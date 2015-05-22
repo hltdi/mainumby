@@ -1,0 +1,1367 @@
+#   
+#   Ñe'ẽasa languages: dictionaries of lexical/grammatical entries
+#
+########################################################################
+#
+#   This file is part of the Ñe'ẽasa project
+#   for parsing, generation, translation, and computer-assisted
+#   human translation.
+#
+#   Copyright (C) 2014, 2015, HLTDI <gasser@cs.indiana.edu>
+#   
+#   This program is free software: you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation, either version 3 of
+#   the License, or (at your option) any later version.
+#   
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#   GNU General Public License for more details.
+#   
+#   You should have received a copy of the GNU General Public License
+#   along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# =========================================================================
+
+# 2014.02.09
+# -- Created
+# 2014.02.10
+# -- Made entries a separate class.
+# 2014.02.15
+# -- Methods for serializing and deserializing languages (using YAML).
+# 2014.03.24
+# -- Words, lexemes, and classes are all in the same dictionary (self.words).
+#    Lexemes start with %, classes with $.
+# 2014.04.17
+# -- Analysis and generation dicts for particular wordforms.
+# 2014.04.30
+# -- Eliminated entry types in lexicon other than Groups and forms.
+# 2015.05.15
+# -- Added morphology-related methods from ParaMorfo
+
+from .entry import *
+from kuaa.morphology.morpho import Morphology, POS
+from kuaa.morphology.semiring import FSSet, TOP
+
+import os, yaml, re
+
+LANGUAGE_DIR = os.path.join(os.path.dirname(__file__), 'languages')
+
+## Regexes for parsing language data
+# Backup language abbreviation
+# l...: 
+BACKUP_RE = re.compile(r'\s*l.*?:\s*(.*)')
+## preprocessing function
+#PREPROC_RE = re.compile(r'\s*pre*?:\s*(.*)')
+# Segments (characters)
+# seg...: 
+SEG_RE = re.compile(r'\s*seg.*?:\s*(.*)')
+# Accent dictionary
+# accent:
+ACC_RE = re.compile(r'\s*accent:\s*(.*)')
+# Deaccent dictionary
+# deaccent:
+DEACC_RE = re.compile(r'\s*deaccent:\s*(.*)')
+# Punctuation
+# pun...: 
+PUNC_RE = re.compile(r'\s*pun.*?:\s*(.*)')
+# Part of speech categories
+# pos: v verbo
+POS_RE = re.compile(r'\s*pos:\s*(.*)\s+(.*)')
+# Feature abbreviations
+# ab...:
+ABBREV_RE = re.compile(r'\s*ab.*?:\s*(.*)')
+# Term translations
+# tr...:
+TRANS_RE = re.compile(r'\s*tr.*?:\s*(.*)')
+# Beginning of feature-value list
+FEATS_RE = re.compile(r'\s*feat.*?:\s*(.*)')
+# Feature-value pair
+FV_RE = re.compile(r'\s*(.*?)\s*=\s*(.*)')
+# FV combinations, could be preceded by ! (= priority)
+FVS_RE = re.compile(r'([!]*)\s*([^!]*)')
+# Abbrev, with prefixes, and full name
+ABBREV_NAME_RE = re.compile(r'([*%]*?)([^*%()]*?)\s*\((.*)\)\s*(\[.*\])?')
+NAME_RE = re.compile(r'([*%]*)([^*%\[\]]*)\s*(\[.*\])?')
+# Feature to be recorded in anal output; new 2015.03.10
+# xf: g gender
+# xf~: VOS voseo
+EXPL_FEAT_RE = re.compile(r'\s*xf(.*):\s*(.*)\s*=\s*(.*)')
+# Preprocessing: replace characters in first list with last char
+# clean: â, ä = ã
+CLEAN_RE = re.compile(r'\s*cle.*?:\s*(.*)\s*=\s*(.*)')
+
+## Regex for checking for non-ascii characters
+ASCII_RE = re.compile(r'[a-zA-Z]')
+
+## Constants for language use
+ANALYSIS = 0
+GENERATION = 1
+# translation
+SOURCE = 2
+TARGET = 3
+
+## Strings used in groups file
+GROUP_SEP = '***'
+TRANS_START = '->'
+
+class Language:
+    """Dictionaries of words, lexemes, grammatical features, and
+    lexical classes."""
+
+    languages = {}
+    
+    # Regular expressions for affix files
+    pattern = re.compile('\s*pat.*:\s+(\w+)\s+(.+)')
+    function = re.compile('\s*func.*:\s+(\w+)\s+(.+)')
+    suffix = re.compile('\s*suf.*:\s+(\S+)(\s.+)?')   # a single space separates the suffix from the segmented form
+    grammar = re.compile('\s*gram.*:\s+(\w+)\s+(.+)')
+    POS = re.compile('\s*pos:\s+(\w+)')
+
+    def __init__(self,
+                 name, abbrev,
+                 use=ANALYSIS,
+#                 source=True, target=False,
+#                 words=None, lexemes=None, grams=None, classes=None,
+#                 mwes=None, groups=None, forms=None,
+                 groups=None, genforms=None,
+                 # Added from morphology/language
+                 pos=None, cache=True):
+        """Initialize dictionaries and names."""
+        self.name = name
+        self.abbrev = abbrev
+#        self.words = words or {}
+#        self.forms = forms or {}
+        self.groups = groups or {}
+        self.use = use
+#        self.source = source
+#        self.target = target
+        # Dict of groups with names as keys
+        self.groupnames = {}
+#        # Record possibilities for dependency labels, feature values, order constraints
+#        self.possible = {}
+        # Record whether language has changed since last loaded
+        self.changed = False
+        # For generation (target) language, a dictionary of morphologically generated words:
+        # {lexeme: {(feat, val): {(feat, val): wordform,...}, ...}, ...}
+#        if not source:
+        self.genforms = genforms or {}
+        Language.languages[abbrev] = self
+        ## 2015.5.15 Copied from morphology/language
+        self.pos = pos or []
+        # Dictionary of preprocessing character conversions
+        self.clean = {}
+        # Dictionary of suffixes and suffix sequences and what to do with them
+        self.suffixes = {}
+        self.accent = None
+        self.deaccent = None
+        # Dictionary of prefixes and prefix sequences and what to do with them
+        self.prefixes = {}
+ #       self.words = []
+        self.punc = None
+        self.seg_units = None
+        # dict of POS: fst lists
+        self.morphology = Morphology()
+        self.morphology.directory = self.get_dir()
+        self.morphology.language = self
+        self.load_morpho_data()
+        # Whether morphological data is loaded
+        self.anal_loaded = False
+        self.gen_loaded = False
+        # Do this later
+        self.load_morpho(target, False, False, False)
+        # Categories (and other semantic features) of words and roots
+        self.cats = {}
+        self.read_cats()
+        # Cached entries read in when language is loaded if language will be used for analysis
+        if use in (ANALYSIS, SOURCE):
+            self.set_anal_cached()
+        # Load groups now if not to be used for translation
+        if use in (ANALYSIS, GENERATION):
+            self.read_groups()
+
+    def quit(self):
+        """Do stuff when the program exits."""
+        if self.use in (ANALYSIS, SOURCE):
+            self.write_cache()
+
+    def __repr__(self):
+        """Print name."""
+        return '<<{}>>'.format(self.name)
+
+    @staticmethod
+    def get_language_dir(abbrev):
+        return os.path.join(LANGUAGE_DIR, abbrev)
+
+    ### Methods copied from morphology/language
+    def get_dir(self):
+        """Where data for this language is kept."""
+        return os.path.join(LANGUAGE_DIR, self.abbrev)
+
+    def get_fst_dir(self):
+        return os.path.join(self.get_dir(), 'fst')
+
+    def get_lex_dir(self):
+        return os.path.join(self.get_dir(), 'lex')
+
+    def set_anal_cached(self):
+        self.cached = {}
+        self.read_cache()
+        # New analyses since language loaded,
+        # each entry a wordform and list of (root, FS) analyses
+        self.new_anals = {}
+
+    def get_cache_dir(self):
+        """File with cached analyses."""
+        return os.path.join(self.get_dir(), 'cache')
+
+    def get_cache_file(self, name=''):
+        d = self.get_cache_dir()
+        if name == True or not name:
+            name = self.abbrev
+#        name = name or self.abbrev
+        return os.path.join(d, name + '.cch')
+
+    def get_sem_file(self, name=''):
+        d = self.get_lex_dir()
+        if name == True or not name:
+            name = 'sem'
+        return os.path.join(d, name + '.lex')
+
+    def get_group_file(self, name=''):
+        d = self.get_dir()
+        if name == True or not name:
+            name = self.abbrev
+        return os.path.join(d, name + '.grp')
+
+    def add_new_anal(self, word, anals):
+        self.new_anals[word] = anals
+
+    def read_cats(self):
+        file = self.get_sem_file()
+        try:
+            with open(file, encoding='utf8') as f:
+                for line in f:
+                    form, sem = line.strip().split()
+                    self.cats[form] = sem.split(',')
+        except IOError:
+            print('No such sem file as {}'.format(file))
+
+    def get_cats(self, form):
+        return self.cats.get(form, [])
+
+    def write_cache(self, name=''):
+        """Write a dictionary of cached entries to a cache file."""
+        if self.new_anals:
+            # Only attempt to cache analyses if there are new ones.
+            file = self.get_cache_file(name=name)
+            with open(file, 'a', encoding='utf8') as out:
+                for word, analyses in self.new_anals.items():
+                    # analyses is a list of root, fs pairs
+                    if len(analyses) == 1 and analyses[0][0] == word and not analyses[0][1]:
+                        # The word is unanalyzed
+                        print("{}:[]".format(word), file=out)
+                    else:
+                        anals = ["{}:{}".format(r, f.__repr__() if f else '') for r, f in analyses]
+                        anals = ';'.join(anals)
+                        print("{} || {}".format(word, anals), file=out)
+        # Empty new_anals in case we want to add things later
+        self.new_anals.clear()
+
+    def read_cache(self, name='', expand=False):
+        """Read cached entries into self.cached from a file.
+        Modified 2015/5/17 to include Ñe'ẽasa categories."""
+        cache = self.get_cache_file(name=name)
+        try:
+            with open(cache, encoding='utf8') as f:
+                print("Reading cached file")
+                for line in f:
+                    split_line = line.strip().split(" || ")
+                    word, analyses = split_line
+                    analyses = analyses.split(';')
+                    anals = [a.split(':') for a in analyses]
+                    alist = []
+                    for r, a in anals:
+                        if expand:
+                            a = FeatStruct(a, freeze=True)
+                        alist.append({'root': r, 'features': a})
+                    if not expand:
+                        # Put False at the front of the list to show that it hasn't been expanded
+                        alist.insert(0, False)
+                    self.cached[word] = alist
+        except IOError:
+            print('No such cache file as {}'.format(cache))
+
+    def get_cached_anal(self, word, expand=True):
+        """Return a list of dicts, one for each analysis of the word, or None."""
+        entries = self.cached.get(word, None)
+        if entries and expand and entries[0] is False:
+            for entry in entries[1:]:
+                feat = entry.get('features')
+                if feat:
+                    entry['features'] = FeatStruct(entry['features'], freeze=True)
+                    entry['root'] = Language.make_root(entry['root'])
+            self.cached[word] = entries[1:]
+            return entries[1:]
+        return entries
+                
+    @staticmethod
+    def make_char_string(chars):
+        """Used in making list of seg units for language."""
+        non_ascii = []
+        for char in chars:
+            if not ASCII_RE.match(char):
+                non_ascii.append(char)
+        non_ascii.sort()
+        non_ascii_s = ''.join(non_ascii)
+        return r'[a-zA-Z' + non_ascii_s + r']'
+
+    @staticmethod
+    def make_seg_units(segs):
+        """Convert a list of segments to a seg_units list + dict."""
+        singletons = []
+        dct = {}
+        for seg in segs:
+            c0 = seg[0]
+            if c0 in dct:
+                dct[c0].append(seg)
+            else:
+                dct[c0] = [seg]
+        for c0, segs in dct.items():
+            if len(segs) == 1 and len(segs[0]) == 1:
+                singletons.append(c0)
+        for seg in singletons:
+            del dct[seg]
+        singletons.sort()
+        return [singletons, dct]
+
+    def load_morpho_data(self):
+        """Load morphological data from .mrf file."""
+        path = os.path.join(self.get_dir(), self.abbrev + '.mrf')
+        if not os.path.exists(path):
+            print("No morphological data file for {}".format(self.abbrev))
+            return
+        print('Parsing morphological data for {}'.format(self.abbrev))
+        with open(path, encoding='utf8') as data:
+            contents = data.read()
+            lines = contents.split('\n')[::-1]
+
+            seg = []
+            punc = []
+            abbrev = {}
+            fv_abbrev = {}
+            trans = {}
+            fv_dependencies = {}
+            fv_priorities = {}
+            fullpos = {}
+
+            excl = {}
+            feats = {}
+            lex_feats = {}
+            true_explicit = {}
+            explicit = {}
+
+            chars = ''
+
+            current = None
+
+            current_feats = []
+            current_lex_feats = []
+            current_excl = []
+            current_abbrev = {}
+            current_fv_abbrev = []
+            current_fv_priority = []
+            current_explicit = []
+            current_true_explicit = []
+            current_fv_dependencies = {}
+
+            complex_feat = False
+            current_feat = None
+            current_value_string = ''
+            complex_fvs = []
+
+            while lines:
+
+                line = lines.pop().split('#')[0].strip() # strip comments
+
+                # Ignore empty lines
+                if not line: continue
+
+                # Beginning of segmentation units
+                m = SEG_RE.match(line)
+                if m:
+                    current = 'seg'
+                    seg = m.group(1).split()
+                    continue
+
+                m = ACC_RE.match(line)
+                if m:
+                    acc = m.group(1).split(',')
+                    self.accent = {}
+                    for c in acc:
+                        u, a = c.split(':')
+                        self.accent[u.strip()] = a.strip()
+                    continue
+
+                m = DEACC_RE.match(line)
+                if m:
+                    deacc = m.group(1).split(',')
+                    self.deaccent = {}
+                    for c in deacc:
+                        a, u = c.split(':')
+                        self.deaccent[a.strip()] = u.strip()
+                    continue
+
+#                m = LG_NAME_RE.match(line)
+#                if m:
+#                    name = m.group(1).strip()
+#                    self.name = name
+#                    continue
+
+                m = PUNC_RE.match(line)
+                if m:
+                    current = 'punc'
+                    punc = m.group(1).split()
+                    continue
+
+                m = TRANS_RE.match(line)
+                if m:
+                    current = 'trans'
+                    w_g = m.group(1).split()
+                    if '=' in w_g:
+                        w, g = w_g.split('=')
+                        # Add to the global TDict
+                        Language.T.add(w.strip(), g.strip(), self.abbrev)
+                    continue
+
+                m = CLEAN_RE.match(line)
+                if m:
+                    dirty, clean = m.groups()
+                    for d in dirty.split(','):
+                        d = d.strip()
+                        self.clean[d] = clean
+                    continue
+
+                m = FEATS_RE.match(line)
+                if m:
+                    current = 'feats'
+                    continue
+
+                if current == 'feats':
+                    m = POS_RE.match(line)
+                    if m:
+                        pos, fullp = m.groups()
+                        pos = pos.strip()
+                        fullp = fullp.strip()
+                        self.pos.append(pos)
+#                        print("Reading features for {}".format(pos))
+                        current_feats = []
+                        current_abbrev = {}
+                        current_fv_abbrev = []
+                        current_fv_priority = []
+                        current_explicit = []
+                        current_true_explicit = []
+                        current_fv_dependencies = {}
+                        feats[pos] = current_feats
+                        abbrev[pos] = current_abbrev
+                        fv_abbrev[pos] = current_fv_abbrev
+                        fv_priorities[pos] = current_fv_priority
+                        explicit[pos] = current_explicit
+                        true_explicit[pos] = current_true_explicit
+                        fullpos[pos] = fullp
+                        fv_dependencies[pos] = current_fv_dependencies
+                        continue
+
+                    m = ABBREV_RE.match(line)
+                    if m:
+                        abb_sig = m.group(1).strip()
+#                        print(" Current abbrev {}, adding {}".format(current_abbrev, abb_sig))
+                        if '=' in abb_sig:
+                            abb, sig = abb_sig.split('=')
+                            current_abbrev[abb.strip()] = sig.strip()
+                        continue
+
+                    m = EXPL_FEAT_RE.match(line)
+                    # Feature to include in pretty output
+                    if m:
+                        opt, fshort, flong = m.groups()
+                        fshort = fshort.strip()
+                        opt = opt.strip()
+                        current_abbrev[fshort] = flong.strip()
+                        current_explicit.append(fshort)
+                        if opt and opt == '~':
+                            current_true_explicit.append(fshort)
+                        continue
+
+                    m = FV_RE.match(line)
+                    if m:
+                        # A feature and value specification
+                        feat, val = m.groups()
+                        if '+' in feat or '-' in feat:
+                            # Expansion for a set of boolean feature values
+                            # See if there's a ! (=priority) prefix
+                            m2 = FVS_RE.match(feat)
+                            priority, fvs = m2.groups()
+                            # An abbreviation for one or more boolean features with values
+                            fvs = fvs.split(',')
+                            fvs = [s.strip() for s in fvs]
+                            fvs = [s.split('=') if '=' in s else [s[1:], (True if s[0] == '+' else False)] for s in fvs]
+                            current_fv_abbrev.append((fvs, val))
+                            if priority:
+                                current_fv_priority.append(fvs)
+                        elif '=' in val:
+                            # Complex feature (with nesting)
+                            complex_feat = self.proc_feat_string(feat, current_abbrev, current_excl, current_lex_feats,
+                                                                 current_fv_dependencies)
+                            vals = val.split(';')
+                            for fv2 in vals:
+                                fv2 = fv2.strip()
+                                if fv2:
+                                    m2 = FV_RE.match(fv2)
+                                    if m2:
+                                        feat2, val2 = m2.groups()
+                                        f = self.proc_feat_string(feat2, current_abbrev, current_excl, current_lex_feats,
+                                                                  current_fv_dependencies)
+                                        v = self.proc_value_string(val2, f, current_abbrev, current_excl,
+                                                                   current_fv_dependencies)
+                                        complex_fvs.append((f, v))
+                            if len(vals) == 1:
+                                current_feats.append((complex_feat, complex_fvs))
+                                complex_feat = None
+                                complex_fvs = []
+
+                        else:
+                           fvs = line.split(';')
+                           if len(fvs) > 1:
+                               # More than one feature-value pair (or continuation)
+                               if not complex_feat:
+                                   complex_feat = current_feat
+                               for fv2 in fvs:
+                                   fv2 = fv2.strip()
+                                   if fv2:
+                                       m2 = FV_RE.match(fv2)
+                                       if m2:
+                                           # A single feature-value pair
+                                           feat2, val2 = m2.groups()
+                                           f = self.proc_feat_string(feat2, current_abbrev, current_excl, current_lex_feats,
+                                                                     current_fv_dependencies)
+                                           v = self.proc_value_string(val2, f, current_abbrev, current_excl,
+                                                                      current_fv_dependencies)
+                                           complex_fvs.append((f, v))
+                           elif complex_feat:
+                               # A single feature-value pair
+                               f = self.proc_feat_string(feat, current_abbrev, current_excl, current_lex_feats,
+                                                         current_fv_dependencies)
+                               v = self.proc_value_string(val, f, current_abbrev, current_excl,
+                                                          current_fv_dependencies)
+                               complex_fvs.append((f, v))
+                               current_feats.append((complex_feat, complex_fvs))
+                               complex_feat = None
+                               complex_fvs = []
+                           else:
+                               # Not a complex feature
+                               current_feat = self.proc_feat_string(feat, current_abbrev, current_excl, current_lex_feats,
+                                                                    current_fv_dependencies)
+                               current_value_string = ''
+                               val = val.strip()
+                               if val:
+                                   # The value is on this line
+                                   # Split the value by |
+                                   vals = val.split('|')
+                                   vals_end = vals[-1].strip()
+                                   if not vals_end:
+                                       # The line ends with | so the value continues
+                                       current_value_string = val
+                                   else:
+                                       v = self.proc_value_string(val, current_feat, current_abbrev, current_excl,
+                                                                  current_fv_dependencies)
+                                       current_feats.append((current_feat, v))
+                    else:
+                        # Just a value
+                        val = line.strip()
+                        current_value_string += val
+                        # Split the value by | to see if it continues
+                        vals = val.split('|')
+                        if vals[-1].strip():
+                            v = self.proc_value_string(current_value_string, current_feat, current_abbrev, current_excl,
+                                                       current_fv_dependencies)
+                            current_feats.append((current_feat, v))
+                            current_value_string = ''
+
+#                       # Handle other cases later
+#                        continue
+
+                elif current == 'seg':
+                    seg.extend(line.strip().split())
+
+                elif current == 'punc':
+                    punc.extend(line.strip().split())
+
+                elif current == 'pos':
+                    pos.extend(line.strip().split())
+
+                elif current == 'trans':
+                    wd, gls = line.strip().split('=')
+                    # Add to the global TDict
+#                    print('Need to add {}: {} to global TDict'.format(wd.strip(), gls.strip()))
+#                    Language.T.add(wd.strip(), gls.strip(), self.abbrev)
+
+                else:
+                    raise ValueError("bad line: {}".format(line))
+
+            if punc:
+                # Make punc list into a string
+                self.punc = ''.join(punc)
+
+            if seg:
+                # Make a bracketed string of character ranges and other characters
+                # to use for re
+                chars = ''.join(set(''.join(seg)))
+                chars = Language.make_char_string(chars)
+                # Make the seg_units list, [chars, char_dict], expected for transduction,
+                # composition, etc.
+                self.seg_units = Language.make_seg_units(seg)
+
+        if self.pos and not self.morphology:
+#            print("Creating morphology...")
+            for p in self.pos:
+#                print(" Creating {}".format(p))
+                self.morphology[p] = POS(p, self, fullname=fullpos[p])
+                self.morphology[p].abbrevs = abbrev[p]
+                self.morphology[p].fv_abbrevs = fv_abbrev[p]
+                self.morphology[p].fv_priority = fv_priorities[p]
+                self.morphology[p].true_explicit_feats = true_explicit[p]
+                self.morphology[p].explicit_feats = explicit[p]
+                self.morphology[p].feat_list = feats[p]
+                self.morphology[p].make_rev_abbrevs()
+
+    def proc_feat_string(self, feat, abbrev_dict, excl_values, lex_feats, fv_dependencies):
+        prefix = ''
+        depend = None
+        m = ABBREV_NAME_RE.match(feat)
+
+        if m:
+            prefix, feat, name, depend = m.groups()
+            abbrev_dict[feat] = name
+        else:
+            m = NAME_RE.match(feat)
+            prefix, feat, depend = m.groups()
+
+        # * means that the feature's values are not reported in analysis output
+        if '*' in prefix:
+            excl_values.append(feat)
+        # % means that the feature is lexical
+        if '%' in prefix:
+            lex_feats.append(feat)
+
+        if depend:
+            # Feature and value that this feature value depends on
+            # Get rid of the []
+            depend = depend[1:-1]
+            # Can be a comma-separated list of features
+            depends = depend.split(',')
+            for index, dep in enumerate(depends):
+                dep_fvs = [fvs.strip() for fvs in dep.split()]
+                if dep_fvs[-1] == 'False':
+                    dep_fvs[-1] = False
+                elif dep_fvs[-1] == 'True':
+                    dep_fvs[-1] = True
+                elif dep_fvs[-1] == 'None':
+                    dep_fvs[-1] = None
+                depends[index] = dep_fvs
+            fv_dependencies[feat] = depends
+
+        return feat
+
+    def proc_value_string(self, value_string, feat, abbrev_dict, excl_values, fv_dependencies):
+        '''value_string is a string containing values separated by |.'''
+        values = [v.strip() for v in value_string.split('|')]
+        res = []
+        prefix = ''
+        for value in values:
+            if not value:
+                continue
+            if value == '+-':
+                res.extend([True, False])
+            else:
+                m = ABBREV_NAME_RE.match(value)
+                if m:
+                    prefix, value, name, depend = m.groups()
+                    abbrev_dict[value] = name
+                else:
+                    m = NAME_RE.match(value)
+                    prefix, value, depend = m.groups()
+
+                value = value.strip()
+
+                if value == 'False':
+                    value = False
+                elif value == 'True':
+                    value = True
+                elif value == 'None':
+                    value = None
+                elif value == '...':
+                    value = FeatStruct('[]')
+                elif value.isdigit():
+                    value = int(value)
+
+                if '*' in prefix:
+                    excl_values.append((feat, value))
+
+                if depend:
+                    # Feature and value that this feature value depends on
+                    depend = depend[1:-1]
+                    dep_fvs = [fvs.strip() for fvs in depend.split()]
+                    if dep_fvs[-1] == 'False':
+                        dep_fvs[-1] = False
+                    elif dep_fvs[-1] == 'True':
+                        dep_fvs[-1] = True
+                    elif dep_fvs[-1] == 'None':
+                        dep_fvs[-1] = None
+                    elif dep_fvs[-1] == '...':
+                        dep_fvs[-1] = FeatStruct('[]')
+                    fv_dependencies[(feat, value)] = dep_fvs
+
+                res.append(value)
+        return tuple(res)
+
+    def load_morpho(self, generate=False, segment=False, guess=True, verbose=False):
+        """Load words and FSTs for morphological analysis and generation."""
+        if verbose:
+            print('Loading morphological data for {} {}'.format(self.name, "(gen)" if generate else "(anal)"))
+        # Load pre-analyzed words
+        self.set_analyzed()
+        self.set_suffixes(verbose=verbose)
+        self.morphology.set_words()
+        for pos in self.morphology:
+            posmorph = self.morphology[pos]
+            # Load pre-analyzed words if any
+            posmorph.set_analyzed()
+            if generate:
+                posmorph.make_generated()
+                posmorph.read_gen_cache()
+            # Load FST
+            posmorph.load_fst(generate=generate, guess=guess, segment=segment,
+                              verbose=verbose)
+            # Do others later
+        if generate:
+            self.gen_loaded = True
+        else:
+            self.anal_loaded = True
+
+        return True
+
+    def load_gen(self, verbose=False):
+        """Just load the generation FSTs."""
+        if self.gen_loaded:
+            return
+        print('Loading morphological generation data for {}'.format(self.name))
+        self.gen_loaded = True
+        for pos in self.morphology:
+            self.morphology[pos].make_generated()
+            # Load FST
+            self.morphology[pos].load_fst(generate=True, guess=False, segment=False,
+                                          verbose=verbose)
+
+    def set_analyzed(self, filename='analyzed.lex', verbose=False):
+        '''Set the dict of analyzed words, reading them in from a file, one per line.'''
+        path = os.path.join(self.get_lex_dir(), filename)
+        if os.path.exists(path):
+            file = open(path, encoding='utf8')
+            if verbose:
+                print('Storing pre-analyzed forms')
+            for line in file:
+                # Word and FS separated by two spaces
+                word, anal = line.split('  ')
+                fs = FSSet.parse(anal.strip())
+                self.analyzed[word] = fs
+            file.close()
+
+    def set_suffixes(self, filename='suf.lex', verbose=False):
+        '''Set the dict of suffixes that can be stripped off.'''
+        path = os.path.join(self.get_lex_dir(), filename)
+        if os.path.exists(path):
+            if verbose:
+                print("Loading suffixes from {}".format(path))
+            
+            # Make 'v' the default POS
+            current_pos = 'v'
+            current_suffix = None
+            current_attribs = None
+            functions = {}
+            patterns = {}
+            grams = {}
+
+            with open(path, encoding='utf8') as file:
+                for line in file:
+                    line = line.split('#')[0].strip() # strip comments
+
+                    if not line:
+                        continue
+
+                    m = Language.pattern.match(line)
+                    if m:
+                        patname = m.group(1)
+                        regex = m.group(2)
+#                        print("Pattern {} with regex {}".format(patname, regex))
+                        patterns[patname] = re.compile(regex)
+                        continue
+                    m = Language.POS.match(line)
+                    if m:
+                        current_pos = m.group(1)
+                        continue
+                    m = Language.grammar.match(line)
+                    if m:
+                        gname = m.group(1)
+                        fs = m.group(2)
+#                        print("Grammar pattern {} with FS {}".format(fname, fs))
+                        grams[gname] = FSSet.parse(fs)
+                        continue
+                    m = Language.function.match(line)
+                    if m:
+                        name = m.group(1)
+                        args = m.group(2)
+                        lg_arg = "lg=self, "
+                        curry = "kuaa.morphology.strip.sub_curry("
+                        call = curry + lg_arg + args + ")"
+                        function = eval(call)
+                        functions[name] = function
+                        continue
+                    m = Language.suffix.match(line)
+                    if m:
+                        if current_suffix:
+                            if current_suffix in self.suffixes:
+                                self.suffixes[current_suffix].extend(current_attribs)
+                            else:
+                                self.suffixes[current_suffix] = current_attribs
+                        current_suffix = m.group(1)
+                        current_attribs = m.group(2)
+                        if current_attribs:
+                            current_attribs = [current_attribs.strip()]
+                        else:
+                            current_attribs = []
+                        continue
+                    if current_suffix:
+                        # This line represents a dict of suffix attribs for a particular case
+                        # ; separate different attribs
+                        attrib_dict = {}
+                        suff_attribs = line.split(';')
+                        for attrib in suff_attribs:
+                            # We need partition instead of split because there
+                            # can be other = to the right in a feature-value expression
+                            typ, x, value = attrib.strip().partition('=')
+                            if typ == 'pat':
+                                if value not in patterns:
+                                    print("Pattern {} not in pattern dict".format(value))
+                                else:
+                                    value = patterns[value]
+                            elif typ == 'change':
+                                if value not in functions:
+                                    print("Function {} not in function dict".format(value))
+                                else:
+                                    value = functions[value]
+                            elif typ == 'gram':
+                                if value in grams:
+                                    value = grams[value]
+                                else:
+                                    value = FSSet.parse(value)
+                            attrib_dict[typ] = value
+                        if 'pos' not in attrib_dict:
+                            attrib_dict['pos'] = current_pos
+                        current_attribs.append(attrib_dict)
+                if current_suffix:
+                    # Current suffix attribs not yet added to suffixes
+                    if current_suffix in self.suffixes:
+                        self.suffixes[current_suffix].extend(current_attribs)
+                    else:
+                        self.suffixes[current_suffix] = current_attribs
+
+    def strip_suffixes(self, word, guess=False, segment=False, verbose=False, pretty=False):
+        '''Check to see if the word can be directly segmented into a stem and one or more suffixes.'''
+        if self.suffixes:
+            result = []
+            stripped = kuaa.morphology.strip.sufstrip(word, self.suffixes)
+            if stripped:
+                for segs, gram, anal in stripped:
+                    if anal:
+                        # 'segs' needs to be analyzed further
+                        # First separate the stem from segs and find the POS
+                        stem, x, suffixes = segs.partition('+')
+                        # There may be a category name for pretty output
+                        suffixes, x, sufcat = suffixes.partition(' ')
+                        # Now use the anal FST for that POS to transduce the stem starting
+                        # from the grammatical FSSet as an initial weight
+                        fst = self.morphology[anal].get_fst(generate=False, guess=guess, segment=segment)
+                        anals = fst.transduce(stem, seg_units=self.seg_units, reject_same=guess,
+                                              init_weight=gram)
+                        if not anals:
+                            continue
+                        # Return each root and FS combination, as expected by language.anal_word()
+                        for root, anls in anals:
+                            for a in anls:
+                                if pretty:
+                                    a = self.morphology[anal].fs2prettylist(a)
+                                    if sufcat:
+                                        a.append((sufcat, suffixes))
+                                        result.append([root, self.morphology[anal].fullname, a])
+                                    else:
+                                        result.append([root + '+' + suffixes, self.morphology[anal].fullname, a])
+                                else:
+                                    result.append([root + '+' + suffixes, a])
+                    else:
+                        if pretty:
+                            gram = self.morphology[anal].fs2pretty(gram)
+                        result.append([segs, gram])
+            return result
+
+#    def get_cached_anal(self, word):
+#        """Returns cached analyses for word if any."""
+#        if word not in self.cached:
+#            return False
+#        else:
+#            entry = self.cached[word]
+#            if not entry:
+#                return [(word, None)]
+#            else:
+#                return entry
+
+    def anal_word(self, word, guess=True, only_guess=False, segment=False, 
+                  root=True, stem=True, citation=True, gram=True,
+                  # Whether to return a pretty list of feature values
+                  # (doesn't work within Ñe'ẽasa yet)
+                  pretty=False,
+                  # Whether to return empty analyses / all analyses
+                  unanal=False, get_all=True,
+                  to_dict=False, preproc=False, postproc=False,
+                  # Whether to cache new entries
+                  cache=True,
+                  no_anal=None,
+                  string=False, print_out=False,
+                  rank=True, report_freq=True, nbest=100,
+                  only_anal=False):
+        '''Analyze a single word, trying all existing POSs, both lexical and guesser FSTs.
+
+        [ [POS, {root|citation}, FSSet] ... ]
+        '''
+        # Before anything else, check to see if the word is in the list of words that
+        # have failed to be analyzed
+        if no_anal != None and word in no_anal:
+            return None
+        # Next clean up using character conversion dict
+        for d, c in self.clean.items():
+            if d in word:
+                word = word.replace(d, c)
+        # Whether the analyses are found in the cache
+        found = False
+        analyses = []
+        to_cache = [] if cache else None
+        # See if the word is cached (before preprocessing/romanization)
+        cached = self.get_cached_anal(word)
+        if cached:
+            found = True
+            if not pretty:
+                analyses = cached
+            else:
+                analyses = self.prettify_analyses(cached)
+            return analyses
+        form = word
+        # See if the word is unanalyzable (in the "words" list)
+#        if unanal:
+#            unal_word = self.morphology.is_word(form)
+#            if unal_word:
+#                if not pretty:
+#                    analyses.append((form, '', []))
+#                else:
+#                    analyses.append((form, []))
+#                if cache and not pretty:
+#                    to_cache.append([])
+        # Try stripping off suffixes
+        suff_anal = self.strip_suffixes(form, pretty=pretty)
+        if suff_anal:
+            analyses.extend(suff_anal)
+            if cache and not pretty:
+                to_cache.extend(suff_anal)
+        if not analyses or get_all:
+            if not only_guess:
+                for pos, POS in self.morphology.items():
+                    #... or already analyzed within a particular POS
+                    preanal = POS.get_analyzed(form, sep_anals=True, pretty=pretty)
+                    if preanal:
+                        analyses.extend(preanal)
+                        if cache and not pretty:
+                            to_cache.extend(preanal)
+                if not analyses or get_all:
+                    if not only_guess:
+                        # We have to really analyze it; first try lexical FSTs for each POS
+                        for pos, POS in self.morphology.items():
+                            analysis = POS.analyze(form, segment=segment,
+                                                   to_dict=to_dict, sep_anals=True, pretty=pretty)
+                            if analysis:
+                                analyses.extend(analysis)
+                                if cache and not pretty:
+                                    to_cache.extend(analysis)
+                    # If nothing has been found, try guesser FSTs for each POS
+                    if not analyses and guess:
+                        # Accumulate results from all guessers
+                        for pos, POS in self.morphology.items():
+                            analysis = POS.analyze(form, guess=True, segment=segment,
+                                                   to_dict=to_dict, sep_anals=True, pretty=pretty)
+                            if analysis:
+                                analyses.extend(analysis)
+                                if cache and not pretty:
+                                    to_cache.extend(analysis)
+
+        if cache and not pretty and not found:
+            # Or use form instead of word
+            self.add_new_anal(word, to_cache)
+
+        return self.dictify_analyses(analyses)
+
+    def dictify_analyses(self, anals):
+        """Convert a list of (root, FS) analyses to a list of dicts,
+        and convert roots to _ form."""
+        dicts = []
+        for root, anal in anals:
+            dicts.append({'root': Language.make_root(root), 'features': anal})
+        return dicts
+
+    @staticmethod
+    def make_root(root):
+        """Add the _ expected for roots."""
+        if root[-1] != '_':
+            root = root + '_'
+        return root
+
+    def prettify_analyses(self, anals):
+        a = []
+        for root, fs in anals:
+            pos = fs.get('pos')
+            posmorph = self.morphology.get(pos)
+            a.append((root, posmorph.fullname, posmorph.fs2prettylist(fs)))
+        return a
+
+    def gen(self, root, features=None, pos=None, guess=False, roman=True):
+        '''Generate a word, given stem/root and features (replacing those in default).
+        If pos is specified, check only that POS; otherwise, try all in order until one succeeeds.
+
+        @param root:     string (roman); root or stem of a word
+        @param features: FeatStruct: grammatical features to be added to default
+        @param pos:      string: part-of-speech: use only the generator for this POS
+        @param guess:    boolean: whether to use guess generator if lexical generator fails
+        @param roman:    boolean: whether the language uses a roman script
+        '''
+        is_not_roman = not roman
+        morf = self.morphology
+        output = []
+        features = features or []
+        if pos:
+            posmorph = morf[pos]
+            output = posmorph.gen(root, update_feats=features, guess=guess)
+        else:
+            for posmorph in list(morf.values()):
+                output.extend(posmorph.gen(root, update_feats=features, guess=guess))
+        if output:
+            o = [out[0] for out in output]
+            return o
+        print("This word can't be generated!")
+        return output
+
+    def get_gen_fvs(self):
+        gf = []
+        for f, m in self.morphology.items():
+            gf.append(((f, m.fullname), m.get_gen_fvs()))
+        return gf
+
+    def form2fvs(self, selpos, form):
+        """Convert a dict of feature, value pairs from web form to L3Morpho feat val dicts,
+        one for the form, one for generation.
+        Record only those features belonging to the selected POS. Features are those keys
+        containing ':'."""
+        fvs = {}
+        longfvs = {}
+        for f, v in form.items():
+            if ':' not in f:
+                continue
+            fsplit = f.split(':')
+            pos = fsplit[0]
+            if pos == selpos:
+                posmorph = self.morphology[pos]
+                f1long = fsplit[1]
+                f1 = posmorph.exrevab(f1long)
+                f2 = None
+                if len(fsplit[1:]) == 2:
+                    f2long = fsplit[2]
+                    f2 = posmorph.exrevab(f2long)
+                if f2:
+                    if f1 not in fvs:
+                        fvs[f1] = {}
+                        longfvs[f1long] = {}
+                    fvs[f1][f2] = True
+                    longfvs[f1long][f2long] = 'on'
+                else:
+                    fvs[f1] = posmorph.exrevab(v)
+                    if v is True:
+                        longfvs[f1long] = 'on'
+                    else:
+                        longfvs[f1long] = v
+        return fvs, longfvs
+
+    ### End of morphology stuff
+
+    def to_dict(self):
+        """Convert the language to a dictionary to be serialized as a yaml file."""
+        d = {}
+        d['name'] = self.name
+        d['abbrev'] = self.abbrev
+        if self.groups:
+            groups = {}
+            for head, v in self.groups.items():
+                groups[head] = [g.to_dict() for g in v]
+            d['groups'] = groups
+        if self.forms:
+            forms = {}
+            for k, v in self.forms.items():
+                # v is an fv dict or a list of fv dicts
+                forms[k] = v
+        return d
+
+    def write(self, directory, filename=''):
+        """Serialize the language."""
+        filename = filename or self.abbrev + '.lg'
+        path = os.path.join(directory, filename)
+        with open(path, 'w', encoding='utf8') as file:
+            yaml.dump(self.to_dict(), file)
+
+    def read_groups(self, target=None):
+        """Read in groups from a .grp file. If target is not None (must be a language), read in translation groups
+        and cross-lingual features as well."""
+        target_abbrev = target.abbrev if target else None
+        source_groups = []
+        target_groups = []
+        with open(self.get_group_file(), encoding='utf8') as file:
+            print("Reading groups for {}".format(self.name))
+            # Groups separated by GROUP_SEP string
+            groups = file.read().split(GROUP_SEP)
+            for group_spec in groups:
+                group_trans = group_spec.split(TRANS_START)
+                source_group = group_trans[0]
+                source_groups.append(source_group)
+                if target:
+                    translations = []
+                    for t in group_trans[1:]:
+                        tlang, x, tgroup = t.strip().partition(' ')
+                        if tlang == target_abbrev:
+                            translations.append(group)
+                    target_groups.extend(translations)
+        return source_groups, target_groups
+
+    @staticmethod
+    def from_dict(d, reverse=True, use=ANALYSIS):
+        """Convert a dict (loaded from a yaml file) to a Language object."""
+        l = Language(d.get('name'), d.get('abbrev'), use=use)
+        l.possible = d.get('possible')
+        groups = d.get('groups')
+        if groups:
+            l.groups = {}
+            for head, v in groups.items():
+                group_objs = [Group.from_dict(g, l, head) for g in v]
+                l.groups[head] = group_objs
+                # Add groups to groupnames dict
+                for go in group_objs:
+                    l.groupnames[go.name] = go
+        forms = d.get('forms')
+        if forms:
+            l.forms = {}
+            for k, v in forms.items():
+                # v should be a dict or a list of dicts
+                # Convert features value to a FeatStruct object
+                if isinstance(v, dict):
+                    if 'features' in v:
+                        v['features'] = FeatStruct(v['features'])
+                else:
+                    for d in v:
+                        if 'features' in d:
+                            d['features'] = FeatStruct(d['features'])
+                l.forms[k] = v
+                if reverse:
+                    # Add item to genform dict
+                    if isinstance(v, dict):
+                        if 'seg' not in v:
+                            l.add_genform(k, v['root'], v.get('features'))
+                    else:
+                        for d in v:
+                            l.add_genform(k, d['root'], d.get('features'))
+        return l
+
+    @staticmethod
+    def read(path, use=ANALYSIS):
+        """Create a Language from the contents of a yaml file, a dict
+        that must be then converted to a Language."""
+        with open(path, encoding='utf8') as file:
+            dct = yaml.load(file)
+            return Language.from_dict(dct, use=use)
+
+    @staticmethod
+    def load_trans(source, target):
+        """Load a source and a target language, given as abbreviations."""
+        srclang = targlang = None
+        if source in Language.languages:
+            srclang = Language.languages[source]
+        else:
+            try:
+                srcpath = os.path.join(Language.get_language_dir(source), source + '.lg')
+                srclang = Language.read(srcpath, use=SOURCE)
+                print("Loaded source language {}".format(srclang))
+            except IOError:
+                print("One of those languages doesn't exist.")
+                return
+        if target in Language.languages:
+            targlang = Language.languages[target]
+        else:
+            try:
+                targpath = os.path.join(Language.get_language_dir(target), target + '.lg')
+                targlang = Language.read(targpath, use=TARGET)
+                print("Loaded target language {}".format(targlang))
+            except IOError:
+                print("One of these languages doesn't exist.")
+                return
+        # Load groups for source language now
+        srclang.read_groups()
+        return srclang, targlang
+        
+    @staticmethod
+    def load(*abbrevs):
+        """Load languages, given as abbreviations."""
+        languages = []
+        for abbrev in abbrevs:
+            if abbrev in Language.languages:
+                language = Language.languages[abbrev]
+                languages.append(language)
+            else:
+                path = os.path.join(Language.get_language_dir(abbrev), abbrev + '.lg')
+                try:
+                    language = Language.read(path)
+                    languages.append(language)
+                    print("Loaded language {}".format(language))
+                except IOError:
+                    print("That language doesn't seem to exist.")
+                    return
+        return languages
+
+    ### Basic setters. Create entries (dicts) for item. For debugging purposes, include name
+    ### in entry.
+
+    def add_form(self, form, dct, reverse=True):
+        """Form dict has root, features, cats.
+        If reverse is True, also add the form to the genforms dict."""
+        if form not in self.forms:
+            self.forms[form] = dct
+        else:
+            entry = self.forms[form]
+            if isinstance(entry, dict):
+                # Make this the second entry
+                self.forms[form] = [entry, dct]
+            else:
+                # There are already two or more entries in a list
+                entry.append(dct)
+        if reverse:
+            lexeme = dct['root']
+            features = dct['features']
+            self.add_genform(form, lexeme, features)
+
+    def add_genform(self, form, lexeme, features):
+        """Add the form to a lexeme- and feature-keyed dict."""
+        if lexeme not in self.genforms:
+            self.genforms[lexeme] = {}
+        featdict = self.genforms[lexeme]
+        # features is a FeatStruct object; convert it to a list of tuples
+        features = tuple(features.to_list())
+        featdict[features] = form
+#        feat = features.pop(0)
+#        self.make_featdict(featdict, feat, features, form)
+
+    def add_group(self, tokens, head_index=-1, head='', name='', features=None):
+        group = Group(tokens, head_index=head_index, head=head,
+                      language=self, name=name, features=features)
+#        print('Group {}, head {}'.format(group, group.head))
+        if features:
+            head_i = tokens.index(group.head)
+            head_feats = features[head_i]
+        else:
+            head_feats = None
+        self.add_group_to_lexicon(group.head, group, head_feats)
+        self.groupnames[group.name] = group
+        self.changed = True
+        return group
+
+    def add_group_to_lexicon(self, head, group, features):
+        if not features:
+            # Add the group to the list of groups for the head word/lexeme
+            if head not in self.groups:
+                self.groups[head] = {}
+            if () not in self.groups[head]:
+                self.groups[head][()] = []
+            self.groups[head][()].append(group)
+        else:
+            # Convert fv dict to an alphabetized tuple of fv pairs
+            fvs = list(features.items())
+            fvs.sort()
+            fvs = tuple(fvs)
+            if head not in self.groups:
+                self.groups[head] = {}
+            if fvs not in self.groups[head]:
+                self.groups[head][fvs] = []
+            self.groups[head][fvs].append(group)
+
+    ### Basic getters.
+
+    ### Generation of word forms
+
+    def generate(self, root, features, pos=None, guess=False, roman=True, verbosity=0):
+        if verbosity:
+            print("Generating {}:{}".format(root, features))
+        if not features:
+            features = FeatStruct({})
+        if not pos:
+            print("Warning: no POS for generation of {}:{}".format(root, features.__repr__()))
+        is_not_roman = not roman
+        morf = self.morphology
+        output = []
+        if pos:
+            posmorph = morf[pos]
+            output = posmorph.gen(root, update_feats=features, guess=guess)
+        else:
+            for posmorph in list(morf.values()):
+                output.extend(posmorph.gen(root, update_feats=features, guess=guess))
+        if output:
+            o = [out[0] for out in output]
+            return o
+        else:
+            print("The root/feature combination {}:{} word can't be generated!".format(root, features.__repr__()))
+            return [root]
+
+    #        if root not in self.genforms:
+#            return [root]
+#        if not features:
+#            features = FeatStruct({})
+#        gendict = self.genforms[root]
+#        # List of matching forms
+#        result = []
+#        for feat_list, form in gendict.items():
+#            if features.match_list(feat_list):
+#                result.append(form)
+#            print('Feat list {}, form {}'.format())
+#        if not result:
+#            print("No forms found for {}:{}".format(root, features))
+#        return result
+
+class LanguageError(Exception):
+    '''Class for errors encountered when attempting to update the language.'''
+
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return repr(self.value)
+

@@ -1,0 +1,370 @@
+#!/usr/bin/env python3
+
+# Ñe'ẽasa. Parsing and translation with minimal dependency grammars.
+#
+########################################################################
+#
+#   This file is part of the HLTDI L^3 project
+#   for parsing, generation, translation, and computer-assisted
+#   human translation.
+#
+#   Copyright (C) 2014, 2015, HLTDI <gasser@cs.indiana.edu>
+#   
+#   This program is free software: you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation, either version 3 of
+#   the License, or (at your option) any later version.
+#   
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#   GNU General Public License for more details.
+#   
+#   You should have received a copy of the GNU General Public License
+#   along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# =========================================================================
+
+# 2014.02.09
+# -- Created
+# 2015.05.20
+# -- Changed to Ñe'ẽasa, after incorporating morphological analysis/generation
+
+__version__ = 1.0
+
+import kuaa
+
+# Profiling
+#import cProfile
+#import pstats
+
+### Corpora and patterns
+
+def corp():
+    return kuaa.Corpus('ep',
+                          tag_map={'n': [('p', 'n'),
+                                         [(1,2), {'s': (('n', 's'),), 'p': (('n', 'p'),)}]],
+                                   'v': [('p', 'v'),
+                                         [(2,4), {'ic': (('tm', 'cnd'),), 'if': (('tm', 'fut'),),
+                                                  'ii': (('tm', 'ipf')), 'ip': (('tm', 'prs'),),
+                                                  'is': (('tm', 'prt'),),
+                                                  'sf': (('tm', 'sft'),),
+                                                  'si': (('tm', 'sbi'),), 'sp': (('tm', 'sbp'),),
+                                                  'g': (('tm', 'ger'),),
+                                                  'n': (('tm', 'inf'),),
+                                                  'p': (('tm', 'prc'),)}]],
+                                   'w': [('p', 'n')]
+                                   },
+                          feat_order={'sj': ['3s', '3p', '1p', '13s', '2p', '1s', '2s'],
+                                      'tm': ['inf', 'prs', 'prt', 'ger', 'prc',
+                                             'fut', 'sbp', 'ipf', 'sbi', 'cnd', 'ipv'],
+                                      'n': ['s', 'p']})
+
+def pos_freq(corpus=None):
+    corpus = corpus or corp()
+    corpus.set_pos_grams('n', {'agua', 'madre', 'comunicación', 'paz', 'futuro', 'fronteras'})
+    corpus.set_pos_grams('v', {'poner', 'querer', 'hacer', 'subir'})
+    corpus.set_pos_grams('a', {'pequeño', 'interesante', 'increíble', 'último', 'corto'})
+
+def europarl_corpus(corpus=None, suffix='0-500', lines=0, posfreq=False, ambig=False):
+    corpus = corpus or corp()
+    corpus.read("../LingData/Es/Europarl/es-en/es-v7-" + suffix, lines=lines)
+    if posfreq:
+        pos_freq(corpus)
+    if ambig:
+        corpus.set_ambig(pos=False)
+    return corpus
+
+def monton():
+    return kuaa.Pattern(['montón', 'de', {('p', 'n')}])
+
+def matar():
+    return kuaa.Pattern([(None, 'matar'), 'a', 2, {('p', 'n')}])
+
+def obligar():
+    return kuaa.Pattern([(None, 'obligar'), 'a', 2, {('p', 'n')},
+                            'a', 2, {('p', 'v')}])
+
+def tc():
+    return kuaa.Pattern([(None, 'tener'), 'en', 'cuenta', (1, 3), (None, 'situación')])
+
+def trans():
+    # ~ se, V, ..., N
+    return kuaa.Pattern([(('~', {'se'}), (None, None)), {('p', 'v')}, 2, {('p', 'n')}])
+
+### Parsing and translating
+
+def test(verbosity=0):
+    piece_of_mind_parse_ung(verbosity=verbosity)
+    piece_of_mind_trans(verbosity=verbosity)
+    kick_the_bucket(verbosity=verbosity)
+    end_of_world(verbosity=verbosity)
+    never_eaten_fish(verbosity=verbosity)
+    never_eaten_fish_ungr(verbosity=verbosity)
+    cantar_las_cuarenta_I(verbosity=verbosity)
+    cantar_las_cuarenta_she(verbosity=verbosity)
+
+def piece_of_mind_parse_ung(verbosity=0, all_sols=True):
+    """
+    Eng parse.
+    Illustrates
+    (1) within SL agreement (fails because 'my' doesn't agree with 'gives')
+    """
+    eng = kuaa.Language.load('eng')[0]
+    s = kuaa.Sentence(raw='Mary gives them a piece of my mind',
+                         language=eng,
+                         verbosity=verbosity)
+#    print("Parsing: {}".format(s.raw))
+    s.initialize(verbosity=verbosity)
+    s.solve(translate=False, verbosity=verbosity, all_sols=all_sols)
+    return s
+
+def piece_of_mind_trans(verbosity=0, all_sols=True):
+    """
+    Eng->Spa
+    Illustrates
+    (1) within SL agreement (succeeds because 'her' agrees with 'gives')
+    (2) SL-TL feature agreement
+    (3) SL-TL word count mismatch (SL > TL)
+    """
+    eng, spa = kuaa.Language.load('eng', 'spa')
+    s = kuaa.Sentence(raw='Mary gives them a piece of her mind',
+                         language=eng, target=spa,
+                         verbosity=verbosity)
+#    print("Translating {} to {}".format(s.raw, s.target))
+    s.initialize(verbosity=verbosity)
+    s.solve(translate=True, verbosity=verbosity, all_sols=all_sols)
+    return s
+
+def kick_the_bucket(verbosity=0, all_sols=True):
+    """
+    Eng->Spa
+    Illustrates
+    (1) SL group ambiguity (search for solutions)
+    (2) SL-TL feature agreement
+    """
+    eng, spa = kuaa.Language.load('eng', 'spa')
+    s = kuaa.Sentence(raw='John kicked the bucket', language=eng, target=spa,
+                         verbosity=verbosity)
+#    print("Translating {} to {}".format(s.raw, s.target))
+    s.initialize(verbosity=verbosity)
+    s.solve(verbosity=verbosity, all_sols=all_sols)
+    return s
+
+def end_of_world(verbosity=0, all_sols=True):
+    """
+    Eng->Spa
+    it's the end of the world -> es el fin del mundo
+    Illustrates
+    (1) SL-TL word count mismatch (SL > TL)
+    """
+    eng, spa = kuaa.Language.load('eng', 'spa')
+    s = kuaa.Sentence(raw="it's the end of the world", language=eng, target=spa,
+                         verbosity=verbosity)
+#    print("Translating {} to {}".format(s.raw, s.target))
+    s.initialize(verbosity=verbosity)
+    s.solve(verbosity=verbosity, all_sols=all_sols)
+    return s
+
+def ate_fish(verbosity=0, all_sols=True):
+    """
+    Amh->Orm
+    አሳ በላ (he ate fish) -> qurxummii nyaate.
+    Illustrates
+    (1) SL-TL feature agreement
+    """
+    amh, orm = kuaa.Language.load('amh', 'orm')
+    s = kuaa.Sentence(raw="አሳ በላ", language=amh, target=orm, verbosity=verbosity)
+#    print("Translating {} to {}".format(s.raw, s.target))
+    s.initialize(verbosity=verbosity)
+    s.solve(verbosity=verbosity, all_sols=all_sols)
+    return s
+
+def never_eaten_fish(verbosity=0, trans=True, all_sols=True):
+    """
+    Amh አሳ በልቶ አያውቅም 'he's never eaten fish'
+    Either parse (trans=False) or translate -> Orm: qurxummii nyaate hin beeku.
+    Illustrates
+    (1) SL-TL feature agreement
+    (2) SL-TL word count mismatch (SL < TL)
+    """
+    amh, orm = kuaa.Language.load('amh', 'orm')
+    s = kuaa.Sentence(raw="አሳ በልቶ አያውቅም", language=amh, target=orm,
+                        verbosity=verbosity)
+    s.initialize(verbosity=verbosity)
+    if trans:
+#        print("Translating {} to {}".format(s.raw, s.target))
+        s.solve(verbosity=verbosity, all_sols=all_sols)
+    else:
+#        print("Parsing: {}".format(s.raw))
+        s.solve(translate=False, verbosity=verbosity, all_sols=all_sols)
+    return s
+
+def never_eaten_fish_ungr(trans=True, verbosity=0, all_sols=True):
+    """
+    Amh አሳ በልተው አያውቅም 'he's never eaten fish' (ungrammatical because the
+    በልተው is 3rd person *plural* so it doesn't agree with አያውቅም).
+    Like the last case except since this is ungrammatical, no solution is
+    found that covers all of the words.
+    """
+    amh, orm = kuaa.Language.load('amh', 'orm')
+    s = kuaa.Sentence(raw="አሳ በልተው አያውቅም", language=amh, target=orm,
+                        verbosity=verbosity)
+#    print("Attempting to translate {} to {}".format(s.raw, s.target))
+    s.initialize(verbosity=verbosity)
+    s.solve(verbosity=verbosity, all_sols=all_sols)
+    return s
+
+def cantar_las_cuarenta_she(trans=True, verbosity=0, all_sols=True):
+    """
+    Spa->Eng
+    Paula les cantó las cuarenta -> Paula read them the riot act.
+                                 -> Paula gave them a piece of her mind.
+    Illustrates
+    (1) SL-TL feature agreement
+    (2) SL-TL mismatch in word count (SL < TL)
+    (3) SL-TL mismatch in word order
+    (4) SL word not associated with any group
+    (5) within-TL-group agreement
+    """
+    spa, eng = kuaa.Language.load_trans('spa', 'eng')
+    s = kuaa.Sentence(raw="Paula les cantó las cuarenta",
+                        language=spa, target=eng if trans else None,
+                        verbosity=verbosity)
+#    print("Translating {} to {}".format(s.raw, s.target))
+    s.initialize(verbosity=verbosity)
+    s.solve(translate=trans, verbosity=verbosity, all_sols=all_sols)
+    return s
+
+def cantar_las_cuarenta_I(trans=True, verbosity=0, all_sols=True):
+    """
+    Spa->Eng
+    les canté las cuarenta -> read them the riot act.
+                           -> gave them a piece of my mind.
+    Illustrates
+    (1) SL-TL feature agreement
+    (2) SL-TL mismatch in word count (SL < TL)
+    (3) SL-TL mismatch in word order
+    (4) SL word not associated with any group
+    (5) within-TL-group agreement
+    """
+    spa, eng = kuaa.Language.load('spa', 'eng')
+    s = kuaa.Sentence(raw="les canté las cuarenta",
+                        language=spa, target=eng if trans else None,
+                        verbosity=verbosity)
+#    print("Translating {} to {}".format(s.raw, s.target))
+    s.initialize(verbosity=verbosity)
+    s.solve(translate=trans, verbosity=verbosity, all_sols=all_sols)
+    return s
+
+### Español -> Guarani
+
+def caminaste(verbosity=0):
+    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+    s = kuaa.Sentence(raw="caminaste", language=spa, target=grn,
+                         verbosity=verbosity)
+    s.initialize(verbosity=verbosity)
+    s.solve(translate=True, all_sols=True, verbosity=verbosity)
+    return s
+
+def pedro_camina(verbosity=0):
+    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+    s = kuaa.Sentence(raw="Pedro camina", language=spa, target=grn,
+                         verbosity=verbosity)
+    s.initialize(verbosity=verbosity)
+    s.solve(translate=True, all_sols=True, verbosity=verbosity)
+    return s
+
+def caminamos(verbosity=0):
+    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+    s = kuaa.Sentence(raw="caminamos", language=spa, target=grn,
+                         verbosity=verbosity)
+    s.initialize(verbosity=verbosity)
+    s.solve(translate=True, all_sols=True,verbosity=verbosity)
+    return s
+
+def ayer_caminé(verbosity=0):
+    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+    s = kuaa.Sentence(raw="ayer caminé", language=spa, target=grn,
+                         verbosity=verbosity)
+    s.initialize(verbosity=verbosity)
+    s.solve(translate=True, all_sols=True,verbosity=verbosity)
+    return s    
+
+def ui():
+    """Create a UI and two languages."""
+    u = kuaa.UI()
+    e, s = kuaa.Language("English", 'eng'), kuaa.Language("español", 'spa')
+    return u, e, s
+
+##def agr_test1():
+##    # This should constraint seq vars seq0 and seq2 to be {2} and {3}
+##    sel = kuaa.DetVar('sel', {(0, 1, ('sn', 'sn'), ('sp', 'sp')),
+##                                (2, 3, ('tam', 'tns'))})
+##    seq = [kuaa.Var('seq0', set(), {1, 2}, 1, 1), kuaa.DetVar('seq1', {0}),
+##           kuaa.Var('seq2', set(), {3, 5}, 1, 1), kuaa.DetVar('seq3', {4})]
+##    feat = [kuaa.DetLVar('f0', [kuaa.Features({'sn': 0, 'sp': 3})]),
+##            kuaa.DetLVar('f1', [kuaa.Features({'sn': 1})]),
+##            kuaa.DetLVar('f2', [kuaa.Features({'sn': 0, 'sp': 3, 'sg': 1})]),
+##            kuaa.DetLVar('f3', [kuaa.Features({'tam': 'ps'})]),
+##            kuaa.DetLVar('f4', [kuaa.Features({'tns': 'ps'})]),
+##            kuaa.DetLVar('f5', [kuaa.Features({'tam': 'pr'})])]
+##    agr = kuaa.AgrSelection(feat, sel, seq)
+##    return agr
+##
+##def agr_test2():
+##    # This should constrain feat var f0 to [{sn: 1, sp: 3}]
+##    sel = kuaa.DetVar('sel', {(0, 1, ('sn', 'sn'), ('sp', 'sp')),
+##                                (2, 3, ('tam', 'tns'))})
+##    seq = [kuaa.DetVar('seq0', {2}), kuaa.DetVar('seq1', {0}),
+##           kuaa.Var('seq2', set(), {3, 5}, 1, 1), kuaa.DetVar('seq3', {4})]
+##    feat = [kuaa.LVar('f0', [], [kuaa.Features({'sn': 0, 'sp': 3}),
+##                                   kuaa.Features({'sn': 0, 'sp': 2}),
+##                                   kuaa.Features({'sn': 1, 'sp': 3})],
+##                        1, 1),
+##            kuaa.DetLVar('f1', [kuaa.Features({'sn': 1})]),
+##            kuaa.DetLVar('f2', [kuaa.Features({'sn': 0, 'sp': 3, 'sg': 1})]),
+##            kuaa.DetLVar('f3', [kuaa.Features({'tam': 'ps'})]),
+##            kuaa.DetLVar('f4', [kuaa.Features({'tns': 'ps'})]),
+##            kuaa.DetLVar('f5', [kuaa.Features({'tam': 'pr'})])]
+##    agr = kuaa.AgrSelection(feat, sel, seq)
+##    return agr
+##
+##def agr_test3():
+##    # This should fail.
+##    sel = kuaa.DetVar('sel', {(0, 1, ('sn', 'sn'), ('sp', 'sp')),
+##                                (2, 3, ('tam', 'tns'))})
+##    seq = [kuaa.DetVar('seq0', {2}), kuaa.DetVar('seq1', {0}),
+##           kuaa.Var('seq2', set(), {3, 5}, 1, 1), kuaa.DetVar('seq3', {4})]
+##    feat = [kuaa.LVar('f0', [], [kuaa.Features({'sn': 0, 'sp': 3}),
+##                                   kuaa.Features({'sn': 0, 'sp': 2}),
+##                                   kuaa.Features({'sn': 1, 'sp': 3})],
+##                        1, 1),
+##            kuaa.DetLVar('f1', [kuaa.Features({'sn': 1})]),
+##            kuaa.DetLVar('f2', [kuaa.Features({'sn': 0, 'sp': 1, 'sg': 1})]),
+##            kuaa.DetLVar('f3', [kuaa.Features({'tam': 'ps'})]),
+##            kuaa.DetLVar('f4', [kuaa.Features({'tns': 'ps'})]),
+##            kuaa.DetLVar('f5', [kuaa.Features({'tam': 'pr'})])]
+##    agr = kuaa.AgrSelection(feat, sel, seq)
+##    return agr
+##
+##def agr_test4():
+##    # This should be entailed.
+##    sel = kuaa.DetVar('sel', {(0, 1, ('sn', 'sn'), ('sp', 'sp')),
+##                                (2, 3, ('tam', 'tns'))})
+##    seq = [kuaa.DetVar('seq0', {2}), kuaa.DetVar('seq1', {0}),
+##           kuaa.Var('seq2', set(), {3, 5}, 1, 1), kuaa.DetVar('seq3', {4})]
+##    feat = [kuaa.LVar('f0', [], [kuaa.Features({'sn': 0, 'sp': 1}),
+##                                   kuaa.Features({'sn': 0, 'sp': 1, 'sg': 1}),
+##                                   kuaa.Features({'sn': 0, 'sg': 3})],
+##                        1, 1),
+##            kuaa.DetLVar('f1', [kuaa.Features({'sn': 1})]),
+##            kuaa.DetLVar('f2', [kuaa.Features({'sn': 0, 'sp': 1, 'sg': 1})]),
+##            kuaa.DetLVar('f3', [kuaa.Features({'tam': 'ps'})]),
+##            kuaa.DetLVar('f4', [kuaa.Features({'tns': 'ps'})]),
+##            kuaa.DetLVar('f5', [kuaa.Features({'tam': 'ps', 'sn': 2})])]
+##    agr = kuaa.AgrSelection(feat, sel, seq)
+##    return agr
+
+if __name__ == "__main__":
+    print("Bienvenido/a a Ñe'ẽasa, versión {}\n".format(__version__))
