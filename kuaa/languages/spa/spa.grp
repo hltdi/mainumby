@@ -1,0 +1,10 @@
+***
+caminar_
+->grn guata_v ; 0==0 n:ns,p:ps
+->eng walk_ ; 0==0 n,n
+***
+$n_prs cantar_ las cuarenta
+->eng read_ $n_prs the riot act ; || 1, 0, 2, 3 ; 1==0 tm,n,p
+->eng give_ $n_prs a piece of $a_pos mind ; || 1, 0, 2, 3 ; 1==0 tm:tm,n:n,p:p ; 1=5 n,p
+
+

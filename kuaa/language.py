@@ -170,7 +170,7 @@ class Language:
         self.anal_loaded = False
         self.gen_loaded = False
         # Do this later
-        self.load_morpho(target, False, False, False)
+        self.load_morpho(use in (GENERATION, TARGET), False, False, False)
         # Categories (and other semantic features) of words and roots
         self.cats = {}
         self.read_cats()
@@ -1139,37 +1139,42 @@ class Language:
         target_abbrev = target.abbrev if target else None
         source_groups = []
         target_groups = []
+#        group_specs = []
         with open(self.get_group_file(), encoding='utf8') as file:
             print("Reading groups for {}".format(self.name))
             # Groups separated by GROUP_SEP string
             groups = file.read().split(GROUP_SEP)
-            for group_spec in groups:
+            # First element in list is what precedes first GROUP_SEP (nothing)
+            for group_spec in groups[1:]:
                 group_trans = group_spec.split(TRANS_START)
                 source_group = group_trans[0]
                 source_groups.append(source_group)
+                translations = []
                 if target:
-                    translations = []
                     for t in group_trans[1:]:
                         tlang, x, tgroup = t.strip().partition(' ')
+#                        print("Looking for translation to {} in {} / {}".format(target_abbrev, tlang, tgroup))
                         if tlang == target_abbrev:
-                            translations.append(group)
+                            translations.append(tgroup)
                     target_groups.extend(translations)
-        return source_groups, target_groups
+                # Creates the group and any target groups specified and adds them to self.groups
+                Group.from_string(source_group, self, translations, target=target, trans=False)
+#        return group_specs
 
     @staticmethod
     def from_dict(d, reverse=True, use=ANALYSIS):
         """Convert a dict (loaded from a yaml file) to a Language object."""
         l = Language(d.get('name'), d.get('abbrev'), use=use)
         l.possible = d.get('possible')
-        groups = d.get('groups')
-        if groups:
-            l.groups = {}
-            for head, v in groups.items():
-                group_objs = [Group.from_dict(g, l, head) for g in v]
-                l.groups[head] = group_objs
-                # Add groups to groupnames dict
-                for go in group_objs:
-                    l.groupnames[go.name] = go
+#        groups = d.get('groups')
+#        if groups:
+#            l.groups = {}
+#            for head, v in groups.items():
+#                group_objs = [Group.from_dict(g, l, head) for g in v]
+#                l.groups[head] = group_objs
+#                # Add groups to groupnames dict
+#                for go in group_objs:
+#                    l.groupnames[go.name] = go
         forms = d.get('forms')
         if forms:
             l.forms = {}
@@ -1204,22 +1209,19 @@ class Language:
 
     @staticmethod
     def load_trans(source, target):
-        """Load a source and a target language, given as abbreviations."""
-        srclang = targlang = None
-        if source in Language.languages:
-            srclang = Language.languages[source]
+        """Load a source and a target language, given as abbreviations.
+        Read in groups for source language, including target language translations at the end.
+        If the languages are already loaded, don't load them."""
+        srclang = Language.languages.get(source)
+        targlang = Language.languages.get(target)
+        loaded = False
+        if srclang and targlang and srclang.use == SOURCE and targlang.use == TARGET:
+            loaded = True
         else:
             try:
                 srcpath = os.path.join(Language.get_language_dir(source), source + '.lg')
                 srclang = Language.read(srcpath, use=SOURCE)
                 print("Loaded source language {}".format(srclang))
-            except IOError:
-                print("One of those languages doesn't exist.")
-                return
-        if target in Language.languages:
-            targlang = Language.languages[target]
-        else:
-            try:
                 targpath = os.path.join(Language.get_language_dir(target), target + '.lg')
                 targlang = Language.read(targpath, use=TARGET)
                 print("Loaded target language {}".format(targlang))
@@ -1227,7 +1229,8 @@ class Language:
                 print("One of these languages doesn't exist.")
                 return
         # Load groups for source language now
-        srclang.read_groups()
+        if not loaded:
+            srclang.read_groups(target=targlang)
         return srclang, targlang
         
     @staticmethod
@@ -1281,38 +1284,48 @@ class Language:
 #        feat = features.pop(0)
 #        self.make_featdict(featdict, feat, features, form)
 
-    def add_group(self, tokens, head_index=-1, head='', name='', features=None):
-        group = Group(tokens, head_index=head_index, head=head,
-                      language=self, name=name, features=features)
-#        print('Group {}, head {}'.format(group, group.head))
-        if features:
-            head_i = tokens.index(group.head)
-            head_feats = features[head_i]
+#    def add_group(self, tokens, head_index=-1, head='', name='', features=None):
+#        group = Group(tokens, head_index=head_index, head=head,
+#                      language=self, name=name, features=features)
+##        print('Group {}, head {}'.format(group, group.head))
+#        if features:
+#            head_i = tokens.index(group.head)
+#            head_feats = features[head_i]
+#        else:
+#            head_feats = None
+#        self.add_group_to_lexicon(group.head, group, head_feats)
+#        self.groupnames[group.name] = group
+#        self.changed = True
+#        return group
+
+    def add_group(self, group):
+        """Add group to dict, indexed by head."""
+        head = group.head
+        if head in self.groups:
+            self.groups[head].append(group)
         else:
-            head_feats = None
-        self.add_group_to_lexicon(group.head, group, head_feats)
+            self.groups[head] = [group]
         self.groupnames[group.name] = group
         self.changed = True
-        return group
 
-    def add_group_to_lexicon(self, head, group, features):
-        if not features:
-            # Add the group to the list of groups for the head word/lexeme
-            if head not in self.groups:
-                self.groups[head] = {}
-            if () not in self.groups[head]:
-                self.groups[head][()] = []
-            self.groups[head][()].append(group)
-        else:
-            # Convert fv dict to an alphabetized tuple of fv pairs
-            fvs = list(features.items())
-            fvs.sort()
-            fvs = tuple(fvs)
-            if head not in self.groups:
-                self.groups[head] = {}
-            if fvs not in self.groups[head]:
-                self.groups[head][fvs] = []
-            self.groups[head][fvs].append(group)
+#    def add_group_to_lexicon(self, head, group, features):
+#        if not features:
+#            # Add the group to the list of groups for the head word/lexeme
+#            if head not in self.groups:
+#                self.groups[head] = {}
+#            if () not in self.groups[head]:
+#                self.groups[head][()] = []
+#            self.groups[head][()].append(group)
+#        else:
+#            # Convert fv dict to an alphabetized tuple of fv pairs
+#            fvs = list(features.items())
+#            fvs.sort()
+#            fvs = tuple(fvs)
+#            if head not in self.groups:
+#                self.groups[head] = {}
+#            if fvs not in self.groups[head]:
+#                self.groups[head][fvs] = []
+#            self.groups[head][fvs].append(group)
 
     ### Basic getters.
 

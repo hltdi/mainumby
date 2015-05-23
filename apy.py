@@ -207,7 +207,7 @@ def never_eaten_fish_ungr(trans=True, verbosity=0, all_sols=True):
     Like the last case except since this is ungrammatical, no solution is
     found that covers all of the words.
     """
-    amh, orm = kuaa.Language.load('amh', 'orm')
+    amh, orm = kuaa.Language.load_trans('amh', 'orm')
     s = kuaa.Sentence(raw="አሳ በልተው አያውቅም", language=amh, target=orm,
                         verbosity=verbosity)
 #    print("Attempting to translate {} to {}".format(s.raw, s.target))
@@ -248,7 +248,7 @@ def cantar_las_cuarenta_I(trans=True, verbosity=0, all_sols=True):
     (4) SL word not associated with any group
     (5) within-TL-group agreement
     """
-    spa, eng = kuaa.Language.load('spa', 'eng')
+    spa, eng = kuaa.Language.load_trans('spa', 'eng')
     s = kuaa.Sentence(raw="les canté las cuarenta",
                         language=spa, target=eng if trans else None,
                         verbosity=verbosity)
@@ -257,7 +257,15 @@ def cantar_las_cuarenta_I(trans=True, verbosity=0, all_sols=True):
     s.solve(translate=trans, verbosity=verbosity, all_sols=all_sols)
     return s
 
-### Español -> Guarani
+### Español -> Guarani / English
+
+def groups(eng=False):
+    e = kuaa.language.Language('Español', 'spa', use=kuaa.language.SOURCE)
+    if eng:
+        g = kuaa.language.Language('English', 'eng', use=kuaa.language.TARGET)
+    else:
+        g = kuaa.language.Language('Guarani', 'grn', use=kuaa.language.TARGET)
+    return e.read_groups(target=g)
 
 def caminaste(verbosity=0):
     spa, grn = kuaa.Language.load_trans('spa', 'grn')

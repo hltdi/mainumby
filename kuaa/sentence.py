@@ -234,7 +234,7 @@ class Sentence:
                     for group in self.language.groups[k]:
 #                        print("Checking group {} for {}".format(group, node))
                         # Reject group if it doesn't have a translation in the target language
-                        if self.target and not group.get_translations(self.target.abbrev):
+                        if self.target and not group.get_translations():
                             print("No translation for {}".format(group))
                             continue
                         candidates.append((node.index, group))
@@ -726,11 +726,13 @@ class GInst:
         
     def set_translations(self, verbosity=0):
         """Find the translations of the group in the target language."""
-        translations = self.group.get_translations(self.target.abbrev, False)
+        translations = self.group.get_translations()
+            # self.target.abbrev, False)
         # If alignments are missing, add default alignment
         for i, t in enumerate(translations):
             if len(t) == 1:
-                translations[i] = [t[0], {'align': list(range(len(self.nodes)))}]
+                translations[i] = [t[0], {}]
+#                                    {'align': list(range(len(self.nodes)))}]
 #        print("Translations for {}: {}".format(self, translations))
         ntokens = len(self.group.tokens)
         for tgroup, s2t_dict in translations:
@@ -741,7 +743,7 @@ class GInst:
             if isinstance(tgroup, str):
                 # First find the target Group object
                 tgroup = self.target.groupnames[tgroup]
-            # Make any TNodes required
+            # Make any TNodes (for target words not corresponding to any source words)
             nttokens = len(tgroup.tokens)
             tnodes = []
             if nttokens > ntokens:

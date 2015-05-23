@@ -53,14 +53,29 @@
 # -- Group entry indices need to distinguish ambiguous words/lexemes.
 #    Indices can be things like "end_n", with POS or other identifiers after "_".
 #    "end_n" and "end_v" would be different roots of "end" in the forms dict.
+# 2015.05.20
+# -- Group heads require a '_', at the beginning for unanalyzed words, following the
+#    root for words to analyze: guata_v_i.
 
 import copy, itertools
 import yaml
+import re
 
 from kuaa.morphology.fs import *
 
 LEXEME_CHAR = '_'
 CAT_CHAR = '$'
+ATTRIB_SEP = ';'
+WITHIN_ATTRIB_SEP = ','
+# Regular expressions for reading groups from text files
+FORM_FV = re.compile("([$<'\w]+)\s*((?:\[.+\])?)$")
+# Within agreement spec
+# 1=3 n,p
+WITHIN_AGR = re.compile("\s*(\d)\s*=\s*(\d)\s*(.+)$")
+# Translation agreement spec
+# 1==3 ns:n,ps:p
+TRANS_AGR = re.compile("\s*(\d)\s*==\s*(\d)\s*(.+)$")
+ALIGNMENT = re.compile("\s*\|\|\s*(.+)$")
 
 class Entry:
     """Superclass for Group and possibly other lexical classes."""
@@ -127,14 +142,16 @@ class Entry:
     ### Values are dicts with correspondence ('cor'), count ('cnt'), etc.
     ### as keys.
 
-    def get_translations(self, language, create=True):
-        """Get the translation dict for language in word/lexeme/gram entry.
-        Create it if it doesn't exist and create is True."""
-        if self.trans is None:
-            self.trans = {}
-        if language not in self.trans and create:
-            self.trans[language] = {}
-        return self.trans.get(language)
+    def get_translations(self):
+        """Changed 2015.05.22. translations is not a list of group, dict pairs
+        for the target language, no longer a dict with language abbrev keys."""
+        
+#        if self.trans is None:
+#            self.trans = {}
+#        if language not in self.trans and create:
+#            self.trans[language] = {}
+#        return self.trans.get(language)
+        return self.trans
 
     def add_trans(self, language, trans, count=1):
         """Add translation to the translation dictionary for language,
@@ -185,6 +202,7 @@ class Group(Entry):
         # Agr constraints: each a list of form
         # (node_index1, node_index2 . feature_pairs)
         self.agr = agr or None
+        self.trans = trans
 
     def __repr__(self):
         """Print name."""
@@ -193,15 +211,6 @@ class Group(Entry):
     @staticmethod
     def make_name(tokens):
         """Each token is either a string or a (string, feat_dict) pair. In name, they're separated by '.'."""
-#        strings = []
-#        for token in tokens:
-#            if isinstance(token, str):
-#                strings.append(token)
-#            else:
-#                form, feat_dict = token
-#                fv = ['{}={}'.format(f, v) for f, v in feat_dict.items()]
-#                fv = ','.join(fv)
-#                strings.append("{}:{}".format(form, fv))
         return '.'.join(tokens)
 
     # Serialization
@@ -243,8 +252,6 @@ class Group(Entry):
                 if index == self.head_index:
                     # This token is the head of the group
                     if node.index == head_sindex:
-                        # This was already matched in lexicalization
-#                if index == node.index == head_sindex:
                         # This is the token corresponding to the group head
                         node_match = node.match(token, feats)
                         if node_match == False:
@@ -274,6 +281,96 @@ class Group(Entry):
                 match_snodes.append(match_snodes1)
 #        print("Group {}, s_indices {}".format(self, match_snodes))
         return match_snodes
+
+    @staticmethod
+    def from_string(string, language, trans_strings=None, target=None, trans=False):
+        """Convert a group string and possibly a set of translation group strings
+        to one or more groups."""
+#        print("Creating group from {} and trans strings {} [trans={}]".format(string, trans_strings, trans))
+        # Separate the tokens from any group attributes
+        tokens_attribs = string.split(ATTRIB_SEP)
+        tokens = tokens_attribs[0].split()
+        attribs = tokens_attribs[1:]
+        # Go through tokens separating off features, if any, and assigning head
+        # based on presence of '_'
+        head_index = -1
+        head = None
+        features = None
+        if '[' in string:
+            hasfeats = True
+            features = []
+        else:
+            hasfeats = False
+        for index, token in enumerate(tokens):
+            # separate features if any
+            tok, feats = FORM_FV.match(token).groups()
+            if feats:
+                features.append(FeatStruct(feats))
+                tokens[index] = tok
+            elif hasfeats:
+                features.append(False)
+            if '_' in tok:
+                head_index = index
+                head = tok
+        # Make agreement lists from attribs
+        within_agrs = []
+        trans_agrs = alignment = None
+        if trans:
+            trans_agrs = []
+            alignment = []
+        for attrib in attribs:
+            # Separate the key from the rest and act accordingly
+            match = WITHIN_AGR.match(attrib)
+            if match:
+                i1, i2, feats = match.groups()
+                feat_pairs = []
+                for f in feats.split(WITHIN_ATTRIB_SEP):
+                    if ':' in f:
+                        f1, f2 = f.split(':')
+                        feat_pairs.append((f1, f2))
+                    else:
+                        feat_pairs.append((f, f))
+                within_agrs.append([int(i1), int(i2)] + feat_pairs)
+                continue
+            elif trans:
+                match = TRANS_AGR.match(attrib)
+                if match:
+                    if not trans_agrs:
+                        trans_agrs = [False] * len(tokens)
+                    si, ti, feats = match.groups()
+                    feat_pairs = []
+                    for f in feats.split(WITHIN_ATTRIB_SEP):
+                        if ':' in f:
+                            sf, tf = f.split(':')
+                            feat_pairs.append((sf, tf))
+                        else:
+                            feat_pairs.append((f, f))
+                    trans_agrs[int(si)] = feat_pairs
+#                    trans_agrs.append([int(si), int(ti)] + feat_pairs)
+                    continue
+                match = ALIGNMENT.match(attrib)
+                if match:
+                    align = match.groups()
+                    for index in align.split(WITHIN_ATTRIB_SEP):
+                        alignment.append(int(index))
+                    continue
+                print("Something wrong with attribute string {}".format(attrib))
+            else:
+                print("Something wrong with attribute string {}".format(attrib))
+        tgroups = None
+        if target and trans_strings:
+            tgroups = []
+            for tstring in trans_strings:
+                tgroup, tg, alg = Group.from_string(tstring, target, trans_strings=None, trans=True)
+                tattribs = {'agr': tg}
+                if alg:
+                    tattribs['align'] = alg
+                tgroups.append((tgroup, tattribs))
+        g = Group(tokens, head_index=head_index, head=head, features=features, agr=within_agrs)
+        if target and not trans:
+            g.trans = tgroups
+        language.add_group(g)
+        return g, trans_agrs, alignment
 
     ### Translations
 

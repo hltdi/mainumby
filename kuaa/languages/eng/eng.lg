@@ -1,6 +1,8 @@
 name: English
 abbrev: eng
 source: true
+target: true
+
 forms:
 #  "it's":
 #     seg:
