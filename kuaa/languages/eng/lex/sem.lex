@@ -1,0 +1,12 @@
+end $n,$n_abs
+boy $n
+act $n
+us $pro
+them $pro
+her $a,$a_pos,$pro
+his $a,$_pos
+song $n
+sing $v
+give $v
+kick $v
+bucket $n
