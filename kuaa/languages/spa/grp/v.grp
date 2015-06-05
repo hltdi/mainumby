@@ -258,16 +258,14 @@
 *** acicalar ; acicalar_
 ->grn mbojegua_v ; 0==0 n:ns,p:ps,tm:tm
 *** aclarar ; aclarar_[+rflx]
-->grn ñemohesakã_v ; 0==0 n:ns,p:ps,tm:tm
+->grn ñemyesakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** aclarar ; aclarar_ casos dudosos
-->grn mohesakã_v ; 0==0 n:ns,p:ps,tm:tm
+->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** aclarar ; aclarar_
 ->grn mbojekuaa_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn <hesape_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn jehecha_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn <hesa'ỹijo_v ; 0==0 n:ns,p:ps,tm:tm
-->grn mosakã_v ; 0==0 n:ns,p:ps,tm:tm
-->grn mohesakã_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** aclarar ; no aclarar_ nada
 ->grn mohũmohũ_v ; 0==0 n:ns,p:ps,tm:tm
@@ -1110,7 +1108,7 @@
 ->grn motenonde_v ; 0==0 n:ns,p:ps,tm:tm
 *** antojar ; antojar_[+rflx]
 ->grn hi'ã_v ; 0==0 n:ns,p:ps,tm:tm
-*** antojar ; antojar_[+rflx]le a uno
+*** antojar ; antojar_[+rflx,+oi] a uno
 ->grn hi'ã_v ; 0==0 n:ns,p:ps,tm:tm
 *** anudar ; anudar_[+rflx]
 ->grn joaju_v ; 0==0 n:ns,p:ps,tm:tm
@@ -1658,7 +1656,7 @@
 ->grn pokua_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tm
 *** atar ; atar_[+rflx] la cabeza
 ->grn ñakãpytĩ_v ; 0==0 n:ns,p:ps,tm:tm
-*** atar ; atar_[+rflx]le a uno los pies
+*** atar ; atar_[+rflx,+oi] a uno los pies
 ->grn jepykua_v ; 0==0 n:ns,p:ps,tm:tm
 *** atar ; atar_[+rflx] los pies
 ->grn jepykua_v ; 0==0 n:ns,p:ps,tm:tm
@@ -4362,7 +4360,6 @@
 ->grn mbohesakuaguyry_v ; 0==0 n:ns,p:ps,tm:tm
 *** deslumbrar ; deslumbrar_
 ->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tm
-->grn mohesakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** desmalezar ; desmalezar_
 ->grn kopi_v ; 0==0 n:ns,p:ps,tm:tm
 *** desmamar ; desmamar_
@@ -4763,12 +4760,12 @@
 ->grn moñeko'õi_v ; 0==0 n:ns,p:ps,tm:tm
 *** disipar ; disipar_[+rflx]
 ->grn gue_v ; 0==0 n:ns,p:ps,tm:tm
-*** disipar ; disipar_ neblina, humo
+*** disipar ; disipar_ humo
 ->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** disipar ; disipar_
 ->grn mbogue_v ; 0==0 n:ns,p:ps,tm:tm
 *** disipar ; disipar_ neblina
-->grn mohesakã_v ; 0==0 n:ns,p:ps,tm:tm
+->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** dislocar ; dislocar_[+rflx]
 ->grn ñemongaráu_v ; 0==0 n:ns,p:ps,tm:tm
 *** dislocar ; dislocar_
@@ -5694,7 +5691,7 @@
 ->grn moapesã_v ; 0==0 n:ns,p:ps,tm:tm
 *** enrojecer ; enrojecer_
 ->grn mopytã_v ; 0==0 n:ns,p:ps,tm:tm
-*** enrollar ; enrollar_ soga, alambre
+*** enrollar ; enrollar_ alambre
 ->grn mbo'apakua_v ; 0==0 n:ns,p:ps,tm:tm
 *** enronquecer ; enronquecer_
 ->grn mboahy'opyáu_v ; 0==0 n:ns,p:ps,tm:tm
@@ -5961,7 +5958,7 @@
 ->grn moñembo'y_v ; 0==0 n:ns,p:ps,tm:tm
 *** erguir ; erguir_[+rflx] sobre los pies o las patas
 ->grn ñembo'y_v ; 0==0 n:ns,p:ps,tm:tm
-*** erizar ; erizar_[+rflx]le el pelo
+*** erizar ; erizar_[+rflx,+oi] el pelo
 ->grn ñembyatyra_v ; 0==0 n:ns,p:ps,tm:tm
 *** errar ; errar_[+rflx]
 ->grn jejavy_v ; 0==0 n:ns,p:ps,tm:tm
@@ -5994,7 +5991,7 @@
 ->grn jehekýi_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn kañy_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn timbo_v ; 0==0 n:ns,p:ps,tm:tm
-*** escapar ; escapar_[+rflx]le a uno la palabra sin querer
+*** escapar ; escapar_[+rflx,+oi] a uno la palabra sin querer
 ->grn ñe'ẽho_v ; 0==0 n:ns,p:ps,tm:tm
 *** escarbar ; escarbar_[+rflx]
 ->grn mboaguera_v ; 0==0 n:ns,p:ps,tm:tm
@@ -6011,11 +6008,10 @@
 ->grn mopokã_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn mbovy_v ; 0==0 n:ns,p:ps,tm:tm
 *** esclarecer ; esclarecer_[+rflx]
-->grn ñemohesakã_v ; 0==0 n:ns,p:ps,tm:tm
+->grn ñemyesakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** esclarecer ; esclarecer_
 ->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn <hesape_v ; 0==0 n:ns,p:ps,tm:tm
-->grn mohesakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** escocer ; escocer_
 ->grn ko'õ_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tm
 *** escoger ; escoger_
@@ -6493,7 +6489,6 @@
 *** explicar ; explicar_
 ->grn <hesa'ỹijo_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tm
-->grn mohesakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** explorar ; explorar_
 ->grn ñami_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn kuaaha'ã_v ; 0==0 n:ns,p:ps,tm:tm
@@ -7190,7 +7185,7 @@
 *** hacer ; hacer_ poner los dientes
 ->grn mohãi_v ; 0==0 n:ns,p:ps,tm:tm
 *** hacer ; hacer_[+rflx] claro
-->grn ñemohesakã_v ; 0==0 n:ns,p:ps,tm:tm
+->grn ñemyesakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** hacer ; hacer_ reir
 ->grn mbopuka_v ; 0==0 n:ns,p:ps,tm:tm
 *** hacer ; hacer_ muecas o morisquetas arrugando la nariz
@@ -7678,7 +7673,6 @@
 ->grn mbohesape'a_v ; 0==0 n:ns,p:ps,tm:tm
 *** hacer ; hacer_ visible
 ->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tm
-->grn mohesakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** hacer ; hacer_ que se habra un forúnculo
 ->grn mombu_v ; 0==0 n:ns,p:ps,tm:tm
 *** hacer ; hacer_[+rflx] el enojado o resentido
@@ -8283,7 +8277,7 @@
 ->grn moñe'ẽry_v ; 0==0 n:ns,p:ps,tm:tm
 *** hacer ; hacer_ tiritar
 ->grn mbotarara_v ; 0==0 n:ns,p:ps,tm:tm
-*** hacer ; hacer_ montoncito de hojas, granos
+*** hacer ; hacer_ montoncito de hojas
 ->grn mbochovi_v ; 0==0 n:ns,p:ps,tm:tm
 *** hacer ; hacer_ pereza
 ->grn myate'ỹ_v ; 0==0 n:ns,p:ps,tm:tm
@@ -8368,7 +8362,7 @@
 *** hacer ; hacer_[+rflx] enfermo
 ->grn ñembohasy_v ; 0==0 n:ns,p:ps,tm:tm
 *** hacer ; hacer_ transparente
-->grn mohesakã_v ; 0==0 n:ns,p:ps,tm:tm
+->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** hacer ; hacer_ caminar
 ->grn mboguata_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn moingo_v ; 0==0 n:ns,p:ps,tm:tm
@@ -8409,7 +8403,7 @@
 ->grn moñani_v ; 0==0 n:ns,p:ps,tm:tm
 *** hacer ; hacer_ brotar
 ->grn mbohoky_v ; 0==0 n:ns,p:ps,tm:tm
-*** hacer ; hacer_ oyo en la tierra, la madera
+*** hacer ; hacer_ oyo en la tierra o la madera
 ->grn jo'o_v ; 0==0 n:ns,p:ps,tm:tm
 *** hacer ; hacer_ hallar
 ->grn mbojehu_v ; 0==0 n:ns,p:ps,tm:tm
@@ -8984,7 +8978,7 @@
 *** invocar ; invocar_
 ->grn jerure_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn <henói_v ; 0==0 n:ns,p:ps,tm:tm
-*** ir ; ir_[+rflx]le la palabra
+*** ir ; ir_[+rflx,+oi] la palabra
 ->grn ñe'ẽho_v ; 0==0 n:ns,p:ps,tm:tm
 *** ir ; ir_ con chisme contra el compañero
 ->grn kopi_v ; 0==0 n:ns,p:ps,tm:tm
@@ -10575,7 +10569,7 @@
 ->grn kañy_v ; 0==0 n:ns,p:ps,tm:tm
 *** perder ; perder_[+rflx] todo el sujeto
 ->grn ñapymi_v ; 0==0 n:ns,p:ps,tm:tm
-*** perder ; perder_[+rflx]le a uno
+*** perder ; perder_[+rflx,+oi] a uno
 ->grn kañy_v ; 0==0 n:ns,p:ps,tm:tm
 *** perder ; perder_ el empleo
 ->grn kúi_v ; 0==0 n:ns,p:ps,tm:tm
@@ -10930,7 +10924,6 @@
 ->grn mohakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** poner ; poner_ en claro
 ->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tm
-->grn mohesakã_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn jehecha_v ; 0==0 n:ns,p:ps,tm:tm
 *** poner ; poner_[+oi] hojas
 ->grn mbohogue_v ; 0==0 n:ns,p:ps,tm:tm
@@ -11552,7 +11545,7 @@
 *** quebrar ; quebrar_
 ->grn joka_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn mopẽ_v ; 0==0 n:ns,p:ps,tm:tm
-*** quebrar ; quebrar_[+rflx]le el corazón
+*** quebrar ; quebrar_[+rflx,+oi] el corazón
 ->grn jepy'ajuka_v ; 0==0 n:ns,p:ps,tm:tm
 *** quedar ; quedar_[+rflx] impresionado por algo sucedido
 ->grn ñemondýi_v ; 0==0 n:ns,p:ps,tm:tm
@@ -12090,7 +12083,7 @@
 ->grn mbopy'ajere_v ; 0==0 n:ns,p:ps,tm:tm
 *** remover ; remover_ las hojas en el suelo para que se deshagan con facilidad
 ->grn mboaviru_v ; 0==0 n:ns,p:ps,tm:tm
-*** remover ; remover_ la tierra, la inmundicia o la basura
+*** remover ; remover_ la tierra o la basura
 ->grn mboaguera_v ; 0==0 n:ns,p:ps,tm:tm
 *** remozar ; remozar_[+rflx]
 ->grn ñembopyahu_v ; 0==0 n:ns,p:ps,tm:tm
@@ -12652,7 +12645,7 @@
 ->grn mbohesakuape_v ; 0==0 n:ns,p:ps,tm:tm
 *** sacar ; sacar_[+rflx] el aguijón de una picadura de insecto
 ->grn jarivo'o_v ; 0==0 n:ns,p:ps,tm:tm
-*** sacar ; sacar_ la hebra, el filamento o hilacha
+*** sacar ; sacar_ la hebra o el filamento
 ->grn <hyvi_v[cat=che] ; 0==0 n:ns,p:ps,tm:tm
 *** sacar ; sacar_ las plumas
 ->grn <hague'o_v ; 0==0 n:ns,p:ps,tm:tm
@@ -12745,7 +12738,7 @@
 *** salpicar ; salpicar_
 ->grn <hypýi_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn myakỹ_v ; 0==0 n:ns,p:ps,tm:tm
-*** saltar ; saltar_ por encima de una barrera, cercado
+*** saltar ; saltar_ por encima de una barrera
 ->grn japyhara_v ; 0==0 n:ns,p:ps,tm:tm
 *** saltar ; saltar_
 ->grn japyhara_v ; 0==0 n:ns,p:ps,tm:tm
@@ -14262,11 +14255,9 @@
 *** transmutar ; transmutar_[+rflx]
 ->grn ñembova_v ; 0==0 n:ns,p:ps,tm:tm
 *** transparentar ; transparentar_[+rflx]
-->grn ñemohesakã_v ; 0==0 n:ns,p:ps,tm:tm
+->grn ñemyesakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** transparentar ; transparentar_
-->grn mosakã_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tm
-->grn mohesakã_v ; 0==0 n:ns,p:ps,tm:tm
 ->grn jehecha_v ; 0==0 n:ns,p:ps,tm:tm
 *** transpirar ; transpirar_
 ->grn <hy'ái_v ; 0==0 n:ns,p:ps,tm:tm
@@ -14294,7 +14285,6 @@
 ->grn <hova_v ; 0==0 n:ns,p:ps,tm:tm
 *** traslumbrar ; traslumbrar_
 ->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tm
-->grn mohesakã_v ; 0==0 n:ns,p:ps,tm:tm
 *** traspasar ; traspasar_
 ->grn <hasa_v ; 0==0 n:ns,p:ps,tm:tm
 *** trasquilar ; trasquilar_

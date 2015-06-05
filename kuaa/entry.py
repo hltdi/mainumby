@@ -186,10 +186,11 @@ class Group(Entry):
         self.tokens = tokens
         if head:
             self.head = head
-            if head in tokens:
-                self.head_index = tokens.index(head)
-            else:
-                self.head_index = tokens.index(root)
+            if head_index == -1:
+                if head in tokens:
+                    self.head_index = tokens.index(head)
+                else:
+                    self.head_index = tokens.index(root)
 #            self.head_index = tokens.index(head_tokens[0]) or tokens.index(head_tokens[1])
         else:
             self.head = tokens[head_index]
@@ -302,14 +303,19 @@ class Group(Entry):
         else:
             hasfeats = False
         for index, token in enumerate(tokens):
+            foundfeats = False
             # separate features if any
+#            m = FORM_FV.match(token)
+#            if not m:
+#                print("String {}".format(string))
             tok, feats = FORM_FV.match(token).groups()
             if feats:
+                foundfeats = True
                 features.append(FeatStruct(feats))
-                tokens[index] = tok
+#                tokens[index] = tok
             elif hasfeats:
                 features.append(False)
-            if '_' in tok:
+            if '_' in tok or foundfeats:
                 head_index = index
                 head = tok
         # Make agreement lists from attribs

@@ -1,7 +1,11 @@
+name: guaraní
+
+# lang backup: es
+
 seg: a e i o u y á é í ó ú ý ã ẽ ĩ õ ũ ỹ
-     h j l ñ p s t v ' g ĝ g̃ k
+     b d f h j l ñ p s t v ' g ĝ g̃ k
      A E I O U Y Á É Í Ó Ú Ý Ã Ẽ Ĩ Õ Ũ Ỹ
-     G Ĝ G̃ H J K L Ñ P S T V
+     B D F G Ĝ G̃ H J K L Ñ P S T V
      ch m mb n nd nt ng r rr
      <h <j <ñ <H <J <Ñ
      Ch M Mb N Nd Nt Ng R Rr

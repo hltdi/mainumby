@@ -259,13 +259,14 @@ def cantar_las_cuarenta_I(trans=True, verbosity=0, all_sols=True):
 
 ### Español -> Guarani / English
 
-def groups(eng=False):
+def groups(eng=False, files=['v']):
     e = kuaa.language.Language('Español', 'spa', use=kuaa.language.SOURCE)
     if eng:
         g = kuaa.language.Language('English', 'eng', use=kuaa.language.TARGET)
     else:
         g = kuaa.language.Language('Guarani', 'grn', use=kuaa.language.TARGET)
-    return e.read_groups(target=g)
+    e.read_groups(files=files, target=g)
+    return e
 
 def caminaste(verbosity=0):
     spa, grn = kuaa.Language.load_trans('spa', 'grn')

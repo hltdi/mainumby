@@ -501,7 +501,7 @@
 ->grn ty'ũ_n ; 0==0 n:n
 *** agua ; agua_ de bañado
 ->grn ygapo'y_n ; 0==0 n:n
-*** agua ; agua_ congelada, helada
+*** agua ; agua_ congelada o helada
 ->grn yrypy'a_n ; 0==0 n:n
 *** agua ; agua_ bendita
 ->grn y_n karai ; 0==0 n:n
@@ -780,7 +780,7 @@
 ->grn <heterupi_n ; 0==0 n:n
 *** alma ; alma_ bondadosa
 ->grn ãngatu_n ; 0==0 n:n
-*** alma ; alma_ pura, verdadera
+*** alma ; alma_ pura o verdadera
 ->grn ãngaite_n ; 0==0 n:n
 *** alma ; alma_ del purgatorio
 ->grn ãnga_n mopotĩhapegua ; 0==0 n:n
@@ -2180,7 +2180,7 @@
 ->grn juruvai_n ; 0==0 n:n
 *** boca ; boca_ ladeada
 ->grn jurukechẽ_n ; 0==0 n:n
-*** boca ; boca_ torcida, contrahecha
+*** boca ; boca_ torcida
 ->grn juruparĩ_n ; 0==0 n:n
 *** boca ; boca_
 ->grn juru_n ; 0==0 n:n
@@ -2525,7 +2525,7 @@
 ->grn tapýi_n ; 0==0 n:n
 ->grn kope_n ; 0==0 n:n
 ->grn tapỹimi_n ; 0==0 n:n
-*** cabecera ; cabecera_ de un río, de un arroyo
+*** cabecera ; cabecera_ de un río
 ->grn yryapy_n ; 0==0 n:n
 *** cabecera ; cabecera_
 ->grn akã_n ; 0==0 n:n
@@ -2537,7 +2537,7 @@
 ->grn avuku_n ; 0==0 n:n
 *** cabello ; cabello_[n=p] rubios
 ->grn áva_n sa'yju ; 0==0 n:n
-*** cabello ; cabello_ risado, enrulado, crespo
+*** cabello ; cabello_ risado o enrulado o crespo
 ->grn akãpicha'ĩ_n ; 0==0 n:n
 *** cabello ; cabello_[n=p] cortos
 ->grn avambyky_n ; 0==0 n:n
@@ -2586,7 +2586,7 @@
 ->grn akãkanguekue_n ; 0==0 n:n
 *** cabeza ; cabeza_ loca
 ->grn akãtarova_n ; 0==0 n:n
-*** cabeza ; cabeza_ chata, aplanada
+*** cabeza ; cabeza_ chata o aplanada
 ->grn akãmbe_n ; 0==0 n:n
 *** cabeza ; cabeza_ de pelo motoso
 ->grn akãpicha'ĩ_n ; 0==0 n:n
@@ -2605,7 +2605,7 @@
 ->grn káule_n ; 0==0 n:n
 *** cabo ; cabo_ largo
 ->grn ýva_n puku ; 0==0 n:n
-*** cabo ; cabo_ sacado, deshebrado
+*** cabo ; cabo_ sacado
 ->grn <hovykã'o_n ; 0==0 n:n
 *** cabo ; cabo_
 ->grn poita_n ; 0==0 n:n
@@ -3542,7 +3542,7 @@
 ->grn akã_n apytu'ũ ; 0==0 n:n
 *** cereza ; cereza_
 ->grn yvapu_n ; 0==0 n:n
-*** cerezo ; cerezo_ común, guindo
+*** cerezo ; cerezo_ común
 ->grn yvaro_n mirĩ ; 0==0 n:n
 *** cerradura ; cerradura_ de la puerta
 ->grn okẽkua_n ; 0==0 n:n
@@ -3586,9 +3586,9 @@
 ->grn yvyra'i_n ; 0==0 n:n
 *** chacra ; chacra_ vieja
 ->grn kokuere_n ; 0==0 n:n
-*** chacra ; chacra_ antigua, abandonada
+*** chacra ; chacra_ antigua o abandonada
 ->grn kokuereyma_n ; 0==0 n:n
-*** chacra ; chacra_ desgastada, infértil, seca
+*** chacra ; chacra_ desgastada o infértil o seca
 ->grn yvykane'õ_n ; 0==0 n:n
 *** chacra ; chacra_
 ->grn kogaty_n ; 0==0 n:n
@@ -4613,7 +4613,7 @@
 ->grn inimbo_n ; 0==0 n:n
 *** corola ; corola_
 ->grn <hope_n ; 0==0 n:n
-*** corona ; corona_ de la reina, del rey o de las mises
+*** corona ; corona_ de la reina o del rey o de las mises
 ->grn akã_n apytere jegua ; 0==0 n:n
 *** corona ; corona_ capilar
 ->grn arague_n ; 0==0 n:n
@@ -5023,7 +5023,7 @@
 ->grn <he'ongue_n ; 0==0 n:n
 *** cuerpo ; cuerpo_ transparente
 ->grn mba'erete_n sakã ; 0==0 n:n
-*** cuerpo ; cuerpo_ débil, debilitado, colapsado
+*** cuerpo ; cuerpo_ débil o debilitado o colapsado
 ->grn <hetekãngy_n ; 0==0 n:n
 *** cuerpo ; cuerpo_ débil
 ->grn <hetekangy_n ; 0==0 n:n
@@ -5033,7 +5033,7 @@
 ->grn avarete_n ; 0==0 n:n
 *** cuerpo ; cuerpo_ ágil
 ->grn <hetepýu_n ; 0==0 n:n
-*** cuerpo ; cuerpo_ impoluto, intacto
+*** cuerpo ; cuerpo_ impoluto o intacto
 ->grn <hete_n marã'ỹ ; 0==0 n:n
 *** cuerpo ; cuerpo_ estirado
 ->grn <hetepyso_n ; 0==0 n:n
@@ -5253,7 +5253,7 @@
 ->grn kuã_n ; 0==0 n:n
 *** dedo ; dedo_ meñique
 ->grn kuã'i_n ; 0==0 n:n
-*** dedo ; dedo_ mochado, seccionado, amputado o mutilado
+*** dedo ; dedo_ mochado o seccionado o amputado o mutilado
 ->grn kuã'apĩ_n ; 0==0 n:n
 *** defecto ; defecto_
 ->grn meĝua_n ; 0==0 n:n
@@ -5669,7 +5669,7 @@
 ->grn chiri_n ; 0==0 n:n
 *** diarrea ; diarrea_ hídrica profusa que chorrea sin parar
 ->grn <hyechivivi_n ; 0==0 n:n
-*** diarrea ; diarrea_ profusa, fluyente, continua
+*** diarrea ; diarrea_ profusa o fluyente o continua
 ->grn <hyechivi_n ; 0==0 n:n
 *** dibujo ; dibujo_
 ->grn <ha'anga_n ; 0==0 n:n
@@ -5722,7 +5722,7 @@
 *** diente ; diente_ molar
 ->grn rãi_n myangu'iha ; 0==0 n:n
 ->grn gue'a_n ; 0==0 n:n
-*** diente ; diente_ descompuesto del serrucho, de la tijera, del cuchillo
+*** diente ; diente_ descompuesto del serrucho o de la tijera o del cuchillo
 ->grn hãinga_n ; 0==0 n:n
 *** diente ; diente_
 ->grn <hãi_n ; 0==0 n:n
@@ -5930,7 +5930,7 @@
 ->grn ombo'éva_n ; 0==0 n:n
 *** doctor ; doctor_
 ->grn pohãnohára_n ; 0==0 n:n
-*** doctrina ; doctrina_ que ha de ser exterminada, condenada, aplastada
+*** doctrina ; doctrina_ que ha de ser exterminada o condenada o aplastada
 ->grn jopypyrã_n ; 0==0 n:n
 *** doctrina ; doctrina_
 ->grn ñe'ẽngue_n ; 0==0 n:n
@@ -5975,7 +5975,7 @@
 ->grn <hevirasy_n ; 0==0 n:n
 *** dolor ; dolor_ anal
 ->grn <hevikuarasy_n ; 0==0 n:n
-*** dolor ; dolor_ vago, difuso y continuo de estómago
+*** dolor ; dolor_ difuso de estómago
 ->grn py'a_n asy ; 0==0 n:n
 *** dolor ; dolor_ del corazón
 ->grn ñe'ãrasy_n ; 0==0 n:n
@@ -8411,7 +8411,7 @@
 ->grn aoaviju_n ; 0==0 n:n
 *** género ; género_ masculino
 ->grn kuimba'e_n meña ; 0==0 n:n
-*** género ; género_ velloso, suave
+*** género ; género_ velloso o suave
 ->grn aoaviju_n ; 0==0 n:n
 *** género ; género_ femenino
 ->grn kuña_n meña ; 0==0 n:n
@@ -8567,7 +8567,7 @@
 *** helecho ; helecho_ pequeño
 ->grn amambái_n tymakãu ; 0==0 n:n
 ->grn amambái_n mirĩ ; 0==0 n:n
-*** helecho ; helecho_ que aparece en las paredes húmedas, pozos, etc.
+*** helecho ; helecho_ que aparece en las paredes húmedas o pozos
 ->grn amambaimi_n ; 0==0 n:n
 *** helecho ; helecho_ grande
 ->grn amambái_n guasu ; 0==0 n:n
@@ -8939,7 +8939,7 @@
 ->grn avapane_n ; 0==0 n:n
 *** hombre ; hombre_ íntegro
 ->grn avaite_n ; 0==0 n:n
-*** hombre ; hombre_ grosero, inferior, maleducado o sin educación
+*** hombre ; hombre_ grosero o inferior o maleducado o sin educación
 ->grn kachape_n ; 0==0 n:n
 *** hombre ; hombre_ de conducta sosegada
 ->grn karai_n guasu ; 0==0 n:n
@@ -9541,7 +9541,7 @@
 ->grn mba'ekatukue_n ; 0==0 n:n
 *** intelectualidad ; intelectualidad_
 ->grn ñe'ãtypy_n ; 0==0 n:n
-*** inteligencia ; inteligencia_ precavida, profunda
+*** inteligencia ; inteligencia_ precavida o profunda
 ->grn jehechapuku_n ; 0==0 n:n
 *** inteligencia ; inteligencia_
 ->grn kuaapy_n ; 0==0 n:n
@@ -10705,7 +10705,7 @@
 ->grn maína_n ; 0==0 n:n
 *** madrugada ; madrugada_ linda
 ->grn ko'ẽmbara_n ; 0==0 n:n
-*** madrugada ; madrugada_ clara, limpia y transparente
+*** madrugada ; madrugada_ clara o limpia
 ->grn ko'ẽsakã_n ; 0==0 n:n
 *** madrugada ; madrugada_ roja
 ->grn ko'ẽpytã_n ; 0==0 n:n
@@ -10827,7 +10827,7 @@
 ->grn mburuvicha_n ; 0==0 n:n
 *** mandato ; mandato_
 ->grn ñe'ẽngue_n ; 0==0 n:n
-*** mandioca ; mandioca_ rallada, secada y cortada
+*** mandioca ; mandioca_ cortada y rallada o secada
 ->grn hu'iatã_n ; 0==0 n:n
 *** mandioca ; mandioca_
 ->grn mandi'o_n ; 0==0 n:n
@@ -11200,7 +11200,7 @@
 ->grn mba'eichaitépa_n ojejapóta ; 0==0 n:n
 *** medio ; medio_[n=p] de vida
 ->grn <hekovereka_n ; 0==0 n:n
-*** medio ; medio_ de difusión, de comunicación
+*** medio ; medio_ de difusión o de comunicación
 ->grn maranduhai_n ; 0==0 n:n
 *** medio ; medio_ de la cabeza
 ->grn akãmbyte_n ; 0==0 n:n
@@ -11445,7 +11445,7 @@
 ->grn aravo'i_n ; 0==0 n:n
 *** miope ; miope_
 ->grn mañasavã_n ; 0==0 n:n
-*** mirada ; mirada_ arisca, hosca, esquiva
+*** mirada ; mirada_ arisca o hosca o esquiva
 ->grn mañasake_n ; 0==0 n:n
 *** mirada ; mirada_ larga
 ->grn ma'ẽmbuku_n ; 0==0 n:n
@@ -12042,7 +12042,7 @@
 ->grn tĩguasu_n ; 0==0 n:n
 *** nariz ; nariz_ afilada
 ->grn tĩ'akua_n ; 0==0 n:n
-*** nariz ; nariz_ arrugada, respingona
+*** nariz ; nariz_ arrugada o respingona
 ->grn tĩcha'ĩ_n ; 0==0 n:n
 *** nariz ; nariz_ ancha
 ->grn tĩpyguasu_n ; 0==0 n:n
@@ -12054,7 +12054,7 @@
 ->grn tĩmbeguasu_n ; 0==0 n:n
 *** nariz ; nariz_ corva
 ->grn apỹngua_n karapã ; 0==0 n:n
-*** nariz ; nariz_ torcida, inclinada
+*** nariz ; nariz_ torcida o inclinada
 ->grn tĩvã_n ; 0==0 n:n
 *** nariz ; nariz_[n=p]
 ->grn tĩnguára_n ; 0==0 n:n
@@ -12525,7 +12525,7 @@
 ->grn <hesarovy_n ; 0==0 n:n
 *** ojo ; ojo_[n=p] cerrados
 ->grn jehesamboty_n ; 0==0 n:n
-*** ojo ; ojo_[n=p] saltones, salientes
+*** ojo ; ojo_[n=p] saltones o salientes
 ->grn <hesapo_n ; 0==0 n:n
 *** ojo ; ojo_
 ->grn <hesa_n ; 0==0 n:n
@@ -12717,7 +12717,7 @@
 ->grn guataha_n ; 0==0 n:n
 *** orina ; orina_ turbia
 ->grn ty_n tyai ; 0==0 n:n
-*** orina ; orina_ turbia, sucia
+*** orina ; orina_ turbia o sucia
 ->grn ty_n ky'a ; 0==0 n:n
 *** orla ; orla_
 ->grn <hembe'yvapa_n ; 0==0 n:n
@@ -13608,7 +13608,7 @@
 ->grn <hembijokuái_n ; 0==0 n:n
 *** persona ; persona_ que inicia y dirige el rezo
 ->grn ñembo'e'ýva_n ; 0==0 n:n
-*** persona ; persona_ que asusta, espanta, sorprende
+*** persona ; persona_ que asusta o espanta o sorprende
 ->grn mondyihára_n ; 0==0 n:n
 *** persona ; persona_ que escucha
 ->grn <henduhára_n ; 0==0 n:n
@@ -13674,7 +13674,7 @@
 ->grn uru_n ; 0==0 n:n
 *** persona ; persona_ por la que se siente halagado
 ->grn aguaraha_n ; 0==0 n:n
-*** persona ; persona_ de cuerpo colapsado, debilitado
+*** persona ; persona_ de cuerpo colapsado o debilitado
 ->grn <hetekãngýva_n ; 0==0 n:n
 *** persona ; persona_ conocedor de las cosas
 ->grn avamba'ekuaa_n ; 0==0 n:n
@@ -13908,7 +13908,7 @@
 ->grn mbi'a_n ; 0==0 n:n
 *** piel ; piel_ herizada
 ->grn pirĩ_n ; 0==0 n:n
-*** piel ; piel_ levantada, hinchada
+*** piel ; piel_ levantada o hinchada
 ->grn piruru_n ; 0==0 n:n
 *** piel ; piel_ de vaca
 ->grn vakapi_n ; 0==0 n:n
@@ -14153,7 +14153,7 @@
 ->grn kururi_n ; 0==0 n:n
 *** planta ; planta_ plana y rastrera
 ->grn ka'arurupe_n ; 0==0 n:n
-*** planta ; planta_ verdolaga, pegajosa
+*** planta ; planta_ verdolaga o pegajosa
 ->grn ka'apunga_n ; 0==0 n:n
 *** planta ; planta_ medicinal
 ->grn ka'a_n kangái ; 0==0 n:n
@@ -14950,7 +14950,7 @@
 ->grn <hundi_n ; 0==0 n:n
 ->grn kañy_n ; 0==0 n:n
 ->grn ñekañy_n ; 0==0 n:n
-*** pérdida ; pérdida_ de la confianza, de la creencia, de la fe, del asentimiento
+*** pérdida ; pérdida_ de la confianza o de la creencia o de la fe o del asentimiento
 ->grn jerovia'ỹ_n ; 0==0 n:n
 *** pétalo ; pétalo_
 ->grn <hope_n ; 0==0 n:n
@@ -15600,9 +15600,9 @@
 ->grn ãmbu_n ; 0==0 n:n
 *** respiración ; respiración_ agitada
 ->grn py'asosopa_n ; 0==0 n:n
-*** respiración ; respiración_ rápida, entrecortada, superficial y jadeante
+*** respiración ; respiración_ rápida o superficial
 ->grn pytuhẽkytã'i_n ; 0==0 n:n
-*** respiración ; respiración_ difícil, agitada
+*** respiración ; respiración_ difícil o agitada
 ->grn juku'a_n ; 0==0 n:n
 *** respiración ; respiración_
 ->grn pytuhẽ_n ; 0==0 n:n
@@ -15966,9 +15966,9 @@
 ->grn hy'apu_n ; 0==0 n:n
 *** ruido ; ruido_ de gran estrépito
 ->grn <hyapurasa_n ; 0==0 n:n
-*** ruido ; ruido_ fuerte, retumbante
+*** ruido ; ruido_ fuerte o retumbante
 ->grn <hyapu_n hatã ; 0==0 n:n
-*** ruido ; ruido_ agudo, penetrante y fino
+*** ruido ; ruido_ agudo o penetrante o fino
 ->grn chinini_n ; 0==0 n:n
 *** ruido ; ruido_ de lluvia
 ->grn guarara_n ; 0==0 n:n
@@ -16315,7 +16315,7 @@
 ->grn ay_n ; 0==0 n:n
 *** sementera ; sementera_
 ->grn kokue_n ; 0==0 n:n
-*** semilla ; semilla_ sacada, desmotada
+*** semilla ; semilla_ sacada o desmotada
 ->grn <hesa'ỹi'o_n ; 0==0 n:n
 *** semilla ; semilla_ sacada
 ->grn ta'ỹi'o_n ; 0==0 n:n
@@ -16697,7 +16697,7 @@
 ->grn kuarahymo'ãha_n ; 0==0 n:n
 *** sonajero ; sonajero_
 ->grn chini_n ; 0==0 n:n
-*** sonido ; sonido_ del tambor, del atabal, del timbal, del tamborcillo
+*** sonido ; sonido_ del tambor o del atabal o del timbal o del tamborcillo
 ->grn angu'a_n tarara ; 0==0 n:n
 *** sonido ; sonido_ de la lengua
 ->grn ñe'ẽpu_n ; 0==0 n:n
@@ -16892,7 +16892,7 @@
 ->grn mba'erykue_n ; 0==0 n:n
 *** superficialidad ; superficialidad_
 ->grn <hekoveve_n ; 0==0 n:n
-*** superficie ; superficie_ cóncava, internalizada o hundida
+*** superficie ; superficie_ cóncava o internalizada o hundida
 ->grn pyko'ẽ_n ; 0==0 n:n
 *** superficie ; superficie_ del agua
 ->grn yrova_n ; 0==0 n:n
@@ -17388,7 +17388,7 @@
 ->grn yvy_n marãe'ỹ ; 0==0 n:n
 *** tierra ; tierra_ triturada
 ->grn yvyku'i_n ; 0==0 n:n
-*** tierra ; tierra_ desgastada, reseca
+*** tierra ; tierra_ desgastada o reseca
 ->grn yvy_n tuja ; 0==0 n:n
 *** tierra ; tierra_ negra
 ->grn yvy_n hũ ; 0==0 n:n
@@ -17592,7 +17592,7 @@
 ->grn mba'apomi_n ; 0==0 n:n
 *** trabajo ; trabajo_ de urgencia
 ->grn mba'apo_n raĝe ; 0==0 n:n
-*** trabajo ; trabajo_ rústico, artesanal, chabacano, chapucero, casero, primitivo
+*** trabajo ; trabajo_ rústico o artesanal o chabacano o chapucero o casero o primitivo
 ->grn <hembiapo_n chae ; 0==0 n:n
 *** trabajo ; trabajo_ hecho
 ->grn mba'eapokue_n ; 0==0 n:n
@@ -17639,7 +17639,7 @@
 ->grn pyaha_n ; 0==0 n:n
 *** trampa ; trampa_ para cazar pájaros y animalitos
 ->grn aratã_n ; 0==0 n:n
-*** trampa ; trampa_ para aves, liebres, etc.
+*** trampa ; trampa_ para aves
 ->grn monde'i_n ; 0==0 n:n
 *** trampa ; trampa_ para cazar
 ->grn apañuãi_n ; 0==0 n:n
@@ -18372,7 +18372,7 @@
 ->grn <hekoapyra'ỹ_n ; 0==0 n:n
 *** vida ; vida_ limpia
 ->grn <hekomarãngatu_n ; 0==0 n:n
-*** vida ; vida_ licenciosa, desarreglada
+*** vida ; vida_ licenciosa o desarreglada
 ->grn <hekomarã_n ; 0==0 n:n
 *** vida ; vida_ muy sacrificada
 ->grn jehesy_n asy ; 0==0 n:n
@@ -18433,7 +18433,7 @@
 ->grn yvytu_n põrã ; 0==0 n:n
 *** viento ; viento_ suave y agradable
 ->grn yvytu_n po'i ; 0==0 n:n
-*** viento ; viento_ sur, generalmente frío
+*** viento ; viento_ sur
 ->grn yvytu_n ro'y ; 0==0 n:n
 *** viento ; viento_ fuerte
 ->grn yvytu_n hatã ; 0==0 n:n
@@ -18931,7 +18931,7 @@
 *** árbol ; árbol_ podrida
 ->grn yvyra_n tujukue ; 0==0 n:n
 ->grn yvyra_n ru'ũngue ; 0==0 n:n
-*** árbol ; árbol_ desmochado, despuntado
+*** árbol ; árbol_ desmochado o despuntado
 ->grn yvyra_n chapĩ ; 0==0 n:n
 *** árbol ; árbol_ inclinado
 ->grn yvyra_n jero'a ; 0==0 n:n

@@ -105,6 +105,7 @@ TARGET = 3
 ## Strings used in groups file
 GROUP_SEP = '***'
 TRANS_START = '->'
+HEAD_SEP = ';'
 
 class Language:
     """Dictionaries of words, lexemes, grammatical features, and
@@ -213,8 +214,12 @@ class Language:
         self.new_anals = {}
 
     def get_cache_dir(self):
-        """File with cached analyses."""
+        """Directory with cached analyses."""
         return os.path.join(self.get_dir(), 'cache')
+
+    def get_group_dir(self):
+        """Directory with group files."""
+        return os.path.join(self.get_dir(), 'grp')
 
     def get_cache_file(self, name=''):
         d = self.get_cache_dir()
@@ -229,11 +234,11 @@ class Language:
             name = 'sem'
         return os.path.join(d, name + '.lex')
 
-    def get_group_file(self, name=''):
-        d = self.get_dir()
-        if name == True or not name:
-            name = self.abbrev
-        return os.path.join(d, name + '.grp')
+    def get_group_files(self, names=None):
+        d = self.get_group_dir()
+        if not names:
+            names = [self.abbrev]
+        return [os.path.join(d, name + '.grp') for name in names]
 
     def add_new_anal(self, word, anals):
         self.new_anals[word] = anals
@@ -1133,33 +1138,36 @@ class Language:
         with open(path, 'w', encoding='utf8') as file:
             yaml.dump(self.to_dict(), file)
 
-    def read_groups(self, target=None):
+    def read_groups(self, files=None, target=None):
         """Read in groups from a .grp file. If target is not None (must be a language), read in translation groups
         and cross-lingual features as well."""
         target_abbrev = target.abbrev if target else None
         source_groups = []
         target_groups = []
-#        group_specs = []
-        with open(self.get_group_file(), encoding='utf8') as file:
-            print("Reading groups for {}".format(self.name))
-            # Groups separated by GROUP_SEP string
-            groups = file.read().split(GROUP_SEP)
-            # First element in list is what precedes first GROUP_SEP (nothing)
-            for group_spec in groups[1:]:
-                group_trans = group_spec.split(TRANS_START)
-                source_group = group_trans[0]
-                source_groups.append(source_group)
-                translations = []
-                if target:
-                    for t in group_trans[1:]:
-                        tlang, x, tgroup = t.strip().partition(' ')
-#                        print("Looking for translation to {} in {} / {}".format(target_abbrev, tlang, tgroup))
-                        if tlang == target_abbrev:
-                            translations.append(tgroup)
-                    target_groups.extend(translations)
-                # Creates the group and any target groups specified and adds them to self.groups
-                Group.from_string(source_group, self, translations, target=target, trans=False)
-#        return group_specs
+        for gfile in self.get_group_files(files):
+            with open(gfile, encoding='utf8') as file:
+                print("Reading groups for {} from {}".format(self.name, gfile))
+                # Groups separated by GROUP_SEP string
+                groups = file.read().split(GROUP_SEP)
+                # Preamble precedes first instance of GROUP_SEP
+                preamble = groups[0]
+                # Handle preamble ...
+                for group_spec in groups[1:]:
+                    group_trans = group_spec.split(TRANS_START)
+                    source_group = group_trans[0]
+                    # Not sure whether head should be used to speed up reading group from string?
+                    head, source_group = source_group.split(HEAD_SEP)
+                    source_group = source_group.strip()
+                    source_groups.append(source_group)
+                    translations = []
+                    if target:
+                        for t in group_trans[1:]:
+                            tlang, x, tgroup = t.strip().partition(' ')
+                            if tlang == target_abbrev:
+                                translations.append(tgroup)
+                        target_groups.extend(translations)
+                    # Creates the group and any target groups specified and adds them to self.groups
+                    Group.from_string(source_group, self, translations, target=target, trans=False)
 
     @staticmethod
     def from_dict(d, reverse=True, use=ANALYSIS):
