@@ -1154,10 +1154,11 @@ class Language:
                 # Handle preamble ...
                 for group_spec in groups[1:]:
                     group_trans = group_spec.split(TRANS_START)
-                    source_group = group_trans[0]
+                    # A string starting with tokens and with other attributes separated by ;
+                    source_group = group_trans[0].strip()
                     # Not sure whether head should be used to speed up reading group from string?
-                    head, source_group = source_group.split(HEAD_SEP)
-                    source_group = source_group.strip()
+#                    head, source_group = source_group.split(HEAD_SEP)
+#                    source_group = source_group.strip()
                     source_groups.append(source_group)
                     translations = []
                     if target:

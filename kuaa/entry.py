@@ -67,8 +67,12 @@ LEXEME_CHAR = '_'
 CAT_CHAR = '$'
 ATTRIB_SEP = ';'
 WITHIN_ATTRIB_SEP = ','
-# Regular expressions for reading groups from text files
+## Regular expressions for reading groups from text files
+# non-empty form string followed by possibly empty FS string
 FORM_FV = re.compile("([$<'\w]+)\s*((?:\[.+\])?)$")
+# possibly empty form string followed by possibly empty FS string, for MorphoSyn pattern
+MS_FORM_FV = re.compile("([$<'\w]*)\s*((?:\[.+\])?)$")
+HEAD = re.compile("\s*\^\s*([<'\w]+)\s+(\d)$")
 # Within agreement spec
 # 1=3 n,p
 WITHIN_AGR = re.compile("\s*(\d)\s*=\s*(\d)\s*(.+)$")
@@ -191,6 +195,8 @@ class Group(Entry):
                     self.head_index = tokens.index(head)
                 else:
                     self.head_index = tokens.index(root)
+            else:
+                self.head_index = head_index
 #            self.head_index = tokens.index(head_tokens[0]) or tokens.index(head_tokens[1])
         else:
             self.head = tokens[head_index]
@@ -203,7 +209,6 @@ class Group(Entry):
         # Agr constraints: each a list of form
         # (node_index1, node_index2 . feature_pairs)
         self.agr = agr or None
-        self.trans = trans
 
     def __repr__(self):
         """Print name."""
@@ -290,8 +295,13 @@ class Group(Entry):
 #        print("Creating group from {} and trans strings {} [trans={}]".format(string, trans_strings, trans))
         # Separate the tokens from any group attributes
         tokens_attribs = string.split(ATTRIB_SEP)
-        tokens = tokens_attribs[0].split()
+        tokens = tokens_attribs[0].strip().split()
         attribs = tokens_attribs[1:]
+        within_agrs = []
+        trans_agrs = alignment = None
+        if trans:
+            trans_agrs = []
+            alignment = []
         # Go through tokens separating off features, if any, and assigning head
         # based on presence of '_'
         head_index = -1
@@ -302,6 +312,52 @@ class Group(Entry):
             features = []
         else:
             hasfeats = False
+        # Go through attribs, finding head and head index if provided and making agreement lists
+        for attrib in attribs:
+            # Root and root index
+            match = HEAD.match(attrib)
+            if match:
+                head, head_index = match.groups()
+                head_index = int(head_index)
+            else:
+                match = WITHIN_AGR.match(attrib)
+                if match:
+                    i1, i2, feats = match.groups()
+                    feat_pairs = []
+                    for f in feats.split(WITHIN_ATTRIB_SEP):
+                        if ':' in f:
+                            f1, f2 = f.split(':')
+                            feat_pairs.append((f1, f2))
+                        else:
+                            feat_pairs.append((f, f))
+                    within_agrs.append([int(i1), int(i2)] + feat_pairs)
+                    continue
+                elif trans:
+                    match = TRANS_AGR.match(attrib)
+                    if match:
+                        if not trans_agrs:
+                            trans_agrs = [False] * len(tokens)
+                        si, ti, feats = match.groups()
+                        feat_pairs = []
+                        for f in feats.split(WITHIN_ATTRIB_SEP):
+                            if ':' in f:
+                                sf, tf = f.split(':')
+                                feat_pairs.append((sf, tf))
+                            else:
+                                feat_pairs.append((f, f))
+                        trans_agrs[int(si)] = feat_pairs
+    #                    trans_agrs.append([int(si), int(ti)] + feat_pairs)
+                        continue
+                    match = ALIGNMENT.match(attrib)
+                    if match:
+                        align = match.groups()
+                        for index in align.split(WITHIN_ATTRIB_SEP):
+                            alignment.append(int(index))
+                        continue
+                    print("Something wrong with attribute string {}".format(attrib))
+                else:
+                    print("Something wrong with attribute string {}".format(attrib))
+            
         for index, token in enumerate(tokens):
             foundfeats = False
             # separate features if any
@@ -315,54 +371,11 @@ class Group(Entry):
 #                tokens[index] = tok
             elif hasfeats:
                 features.append(False)
-            if '_' in tok or foundfeats:
-                head_index = index
-                head = tok
-        # Make agreement lists from attribs
-        within_agrs = []
-        trans_agrs = alignment = None
-        if trans:
-            trans_agrs = []
-            alignment = []
-        for attrib in attribs:
-            # Separate the key from the rest and act accordingly
-            match = WITHIN_AGR.match(attrib)
-            if match:
-                i1, i2, feats = match.groups()
-                feat_pairs = []
-                for f in feats.split(WITHIN_ATTRIB_SEP):
-                    if ':' in f:
-                        f1, f2 = f.split(':')
-                        feat_pairs.append((f1, f2))
-                    else:
-                        feat_pairs.append((f, f))
-                within_agrs.append([int(i1), int(i2)] + feat_pairs)
-                continue
-            elif trans:
-                match = TRANS_AGR.match(attrib)
-                if match:
-                    if not trans_agrs:
-                        trans_agrs = [False] * len(tokens)
-                    si, ti, feats = match.groups()
-                    feat_pairs = []
-                    for f in feats.split(WITHIN_ATTRIB_SEP):
-                        if ':' in f:
-                            sf, tf = f.split(':')
-                            feat_pairs.append((sf, tf))
-                        else:
-                            feat_pairs.append((f, f))
-                    trans_agrs[int(si)] = feat_pairs
-#                    trans_agrs.append([int(si), int(ti)] + feat_pairs)
-                    continue
-                match = ALIGNMENT.match(attrib)
-                if match:
-                    align = match.groups()
-                    for index in align.split(WITHIN_ATTRIB_SEP):
-                        alignment.append(int(index))
-                    continue
-                print("Something wrong with attribute string {}".format(attrib))
-            else:
-                print("Something wrong with attribute string {}".format(attrib))
+            if not head:
+                # Head not set yet
+                if '_' in tok or foundfeats:
+                    head_index = index
+                    head = tok
         tgroups = None
         if target and trans_strings:
             tgroups = []
@@ -388,6 +401,83 @@ class Group(Entry):
     ##     }
 
     def add_alignment(self, trans):
+        pass
+
+class MorphoSyn(Entry):
+    """Within-language patterns that modify morphology a word/root on the basis of the occurrence of other words."""
+
+    def __init__(self, language, name=None, pattern=None, change=None, direction=True):
+        """pattern and change are strings, which get expanded at initialization.
+        direction = True is left-to-right matching, False right-to-left matching.
+        """
+        name = name or MorphoSyn.make_name(pattern)
+        Entry.__init__(self, name, language)
+        # Expand here?
+        self.pattern = self.expand_pattern(pattern)
+        self.change = change
+        self.direction = direction
+
+    @staticmethod
+    def make_name(pattern):
+        """Pattern is a string."""
+        return "{{ " + pattern + " }}"
+
+    def expand_pattern(self, pattern):
+        """
+        Pattern is a string consisting of elements separated by spaces. An element may be
+        - a word
+        - a FeatStruct
+        - a category with or without a FeatStruct ($...)
+        - a gap of some range of words (<l-h> or <g>, where l is minimum, h is maximum and g is exact gap)
+        """
+        # For now, just split the string into a list of items.
+        p = []
+        for item in pattern.split():
+            form, fv = MS_FORM_FV.match(item).groups()
+            if fv:
+                fv = FeatStruct(fv)
+            p.append((form, fv))
+        return p
+
+    def pattern_length(self):
+        return len(self.pattern)
+
+    def match(self, sentence):
+        """
+        Match sentence, a list of analyzed words, against the MorphoSyn's pattern.
+        """
+        if self.direction:
+            pindex = 0
+            mindex = -1
+            # left-to-right
+            for sindex, sitem in enumerate(sentence):
+                if self.match_item(sitem, pindex):
+                    # Is this the end of the pattern?
+                    if self.pattern_length() == pindex + 1:
+                        return mindex, sindex
+                    pindex += 1
+                    if mindex < 0:
+                        # Start of matching
+                        mindex = sindex
+                else:
+                    # Start over
+                    mindex = -1
+                    pindex = 0
+            return False
+        return False
+
+    def match_item(self, sitem, pindex):
+        pform, pfv = self.pattern[pindex]
+        # No FS to match
+        if not pfv:
+            return pform == sitem
+        return False
+
+    def expand_change(self, change):
+        """
+        Change is the addition of a FeatStruct to a root in the pattern and possibly the deletion of one or more
+        other items.
+        """
         pass
 
 class EntryError(Exception):
