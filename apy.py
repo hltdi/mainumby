@@ -259,6 +259,14 @@ def cantar_las_cuarenta_I(trans=True, verbosity=0, all_sols=True):
 
 ### Español -> Guarani / English
 
+def morphosyn(verbosity=0):
+    # Test MorphoSyn matching
+    e = kuaa.language.Language('Español', 'spa', use=kuaa.language.SOURCE)
+    s = kuaa.Sentence(raw='se está acostando', language=e)
+    s.tokenize()
+    p = kuaa.MorphoSyn(e, pattern="se estar[tm=prs,ps=3] [pos=v,tm=ger,+rflx]")
+    return p.match(s, verbosity=verbosity)
+
 def groups(eng=False, files=['v']):
     e = kuaa.language.Language('Español', 'spa', use=kuaa.language.SOURCE)
     if eng:

@@ -83,8 +83,7 @@ class Sentence:
     id = 0
     word_width = 10
 
-    def __init__(self, raw='', language=None,
-                 tokens=None, analyses=None,
+    def __init__(self, raw='', language=None, tokens=None,
                  nodes=None, groups=None, target=None,
                  verbosity=0):
         self.set_id()
@@ -94,6 +93,8 @@ class Sentence:
         self.language = language
         # Target language: a language object or None
         self.target = target
+        # A list of tuples of analyzed words
+        self.analyses = []
         # A list of SNode objects, one for each token
         self.nodes = nodes or []
         # A list of candidate groups (realized as GInst objects) found during lexicalization
@@ -183,18 +184,22 @@ class Sentence:
 
     def tokenize(self, verbosity=0):
         """Segment the sentence string into tokens, analyze them morphologically,
-        and create a SNode object for each."""
+        and create a SNode object for each.
+        2015.06.07: Save the analyzed tokens as well as nodes.
+        """
         if verbosity:
             print("Tokenizing {}".format(self))
         if not self.nodes:
             # (Otherwise it's already done.)
             # Split at spaces by default (later allow for dedicated language-specific tokenizers).
             tokens = self.raw.split()
+            # First do morphological analysis (2015.06.07)
+            self.analyses = [(token, self.language.anal_word(token)) for token in tokens]
+            # Run MorphoSyns on analyses
+            # ...
             self.nodes = []
             index = 0
-            for token in tokens:
-                # Try to analyze the token
-                anals = self.language.anal_word(token)
+            for token, anals in self.analyses:
                 if anals:
                     # Multiple dicts: ambiguity; let node handle it
                     # Get cats
@@ -765,7 +770,9 @@ class GInst:
                 if targ_index < 0:
                     # This means there's no target language token for this GNode.
                     continue
-                agrs = s2t_dict['agr'][gn_index] if 'agr' in s2t_dict else None
+                agrs = None
+                if s2t_dict.get('agr'):
+                    agrs = s2t_dict['agr'][gn_index]
                 token = tokens[targ_index]
                 feats = features[targ_index] if features else None
                 gnodes.append((gnode, token, feats, agrs, targ_index))

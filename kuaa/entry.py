@@ -56,6 +56,8 @@
 # 2015.05.20
 # -- Group heads require a '_', at the beginning for unanalyzed words, following the
 #    root for words to analyze: guata_v_i.
+# 2015.06.07
+# -- This is no longer true. Unanalyzed heads can be strings without '_' (I think...).
 
 import copy, itertools
 import yaml
@@ -182,14 +184,11 @@ class Group(Entry):
         # tokens is a list of strings
         # name may be specified explicitly or not
         # head is a string like 'guata' or 'guata_' or 'guata_v'
-        root, x, pos = head.partition('_')
-        # Either something like 'v', or ''
-        self.pos = pos
-        name = name or Group.make_name(tokens)
-        Entry.__init__(self, name, language, trans=trans)
-        self.tokens = tokens
         if head:
             self.head = head
+            root, x, pos = head.partition('_')
+            # Either something like 'v', or ''
+            self.pos = pos
             if head_index == -1:
                 if head in tokens:
                     self.head_index = tokens.index(head)
@@ -201,6 +200,10 @@ class Group(Entry):
         else:
             self.head = tokens[head_index]
             self.head_index = head_index
+            
+        name = name or Group.make_name(tokens)
+        Entry.__init__(self, name, language, trans=trans)
+        self.tokens = tokens
         # Either None or a list of feat-val dicts for tokens that require them
         # Convert dicts to FeatStruct objects
         if isinstance(features, list):
@@ -312,7 +315,7 @@ class Group(Entry):
             features = []
         else:
             hasfeats = False
-        # Go through attribs, finding head and head index if provided and making agreement lists
+        # Go through attribs, finding head and head index if not provided and making agreement lists
         for attrib in attribs:
             # Root and root index
             match = HEAD.match(attrib)
@@ -376,6 +379,10 @@ class Group(Entry):
                 if '_' in tok or foundfeats:
                     head_index = index
                     head = tok
+        if not head:
+            # Still no head found; it's just the first token
+            head = tokens[0]
+            head_index = 0
         tgroups = None
         if target and trans_strings:
             tgroups = []
@@ -406,7 +413,7 @@ class Group(Entry):
 class MorphoSyn(Entry):
     """Within-language patterns that modify morphology a word/root on the basis of the occurrence of other words."""
 
-    def __init__(self, language, name=None, pattern=None, change=None, direction=True):
+    def __init__(self, language, name=None, pattern=None, direction=True):
         """pattern and change are strings, which get expanded at initialization.
         direction = True is left-to-right matching, False right-to-left matching.
         """
@@ -414,7 +421,6 @@ class MorphoSyn(Entry):
         Entry.__init__(self, name, language)
         # Expand here?
         self.pattern = self.expand_pattern(pattern)
-        self.change = change
         self.direction = direction
 
     @staticmethod
@@ -442,19 +448,23 @@ class MorphoSyn(Entry):
     def pattern_length(self):
         return len(self.pattern)
 
-    def match(self, sentence):
+    def match(self, sentence, verbosity=0):
         """
-        Match sentence, a list of analyzed words, against the MorphoSyn's pattern.
+        Match sentence, a list of pairs of words and their analyses, against the MorphoSyn's pattern.
         """
         if self.direction:
             pindex = 0
             mindex = -1
+            result = []
             # left-to-right
-            for sindex, sitem in enumerate(sentence):
-                if self.match_item(sitem, pindex):
+            for sindex, (stoken, sanals) in enumerate(sentence.analyses):
+                # sentence.analyses consists of pairs of word tokens and a list of analysis dicts
+                match = self.match_item(stoken, sanals, pindex, verbosity=verbosity)
+                if match:
+                    result.append(match)
                     # Is this the end of the pattern?
                     if self.pattern_length() == pindex + 1:
-                        return mindex, sindex
+                        return (mindex, sindex, result)
                     pindex += 1
                     if mindex < 0:
                         # Start of matching
@@ -466,19 +476,31 @@ class MorphoSyn(Entry):
             return False
         return False
 
-    def match_item(self, sitem, pindex):
+    def match_item(self, stoken, sanals, pindex, verbosity=0):
         pform, pfv = self.pattern[pindex]
+        if verbosity:
+            print("Matching {}:{} against {}:{}".format(stoken, sanals, pform, pfv.__repr__()))
         # No FS to match
         if not pfv:
-            return pform == sitem
+            if pform == stoken:
+                return (stoken, True)
+        else:
+            if not sanals:
+                # No morphological analyses for sentence item; fail
+                if verbosity:
+                    print("No FV, failing")
+                return False
+            # pattern FS must match features in anals
+            for sanal in sanals:
+                sfv = sanal.get('features')
+                if verbosity:
+                    print("Attempting to match pattern FV {} against sentence item FV {}".format(pfv.__repr__(), sfv.__repr__()))
+                u = simple_unify(sfv, pfv)
+                if u != 'fail':
+                    return (stoken, u)
+        if verbosity:
+            print("Failing")
         return False
-
-    def expand_change(self, change):
-        """
-        Change is the addition of a FeatStruct to a root in the pattern and possibly the deletion of one or more
-        other items.
-        """
-        pass
 
 class EntryError(Exception):
     '''Class for errors encountered when attempting to update an entry.'''
