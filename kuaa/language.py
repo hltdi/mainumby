@@ -945,10 +945,7 @@ class Language:
                   string=False, print_out=False,
                   rank=True, report_freq=True, nbest=100,
                   only_anal=False):
-        '''Analyze a single word, trying all existing POSs, both lexical and guesser FSTs.
-
-        [ [POS, {root|citation}, FSSet] ... ]
-        '''
+        '''Analyze a single word, trying all existing POSs, both lexical and guesser FSTs.'''
         # Before anything else, check to see if the word is in the list of words that
         # have failed to be analyzed
         if no_anal != None and word in no_anal:
@@ -971,16 +968,6 @@ class Language:
                 analyses = self.prettify_analyses(cached)
             return analyses
         form = word
-        # See if the word is unanalyzable (in the "words" list)
-#        if unanal:
-#            unal_word = self.morphology.is_word(form)
-#            if unal_word:
-#                if not pretty:
-#                    analyses.append((form, '', []))
-#                else:
-#                    analyses.append((form, []))
-#                if cache and not pretty:
-#                    to_cache.append([])
         # Try stripping off suffixes
         suff_anal = self.strip_suffixes(form, pretty=pretty)
         if suff_anal:

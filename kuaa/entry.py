@@ -58,6 +58,9 @@
 #    root for words to analyze: guata_v_i.
 # 2015.06.07
 # -- This is no longer true. Unanalyzed heads can be strings without '_' (I think...).
+# 2015.06.08...
+# -- Morphosyn class: patterns that relate syntax to morphology, by modifying FeatStructs
+#    in word analyses and deleting free grammatical morphemes that trigger the changes.
 
 import copy, itertools
 import yaml
@@ -71,9 +74,7 @@ ATTRIB_SEP = ';'
 WITHIN_ATTRIB_SEP = ','
 ## Regular expressions for reading groups from text files
 # non-empty form string followed by possibly empty FS string
-FORM_FV = re.compile("([$<'\w]+)\s*((?:\[.+\])?)$")
-# possibly empty form string followed by possibly empty FS string, for MorphoSyn pattern
-MS_FORM_FV = re.compile("([$<'\w]*)\s*((?:\[.+\])?)$")
+FORM_FEATS = re.compile("([$<'\w]+)\s*((?:\[.+\])?)$")
 HEAD = re.compile("\s*\^\s*([<'\w]+)\s+(\d)$")
 # Within agreement spec
 # 1=3 n,p
@@ -82,6 +83,16 @@ WITHIN_AGR = re.compile("\s*(\d)\s*=\s*(\d)\s*(.+)$")
 # 1==3 ns:n,ps:p
 TRANS_AGR = re.compile("\s*(\d)\s*==\s*(\d)\s*(.+)$")
 ALIGNMENT = re.compile("\s*\|\|\s*(.+)$")
+## MorphoSyn regex
+# Separates elements of MorphoSyn pattern
+MS_PATTERN_SEP = ' '
+# Separates form alternatives in MorphSyn pattern
+FORMALT_SEP = '|'
+MS_ATTRIB_SEP = ';'
+# possibly empty form string followed by possibly empty FS string, for MorphoSyn pattern
+MS_FORM_FEATS = re.compile("\s*([$<'|\w]*)\s*((?:\[.+\])?)$")
+MS_AGR = re.compile("\s*(\d)\s*=>\s*(\d)\s*(.+)$")
+MS_DELETE = re.compile("\s*//\s*(.+)$")
 
 class Entry:
     """Superclass for Group and possibly other lexical classes."""
@@ -328,6 +339,7 @@ class Group(Entry):
                     i1, i2, feats = match.groups()
                     feat_pairs = []
                     for f in feats.split(WITHIN_ATTRIB_SEP):
+                        f = f.strip()
                         if ':' in f:
                             f1, f2 = f.split(':')
                             feat_pairs.append((f1, f2))
@@ -364,10 +376,10 @@ class Group(Entry):
         for index, token in enumerate(tokens):
             foundfeats = False
             # separate features if any
-#            m = FORM_FV.match(token)
+#            m = FORM_FEATS.match(token)
 #            if not m:
 #                print("String {}".format(string))
-            tok, feats = FORM_FV.match(token).groups()
+            tok, feats = FORM_FEATS.match(token).groups()
             if feats:
                 foundfeats = True
                 features.append(FeatStruct(feats))
@@ -430,30 +442,76 @@ class MorphoSyn(Entry):
 
     def expand_pattern(self, pattern):
         """
-        Pattern is a string consisting of elements separated by spaces. An element may be
-        - a word
-        - a FeatStruct
-        - a category with or without a FeatStruct ($...)
+        Pattern is a string consisting of elements separated by PATTERN_SEP. An element may be
+        - a word, set of words, or category with or without a FeatStruct
+        - a FeatStruct only
         - a gap of some range of words (<l-h> or <g>, where l is minimum, h is maximum and g is exact gap)
+          [not yet implemented]
         """
         # For now, just split the string into a list of items.
+        pattern = pattern.split(MS_ATTRIB_SEP)
+        tokens = pattern[0].strip()
+        # Attributes: agreement, delete
+        attribs = pattern[1:]
+        self.agr = None
+        self.delete = []
+        for attrib in attribs:
+            match = MS_AGR.match(attrib)
+            if match:
+                if self.agr:
+                    print("Only one agreement constraint allowed!")
+                    continue
+                srci, trgi, feats = match.groups()
+                feat_pairs = []
+                for f in feats.split(WITHIN_ATTRIB_SEP):
+                    f = f.strip()
+                    if ':' in f:
+                        f1, f2 = f.split(':')
+                        feat_pairs.append((f1, f2))
+                    else:
+                        feat_pairs.append((f, f))
+                self.agr = int(srci), int(trgi), feat_pairs
+                continue
+            match = MS_DELETE.match(attrib)
+            if match:
+                del_string = match.groups()[0]
+                self.del_indices = []
+                for d in del_string.split():
+                    self.del_indices.append(int(d))
+                continue
+            print("Something wrong with attribute {}".format(attrib))
         p = []
-        for item in pattern.split():
-            form, fv = MS_FORM_FV.match(item).groups()
-            if fv:
-                fv = FeatStruct(fv)
-            p.append((form, fv))
+        for item in tokens.split(MS_PATTERN_SEP):
+            forms, feats = MS_FORM_FEATS.match(item).groups()
+            if feats:
+                feats = FeatStruct(feats)
+            forms = [f.strip() for f in forms.split(FORMALT_SEP) if f]
+            p.append((forms, feats))
         return p
 
     def pattern_length(self):
         return len(self.pattern)
 
+    def apply(self, sentence, verbosity=0):
+        """Apply the MorphoSyn pattern to the sentence if there is a match on some portion."""
+        if verbosity:
+            print("Attempting to apply {} to {}".format(self, sentence))
+        match = self.match(sentence, verbosity=verbosity)
+        if match:
+            self.enforce_constraints(match, verbosity=verbosity)
+            self.insert_match(match, sentence, verbosity=verbosity)
+
     def match(self, sentence, verbosity=0):
         """
         Match sentence, a list of pairs of words and their analyses, against the MorphoSyn's pattern.
+        Match records the index of a matching analysis within the list of analyses for a given
+        sentence word.
         """
+        if verbosity:
+            print("{} matching {}".format(self, sentence))
         if self.direction:
             pindex = 0
+            # Index of sentence token where successful matching starts
             mindex = -1
             result = []
             # left-to-right
@@ -462,9 +520,10 @@ class MorphoSyn(Entry):
                 match = self.match_item(stoken, sanals, pindex, verbosity=verbosity)
                 if match:
                     result.append(match)
-                    # Is this the end of the pattern?
+                    # Is this the end of the pattern? If so, succeed.
                     if self.pattern_length() == pindex + 1:
-                        return (mindex, sindex, result)
+                        return (mindex, sindex+1, result)
+                    # Otherwise move forward in the pattern
                     pindex += 1
                     if mindex < 0:
                         # Start of matching
@@ -477,30 +536,134 @@ class MorphoSyn(Entry):
         return False
 
     def match_item(self, stoken, sanals, pindex, verbosity=0):
-        pform, pfv = self.pattern[pindex]
+        """Match a sentence item against a pattern item."""
+        pforms, pfeats = self.pattern[pindex]
         if verbosity:
-            print("Matching {}:{} against {}:{}".format(stoken, sanals, pform, pfv.__repr__()))
+            print("Matching {}:{} against {}:{}".format(stoken, sanals, pforms, pfeats.__repr__()))
         # No FS to match
-        if not pfv:
-            if pform == stoken:
-                return (stoken, True)
+        if not pfeats:
+            return self.match_token(stoken, sanals, pforms, verbosity=verbosity)
         else:
             if not sanals:
                 # No morphological analyses for sentence item; fail
                 if verbosity:
-                    print("No FV, failing")
+                    print("No Feats, match item failed")
                 return False
-            # pattern FS must match features in anals
+            # pattern FS must match features in one or more anals; record the results in
+            # last corresponding to the list of anals in sentence
+            anal_matches = []
             for sanal in sanals:
-                sfv = sanal.get('features')
-                if verbosity:
-                    print("Attempting to match pattern FV {} against sentence item FV {}".format(pfv.__repr__(), sfv.__repr__()))
-                u = simple_unify(sfv, pfv)
-                if u != 'fail':
-                    return (stoken, u)
+                anal_matches.append(self.match_anal(stoken, sanal, pforms, pfeats, verbosity=verbosity))
+            if any(anal_matches):
+                return [stoken, anal_matches]
         if verbosity:
-            print("Failing")
+            print("Match item failed")
         return False
+
+    def match_token(self, stoken, sanals, pforms, verbosity=0):
+        """Match the word or roots in a sentence against the set of forms in a pattern item."""
+        if verbosity:
+            print("Matching sentence token {} and analyses {} against pattern forms {}".format(stoken, sanals, pforms))
+        if any([stoken == f for f in pforms]):
+            # Do any of th pattern items match the sentence word?
+            if verbosity:
+                print(" Succeeded on token")
+            return [stoken, False]
+        # Do any of the pattern items match a root in any sentence item analysis?
+        matched_anals = []
+        for anal in sanals:
+            root = anal['root']
+            if any([root == f for f in pforms]):
+                matched_anals.append(anal['features'])
+            else:
+                matched_anals.append(False)
+        if any(matched_anals):
+            if verbosity:
+                print("Succeeded on root")
+            return [stoken, matched_anals]
+        return False
+
+    def match_anal(self, stoken, sanal, pforms, pfeats, verbosity=0):
+        """Match the sentence analysis against pforms and pfeats in a pattern.
+        sanal is either a dict or a pair (root, features)."""
+        if isinstance(sanal, dict):
+            sfeats = sanal.get('features')
+            sroot = sanal.get('root')
+        else:
+            sroot, sfeats = sanal
+        if verbosity:
+            s = "Attempting to match pattern forms {} and feats {} against sentence item root {} and feats {}"
+            print(s.format(pforms, pfeats.__repr__(), sroot, sfeats.__repr__()))
+        if not pforms or any([sroot == f for f in pforms]):
+            if verbosity:
+                print(" Root matched")
+            # root matches
+            u = simple_unify(sfeats, pfeats)
+            if u != 'fail':
+                if verbosity:
+                    print(" Feats matched")
+                return u
+        if verbosity:
+            print(" Failed")
+        return False
+
+    def enforce_constraints(self, match, verbosity=0):
+        """If there is an agreement contraint, modify the match element features to reflect it.
+        Works by mutating the features in match.
+        If there are deletion constraints, prefix * to the relevant tokens.
+        """
+        if self.agr:
+            start, end, elements = match
+            srci, trgi, feats = self.agr
+            src_elem = elements[srci]
+            trg_elem = elements[trgi]
+            if verbosity:
+                print("Enforcing agreement on features {} from {} to {}".format(feats, src_elem, trg_elem))
+            src_tok, src_feats_list = src_elem
+            trg_tok, trg_feats_list = trg_elem
+            for trg_feats in trg_feats_list:
+                if not trg_feats:
+                    # target features could be False
+                    continue
+                for src_feats in src_feats_list:
+                    if src_feats:
+                        # source features could be False
+                        # Force target to agree with source on feature pairs
+                        src_feats.agree(trg_feats, feats, force=True)
+#            a = src_feats.agree(trg_feats, feats, force=True)
+                        if verbosity:
+                            print("Result of agreement: {}".format(trg_feats.__repr__()))
+        if self.del_indices:
+            for i in self.del_indices:
+                if verbosity:
+                    print("Recording deletion for match element {}".format(elements[i]))
+                elements[i][0] = '*' + elements[i][0]
+
+    def insert_match(self, match, sentence, verbosity=0):
+        """Replace matched portion of sentence with elements in match.
+        Works by mutating sentence elements (tokens and analyses).
+        """
+        start, end, m_elements = match
+        for m_elem, s_elem in zip(m_elements, sentence.analyses[start:end]):
+            # Replace the token (could have * now)
+            s_elem[0] = m_elem[0]
+            # Replace the features if match element has any
+            m_feats_list = m_elem[1]
+            s_anals = s_elem[1]
+            new_s_anals = []
+            if m_feats_list:
+                for m_feats, s_anal in zip(m_feats_list, s_anals):
+                    if not m_feats:
+                        # This anal failed to match pattern; filter it out
+                        continue
+                    else:
+                        s_feats = s_anal['features']
+                        if s_feats != m_feats:
+                            # Replace sentence features with match features if something
+                            # has changed
+                            s_anal['features'] = m_feats
+                        new_s_anals.append(s_anal)
+            s_elem[1] = new_s_anals
 
 class EntryError(Exception):
     '''Class for errors encountered when attempting to update an entry.'''

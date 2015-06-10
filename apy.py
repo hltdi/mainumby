@@ -262,10 +262,20 @@ def cantar_las_cuarenta_I(trans=True, verbosity=0, all_sols=True):
 def morphosyn(verbosity=0):
     # Test MorphoSyn matching
     e = kuaa.language.Language('Español', 'spa', use=kuaa.language.SOURCE)
-    s = kuaa.Sentence(raw='se está acostando', language=e)
-    s.tokenize()
-    p = kuaa.MorphoSyn(e, pattern="se estar[tm=prs,ps=3] [pos=v,tm=ger,+rflx]")
-    return p.match(s, verbosity=verbosity)
+    s1 = kuaa.Sentence(raw="la ventana fue abierta", language=e)
+    s1.tokenize()
+    p1 = kuaa.MorphoSyn(e, name='pasivo', pattern="ser_ [pos=v,tm=prc,+psv] ; 0=>1 p,n,tm ; // 0")
+    m1 = p1.match(s1, verbosity=verbosity)
+#    p1 = kuaa.MorphoSyn(e, pattern="estar_ [pos=v,tm=ger,+prg] ; 0=>1 p,n,tm ; // 0")
+    s2 = kuaa.Sentence(raw='María se quiere acostar con él', language=e)
+    s2.tokenize()
+    p2 = kuaa.MorphoSyn(e, pattern="se querer_|poder_[p=3] [pos=v,tm=inf,+rflx] ; 1=>2 p,n,tm ; // 0")
+    m2 = p2.match(s2, verbosity=verbosity)
+    p1.enforce_constraints(m1, verbosity=verbosity)
+    p2.enforce_constraints(m2, verbosity=verbosity)
+    p1.insert_match(m1, s1)
+    p2.insert_match(m2, s2)
+    return s1, p1, m1, s2, p2, m2
 
 def groups(eng=False, files=['v']):
     e = kuaa.language.Language('Español', 'spa', use=kuaa.language.SOURCE)

@@ -194,7 +194,7 @@ class Sentence:
             # Split at spaces by default (later allow for dedicated language-specific tokenizers).
             tokens = self.raw.split()
             # First do morphological analysis (2015.06.07)
-            self.analyses = [(token, self.language.anal_word(token)) for token in tokens]
+            self.analyses = [[token, self.language.anal_word(token)] for token in tokens]
             # Run MorphoSyns on analyses
             # ...
             self.nodes = []
