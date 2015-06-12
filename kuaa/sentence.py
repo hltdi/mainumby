@@ -70,6 +70,8 @@
 # -- Cache search and morphological analysis replaces form lookup in tokenize()
 # 2015.05.20
 # -- Generation now handled by morphology FSTs
+# 2015.06.10
+# -- MorphoSyns applied in Sentence.tokenize()
 
 import itertools, copy
 from .ui import *
@@ -157,7 +159,7 @@ class Sentence:
             return True
 
     def solve(self, translate=True, all_sols=False, verbosity=0):
-        """Generate solutions and translations."""
+        """Generate solutions and translations (if translate is true)."""
         generator = self.solver.generator(test_verbosity=verbosity,
                                           expand_verbosity=verbosity)
         try:
@@ -167,7 +169,7 @@ class Sentence:
                 solution = self.create_solution(dstore=succeeding_state.dstore, verbosity=verbosity)
                 if verbosity:
                     print('FOUND ANALYSIS', solution)
-                if translate:
+                if translate and self.target:
                     solution.translate(verbosity=verbosity, all_sols=all_sols)
                 else:
                     # Display the parse
@@ -182,10 +184,12 @@ class Sentence:
         if not self.solutions:
             print("NO SOLUTIONS FOUND for {}".format(self))
 
-    def tokenize(self, verbosity=0):
+    def tokenize(self, incl_del=False, verbosity=0):
         """Segment the sentence string into tokens, analyze them morphologically,
         and create a SNode object for each.
         2015.06.07: Save the analyzed tokens as well as nodes.
+        2015.06.10: Apply MorphoSyns before creating nodes.
+        2015.06.11: If incl_del is True, create nodes for elements deleted by MorphoSyns.
         """
         if verbosity:
             print("Tokenizing {}".format(self))
@@ -195,11 +199,17 @@ class Sentence:
             tokens = self.raw.split()
             # First do morphological analysis (2015.06.07)
             self.analyses = [[token, self.language.anal_word(token)] for token in tokens]
-            # Run MorphoSyns on analyses
-            # ...
+            # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
+            if verbosity:
+                print("Running Morphosyns for {} on {}".format(self.language, self))
+            for ms in self.language.ms:
+                ms.apply(self, verbosity=verbosity)
             self.nodes = []
             index = 0
             for token, anals in self.analyses:
+                if not incl_del and MorphoSyn.del_token(token):
+                    # Ignore elements deleted by MorphoSyns
+                    continue
                 if anals:
                     # Multiple dicts: ambiguity; let node handle it
                     # Get cats
@@ -226,13 +236,14 @@ class Sentence:
         for node in self.nodes:
             # Get keys into lexicon for this node
             keys = {node.token}
-            anal = node.analyses
-            if anal:
-                if isinstance(anal, list):
-                    for a in anal:
-                        keys.add(a.get('root'))
-                else:
-                    keys.add(anal.get('root'))
+            anals = node.analyses
+            if anals:
+                if not isinstance(anals, list):
+                    # Is this still possible?
+                    anals = [anals]
+                for a in anals:
+                    keys.add(a.get('root'))
+#            print("Found lex keys {} for node {}".format(keys, node))
             # Look up candidate groups in lexicon
             for k in keys:
                 if k in self.language.groups:
@@ -243,8 +254,9 @@ class Sentence:
                             print("No translation for {}".format(group))
                             continue
                         candidates.append((node.index, group))
+#            print("Found candidates {}".format(candidates))
         # Now filter candidates to see if all words are present in the sentence
-        # For each group, save a list of list of sentence token indices that correspond
+        # For each group, save a list of sentence token indices that correspond
         # to the group's words
         groups = []
         for head_i, group in candidates:
@@ -562,7 +574,7 @@ class SNode:
         return features
 
     def match(self, item, features, verbosity=0):
-        """Does this node match the group item (word, lexeme, category) and
+        """Does this node match the group item (word, root, category) and
         any features associated with it?"""
         if verbosity:
             print('   SNode {} with features {} trying to match item {} with features {}'.format(self, self.analyses, item, features))

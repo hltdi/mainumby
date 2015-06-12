@@ -316,8 +316,6 @@ class Group(Entry):
         if trans:
             trans_agrs = []
             alignment = []
-        # Go through tokens separating off features, if any, and assigning head
-        # based on presence of '_'
         head_index = -1
         head = None
         features = None
@@ -369,11 +367,13 @@ class Group(Entry):
                         for index in align.split(WITHIN_ATTRIB_SEP):
                             alignment.append(int(index))
                         continue
-                    print("Something wrong with attribute string {}".format(attrib))
                 else:
                     print("Something wrong with attribute string {}".format(attrib))
-            
+        # Go through tokens separating off features, if any, and assigning head
+        # based on presence of '_'
+        name_toks = []
         for index, token in enumerate(tokens):
+            name_toks.append(token)
             foundfeats = False
             # separate features if any
 #            m = FORM_FEATS.match(token)
@@ -383,7 +383,7 @@ class Group(Entry):
             if feats:
                 foundfeats = True
                 features.append(FeatStruct(feats))
-#                tokens[index] = tok
+                tokens[index] = tok
             elif hasfeats:
                 features.append(False)
             if not head:
@@ -404,7 +404,8 @@ class Group(Entry):
                 if alg:
                     tattribs['align'] = alg
                 tgroups.append((tgroup, tattribs))
-        g = Group(tokens, head_index=head_index, head=head, features=features, agr=within_agrs)
+        g = Group(tokens, head_index=head_index, head=head, features=features, agr=within_agrs,
+                  name=Group.make_name(name_toks))
         if target and not trans:
             g.trans = tgroups
         language.add_group(g)
@@ -425,22 +426,22 @@ class Group(Entry):
 class MorphoSyn(Entry):
     """Within-language patterns that modify morphology a word/root on the basis of the occurrence of other words."""
 
-    def __init__(self, language, name=None, pattern=None, direction=True):
+    def __init__(self, language, name=None, pattern=None):
         """pattern and change are strings, which get expanded at initialization.
         direction = True is left-to-right matching, False right-to-left matching.
         """
         name = name or MorphoSyn.make_name(pattern)
         Entry.__init__(self, name, language)
-        # Expand here?
-        self.pattern = self.expand_pattern(pattern)
-        self.direction = direction
+        self.direction = True
+        # This also sets self.agr, self.del_indices; may also set direction
+        self.pattern = self.expand(pattern)
 
     @staticmethod
     def make_name(pattern):
         """Pattern is a string."""
         return "{{ " + pattern + " }}"
 
-    def expand_pattern(self, pattern):
+    def expand(self, pattern):
         """
         Pattern is a string consisting of elements separated by PATTERN_SEP. An element may be
         - a word, set of words, or category with or without a FeatStruct
@@ -501,6 +502,10 @@ class MorphoSyn(Entry):
             self.enforce_constraints(match, verbosity=verbosity)
             self.insert_match(match, sentence, verbosity=verbosity)
 
+    @staticmethod
+    def del_token(token):
+        return token[0] == '~'
+
     def match(self, sentence, verbosity=0):
         """
         Match sentence, a list of pairs of words and their analyses, against the MorphoSyn's pattern.
@@ -516,6 +521,8 @@ class MorphoSyn(Entry):
             result = []
             # left-to-right
             for sindex, (stoken, sanals) in enumerate(sentence.analyses):
+                if MorphoSyn.del_token(stoken):
+                    continue
                 # sentence.analyses consists of pairs of word tokens and a list of analysis dicts
                 match = self.match_item(stoken, sanals, pindex, verbosity=verbosity)
                 if match:
@@ -612,8 +619,8 @@ class MorphoSyn(Entry):
         Works by mutating the features in match.
         If there are deletion constraints, prefix * to the relevant tokens.
         """
+        start, end, elements = match
         if self.agr:
-            start, end, elements = match
             srci, trgi, feats = self.agr
             src_elem = elements[srci]
             trg_elem = elements[trgi]
@@ -637,14 +644,23 @@ class MorphoSyn(Entry):
             for i in self.del_indices:
                 if verbosity:
                     print("Recording deletion for match element {}".format(elements[i]))
-                elements[i][0] = '*' + elements[i][0]
+                elements[i][0] = '~' + elements[i][0]
 
     def insert_match(self, match, sentence, verbosity=0):
         """Replace matched portion of sentence with elements in match.
         Works by mutating sentence elements (tokens and analyses).
         """
         start, end, m_elements = match
-        for m_elem, s_elem in zip(m_elements, sentence.analyses[start:end]):
+        # start and end are indices with the the sentence; some may have been
+        # ignore within the pattern during matching
+        m_index = 0
+        for s_elem in sentence.analyses[start:end]:
+            s_token = s_elem[0]
+            if MorphoSyn.del_token(s_token):
+                # Skip this sentence element; don't increment m_index
+                continue
+            m_elem = m_elements[m_index]
+            m_index += 1
             # Replace the token (could have * now)
             s_elem[0] = m_elem[0]
             # Replace the features if match element has any

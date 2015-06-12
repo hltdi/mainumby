@@ -332,7 +332,7 @@ class FeatStruct:
         If force is True, override incompatible value in target."""
         agr_pairs = agrs.items() if isinstance(agrs, dict) else agrs
         for src_feat, targ_feat in agr_pairs:
-            print("Agreeing on {}:{}".format(src_feat, targ_feat))
+#            print("Agreeing on {}:{}".format(src_feat, targ_feat))
             if src_feat in self:
                 src_value = self[src_feat]
                 if not force and targ_feat in target and target[targ_feat] != src_value:

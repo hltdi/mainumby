@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+
+<style type="text/css">
+body
+{
+	margin-left: 25pt;
+	margin-right: 20pt;
+	margin-top: 20pt;
+	margin-bottom: 20pt;
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+	font-family: verdana, geneva, arial, sans-serif;
+	background-color: #FFF;
+}
+a:link { color: #009900; }
+span.fuzzy a:link { color: #66BB66; }
+a:visited { color: #006600; }
+span.fuzzy a:visited { color: #558855; }
+a:active { color: #000000; }
+a:hover { background-color: #009900; color: #FFFFFF; }
+span.fuzzy a:hover { background-color: #66FF66; color: #FFFFFF; }
+h1,h2,h3 { clear: left; }
+h1
+{
+	font-size: 140%;
+	margin-top: .25em;
+	margin-bottom: 0;
+        border-bottom: thin solid;
+	text-align: center;
+	font-weight: bold;
+	color: #900;
+}
+h2
+{
+	font-size: 120%;
+	font-weight: bold;
+	margin-top: .75em;
+	margin-bottom: .35em;
+	color: #00F;
+}
+h3
+{
+ 	font-size: 110%;
+	font-weight: bold;
+	margin-top: .5em;
+	margin-bottom: .35em;
+}
+p
+{
+	margin-top: .35em;
+	margin-bottom: .35em;
+        clear: left;
+}
+}
+input.word
+{
+   font-size: 14px;
+   height: 18px;
+   width: 200px;
+}
+input.analyze
+{
+   font-family: verdana, geneva, arial, sans-serif;
+   font-size: 18px;
+   font-weight: bold;
+   color: #900;
+   height: 32px;
+   width: 200px;
+}
+span.root
+{
+   font-weight: bold;
+   color: #900;
+   border: thin solid;
+}
+span.word
+{
+   font-size: 125%;
+   font-weight: bold;
+   border: thin solid;
+}
+span.analysis
+{
+   border: thin solid;
+}
+span.impossible
+{
+   font-weight: bold;
+   color: #900;
+}
+</style>
+
+<script>
+<!--
+function toSpa() {
+    anal = document.getElementById("anal").checked;
+    gen = document.getElementById("gen").checked;
+    if (anal){
+        document.getElementById("loading").innerHTML = "Cargando léxico y gramática castellana para análisis...";
+        window.location.assign("anal_spa");
+    } else if (gen){
+        document.getElementById("loading").innerHTML = "Cargando léxico y gramática castellana para generación...";
+        window.location.assign("gen_spa");
+    }
+}
+function toGrn() {
+    anal = document.getElementById("anal").checked;
+    gen = document.getElementById("gen").checked;
+    if (anal){
+        document.getElementById("loading").innerHTML = "Cargando léxico y gramática guaraní para análisis...";
+        window.location.assign("anal_grn");
+    } else if (gen){
+        document.getElementById("loading").innerHTML = "Cargando léxico y gramática guaraní para generación...";
+        window.location.assign("gen_grn");
+    }
+}
+function toGen() {
+    spa = document.getElementById("spa").checked;
+    grn = document.getElementById("grn").checked;
+    if (spa){
+        document.getElementById("loading").innerHTML = "Cargando léxico y gramática castellana para generación...";
+        window.location.assign("gen_spa");
+    } else if (grn){
+        document.getElementById("loading").innerHTML = "Cargando léxico y gramática guaraní para generación...";
+        window.location.assign("gen_grn");
+    }
+}
+function toAnal() {
+    spa = document.getElementById("spa").checked;
+    grn = document.getElementById("grn").checked;
+    if (spa){
+        document.getElementById("loading").innerHTML = "Cargando léxico y gramática castellana para análisis...";
+        window.location.assign("anal_spa");
+    } else if (grn){
+        document.getElementById("loading").innerHTML = "Cargando léxico y gramática guaraní para análisis...";
+        window.location.assign("anal_grn");
+    }
+}
+-->
+</script>
+
+<title>Ñe'eAsa: Traducción del Castellano al Guaraní</title>
+
+</head>
+
+<body>
+
+<h1>Ñe'eAsa: Traducción del Castellano al Guaraní</h1>
+
+<p>
+This is a test...
+</p>
+
+<!--
+<h3>Dirección de procesamiento</h3>
+<input id="anal" type=radio name="direccion" value="a" onchange="toAnal()">análisis<br>
+<input id="gen" type=radio name="direccion" value="g" onchange="toGen()">generación
+
+<p></p>
+
+<h3>Idioma</h3>
+<input id="spa" type=radio name="idioma" value="e" onchange="toSpa()">castellano<br>
+<input id="grn" type=radio name="idioma" value="g" onchange="toGrn()">guarani
+
+<p></p>
+
+<hr>
+
+<p id="loading"></p>
+-->
+
+</body>
+
+</html>

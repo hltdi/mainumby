@@ -95,6 +95,9 @@ CLEAN_RE = re.compile(r'\s*cle.*?:\s*(.*)\s*=\s*(.*)')
 ## Regex for checking for non-ascii characters
 ASCII_RE = re.compile(r'[a-zA-Z]')
 
+## Separtes Morphosyn name from pattern and other attributes
+MS_NAME_SEP = '::'
+
 ## Constants for language use
 ANALYSIS = 0
 GENERATION = 1
@@ -135,6 +138,7 @@ class Language:
 #        self.words = words or {}
 #        self.forms = forms or {}
         self.groups = groups or {}
+        self.ms = []
         self.use = use
 #        self.source = source
 #        self.target = target
@@ -200,6 +204,10 @@ class Language:
         """Where data for this language is kept."""
         return os.path.join(LANGUAGE_DIR, self.abbrev)
 
+    def get_syn_dir(self):
+        """Directory for .ms (MorphoSyn) files (at least)."""
+        return os.path.join(self.get_dir(), 'syn')
+
     def get_fst_dir(self):
         return os.path.join(self.get_dir(), 'fst')
 
@@ -220,6 +228,10 @@ class Language:
     def get_group_dir(self):
         """Directory with group files."""
         return os.path.join(self.get_dir(), 'grp')
+
+    def get_ms_file(self, target_abbrev):
+        d = self.get_syn_dir()
+        return os.path.join(d, target_abbrev + '.ms')
 
     def get_cache_file(self, name=''):
         d = self.get_cache_dir()
@@ -351,6 +363,7 @@ class Language:
         with open(path, encoding='utf8') as data:
             contents = data.read()
             lines = contents.split('\n')[::-1]
+#            lines = contents.split('\n')
 
             seg = []
             punc = []
@@ -1126,7 +1139,7 @@ class Language:
             yaml.dump(self.to_dict(), file)
 
     def read_groups(self, files=None, target=None):
-        """Read in groups from a .grp file. If target is not None (must be a language), read in translation groups
+        """Read in groups from .grp files. If target is not None (must be a language), read in translation groups
         and cross-lingual features as well."""
         target_abbrev = target.abbrev if target else None
         source_groups = []
@@ -1156,6 +1169,26 @@ class Language:
                         target_groups.extend(translations)
                     # Creates the group and any target groups specified and adds them to self.groups
                     Group.from_string(source_group, self, translations, target=target, trans=False)
+
+    def read_ms(self, target=None, verbosity=0):
+        """Read in MorphoSyns for target from a .ms file. If target is not None (must be a language), read in translation groups
+        and cross-lingual features as well."""
+        path = self.get_ms_file(target.abbrev)
+        try:
+            with open(path, encoding='utf8') as f:
+                print("Reading morphosyns from {}".format(path))
+                lines = f.read().split('\n')[::-1]
+                # the order of MorphoSyns matterns
+                while lines:
+                    # Strip comments
+                    line = lines.pop().split('#')[0].strip()
+                    # Ignore empty lines
+                    if not line: continue
+                    name, x, pattern = line.partition(MS_NAME_SEP)
+                    morphosyn = MorphoSyn(self, name=name.strip(), pattern=pattern.strip())
+                    self.ms.append(morphosyn)
+        except IOError:
+            print('No such MS file as {}'.format(path))
 
     @staticmethod
     def from_dict(d, reverse=True, use=ANALYSIS):
@@ -1227,6 +1260,7 @@ class Language:
         # Load groups for source language now
         if not loaded:
             srclang.read_groups(target=targlang)
+            srclang.read_ms(target=targlang)
         return srclang, targlang
         
     @staticmethod

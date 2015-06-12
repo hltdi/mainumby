@@ -29,6 +29,8 @@
 # -- Created
 # 2015.05.20
 # -- Changed to Ñe'ẽasa, after incorporating morphological analysis/generation
+# 2015.06.12
+# -- Started Web app
 
 __version__ = 1.0
 
@@ -259,32 +261,15 @@ def cantar_las_cuarenta_I(trans=True, verbosity=0, all_sols=True):
 
 ### Español -> Guarani / English
 
-def morphosyn(verbosity=0):
-    # Test MorphoSyn matching
-    e = kuaa.language.Language('Español', 'spa', use=kuaa.language.SOURCE)
-    s1 = kuaa.Sentence(raw="la ventana fue abierta", language=e)
-    s1.tokenize()
-    p1 = kuaa.MorphoSyn(e, name='pasivo', pattern="ser_ [pos=v,tm=prc,+psv] ; 0=>1 p,n,tm ; // 0")
-    m1 = p1.match(s1, verbosity=verbosity)
-#    p1 = kuaa.MorphoSyn(e, pattern="estar_ [pos=v,tm=ger,+prg] ; 0=>1 p,n,tm ; // 0")
-    s2 = kuaa.Sentence(raw='María se quiere acostar con él', language=e)
-    s2.tokenize()
-    p2 = kuaa.MorphoSyn(e, pattern="se querer_|poder_[p=3] [pos=v,tm=inf,+rflx] ; 1=>2 p,n,tm ; // 0")
-    m2 = p2.match(s2, verbosity=verbosity)
-    p1.enforce_constraints(m1, verbosity=verbosity)
-    p2.enforce_constraints(m2, verbosity=verbosity)
-    p1.insert_match(m1, s1)
-    p2.insert_match(m2, s2)
-    return s1, p1, m1, s2, p2, m2
-
-def groups(eng=False, files=['v']):
-    e = kuaa.language.Language('Español', 'spa', use=kuaa.language.SOURCE)
-    if eng:
-        g = kuaa.language.Language('English', 'eng', use=kuaa.language.TARGET)
-    else:
-        g = kuaa.language.Language('Guarani', 'grn', use=kuaa.language.TARGET)
-    e.read_groups(files=files, target=g)
-    return e
+def eg_morphosyn(verbosity=0):
+    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+    s1 = kuaa.Sentence(raw='la ventana no fue abierta', language=spa,
+                       target=grn, verbosity=verbosity)
+    s1.initialize(verbosity=verbosity)
+    s2 = kuaa.Sentence(raw='José se fue ayer', language=spa,
+                       target=grn, verbosity=verbosity)
+    s2.initialize(verbosity=verbosity)
+    return s1, s2
 
 def caminaste(verbosity=0):
     spa, grn = kuaa.Language.load_trans('spa', 'grn')
@@ -395,3 +380,4 @@ def ui():
 
 if __name__ == "__main__":
     print("Bienvenido/a a Ñe'ẽasa, versión {}\n".format(__version__))
+#    kuaa.app.run(debug=True)

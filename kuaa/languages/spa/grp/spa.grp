@@ -1,10 +1,17 @@
 *** caminar_ ; ^ caminar_ 0
-->grn guata_v ; 0==0 n:ns,p:ps
+->grn guata_v ; 0==0 n:ns,p:ps,tm:tmp
 ->eng walk_ ; 0==0 n,n
 *** ayer
 ->grn kuehe
+*** ir_[+rflx] ; ^ ir_ 0
+->grn ha_v ; 0==0 n:ns,p:ps,tm:tmp
 *** $n_prs cantar_ las cuarenta; ^ cantar_ 1
 ->eng read_ $n_prs the riot act ; || 1, 0, 2, 3 ; 1==0 tm,n,p
-->eng give_ $n_prs a piece of $a_pos mind ; || 1, 0, 2, 3 ; 1==0 tm:tm,n:n,p:p ; 1=5 n,p
+->eng give_ $n_prs a piece of $a_pos mind ; || 1, 0, 2, 3 ; 1==0 tm,n,p ; 1=5 n,p
+*** abrir_[+psv] ; ^ abrir_ 0
+->grn jepe'a_v ; 0==0 n:ns,p:ps,tm:tmp
+->grn jera_v ; 0==0 n:ns,p:ps,tm:tmp
+*** ventana_ ; ^ ventana_ 0
+->grn ovetã_n ; 0==0 n:n
 
 
