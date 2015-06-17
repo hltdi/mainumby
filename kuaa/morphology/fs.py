@@ -21,6 +21,9 @@ fs.py is a modification of featstruct.py in NLTK.
 
 2015.05.15
 -- Added some methods from Features.py, which this replaces.
+2015.06.14
+-- Added update_inside, which updates a FeatStruct like update,
+   but only changes the deepest level.
 """    
 
 import re, copy
@@ -202,6 +205,31 @@ class FeatStruct:
                 raise TypeError('Feature names must be strings')
             self[key] = val
 
+    def update_inside(self, features=None):
+        """
+        Like update but only replaces features at the deepest (inside) level.
+        features may be a FeatStruct instance or a dict.
+        """
+        if self._frozen: raise ValueError(self._FROZEN_ERROR)
+        
+        if features is None:
+            items = ()
+        else:
+            items = features.items()
+        
+        for key, val in items:
+            # The case where the value is a mapping
+            if hasattr(val, 'keys'):
+                # See if self has a value for this key and if it is a FeatStruct
+                selfval = self.get(key)
+                if selfval and isinstance(selfval, FeatStruct):
+                    # Only replace the inside values
+                    selfval.update_inside(val)
+                else:
+                    self[key] = FeatStruct(val)
+            else:
+                self[key] = val
+            
     def _path_parent(self, path, operation):
         """
         Helper function -- given a feature path, return a tuple

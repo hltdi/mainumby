@@ -261,6 +261,13 @@ def cantar_las_cuarenta_I(trans=True, verbosity=0, all_sols=True):
 
 ### Español -> Guarani / English
 
+def future(verbosity=0):
+    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+    s1 = kuaa.Sentence('Juan va a caminar mañana', language=spa, target=grn)
+    s1.initialize()
+    s1.solve(all_sols=True)
+    return s1
+
 def eg_morphosyn(verbosity=0):
     spa, grn = kuaa.Language.load_trans('spa', 'grn')
     s1 = kuaa.Sentence(raw='la ventana no fue abierta', language=spa,

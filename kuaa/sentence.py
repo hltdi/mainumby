@@ -750,7 +750,6 @@ class GInst:
             if len(t) == 1:
                 translations[i] = [t[0], {}]
 #                                    {'align': list(range(len(self.nodes)))}]
-#        print("Translations for {}: {}".format(self, translations))
         ntokens = len(self.group.tokens)
         for tgroup, s2t_dict in translations:
             if verbosity > 1:
@@ -1088,7 +1087,6 @@ class Translation:
                 if not targ_feats:
                     targ_feats = FeatStruct({})
                 if agrs:
-#                    print("Feature agree, targ feats {}, agrs {}".format(targ_feats, agrs))
                     features.agree(targ_feats, agrs)
                 node_index_map[snode.index] = tnode_index
                 tnode_index += 1

@@ -56,7 +56,14 @@ feats:
   ab: opt = opt
   ab: smp = simp
   ab: intrans = intr
-  ab: caus = caus
+  ab: cau#%         ma1 = False | True;
+#%         ma2 = False | True;
+#%         maramo = False | True;
+#% 	jepi = False | True;
+#% 	meme = False | True;
+#% 	rae = False | True
+#%         ypy = False | True
+s = caus
   ab: reflx = refl
   ab: recip = recp
   ab: intrans_caus = intr_caus
@@ -81,13 +88,15 @@ feats:
 #  clu = *False | True
 #  oclu = *False | True
 
-  neg (neg) = *None | i | ỹ | tei
+#  neg (neg) = *None | i | ỹ | tei
+  neg = *False | True
+  negipv = *False | True
   inter (inter) = *False | True
   # uka
-  caus (caus) = *False | True
+#  caus (caus) = *False | True
   *%rztrans (raíz transitiva) = False | True
-  *%trans (transitivo) = False | True
-  *%refl (reflexivo) = False | True
+#  *%trans (transitivo) = False | True
+  *%rflx (reflexivo) = False | True
 
   *%cat (categoría) = a | che | adj
   *%subcat (subcategoría) = 0 | i | gue
@@ -119,6 +128,7 @@ feats:
         caus (caus) |
         reflx (refl) |
         recip (recip)
+
 #%         intrans_caus (intran_caus) |
 #%         reflx_caus (refl_caus) |
 #%         recip_caus (recip_caus)
@@ -156,18 +166,11 @@ feats:
 	jevy = False | True;
 	gueteri = False | True;
 	ramo = False | True;
-	ma = False | True;
+	prf = False | True;
         mante = False | True;
         katu = False | True;
-        hína = False | True;
+        prg = False | True;
         hikóni = False | True
-#%         ma1 = False | True;
-#%         ma2 = False | True;
-#%         maramo = False | True;
-#% 	jepi = False | True;
-#% 	meme = False | True;
-#% 	rae = False | True
-#%         ypy = False | True
  
   misc = se    = False | True;
          rei   = False | True;
@@ -188,19 +191,6 @@ feats:
          ndaje = False | True;
          niko = False | True;
 	 ko = False | True
-#%          nte1 = False | True;
-#%          nte2 = False | True;
-#%          nunga = False | True;
-#%          guau  = False | True;
-#%          asy   = False | True;
-#%          imi   = False | True;
-#%          mimi  = False | True;
-#%          aja   = False | True;
-#% 	 anga = False | True;
-#%          ngau = False | True;
-#%          nipo = False | True;
-#%          vy    = False | True;
-#% 	 moã = False | True
 
 #### SUSTANTIVOS; TEROKUÉRA
   

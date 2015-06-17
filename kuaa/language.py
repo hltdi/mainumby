@@ -183,13 +183,16 @@ class Language:
         if use in (ANALYSIS, SOURCE):
             self.set_anal_cached()
         # Load groups now if not to be used for translation
-        if use in (ANALYSIS, GENERATION):
+        if use in (ANALYSIS,):
             self.read_groups()
 
     def quit(self):
         """Do stuff when the program exits."""
         if self.use in (ANALYSIS, SOURCE):
             self.write_cache()
+        if self.use in (GENERATION, TARGET):
+            for pos in self.morphology.values():
+                pos.quit()
 
     def __repr__(self):
         """Print name."""
@@ -275,10 +278,13 @@ class Language:
             file = self.get_cache_file(name=name)
             with open(file, 'a', encoding='utf8') as out:
                 for word, analyses in self.new_anals.items():
-                    # analyses is a list of root, fs pairs
-                    if len(analyses) == 1 and analyses[0][0] == word and not analyses[0][1]:
+                    if not analyses:
                         # The word is unanalyzed
-                        print("{}:[]".format(word), file=out)
+                        print("{} || {}:".format(word, word), file=out)
+                    # analyses is a list of root, fs pairs
+#                    if len(analyses) == 1 and analyses[0][0] == word and not analyses[0][1]:
+#                        # The word is unanalyzed
+#                        print("{}:[]".format(word), file=out)
                     else:
                         anals = ["{}:{}".format(r, f.__repr__() if f else '') for r, f in analyses]
                         anals = ';'.join(anals)
@@ -757,7 +763,7 @@ class Language:
             # Load pre-analyzed words if any
             posmorph.set_analyzed()
             if generate:
-                posmorph.make_generated()
+#                posmorph.make_generated()
                 posmorph.read_gen_cache()
             # Load FST
             posmorph.load_fst(generate=generate, guess=guess, segment=segment,
@@ -933,17 +939,6 @@ class Language:
                         result.append([segs, gram])
             return result
 
-#    def get_cached_anal(self, word):
-#        """Returns cached analyses for word if any."""
-#        if word not in self.cached:
-#            return False
-#        else:
-#            entry = self.cached[word]
-#            if not entry:
-#                return [(word, None)]
-#            else:
-#                return entry
-
     def anal_word(self, word, guess=True, only_guess=False, segment=False, 
                   root=True, stem=True, citation=True, gram=True,
                   # Whether to return a pretty list of feature values
@@ -957,7 +952,8 @@ class Language:
                   no_anal=None,
                   string=False, print_out=False,
                   rank=True, report_freq=True, nbest=100,
-                  only_anal=False):
+                  only_anal=False,
+                  verbosity=0):
         '''Analyze a single word, trying all existing POSs, both lexical and guesser FSTs.'''
         # Before anything else, check to see if the word is in the list of words that
         # have failed to be analyzed
@@ -967,14 +963,13 @@ class Language:
         for d, c in self.clean.items():
             if d in word:
                 word = word.replace(d, c)
-        # Whether the analyses are found in the cache
-        found = False
         analyses = []
         to_cache = [] if cache else None
         # See if the word is cached (before preprocessing/romanization)
         cached = self.get_cached_anal(word)
         if cached:
-            found = True
+            if verbosity:
+                print("Found {} in cached analyses".format(word))
             if not pretty:
                 analyses = cached
             else:
@@ -1017,8 +1012,8 @@ class Language:
                                 if cache and not pretty:
                                     to_cache.extend(analysis)
 
-        if cache and not pretty and not found:
-            # Or use form instead of word
+        if cache and not pretty:
+            # Cache new analyses
             self.add_new_anal(word, to_cache)
 
         return self.dictify_analyses(analyses)
@@ -1363,9 +1358,10 @@ class Language:
 
     def generate(self, root, features, pos=None, guess=False, roman=True, verbosity=0):
         if verbosity:
-            print("Generating {}:{}".format(root, features))
-        if not features:
-            features = FeatStruct({})
+            print("Generating {}:{}".format(root, features.__repr__()))
+#        if not features:
+#            features = FeatStruct({})
+#        features = features.freeze()
         if not pos:
             print("Warning: no POS for generation of {}:{}".format(root, features.__repr__()))
         is_not_roman = not roman
@@ -1373,13 +1369,13 @@ class Language:
         output = []
         if pos:
             posmorph = morf[pos]
-            output = posmorph.gen(root, update_feats=features, guess=guess)
+            output = posmorph.gen(root, update_feats=features, guess=guess, only_words=True)
         else:
             for posmorph in list(morf.values()):
-                output.extend(posmorph.gen(root, update_feats=features, guess=guess))
+                output.extend(posmorph.gen(root, update_feats=features, guess=guess, only_words=True))
         if output:
-            o = [out[0] for out in output]
-            return o
+#            o = [out[0] for out in output]
+            return output
         else:
             print("The root/feature combination {}:{} word can't be generated!".format(root, features.__repr__()))
             return [root]

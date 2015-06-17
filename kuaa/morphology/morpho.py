@@ -333,6 +333,10 @@ class POS:
         # New generations since language loaded, each entry a (root FS) pair and a list of words
         self.new_gens = {}
 
+    def quit(self):
+        """Save new_gens in gen_cache."""
+        self.write_gen_cache()
+
     def make_rev_abbrevs(self):
         """Make the reverse abbreviation dictionary."""
         for ab, full in self.abbrevs.items():
@@ -446,18 +450,6 @@ class POS:
 #        else:
 #            print("No analyzed forms found for", self.pos)
 
-    def make_generated(self):
-        """Create a dictionary of analyzed words for generation."""
-        analyzed = self.analyzed
-        # Only create the dict if there's a corresponding analyzed dict
-        if analyzed:
-            for word, (root, fs) in analyzed.items():
-                # add an entry for this word form under the root
-                if root in self.generated:
-                    self.generated[root].append((fs, word))
-                else:
-                    self.generated[root] = [(fs, word)]
-
     def get_features(self):
         '''Get the dict of grammatical features and values, generating it if {}.'''
         if not self.features:
@@ -481,23 +473,27 @@ class POS:
         return os.path.join(d, name + '.gch')
 
     def add_new_gen(self, root, fs, words):
+        print("Adding new gen {}:{} || {}".format(root, fs.__repr__(), words))
         self.new_gens[(root, fs)] = words
 
     def get_cached_gen(self, root, fs):
         """Returns cached words for root, FS pair, if any."""
+        if not fs.frozen():
+            fs.freeze()
         if (root, fs) not in self.gen_cached:
             return False
         else:
             return self.gen_cached[(root, fs)]
 
     def write_gen_cache(self, name=''):
-        """Write a dictionary of cached entries to a gen cache file."""
+        """Write a dictionary of cached entries to a gen cache file. This should only be used in
+        combination with only_words=True in gen() so that no analyses are included."""
         if self.new_gens:
-            # Only attempt to cache analyses if there are new ones.
+            # Only attempt to cache generations if there are new ones.
             file = self.get_gen_cache_file(name=name)
             with open(file, 'a', encoding='utf8') as out:
                 for (root, fs), words in self.new_gens.items():
-                    print("{}:{} || {}".format(root, fs, ';'.join(words)), file=out)
+                    print("{}:{} || {}".format(root, fs.__repr__(), ';'.join(words)), file=out)
         # Empty new_gens in case we want to add things later
         self.new_gens.clear()
 
@@ -511,8 +507,9 @@ class POS:
                     root_fs, words = line.strip().split(" || ")
                     root, fs = root_fs.split(':')
                     words = words.split(';')
-                    if fs == '[]':
-                        fs = TOP
+                    if fs in ('[]', 'None'):
+#                        fs = TOP
+                         fs = None
                     else:
                         fs = FeatStruct(fs, freeze=True)
                     self.gen_cached[(root, fs)] = words
@@ -542,26 +539,6 @@ class POS:
         if self.get_fst(generate, guess, segment=segment):
             # FST found one way or another
             return True
-
-#    def load_gen_fst(self, guess=False, simplified=False, phon=False, segment=False, verbose=False):
-#        '''Create gen_fst(0) by inverting an existing anal_fst(0) or loading and inverting a generation FST.'''
-#        if not self.get_fst(True, guess, simplified, phon=phon, segment=segment):
-#            print('LOADING GEN FST FOR', self.morphology.language.label, self.pos, ('(guess)' if guess else ''))
-#            name = self.fst_name(True, guess, simplified, phon=phon, segment=segment)
-#            # First try to load the explicit generation FST
-#            gen = self.load_fst(generate=True, guess=guess, simplified=simplified,
-#                                phon=phon, segment=segment,
-#                                invert=True)
-#            if gen:
-#                self.set_fst(gen, True, guess, simplified, phon=phon, segment=segment)
-#            else:
-#                # The corresponding analysis FST
-#                anal = self.get_fst(False, guess, simplified, phon=phon, segment=segment)
-#                if anal:
-#                    self.set_fst(anal.inverted(), True, guess, simplified, phon=phon, segment=segment)
-#            if self.casc:
-#                self.casc_inv = self.casc.inverted()
-#                self.casc_inv.reverse()
 
     def save_fst(self, generate=False, guess=False, 
                  phon=False, segment=False, features=True):
@@ -613,68 +590,38 @@ class POS:
 
     def gen(self, root, features=None, postproc=False, update_feats=None,
             guess=False, segment=False, fst=None, timeit=False, only_one=False, cache=True,
+            # Return only word forms
+            only_words=True,
             trace=False):
         """Generate word from root and features."""
-        cached = self.get_cached_gen(root, features)
+        cached = self.get_cached_gen(root, update_feats)
         if cached:
-            found = True
+            if trace:
+                print("Found {}:{} in cached generations".format(root, update_feats.__repr__()))
             return cached
         features = features or self.defaultFS
         upd_features = features
         if update_feats:
             upd_features = self.update_FS(FeatStruct(features), update_feats)
-#        if not features:
-#            return []
-        pre_gen = self.gen_from_pregen(root, upd_features, only_one=only_one)
-        if pre_gen:
-            if cache:
-                features.freeze()
-                self.add_new_gen(root, features, pre_gen)
-            return pre_gen
         fst = fst or self.get_fst(generate=True, guess=guess, segment=segment)
         if not fst:
             return []
         # Up to this point, features should be a FeatStruct instance
         fsset = FSSet.cast(upd_features)
-#        print("Features")
-#        print(features)
         if fst:
             gens = fst.transduce(root, fsset, seg_units=self.language.seg_units, trace=trace, timeit=timeit)
             if postproc:
                 # For languages with non-roman orthographies
                 for gen in gens:
                     gen[0] = postproc(gen[0])
+            if only_words:
+                gens = [g[0] for g in gens]
             if cache:
-                features.freeze()
-                self.add_new_gen(root, features, gens)
+                self.add_new_gen(root, update_feats, gens)
             return gens
         elif trace:
             print('No generation FST loaded')
             return []
-
-    def gen_from_pregen(self, root, features=None, only_one=True):
-        """Generate word from saved generated dict. features may need to be cast to FSSet."""
-        features = FSSet(features)
-        generated = self.generated
-        if generated:
-            words = generated.get(root)
-            if words:
-                if not features:
-                    if only_one:
-                        return [[words[0][1], words[0][0]]]
-                    else:
-                        return [[word, feats] for feats, word in words]
-                # Unify features with feats associated with wordform
-                res = []
-                for feats, word in words:
-                    u = features.unify(feats)
-                    if u:
-                        if only_one:
-                            return [[word, u]]
-                        else:
-                            res.append([word, u])
-                # Just return the wordforms, not the features
-                return [x[0] for x in res]
 
     def anals_to_dicts(self, analyses):
         '''Convert list of analyses to list of dicts.'''
@@ -795,96 +742,6 @@ class POS:
                                 # Otherwise treat f as feature, v as value in fs
                                 fs[f] = v
         return fs
-
-##    def ortho2phon(self, form, guess=False):
-##        """Convert orthographic input to phonetic form."""
-##        output = {}
-##        analyzed = self.analyzed_phon[Morphology.complex].get(form, None)
-##        if analyzed:
-##            word, root, anals = analyzed
-##            output[word] = [[self.pos, root, None, anal] for anal in anals]
-##            return output
-##        gen_fst = self.get_fst(generate=True, guess=guess, phon=True)
-##        if not gen_fst:
-##            return
-##        analyses = self.anal(form, guess=guess)
-##        if analyses:
-##            for root, anals in analyses:
-##                for anal in anals:
-##                    out = self.gen(root, features=anal, phon=True, fst=gen_fst)
-##                    for o in out:
-##                        word = o[0]
-##                        output[word] = output.get(word, []) + [(self.pos, root, None, anal)]
-##        return output
-    
-##    def anal1(self, input, label='', casc_label='', index=0, load=False):
-##        """Analyze input in a single sub-FST, given its label or index in the cascade."""
-##        return self._proc1(input, label=label, casc_label=casc_label, index=index, load=load,
-##                           anal=True)
-##
-##    def gen1(self, input, feats=None, fss=None, label='', casc_label='', index=0, load=False):
-##        """Generate a form for an input and update features or FSS in a single sub-FST,
-##        given its label or index in the cascade."""
-##        return self._proc1(input, feats=feats, fss=fss, label=label, casc_label=casc_label,
-##                           index=index, load=load, anal=False)
-##
-##    def _proc1(self, input, feats=None, fss='', label='', casc_label='', index=0,
-##               load=False, anal=True):
-##        """Process a form and input features or FSS in a single sub-FST, given its label
-##        or index in the cascade.
-##        @param  input: input to FST (wordform or root)
-##        @type   input: string
-##        @param  feats: features to add to default for generation
-##        @type   feats: string of bracketed feature-value pairs
-##        @param  fss:   feature structure set (alternative to feats)
-##        @type   fss:   FSSet
-##        @param  label: name of FST
-##        @type   label: string
-##        @param  casc_label: name of alternative cascade (without .cas)
-##        @type   casc_label: string
-##        @param  index: index of FST in FSTCascade
-##        @type   index: int
-##        @param  load:  whether to (re)load the default cascade
-##        @type   load:  boolean
-##        @param  anal:  whether to do analysis as opposed to generation
-##        @type   anal:  boolean
-##        @return  analyses or wordforms
-##        @rtype   list: [[string, FSSet]...]
-##        """
-##        if casc_label:
-##            casc = FSTCascade.load(os.path.join(self.morphology.directory, casc_label + '.cas'),
-##                                   seg_units = self.morphology.seg_units,
-##                                   create_networks=True,
-##                                   weight_constraint=self.wc, verbose=True)
-##        else:
-##            if load:
-##                name = self.fst_name(not anal, False, False)
-##                self.casc = FSTCascade.load(os.path.join(self.morphology.directory, name + '.cas'),
-##                                            seg_units = self.morphology.seg_units,
-##                                            create_networks=True,
-##                                            weight_constraint=self.wc, verbose=True)
-##            casc = self.casc
-##        if label:
-##            # Find the FST with the particular label
-##            fst = None
-##            i = 0
-##            while not fst and i < len(self.casc):
-##                f = casc[i]
-##                if f.label == label:
-##                    fst = f
-##                i += 1
-##        else:
-##            fst = casc[index]
-##        if not anal and not fss:
-##            features = FeatStruct(self.defaultFS)
-##            if feats:
-##                features = self.update_FS(features, feats)
-##            fss = FSSet.cast(features)
-##        print(('Analyzing' if anal else 'Generating'), input, 'with FST', fst.label)
-##        if not anal:
-##            fst = fst.inverted()
-##        return fst.transduce(input, fss, seg_units=self.morphology.seg_units,
-##                             timeout=20)
 
     def gen_citation(self, root, fs):
         if self.citationFS == '[]':

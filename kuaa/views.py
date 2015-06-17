@@ -28,12 +28,15 @@
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
 from kuaa import app
 
+GRN = None
+SPA = None
+
 @app.route('/')
 def index():
     return redirect(url_for('base'))
-#    return 'Hello world!'
 
 @app.route('/base', methods=['GET', 'POST'])
 def base():
     return render_template('base.html')
+
 

@@ -93,6 +93,8 @@ MS_ATTRIB_SEP = ';'
 MS_FORM_FEATS = re.compile("\s*([$<'|\w]*)\s*((?:\[.+\])?)$")
 MS_AGR = re.compile("\s*(\d)\s*=>\s*(\d)\s*(.+)$")
 MS_DELETE = re.compile("\s*//\s*(.+)$")
+# digit -> [FS], all obligatory
+MS_FEATMOD = re.compile("\s*(\d)\s*->\s*(\[.+\])$")
 
 class Entry:
     """Superclass for Group and possibly other lexical classes."""
@@ -433,7 +435,7 @@ class MorphoSyn(Entry):
         name = name or MorphoSyn.make_name(pattern)
         Entry.__init__(self, name, language)
         self.direction = True
-        # This also sets self.agr, self.del_indices; may also set direction
+        # This also sets self.agr, self.del_indices, self.featmod; may also set direction
         self.pattern = self.expand(pattern)
 
     @staticmethod
@@ -443,11 +445,14 @@ class MorphoSyn(Entry):
 
     def expand(self, pattern):
         """
-        Pattern is a string consisting of elements separated by PATTERN_SEP. An element may be
+        Pattern is a string consisting of elements separated by MS_ATTRIB_SEP.
+        The first element is the actual pattern, which consists of pattern elements
+        separated by PATTERN_SEP. A pattern element may be
         - a word, set of words, or category with or without a FeatStruct
         - a FeatStruct only
         - a gap of some range of words (<l-h> or <g>, where l is minimum, h is maximum and g is exact gap)
           [not yet implemented]
+        Other elements are attributes, either agreement, deletion, or feature modification.
         """
         # For now, just split the string into a list of items.
         pattern = pattern.split(MS_ATTRIB_SEP)
@@ -455,8 +460,10 @@ class MorphoSyn(Entry):
         # Attributes: agreement, delete
         attribs = pattern[1:]
         self.agr = None
-        self.delete = []
+        self.del_indices = []
+        self.featmod = None
         for attrib in attribs:
+            # Within pattern feature agreement
             match = MS_AGR.match(attrib)
             if match:
                 if self.agr:
@@ -473,12 +480,18 @@ class MorphoSyn(Entry):
                         feat_pairs.append((f, f))
                 self.agr = int(srci), int(trgi), feat_pairs
                 continue
+            # Indices of pattern elements to be marked for deletion
             match = MS_DELETE.match(attrib)
             if match:
                 del_string = match.groups()[0]
-                self.del_indices = []
                 for d in del_string.split():
                     self.del_indices.append(int(d))
+                continue
+            # Index of pattern elements whose features are to be modified
+            match = MS_FEATMOD.match(attrib)
+            if match:
+                fm_index, fm_feats = match.groups()
+                self.featmod = int(fm_index), FeatStruct(fm_feats)
                 continue
             print("Something wrong with attribute {}".format(attrib))
         p = []
@@ -609,7 +622,8 @@ class MorphoSyn(Entry):
             if u != 'fail':
                 if verbosity:
                     print(" Feats matched")
-                return u
+                # result could be frozen if nothing changed; we need an unfrozen FS for later changes
+                return u.unfreeze()
         if verbosity:
             print(" Failed")
         return False
@@ -632,6 +646,7 @@ class MorphoSyn(Entry):
                 if not trg_feats:
                     # target features could be False
                     continue
+#                print("trg_feats {}, frozen? {}".format(trg_feats.__repr__(), trg_feats.frozen()))
                 for src_feats in src_feats_list:
                     if src_feats:
                         # source features could be False
@@ -645,6 +660,14 @@ class MorphoSyn(Entry):
                 if verbosity:
                     print("Recording deletion for match element {}".format(elements[i]))
                 elements[i][0] = '~' + elements[i][0]
+        if self.featmod:
+            # Modify features in indexed element
+            fm_index, fm_feats = self.featmod
+            elem = elements[fm_index]
+            feats_list = elem[1]
+            for feats in feats_list:
+#                print("Updating feat{} with fm_feats {}".format(feats.__repr__(), fm_feats.__repr__()))
+                feats.update_inside(fm_feats)
 
     def insert_match(self, match, sentence, verbosity=0):
         """Replace matched portion of sentence with elements in match.

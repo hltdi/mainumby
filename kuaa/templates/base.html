@@ -77,7 +77,7 @@ span.root
    color: #900;
    border: thin solid;
 }
-span.word
+span.sentence
 {
    font-size: 125%;
    font-weight: bold;
@@ -151,9 +151,24 @@ function toAnal() {
 
 <h1>Ñe'eAsa: Traducción del Castellano al Guaraní</h1>
 
+<h3>Uso</h3>
+<p>Introducí una oración que querés traducir, por ejemplo, <i>Pedro
+está cantando en su casa</i>.</p>
+
+<input type=text style="font-family: Verdana; font-size: 120%;" name=word>
+</form>
+
+<p></p>
+<hr>
+
+<!--
+{% if sentence %}
+<p></p><p></p>
 <p>
-This is a test...
+<span class="sentence">{{ sentence }}</span>
 </p>
+{% endif %}
+-->
 
 <!--
 <h3>Dirección de procesamiento</h3>

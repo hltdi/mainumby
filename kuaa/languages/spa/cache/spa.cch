@@ -1156,3 +1156,9 @@ vuelto || volver:[g=m,n=0,pos=v,tm=prc];vuelto:[g=m,n=0,pos=n]
 ética || ética:[g=f,n=0,pos=n];ético:[g=f,n=0,pos=a]
 útil || útil:[n=0,pos=a];útil:[g=m,n=0,pos=n]
 útiles || útil:[n=1,pos=a];útil:[g=m,n=1,pos=n]
+caminaste || caminar:[n=0,p=2,pos=v,tm=prt]
+a || a:
+va || ir:[n=0,p=3,pos=v,tm=prs]
+Juan || Juan:
+caminar || caminar:[pos=v,tm=inf]
+mañana || mañana:[g=f,n=0,pos=n]
