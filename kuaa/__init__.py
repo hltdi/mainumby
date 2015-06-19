@@ -16,8 +16,12 @@ def load(source='spa', target='grn'):
     """Load source and target languages for translation."""
     return kuaa.Language.load_trans(source, target)
 
-def translate(sentence, source, target, all_sols=True):
+def translate(sentence, source, target, all_sols=True, verbosity=0):
     """Translate sentence from source to target language."""
+    s = kuaa.Sentence(raw=sentence, language=source, target=target)
+    s.initialize(verbosity=verbosity)
+    s.solve(translate=True, all_sols=all_sols, verbosity=verbosity)
+    return s.trans_strings()
 
 def quit():
     """Quit the program, cleaning up in various ways."""

@@ -132,8 +132,7 @@ class Sentence:
         else:
             return '|| {} sentence {} ||'.format(self.language, self.id)
 
-    def display(self, show_all_sols=True, show_trans=True,
-                word_width=0):
+    def display(self, show_all_sols=True, show_trans=True, word_width=0):
         """Show the sentence and one or more solutions in terminal."""
         s = "   "
         word_width = word_width or Sentence.word_width
@@ -143,6 +142,14 @@ class Sentence:
         solutions = self.solutions if show_all_sols else self.solutions[:1]
         for solution in solutions:
             solution.display(word_width=word_width)
+
+    def trans_strings(self, sol_index=-1):
+        """Translation strings for indexed solution or all solutions."""
+        solutions = self.solutions if sol_index < 0 else [self.solutions[index]]
+        strings = []
+        for solution in solutions:
+            strings.extend(solution.trans_strings())
+        return strings
 
     def initialize(self, verbosity=0):
         """Things to do before running constraint satisfaction."""
@@ -160,8 +167,7 @@ class Sentence:
 
     def solve(self, translate=True, all_sols=False, verbosity=0):
         """Generate solutions and translations (if translate is true)."""
-        generator = self.solver.generator(test_verbosity=verbosity,
-                                          expand_verbosity=verbosity)
+        generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity)
         try:
             proceed = True
             while proceed:
@@ -172,7 +178,7 @@ class Sentence:
                 if translate and self.target:
                     solution.translate(verbosity=verbosity, all_sols=all_sols)
                 else:
-                    # Display the parse
+                    # Display the parse/translation
                     self.display()
                 if all_sols:
                     continue
@@ -183,6 +189,12 @@ class Sentence:
                 print('No more solutions')
         if not self.solutions:
             print("NO SOLUTIONS FOUND for {}".format(self))
+
+    def translate(self, sol_index=-1, all_trans=False, verbosity=0):
+        """Translate the solution with sol_index or all solutions if index is negative."""
+        solutions = self.solutions if sol_index < 0 else [self.solutions[sol_index]]
+        for solution in solutions:
+            solution.translate(all_sols=all_trans, verbosity=verbosity)
 
     def tokenize(self, incl_del=False, verbosity=0):
         """Segment the sentence string into tokens, analyze them morphologically,
@@ -430,7 +442,8 @@ class Sentence:
                 Sentence.make_tree(group_dict, mgi, tree)
 
     def create_solution(self, dstore=None, verbosity=0):
-        """Assuming essential variables are determined in a domain store, make a Solution object."""
+        """Assuming essential variables are determined in a domain store, make a Solution object.
+        Adds solution to self.solutions and also returns the solution."""
         dstore = dstore or self.dstore
         # Get the indices of the selected groups
         groups = self.variables['groups'].get_value(dstore=dstore)
@@ -891,6 +904,15 @@ class Solution:
         for g in self.ginsts:
             g.display(word_width=word_width, s2gnodes=self.s2gnodes)
 
+    def trans_strings(self, index=-1):
+        """Return a list of translation strings for the translation indexed or all translations
+        for this solution."""
+        translations = self.translations if index < 0 else [self.translation[index]]
+        strings = []
+        for translation in translations:
+            strings.extend(translation.output_strings)
+        return strings
+
     def translate(self, verbosity=0, all_sols=False):
         """Do everything you need to create the translation."""
         self.merge_nodes(verbosity=verbosity)
@@ -983,21 +1005,34 @@ class Translation:
         self.agreements = None
         # Final outputs; different ones have alternate word orders
         self.outputs = []
+        # Strings representing outputs
+        self.output_strings = []
 
     def __repr__(self):
         return "{}[{}] ->".format(self.solution, self.index)
 
     def display(self, index):
-        print("{}  {}".format(self, self.out_string(index)))
+        print("{}  {}".format(self, self.output_strings[index]))
+                              #self.out_string(index)))
 
     def display_all(self):
         for index in range(len(self.outputs)):
             self.display(index)
 
-    def out_string(self, index):
-        '''Convert output to a string for pretty printing.'''
+#    def out_string(self, index):
+#        '''Convert output to a string for pretty printing.'''
+#        l = []
+#        for word_list in self.outputs[index]:
+#            if len(word_list) == 1:
+#                l.append(word_list[0])
+#            else:
+#                l.append('|'.join(word_list))
+#        return ' '.join(l)
+
+    @staticmethod
+    def output_string(output):
         l = []
-        for word_list in self.outputs[index]:
+        for word_list in output:
             if len(word_list) == 1:
                 l.append(word_list[0])
             else:
@@ -1288,8 +1323,7 @@ class Translation:
         ## Order constraints
         order_vars = self.variables['order']
 #        print("Order pairs {}".format(self.variables['order_pairs']))
-        self.constraints.append(PrecedenceSelection(self.variables['order_pairs'],
-                                                    order_vars))
+        self.constraints.append(PrecedenceSelection(self.variables['order_pairs'], order_vars))
         self.constraints.append(Order(order_vars))
         ## Tree constraints
         for i_var, tree in zip(self.variables['tree_sindices'], self.variables['trees']):
@@ -1305,8 +1339,7 @@ class Translation:
     def realize(self, verbosity=0, display=True, all_sols=False):
         """Run constraint satisfaction on the order and disjunction constraints,
         and convert variable values to sentence positions."""
-        generator = self.solver.generator(test_verbosity=verbosity,
-                                          expand_verbosity=verbosity)
+        generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity)
         try:
             proceed = True
             while proceed:
@@ -1315,7 +1348,9 @@ class Translation:
                 positions = [list(v.get_value(dstore=succeeding_state.dstore))[0] for v in order_vars]
                 node_pos = list(zip([n[0] for n in self.nodes], positions))
                 node_pos.sort(key=lambda x: x[1])
-                self.outputs.append([n[0] for n in node_pos])
+                output = [n[0] for n in node_pos]
+                self.outputs.append(output)
+                self.output_strings.append(Translation.output_string(output))
                 if display:
                     self.display(len(self.outputs)-1)
                 if verbosity:

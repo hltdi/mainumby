@@ -26,10 +26,14 @@
 # Created 2015.06.12
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-from kuaa import app
+from kuaa import app, translate, load
 
 GRN = None
 SPA = None
+
+def load_languages():
+    global GRN, SPA
+    SPA, GRN = load()
 
 @app.route('/')
 def index():
@@ -37,6 +41,25 @@ def index():
 
 @app.route('/base', methods=['GET', 'POST'])
 def base():
+    if request.method == 'POST' and 'Cargar' in request.form:
+        return render_template('tra.html')
     return render_template('base.html')
 
+@app.route('/tra', methods=['GET', 'POST'])
+def tra():
+    if not SPA:
+        load_languages()
+    print("Idiomas cargados")
+    if request.method == 'POST':
+        form = request.form
+        print("Form: {}".format(form))
+        if form.get('otra'):
+            return render_template('tra.html', translation=None, sentence=None, otra=False)
+        elif form.get('sentence'):
+            s = form['sentence']
+            print("Sentence {}".format(s))
+            t = translate(s, SPA, GRN)
+            print("Translations {}".format(t))
+            return render_template('tra.html', translation=t, sentence=s)
+    return render_template('tra.html', translation=None, sentence=None, otra=False)
 

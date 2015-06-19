@@ -273,9 +273,11 @@ def eg_morphosyn(verbosity=0):
     s1 = kuaa.Sentence(raw='la ventana no fue abierta', language=spa,
                        target=grn, verbosity=verbosity)
     s1.initialize(verbosity=verbosity)
+    s1.solve(all_sols=True, verbosity=verbosity)
     s2 = kuaa.Sentence(raw='José se fue ayer', language=spa,
                        target=grn, verbosity=verbosity)
     s2.initialize(verbosity=verbosity)
+    s2.solve(all_sols=True, verbosity=verbosity)
     return s1, s2
 
 def caminaste(verbosity=0):
@@ -386,5 +388,5 @@ def ui():
 ##    return agr
 
 if __name__ == "__main__":
-    print("Bienvenido/a a Ñe'ẽasa, versión {}\n".format(__version__))
-#    kuaa.app.run(debug=True)
+#    print("Bienvenido/a a Ñe'ẽasa, versión {}\n".format(__version__))
+    kuaa.app.run(debug=True)
