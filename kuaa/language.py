@@ -252,7 +252,11 @@ class Language:
     def get_group_files(self, names=None):
         d = self.get_group_dir()
         if not names:
-            names = [self.abbrev]
+            if self.morphology:
+                # POS abbreviations
+                names = list(self.morphology.keys())
+            else:
+                names = [self.abbrev]
         return [os.path.join(d, name + '.grp') for name in names]
 
     def add_new_anal(self, word, anals):
@@ -269,6 +273,7 @@ class Language:
             print('No such sem file as {}'.format(file))
 
     def get_cats(self, form):
+#        print("Getting cats for {}".format(form))
         return self.cats.get(form, [])
 
     def write_cache(self, name=''):

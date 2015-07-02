@@ -13,5 +13,11 @@
 ->grn jera_v ; 0==0 n:ns,p:ps,tm:tmp,asp,neg
 *** ventana_ ; ^ ventana_ 0
 ->grn ovetã_n ; 0==0 n:n
+*** ver_ a $n_prs ; ^ ver_ 0
+->grn <hecha_v $n_prs[caso=pe] ; || 0, -1, 1 ; 0==0 n:ns,p:ps,tm:tmp
+*** el profesor_ ; ^ profesor_ 1
+->grn mbo'ehára_n ; || -1, 0 ; 0==0 n:n
+*** Pedro
+->grn Peru_n
 
 

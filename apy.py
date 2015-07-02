@@ -259,7 +259,36 @@ def cantar_las_cuarenta_I(trans=True, verbosity=0, all_sols=True):
     s.solve(translate=trans, verbosity=verbosity, all_sols=all_sols)
     return s
 
-### Español -> Guarani / English
+### Español -> Guarani
+
+def load_eg():
+    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+    return spa, grn
+
+def get_ambig(language, write="../LingData/EsGn/ambig.txt"):
+    ambig = {}
+    groups = language.groups
+    for head, grps in groups.items():
+        for group in grps:
+            if len(group.tokens) == 1:
+                trans = group.trans
+                if len(trans) > 1:
+                    ambig[group.name] = [t.name for t, f in trans]
+    if write:
+        ambig = list(ambig.items())
+        ambig.sort()
+        with open(write, 'w', encoding='utf8') as file:
+            for s, t in ambig:
+                print("{} {}".format(s, ','.join(t)), file=file)
+    else:
+        return ambig
+
+def ver(verbosity=0):
+    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+    s = kuaa.Sentence('vimos a el profesor', language=spa, target=grn)
+    s.initialize(verbosity=verbosity)
+#    s.solve(translate=False, all_sols=True, verbosity=verbosity)
+    return s
 
 def future(verbosity=0):
     spa, grn = kuaa.Language.load_trans('spa', 'grn')
@@ -388,5 +417,5 @@ def ui():
 ##    return agr
 
 if __name__ == "__main__":
-#    print("Bienvenido/a a Ñe'ẽasa, versión {}\n".format(__version__))
-    kuaa.app.run(debug=True)
+    print("Tereg̃uahẽ porãite Ñe'ẽasa-pe, versión {}\n".format(__version__))
+#    kuaa.app.run(debug=True)

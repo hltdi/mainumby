@@ -230,11 +230,21 @@ class Sentence:
                         cats = self.language.get_cats(root)
                         if cats:
                             anal['cats'] = cats
+                        features = anal['features']
+                        pos = features.get('pos') if features else ''
+                        if pos:
+                            anal['pos'] = pos
                     self.nodes.append(SNode(token, index, anals, self))
                     index += 1
                 else:
                     # No analysis, just use the raw string
-                    self.nodes.append(SNode(token, index, None, self))
+                    # First check for categories
+                    cats = self.language.get_cats(token)
+                    if cats:
+                        anals = [{'cats': cats}]
+                    else:
+                        anals = None
+                    self.nodes.append(SNode(token, index, anals, self))
                     index += 1
 
     def lexicalize(self, verbosity=0):
@@ -254,7 +264,11 @@ class Sentence:
                     # Is this still possible?
                     anals = [anals]
                 for a in anals:
-                    keys.add(a.get('root'))
+                    root = a.get('root')
+                    keys.add(root)
+                    pos = a.get('pos')
+                    if pos:
+                        keys.add(root + '_' +pos)
 #            print("Found lex keys {} for node {}".format(keys, node))
             # Look up candidate groups in lexicon
             for k in keys:
@@ -757,6 +771,7 @@ class GInst:
     def set_translations(self, verbosity=0):
         """Find the translations of the group in the target language."""
         translations = self.group.get_translations()
+#        print("Translations {}".format(translations))
             # self.target.abbrev, False)
         # If alignments are missing, add default alignment
         for i, t in enumerate(translations):
@@ -795,8 +810,9 @@ class GInst:
                     # This means there's no target language token for this GNode.
                     continue
                 agrs = None
+#                print("s2t_dict {}".format(s2t_dict))
                 if s2t_dict.get('agr'):
-                    agrs = s2t_dict['agr'][gn_index]
+                    agrs = s2t_dict['agr'][targ_index]
                 token = tokens[targ_index]
                 feats = features[targ_index] if features else None
                 gnodes.append((gnode, token, feats, agrs, targ_index))
@@ -1077,7 +1093,8 @@ class Translation:
                 t_indices = []
                 if len(gnodes) > 1:
                     # There are two gnodes for this snode; only the concrete node can have translations
-                    # Check if there is no translation for one or the other; if so, skip this snode
+                    # Check if there is no translation for one or the other; if so, skip this snode and
+                    # don't increment tnode_index
                     if gnodes[0] not in tgnodes or gnodes[1] not in tgnodes:
 #                        print("No translation for {}".format(snode))
                         continue
@@ -1095,16 +1112,21 @@ class Translation:
                             token = t
                         i += 1
                     targ_feats = FeatStruct.unify_all(targ_feats)
+#                    print(" token {}, targ feats {}".format(token, targ_feats.__repr__()))
                     # Merge the agreements
                     agrs = Translation.merge_agrs(agrs)
+#                    print(" merged agrs {}".format(agrs))
                     t_indices.append((tgroups[0], gn0[-1]))
                     t_indices.append((tgroups[1], gn1[-1]))
                     ## Record this node and its groups in mergers
                     tg = list(zip(tgroups, gnodes))
+#                    print(" tgroups/gnodes {}".format(tg))
                     # Sort the groups by which is the "outer" group in the merger
                     tg.sort(key=lambda x: x[1].cat)
                     tg = [x[0] for x in tg]
-                    self.mergers.append([snode.index, tg])
+#                    print("  sorted tg {}".format(tg))
+                    print("Creating merger for snode index {}, tnode index {}".format(snode.index, tnode_index))
+                    self.mergers.append([tnode_index, tg])
 #                    print(' tgroups {}, token {}, t_indices {}'.format(tgroups, token, t_indices))
                 else:
                     gnode = gnodes[0]
@@ -1226,12 +1248,12 @@ class Translation:
     @staticmethod
     def merge_agrs(agr_list):
         """Merge agr dicts in agr_list into a single agr dict."""
-        print("  Merging agreements for merged nodes {}".format(agr_list))
+#        print("  Merging agreements for merged nodes {}".format(agr_list))
         result = {}
         for agr in agr_list:
             if not agr:
                 continue
-            for k, v in agr.items():
+            for k, v in agr:
                 if k in result:
                     if result[k] != v:
                         print("Warning: agrs in {} failed to merge".format(agr_list))
@@ -1240,7 +1262,7 @@ class Translation:
                         continue
                 else:
                     result[k] = v
-        print("  Result", result)
+#        print("  Result", result)
         return result
 
     def make_order_pairs(self, verbosity=0):
@@ -1249,12 +1271,12 @@ class Translation:
         Constrain order in merged groups."""
         tgroup_dict = {}
         for index, (forms, constraints) in enumerate(self.nodes):
-#            print('  index {}, forms {}, constraints {}'.format(index, forms, constraints))
+#            print("Order pairs for node {} with forms {} and constraints {}".format(index, forms, constraints))
             for tgroup, tg_index in constraints:
                 if tgroup not in tgroup_dict:
                     tgroup_dict[tgroup] = []
                 tgroup_dict[tgroup].append((index, tg_index))
-#        print('tgroup dict {}'.format(tgroup_dict))
+#                print(" Tgroup_dict entry for tgroup {}: node index {}, tg index {}".format(tgroup, index, tg_index))
         for pairs in tgroup_dict.values():
 #            print(' pairs {}'.format(pairs))
             for pairpair in itertools.combinations(pairs, 2):
@@ -1271,14 +1293,16 @@ class Translation:
                     self.order_pairs.append([index, next_index])
         # Order nodes within merged groups
         for node, (inner, outer) in self.mergers:
+#            print("Merger: tnode index {}, inner group {}, outer group {}".format(node, inner, outer))
+            # node is sentence node index; inner and outer are groups
             # Indices (input, tgroup) in inner and outer groups
             inner_nodes = tgroup_dict[inner]
             outer_nodes = tgroup_dict[outer]
             # Get the tgroup index for the merge node
-#            print("node {}, inner nodes {}, outer nodes {}".format(node, inner_nodes, outer_nodes))
+#            print("tgroup_dict {}, inner {}, outer {}, node {}".format(tgroup_dict, inner, outer, node))
             merge_tg_i = dict(outer_nodes)[node]
 #            print("pos of merge node in outer group: {}".format(merge_tg_i))
-            # Get input indices for outer groups units before and after the merged node
+            # Get input indices for outer group's units before and after the merged node
             prec_outer = [n for n, i in outer_nodes if i < merge_tg_i]
             foll_outer = [n for n, i in outer_nodes if i > merge_tg_i]
 #            print("outer nodes before {} / after {} merger node".format(prec_outer, foll_outer))

@@ -478,7 +478,7 @@ class POS:
 
     def get_cached_gen(self, root, fs):
         """Returns cached words for root, FS pair, if any."""
-        if not fs.frozen():
+        if fs and not fs.frozen():
             fs.freeze()
         if (root, fs) not in self.gen_cached:
             return False
@@ -594,6 +594,8 @@ class POS:
             only_words=True,
             trace=False):
         """Generate word from root and features."""
+        if isinstance(update_feats, str):
+            update_feats = FeatStruct(update_feats)
         cached = self.get_cached_gen(root, update_feats)
         if cached:
             if trace:
@@ -616,7 +618,7 @@ class POS:
                     gen[0] = postproc(gen[0])
             if only_words:
                 gens = [g[0] for g in gens]
-            if cache:
+            if cache and gens:
                 self.add_new_gen(root, update_feats, gens)
             return gens
         elif trace:

@@ -68,14 +68,15 @@ import re
 
 from kuaa.morphology.fs import *
 
+## Group files
 LEXEME_CHAR = '_'
 CAT_CHAR = '$'
 ATTRIB_SEP = ';'
 WITHIN_ATTRIB_SEP = ','
 ## Regular expressions for reading groups from text files
 # non-empty form string followed by possibly empty FS string
-FORM_FEATS = re.compile("([$<'\w]+)\s*((?:\[.+\])?)$")
-HEAD = re.compile("\s*\^\s*([<'\w]+)\s+(\d)$")
+FORM_FEATS = re.compile("([$<'?\-\w]+)\s*((?:\[.+\])?)$")
+HEAD = re.compile("\s*\^\s*([<'\w]+)\s+(\d)\s*$")
 # Within agreement spec
 # 1=3 n,p
 WITHIN_AGR = re.compile("\s*(\d)\s*=\s*(\d)\s*(.+)$")
@@ -83,6 +84,11 @@ WITHIN_AGR = re.compile("\s*(\d)\s*=\s*(\d)\s*(.+)$")
 # 1==3 ns:n,ps:p
 TRANS_AGR = re.compile("\s*(\d)\s*==\s*(\d)\s*(.+)$")
 ALIGNMENT = re.compile("\s*\|\|\s*(.+)$")
+# Count of source group
+COUNT = re.compile("\s*#\s*(\d+)$")
+# Count of translation to target group
+TRANS_COUNT = re.compile("\s*##\s*(\d+)$")
+
 ## MorphoSyn regex
 # Separates elements of MorphoSyn pattern
 MS_PATTERN_SEP = ' '
@@ -192,7 +198,7 @@ class Group(Entry):
     other languages."""
 
     def __init__(self, tokens, head_index=-1, head='', language=None, name='',
-                 features=None, agr=None, trans=None):
+                 features=None, agr=None, trans=None, count=0):
         """Either head_index or head (a string) must be specified."""
         # tokens is a list of strings
         # name may be specified explicitly or not
@@ -225,6 +231,8 @@ class Group(Entry):
         # Agr constraints: each a list of form
         # (node_index1, node_index2 . feature_pairs)
         self.agr = agr or None
+        # Count in TMs
+        self.count = count
 
     def __repr__(self):
         """Print name."""
@@ -315,12 +323,14 @@ class Group(Entry):
         attribs = tokens_attribs[1:]
         within_agrs = []
         trans_agrs = alignment = None
+        trans_count = 0
         if trans:
             trans_agrs = []
             alignment = []
         head_index = -1
         head = None
         features = None
+        count = 0
         if '[' in string:
             hasfeats = True
             features = []
@@ -333,6 +343,10 @@ class Group(Entry):
             if match:
                 head, head_index = match.groups()
                 head_index = int(head_index)
+                continue
+            match = COUNT.match(attrib)
+            if match:
+                count = int(match.groups()[0])
             else:
                 match = WITHIN_AGR.match(attrib)
                 if match:
@@ -361,13 +375,16 @@ class Group(Entry):
                             else:
                                 feat_pairs.append((f, f))
                         trans_agrs[int(si)] = feat_pairs
-    #                    trans_agrs.append([int(si), int(ti)] + feat_pairs)
                         continue
                     match = ALIGNMENT.match(attrib)
                     if match:
-                        align = match.groups()
+                        align = match.groups()[0]
                         for index in align.split(WITHIN_ATTRIB_SEP):
                             alignment.append(int(index))
+                        continue
+                    match = TRANS_COUNT.match(attrib)
+                    if match:
+                        trans_count = int(match.groups()[0])
                         continue
                 else:
                     print("Something wrong with attribute string {}".format(attrib))
@@ -378,9 +395,9 @@ class Group(Entry):
             name_toks.append(token)
             foundfeats = False
             # separate features if any
-#            m = FORM_FEATS.match(token)
-#            if not m:
-#                print("String {}".format(string))
+            m = FORM_FEATS.match(token)
+            if not m:
+                print("No form/feats match for {}".format(tokens))
             tok, feats = FORM_FEATS.match(token).groups()
             if feats:
                 foundfeats = True
@@ -401,17 +418,19 @@ class Group(Entry):
         if target and trans_strings:
             tgroups = []
             for tstring in trans_strings:
-                tgroup, tg, alg = Group.from_string(tstring, target, trans_strings=None, trans=True)
+                tgroup, tg, alg, tc = Group.from_string(tstring, target, trans_strings=None, trans=True)
                 tattribs = {'agr': tg}
                 if alg:
                     tattribs['align'] = alg
+                if tc:
+                    tattribs['count'] = tc
                 tgroups.append((tgroup, tattribs))
         g = Group(tokens, head_index=head_index, head=head, features=features, agr=within_agrs,
-                  name=Group.make_name(name_toks))
+                  name=Group.make_name(name_toks), count=count)
         if target and not trans:
             g.trans = tgroups
         language.add_group(g)
-        return g, trans_agrs, alignment
+        return g, trans_agrs, alignment, trans_count
 
     ### Translations
 
