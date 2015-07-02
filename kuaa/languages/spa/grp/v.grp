@@ -126,10 +126,8 @@
 ->grn kuerái_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñembyaju_v ; 0==0 n:ns,p:ps,tm:tmp
 *** aburrir_v ; ^ aburrir_v 0
-->grn mbokaigue_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbyaju_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mboka'apa_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboahéi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn monguerái_v ; 0==0 n:ns,p:ps,tm:tmp
 *** abusar_v[+rflx] ; ^ abusar_v 0
 ->grn jeporuvai_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -161,7 +159,6 @@
 ->grn pete_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <havi'u_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbojaru_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn chichĩ_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mokunu'ũ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn japichy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** acariciar_v con las manos ; ^ acariciar_v 0
@@ -194,11 +191,7 @@
 ->grn ñemyaĝe_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemoaĝe_v ; 0==0 n:ns,p:ps,tm:tmp
 *** acelerar_v ; ^ acelerar_v 0
-->grn japura_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopya'e_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moaĝe_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn myandy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn myaĝe_v ; 0==0 n:ns,p:ps,tm:tmp
 *** acentuar_v ; ^ acentuar_v 0
 ->grn momyanduhe_v ; 0==0 n:ns,p:ps,tm:tmp
 *** aceptar_v con mucho gusto ; ^ aceptar_v 0
@@ -234,10 +227,7 @@
 *** achicar_v la pata ; ^ achicar_v 0
 ->grn mbopy'i_v ; 0==0 n:ns,p:ps,tm:tmp
 *** achicar_v ; ^ achicar_v 0
-->grn mokuruchĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn momichĩ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbomini_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn momini_v ; 0==0 n:ns,p:ps,tm:tmp
 *** acicalar_v[+rflx] ; ^ acicalar_v 0
 ->grn ñemoporã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñembokate_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -248,9 +238,7 @@
 *** aclarar_v casos dudosos ; ^ aclarar_v 0
 ->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** aclarar_v ; ^ aclarar_v 0
-->grn mbojekuaa_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hesape_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jehecha_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hesa'ỹijo_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** no aclarar_v nada ; ^ aclarar_v 1
@@ -262,12 +250,7 @@
 ->grn mbopo'i_v ; 0==0 n:ns,p:ps,tm:tmp
 *** acobardar_v ; ^ acobardar_v 0
 ->grn mondýi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn picha_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboapía_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mopy'amirĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mongyhyje_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'amirĩ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'atytýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** acoger_v ; ^ acoger_v 0
 ->grn moĝuahẽ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** acogotar_v ; ^ acogotar_v 0
@@ -303,7 +286,6 @@
 ->grn ñemoñe'ẽ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hesape'a_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hekombo'e_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemboayvu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** acontecer_v ; ^ acontecer_v 0
 ->grn jehu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** acopiar_v[+rflx] ; ^ acopiar_v 0
@@ -367,9 +349,7 @@
 *** actuar_v ; ^ actuar_v 0
 ->grn mba'apo_v ; 0==0 n:ns,p:ps,tm:tmp
 *** acudir_v en grupo ; ^ acudir_v 0
-->grn ko'i_v ; 0==0 n:ns,p:ps,tm:tmp
 *** acudir_v ; ^ acudir_v 0
-->grn ko'i_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kukúi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn hua'ĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn je'oi_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -386,11 +366,7 @@
 *** acunar_v ; ^ acunar_v 0
 ->grn mbotorore_v ; 0==0 n:ns,p:ps,tm:tmp
 *** acurrucar_v[+rflx] ; ^ acurrucar_v 0
-->grn ñemboaturu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn aturu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
-->grn jeapakua_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembyaturu_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemyakuruchĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñyñýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** acurrucar_v ; ^ acurrucar_v 0
 ->grn mboaturu_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -399,7 +375,6 @@
 *** acusar_v ; ^ acusar_v 0
 ->grn mboja_v ; 0==0 n:ns,p:ps,tm:tmp
 *** adelantar_v[+rflx] ; ^ adelantar_v 0
-->grn ñemohenonde_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemotenonde_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <henonde'a_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemotenonde_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -411,9 +386,7 @@
 ->grn ñembopiru_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemopererĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** adelgazar_v ; ^ adelgazar_v 0
-->grn ñembopo'i_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopo'i_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemopererĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopiru_v ; 0==0 n:ns,p:ps,tm:tmp
 *** adentrar_v[+rflx] ; ^ adentrar_v 0
 ->grn ike_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -489,7 +462,6 @@
 ->grn mbojuruhe'ẽ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn momorã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemboheko_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemongele'e_v ; 0==0 n:ns,p:ps,tm:tmp
 *** advertir_v ; ^ advertir_v 0
 ->grn myesa'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** afear_v[+rflx] ; ^ afear_v 0
@@ -513,10 +485,8 @@
 ->grn mohãi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mohaimbe_v ; 0==0 n:ns,p:ps,tm:tmp
 *** afinar_v ; ^ afinar_v 0
-->grn mosũ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñatõi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbojoja_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemopererĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** afinar_v un hilo ; ^ afinar_v 0
 ->grn mbopo'i_v ; 0==0 n:ns,p:ps,tm:tmp
 *** afirmar_v[+rflx] ; ^ afirmar_v 0
@@ -532,8 +502,6 @@
 *** afligir_v[+rflx] ; ^ afligir_v 0
 ->grn jepy'apy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jepy'ajuka_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemomba'embyasy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemoaĝe_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñembyasy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** afligir_v ; ^ afligir_v 0
 ->grn mbopy'arasy_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -544,14 +512,10 @@
 *** aflojar_v el cuerpo ; ^ aflojar_v 0
 ->grn mbohetepýu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** aflojar_v ; ^ aflojar_v 0
-->grn mboku'e_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mokangy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemomýi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemongu'e_v ; 0==0 n:ns,p:ps,tm:tmp
 *** agachar_v[+rflx] ; ^ agachar_v 0
 ->grn jayvy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemokarãpa_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemombe_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñembope_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñakãity_v ; 0==0 n:ns,p:ps,tm:tmp
 *** agachar_v la cabeza ; ^ agachar_v 0
@@ -561,15 +525,9 @@
 ->grn mombe_v ; 0==0 n:ns,p:ps,tm:tmp
 *** agarrar_v[+rflx] ; ^ agarrar_v 0
 ->grn jejoko_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jejapokói_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jepyhy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jepokói_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn japokói_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn japyhy_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 *** agarrar_v ; ^ agarrar_v 0
-->grn mba'epysy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn pyhy_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
-->grn japokói_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn japyhy_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 *** agasajar_v ; ^ agasajar_v 0
 ->grn rohory_v[subcat=gue] ; 0==0 n:ns,p:ps,tm:tmp
@@ -611,7 +569,6 @@
 *** agradecer_v desde el alma ; ^ agradecer_v 0
 ->grn mboaguyje_v ; 0==0 n:ns,p:ps,tm:tmp
 *** agradecer_v ; ^ agradecer_v 0
-->grn <hechakuaa_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn aguyje_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mba'erechakuaa_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hepyme'ẽ_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -629,7 +586,6 @@
 ->grn ñopũ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ja'o_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemyrõ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñemyrõ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** agredir_v ; ^ agredir_v 0
 ->grn ñorairõ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jepoi_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -684,11 +640,7 @@
 ->grn jahoga_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn 'yguy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** ahogar_v ; ^ ahogar_v 0
-->grn mbo'yguy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñapymi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn juvy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopytupa_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojahoga_v ; 0==0 n:ns,p:ps,tm:tmp
 *** ahondar_v ; ^ ahondar_v 0
 ->grn mbohypy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopypuku_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -726,14 +678,10 @@
 *** aislar_v ; ^ aislar_v 0
 ->grn moha'eño_v ; 0==0 n:ns,p:ps,tm:tmp
 *** ajustar_v[+rflx] ; ^ ajustar_v 0
-->grn ñembopy'i_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemopa'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn joaju_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembojoja_v ; 0==0 n:ns,p:ps,tm:tmp
 *** ajustar_v ; ^ ajustar_v 0
 ->grn jopy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn joaju_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mba'ejopy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbojoja_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mopa'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** ajustar_v mucho una cosa contra otra ; ^ ajustar_v 0
@@ -787,7 +735,6 @@
 ->grn ñembohory_v ; 0==0 n:ns,p:ps,tm:tmp
 *** alegrar_v ; ^ alegrar_v 0
 ->grn mbohetia'e_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'aporã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopy'arory_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbohory_v ; 0==0 n:ns,p:ps,tm:tmp
 *** alejar_v[+rflx] ; ^ alejar_v 0
@@ -802,10 +749,7 @@
 ->grn mbo'úi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** alentar_v ; ^ alentar_v 0
 ->grn mbohetia'e_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mopy'ahatã_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'aguasu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mokyre'ỹ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'ahatã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** alertar_v ; ^ alertar_v 0
 ->grn ñatõi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** aletear_v ; ^ aletear_v 0
@@ -839,9 +783,7 @@
 *** aliviar_v[+rflx] ; ^ aliviar_v 0
 ->grn pytu'u_v ; 0==0 n:ns,p:ps,tm:tmp
 *** aliviar_v ; ^ aliviar_v 0
-->grn mbohekoporã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopytu'u_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboyvytu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mombytu'u_v ; 0==0 n:ns,p:ps,tm:tmp
 *** aliviar_v la carga ; ^ aliviar_v 0
 ->grn mbovevúi_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -872,8 +814,6 @@
 *** alterar_v ; ^ alterar_v 0
 ->grn mbotytypy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** altercar_v ; ^ altercar_v 0
-->grn juavy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojovái_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn joavy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbohovake_v ; 0==0 n:ns,p:ps,tm:tmp
 *** alternar_v[+rflx] ; ^ alternar_v 0
@@ -932,11 +872,9 @@
 *** amargar_v la vida ; ^ amargar_v 0
 ->grn mboypi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** amargar_v ; ^ amargar_v 0
-->grn mboiro_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbohái_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopy'ajere_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopy'aro_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'avai_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mboro_v ; 0==0 n:ns,p:ps,tm:tmp
 *** amarillear_v[+rflx] ; ^ amarillear_v 0
 ->grn ñembosa'yju_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -953,8 +891,6 @@
 *** amedrentar_v ; ^ amedrentar_v 0
 ->grn mondýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mongyhyje_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'amirĩ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'atytýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** amenazar_v ; ^ amenazar_v 0
 ->grn <ha'anga_v ; 0==0 n:ns,p:ps,tm:tmp
 *** amilanar_v ; ^ amilanar_v 0
@@ -1062,9 +998,7 @@
 ->grn joapy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** anudar_v ; ^ anudar_v 0
 ->grn myakytã_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboapokytã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn joapy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moapokytã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** anunciar_v algo en voz alta ; ^ anunciar_v 0
 ->grn rosapukái_v[subcat=gue] ; 0==0 n:ns,p:ps,tm:tmp
 *** anunciar_v ; ^ anunciar_v 0
@@ -1119,7 +1053,6 @@
 ->grn mbo'ita_v ; 0==0 n:ns,p:ps,tm:tmp
 *** apenar_v[+rflx] ; ^ apenar_v 0
 ->grn ñembyasy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemomba'embyasy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jepy'ajuka_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jepy'apy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** apenar_v ; ^ apenar_v 0
@@ -1164,10 +1097,7 @@
 ->grn ñembope_v ; 0==0 n:ns,p:ps,tm:tmp
 *** aplastar_v ; ^ aplastar_v 0
 ->grn jopy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbochipe_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mombe_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbochipa_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbope_v ; 0==0 n:ns,p:ps,tm:tmp
 *** aplastar_v algo ; ^ aplastar_v 0
 ->grn mba'ejopy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** aplaudir_v ; ^ aplaudir_v 0
@@ -1212,22 +1142,14 @@
 ->grn jeku'ako_v ; 0==0 n:ns,p:ps,tm:tmp
 *** apoyar_v ; ^ apoyar_v 0
 ->grn joko_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn japokói_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojepoko_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jepytaso_v ; 0==0 n:ns,p:ps,tm:tmp
 *** apreciar_v las cosas ; ^ apreciar_v 0
 ->grn mba'erayhu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** apreciar_v ; ^ apreciar_v 0
-->grn poroapo_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hayhu_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbohepy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn momba'e_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn rohory_v[subcat=gue] ; 0==0 n:ns,p:ps,tm:tmp
-->grn momba'érõ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** aprehender_v[+rflx] ; ^ aprehender_v 0
-->grn jepokói_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jejapokói_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jepyhy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jejapyhy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** aprehender_v ; ^ aprehender_v 0
 ->grn japyhy_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
@@ -1245,14 +1167,8 @@
 ->grn ñembosako'i_v ; 0==0 n:ns,p:ps,tm:tmp
 *** apresurar_v[+rflx] ; ^ apresurar_v 0
 ->grn ñembopya'e_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn japura_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemyaĝe_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemoaĝe_v ; 0==0 n:ns,p:ps,tm:tmp
 *** apresurar_v ; ^ apresurar_v 0
-->grn moaĝe_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopya'e_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn myandy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn myaĝe_v ; 0==0 n:ns,p:ps,tm:tmp
 *** apretar_v el cuello ; ^ apretar_v 0
 ->grn juvy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** apretar_v ; ^ apretar_v 0
@@ -1274,7 +1190,6 @@
 ->grn ñemoporã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** aprobar_v ; ^ aprobar_v 0
 ->grn mbokatu_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn neĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mohe'ẽ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moneĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñakãity_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -1302,7 +1217,6 @@
 *** apuntalar_v[+rflx] ; ^ apuntalar_v 0
 ->grn jejoko_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jetu'u_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jepyta'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñepyta'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** apuntalar_v ; ^ apuntalar_v 0
 ->grn joko_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -1416,14 +1330,9 @@
 ->grn ĝuahẽ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** arrimar_v[+rflx] ; ^ arrimar_v 0
 ->grn ñemboja_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemoaĝui_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ja_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jeroja_v ; 0==0 n:ns,p:ps,tm:tmp
 *** arrimar_v ; ^ arrimar_v 0
-->grn mbojepoko_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mopy'ỹi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mboja_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moaña_v ; 0==0 n:ns,p:ps,tm:tmp
 *** arrinconar_v[+rflx] ; ^ arrinconar_v 0
 ->grn ñembohugua_v ; 0==0 n:ns,p:ps,tm:tmp
 *** arrinconar_v ; ^ arrinconar_v 0
@@ -1512,9 +1421,6 @@
 *** asfixiar_v ahorcando ; ^ asfixiar_v 0
 ->grn mbopytupa_v ; 0==0 n:ns,p:ps,tm:tmp
 *** asir_v[+rflx] ; ^ asir_v 0
-->grn jepokói_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jejapokói_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jepyhy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jejapyhy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** asir_v ; ^ asir_v 0
 ->grn pyhy_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
@@ -1556,9 +1462,7 @@
 ->grn ñemondyikakuaa_v ; 0==0 n:ns,p:ps,tm:tmp
 *** asustar_v ; ^ asustar_v 0
 ->grn mondýi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mongyhy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mongyhyje_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'atytýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** atacar_v ; ^ atacar_v 0
 ->grn ñorairõ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** atacar_v[+rflx] mutuamente ; ^ atacar_v 0
@@ -1665,10 +1569,8 @@
 ->grn mongu'i_v ; 0==0 n:ns,p:ps,tm:tmp
 *** atontar_v ; ^ atontar_v 0
 ->grn mbotavy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn monga'u_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moakãtavy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbotavyrai_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moakãnga'u_v ; 0==0 n:ns,p:ps,tm:tmp
 *** atorar_v[+rflx] ; ^ atorar_v 0
 ->grn mba'epyty_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn pa'ã_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -1692,14 +1594,10 @@
 ->grn myatã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** atrapar_v ; ^ atrapar_v 0
 ->grn pyhy_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
-->grn japokói_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jura_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn japyhy_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 *** atrasar_v ; ^ atrasar_v 0
-->grn mbohakykue_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbohapykue_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbotapykue_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbyaje_v ; 0==0 n:ns,p:ps,tm:tmp
 *** atravesar_v ; ^ atravesar_v 0
 ->grn <hasa_v ; 0==0 n:ns,p:ps,tm:tmp
 *** atribuir_v a uno chismes ; ^ atribuir_v 0
@@ -1720,7 +1618,6 @@
 *** aturdir_v ; ^ aturdir_v 0
 ->grn moakãtavy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbotavyrai_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moakãnga'u_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn myangekói_v ; 0==0 n:ns,p:ps,tm:tmp
 *** atusar_v ; ^ atusar_v 0
 ->grn japichy_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -1773,7 +1670,6 @@
 ->grn mboavevo_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mboveve_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbovu_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboyvytu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn peju_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 *** avergonzar_v[+rflx] ; ^ avergonzar_v 0
 ->grn ñemotĩ_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -1785,7 +1681,6 @@
 ->grn mboaguera_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kundaha_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hechauka_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jetypeka_v ; 0==0 n:ns,p:ps,tm:tmp
 *** averiguar_v el estado de salud ; ^ averiguar_v 0
 ->grn poroñandu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** avezar_v ; ^ avezar_v 0
@@ -1968,7 +1863,6 @@
 *** bromear_v ; ^ bromear_v 0
 ->grn ñembohory_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbojaru_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñombojaru_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñembojaru_v ; 0==0 n:ns,p:ps,tm:tmp
 *** brotar_v ; ^ brotar_v 0
 ->grn <heñói_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -2058,7 +1952,6 @@
 ->grn mbohaku_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jope_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbyaku_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moakãnundu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** calentar_v[+rflx] al fuego o cerca del brasero ; ^ calentar_v 0
 ->grn jepe'e_v ; 0==0 n:ns,p:ps,tm:tmp
 *** callar_v[+rflx] ; ^ callar_v 0
@@ -2084,8 +1977,6 @@
 ->grn rova_v[subcat=gue] ; 0==0 n:ns,p:ps,tm:tmp
 *** cambiar_v[+rflx] ; ^ cambiar_v 0
 ->grn ñemoambue_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembohekovia_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembova_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemyengovia_v ; 0==0 n:ns,p:ps,tm:tmp
 *** cambiar_v ; ^ cambiar_v 0
 ->grn myengovia_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -2105,8 +1996,6 @@
 *** cansar_v a una persona ; ^ cansar_v 0
 ->grn mboka'apa_v ; 0==0 n:ns,p:ps,tm:tmp
 *** cansar_v ; ^ cansar_v 0
-->grn mbokaigue_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mokane'õ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbyaju_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn monguerái_v ; 0==0 n:ns,p:ps,tm:tmp
 *** cantar_v a dúo ; ^ cantar_v 0
@@ -2416,8 +2305,6 @@
 ->grn ñemochumbe_v ; 0==0 n:ns,p:ps,tm:tmp
 *** ceñir_v ; ^ ceñir_v 0
 ->grn jopy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mochumbe_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mba'ejopy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñapytĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** ceñir_v[+rflx] la cintura ; ^ ceñir_v 0
 ->grn jeku'akua_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -2452,7 +2339,6 @@
 ->grn ñe'ẽmbegue_v ; 0==0 n:ns,p:ps,tm:tmp
 *** chisporrotear_v ; ^ chisporrotear_v 0
 ->grn piriri_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopiriri_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopororo_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn pororo_v ; 0==0 n:ns,p:ps,tm:tmp
 *** chocar_v[+rflx] ; ^ chocar_v 0
@@ -2550,7 +2436,6 @@
 *** coger_v ; ^ coger_v 0
 ->grn po'o_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn pyhy_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
-->grn japokói_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn japyhy_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 *** coger_v algo ; ^ coger_v 0
 ->grn mba'epysy_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -2616,8 +2501,6 @@
 ->grn mohokẽ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** colorear_v ; ^ colorear_v 0
 ->grn mbopara_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbosa'y_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mongolo_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mopytã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** columpiar_v[+rflx] ; ^ columpiar_v 0
 ->grn ñemyatimói_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -2741,11 +2624,8 @@
 *** concluir_v[+rflx] ; ^ concluir_v 0
 ->grn jejapopa_v ; 0==0 n:ns,p:ps,tm:tmp
 *** concluir_v ; ^ concluir_v 0
-->grn mombi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mohu'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn momba_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemohu'ã_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemomba_v ; 0==0 n:ns,p:ps,tm:tmp
 *** concordar_v ; ^ concordar_v 0
 ->grn jekopyty_v ; 0==0 n:ns,p:ps,tm:tmp
 *** concurrir_v ; ^ concurrir_v 0
@@ -2787,17 +2667,11 @@
 *** conformar_v ; ^ conformar_v 0
 ->grn mboaje_v ; 0==0 n:ns,p:ps,tm:tmp
 *** confundir_v[+rflx] ; ^ confundir_v 0
-->grn jejavo'ói_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jehe'a_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembojehe'a_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jejavy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jepoapi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** confundir_v ; ^ confundir_v 0
-->grn moapañuãi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mohypy'ũ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojavy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbojehe'a_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojavo'ói_v ; 0==0 n:ns,p:ps,tm:tmp
 *** confundir_v[+rflx] una cosa con otra ; ^ confundir_v 0
 ->grn jeresarea_v ; 0==0 n:ns,p:ps,tm:tmp
 *** congelar_v[+rflx] ; ^ congelar_v 0
@@ -2827,9 +2701,6 @@
 ->grn mbojavo'ói_v ; 0==0 n:ns,p:ps,tm:tmp
 *** conmover_v[+rflx] ; ^ conmover_v 0
 ->grn py'andýi_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemopirĩ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemosũsũ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemyangekói_v ; 0==0 n:ns,p:ps,tm:tmp
 *** conmover_v ; ^ conmover_v 0
 ->grn mopirĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mosũsũ_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -2955,7 +2826,6 @@
 ->grn ñoñe'ẽme'ẽ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** conversar_v ; ^ conversar_v 0
 ->grn ñomongeta_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñe'ẽarandu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mongeta_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemongeta_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñe'ẽ_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -3036,8 +2906,6 @@
 ->grn ñehakã'o_v ; 0==0 n:ns,p:ps,tm:tmp
 *** cortar_v[+rflx] ; ^ cortar_v 0
 ->grn so_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembovo_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemondoho_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñekytĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** cortar_v[+rflx] el pelo ; ^ cortar_v 0
 ->grn ñeñapĩ_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -3076,10 +2944,8 @@
 ->grn jatapy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** crear_v ; ^ crear_v 0
 ->grn ñemuña_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn poreno_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moheñói_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemuña_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojera_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moñemuña_v ; 0==0 n:ns,p:ps,tm:tmp
 *** crecer_v ; ^ crecer_v 0
 ->grn kakuaa_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -3499,7 +3365,6 @@
 ->grn haru_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbyai_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn momarã_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboharu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** deber_v ; ^ deber_v 0
 ->grn kotevẽ_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 *** debilitar_v ; ^ debilitar_v 0
@@ -3585,10 +3450,7 @@
 *** deformar_v[+rflx] ; ^ deformar_v 0
 ->grn ñembovai_v ; 0==0 n:ns,p:ps,tm:tmp
 *** deformar_v ; ^ deformar_v 0
-->grn mokucha'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbovai_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn momeĝua_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboapa_v ; 0==0 n:ns,p:ps,tm:tmp
 *** defraudar_v ; ^ defraudar_v 0
 ->grn mbotavy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** degenerar_v ; ^ degenerar_v 0
@@ -3704,8 +3566,6 @@
 *** demorar_v[+rflx] ; ^ demorar_v 0
 ->grn ñembo'are_v ; 0==0 n:ns,p:ps,tm:tmp
 *** demorar_v ; ^ demorar_v 0
-->grn mbo'are_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbyaje_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn are_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopuku_v ; 0==0 n:ns,p:ps,tm:tmp
 *** demostrar_v ; ^ demostrar_v 0
@@ -3718,7 +3578,6 @@
 *** denominar_v ; ^ denominar_v 0
 ->grn mbohero_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hero_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbohéra_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <henói_v ; 0==0 n:ns,p:ps,tm:tmp
 *** denotar_v ; ^ denotar_v 0
 ->grn pepirũ_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -3918,8 +3777,6 @@
 ->grn jeharu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** descomponer_v ; ^ descomponer_v 0
 ->grn haru_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñembyai_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn momeĝua_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbyai_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbotyai_v ; 0==0 n:ns,p:ps,tm:tmp
 *** descomponer_v[+rflx] una comida o herida ; ^ descomponer_v 0
@@ -4124,7 +3981,6 @@
 ->grn myesakã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** deslizar_v[+rflx] ; ^ deslizar_v 0
 ->grn ñembogua_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jeapajeréi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn syryry_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn japajeréi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** deslizar_v ; ^ deslizar_v 0
@@ -4231,7 +4087,6 @@
 *** despedazar_v[+rflx] ; ^ despedazar_v 0
 ->grn ñemboja'o_v ; 0==0 n:ns,p:ps,tm:tmp
 *** despedazar_v ; ^ despedazar_v 0
-->grn mboa'y_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mboja'o_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbo'i_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn pehe'ã_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -4259,12 +4114,8 @@
 *** desperdiciar_v ; ^ desperdiciar_v 0
 ->grn momborei_v ; 0==0 n:ns,p:ps,tm:tmp
 *** desperezar_v[+rflx] ; ^ desperezar_v 0
-->grn jetepoka_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jehetepoka_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jetepyso_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jepyso_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemombarete_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembohetia'e_v ; 0==0 n:ns,p:ps,tm:tmp
 *** desperezar_v ; ^ desperezar_v 0
 ->grn mbohetia'e_v ; 0==0 n:ns,p:ps,tm:tmp
 *** despertar_v[+rflx] ; ^ despertar_v 0
@@ -4317,12 +4168,10 @@
 *** desprender_v[+rflx] ; ^ desprender_v 0
 ->grn ñemomýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kukúi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemongu'e_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jehekýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn 'a_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kúi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn piã_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jejopoi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jepe'a_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jei_v ; 0==0 n:ns,p:ps,tm:tmp
 *** desprender_v ; ^ desprender_v 0
@@ -4365,7 +4214,6 @@
 *** destrozar_v ; ^ destrozar_v 0
 ->grn myangu'i_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn joka_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboa'y_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mongu'i_v ; 0==0 n:ns,p:ps,tm:tmp
 *** destruir_v[+rflx] ; ^ destruir_v 0
 ->grn ñembyai_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -4449,8 +4297,6 @@
 *** diferenciar_v ; ^ diferenciar_v 0
 ->grn joavy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** diferir_v ; ^ diferir_v 0
-->grn mboareve_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbohakykue_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbohasa_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbotapykue_v ; 0==0 n:ns,p:ps,tm:tmp
 *** dificultar_v ; ^ dificultar_v 0
@@ -4500,8 +4346,6 @@
 *** discursear_v ; ^ discursear_v 0
 ->grn ñemoñe'ẽ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** discutir_v ; ^ discutir_v 0
-->grn ñe'ẽjoko_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojovái_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbohovái_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñe'ẽreity_v ; 0==0 n:ns,p:ps,tm:tmp
 *** disecar_v ; ^ disecar_v 0
@@ -4520,11 +4364,7 @@
 ->grn ñemyrõ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñeko'õi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** disgustar_v ; ^ disgustar_v 0
-->grn mbopochy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jahéi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojoavy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'avai_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñeko'õi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** disipar_v[+rflx] ; ^ disipar_v 0
 ->grn gue_v ; 0==0 n:ns,p:ps,tm:tmp
 *** disipar_v humo ; ^ disipar_v 0
@@ -4543,9 +4383,7 @@
 ->grn mbokuejy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** disminuir_v ; ^ disminuir_v 0
 ->grn guejy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbokarape_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mombyky_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mopokã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** disminuir_v el estado de ánimo ; ^ disminuir_v 0
 ->grn mopy'amirĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** disminuir_v de tamaño ; ^ disminuir_v 0
@@ -4647,10 +4485,8 @@
 *** divulgar_v[+rflx] ; ^ divulgar_v 0
 ->grn ñemyasãi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** divulgar_v ; ^ divulgar_v 0
-->grn mosũ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moherakuã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn myasãi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn kuaauka_v ; 0==0 n:ns,p:ps,tm:tmp
 *** doblar_v las hebras ; ^ doblar_v 0
 ->grn mbojoyvy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** doblar_v en cantidad ; ^ doblar_v 0
@@ -4661,9 +4497,6 @@
 *** doblar_v ; ^ doblar_v 0
 ->grn povã_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mokarẽ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojepepy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboapakua_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mba'epepy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jo'a_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mokarapã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** doblar_v el espinazo ; ^ doblar_v 0
@@ -4766,7 +4599,6 @@
 ->grn jehogapo_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jogapo_v ; 0==0 n:ns,p:ps,tm:tmp
 *** educar_v ; ^ educar_v 0
-->grn mbohekoporã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hekombo'e_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbo'e_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mongakuaa_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -5011,7 +4843,6 @@
 ->grn moraguyrõ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** enardecer_v ; ^ enardecer_v 0
 ->grn mbohaku_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbohuguyraku_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moakãraku_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbyaku_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mokyre'ỹ_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -5022,8 +4853,6 @@
 *** encabezar_v ; ^ encabezar_v 0
 ->grn moakã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moñepyrũ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn myakã_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn myenonde_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn motenonde_v ; 0==0 n:ns,p:ps,tm:tmp
 *** encajar_v ; ^ encajar_v 0
 ->grn mbojetu'u_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -5105,7 +4934,6 @@
 ->grn ñemombyky_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kuruchĩ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn aturu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembyaturu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñyñýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemocha'ĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** encoger_v[+rflx] por el frio ; ^ encoger_v 0
@@ -5127,9 +4955,7 @@
 ->grn ñembopy'araku_v ; 0==0 n:ns,p:ps,tm:tmp
 *** encolerizar_v ; ^ encolerizar_v 0
 ->grn mbohaku_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopochy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbyaku_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñemyrõ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** enconar_v ; ^ enconar_v 0
 ->grn ñopũ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** encontrar_v[+rflx] considerado por ; ^ encontrar_v 0
@@ -5224,19 +5050,14 @@
 ->grn ñembopiru_v ; 0==0 n:ns,p:ps,tm:tmp
 *** enflaquecer_v ; ^ enflaquecer_v 0
 ->grn guejy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopi'i_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopiru_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboypi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** enfrentar_v[+rflx] ; ^ enfrentar_v 0
 ->grn jovái_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñembohovái_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembojovake_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemoĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** enfrentar_v con la verdad ; ^ enfrentar_v 0
 ->grn jehovapi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** enfrentar_v ; ^ enfrentar_v 0
-->grn mbojovái_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñembojovái_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbohovái_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbohovake_v ; 0==0 n:ns,p:ps,tm:tmp
 *** enfrentar_v[+rflx] cara a cara ; ^ enfrentar_v 0
@@ -5283,11 +5104,9 @@
 ->grn ñemomarã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** engendrar_v ; ^ engendrar_v 0
 ->grn ñemuña_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbohyeguasu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moheñói_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemuña_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn momemby_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopuru'a_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn muña_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moñemuña_v ; 0==0 n:ns,p:ps,tm:tmp
 *** engomar_v ; ^ engomar_v 0
@@ -5307,12 +5126,9 @@
 ->grn moñandy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mongyra_v ; 0==0 n:ns,p:ps,tm:tmp
 *** engreír_v[+rflx] ; ^ engreír_v 0
-->grn ñemboavevo_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembovu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jero_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn vu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jererovu_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembotuvicha_v ; 0==0 n:ns,p:ps,tm:tmp
 *** engreír_v ; ^ engreír_v 0
 ->grn mbotuicha_v ; 0==0 n:ns,p:ps,tm:tmp
 *** engrillar_v ; ^ engrillar_v 0
@@ -5365,8 +5181,6 @@
 ->grn ñopẽ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn joaju_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jura_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mba'ejura_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moakãsã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** enlazar_v un concepto o un recuerdo con otro ; ^ enlazar_v 0
 ->grn ñapytĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** enlodar_v[+rflx] ; ^ enlodar_v 0
@@ -5404,10 +5218,7 @@
 *** enorgullecer_v[+rflx] ; ^ enorgullecer_v 0
 ->grn mbotuicha_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñakãrapu'ã_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembo'ete_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn vu_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembotuvicha_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn akãrapu'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** enorgullecer_v ; ^ enorgullecer_v 0
 ->grn mbovu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** enraizar_v ; ^ enraizar_v 0
@@ -5573,10 +5384,7 @@
 *** enturbiar_v ; ^ enturbiar_v 0
 ->grn mohypy'ũ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** entusiasmar_v[+rflx] ; ^ entusiasmar_v 0
-->grn ñembopy'araku_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembyaku_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemokyre'ỹ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemoakãraku_v ; 0==0 n:ns,p:ps,tm:tmp
 *** entusiasmar_v ; ^ entusiasmar_v 0
 ->grn moakãraku_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mokyre'ỹ_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -5595,10 +5403,7 @@
 ->grn ñemboavevo_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn vu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** envasar_v ; ^ envasar_v 0
-->grn mboajaka_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbohyru_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñoña_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojaka_v ; 0==0 n:ns,p:ps,tm:tmp
 *** envejecer_v[+rflx] ; ^ envejecer_v 0
 ->grn ñembotuja_v ; 0==0 n:ns,p:ps,tm:tmp
 *** envejecer_v al hombre ; ^ envejecer_v 0
@@ -5654,7 +5459,6 @@
 *** equivocar_v[+rflx] de persona ; ^ equivocar_v 0
 ->grn jepyapy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** equivocar_v[+rflx] sobre la identidad de una persona ; ^ equivocar_v 0
-->grn jepoapi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** equivocar_v ; ^ equivocar_v 0
 ->grn jeavýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** equivocar_v[+rflx] en algo ; ^ equivocar_v 0
@@ -5662,11 +5466,8 @@
 *** equivocar_v[+rflx] ; ^ equivocar_v 0
 ->grn jeavýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <javy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mba'eavy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jejavy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jepoapi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñembotavy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jepy'api_v ; 0==0 n:ns,p:ps,tm:tmp
 *** equivocar_v el camino ; ^ equivocar_v 0
 ->grn guari_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mboguari_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -5703,8 +5504,6 @@
 ->grn mondyikakuaa_v ; 0==0 n:ns,p:ps,tm:tmp
 *** escapar_v[+rflx] ; ^ escapar_v 0
 ->grn ñembogua_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemotĩmbo_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn guari_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn piã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jehekýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** escapar_v ; ^ escapar_v 0
@@ -5718,11 +5517,8 @@
 *** escarbar_v[+rflx] los dientes ; ^ escarbar_v 0
 ->grn ñehãikutu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** escarbar_v ; ^ escarbar_v 0
-->grn jetypeka_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jevyka_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mboaguera_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn guyguy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jepyteka_v ; 0==0 n:ns,p:ps,tm:tmp
 *** escasear_v ; ^ escasear_v 0
 ->grn mopokã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbovy_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -5789,9 +5585,7 @@
 *** esparcir_v[+rflx] ; ^ esparcir_v 0
 ->grn ñemyasãi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mosarambi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemoasãi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemosarambi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn asãi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** esparcir_v ; ^ esparcir_v 0
 ->grn mosũ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn myasãi_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -5827,16 +5621,13 @@
 ->grn <hague'o_v ; 0==0 n:ns,p:ps,tm:tmp
 *** esquivar_v[+rflx] ; ^ esquivar_v 0
 ->grn jehekýi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembohesaite_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñembogua_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemboyke_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemokoni_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemombe_v ; 0==0 n:ns,p:ps,tm:tmp
 *** esquivar_v ; ^ esquivar_v 0
 ->grn gua_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jei_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn nohẽ_v[subcat=gue] ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemovã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hekýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** establecer_v[+rflx] ; ^ establecer_v 0
 ->grn ñembohapo_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -6023,13 +5814,10 @@
 ->grn mbojuruhe_v ; 0==0 n:ns,p:ps,tm:tmp
 *** estimular_v ; ^ estimular_v 0
 ->grn mbohetia'e_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'aguasu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mokyre'ỹ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñatõi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mborari_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mombarete_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moakãraku_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mopy'ahatã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** estirar_v[+rflx] ; ^ estirar_v 0
 ->grn ñemyatã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jepyso_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -6042,9 +5830,7 @@
 ->grn <hekýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn myatã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbotuicha_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojepyso_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopuku_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojaity_v ; 0==0 n:ns,p:ps,tm:tmp
 *** estomagar_v ; ^ estomagar_v 0
 ->grn mbopy'ajere_v ; 0==0 n:ns,p:ps,tm:tmp
 *** estornudar_v ; ^ estornudar_v 0
@@ -6058,9 +5844,6 @@
 ->grn jejopy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** estrechar_v ; ^ estrechar_v 0
 ->grn jopy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopi'i_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'i_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mba'ejopy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** estrechar_v[+rflx] las manos saludándose dos personas ; ^ estrechar_v 0
 ->grn jepopychy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** estregar_v ; ^ estregar_v 0
@@ -6072,9 +5855,7 @@
 *** estremecer_v[+rflx] ; ^ estremecer_v 0
 ->grn pirĩ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn py'andýi_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemopirĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn pepe_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn sysýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** estremecer_v ; ^ estremecer_v 0
 ->grn mopirĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mosũsũ_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -6089,10 +5870,8 @@
 *** estropear_v[+rflx] ; ^ estropear_v 0
 ->grn ñembyai_v ; 0==0 n:ns,p:ps,tm:tmp
 *** estropear_v ; ^ estropear_v 0
-->grn momeĝua_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbovai_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mokarẽ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbohekomarã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbyai_v ; 0==0 n:ns,p:ps,tm:tmp
 *** estrujar_v[+rflx] ; ^ estrujar_v 0
 ->grn ñehumbiri_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -6102,18 +5881,11 @@
 ->grn poka_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kyty_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñami_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboguyryry_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mba'ejopy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** estudiar_v con profundidad ; ^ estudiar_v 0
 ->grn mbopypuku_v ; 0==0 n:ns,p:ps,tm:tmp
 *** estudiar_v ; ^ estudiar_v 0
-->grn jetypeka_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jetavy'o_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mboaguera_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn pyguara_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mba'erendu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemoarandu_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn kuaaha'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** eternizar_v ; ^ eternizar_v 0
 ->grn mbopave'ỹ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** evacuar_v el vientre ; ^ evacuar_v 0
@@ -6216,7 +5988,6 @@
 ->grn jopy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn humbiri_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mondyky_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mba'ejopy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñami_v ; 0==0 n:ns,p:ps,tm:tmp
 *** expulsar_v[+rflx] ; ^ expulsar_v 0
 ->grn ñemosẽ_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -6298,15 +6069,9 @@
 *** fastidiar_v[+rflx] ; ^ fastidiar_v 0
 ->grn jepicha_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kuerái_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembyaju_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemyangekói_v ; 0==0 n:ns,p:ps,tm:tmp
 *** fastidiar_v ; ^ fastidiar_v 0
 ->grn mbyaju_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn picha_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn monguerái_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñeko'õi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboju'ái_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñeãngu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** fatigar_v[+rflx] ; ^ fatigar_v 0
 ->grn juku'a_v ; 0==0 n:ns,p:ps,tm:tmp
 *** fatigar_v ; ^ fatigar_v 0
@@ -6330,10 +6095,8 @@
 ->grn jererohory_v ; 0==0 n:ns,p:ps,tm:tmp
 *** festejar_v ; ^ festejar_v 0
 ->grn mbohory_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn roayvu_v[subcat=gue] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn rohory_v[subcat=gue] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemboki_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboarete_v ; 0==0 n:ns,p:ps,tm:tmp
 *** fiar_v[+rflx] ; ^ fiar_v 0
 ->grn jerovia_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jererovia_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -6460,7 +6223,6 @@
 ->grn moaña_v ; 0==0 n:ns,p:ps,tm:tmp
 *** fracasar_v ; ^ fracasar_v 0
 ->grn kapu_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopane_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mone_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn 'yguy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** fracasar_v en algo ; ^ fracasar_v 0
@@ -6484,14 +6246,10 @@
 ->grn jepopichy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jekyty_v ; 0==0 n:ns,p:ps,tm:tmp
 *** fregar_v ; ^ fregar_v 0
-->grn joy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn pichy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kyty_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
-->grn johýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** fregar_v[+rflx] las manos ; ^ fregar_v 0
 ->grn jepokyty_v ; 0==0 n:ns,p:ps,tm:tmp
 *** fregar_v limpiando ; ^ fregar_v 0
-->grn johýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** frenar_v ; ^ frenar_v 0
 ->grn mba'ejoko_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mombyta_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -6530,9 +6288,6 @@
 ->grn mocha'ĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn myacha'ĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** frustrar_v ; ^ frustrar_v 0
-->grn mbopane_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn morãngue_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñemyrõ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbohuguy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** fugar_v[+rflx] ; ^ fugar_v 0
 ->grn guari_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -8194,11 +7949,8 @@
 ->grn moñesũ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kutu_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 *** hinchar_v[+rflx] ; ^ hinchar_v 0
-->grn rovu_v[subcat=gue] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jererovu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn vu_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemboavevo_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembovu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** hinchar_v ; ^ hinchar_v 0
 ->grn mboavevo_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbovu_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -8264,15 +8016,10 @@
 *** hurgar_v con la mano ; ^ hurgar_v 0
 ->grn jeporeka_v ; 0==0 n:ns,p:ps,tm:tmp
 *** hurgar_v ; ^ hurgar_v 0
-->grn mboguyguy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn javyky_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jevyka_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboguyryry_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mba'epovyvy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn guyguy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jepovyvy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn povyvy_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
-->grn je'a_v ; 0==0 n:ns,p:ps,tm:tmp
 *** hurtar_v[+rflx] ; ^ hurtar_v 0
 ->grn ñemonda_v ; 0==0 n:ns,p:ps,tm:tmp
 *** hurtar_v ; ^ hurtar_v 0
@@ -8297,7 +8044,6 @@
 *** ilusionar_v ; ^ ilusionar_v 0
 ->grn japu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
 *** ilustrar_v[+rflx] ; ^ ilustrar_v 0
-->grn jetavy'o_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemoarandu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jesape'a_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jehesape'a_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -8372,10 +8118,7 @@
 *** impugnar_v ; ^ impugnar_v 0
 ->grn mbohovái_v ; 0==0 n:ns,p:ps,tm:tmp
 *** impulsar_v ; ^ impulsar_v 0
-->grn momymýi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jehepeña_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mombo_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moaña_v ; 0==0 n:ns,p:ps,tm:tmp
 *** imputar_v ; ^ imputar_v 0
 ->grn mboja_v ; 0==0 n:ns,p:ps,tm:tmp
 *** incendiar_v[+rflx] ; ^ incendiar_v 0
@@ -8389,10 +8132,7 @@
 *** incitar_v a uno contra otro ; ^ incitar_v 0
 ->grn jatapy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** incitar_v ; ^ incitar_v 0
-->grn mbopy'aguasu_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñarõ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñatõi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'ahatã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñe'ẽreity_v ; 0==0 n:ns,p:ps,tm:tmp
 *** incitar_v a una acción ; ^ incitar_v 0
 ->grn mbotuli_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -8402,10 +8142,6 @@
 *** inclinar_v ; ^ inclinar_v 0
 ->grn mboyke_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mokarẽ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn movã_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbokarape_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mba'epepy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojayvy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mombe_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mokarapã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** inclinar_v hacia atrás ; ^ inclinar_v 0
@@ -8446,11 +8182,8 @@
 *** indicar_v ; ^ indicar_v 0
 ->grn <hechauka_v ; 0==0 n:ns,p:ps,tm:tmp
 *** indigestar_v ; ^ indigestar_v 0
-->grn mboaviru_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopy'ajere_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'avai_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbohyevu_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mopunga_v ; 0==0 n:ns,p:ps,tm:tmp
 *** indignar_v ; ^ indignar_v 0
 ->grn mbohuguyraku_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moñeko'õi_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -8586,10 +8319,7 @@
 ->grn ike_v ; 0==0 n:ns,p:ps,tm:tmp
 *** introducir_v ; ^ introducir_v 0
 ->grn mbohyru_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn poreno_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moinge_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn myesyvõ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñoña_v ; 0==0 n:ns,p:ps,tm:tmp
 *** introducir_v[+rflx] deslizandose y con cierta violencia ; ^ introducir_v 0
 ->grn sururu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** introducir_v todo ; ^ introducir_v 0
@@ -8610,14 +8340,9 @@
 ->grn mbojevy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** investigar_v ; ^ investigar_v 0
 ->grn jo'o_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn pyguara_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jetypeka_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mboaguera_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hechauka_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mba'epovyvy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn kuaaha'ã_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kundaha_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboguyguy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** invitar_v ; ^ invitar_v 0
 ->grn kuave'ẽ_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <henói_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -8665,12 +8390,8 @@
 ->grn ñembyaku_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñeko'õi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** irritar_v ; ^ irritar_v 0
-->grn mbopochy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ko'õ_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñeko'õi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ko'õi_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojoha_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñemyrõ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** irritar_v la vista ; ^ irritar_v 0
 ->grn <hesako'õ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** irrumpir_v ; ^ irrumpir_v 0
@@ -8693,10 +8414,8 @@
 ->grn mbojaru_v ; 0==0 n:ns,p:ps,tm:tmp
 *** jugar_v ; ^ jugar_v 0
 ->grn pete_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñeanga_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbojaru_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemboharái_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñombojaru_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <ha'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñembojaru_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñembosarái_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -8744,7 +8463,6 @@
 ->grn jehekýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jero'a_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jepepy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemovã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemboyke_v ; 0==0 n:ns,p:ps,tm:tmp
 *** ladear_v[+rflx] la cara ; ^ ladear_v 0
 ->grn jererova_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -8803,7 +8521,6 @@
 ->grn ñopũ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jahéi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopy'arasy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñepã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** lastimar_v suavemente ; ^ lastimar_v 0
 ->grn humbiri_v ; 0==0 n:ns,p:ps,tm:tmp
 *** lastimar_v[+rflx] ; ^ lastimar_v 0
@@ -8913,8 +8630,6 @@
 ->grn ñenohẽ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñepysyrõ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** libertar_v ; ^ libertar_v 0
-->grn mbojera_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mopysyrõ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn pysyrõ_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mosãso_v ; 0==0 n:ns,p:ps,tm:tmp
 *** librar_v[+rflx] del peligro ; ^ librar_v 0
@@ -8954,8 +8669,6 @@
 ->grn mosỹi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moapesỹi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** limitar_v ; ^ limitar_v 0
-->grn morembe'y_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboapýra_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ja_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopaha_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mohembe'y_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -9330,15 +9043,12 @@
 ->grn ñemomýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kacha_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mýi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemongu'e_v ; 0==0 n:ns,p:ps,tm:tmp
 *** menear_v[+rflx] sexualmente ; ^ menear_v 0
 ->grn jerokua_v ; 0==0 n:ns,p:ps,tm:tmp
 *** menear_v ; ^ menear_v 0
-->grn momymýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jepyvu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbovava_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbokacha_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mongu'e_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbojeroky_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn momýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** menoscabar_v ; ^ menoscabar_v 0
@@ -9478,7 +9188,6 @@
 ->grn ko'õ_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hesy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn monguerái_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñeko'õi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñopũ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ko'õi_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn myangekói_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -9548,11 +9257,8 @@
 *** mover_v[+rflx] fuerte ; ^ mover_v 0
 ->grn myihatã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** mover_v ; ^ mover_v 0
-->grn momymýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbokacha_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbokuchu_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mongu'e_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboku'e_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn momýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** mover_v[+rflx] rápidamente y sin salir de un espacio determinado ; ^ mover_v 0
 ->grn pyryrỹi_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
@@ -9576,7 +9282,6 @@
 *** mudar_v[+rflx] ; ^ mudar_v 0
 ->grn jerova_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn va_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jeva_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jererova_v ; 0==0 n:ns,p:ps,tm:tmp
 *** mudar_v[+rflx] a otro ; ^ mudar_v 0
 ->grn ñemoambue_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -9629,14 +9334,12 @@
 *** nombrar_v ; ^ nombrar_v 0
 ->grn mbohero_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hero_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbohéra_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <henói_v ; 0==0 n:ns,p:ps,tm:tmp
 *** nominar_v[+rflx] ; ^ nominar_v 0
 ->grn ñembohéra_v ; 0==0 n:ns,p:ps,tm:tmp
 *** notar_v ; ^ notar_v 0
 ->grn <hecha_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hesaho_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
-->grn jehechakuaa_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mba'erechakuaa_v ; 0==0 n:ns,p:ps,tm:tmp
 *** notar_v gravedad ; ^ notar_v 0
 ->grn <hechavai_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -9707,7 +9410,6 @@
 *** ocupar_v[+rflx] ; ^ ocupar_v 0
 ->grn jejokuái_v ; 0==0 n:ns,p:ps,tm:tmp
 *** ocupar_v ; ^ ocupar_v 0
-->grn mohembiapo_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn momba'apo_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jokuái_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn poru_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
@@ -9723,7 +9425,6 @@
 ->grn ñemyrõ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jero_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñeko'õi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemoñemyrõ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** ofender_v con el lenguaje ; ^ ofender_v 0
 ->grn ñe'ẽreity_v ; 0==0 n:ns,p:ps,tm:tmp
 *** ofender_v ; ^ ofender_v 0
@@ -9894,7 +9595,6 @@
 *** palpar_v ; ^ palpar_v 0
 ->grn javyky_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <havi'u_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jevyka_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <ha'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn poko_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jepovyvy_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -9929,7 +9629,6 @@
 ->grn jejogua_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jogua_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn hi'ã_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jojogua_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn joja_v ; 0==0 n:ns,p:ps,tm:tmp
 *** parecer_v[+rflx] a ; ^ parecer_v 0
 ->grn ñeimo'ã_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -9943,8 +9642,6 @@
 *** participar_v ; ^ participar_v 0
 ->grn mombe'u_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mombe'uka_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn kuaauka_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn euka_v ; 0==0 n:ns,p:ps,tm:tmp
 *** partir_v en trocitos ; ^ partir_v 0
 ->grn ñembo'i_v ; 0==0 n:ns,p:ps,tm:tmp
 *** partir_v ; ^ partir_v 0
@@ -10048,7 +9745,6 @@
 ->grn jokua_v ; 0==0 n:ns,p:ps,tm:tmp
 *** pegar_v ; ^ pegar_v 0
 ->grn pete_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn <havira_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mboja_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemyendy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn nupã_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
@@ -10064,11 +9760,8 @@
 *** pelar_v[+rflx] ; ^ pelar_v 0
 ->grn jepiro_v ; 0==0 n:ns,p:ps,tm:tmp
 *** pelar_v ; ^ pelar_v 0
-->grn pe'o_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
-->grn mopẽrõ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñapĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hague'o_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn piro_v ; 0==0 n:ns,p:ps,tm:tmp
 *** pelar_v[+rflx] en parte o total ; ^ pelar_v 0
 ->grn jepire'o_v ; 0==0 n:ns,p:ps,tm:tmp
 *** pelar_v la cabeza ; ^ pelar_v 0
@@ -10091,7 +9784,6 @@
 ->grn ãho_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn pena_v ; 0==0 n:ns,p:ps,tm:tmp
 *** penetrar_v ; ^ penetrar_v 0
-->grn ñeñoña_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hasa_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ike_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moinge_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -10141,7 +9833,6 @@
 ->grn 'yga_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
 *** perdonar_v ; ^ perdonar_v 0
 ->grn ñyrõ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñyrõ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn pysyrõ_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hovasa_v ; 0==0 n:ns,p:ps,tm:tmp
 *** perdurar_v ; ^ perdurar_v 0
@@ -10211,9 +9902,7 @@
 ->grn myangekói_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbotyai_v ; 0==0 n:ns,p:ps,tm:tmp
 *** pervertir_v ; ^ pervertir_v 0
-->grn moñaña_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbovai_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbohekovai_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbyai_v ; 0==0 n:ns,p:ps,tm:tmp
 *** pesar_v[+rflx] ; ^ pesar_v 0
 ->grn ñembopohýi_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -10257,9 +9946,6 @@
 ->grn mopini_v ; 0==0 n:ns,p:ps,tm:tmp
 *** pintar_v ; ^ pintar_v 0
 ->grn mbopara_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbosa'y_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mongolo_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mba'erai_v ; 0==0 n:ns,p:ps,tm:tmp
 *** pintar_v de rojo o colorado ; ^ pintar_v 0
 ->grn mopytã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** pintar_v de rojo ; ^ pintar_v 0
@@ -10724,8 +10410,6 @@
 ->grn mbotapykue_v ; 0==0 n:ns,p:ps,tm:tmp
 *** postergar_v ; ^ postergar_v 0
 ->grn mboyke_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbo'are_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbohakykue_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbotapykue_v ; 0==0 n:ns,p:ps,tm:tmp
 *** postrar_v ; ^ postrar_v 0
 ->grn moñesũ_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -10739,7 +10423,6 @@
 *** preceder_v[+rflx] ; ^ preceder_v 0
 ->grn ñemotenonde_v ; 0==0 n:ns,p:ps,tm:tmp
 *** preceder_v ; ^ preceder_v 0
-->grn ñemohenonde_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mohenonde_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <henonde'a_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn motenonde_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -11208,11 +10891,7 @@
 ->grn hai_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn karãi_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 *** raspar_v ; ^ raspar_v 0
-->grn jetypeka_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn karãi_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
-->grn mopopĩ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn <havere_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jepyteka_v ; 0==0 n:ns,p:ps,tm:tmp
 *** rasurar_v ; ^ rasurar_v 0
 ->grn ñapĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** rayar_v ; ^ rayar_v 0
@@ -11237,7 +10916,6 @@
 ->grn ñembohetia'e_v ; 0==0 n:ns,p:ps,tm:tmp
 *** reanimar_v ; ^ reanimar_v 0
 ->grn mbohetia'e_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mborari_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moakãrapu'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mokyre'ỹ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** reaparecer_v ; ^ reaparecer_v 0
@@ -11262,10 +10940,8 @@
 ->grn jevy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** rebuscar_v[+rflx] ; ^ rebuscar_v 0
 ->grn jeporeka_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jetypeka_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mboaguera_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn guyguy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jeporara_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jeheka_v ; 0==0 n:ns,p:ps,tm:tmp
 *** rebuscar_v ; ^ rebuscar_v 0
 ->grn jevyka_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -11428,8 +11104,6 @@
 *** reemplazar_v ; ^ reemplazar_v 0
 ->grn myengovia_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jopyru_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn morãngue_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mohendague_v ; 0==0 n:ns,p:ps,tm:tmp
 *** reemplazar_v una cosa por otra ; ^ reemplazar_v 0
 ->grn moambue_v ; 0==0 n:ns,p:ps,tm:tmp
 *** referir_v ; ^ referir_v 0
@@ -11456,8 +11130,6 @@
 ->grn ñemoro'ysã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** refrescar_v ; ^ refrescar_v 0
 ->grn <ho'ysã_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboro'y_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moro'ysã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopiro'y_v ; 0==0 n:ns,p:ps,tm:tmp
 *** refrigerar_v[+rflx] ; ^ refrigerar_v 0
 ->grn <ho'ysã_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
@@ -11529,8 +11201,6 @@
 ->grn mombytu'u_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn myengovia_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopytu'u_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jejopyru_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mohendague_v ; 0==0 n:ns,p:ps,tm:tmp
 *** rellenar_v ; ^ rellenar_v 0
 ->grn mbohovi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn myenyhẽ_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -11585,7 +11255,6 @@
 *** remover_v cosas en busca de algo ; ^ remover_v 0
 ->grn povyvy_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 *** remover_v ; ^ remover_v 0
-->grn momymýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mymýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbokacha_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn typeka_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
@@ -11634,8 +11303,6 @@
 *** replegar_v[+rflx] ; ^ replegar_v 0
 ->grn guevi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** replicar_v ; ^ replicar_v 0
-->grn ñe'ẽjoko_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojovái_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñe'ẽjoapy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbohovái_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñe'ẽreity_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -11786,8 +11453,6 @@
 ->grn ñakãrapu'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** retar_v ; ^ retar_v 0
 ->grn ja'o_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn <havira_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moakãky'o_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbyepoti_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mopa'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** retardar_v[+rflx] ; ^ retardar_v 0
@@ -11806,9 +11471,7 @@
 *** retener_v ; ^ retener_v 0
 ->grn joko_v ; 0==0 n:ns,p:ps,tm:tmp
 *** retirar_v[+rflx] ; ^ retirar_v 0
-->grn guari_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jehekýi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemoha'eño_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn piã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemomombyry_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jei_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -11819,9 +11482,6 @@
 ->grn mbojei_v ; 0==0 n:ns,p:ps,tm:tmp
 *** retorcer_v[+rflx] ; ^ retorcer_v 0
 ->grn jepoka_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemyakuruchĩ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jejepokua_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemokarẽ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** retorcer_v[+rflx] el cuerpo ; ^ retorcer_v 0
 ->grn jetepoka_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jehetepoka_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -11906,12 +11566,10 @@
 ->grn mba'epyvu_v ; 0==0 n:ns,p:ps,tm:tmp
 *** revolver_v ; ^ revolver_v 0
 ->grn mbojehe'a_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mba'epovyvy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbokuchu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbojere_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jepovyvy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn pyvu_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboguyguy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** rezar_v ; ^ rezar_v 0
 ->grn ñembo'e_v ; 0==0 n:ns,p:ps,tm:tmp
 *** rezar_v verdaderamente ; ^ rezar_v 0
@@ -11966,16 +11624,13 @@
 *** rodar_v por el suelo ; ^ rodar_v 0
 ->grn ñeapamona_v ; 0==0 n:ns,p:ps,tm:tmp
 *** rodar_v ; ^ rodar_v 0
-->grn mboapajeréi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn japaro_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mboapajere_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jere_v ; 0==0 n:ns,p:ps,tm:tmp
 *** rodear_v ; ^ rodear_v 0
 ->grn mbojere_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mongora_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jere_v ; 0==0 n:ns,p:ps,tm:tmp
 *** roer_v ; ^ roer_v 0
-->grn mopopĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn karãi_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñapĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñamindu'u_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -12030,8 +11685,6 @@
 *** rozar_v ; ^ rozar_v 0
 ->grn kopi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbotyryry_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn johýi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn <havere_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn heréi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** rugir_v ; ^ rugir_v 0
 ->grn kororõ_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -12151,14 +11804,10 @@
 ->grn mbotytýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** sacudir_v[+rflx] ; ^ sacudir_v 0
 ->grn jetyvyro_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembokacha_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kacha_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembovava_v ; 0==0 n:ns,p:ps,tm:tmp
 *** sacudir_v ; ^ sacudir_v 0
-->grn momymýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn momýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbokuchu_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojaity_v ; 0==0 n:ns,p:ps,tm:tmp
 *** sacudir_v para aflojar ; ^ sacudir_v 0
 ->grn mboku'e_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mongu'e_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -12260,10 +11909,8 @@
 ->grn ñemohyvatã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** satisfacer_v ; ^ satisfacer_v 0
 ->grn myenyhẽ_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moangapyhy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mboaje_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mboaguyje_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mohyvatã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** satisfacer_v plenamente ; ^ satisfacer_v 0
 ->grn mboaguyjevete_v ; 0==0 n:ns,p:ps,tm:tmp
 *** satisfecho_v ; ^ satisfecho_v 0
@@ -12280,8 +11927,6 @@
 ->grn <hesy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** secar_v[+rflx] ; ^ secar_v 0
 ->grn <hypa_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemboypi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñembopiru_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñyñýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemokã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** secar_v ; ^ secar_v 0
@@ -12920,9 +12565,7 @@
 *** soltar_v[+rflx] ; ^ soltar_v 0
 ->grn jera_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kúi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemonandi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jepoi_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemondoho_v ; 0==0 n:ns,p:ps,tm:tmp
 *** soltar_v lo que está atado ; ^ soltar_v 0
 ->grn jora_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mosãso_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -12942,7 +12585,6 @@
 *** someter_v ; ^ someter_v 0
 ->grn mbojero'a_v ; 0==0 n:ns,p:ps,tm:tmp
 *** sonar_v ; ^ sonar_v 0
-->grn moparãrã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn pu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <hyapu_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -12968,24 +12610,19 @@
 ->grn <hyku_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kambu_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn pyte_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp
-->grn syryku_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mboy'u_v ; 0==0 n:ns,p:ps,tm:tmp
 *** sorprender_v[+rflx] ; ^ sorprender_v 0
 ->grn ñemondýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** sorprender_v ; ^ sorprender_v 0
 ->grn mondýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mongyhyje_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mopy'andýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn myangekói_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbopy'atytýi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** sosegar_v[+rflx] ; ^ sosegar_v 0
 ->grn pytu'u_v ; 0==0 n:ns,p:ps,tm:tmp
 *** sosegar_v ; ^ sosegar_v 0
 ->grn mokirirĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopytu'u_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moakãguapy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbopy'aguapy_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moñyrõ_v ; 0==0 n:ns,p:ps,tm:tmp
 *** soslayar_v ; ^ soslayar_v 0
 ->grn mboyke_v ; 0==0 n:ns,p:ps,tm:tmp
 *** sospechar_v[+rflx] ; ^ sospechar_v 0
@@ -12995,7 +12632,6 @@
 ->grn malisia_v ; 0==0 n:ns,p:ps,tm:tmp
 *** sostener_v[+rflx] ; ^ sostener_v 0
 ->grn jejoko_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jepokói_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jeko_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jejapyhy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jerereko_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -13164,7 +12800,6 @@
 ->grn ñemboty_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jejaho'i_v ; 0==0 n:ns,p:ps,tm:tmp
 *** tapar_v ; ^ tapar_v 0
-->grn mboape_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mo'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jaty_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jaho'i_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -13389,10 +13024,8 @@
 *** tensionar_v[+rflx] ; ^ tensionar_v 0
 ->grn ñemyatã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** tentar_v ; ^ tentar_v 0
-->grn mboahe_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <ha'ã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñeha'ã_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojahéi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** terminar_v[+rflx] ; ^ terminar_v 0
 ->grn jejapopa_v ; 0==0 n:ns,p:ps,tm:tmp
 *** terminar_v de poner ; ^ terminar_v 0
@@ -13544,7 +13177,6 @@
 ->grn <huvaitĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn <huĝuaitĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jejoso_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn jetopa_v ; 0==0 n:ns,p:ps,tm:tmp
 *** topetar_v[+rflx] ; ^ topetar_v 0
 ->grn jejoso_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jejuhu_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -13688,7 +13320,6 @@
 *** trapacear_v ; ^ trapacear_v 0
 ->grn mbotavyky'a_v ; 0==0 n:ns,p:ps,tm:tmp
 *** trasladar_v[+rflx] ; ^ trasladar_v 0
-->grn jereroja_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jerova_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn va_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ku'e_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -13779,7 +13410,6 @@
 ->grn mombyky_v ; 0==0 n:ns,p:ps,tm:tmp
 *** tullir_v[+rflx] ; ^ tullir_v 0
 ->grn aturu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
-->grn ñemyakuruchĩ_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñyñýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kuruchĩ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp
 *** tullir_v ; ^ tullir_v 0
@@ -13881,9 +13511,7 @@
 *** vaciar_v ; ^ vaciar_v 0
 ->grn monandi_v ; 0==0 n:ns,p:ps,tm:tmp
 *** vacilar_v ; ^ vacilar_v 0
-->grn mbopy'aheta_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbovava_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn moherã_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn vava_v ; 0==0 n:ns,p:ps,tm:tmp
 *** vacunar_v ; ^ vacunar_v 0
 ->grn <hasymombia_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -13905,12 +13533,10 @@
 ->grn mbyepoti_v ; 0==0 n:ns,p:ps,tm:tmp
 *** variar_v ; ^ variar_v 0
 ->grn mbojopara_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn juavy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn joavy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn va_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moingoe_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn moambue_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbojoavy_v ; 0==0 n:ns,p:ps,tm:tmp
 *** vejar_v ; ^ vejar_v 0
 ->grn mbopy'arasy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbosarái_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -13983,7 +13609,6 @@
 *** viciar_v ; ^ viciar_v 0
 ->grn mongy'a_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn haru_v ; 0==0 n:ns,p:ps,tm:tmp
-->grn mbohekovai_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn momarã_v ; 0==0 n:ns,p:ps,tm:tmp
 *** vigilar_v ; ^ vigilar_v 0
 ->grn ma'ẽ_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -14037,7 +13662,6 @@
 *** voltear_v[+rflx] ; ^ voltear_v 0
 ->grn jevolea_v ; 0==0 n:ns,p:ps,tm:tmp
 *** voltear_v ; ^ voltear_v 0
-->grn mboapajeréi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbovapy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ity_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn mbojere_v ; 0==0 n:ns,p:ps,tm:tmp
@@ -14077,7 +13701,6 @@
 *** yacer_v ; ^ yacer_v 0
 ->grn mano_v ; 0==0 n:ns,p:ps,tm:tmp
 *** zafar_v[+rflx] ; ^ zafar_v 0
-->grn ñemombe_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn kañy_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn jehekýi_v ; 0==0 n:ns,p:ps,tm:tmp
 ->grn ñemboyke_v ; 0==0 n:ns,p:ps,tm:tmp
