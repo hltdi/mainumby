@@ -1,6 +1,6 @@
 ########################################################################
 #
-#   This file is part of the ParaMorfo project
+#   This file is part of the Mbojereha project
 #
 #   Copyright (C) 2015
 #   The HLTDI L^3 Team <gasser@cs.indiana.edu>

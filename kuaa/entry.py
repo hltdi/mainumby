@@ -1,5 +1,5 @@
 #   
-#   Ñe'ẽasa entries: words, grammatical morphemes, lexemes, lexical classes
+#   Mbojereha entries: words, grammatical morphemes, lexemes, lexical classes
 #
 ########################################################################
 #
@@ -160,12 +160,7 @@ class Entry:
         """Update count on the basis of data from somewhere."""
         self.count += count
 
-    ### Translations (word, gram, lexeme, group entries)
-    ###
-    ### Translations are stored in a language-id-keyed dict.
-    ### Values are dicts with target entry names as ids.
-    ### Values are dicts with correspondence ('cor'), count ('cnt'), etc.
-    ### as keys.
+    ### Translations of entries
 
     def get_translations(self):
         """Changed 2015.05.22. translations is not a list of group, dict pairs
@@ -356,9 +351,9 @@ class Group(Entry):
                         f = f.strip()
                         if ':' in f:
                             f1, f2 = f.split(':')
-                            feat_pairs.append((f1, f2))
+                            feat_pairs.append((f1.strip(), f2.strip()))
                         else:
-                            feat_pairs.append((f, f))
+                            feat_pairs.append((f.strip(), f.strip()))
                     within_agrs.append([int(i1), int(i2)] + feat_pairs)
                     continue
                 elif trans:
@@ -371,9 +366,9 @@ class Group(Entry):
                         for f in feats.split(WITHIN_ATTRIB_SEP):
                             if ':' in f:
                                 sf, tf = f.split(':')
-                                feat_pairs.append((sf, tf))
+                                feat_pairs.append((sf.strip(), tf.strip()))
                             else:
-                                feat_pairs.append((f, f))
+                                feat_pairs.append((f.strip(), f.strip()))
                         trans_agrs[int(si)] = feat_pairs
                         continue
                     match = ALIGNMENT.match(attrib)
@@ -441,8 +436,13 @@ class Group(Entry):
     ##     featmaps: {((pers, 2), (num, 2)): ((pers, 3), (num, 2))}
     ##     }
 
-    def add_alignment(self, trans):
-        pass
+#    def add_alignment(self, trans):
+#        pass
+
+    @staticmethod
+    def sort_trans(translations):
+        """Sort translations by their translation frequency. translations is a list of pairs: group, feature dict."""
+        translations.sort(key=lambda x: x[1].get('count', 0), reverse=True)
 
 class MorphoSyn(Entry):
     """Within-language patterns that modify morphology a word/root on the basis of the occurrence of other words."""
@@ -547,11 +547,11 @@ class MorphoSyn(Entry):
         if verbosity:
             print("{} matching {}".format(self, sentence))
         if self.direction:
+            # Left-to-right
             pindex = 0
             # Index of sentence token where successful matching starts
             mindex = -1
             result = []
-            # left-to-right
             for sindex, (stoken, sanals) in enumerate(sentence.analyses):
                 if MorphoSyn.del_token(stoken):
                     continue
@@ -561,6 +561,7 @@ class MorphoSyn(Entry):
                     result.append(match)
                     # Is this the end of the pattern? If so, succeed.
                     if self.pattern_length() == pindex + 1:
+                        print("MS {} succeeded".format(self))
                         return (mindex, sindex+1, result)
                     # Otherwise move forward in the pattern
                     pindex += 1

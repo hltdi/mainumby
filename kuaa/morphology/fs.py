@@ -308,7 +308,8 @@ class FeatStruct:
 
     @staticmethod
     def simple_unify(x, y):
-        """Unify the values x and y, returning the result or 'fail'."""
+        """Unify the values x and y, returning the result or 'fail'. Does not
+        check values embedded in value dicts or FSs."""
         # If they're the same, return one.
         if x == y:
             return x
@@ -327,14 +328,17 @@ class FeatStruct:
         else:
             return 'fail'
 
-    def unify(self, other):
+    def unify(self, other, strict=False):
         """other is a FeatStruct object or a dict. Attempt to unify self with other,
-        returning the result or 'fail'."""
+        returning the result or 'fail'. If strict is True, all features in other
+        must appear explicitly in self for success (unless a feature's value is False)."""
         result = FeatStruct({})
         for k in set(self.keys()) | set(other.keys()):
             # Check all of the keys of self and other
             self_val, other_val = self.get(k, 'nil'), other.get(k, 'nil')
-            if self_val != 'nil':
+            if strict and self_val == 'nil' and other_val is not False:
+                return 'fail'
+            elif self_val != 'nil':
                 if other_val != 'nil':
                     # If x and y both have a value for k, try to unify the values
                     u = FeatStruct.simple_unify(self_val, other_val)
@@ -1380,7 +1384,7 @@ class FeatureValueConcat(SubstituteBindingsSequence, tuple):
 #{ Simple unification (no variables)
 ######################################################################
 
-def simple_unify(x, y):
+def simple_unify(x, y, strict=False):
     """Unify the expressions x and y, returning the result or 'fail'."""
     # If either expression doesn't exist, return the other, unless this is the top-level
     # If they're the same, return one.
@@ -1388,23 +1392,26 @@ def simple_unify(x, y):
         return x
     # If both are dicts, call unify_dict
     elif isinstance(x, FeatStruct) and isinstance(y, FeatStruct):
-        return unify_dicts(x, y)
+        return unify_dicts(x, y, strict=strict)
     # Otherwise fail
     else:
         return 'fail'
 
-def unify_dicts(x, y):
-    '''Try to unify two dicts in the context of bindings, returning the merged result.'''
+def unify_dicts(x, y, strict=False):
+    '''Try to unify two dicts in the context of bindings, returning the merged result.
+    If strict is True, only succeed if there are explicit matching values in both FSs.'''
     # Make an empty dict of the type of x
 #    print('Unifying dicts {} {}'.format(x.__repr__(), y.__repr__()))
     result = FeatStruct()
     for k in set(x.keys()) | set(y.keys()):
         # Check all of the keys of x and y
         x_val, y_val = x.get(k, 'nil'), y.get(k, 'nil')
-        if x_val != 'nil':
+        if strict and (x_val == 'nil' or y_val == 'nil'):
+            return 'fail'
+        elif x_val != 'nil':
             if y_val != 'nil':
                 # If x and y both have a value for k, try to unify the values
-                u = simple_unify(x_val, y_val)
+                u = simple_unify(x_val, y_val, strict=strict)
                 if u == 'fail':
 #                    print('Failed')
                     return 'fail'

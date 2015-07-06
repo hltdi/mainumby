@@ -1,9 +1,9 @@
 #   
-#   Ñe'ẽasa languages: dictionaries of lexical/grammatical entries
+#   Mbojereha languages: dictionaries of lexical/grammatical entries
 #
 ########################################################################
 #
-#   This file is part of the Ñe'ẽasa project
+#   This file is part of the Mbojereha project
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
@@ -38,7 +38,11 @@
 # 2014.04.30
 # -- Eliminated entry types in lexicon other than Groups and forms.
 # 2015.05.15
-# -- Added morphology-related methods from ParaMorfo
+# -- Added morphology-related methods from ParaMorfo.
+# 2015.06
+# -- Updated group-reading methods.
+# 2015.07.03
+# -- Added abbreviations.
 
 from .entry import *
 from kuaa.morphology.morpho import Morphology, POS
@@ -179,6 +183,9 @@ class Language:
         # Categories (and other semantic features) of words and roots
         self.cats = {}
         self.read_cats()
+        # List of abbreviations (needed for tokenization)
+        self.abbrevs = []
+        self.read_abbrevs()
         # Cached entries read in when language is loaded if language will be used for analysis
         if use in (ANALYSIS, SOURCE):
             self.set_anal_cached()
@@ -249,6 +256,12 @@ class Language:
             name = 'sem'
         return os.path.join(d, name + '.lex')
 
+    def get_abbrev_file(self, name=''):
+        d = self.get_lex_dir()
+        if name == True or not name:
+            name = 'abr'
+        return os.path.join(d, name + '.lex')
+
     def get_group_files(self, names=None):
         d = self.get_group_dir()
         if not names:
@@ -276,6 +289,16 @@ class Language:
 #        print("Getting cats for {}".format(form))
         return self.cats.get(form, [])
 
+    def read_abbrevs(self):
+        """Read in abbreviations from abr file."""
+        file = self.get_abbrev_file()
+        try:
+            with open(file, encoding='utf8') as f:
+                for line in f:
+                    self.abbrevs.append(line.strip())
+        except IOError:
+            print('No such abbrevs file as {}'.format(file))
+
     def write_cache(self, name=''):
         """Write a dictionary of cached entries to a cache file."""
         if self.new_anals:
@@ -299,7 +322,7 @@ class Language:
 
     def read_cache(self, name='', expand=False):
         """Read cached entries into self.cached from a file.
-        Modified 2015/5/17 to include Ñe'ẽasa categories."""
+        Modified 2015/5/17 to include Mbojereha categories."""
         cache = self.get_cache_file(name=name)
         try:
             with open(cache, encoding='utf8') as f:
@@ -329,7 +352,8 @@ class Language:
                 feat = entry.get('features')
                 if feat:
                     entry['features'] = FeatStruct(entry['features'], freeze=True)
-                    entry['root'] = Language.make_root(entry['root'])
+                    pos = entry['features'].get('pos', '')
+                    entry['root'] = Language.make_root(entry['root'], pos)
             self.cached[word] = entries[1:]
             return entries[1:]
         return entries
@@ -947,7 +971,7 @@ class Language:
     def anal_word(self, word, guess=True, only_guess=False, segment=False, 
                   root=True, stem=True, citation=True, gram=True,
                   # Whether to return a pretty list of feature values
-                  # (doesn't work within Ñe'ẽasa yet)
+                  # (doesn't work within Mbojereha yet)
                   pretty=False,
                   # Whether to return empty analyses / all analyses
                   unanal=False, get_all=True,
@@ -1028,14 +1052,16 @@ class Language:
         and convert roots to _ form."""
         dicts = []
         for root, anal in anals:
-            dicts.append({'root': Language.make_root(root), 'features': anal})
+            pos = anal.get('pos', '')
+            dicts.append({'root': Language.make_root(root, pos), 'features': anal})
         return dicts
 
     @staticmethod
-    def make_root(root):
+    def make_root(root, pos):
         """Add the _ expected for roots."""
-        if root[-1] != '_':
-            root = root + '_'
+        if '_' not in root:
+#        if root[-1] != '_':
+            root = root + '_' + pos
         return root
 
     def prettify_analyses(self, anals):

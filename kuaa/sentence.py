@@ -1,5 +1,5 @@
 #   
-#   Hiiktuu sentences and how to parse and translate them.
+#   Mbojereha sentences and how to parse and translate them.
 #
 ########################################################################
 #
@@ -61,21 +61,154 @@
 # -- Fixed a bug in how SL snodes with no corresponding TL snodes are
 #    handled during node merging.
 # 2014.05.18
-# -- Target-language within-group agreement ("GIVES them a piece of HER/HIS mind")
+# -- Target-language within-group agreement ("GIVES them a piece of HER/HIS mind").
 # 2014.05.19
 # -- all_sols argument to solve() and other methods that search finds all
 #    solutions without querying user.
 # -- Alignments is inferred from lexicon if not explicit.
 # 2015.05.18
-# -- Cache search and morphological analysis replaces form lookup in tokenize()
+# -- Cache search and morphological analysis replaces form lookup in tokenize().
 # 2015.05.20
-# -- Generation now handled by morphology FSTs
+# -- Generation now handled by morphology FSTs.
 # 2015.06.10
-# -- MorphoSyns applied in Sentence.tokenize()
+# -- MorphoSyns applied in Sentence.tokenize().
+# 2015.07.04
+# -- Text class, including sentence tokenizer and splitter.
+# 2015.07.05
+# -- Fixed SNode - Group matching so it works for features added during
+#    MorphoSyn matching, like +r (reflexive) in Spanish. Required adding
+#    explicit negative features in groups.
+#      se abrió matches abrir_v[+r] but not abrir_v[-r]
+#      abrió matchs abrir_v[-r] but not abrir_v[+r]
 
-import itertools, copy
+import itertools, copy, re
 from .ui import *
 from .cs import *
+
+class Text(list):
+    """A ist of of Sentences, split from a text string."""
+
+    id = 0
+
+    start = ['¿', '¡']
+    end = ['.', '?', '!']
+    markers = [('\"', '\"'), ("(", ")"), ("{", "}")]
+    wordsplit = ['—']
+
+    ## regular expressions for matching tokens
+    # adjoining punctuation (except .)
+    # before: ([{¡¿"*
+    # after: )]}!?":;*
+    # within: letters and digits, _-+#.'`@$%^&=|
+    puncsep_re = re.compile(r"([(\[{¡¿—\"*]*)([\w\-/+#.'`~@$%^&=\|<>]+)([)\]}!?\"*,:;]*)$")
+    start_re = re.compile('[—¿¡"(\[]+$')
+    poss_end_re = re.compile('[")\]}]{0,2}[?!][)"\]]{0,2}')
+    end_re = re.compile('[")\]}]{0,2}\.[.)"\]]{0,2}')
+
+    def __init__(self, language=None, target=None, text=''):
+        self.set_id()
+        self.language = language
+        self.target = target
+        self.text = text
+        # Intermediate representations: list of word-like tokens and ints representing types
+        self.tokens = []
+        list.__init__(self)
+
+    def set_id(self):
+        self.id = Text.id
+        Text.id += 1
+
+    def __repr__(self):
+        return "||| text {} |||".format(self.id)
+
+    def process(self):
+        """Use tokenize and split to generate tokenized sentences."""
+        self.tokenize()
+        self.split()
+
+    def tokenize(self):
+        """Split the text into word tokens, separating off punctuation except for
+        abbreviations and numerals. Later use a language-specific tokenizer."""
+        # Later split at \n to get paragraphs.
+        # Separate at whitespace.
+        tokens = self.text.split()
+        for token in tokens:
+            # Segment off punctuation 1 characters
+            match = Text.puncsep_re.match(token)
+            if not match:
+                print("Something wrong: {} fails to be an acceptable token".format(token))
+                return
+            pre, word, suf = match.groups()
+            if pre:
+                self.tokens.append((pre, 0))
+            # Check to see if word ends in . and is not an abbreviation
+            if word.endswith('.'):
+                if word not in self.language.abbrevs:
+                    word = word[:-1]
+                    suf = '.' + suf
+            self.tokens.append((word, 1))
+            if suf:
+                self.tokens.append((suf, 2))
+
+    @staticmethod
+    def is_sent_start(token):
+        return token[0].isupper()
+
+    @staticmethod
+    def start_next(tokens):
+        # Does a new sentence begin at the start of tokens?
+        if not tokens:
+            return False
+        tok, typ = tokens[0]
+        if typ == 1:
+            if Text.is_sent_start(tok):
+                return True
+        elif Text.start_re.match(tok):
+            # sentence-inital punctuation
+            if len(tokens) > 1 and Text.is_sent_start(tokens[1][0]):
+                return True
+        return False
+            
+    def split(self):
+        """Split tokenized text into sentences. Later use a language-specific splitter."""
+        current_sentence = []
+        sentences = []
+        ntokens = len(self.tokens)
+        tokindex = 0
+        token = ''
+        toktype = 1
+        while tokindex < ntokens:
+            token, toktype = self.tokens[tokindex]
+            if toktype in (0, 1):
+                current_sentence.append((token, toktype))
+            # Check whether this is a sentence end
+            elif Text.end_re.match(token):
+                if not current_sentence:
+                    print("Something wrong: sentence end with empty sentence: {}".format(self.tokens[:tokindex]))
+                    return
+                else:
+                    # End sentence
+                    current_sentence.append((token, toktype))
+                    sentences.append(current_sentence)
+                    current_sentence = []
+            elif Text.poss_end_re.match(token):
+                if current_sentence and (tokindex == ntokens-1 or Text.start_next(self.tokens[tokindex:])):
+                    # End sentence
+                    current_sentence.append((token, toktype))
+                    sentences.append(current_sentence)
+                    current_sentence = []
+                else:
+                    current_sentence.append((token, toktype))
+            else:
+                current_sentence.append((token, toktype))
+            tokindex += 1
+        # Make Sentence objects for each list of tokens and types
+        for sentence in sentences:
+            self.append(Sentence(language=self.language, tokens=sentence, target=self.target))
+
+#            if Text.start_re(token) and tokindex < ntokens-1 and Text.is_sent_start(token[tokindex+1]):
+#                # Sentence beginning
+#                if current_sentence:
 
 class Sentence:
     """A sentence is a list of words (or other lexical tokens) that gets
@@ -86,10 +219,17 @@ class Sentence:
     word_width = 10
 
     def __init__(self, raw='', language=None, tokens=None,
-                 nodes=None, groups=None, target=None,
-                 verbosity=0):
+                 nodes=None, groups=None, target=None, verbosity=0):
         self.set_id()
-        # A string representing the raw sentence
+        # A list of string tokens, created by a Text object including this sentence
+        # or None if the Sentence is created outside of Text
+        if tokens:
+            self.tokens = [t[0] for t in tokens]
+            self.toktypes = [t[1] for t in tokens]
+        else:
+            self.tokens = None
+            self.toktypes = None
+        # A string representing the raw sentence (if it hasn't been tokenized)
         self.raw = raw
         # Source language: a language object
         self.language = language
@@ -127,7 +267,9 @@ class Sentence:
 
     def __repr__(self):
         """Print name."""
-        if self.raw:
+        if self.tokens:
+            return '|| ({}) {} ||'.format(self.id, ' '.join(self.tokens))
+        elif self.raw:
             return '|| ({}) {} ||'.format(self.id, self.raw)
         else:
             return '|| {} sentence {} ||'.format(self.language, self.id)
@@ -167,6 +309,9 @@ class Sentence:
 
     def solve(self, translate=True, all_sols=False, verbosity=0):
         """Generate solutions and translations (if translate is true)."""
+        if not self.groups:
+            print("NO GROUPS FOUND for {}, so NO SOLUTIONS POSSIBLE".format(self))
+            return
         generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity)
         try:
             proceed = True
@@ -208,7 +353,10 @@ class Sentence:
         if not self.nodes:
             # (Otherwise it's already done.)
             # Split at spaces by default (later allow for dedicated language-specific tokenizers).
-            tokens = self.raw.split()
+            if self.tokens:
+                tokens = self.tokens
+            else:
+                tokens = self.raw.split()
             # First do morphological analysis (2015.06.07)
             self.analyses = [[token, self.language.anal_word(token)] for token in tokens]
             # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
@@ -246,6 +394,9 @@ class Sentence:
                         anals = None
                     self.nodes.append(SNode(token, index, anals, self))
                     index += 1
+
+    def split(self):
+        """Split the raw sentence into words, separating off punctuation."""
 
     def lexicalize(self, verbosity=0):
         """Find and instantiate all groups that are compatible with the tokens in the sentence."""
@@ -600,54 +751,57 @@ class SNode:
                     features.append(FeatStruct({}))
         return features
 
-    def match(self, item, features, verbosity=0):
+    def match(self, grp_item, grp_feats, verbosity=0):
         """Does this node match the group item (word, root, category) and
         any features associated with it?"""
         if verbosity:
-            print('   SNode {} with features {} trying to match item {} with features {}'.format(self, self.analyses, item, features))
+            print('   SNode {} with features {} trying to match item {} with features {}'.format(self, self.analyses, grp_item, grp_feats))
         # If item is a category, don't bother looking at token
-        if Entry.is_cat(item):
+        if Entry.is_cat(grp_item):
             if verbosity:
                 print('    Cat item, looking in {}'.format(self.cats))
-            if self.cats and item in self.cats:
-#                print("   Token {} is in cat {}".format(self.token, item))
-                if not self.analyses or not features:
+            if self.cats and grp_item in self.cats:
+#                print("   Token {} is in cat {}".format(self.token, grp_item))
+                if not self.analyses or not grp_feats:
                     # Match; failure would be False
                     return None
                 else:
                     for analysis in self.analyses:
                         node_features = analysis.get('features')
                         if node_features:
-                            u_features = node_features.unify(features)
+                            # 2015.7.5: strict option added to force True feature in grp_features
+                            # to be present in node_features, e.g., for Spanish reflexive
+                            u_features = node_features.unify(grp_feats, strict=True)
                             if u_features != 'fail':
                                 return analysis.get('root'), u_features
-#                        print("   Matching group features {} and sentence features {}".format(features, node_features))
-#                        if node_features and node_features.unify(features) != 'fail':
+#                        print("   Matching group features {} and sentence features {}".format(grp_feats, node_features))
+#                        if node_features and node_features.unify(grp_feats) != 'fail':
 #                            return True
                     # None succeeded
                     return False
-        elif self.token == item:
-            # item matches this node's token; features are irrelevant
+        elif self.token == grp_item:
+            # grp_item matches this node's token; features are irrelevant
             return None
         elif self.analyses:
             # Check each combination of root and analysis features
             for analysis in self.analyses:
                 root = analysis.get('root', '')
                 node_features = analysis.get('features')
-#                print("   SNode features {}".format(node_features))
-                if root == item:
-                    if not features:
+                if root == grp_item:
+#                    if grp_feats:
+#                        print("Matching group item features {} against snode features {}".format(grp_feats.__repr__(), node_features.__repr__()))
+                    if not grp_feats:
                         return root, node_features
-#                        return True
                     elif not node_features:
-                        return root, features
-#                        return True
+                        # Fail because there must be an explicit match with group features
+                        return False
+#                        return root, grp_feats
                     else:
-                        u_features = node_features.unify(features)
+                        # There must be an explicit match with group features, so strict=True
+                        u_features = node_features.unify(grp_feats, strict=True)
                         if u_features != 'fail':
+#                            print(" Succeeded by unification")
                             return root, u_features
-#                    elif node_features.unify(features) != 'fail':
-#                        return True
         return False
 
 class GInst:
@@ -771,6 +925,8 @@ class GInst:
     def set_translations(self, verbosity=0):
         """Find the translations of the group in the target language."""
         translations = self.group.get_translations()
+        # Sort group translations by their translation frequency
+        Group.sort_trans(translations)
 #        print("Translations {}".format(translations))
             # self.target.abbrev, False)
         # If alignments are missing, add default alignment
@@ -1136,6 +1292,8 @@ class Translation:
                     else:
                         gnode = gnodes[0]
                         tgroup, token, targ_feats, agrs, t_index = tgnodes[gnode]
+#                        if targ_feats:
+#                            print("targ feats {}, frozen? {}".format(targ_feats.__repr__(), targ_feats.frozen()))
                         if len(tgroup.tokens) > 1:
                             t_indices.append((tgroup, t_index))
 #                    print(' tgroup {}, token {}, t_index {}'.format(tgroup, token, t_index))
@@ -1143,7 +1301,10 @@ class Translation:
                 # Make target and source features agree as required
                 if not targ_feats:
                     targ_feats = FeatStruct({})
+#                print("Making targ feats {} and agrs {} agree".format(targ_feats.__repr__(), agrs))
                 if agrs:
+                    # Use an (unfrozen) copy of target features
+                    targ_feats = targ_feats.copy(True)
                     features.agree(targ_feats, agrs)
                 node_index_map[snode.index] = tnode_index
                 tnode_index += 1

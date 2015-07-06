@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Ñe'ẽasa. Parsing and translation with minimal dependency grammars.
+# Mbojereha. Parsing and translation with minimal dependency grammars.
 #
 ########################################################################
 #
@@ -31,6 +31,8 @@
 # -- Changed to Ñe'ẽasa, after incorporating morphological analysis/generation
 # 2015.06.12
 # -- Started Web app
+# 2015.07.04
+# -- Changed name to Mbojereha
 
 __version__ = 1.0
 
@@ -265,23 +267,23 @@ def load_eg():
     spa, grn = kuaa.Language.load_trans('spa', 'grn')
     return spa, grn
 
-def get_ambig(language, write="../LingData/EsGn/ambig.txt"):
-    ambig = {}
-    groups = language.groups
-    for head, grps in groups.items():
-        for group in grps:
-            if len(group.tokens) == 1:
-                trans = group.trans
-                if len(trans) > 1:
-                    ambig[group.name] = [t.name for t, f in trans]
-    if write:
-        ambig = list(ambig.items())
-        ambig.sort()
-        with open(write, 'w', encoding='utf8') as file:
-            for s, t in ambig:
-                print("{} {}".format(s, ','.join(t)), file=file)
-    else:
-        return ambig
+##def get_ambig(language, write="../LingData/EsGn/ambig.txt"):
+##    ambig = {}
+##    groups = language.groups
+##    for head, grps in groups.items():
+##        for group in grps:
+##            if len(group.tokens) == 1:
+##                trans = group.trans
+##                if len(trans) > 1:
+##                    ambig[group.name] = [t.name for t, f in trans]
+##    if write:
+##        ambig = list(ambig.items())
+##        ambig.sort()
+##        with open(write, 'w', encoding='utf8') as file:
+##            for s, t in ambig:
+##                print("{} {}".format(s, ','.join(t)), file=file)
+##    else:
+##        return ambig
 
 def ver(verbosity=0):
     spa, grn = kuaa.Language.load_trans('spa', 'grn')
@@ -417,5 +419,5 @@ def ui():
 ##    return agr
 
 if __name__ == "__main__":
-    print("Tereg̃uahẽ porãite Ñe'ẽasa-pe, versión {}\n".format(__version__))
+    print("Tereg̃uahẽ porãite Mbojereha-pe, versión {}\n".format(__version__))
 #    kuaa.app.run(debug=True)
