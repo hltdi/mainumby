@@ -1,12 +1,13 @@
 """Ñe'ẽasa: Create simple bilingual lexicons and grammars for language pairs."""
 
-__all__ = ['language', 'entry', 'ui', 'constraint', 'variable', 'sentence', 'cs', 'learn', 'utils']
+__all__ = ['language', 'entry', 'ui', 'constraint', 'db', 'views', 'variable', 'sentence', 'cs', 'learn', 'utils']
 
 from flask import Flask, url_for, render_template
 
 from .sentence import *
 from .learn import *
 from .morphology import *
+from . import db
 
 ## Instantiate the Flask class to get the application
 app = Flask(__name__)

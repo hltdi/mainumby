@@ -44,222 +44,222 @@ import kuaa
 
 ### Corpora and patterns
 
-def corp():
-    return kuaa.Corpus('ep',
-                          tag_map={'n': [('p', 'n'),
-                                         [(1,2), {'s': (('n', 's'),), 'p': (('n', 'p'),)}]],
-                                   'v': [('p', 'v'),
-                                         [(2,4), {'ic': (('tm', 'cnd'),), 'if': (('tm', 'fut'),),
-                                                  'ii': (('tm', 'ipf')), 'ip': (('tm', 'prs'),),
-                                                  'is': (('tm', 'prt'),),
-                                                  'sf': (('tm', 'sft'),),
-                                                  'si': (('tm', 'sbi'),), 'sp': (('tm', 'sbp'),),
-                                                  'g': (('tm', 'ger'),),
-                                                  'n': (('tm', 'inf'),),
-                                                  'p': (('tm', 'prc'),)}]],
-                                   'w': [('p', 'n')]
-                                   },
-                          feat_order={'sj': ['3s', '3p', '1p', '13s', '2p', '1s', '2s'],
-                                      'tm': ['inf', 'prs', 'prt', 'ger', 'prc',
-                                             'fut', 'sbp', 'ipf', 'sbi', 'cnd', 'ipv'],
-                                      'n': ['s', 'p']})
-
-def pos_freq(corpus=None):
-    corpus = corpus or corp()
-    corpus.set_pos_grams('n', {'agua', 'madre', 'comunicación', 'paz', 'futuro', 'fronteras'})
-    corpus.set_pos_grams('v', {'poner', 'querer', 'hacer', 'subir'})
-    corpus.set_pos_grams('a', {'pequeño', 'interesante', 'increíble', 'último', 'corto'})
-
-def europarl_corpus(corpus=None, suffix='0-500', lines=0, posfreq=False, ambig=False):
-    corpus = corpus or corp()
-    corpus.read("../LingData/Es/Europarl/es-en/es-v7-" + suffix, lines=lines)
-    if posfreq:
-        pos_freq(corpus)
-    if ambig:
-        corpus.set_ambig(pos=False)
-    return corpus
-
-def monton():
-    return kuaa.Pattern(['montón', 'de', {('p', 'n')}])
-
-def matar():
-    return kuaa.Pattern([(None, 'matar'), 'a', 2, {('p', 'n')}])
-
-def obligar():
-    return kuaa.Pattern([(None, 'obligar'), 'a', 2, {('p', 'n')},
-                            'a', 2, {('p', 'v')}])
-
-def tc():
-    return kuaa.Pattern([(None, 'tener'), 'en', 'cuenta', (1, 3), (None, 'situación')])
-
-def trans():
-    # ~ se, V, ..., N
-    return kuaa.Pattern([(('~', {'se'}), (None, None)), {('p', 'v')}, 2, {('p', 'n')}])
+##def corp():
+##    return kuaa.Corpus('ep',
+##                          tag_map={'n': [('p', 'n'),
+##                                         [(1,2), {'s': (('n', 's'),), 'p': (('n', 'p'),)}]],
+##                                   'v': [('p', 'v'),
+##                                         [(2,4), {'ic': (('tm', 'cnd'),), 'if': (('tm', 'fut'),),
+##                                                  'ii': (('tm', 'ipf')), 'ip': (('tm', 'prs'),),
+##                                                  'is': (('tm', 'prt'),),
+##                                                  'sf': (('tm', 'sft'),),
+##                                                  'si': (('tm', 'sbi'),), 'sp': (('tm', 'sbp'),),
+##                                                  'g': (('tm', 'ger'),),
+##                                                  'n': (('tm', 'inf'),),
+##                                                  'p': (('tm', 'prc'),)}]],
+##                                   'w': [('p', 'n')]
+##                                   },
+##                          feat_order={'sj': ['3s', '3p', '1p', '13s', '2p', '1s', '2s'],
+##                                      'tm': ['inf', 'prs', 'prt', 'ger', 'prc',
+##                                             'fut', 'sbp', 'ipf', 'sbi', 'cnd', 'ipv'],
+##                                      'n': ['s', 'p']})
+##
+##def pos_freq(corpus=None):
+##    corpus = corpus or corp()
+##    corpus.set_pos_grams('n', {'agua', 'madre', 'comunicación', 'paz', 'futuro', 'fronteras'})
+##    corpus.set_pos_grams('v', {'poner', 'querer', 'hacer', 'subir'})
+##    corpus.set_pos_grams('a', {'pequeño', 'interesante', 'increíble', 'último', 'corto'})
+##
+##def europarl_corpus(corpus=None, suffix='0-500', lines=0, posfreq=False, ambig=False):
+##    corpus = corpus or corp()
+##    corpus.read("../LingData/Es/Europarl/es-en/es-v7-" + suffix, lines=lines)
+##    if posfreq:
+##        pos_freq(corpus)
+##    if ambig:
+##        corpus.set_ambig(pos=False)
+##    return corpus
+##
+##def monton():
+##    return kuaa.Pattern(['montón', 'de', {('p', 'n')}])
+##
+##def matar():
+##    return kuaa.Pattern([(None, 'matar'), 'a', 2, {('p', 'n')}])
+##
+##def obligar():
+##    return kuaa.Pattern([(None, 'obligar'), 'a', 2, {('p', 'n')},
+##                            'a', 2, {('p', 'v')}])
+##
+##def tc():
+##    return kuaa.Pattern([(None, 'tener'), 'en', 'cuenta', (1, 3), (None, 'situación')])
+##
+##def trans():
+##    # ~ se, V, ..., N
+##    return kuaa.Pattern([(('~', {'se'}), (None, None)), {('p', 'v')}, 2, {('p', 'n')}])
 
 ### Parsing and translating
 
-def test(verbosity=0):
-    piece_of_mind_parse_ung(verbosity=verbosity)
-    piece_of_mind_trans(verbosity=verbosity)
-    kick_the_bucket(verbosity=verbosity)
-    end_of_world(verbosity=verbosity)
-    never_eaten_fish(verbosity=verbosity)
-    never_eaten_fish_ungr(verbosity=verbosity)
-    cantar_las_cuarenta_I(verbosity=verbosity)
-    cantar_las_cuarenta_she(verbosity=verbosity)
-
-def piece_of_mind_parse_ung(verbosity=0, all_sols=True):
-    """
-    Eng parse.
-    Illustrates
-    (1) within SL agreement (fails because 'my' doesn't agree with 'gives')
-    """
-    eng = kuaa.Language.load('eng')[0]
-    s = kuaa.Sentence(raw='Mary gives them a piece of my mind',
-                         language=eng,
-                         verbosity=verbosity)
-#    print("Parsing: {}".format(s.raw))
-    s.initialize(verbosity=verbosity)
-    s.solve(translate=False, verbosity=verbosity, all_sols=all_sols)
-    return s
-
-def piece_of_mind_trans(verbosity=0, all_sols=True):
-    """
-    Eng->Spa
-    Illustrates
-    (1) within SL agreement (succeeds because 'her' agrees with 'gives')
-    (2) SL-TL feature agreement
-    (3) SL-TL word count mismatch (SL > TL)
-    """
-    eng, spa = kuaa.Language.load('eng', 'spa')
-    s = kuaa.Sentence(raw='Mary gives them a piece of her mind',
-                         language=eng, target=spa,
-                         verbosity=verbosity)
-#    print("Translating {} to {}".format(s.raw, s.target))
-    s.initialize(verbosity=verbosity)
-    s.solve(translate=True, verbosity=verbosity, all_sols=all_sols)
-    return s
-
-def kick_the_bucket(verbosity=0, all_sols=True):
-    """
-    Eng->Spa
-    Illustrates
-    (1) SL group ambiguity (search for solutions)
-    (2) SL-TL feature agreement
-    """
-    eng, spa = kuaa.Language.load('eng', 'spa')
-    s = kuaa.Sentence(raw='John kicked the bucket', language=eng, target=spa,
-                         verbosity=verbosity)
-#    print("Translating {} to {}".format(s.raw, s.target))
-    s.initialize(verbosity=verbosity)
-    s.solve(verbosity=verbosity, all_sols=all_sols)
-    return s
-
-def end_of_world(verbosity=0, all_sols=True):
-    """
-    Eng->Spa
-    it's the end of the world -> es el fin del mundo
-    Illustrates
-    (1) SL-TL word count mismatch (SL > TL)
-    """
-    eng, spa = kuaa.Language.load('eng', 'spa')
-    s = kuaa.Sentence(raw="it's the end of the world", language=eng, target=spa,
-                         verbosity=verbosity)
-#    print("Translating {} to {}".format(s.raw, s.target))
-    s.initialize(verbosity=verbosity)
-    s.solve(verbosity=verbosity, all_sols=all_sols)
-    return s
-
-def ate_fish(verbosity=0, all_sols=True):
-    """
-    Amh->Orm
-    አሳ በላ (he ate fish) -> qurxummii nyaate.
-    Illustrates
-    (1) SL-TL feature agreement
-    """
-    amh, orm = kuaa.Language.load('amh', 'orm')
-    s = kuaa.Sentence(raw="አሳ በላ", language=amh, target=orm, verbosity=verbosity)
-#    print("Translating {} to {}".format(s.raw, s.target))
-    s.initialize(verbosity=verbosity)
-    s.solve(verbosity=verbosity, all_sols=all_sols)
-    return s
-
-def never_eaten_fish(verbosity=0, trans=True, all_sols=True):
-    """
-    Amh አሳ በልቶ አያውቅም 'he's never eaten fish'
-    Either parse (trans=False) or translate -> Orm: qurxummii nyaate hin beeku.
-    Illustrates
-    (1) SL-TL feature agreement
-    (2) SL-TL word count mismatch (SL < TL)
-    """
-    amh, orm = kuaa.Language.load('amh', 'orm')
-    s = kuaa.Sentence(raw="አሳ በልቶ አያውቅም", language=amh, target=orm,
-                        verbosity=verbosity)
-    s.initialize(verbosity=verbosity)
-    if trans:
-#        print("Translating {} to {}".format(s.raw, s.target))
-        s.solve(verbosity=verbosity, all_sols=all_sols)
-    else:
-#        print("Parsing: {}".format(s.raw))
-        s.solve(translate=False, verbosity=verbosity, all_sols=all_sols)
-    return s
-
-def never_eaten_fish_ungr(trans=True, verbosity=0, all_sols=True):
-    """
-    Amh አሳ በልተው አያውቅም 'he's never eaten fish' (ungrammatical because the
-    በልተው is 3rd person *plural* so it doesn't agree with አያውቅም).
-    Like the last case except since this is ungrammatical, no solution is
-    found that covers all of the words.
-    """
-    amh, orm = kuaa.Language.load_trans('amh', 'orm')
-    s = kuaa.Sentence(raw="አሳ በልተው አያውቅም", language=amh, target=orm,
-                        verbosity=verbosity)
-#    print("Attempting to translate {} to {}".format(s.raw, s.target))
-    s.initialize(verbosity=verbosity)
-    s.solve(verbosity=verbosity, all_sols=all_sols)
-    return s
-
-def cantar_las_cuarenta_she(trans=True, verbosity=0, all_sols=True):
-    """
-    Spa->Eng
-    Paula les cantó las cuarenta -> Paula read them the riot act.
-                                 -> Paula gave them a piece of her mind.
-    Illustrates
-    (1) SL-TL feature agreement
-    (2) SL-TL mismatch in word count (SL < TL)
-    (3) SL-TL mismatch in word order
-    (4) SL word not associated with any group
-    (5) within-TL-group agreement
-    """
-    spa, eng = kuaa.Language.load_trans('spa', 'eng')
-    s = kuaa.Sentence(raw="Paula les cantó las cuarenta",
-                        language=spa, target=eng if trans else None,
-                        verbosity=verbosity)
-#    print("Translating {} to {}".format(s.raw, s.target))
-    s.initialize(verbosity=verbosity)
-    s.solve(translate=trans, verbosity=verbosity, all_sols=all_sols)
-    return s
-
-def cantar_las_cuarenta_I(trans=True, verbosity=0, all_sols=True):
-    """
-    Spa->Eng
-    les canté las cuarenta -> read them the riot act.
-                           -> gave them a piece of my mind.
-    Illustrates
-    (1) SL-TL feature agreement
-    (2) SL-TL mismatch in word count (SL < TL)
-    (3) SL-TL mismatch in word order
-    (4) SL word not associated with any group
-    (5) within-TL-group agreement
-    """
-    spa, eng = kuaa.Language.load_trans('spa', 'eng')
-    s = kuaa.Sentence(raw="les canté las cuarenta",
-                        language=spa, target=eng if trans else None,
-                        verbosity=verbosity)
-#    print("Translating {} to {}".format(s.raw, s.target))
-    s.initialize(verbosity=verbosity)
-    s.solve(translate=trans, verbosity=verbosity, all_sols=all_sols)
-    return s
+##def test(verbosity=0):
+##    piece_of_mind_parse_ung(verbosity=verbosity)
+##    piece_of_mind_trans(verbosity=verbosity)
+##    kick_the_bucket(verbosity=verbosity)
+##    end_of_world(verbosity=verbosity)
+##    never_eaten_fish(verbosity=verbosity)
+##    never_eaten_fish_ungr(verbosity=verbosity)
+##    cantar_las_cuarenta_I(verbosity=verbosity)
+##    cantar_las_cuarenta_she(verbosity=verbosity)
+##
+##def piece_of_mind_parse_ung(verbosity=0, all_sols=True):
+##    """
+##    Eng parse.
+##    Illustrates
+##    (1) within SL agreement (fails because 'my' doesn't agree with 'gives')
+##    """
+##    eng = kuaa.Language.load('eng')[0]
+##    s = kuaa.Sentence(raw='Mary gives them a piece of my mind',
+##                         language=eng,
+##                         verbosity=verbosity)
+###    print("Parsing: {}".format(s.raw))
+##    s.initialize(verbosity=verbosity)
+##    s.solve(translate=False, verbosity=verbosity, all_sols=all_sols)
+##    return s
+##
+##def piece_of_mind_trans(verbosity=0, all_sols=True):
+##    """
+##    Eng->Spa
+##    Illustrates
+##    (1) within SL agreement (succeeds because 'her' agrees with 'gives')
+##    (2) SL-TL feature agreement
+##    (3) SL-TL word count mismatch (SL > TL)
+##    """
+##    eng, spa = kuaa.Language.load('eng', 'spa')
+##    s = kuaa.Sentence(raw='Mary gives them a piece of her mind',
+##                         language=eng, target=spa,
+##                         verbosity=verbosity)
+###    print("Translating {} to {}".format(s.raw, s.target))
+##    s.initialize(verbosity=verbosity)
+##    s.solve(translate=True, verbosity=verbosity, all_sols=all_sols)
+##    return s
+##
+##def kick_the_bucket(verbosity=0, all_sols=True):
+##    """
+##    Eng->Spa
+##    Illustrates
+##    (1) SL group ambiguity (search for solutions)
+##    (2) SL-TL feature agreement
+##    """
+##    eng, spa = kuaa.Language.load('eng', 'spa')
+##    s = kuaa.Sentence(raw='John kicked the bucket', language=eng, target=spa,
+##                         verbosity=verbosity)
+###    print("Translating {} to {}".format(s.raw, s.target))
+##    s.initialize(verbosity=verbosity)
+##    s.solve(verbosity=verbosity, all_sols=all_sols)
+##    return s
+##
+##def end_of_world(verbosity=0, all_sols=True):
+##    """
+##    Eng->Spa
+##    it's the end of the world -> es el fin del mundo
+##    Illustrates
+##    (1) SL-TL word count mismatch (SL > TL)
+##    """
+##    eng, spa = kuaa.Language.load('eng', 'spa')
+##    s = kuaa.Sentence(raw="it's the end of the world", language=eng, target=spa,
+##                         verbosity=verbosity)
+###    print("Translating {} to {}".format(s.raw, s.target))
+##    s.initialize(verbosity=verbosity)
+##    s.solve(verbosity=verbosity, all_sols=all_sols)
+##    return s
+##
+##def ate_fish(verbosity=0, all_sols=True):
+##    """
+##    Amh->Orm
+##    አሳ በላ (he ate fish) -> qurxummii nyaate.
+##    Illustrates
+##    (1) SL-TL feature agreement
+##    """
+##    amh, orm = kuaa.Language.load('amh', 'orm')
+##    s = kuaa.Sentence(raw="አሳ በላ", language=amh, target=orm, verbosity=verbosity)
+###    print("Translating {} to {}".format(s.raw, s.target))
+##    s.initialize(verbosity=verbosity)
+##    s.solve(verbosity=verbosity, all_sols=all_sols)
+##    return s
+##
+##def never_eaten_fish(verbosity=0, trans=True, all_sols=True):
+##    """
+##    Amh አሳ በልቶ አያውቅም 'he's never eaten fish'
+##    Either parse (trans=False) or translate -> Orm: qurxummii nyaate hin beeku.
+##    Illustrates
+##    (1) SL-TL feature agreement
+##    (2) SL-TL word count mismatch (SL < TL)
+##    """
+##    amh, orm = kuaa.Language.load('amh', 'orm')
+##    s = kuaa.Sentence(raw="አሳ በልቶ አያውቅም", language=amh, target=orm,
+##                        verbosity=verbosity)
+##    s.initialize(verbosity=verbosity)
+##    if trans:
+###        print("Translating {} to {}".format(s.raw, s.target))
+##        s.solve(verbosity=verbosity, all_sols=all_sols)
+##    else:
+###        print("Parsing: {}".format(s.raw))
+##        s.solve(translate=False, verbosity=verbosity, all_sols=all_sols)
+##    return s
+##
+##def never_eaten_fish_ungr(trans=True, verbosity=0, all_sols=True):
+##    """
+##    Amh አሳ በልተው አያውቅም 'he's never eaten fish' (ungrammatical because the
+##    በልተው is 3rd person *plural* so it doesn't agree with አያውቅም).
+##    Like the last case except since this is ungrammatical, no solution is
+##    found that covers all of the words.
+##    """
+##    amh, orm = kuaa.Language.load_trans('amh', 'orm')
+##    s = kuaa.Sentence(raw="አሳ በልተው አያውቅም", language=amh, target=orm,
+##                        verbosity=verbosity)
+###    print("Attempting to translate {} to {}".format(s.raw, s.target))
+##    s.initialize(verbosity=verbosity)
+##    s.solve(verbosity=verbosity, all_sols=all_sols)
+##    return s
+##
+##def cantar_las_cuarenta_she(trans=True, verbosity=0, all_sols=True):
+##    """
+##    Spa->Eng
+##    Paula les cantó las cuarenta -> Paula read them the riot act.
+##                                 -> Paula gave them a piece of her mind.
+##    Illustrates
+##    (1) SL-TL feature agreement
+##    (2) SL-TL mismatch in word count (SL < TL)
+##    (3) SL-TL mismatch in word order
+##    (4) SL word not associated with any group
+##    (5) within-TL-group agreement
+##    """
+##    spa, eng = kuaa.Language.load_trans('spa', 'eng')
+##    s = kuaa.Sentence(raw="Paula les cantó las cuarenta",
+##                        language=spa, target=eng if trans else None,
+##                        verbosity=verbosity)
+###    print("Translating {} to {}".format(s.raw, s.target))
+##    s.initialize(verbosity=verbosity)
+##    s.solve(translate=trans, verbosity=verbosity, all_sols=all_sols)
+##    return s
+##
+##def cantar_las_cuarenta_I(trans=True, verbosity=0, all_sols=True):
+##    """
+##    Spa->Eng
+##    les canté las cuarenta -> read them the riot act.
+##                           -> gave them a piece of my mind.
+##    Illustrates
+##    (1) SL-TL feature agreement
+##    (2) SL-TL mismatch in word count (SL < TL)
+##    (3) SL-TL mismatch in word order
+##    (4) SL word not associated with any group
+##    (5) within-TL-group agreement
+##    """
+##    spa, eng = kuaa.Language.load_trans('spa', 'eng')
+##    s = kuaa.Sentence(raw="les canté las cuarenta",
+##                        language=spa, target=eng if trans else None,
+##                        verbosity=verbosity)
+###    print("Translating {} to {}".format(s.raw, s.target))
+##    s.initialize(verbosity=verbosity)
+##    s.solve(translate=trans, verbosity=verbosity, all_sols=all_sols)
+##    return s
 
 ### Español -> Guarani
 

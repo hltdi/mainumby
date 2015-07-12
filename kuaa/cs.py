@@ -1,5 +1,5 @@
 #   
-#   Hiiktuu CS: what is needed to implement l3 style constraint satisfaction
+#   Mbojereha CS: what is needed to implement l3 style constraint satisfaction
 #   using the lexicon/grammars created.
 #
 ########################################################################

@@ -55,13 +55,7 @@ p
 	margin-bottom: .35em;
         clear: left;
 }
-span.root
-{
-   font-weight: bold;
-   color: #900;
-   border: thin solid;
-}
-span.sentence
+span.document
 {
    font-size: 100%;
    font-weight: bold;
@@ -82,62 +76,13 @@ span.sentence
 <h1>Mbojereha: Traducción del Castellano al Guaraní</h1>
 
 <h3>Uso</h3>
-<p>Introducí el texto que querés traducir, por ejemplo, <i>Pedro
-está cantando en su casa</i>.</p>
+<p>Introducí un documento que querés traducir.</p>
 
 <form method=POST>
-<TEXTAREA NAME="sentence" ROWS=10 COLS=60 ></TEXTAREA>
+<TEXTAREA NAME="doc" ROWS=50 COLS=60 ></TEXTAREA>
 <p>
 <input type=submit value='enviar'>
 </p>
-<!--
-<input type=text style="font-family: Verdana; font-size: 100%;"
-name=sentence>
--->
-
-<p></p>
-<hr>
-
-{% if sentence %}
-<p></p><p></p>
-<p>
-<span class="sentence">{{ sentence }}</span>
-</p>
-{% endif %}
-
-{% if translation %}
-<p></p><p></p>
-<h3>
-Traducciones
-</h3>
-{% for t in translation %}
-<p>
-<span class="translation"> {{ t }} </span>
-</p>
-{% endfor %}
-
-<input type=submit style="font-family: Verdana; font-size: 100%;"
-action='tra' name='otra' value='¿Traducir otra oración?'>
-{% endif %}
-</form>
-
-<!--
-<h3>Dirección de procesamiento</h3>
-<input id="anal" type=radio name="direccion" value="a" onchange="toAnal()">análisis<br>
-<input id="gen" type=radio name="direccion" value="g" onchange="toGen()">generación
-
-<p></p>
-
-<h3>Idioma</h3>
-<input id="spa" type=radio name="idioma" value="e" onchange="toSpa()">castellano<br>
-<input id="grn" type=radio name="idioma" value="g" onchange="toGrn()">guarani
-
-<p></p>
-
-<hr>
-
-<p id="loading"></p>
--->
 
 </body>
 

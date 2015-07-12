@@ -80,12 +80,14 @@
 #    explicit negative features in groups.
 #      se abrió matches abrir_v[+r] but not abrir_v[-r]
 #      abrió matchs abrir_v[-r] but not abrir_v[+r]
+# 2015.07.11
+# -- Changed Text to Document (to agree with database class)
 
 import itertools, copy, re
 from .ui import *
 from .cs import *
 
-class Text(list):
+class Document(list):
     """A ist of of Sentences, split from a text string."""
 
     id = 0
@@ -115,8 +117,8 @@ class Text(list):
         list.__init__(self)
 
     def set_id(self):
-        self.id = Text.id
-        Text.id += 1
+        self.id = Document.id
+        Document.id += 1
 
     def __repr__(self):
         return "||| text {} |||".format(self.id)
@@ -134,7 +136,7 @@ class Text(list):
         tokens = self.text.split()
         for token in tokens:
             # Segment off punctuation 1 characters
-            match = Text.puncsep_re.match(token)
+            match = Document.puncsep_re.match(token)
             if not match:
                 print("Something wrong: {} fails to be an acceptable token".format(token))
                 return
@@ -161,11 +163,11 @@ class Text(list):
             return False
         tok, typ = tokens[0]
         if typ == 1:
-            if Text.is_sent_start(tok):
+            if Document.is_sent_start(tok):
                 return True
-        elif Text.start_re.match(tok):
+        elif Document.start_re.match(tok):
             # sentence-inital punctuation
-            if len(tokens) > 1 and Text.is_sent_start(tokens[1][0]):
+            if len(tokens) > 1 and Document.is_sent_start(tokens[1][0]):
                 return True
         return False
             
@@ -182,7 +184,7 @@ class Text(list):
             if toktype in (0, 1):
                 current_sentence.append((token, toktype))
             # Check whether this is a sentence end
-            elif Text.end_re.match(token):
+            elif Document.end_re.match(token):
                 if not current_sentence:
                     print("Something wrong: sentence end with empty sentence: {}".format(self.tokens[:tokindex]))
                     return
@@ -191,8 +193,8 @@ class Text(list):
                     current_sentence.append((token, toktype))
                     sentences.append(current_sentence)
                     current_sentence = []
-            elif Text.poss_end_re.match(token):
-                if current_sentence and (tokindex == ntokens-1 or Text.start_next(self.tokens[tokindex:])):
+            elif Document.poss_end_re.match(token):
+                if current_sentence and (tokindex == ntokens-1 or Document.start_next(self.tokens[tokindex:])):
                     # End sentence
                     current_sentence.append((token, toktype))
                     sentences.append(current_sentence)
@@ -206,7 +208,7 @@ class Text(list):
         for sentence in sentences:
             self.append(Sentence(language=self.language, tokens=sentence, target=self.target))
 
-#            if Text.start_re(token) and tokindex < ntokens-1 and Text.is_sent_start(token[tokindex+1]):
+#            if Document.start_re(token) and tokindex < ntokens-1 and Document.is_sent_start(token[tokindex+1]):
 #                # Sentence beginning
 #                if current_sentence:
 
@@ -221,8 +223,8 @@ class Sentence:
     def __init__(self, raw='', language=None, tokens=None,
                  nodes=None, groups=None, target=None, verbosity=0):
         self.set_id()
-        # A list of string tokens, created by a Text object including this sentence
-        # or None if the Sentence is created outside of Text
+        # A list of string tokens, created by a Document object including this sentence
+        # or None if the Sentence is created outside of Document
         if tokens:
             self.tokens = [t[0] for t in tokens]
             self.toktypes = [t[1] for t in tokens]
