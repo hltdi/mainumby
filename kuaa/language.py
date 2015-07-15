@@ -1072,31 +1072,31 @@ class Language:
             a.append((root, posmorph.fullname, posmorph.fs2prettylist(fs)))
         return a
 
-    def gen(self, root, features=None, pos=None, guess=False, roman=True):
-        '''Generate a word, given stem/root and features (replacing those in default).
-        If pos is specified, check only that POS; otherwise, try all in order until one succeeeds.
-
-        @param root:     string (roman); root or stem of a word
-        @param features: FeatStruct: grammatical features to be added to default
-        @param pos:      string: part-of-speech: use only the generator for this POS
-        @param guess:    boolean: whether to use guess generator if lexical generator fails
-        @param roman:    boolean: whether the language uses a roman script
-        '''
-        is_not_roman = not roman
-        morf = self.morphology
-        output = []
-        features = features or []
-        if pos:
-            posmorph = morf[pos]
-            output = posmorph.gen(root, update_feats=features, guess=guess)
-        else:
-            for posmorph in list(morf.values()):
-                output.extend(posmorph.gen(root, update_feats=features, guess=guess))
-        if output:
-            o = [out[0] for out in output]
-            return o
-        print("This word can't be generated!")
-        return output
+#    def gen(self, root, features=None, pos=None, guess=False, roman=True):
+#        '''Generate a word, given stem/root and features (replacing those in default).
+#        If pos is specified, check only that POS; otherwise, try all in order until one succeeeds.
+#
+#        @param root:     string (roman); root or stem of a word
+#        @param features: FeatStruct: grammatical features to be added to default
+#        @param pos:      string: part-of-speech: use only the generator for this POS
+#        @param guess:    boolean: whether to use guess generator if lexical generator fails
+#        @param roman:    boolean: whether the language uses a roman script
+#        '''
+#        is_not_roman = not roman
+#        morf = self.morphology
+#        output = []
+#        features = features or []
+#        if pos:
+#            posmorph = morf[pos]
+#            output = posmorph.gen(root, update_feats=features, guess=guess)
+#        else:
+#            for posmorph in list(morf.values()):
+#                output.extend(posmorph.gen(root, update_feats=features, guess=guess))
+#        if output:
+#            o = [out[0] for out in output]
+#            return o
+#        print("This word can't be generated!")
+#        return output
 
     def get_gen_fvs(self):
         gf = []

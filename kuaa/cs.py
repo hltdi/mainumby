@@ -31,6 +31,11 @@
 # -- SearchState class created, so that Solver doesn't have to do double-duty.
 # 2014.05.15
 # -- Search implemented in Solver.
+# 2015.07.14
+# -- Solver can be passed an explicit evaluator function to assign values to
+#    states during best-first search and an explicit variable and value selection
+#    function to be used in distribution. Normally one or the other would be
+#    used; currently this is the variable selection function.
 
 from .constraint import *
 import queue, random
@@ -47,11 +52,16 @@ class Solver:
     skipped = 4
 
     def __init__(self, constraints, dstore, name='',
+                 evaluator=None, varselect=None,
                  description='', verbosity=0):
         self.constraints = constraints
         # Used in solver's printname
         self.description = description
         # Solver (state) that generated this one
+        # A function that assigns values to states
+        self.evaluator = evaluator
+        # A function that selects a variable and splits its values, given a list of variables and a dstore
+        self.varselect = varselect
         self.verbosity=verbosity
         self.id = Solver.id
         self.name = name or "({})={}=".format(description, self.id)
@@ -70,7 +80,7 @@ class Solver:
         tracevar = tracevar or []
         fringe = queue.PriorityQueue()
         init_state = initial or self.init_state
-        fringe.put((init_state.get_value(), init_state))
+        fringe.put((init_state.get_value(evaluator=self.evaluator), init_state))
         n = 0
         solutions = []
         ambiguity = False
@@ -90,11 +100,20 @@ class Solver:
             state.run(verbosity=test_verbosity, tracevar=tracevar)
             if state.status == SearchState.succeeded:
                 # Return this state
+#                print("state {} succeeded".format(state))
                 yield state
             # Expand to next states if distributable
             if state.status == SearchState.distributable:
+                score = 0
                 for attribs, next_state in self.distribute(state=state, verbosity=expand_verbosity):
-                    val = next_state.get_value()
+                    # If there's no evaluator function, just the order of states returned by distribute
+                    if self.evaluator:
+                        val = next_state.get_value(evaluator=self.evaluator)
+                    else:
+                        # Score is just the index of the state in the list returned by distribute
+                        val = score
+                        score += 1
+#                    print("next state {}, value {}".format(next_state, val))
                     # Add next state where it belongs in the queue
                     fringe.put((val, next_state))
             n += 1
@@ -102,10 +121,13 @@ class Solver:
             print()
             print('>>>> HALTED AT SEARCH STATE', n, '<<<<')
 
-    def select_variable(self, variables, dstore=None, verbosity=0):
+    def select_variable(self, variables, dstore=None, func=None, verbosity=0):
         """One possibility for selecting variables to branch on:
-        prefer larger upper domains."""
-        return sorted(variables, key=lambda v: len(v.get_upper(dstore=dstore)))[0]
+        prefer smaller upper domains so the variable can be determined soon."""
+        if func:
+            return func(variables, dstore)
+        else:
+            return sorted(variables, key=lambda v: len(v.get_upper(dstore=dstore)))[0]
 
     def split_var_values(self, variable, dstore=None, verbosity=0):
         """For a selected variable, select a value by calling the value selection function,
@@ -117,6 +139,21 @@ class Solver:
             print("SOMETHING WRONG; {} HAS NO UNDECIDED VALUES".format(variable))
         elem = Solver.ran_select(undecided)
         return {elem}, undecided - {elem}
+
+    def select_var_values(self, variables, dstore=None, func=None, verbosity=0):
+        """Select a variable to branch on and split its undecided values, ordering
+        them by how promising they are. If no func is provided, use the default:
+        prefer smaller upper domains and random order."""
+        selected = func(variables, dstore) if func else None
+        if not selected:
+            variable = sorted(variables, key=lambda v: len(v.get_upper(dstore=dstore)))[0]
+            undecided = variable.get_undecided(dstore=dstore)
+            # Split undecided into two non-empty subsets
+            if not undecided:
+                print("SOMETHING WRONG; {} HAS NO UNDECIDED VALUES".format(variable))
+            elem = Solver.ran_select(undecided)
+            selected = variable, {elem}, undecided - {elem}
+        return selected
         
     ## Two variable value selection functions.
 
@@ -132,15 +169,16 @@ class Solver:
         value_list.sort()
         return value_list[0]
 
-    def select_constraints(self, variable, dstore=None, verbosity=0):
+    def make_constraints(self, variable, subset1=None, subset2=None, dstore=None, verbosity=0):
         """Return a pair of constraints for the selected variable."""
-        subset1, subset2 = self.split_var_values(variable, verbosity=verbosity)
+        if not subset1:
+            subset1, subset2 = self.split_var_values(variable, verbosity=verbosity)
         if isinstance(variable, IVar):
             if verbosity:
                 print(' values: {}, {}'.format(subset1, subset2))
             return Member(variable, subset1, record=False), Member(variable, subset2, record=False)
         else:
-            # For an set Var, add subset1 to the lower bound, subtract subset1
+            # For a set Var, add subset1 to the lower bound, subtract subset1
             # from the upper bound
             v1 = variable.get_lower(dstore=dstore) | subset1
             v2 = variable.get_upper(dstore=dstore) - subset1
@@ -163,9 +201,15 @@ class Solver:
             if ndet > 5:
                 print('...')
         # Select a variable and two disjoint basic constraints on it
-        var = self.select_variable(undet, dstore=state.dstore, verbosity=verbosity)
-        constraint1, constraint2 = self.select_constraints(var, dstore=state.dstore,
-                                                           verbosity=verbosity)
+#        var = self.select_variable(undet, dstore=state.dstore, func=self.varselect,
+#                                   verbosity=verbosity)
+        var, values1, values2 = self.select_var_values(undet, dstore=state.dstore,
+                                                       func=self.varselect, verbosity=verbosity)
+#        print('Selected variable {} and value sets {},{}'.format(var, values1, values2))
+        constraint1, constraint2 = self.make_constraints(var, dstore=state.dstore,
+                                                         subset1=values1, subset2=values2,
+                                                         verbosity=verbosity)
+        print('Selected constraints {}, {}'.format(constraint1, constraint2))
         if verbosity:
             print('Distribution constraints: a -- {}, b -- {}'.format(constraint1, constraint2))
         # The constraints of the selected variable (make copies)
@@ -182,8 +226,8 @@ class Solver:
                              name=state.name+'b', depth=state.depth+1,
                              parent=state,
                              verbosity=verbosity)
-        state.children.extend([state, state2])
-        return [((var, constraint2), state2), ((var, constraint1), state1)]
+        state.children.extend([state1, state2])
+        return [((var, constraint1), state1), ((var, constraint2), state2)]
 
 class SearchState:
 
@@ -211,10 +255,13 @@ class SearchState:
     def __repr__(self):
         return "<SS {}/{}>".format(self.name, self.depth)
 
-    def get_value(self):
-        """A measure of how promising this state is: how many undetermined
-        essential variables there are."""
-        return len(self.dstore.ess_undet)
+    def get_value(self, evaluator=None):
+        """A measure of how promising this state is. Unless there is an explicit evaluator
+        for the solver, by default, this is how many undetermined essential variables there are."""
+        if evaluator:
+            return evaluator(self.dstore)
+        else:
+            return len(self.dstore.ess_undet)
 
     def exit(self, result, verbosity=0):
         if result == Constraint.failed:

@@ -42,8 +42,17 @@ def index():
 @app.route('/base', methods=['GET', 'POST'])
 def base():
     if request.method == 'POST' and 'Cargar' in request.form:
-        return render_template('tra.html')
+        return render_template('doc.html')
     return render_template('base.html')
+
+@app.route('/doc', methods=['GET', 'POST'])
+def doc():
+    if request.method == 'POST':
+        form = request.form
+        print("Form for doc: {}".format(form))
+        if 'enviar' in request.form:
+            return render_template('tra.html', translation=None, sentence=None, next=False)
+    return render_template('doc.html')
 
 @app.route('/tra', methods=['GET', 'POST'])
 def tra():
@@ -52,14 +61,14 @@ def tra():
     print("Idiomas cargados")
     if request.method == 'POST':
         form = request.form
-        print("Form: {}".format(form))
-        if form.get('otra'):
-            return render_template('tra.html', translation=None, sentence=None, otra=False)
+        print("Form for tra: {}".format(form))
+        if form.get('next'):
+            return render_template('tra.html', translation=None, sentence=None, next=False)
         elif form.get('sentence'):
             s = form['sentence']
             print("Sentence {}".format(s))
             t = translate(s, SPA, GRN)
             print("Translations {}".format(t))
             return render_template('tra.html', translation=t, sentence=s)
-    return render_template('tra.html', translation=None, sentence=None, otra=False)
+    return render_template('tra.html', translation=None, sentence=None, next=False)
 

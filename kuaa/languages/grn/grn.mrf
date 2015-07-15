@@ -190,6 +190,7 @@ s = caus
          rangue = False | True;
          ndaje = False | True;
          niko = False | True;
+	 pyre = False | True;
 	 ko = False | True
 
 #### SUSTANTIVOS; TEROKUÉRA

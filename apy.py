@@ -267,6 +267,13 @@ def load_eg():
     spa, grn = kuaa.Language.load_trans('spa', 'grn')
     return spa, grn
 
+def bueno():
+    e, g = load_eg()
+    d = kuaa.Document(e, g, "el muchacho es bueno.", True)
+    s = d[0]
+    s.initialize()
+    return s
+
 ##def get_ambig(language, write="../LingData/EsGn/ambig.txt"):
 ##    ambig = {}
 ##    groups = language.groups

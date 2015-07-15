@@ -1,5 +1,5 @@
 #   
-#   Hiiktuu variables and domain stores: required for constraint satisfaction.
+#   Mbojereha variables and domain stores: required for constraint satisfaction.
 #
 ########################################################################
 #
@@ -7,7 +7,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, HLTDI <gasser@cs.indiana.edu>
+#   Copyright (C) 2014, 2015 HLTDI <gasser@cs.indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as

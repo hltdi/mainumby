@@ -308,7 +308,8 @@ class Group(Entry):
         return match_snodes
 
     @staticmethod
-    def from_string(string, language, trans_strings=None, target=None, trans=False):
+    def from_string(string, language, trans_strings=None, target=None, trans=False,
+                    n_src_tokens=1):
         """Convert a group string and possibly a set of translation group strings
         to one or more groups."""
 #        print("Creating group from {} and trans strings {} [trans={}]".format(string, trans_strings, trans))
@@ -360,7 +361,7 @@ class Group(Entry):
                     match = TRANS_AGR.match(attrib)
                     if match:
                         if not trans_agrs:
-                            trans_agrs = [False] * len(tokens)
+                            trans_agrs = [False] * n_src_tokens
                         si, ti, feats = match.groups()
                         feat_pairs = []
                         for f in feats.split(WITHIN_ATTRIB_SEP):
@@ -369,7 +370,8 @@ class Group(Entry):
                                 feat_pairs.append((sf.strip(), tf.strip()))
                             else:
                                 feat_pairs.append((f.strip(), f.strip()))
-                        trans_agrs[int(si)] = feat_pairs
+                        # Changed 2015.07.13 to include index of target item
+                        trans_agrs[int(si)] = (int(ti), feat_pairs)
                         continue
                     match = ALIGNMENT.match(attrib)
                     if match:
@@ -413,8 +415,9 @@ class Group(Entry):
         if target and trans_strings:
             tgroups = []
             for tstring in trans_strings:
-                tgroup, tg, alg, tc = Group.from_string(tstring, target, trans_strings=None, trans=True)
-                tattribs = {'agr': tg}
+                tgroup, tagr, alg, tc = Group.from_string(tstring, target, trans_strings=None, trans=True,
+                                                          n_src_tokens=len(tokens))
+                tattribs = {'agr': tagr}
                 if alg:
                     tattribs['align'] = alg
                 if tc:

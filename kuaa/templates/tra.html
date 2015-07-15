@@ -82,14 +82,21 @@ span.sentence
 <h1>Mbojereha: Traducción del Castellano al Guaraní</h1>
 
 <h3>Uso</h3>
+<!--
 <p>Introducí el texto que querés traducir, por ejemplo, <i>Pedro
 está cantando en su casa</i>.</p>
+-->
+<p>
+Para pedirle a MJH que traduzca la oración, hac&eacute; clic en "Traducir".
+</p>
 
+<!--
 <form method=POST>
 <TEXTAREA NAME="sentence" ROWS=10 COLS=60 ></TEXTAREA>
 <p>
 <input type=submit value='enviar'>
 </p>
+-->
 <!--
 <input type=text style="font-family: Verdana; font-size: 100%;"
 name=sentence>
@@ -100,8 +107,7 @@ name=sentence>
 
 {% if sentence %}
 <p></p><p></p>
-<p>
-<span class="sentence">{{ sentence }}</span>
+<p>Actual oración: <span class="sentence">{{ sentence }}</span>
 </p>
 {% endif %}
 
@@ -117,8 +123,11 @@ Traducciones
 {% endfor %}
 
 <input type=submit style="font-family: Verdana; font-size: 100%;"
-action='tra' name='otra' value='¿Traducir otra oración?'>
+action='tra' name='next' value='¿Traducir la próxima oración?'>
 {% endif %}
+
+<form>
+<input type=submit value=''>
 </form>
 
 <!--

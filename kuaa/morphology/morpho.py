@@ -472,14 +472,17 @@ class POS:
             name = self.pos
         return os.path.join(d, name + '.gch')
 
-    def add_new_gen(self, root, fs, words):
-        print("Adding new gen {}:{} || {}".format(root, fs.__repr__(), words))
-        self.new_gens[(root, fs)] = words
+    def add_new_gen(self, root, fs, words, verbose=0):
+        if (root, fs) not in self.new_gens:
+            if verbose:
+                print("Adding new gen {}:{} || {}".format(root, fs.__repr__(), words))
+            self.new_gens[(root, fs)] = words
 
     def get_cached_gen(self, root, fs):
         """Returns cached words for root, FS pair, if any."""
-        if fs and not fs.frozen():
+        if isinstance(fs, FeatStruct) and not fs.frozen():
             fs.freeze()
+#        print("Root {}, FS {}".format(root, fs.__repr__()))
         if (root, fs) not in self.gen_cached:
             return False
         else:
@@ -594,6 +597,7 @@ class POS:
             only_words=True,
             trace=False):
         """Generate word from root and features."""
+#        print("Update feats {}, type {}".format(update_feats, type(update_feats)))
         if isinstance(update_feats, str):
             update_feats = FeatStruct(update_feats)
         cached = self.get_cached_gen(root, update_feats)

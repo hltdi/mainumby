@@ -9145,7 +9145,6 @@
 *** joven_n ; ^ joven_n 0 ; #151
 ->grn mitã_n ; 0==0 n:n ; #830 ; ##74
 ->grn mitãrusu_n ; 0==0 n:n ; #94 ; ##12
-->grn kuña_n pyahu ; 0==0 n:n
 ->grn karia'y_n ; 0==0 n:n ; #133 ; ##15
 ->grn mitãkuña_n ; 0==0 n:n ; #142 ; ##2
 *** joya_n ; ^ joya_n 0 ; #8
@@ -10988,19 +10987,19 @@
 ->grn kuñataĩ_n ; 0==0 n:n ; #121
 *** mozo_n ; ^ mozo_n 0
 ->grn mitãrusu_n ; 0==0 n:n ; #94
-->grn gua'i_n ; 0==0 n:n ; #9
-->grn mitãkaria'y_n ; 0==0 n:n ; #9
 ->grn karia'y_n ; 0==0 n:n ; #133
 *** muchacha_n núbil en el vocabulario religioso ; ^ muchacha_n 0 ; #20
 ->grn akãju_n ; 0==0 n:n
 *** muchacha_n ; ^ muchacha_n 0 ; #20
 ->grn mitãkuña_n ; 0==0 n:n ; #142 ; ##7
 ->grn kuñataĩ_n ; 0==0 n:n ; #121 ; ##10
-->grn kuña_n ra'y ; 0==0 n:n
 *** muchacho_n ; ^ muchacho_n 0 ; #48
 ->grn mitã_n ; 0==0 n:n ; #830 ; ##25
 ->grn mitãrusu_n ; 0==0 n:n ; #94 ; ##4
 ->grn karia'y_n ; 0==0 n:n ; #133 ; ##4
+*** el muchacho_n ; ^ muchacho_n 1
+->grn karia'y_n ; 1==0 n:n
+->grn mitãrusu_n ; 1==0 n:n
 *** muchedumbre_n ; ^ muchedumbre_n 0 ; #11
 ->grn <heta_n ; 0==0 n:n ; #1230
 ->grn aty_n ; 0==0 n:n ; #172 ; ##1
@@ -11822,7 +11821,6 @@
 ->grn <hovaigua_n ; 0==0 n:n
 *** oración_n de las doce palabras ; ^ oración_n 0 ; #89
 ->grn ñembo'e_n kurundu ; 0==0 n:n ; #64 ; ##1
-*** oración_n imperativa ; ^ oración_n 0 ; #89
 *** oración_n simple enunciativa o adversativa ; ^ oración_n 0 ; #89
 ->grn ñe'ẽjoajuteĩtee_n ; 0==0 n:n
 *** oración_n simple desiderativa u optativa ; ^ oración_n 0 ; #89
@@ -11832,7 +11830,6 @@
 *** oración_n ; ^ oración_n 0 ; #89
 ->grn mborai_n ; 0==0 n:n ; #10
 ->grn ñembo'e_n ; 0==0 n:n ; #64 ; ##1
-*** oración_n optativa o desiderativa ; ^ oración_n 0 ; #89
 *** oral_n ; ^ oral_n 0
 ->grn jurugua_n ; 0==0 n:n
 *** orden_n ; ^ orden_n 0 ; #96

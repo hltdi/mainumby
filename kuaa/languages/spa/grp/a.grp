@@ -1,3198 +1,3198 @@
 *** abandonado_a ; ^ abandonado_a 0
-->grn churi_a
+->grn churi_v[pos=adj]
 *** abatido_a ; ^ abatido_a 0
-->grn kangy_a
+->grn kangy_v[pos=adj]
 *** abierto_a ; ^ abierto_a 0
-->grn juru_a
+->grn juru_v[pos=adj]
 *** abigarrado_a ; ^ abigarrado_a 0
-->grn tara_a
-->grn para_a ; #116
+->grn tara_v[pos=adj]
+->grn para_v[pos=adj] ; #116
 *** abombado_a ; ^ abombado_a 0
-->grn akãravevo_a
+->grn akãravevo_v[pos=adj]
 *** abrigado_a ; ^ abrigado_a 0
-->grn jaho'ipy_a
+->grn jaho'ipy_v[pos=adj]
 *** abultado_a ; ^ abultado_a 0
-->grn chigua_a
+->grn chigua_v[pos=adj]
 *** abundante_a ; ^ abundante_a 0 ; #17
-->grn popy'ỹi_a
-->grn <heta_a ; #1230
+->grn popy'ỹi_v[pos=adj]
+->grn <heta_v[pos=adj] ; #1230
 *** aburrido_a ; ^ aburrido_a 0
-->grn kaigue_a ; #12
-->grn so'o_a ; #162
-->grn ay_a ; #4
-->grn kuerái_a ; #10
+->grn kaigue_v[pos=adj] ; #12
+->grn so'o_v[pos=adj] ; #162
+->grn ay_v[pos=adj] ; #4
+->grn kuerái_v[pos=adj] ; #10
 *** acelerado_a ; ^ acelerado_a 0
-->grn pojava_a
+->grn pojava_v[pos=adj]
 *** acicalado_a ; ^ acicalado_a 0
-->grn aru'ã_a
+->grn aru'ã_v[pos=adj]
 *** activo_a ; ^ activo_a 0 ; #1
-->grn kyre'ỹ_a ; #66
-->grn <hetia'e_a ; #25
-->grn ha'eve_a
+->grn kyre'ỹ_v[pos=adj] ; #66
+->grn <hetia'e_v[pos=adj] ; #25
+->grn ha'eve_v[pos=adj]
 *** actual_a ; ^ actual_a 0
-->grn aĝagua_a
+->grn aĝagua_v[pos=adj]
 *** acuático_a ; ^ acuático_a 0 ; #1
-->grn yrehegua_a
-->grn ypegua_a
+->grn yrehegua_v[pos=adj]
+->grn ypegua_v[pos=adj]
 *** admirado_a ; ^ admirado_a 0 ; #6
-->grn jepotapy_a
+->grn jepotapy_v[pos=adj]
 ->grn ma'ẽha_n rory
 *** adulto_a ; ^ adulto_a 0 ; #1
-->grn <huvicha_a ; #84
-->grn tuicha_a ; #155
+->grn <huvicha_v[pos=adj] ; #84
+->grn tuicha_v[pos=adj] ; #155
 *** afeminado_a ; ^ afeminado_a 0
 ->grn ava_n kuñareko
 *** afilado_a ; ^ afilado_a 0
-->grn haimbe_a
+->grn haimbe_v[pos=adj]
 *** afligida_a ; ^ afligida_a 0
-->grn <hovasy_a
+->grn <hovasy_v[pos=adj]
 *** afortunado_a ; ^ afortunado_a 0
-->grn oikoporãva_a
-->grn ka'avo_a ; #50
+->grn oikoporãva_v[pos=adj]
+->grn ka'avo_v[pos=adj] ; #50
 *** agotado_a ; ^ agotado_a 0
-->grn <hypa_a
+->grn <hypa_v[pos=adj]
 *** agraciado_a ; ^ agraciado_a 0
-->grn ka'avo_a ; #50
+->grn ka'avo_v[pos=adj] ; #50
 *** agradable_a ; ^ agradable_a 0 ; #30
-->grn piro'y_a ; #34
-->grn he_a ; #78
+->grn piro'y_v[pos=adj] ; #34
+->grn he_v[pos=adj] ; #78
 *** agradecido_a ; ^ agradecido_a 0 ; #2
-->grn ohechakuaáva_a
-->grn mba'erechakuaa_a ; #1
+->grn ohechakuaáva_v[pos=adj]
+->grn mba'erechakuaa_v[pos=adj] ; #1
 *** agresivo_a ; ^ agresivo_a 0
-->grn kachiãi_a
+->grn kachiãi_v[pos=adj]
 *** agreste_a ; ^ agreste_a 0
-->grn <hesaite_a
+->grn <hesaite_v[pos=adj]
 *** agrio_a ; ^ agrio_a 0
-->grn hái_a
+->grn hái_v[pos=adj]
 *** aguado_a ; ^ aguado_a 0
-->grn hi'ýva_a
-->grn yrei_a
+->grn hi'ýva_v[pos=adj]
+->grn yrei_v[pos=adj]
 *** agudo_a ; ^ agudo_a 0 ; #11
-->grn akua_a
-->grn akuã_a ; #1
-->grn <hakua_a ; #41
+->grn akua_v[pos=adj]
+->grn akuã_v[pos=adj] ; #1
+->grn <hakua_v[pos=adj] ; #41
 *** agujereado_a ; ^ agujereado_a 0
-->grn kua_a ; #36
+->grn kua_v[pos=adj] ; #36
 *** ahumado_a ; ^ ahumado_a 0
-->grn mbiche_a
+->grn mbiche_v[pos=adj]
 *** aislado_a ; ^ aislado_a 0
-->grn kotyvy'a_a
+->grn kotyvy'a_v[pos=adj]
 *** ajeno_a ; ^ ajeno_a 0
-->grn mba'e'ỹ_a
+->grn mba'e'ỹ_v[pos=adj]
 *** ajustado_a ; ^ ajustado_a 0
-->grn ijetu'u_a
+->grn ijetu'u_v[pos=adj]
 *** alargado_a ; ^ alargado_a 0
-->grn pyryva_a
+->grn pyryva_v[pos=adj]
 *** alborotador_a ; ^ alborotador_a 0
 ->grn sarambi_n apoha
 *** alegre_a ; ^ alegre_a 0 ; #26
-->grn pichoro_a ; #1
-->grn <hory_a ; #76
-->grn <hetia'e_a ; #25
+->grn pichoro_v[pos=adj] ; #1
+->grn <hory_v[pos=adj] ; #76
+->grn <hetia'e_v[pos=adj] ; #25
 *** alicaído_a ; ^ alicaído_a 0
-->grn pepo'a_a
+->grn pepo'a_v[pos=adj]
 *** alimenticio_a ; ^ alimenticio_a 0
-->grn mongarúva_a
+->grn mongarúva_v[pos=adj]
 *** alocado_a ; ^ alocado_a 0
-->grn akãtarova_a
+->grn akãtarova_v[pos=adj]
 *** altivo_a ; ^ altivo_a 0
-->grn jerova_a
+->grn jerova_v[pos=adj]
 *** alto_a ; ^ alto_a 0 ; #193
-->grn puku_a ; #88
-->grn mbuku_a ; #14
-->grn <huvicha_a ; #84
-->grn tuicha_a ; #155
-->grn yvate_a ; #227
+->grn puku_v[pos=adj] ; #88
+->grn mbuku_v[pos=adj] ; #14
+->grn <huvicha_v[pos=adj] ; #84
+->grn tuicha_v[pos=adj] ; #155
+->grn yvate_v[pos=adj] ; #227
 *** amable_a ; ^ amable_a 0 ; #5
-->grn <hekoayhu_a ; #11
-->grn <hory_a ; #76
-->grn <hetia'e_a ; #25
+->grn <hekoayhu_v[pos=adj] ; #11
+->grn <hory_v[pos=adj] ; #76
+->grn <hetia'e_v[pos=adj] ; #25
 *** amado_a ; ^ amado_a 0 ; #127
-->grn <hayhupy_a
-->grn <hayhupyre_a
-->grn ojehayhúva_a
-->grn <hecharamomby_a
+->grn <hayhupy_v[pos=adj]
+->grn <hayhupyre_v[pos=adj]
+->grn ojehayhúva_v[pos=adj]
+->grn <hecharamomby_v[pos=adj]
 *** amargado_a ; ^ amargado_a 0
-->grn py'aro_a
+->grn py'aro_v[pos=adj]
 *** amargo_a ; ^ amargo_a 0
-->grn ro_a
+->grn ro_v[pos=adj]
 *** amarillo_a ; ^ amarillo_a 0 ; #1
-->grn tupi_a ; #8
-->grn ju_a ; #859
-->grn sa'yju_a ; #23
-->grn ju_a ; #859
+->grn tupi_v[pos=adj] ; #8
+->grn ju_v[pos=adj] ; #859
+->grn sa'yju_v[pos=adj] ; #23
+->grn ju_v[pos=adj] ; #859
 *** ambidextro_a ; ^ ambidextro_a 0
 ->grn akatúa_n joja
 *** ambos_a ; ^ ambos_a 0
-->grn mokõive_a
+->grn mokõive_v[pos=adj]
 *** amoroso_a ; ^ amoroso_a 0
-->grn porayhukuaa_a
+->grn porayhukuaa_v[pos=adj]
 *** amplio_a ; ^ amplio_a 0
-->grn pyrusu_a
+->grn pyrusu_v[pos=adj]
 *** anacrónico_a ; ^ anacrónico_a 0
-->grn ymaguare_a
+->grn ymaguare_v[pos=adj]
 *** analfabeto_a ; ^ analfabeto_a 0
-->grn ohai'ỹva_a
+->grn ohai'ỹva_v[pos=adj]
 *** ancho_a ; ^ ancho_a 0
-->grn pe_a
+->grn pe_v[pos=adj]
 *** anciana_a ; ^ anciana_a 0
-->grn ĝuaiĝui_a
+->grn ĝuaiĝui_v[pos=adj]
 *** andrajoso_a ; ^ andrajoso_a 0
-->grn chalái_a
+->grn chalái_v[pos=adj]
 *** angosto_a ; ^ angosto_a 0 ; #4
-->grn po'i_a ; #29
-->grn ypi_a
+->grn po'i_v[pos=adj] ; #29
+->grn ypi_v[pos=adj]
 *** anterior_a ; ^ anterior_a 0 ; #3
-->grn <henondegua_a
-->grn mboyvegua_a
+->grn <henondegua_v[pos=adj]
+->grn mboyvegua_v[pos=adj]
 *** anticipado_a ; ^ anticipado_a 0
-->grn raẽ_a
+->grn raẽ_v[pos=adj]
 *** anticuado_a ; ^ anticuado_a 0
-->grn ymaguare_a
+->grn ymaguare_v[pos=adj]
 *** antiguo_a ; ^ antiguo_a 0 ; #53
-->grn <huvicha_a ; #84
-->grn ymaguare_a ; #164
+->grn <huvicha_v[pos=adj] ; #84
+->grn ymaguare_v[pos=adj] ; #164
 *** antipático_a ; ^ antipático_a 0
-->grn joha_a ; #3
-->grn ay_a ; #4
+->grn joha_v[pos=adj] ; #3
+->grn ay_v[pos=adj] ; #4
 *** antisocial_a ; ^ antisocial_a 0
-->grn kachiãi_a
+->grn kachiãi_v[pos=adj]
 *** antojadizo_a ; ^ antojadizo_a 0
-->grn ñemyrõnde_a
+->grn ñemyrõnde_v[pos=adj]
 *** anual_a ; ^ anual_a 0
-->grn aryñavõygua_a
+->grn aryñavõygua_v[pos=adj]
 *** análogo_a ; ^ análogo_a 0
-->grn joguaha_a ; #13
-->grn joguaháva_a
+->grn joguaha_v[pos=adj] ; #13
+->grn joguaháva_v[pos=adj]
 *** anónimo_a ; ^ anónimo_a 0
-->grn <hera'ỹva_a
+->grn <hera'ỹva_v[pos=adj]
 *** apagado_a ; ^ apagado_a 0 ; #5
-->grn guepyre_a
-->grn oguéva_a
-->grn oguepyre_a
+->grn guepyre_v[pos=adj]
+->grn oguéva_v[pos=adj]
+->grn oguepyre_v[pos=adj]
 *** apartado_a ; ^ apartado_a 0
-->grn mombyry_a
+->grn mombyry_v[pos=adj]
 *** apasionado_a ; ^ apasionado_a 0
-->grn akãraku_a
+->grn akãraku_v[pos=adj]
 *** apreciado_a ; ^ apreciado_a 0 ; #5
-->grn <hayhupyre_a
-->grn <hecharamomby_a
+->grn <hayhupyre_v[pos=adj]
+->grn <hecharamomby_v[pos=adj]
 *** apresurado_a ; ^ apresurado_a 0
-->grn pojava_a
+->grn pojava_v[pos=adj]
 *** apretado_a ; ^ apretado_a 0 ; #2
-->grn apoapy_a
-->grn mbojoparapyre_a
+->grn apoapy_v[pos=adj]
+->grn mbojoparapyre_v[pos=adj]
 *** apurado_a ; ^ apurado_a 0
-->grn py'atarova_a ; #6
-->grn pojava_a ; #2
+->grn py'atarova_v[pos=adj] ; #6
+->grn pojava_v[pos=adj] ; #2
 *** apócrifo_a ; ^ apócrifo_a 0
-->grn añetegua'ỹ_a
+->grn añetegua'ỹ_v[pos=adj]
 *** ardiente_a ; ^ ardiente_a 0
-->grn <hendýva_a
+->grn <hendýva_v[pos=adj]
 *** argentino_a ; ^ argentino_a 0
-->grn kurepi_a
+->grn kurepi_v[pos=adj]
 *** arisco_a ; ^ arisco_a 0
-->grn saraki_a ; #11
-->grn rari_a ; #1
-->grn <hesaite_a ; #12
+->grn saraki_v[pos=adj] ; #11
+->grn rari_v[pos=adj] ; #1
+->grn <hesaite_v[pos=adj] ; #12
 *** armonioso_a ; ^ armonioso_a 0
-->grn porãmbaite_a
+->grn porãmbaite_v[pos=adj]
 *** aromático_a ; ^ aromático_a 0
-->grn <hyakuãvu_a
+->grn <hyakuãvu_v[pos=adj]
 *** arreglado_a ; ^ arreglado_a 0
-->grn myatyrõmbyre_a
+->grn myatyrõmbyre_v[pos=adj]
 *** arrogante_a ; ^ arrogante_a 0
-->grn jerova_a
+->grn jerova_v[pos=adj]
 *** arrojado_a ; ^ arrojado_a 0
-->grn mombopyre_a
+->grn mombopyre_v[pos=adj]
 *** arrugada_a ; ^ arrugada_a 0
-->grn akãchororĩ_a
+->grn akãchororĩ_v[pos=adj]
 *** arrugado_a ; ^ arrugado_a 0
-->grn cha'ỹ_a
-->grn cha'ĩ_a
+->grn cha'ỹ_v[pos=adj]
+->grn cha'ĩ_v[pos=adj]
 *** artesanal_a ; ^ artesanal_a 0
-->grn chae_a
+->grn chae_v[pos=adj]
 *** asado_a ; ^ asado_a 0 ; #5
-->grn maimbe_a ; #18
-->grn <hesypyre_a
+->grn maimbe_v[pos=adj] ; #18
+->grn <hesypyre_v[pos=adj]
 *** asado_a superficialmente ; ^ asado_a 0 ; #5
-->grn apechyryry_a
+->grn apechyryry_v[pos=adj]
 *** asado_a seco ; ^ asado_a 0 ; #5
-->grn mbichy_a
+->grn mbichy_v[pos=adj]
 *** ascendente_a ; ^ ascendente_a 0
-->grn ojupíva_a
+->grn ojupíva_v[pos=adj]
 *** aseado_a ; ^ aseado_a 0
-->grn mopotĩmbyre_a
+->grn mopotĩmbyre_v[pos=adj]
 *** asiduo_a ; ^ asiduo_a 0
-->grn meme_a
+->grn meme_v[pos=adj]
 *** astuto_a ; ^ astuto_a 0
-->grn katupyry_a
+->grn katupyry_v[pos=adj]
 *** asustadizo_a ; ^ asustadizo_a 0
-->grn py'amandyju_a
+->grn py'amandyju_v[pos=adj]
 *** atado_a ; ^ atado_a 0 ; #24
-->grn apytĩmbyre_a
-->grn apytĩmby_a
+->grn apytĩmbyre_v[pos=adj]
+->grn apytĩmby_v[pos=adj]
 *** atento_a ; ^ atento_a 0
-->grn py'arechaukaha_a
+->grn py'arechaukaha_v[pos=adj]
 *** atolondrado_a ; ^ atolondrado_a 0
-->grn akãkuchu_a
+->grn akãkuchu_v[pos=adj]
 *** atontado_a ; ^ atontado_a 0
-->grn akãnga'u_a
+->grn akãnga'u_v[pos=adj]
 *** atractivo_a ; ^ atractivo_a 0 ; #1
-->grn kavure'i_a ; #13
-->grn ka'avo_a ; #50
+->grn kavure'i_v[pos=adj] ; #13
+->grn ka'avo_v[pos=adj] ; #50
 *** atrevido_a ; ^ atrevido_a 0 ; #3
-->grn <hova'atã_a ; #3
-->grn kose_a
-->grn tĩ'atã_a ; #1
+->grn <hova'atã_v[pos=adj] ; #3
+->grn kose_v[pos=adj]
+->grn tĩ'atã_v[pos=adj] ; #1
 *** audaz_a ; ^ audaz_a 0
-->grn py'aguasu_a
+->grn py'aguasu_v[pos=adj]
 *** ausente_a ; ^ ausente_a 0
-->grn pore'ỹ_a
+->grn pore'ỹ_v[pos=adj]
 *** automático_a ; ^ automático_a 0
-->grn ijeheguíva_a
+->grn ijeheguíva_v[pos=adj]
 *** autoritario_a ; ^ autoritario_a 0
-->grn mbarete_a
+->grn mbarete_v[pos=adj]
 *** auténtico_a ; ^ auténtico_a 0
-->grn añetegua_a ; #30
-->grn añete_a ; #219
+->grn añetegua_v[pos=adj] ; #30
+->grn añete_v[pos=adj] ; #219
 *** avaro_a ; ^ avaro_a 0 ; #6
-->grn chi'õ_a ; #5
-->grn jopy_a ; #79
+->grn chi'õ_v[pos=adj] ; #5
+->grn jopy_v[pos=adj] ; #79
 *** aventajado_a ; ^ aventajado_a 0
-->grn jesarekoha_a
+->grn jesarekoha_v[pos=adj]
 *** avezado_a ; ^ avezado_a 0
-->grn pohe_a
+->grn pohe_v[pos=adj]
 *** azulado_a ; ^ azulado_a 0
-->grn chovy_a
+->grn chovy_v[pos=adj]
 *** baboso_a ; ^ baboso_a 0
-->grn juruaysýva_a
+->grn juruaysýva_v[pos=adj]
 *** bajo_a ; ^ bajo_a 0 ; #89
-->grn pe_a ; #5405
-->grn karape_a ; #20
+->grn pe_v[pos=adj] ; #5405
+->grn karape_v[pos=adj] ; #20
 *** bajo_a de estatura ; ^ bajo_a 0 ; #89
-->grn karape_a ; #20
+->grn karape_v[pos=adj] ; #20
 *** bajo_a reserva ; ^ bajo_a 0 ; #89
-->grn ensuguy_a
+->grn ensuguy_v[pos=adj]
 *** barato_a ; ^ barato_a 0
-->grn <hapy'ỹva_a
+->grn <hapy'ỹva_v[pos=adj]
 *** barbudo_a ; ^ barbudo_a 0
-->grn <hendyváva_a
+->grn <hendyváva_v[pos=adj]
 ->grn <hendyva_n vuku
-->grn <hendyva_a ; #10
+->grn <hendyva_v[pos=adj] ; #10
 *** barrigón_a ; ^ barrigón_a 0
-->grn <hyegua'a_a
-->grn <hyepo_a
+->grn <hyegua'a_v[pos=adj]
+->grn <hyepo_v[pos=adj]
 *** bastante_a ; ^ bastante_a 0
-->grn chochõ_a
+->grn chochõ_v[pos=adj]
 *** basto_a ; ^ basto_a 0
-->grn korócho_a
+->grn korócho_v[pos=adj]
 *** bello_a ; ^ bello_a 0 ; #4
-->grn morã_a
-->grn porã_a ; #1590
+->grn morã_v[pos=adj]
+->grn porã_v[pos=adj] ; #1590
 *** bendito_a ; ^ bendito_a 0
-->grn marangatu_a
+->grn marangatu_v[pos=adj]
 *** bien_a ; ^ bien_a 0
-->grn porã_a ; #1590
+->grn porã_v[pos=adj] ; #1590
 *** absolutamente bien_a ; ^ bien_a 1
-->grn pavẽngatu_a
+->grn pavẽngatu_v[pos=adj]
 *** bilingüe_a ; ^ bilingüe_a 0
-->grn ñe'ẽkõi_a
+->grn ñe'ẽkõi_v[pos=adj]
 *** blanco_a ; ^ blanco_a 0
-->grn morotĩ_a
+->grn morotĩ_v[pos=adj]
 *** blancuzco_a ; ^ blancuzco_a 0
-->grn apatĩ_a
+->grn apatĩ_v[pos=adj]
 *** blando_a ; ^ blando_a 0
-->grn <hu'ũ_a ; #13
+->grn <hu'ũ_v[pos=adj] ; #13
 *** bobo_a ; ^ bobo_a 0
-->grn <hovatavy_a
+->grn <hovatavy_v[pos=adj]
 *** boludo_a ; ^ boludo_a 0
-->grn ha'ỹiva_a
+->grn ha'ỹiva_v[pos=adj]
 *** bondadoso_a ; ^ bondadoso_a 0
-->grn py'aporã_a
+->grn py'aporã_v[pos=adj]
 *** bonito_a ; ^ bonito_a 0
-->grn porã_a
+->grn porã_v[pos=adj]
 *** boquiabierto_a ; ^ boquiabierto_a 0
-->grn <hãimbiti_a
-->grn jurujái_a ; #10
+->grn <hãimbiti_v[pos=adj]
+->grn jurujái_v[pos=adj] ; #10
 *** borracho_a ; ^ borracho_a 0
-->grn ka'u_a
+->grn ka'u_v[pos=adj]
 *** borracho_a empedernido ; ^ borracho_a 0
-->grn ka'urapo_a
+->grn ka'urapo_v[pos=adj]
 *** bravo_a ; ^ bravo_a 0
-->grn sagua'a_a
-->grn jero_a ; #1
-->grn ñarõ_a ; #17
+->grn sagua'a_v[pos=adj]
+->grn jero_v[pos=adj] ; #1
+->grn ñarõ_v[pos=adj] ; #17
 *** brillante_a ; ^ brillante_a 0 ; #5
-->grn jajái_a ; #5
-->grn vera_a ; #64
-->grn mimbi_a ; #22
+->grn jajái_v[pos=adj] ; #5
+->grn vera_v[pos=adj] ; #64
+->grn mimbi_v[pos=adj] ; #22
 *** brilloso_a ; ^ brilloso_a 0
-->grn jajái_a ; #5
-->grn mimbi_a ; #22
-->grn mbi'i_a
+->grn jajái_v[pos=adj] ; #5
+->grn mimbi_v[pos=adj] ; #22
+->grn mbi'i_v[pos=adj]
 *** bronco_a ; ^ bronco_a 0
-->grn ñe'ẽkẽkẽ_a
+->grn ñe'ẽkẽkẽ_v[pos=adj]
 *** brumoso_a ; ^ brumoso_a 0
-->grn hi'aratĩmbo_a
+->grn hi'aratĩmbo_v[pos=adj]
 *** bruto_a ; ^ bruto_a 0
-->grn py'ahatã_a
+->grn py'ahatã_v[pos=adj]
 *** bueno_a ; ^ bueno_a 0 ; #337
-->grn porã_a ; #1590
-->grn marangatu_a ; #69
-->grn iporãva_a ; #92
-->grn py'aporã_a ; #14
+->grn porã_v[pos=adj] ; #1590
+->grn marangatu_v[pos=adj] ; #69
+*** ser_v bueno_a ; ^ bueno_a 1
+->grn porã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** burdo_a ; ^ burdo_a 0
-->grn korócho_a
+->grn korócho_v[pos=adj]
 *** cabezudo_a ; ^ cabezudo_a 0
-->grn akãhatã_a
+->grn akãhatã_v[pos=adj]
 *** cabizbajo_a ; ^ cabizbajo_a 0 ; #1
-->grn aturu_a
-->grn jayvyhápe_a
-->grn tindy_a ; #1
+->grn aturu_v[pos=adj]
+->grn jayvyhápe_v[pos=adj]
+->grn tindy_v[pos=adj] ; #1
 *** caliente_a ; ^ caliente_a 0 ; #5
-->grn aku_a ; #8
-->grn <haku_a ; #52
-->grn tini_a
+->grn aku_v[pos=adj] ; #8
+->grn <haku_v[pos=adj] ; #52
+->grn tini_v[pos=adj]
 *** apenas caliente_a ; ^ caliente_a 1
-->grn <hakuvy_a
+->grn <hakuvy_v[pos=adj]
 *** callado_a ; ^ callado_a 0 ; #5
-->grn kirirĩ_a ; #60
-->grn apeguy_a
-->grn apeguypegua_a
+->grn kirirĩ_v[pos=adj] ; #60
+->grn apeguy_v[pos=adj]
+->grn apeguypegua_v[pos=adj]
 *** calvo_a ; ^ calvo_a 0
-->grn akãperõ_a
+->grn akãperõ_v[pos=adj]
 *** caminante_a ; ^ caminante_a 0
-->grn oguatáva_a
+->grn oguatáva_v[pos=adj]
 *** canoso_a ; ^ canoso_a 0
-->grn akãtĩ_a ; #2
-->grn atĩ_a ; #4
-->grn atĩva_a
+->grn akãtĩ_v[pos=adj] ; #2
+->grn atĩ_v[pos=adj] ; #4
+->grn atĩva_v[pos=adj]
 *** cansado_a ; ^ cansado_a 0
-->grn kane'õ_a
+->grn kane'õ_v[pos=adj]
 *** capaz_a ; ^ capaz_a 0 ; #13
-->grn ha'eve_a
-->grn pohe_a
-->grn guápa_a
+->grn ha'eve_v[pos=adj]
+->grn pohe_v[pos=adj]
+->grn guápa_v[pos=adj]
 *** capaz_a de retroceder ; ^ capaz_a 0 ; #13
-->grn guevipy_a
+->grn guevipy_v[pos=adj]
 *** caprichoso_a ; ^ caprichoso_a 0
-->grn <hekoita_a
+->grn <hekoita_v[pos=adj]
 *** capón_a ; ^ capón_a 0
-->grn <ha'ỹi'ỹva_a
+->grn <ha'ỹi'ỹva_v[pos=adj]
 *** cargado_a ; ^ cargado_a 0
-->grn pyasy_a
+->grn pyasy_v[pos=adj]
 *** caritativo_a ; ^ caritativo_a 0
-->grn guéno_a
+->grn guéno_v[pos=adj]
 *** cariñoso_a ; ^ cariñoso_a 0
-->grn porayhukuaa_a
+->grn porayhukuaa_v[pos=adj]
 *** caro_a ; ^ caro_a 0 ; #19
-->grn <hepýva_a
-->grn <hepy_a ; #62
+->grn <hepýva_v[pos=adj]
+->grn <hepy_v[pos=adj] ; #62
 *** casado_a ; ^ casado_a 0
-->grn mendáva_a
+->grn mendáva_v[pos=adj]
 *** casero_a ; ^ casero_a 0
-->grn chae_a
-->grn ñemoñare_a ; #32
-->grn ogapegua_a
+->grn chae_v[pos=adj]
+->grn ñemoñare_v[pos=adj] ; #32
+->grn ogapegua_v[pos=adj]
 *** casto_a ; ^ casto_a 0
-->grn marã'ỹ_a
+->grn marã'ỹ_v[pos=adj]
 *** catorce_a ; ^ catorce_a 0
-->grn parundy_a
+->grn parundy_v[pos=adj]
 *** caudaloso_a ; ^ caudaloso_a 0
 ->grn hi'y_n hetáva
 *** cautivador_a ; ^ cautivador_a 0
-->grn jesarekoha_a
+->grn jesarekoha_v[pos=adj]
 *** cautivo_a ; ^ cautivo_a 0
-->grn monambipyre_a
+->grn monambipyre_v[pos=adj]
 *** caído_a ; ^ caído_a 0
-->grn kuigue_a
+->grn kuigue_v[pos=adj]
 *** ceniciento_a ; ^ ceniciento_a 0
-->grn <havẽ_a
+->grn <havẽ_v[pos=adj]
 *** central_a ; ^ central_a 0
-->grn apytere_a
+->grn apytere_v[pos=adj]
 *** centésimo_a ; ^ centésimo_a 0
-->grn saha_a
+->grn saha_v[pos=adj]
 *** cercano_a ; ^ cercano_a 0
-->grn aĝuigua_a
+->grn aĝuigua_v[pos=adj]
 *** cero_a ; ^ cero_a 0
-->grn papa'ỹ_a
+->grn papa'ỹ_v[pos=adj]
 *** cerrado_a ; ^ cerrado_a 0
-->grn ñembotypy_a
+->grn ñembotypy_v[pos=adj]
 *** chabacano_a ; ^ chabacano_a 0
-->grn sagua'a_a
+->grn sagua'a_v[pos=adj]
 *** chapucero_a ; ^ chapucero_a 0
-->grn chambo_a
+->grn chambo_v[pos=adj]
 *** charlatán_a ; ^ charlatán_a 0
-->grn jurujy_a
-->grn my'ỹi_a
-->grn ñe'ẽngatu_a ; #3
+->grn jurujy_v[pos=adj]
+->grn my'ỹi_v[pos=adj]
+->grn ñe'ẽngatu_v[pos=adj] ; #3
 *** chato_a ; ^ chato_a 0
-->grn pe_a ; #5405
-->grn tupe_a
+->grn pe_v[pos=adj] ; #5405
+->grn tupe_v[pos=adj]
 *** chico_a ; ^ chico_a 0 ; #5
-->grn po'i_a ; #29
-->grn michĩ_a ; #35
-->grn sa'i_a ; #58
-->grn mirĩ_a ; #16
+->grn po'i_v[pos=adj] ; #29
+->grn michĩ_v[pos=adj] ; #35
+->grn sa'i_v[pos=adj] ; #58
+->grn mirĩ_v[pos=adj] ; #16
 *** chiflado_a ; ^ chiflado_a 0
-->grn tavyrai_a
+->grn tavyrai_v[pos=adj]
 *** chiquito_a ; ^ chiquito_a 0
-->grn kýtomi_a
+->grn kýtomi_v[pos=adj]
 *** chismoso_a ; ^ chismoso_a 0 ; #5
-->grn my'ỹi_a
-->grn kuña'i_a
+->grn my'ỹi_v[pos=adj]
+->grn kuña'i_v[pos=adj]
 *** chistoso_a ; ^ chistoso_a 0
-->grn grásia_a
+->grn grásia_v[pos=adj]
 *** chusco_a ; ^ chusco_a 0
-->grn kuli_a
+->grn kuli_v[pos=adj]
 *** ciego_a ; ^ ciego_a 0 ; #68
-->grn <hesatũ_a
-->grn satũ_a
+->grn <hesatũ_v[pos=adj]
+->grn satũ_v[pos=adj]
 *** cien_a ; ^ cien_a 0
-->grn sa_a
+->grn sa_v[pos=adj]
 *** cien_a mil ; ^ cien_a 0
-->grn sasu_a
+->grn sasu_v[pos=adj]
 *** cierto_a ; ^ cierto_a 0 ; #164
-->grn añetegua_a ; #30
-->grn añete_a ; #219
+->grn añetegua_v[pos=adj] ; #30
+->grn añete_v[pos=adj] ; #219
 *** cilíndrico_a ; ^ cilíndrico_a 0
-->grn guachiko_a
+->grn guachiko_v[pos=adj]
 *** cinco_a ; ^ cinco_a 0
-->grn po_a
+->grn po_v[pos=adj]
 *** cinco_a mil ; ^ cinco_a 0
-->grn posu_a
+->grn posu_v[pos=adj]
 *** cincuenta_a ; ^ cincuenta_a 0
-->grn popa_a
+->grn popa_v[pos=adj]
 *** cincuenta_a mil ; ^ cincuenta_a 0
-->grn popasu_a
+->grn popasu_v[pos=adj]
 *** circular_a ; ^ circular_a 0
-->grn amandáva_a
-->grn apu'a_a ; #43
+->grn amandáva_v[pos=adj]
+->grn apu'a_v[pos=adj] ; #43
 *** citado_a ; ^ citado_a 0
-->grn <henoimby_a
+->grn <henoimby_v[pos=adj]
 *** ciudadano_a ; ^ ciudadano_a 0
-->grn tavaygua_a
+->grn tavaygua_v[pos=adj]
 *** clandestino_a ; ^ clandestino_a 0
-->grn ñemihapegua_a
+->grn ñemihapegua_v[pos=adj]
 *** claro_a ; ^ claro_a 0 ; #6
-->grn sakã_a
-->grn <hesakã_a ; #33
+->grn sakã_v[pos=adj]
+->grn <hesakã_v[pos=adj] ; #33
 *** cocido_a ; ^ cocido_a 0 ; #16
-->grn jy_a ; #93
-->grn mimói_a ; #9
+->grn jy_v[pos=adj] ; #93
+->grn mimói_v[pos=adj] ; #9
 *** cocido_a en agua ; ^ cocido_a 0 ; #16
-->grn mimoimbyre_a
+->grn mimoimbyre_v[pos=adj]
 *** cocido_a a calor seco ; ^ cocido_a 0 ; #16
-->grn mbichy_a
+->grn mbichy_v[pos=adj]
 *** codiciado_a ; ^ codiciado_a 0
-->grn jepotapy_a
+->grn jepotapy_v[pos=adj]
 *** coetáneo_a ; ^ coetáneo_a 0
-->grn javegua_a
+->grn javegua_v[pos=adj]
 *** cojo_a ; ^ cojo_a 0 ; #24
-->grn parĩ_a
-->grn karẽ_a ; #7
+->grn parĩ_v[pos=adj]
+->grn karẽ_v[pos=adj] ; #7
 *** cojonudo_a ; ^ cojonudo_a 0
-->grn ha'ỹiva_a
+->grn ha'ỹiva_v[pos=adj]
 *** colgante_a ; ^ colgante_a 0
-->grn osãingóva_a
+->grn osãingóva_v[pos=adj]
 *** colmado_a ; ^ colmado_a 0 ; #5
-->grn <henyhẽ_a ; #51
-->grn chovi_a ; #2
+->grn <henyhẽ_v[pos=adj] ; #51
+->grn chovi_v[pos=adj] ; #2
 *** colocado_a ; ^ colocado_a 0
-->grn moĩmby_a
+->grn moĩmby_v[pos=adj]
 *** mal colocado_a ; ^ colocado_a 1
-->grn kechẽ_a
+->grn kechẽ_v[pos=adj]
 *** colorado_a ; ^ colorado_a 0
-->grn pytã_a
+->grn pytã_v[pos=adj]
 *** colosal_a ; ^ colosal_a 0
-->grn popeno_a
+->grn popeno_v[pos=adj]
 *** combustible_a ; ^ combustible_a 0
-->grn jepotareíva_a
+->grn jepotareíva_v[pos=adj]
 *** comestible_a ; ^ comestible_a 0
-->grn upy_a
-->grn hi'upy_a ; #74
+->grn upy_v[pos=adj]
+->grn hi'upy_v[pos=adj] ; #74
 *** comilón_a ; ^ comilón_a 0
-->grn karúva_a
+->grn karúva_v[pos=adj]
 *** competente_a ; ^ competente_a 0
-->grn oikuaáva_a
+->grn oikuaáva_v[pos=adj]
 *** complacido_a ; ^ complacido_a 0
-->grn mbojeroviapy_a
+->grn mbojeroviapy_v[pos=adj]
 *** completo_a ; ^ completo_a 0 ; #33
-->grn oĩmbáva_a
-->grn <henyhẽmba_a
+->grn oĩmbáva_v[pos=adj]
+->grn <henyhẽmba_v[pos=adj]
 *** complicado_a ; ^ complicado_a 0
-->grn <hovatavy_a ; #4
-->grn javorái_a ; #8
+->grn <hovatavy_v[pos=adj] ; #4
+->grn javorái_v[pos=adj] ; #8
 *** compuesto_a ; ^ compuesto_a 0
-->grn myatyrõmbyre_a
+->grn myatyrõmbyre_v[pos=adj]
 *** común_a ; ^ común_a 0
-->grn tapiagua_a
+->grn tapiagua_v[pos=adj]
 *** concentrado_a ; ^ concentrado_a 0
-->grn tevire_a
+->grn tevire_v[pos=adj]
 *** confuso_a ; ^ confuso_a 0
-->grn apañuãi_a
+->grn apañuãi_v[pos=adj]
 *** congelado_a ; ^ congelado_a 0
-->grn <hypy'ũ_a
+->grn <hypy'ũ_v[pos=adj]
 *** conocedor_a ; ^ conocedor_a 0
-->grn mba'ekuaáva_a
+->grn mba'ekuaáva_v[pos=adj]
 *** conocido_a ; ^ conocido_a 0 ; #77
-->grn ojekuaáva_a
-->grn kuaáva_a
+->grn ojekuaáva_v[pos=adj]
+->grn kuaáva_v[pos=adj]
 *** consagrado_a ; ^ consagrado_a 0
-->grn mongaraipyre_a
+->grn mongaraipyre_v[pos=adj]
 *** consanguíneo_a ; ^ consanguíneo_a 0
-->grn oñopẽhẽngue_a
+->grn oñopẽhẽngue_v[pos=adj]
 *** consentido_a ; ^ consentido_a 0
 ->grn <hesãi_n kyra
 *** considerado_a ; ^ considerado_a 0
-->grn mba'erechakuaa_a
+->grn mba'erechakuaa_v[pos=adj]
 *** constante_a ; ^ constante_a 0
-->grn meme_a
+->grn meme_v[pos=adj]
 *** consumido_a ; ^ consumido_a 0
-->grn yguerei_a
+->grn yguerei_v[pos=adj]
 *** contado_a ; ^ contado_a 0
-->grn papapyre_a
+->grn papapyre_v[pos=adj]
 *** contagioso_a ; ^ contagioso_a 0
-->grn ováva_a
+->grn ováva_v[pos=adj]
 *** contemporáneo_a ; ^ contemporáneo_a 0 ; #1
-->grn ko'aĝagua_a ; #9
-->grn javegua_a ; #2
-->grn aĝagua_a
+->grn ko'aĝagua_v[pos=adj] ; #9
+->grn javegua_v[pos=adj] ; #2
+->grn aĝagua_v[pos=adj]
 *** contemporáneos_a ; ^ contemporáneos_a 0
-->grn joavegua_a
+->grn joavegua_v[pos=adj]
 *** contento_a ; ^ contento_a 0
-->grn ovy'áva_a
+->grn ovy'áva_v[pos=adj]
 *** contestador_a ; ^ contestador_a 0
-->grn ombohováiva_a
+->grn ombohováiva_v[pos=adj]
 *** contiguo_a ; ^ contiguo_a 0
-->grn ykeregua_a
+->grn ykeregua_v[pos=adj]
 *** contradictorio_a ; ^ contradictorio_a 0
-->grn ojoaju'ỹva_a
+->grn ojoaju'ỹva_v[pos=adj]
 *** convexo_a ; ^ convexo_a 0
-->grn chovi_a ; #2
-->grn chigua_a
+->grn chovi_v[pos=adj] ; #2
+->grn chigua_v[pos=adj]
 *** copioso_a ; ^ copioso_a 0
-->grn <heta_a
+->grn <heta_v[pos=adj]
 *** cornudo_a ; ^ cornudo_a 0
-->grn <hatĩva_a
-->grn akãratĩ_a
+->grn <hatĩva_v[pos=adj]
+->grn akãratĩ_v[pos=adj]
 *** corpulento_a ; ^ corpulento_a 0
-->grn <huvicha_a ; #84
-->grn tuicha_a ; #155
+->grn <huvicha_v[pos=adj] ; #84
+->grn tuicha_v[pos=adj] ; #155
 *** correcto_a ; ^ correcto_a 0 ; #1
-->grn <hekoporã_a ; #16
-->grn porã_a ; #1590
+->grn <hekoporã_v[pos=adj] ; #16
+->grn porã_v[pos=adj] ; #1590
 *** corrupto_a ; ^ corrupto_a 0
-->grn meĝua_a
+->grn meĝua_v[pos=adj]
 *** cortado_a ; ^ cortado_a 0 ; #28
-->grn apĩ_a ; #6
-->grn sogue_a ; #3
+->grn apĩ_v[pos=adj] ; #6
+->grn sogue_v[pos=adj] ; #3
 *** corto_a ; ^ corto_a 0 ; #11
-->grn apĩ_a ; #6
-->grn mbyky_a ; #10
+->grn apĩ_v[pos=adj] ; #6
+->grn mbyky_v[pos=adj] ; #10
 *** corvo_a ; ^ corvo_a 0
-->grn karapã_a
+->grn karapã_v[pos=adj]
 *** cosido_a ; ^ cosido_a 0
-->grn vyvy_a
+->grn vyvy_v[pos=adj]
 *** costoso_a ; ^ costoso_a 0 ; #3
-->grn <hasy_a ; #321
-->grn <hepýva_a
-->grn <hepy_a ; #62
+->grn <hasy_v[pos=adj] ; #321
+->grn <hepýva_v[pos=adj]
+->grn <hepy_v[pos=adj] ; #62
 *** crecido_a ; ^ crecido_a 0 ; #12
-->grn <huvicha_a ; #84
-->grn tuicha_a ; #155
+->grn <huvicha_v[pos=adj] ; #84
+->grn tuicha_v[pos=adj] ; #155
 *** crespo_a ; ^ crespo_a 0 ; #1
-->grn cha'ỹ_a
-->grn apopẽ_a
+->grn cha'ỹ_v[pos=adj]
+->grn apopẽ_v[pos=adj]
 *** cristalino_a ; ^ cristalino_a 0
-->grn satĩ_a
+->grn satĩ_v[pos=adj]
 *** crudo_a ; ^ crudo_a 0 ; #2
-->grn pyryva_a
-->grn pýra_a ; #1
+->grn pyryva_v[pos=adj]
+->grn pýra_v[pos=adj] ; #1
 *** cruel_a ; ^ cruel_a 0 ; #12
-->grn jero_a ; #1
-->grn py'ahatã_a ; #1
+->grn jero_v[pos=adj] ; #1
+->grn py'ahatã_v[pos=adj] ; #1
 *** cuarenta_a ; ^ cuarenta_a 0
-->grn irundypa_a
+->grn irundypa_v[pos=adj]
 *** cuarto_a ; ^ cuarto_a 0
-->grn irundyha_a
+->grn irundyha_v[pos=adj]
 *** cuatro_a ; ^ cuatro_a 0
-->grn irundy_a
+->grn irundy_v[pos=adj]
 *** cuatrocientos_a ; ^ cuatrocientos_a 0
-->grn irundysa_a
+->grn irundysa_v[pos=adj]
 *** cubierto_a ; ^ cubierto_a 0 ; #53
-->grn jaho'ipy_a
-->grn aho'i_a
+->grn jaho'ipy_v[pos=adj]
+->grn aho'i_v[pos=adj]
 *** cuerdo_a ; ^ cuerdo_a 0
-->grn akãguapy_a
+->grn akãguapy_v[pos=adj]
 *** curioso_a ; ^ curioso_a 0
-->grn volu_a
-->grn <hovayva_a
+->grn volu_v[pos=adj]
+->grn <hovayva_v[pos=adj]
 *** curvo_a ; ^ curvo_a 0
-->grn karẽ_a ; #7
-->grn karapã_a
+->grn karẽ_v[pos=adj] ; #7
+->grn karapã_v[pos=adj]
 *** cálido_a ; ^ cálido_a 0
-->grn <hakuvy_a
+->grn <hakuvy_v[pos=adj]
 *** célebre_a ; ^ célebre_a 0
-->grn momorãmbyre_a
+->grn momorãmbyre_v[pos=adj]
 *** cínico_a ; ^ cínico_a 0
-->grn <hovamokõi_a ; #4
-->grn otĩ'ỹva_a
+->grn <hovamokõi_v[pos=adj] ; #4
+->grn otĩ'ỹva_v[pos=adj]
 *** círculo_a ; ^ círculo_a 0
-->grn apu'a_a
+->grn apu'a_v[pos=adj]
 *** cóncavo_a ; ^ cóncavo_a 0
-->grn pygua_a
-->grn pyko'ẽ_a ; #1
+->grn pygua_v[pos=adj]
+->grn pyko'ẽ_v[pos=adj] ; #1
 *** dadivoso_a ; ^ dadivoso_a 0
-->grn pojera_a
+->grn pojera_v[pos=adj]
 *** dado_a ; ^ dado_a 0
-->grn me'ẽmbyre_a
+->grn me'ẽmbyre_v[pos=adj]
 *** dañino_a ; ^ dañino_a 0
-->grn mbyaiha_a
-->grn kose_a
-->grn haruha_a
+->grn mbyaiha_v[pos=adj]
+->grn kose_v[pos=adj]
+->grn haruha_v[pos=adj]
 *** decaído_a ; ^ decaído_a 0
-->grn ygue_a
+->grn ygue_v[pos=adj]
 *** decente_a ; ^ decente_a 0 ; #1
-->grn <huvicha_a ; #84
-->grn kate_a ; #2
-->grn tuicha_a ; #155
+->grn <huvicha_v[pos=adj] ; #84
+->grn kate_v[pos=adj] ; #2
+->grn tuicha_v[pos=adj] ; #155
 *** decidido_a ; ^ decidido_a 0 ; #5
-->grn ipyapýva_a
-->grn kose_a
+->grn ipyapýva_v[pos=adj]
+->grn kose_v[pos=adj]
 *** declarado_a ; ^ declarado_a 0
-->grn mombe'upyre_a
+->grn mombe'upyre_v[pos=adj]
 *** defectuoso_a ; ^ defectuoso_a 0
-->grn meĝua_a ; #1
+->grn meĝua_v[pos=adj] ; #1
 *** deficiente_a ; ^ deficiente_a 0
-->grn oĩmba'ỹ_a
+->grn oĩmba'ỹ_v[pos=adj]
 *** definitivo_a ; ^ definitivo_a 0
-->grn opytaitéva_a
+->grn opytaitéva_v[pos=adj]
 *** degenerado_a ; ^ degenerado_a 0
-->grn <hekovai_a
+->grn <hekovai_v[pos=adj]
 *** delator_a ; ^ delator_a 0
-->grn jurupepíta_a
+->grn jurupepíta_v[pos=adj]
 *** delgado_a ; ^ delgado_a 0
-->grn po'i_a ; #29
-->grn piru_a ; #34
-->grn pererĩ_a ; #6
+->grn po'i_v[pos=adj] ; #29
+->grn piru_v[pos=adj] ; #34
+->grn pererĩ_v[pos=adj] ; #6
 *** delicado_a ; ^ delicado_a 0 ; #11
-->grn <hekoita_a
-->grn asy_a ; #64
+->grn <hekoita_v[pos=adj]
+->grn asy_v[pos=adj] ; #64
 *** delicioso_a ; ^ delicioso_a 0
-->grn he_a
+->grn he_v[pos=adj]
 *** demasiado_a ; ^ demasiado_a 0 ; #11
-->grn <huvicha_a ; #84
-->grn tuicha_a ; #155
+->grn <huvicha_v[pos=adj] ; #84
+->grn tuicha_v[pos=adj] ; #155
 *** denominado_a ; ^ denominado_a 0
-->grn <hérava_a
+->grn <hérava_v[pos=adj]
 *** denso_a ; ^ denso_a 0
-->grn <hypy'ũ_a
+->grn <hypy'ũ_v[pos=adj]
 *** depravado_a ; ^ depravado_a 0 ; #2
-->grn <hekovai_a ; #15
-->grn <hekomeĝua_a
+->grn <hekovai_v[pos=adj] ; #15
+->grn <hekomeĝua_v[pos=adj]
 *** deprimido_a ; ^ deprimido_a 0
-->grn kangy_a
+->grn kangy_v[pos=adj]
 *** derecho_a ; ^ derecho_a 0 ; #180
-->grn karẽ'ỹ_a
-->grn yvi_a
-->grn akatúa_a
-->grn ikare'ỹva_a
+->grn karẽ'ỹ_v[pos=adj]
+->grn yvi_v[pos=adj]
+->grn akatúa_v[pos=adj]
+->grn ikare'ỹva_v[pos=adj]
 *** derrotado_a ; ^ derrotado_a 0 ; #10
-->grn pitua_a
-->grn pituva_a ; #2
-->grn me'ẽmbyre_a
+->grn pitua_v[pos=adj]
+->grn pituva_v[pos=adj] ; #2
+->grn me'ẽmbyre_v[pos=adj]
 *** desabrido_a ; ^ desabrido_a 0
-->grn he'ỹ_a
+->grn he'ỹ_v[pos=adj]
 *** desagradable_a ; ^ desagradable_a 0 ; #1
-->grn joha_a ; #3
-->grn pohýi_a ; #44
-->grn santoro_a
+->grn joha_v[pos=adj] ; #3
+->grn pohýi_v[pos=adj] ; #44
+->grn santoro_v[pos=adj]
 *** desalmado_a ; ^ desalmado_a 0
-->grn ãnge'ỹ_a
+->grn ãnge'ỹ_v[pos=adj]
 *** desanimado_a ; ^ desanimado_a 0
-->grn pila'i_a
+->grn pila'i_v[pos=adj]
 *** desarrollado_a ; ^ desarrollado_a 0
-->grn <huvicha_a ; #84
-->grn tuicha_a ; #155
+->grn <huvicha_v[pos=adj] ; #84
+->grn tuicha_v[pos=adj] ; #155
 *** desatado_a ; ^ desatado_a 0 ; #5
-->grn jorapyre_a
-->grn jorapy_a
-->grn jera_a ; #10
+->grn jorapyre_v[pos=adj]
+->grn jorapy_v[pos=adj]
+->grn jera_v[pos=adj] ; #10
 *** desbocado_a ; ^ desbocado_a 0
-->grn juru'akua_a
+->grn juru'akua_v[pos=adj]
 *** descabellado_a ; ^ descabellado_a 0
-->grn akãchara_a
+->grn akãchara_v[pos=adj]
 *** descalzo_a ; ^ descalzo_a 0
-->grn pynandi_a
+->grn pynandi_v[pos=adj]
 *** descarado_a ; ^ descarado_a 0 ; #1
-->grn <hova'atã_a ; #3
-->grn kose_a
+->grn <hova'atã_v[pos=adj] ; #3
+->grn kose_v[pos=adj]
 *** descolorido_a ; ^ descolorido_a 0
-->grn apatĩ_a
+->grn apatĩ_v[pos=adj]
 *** descompuesto_a ; ^ descompuesto_a 0
-->grn marã_a
-->grn rẽ_a
+->grn marã_v[pos=adj]
+->grn rẽ_v[pos=adj]
 *** desconsiderado_a ; ^ desconsiderado_a 0
-->grn moõpy_a
-->grn <hechakuaa'ỹ_a
+->grn moõpy_v[pos=adj]
+->grn <hechakuaa'ỹ_v[pos=adj]
 *** descontento_a ; ^ descontento_a 0
-->grn vy'a'ỹva_a
+->grn vy'a'ỹva_v[pos=adj]
 *** descubierto_a ; ^ descubierto_a 0
-->grn nandi_a
+->grn nandi_v[pos=adj]
 *** desdichado_a ; ^ desdichado_a 0
-->grn vy'a'ỹva_a
+->grn vy'a'ỹva_v[pos=adj]
 *** desencajado_a ; ^ desencajado_a 0
-->grn <hovaju_a
+->grn <hovaju_v[pos=adj]
 *** desenfadado_a ; ^ desenfadado_a 0
-->grn kose_a
+->grn kose_v[pos=adj]
 *** desenvuelto_a ; ^ desenvuelto_a 0
-->grn myasãimbyre_a
+->grn myasãimbyre_v[pos=adj]
 *** desesperado_a ; ^ desesperado_a 0
-->grn py'atarova_a
+->grn py'atarova_v[pos=adj]
 *** desfigurado_a ; ^ desfigurado_a 0
-->grn chóto_a
+->grn chóto_v[pos=adj]
 *** deshecho_a ; ^ deshecho_a 0
-->grn kuerei_a
+->grn kuerei_v[pos=adj]
 *** desmesurado_a ; ^ desmesurado_a 0
-->grn popeno_a
+->grn popeno_v[pos=adj]
 *** desnudo_a ; ^ desnudo_a 0
-->grn opívo_a
+->grn opívo_v[pos=adj]
 *** desocupado_a ; ^ desocupado_a 0
-->grn mba'apo'ỹ_a
+->grn mba'apo'ỹ_v[pos=adj]
 *** desordenado_a ; ^ desordenado_a 0
-->grn sarambi_a
+->grn sarambi_v[pos=adj]
 *** desparramada_a ; ^ desparramada_a 0
-->grn aperera_a
+->grn aperera_v[pos=adj]
 *** desparramado_a ; ^ desparramado_a 0 ; #1
-->grn sarambi_a ; #30
+->grn sarambi_v[pos=adj] ; #30
 *** despeinado_a ; ^ despeinado_a 0
-->grn chara_a
+->grn chara_v[pos=adj]
 *** despierta_a ; ^ despierta_a 0
-->grn guápa_a
+->grn guápa_v[pos=adj]
 *** despierto_a ; ^ despierto_a 0 ; #15
-->grn katupyry_a ; #252
-->grn pyryrỹi_a ; #2
-->grn kyre'ỹ_a ; #66
+->grn katupyry_v[pos=adj] ; #252
+->grn pyryrỹi_v[pos=adj] ; #2
+->grn kyre'ỹ_v[pos=adj] ; #66
 *** desposeído_a ; ^ desposeído_a 0
-->grn poriahu_a
+->grn poriahu_v[pos=adj]
 *** despreciable_a ; ^ despreciable_a 0
-->grn váiro_a
+->grn váiro_v[pos=adj]
 *** desprendido_a ; ^ desprendido_a 0
-->grn kuigue_a
+->grn kuigue_v[pos=adj]
 *** destartalado_a ; ^ destartalado_a 0
-->grn ku'ekue_a
+->grn ku'ekue_v[pos=adj]
 *** destrozado_a ; ^ destrozado_a 0
-->grn pẽngue_a
+->grn pẽngue_v[pos=adj]
 *** destructor_a ; ^ destructor_a 0
-->grn kose_a
+->grn kose_v[pos=adj]
 *** desubicado_a ; ^ desubicado_a 0
-->grn <henda'ỹ_a
+->grn <henda'ỹ_v[pos=adj]
 *** desvergonzado_a ; ^ desvergonzado_a 0 ; #2
-->grn tĩ'ỹ_a
-->grn <hova'atã_a ; #3
-->grn otĩ'ỹva_a
+->grn tĩ'ỹ_v[pos=adj]
+->grn <hova'atã_v[pos=adj] ; #3
+->grn otĩ'ỹva_v[pos=adj]
 *** diabólico_a ; ^ diabólico_a 0
-->grn añareko_a
+->grn añareko_v[pos=adj]
 *** diestro_a ; ^ diestro_a 0
-->grn pohe_a
+->grn pohe_v[pos=adj]
 *** diez_a ; ^ diez_a 0
-->grn pa_a
+->grn pa_v[pos=adj]
 *** diez_a mil ; ^ diez_a 0
-->grn pasu_a
+->grn pasu_v[pos=adj]
 *** diez_a y seis ; ^ diez_a 0
-->grn papoteĩ_a
+->grn papoteĩ_v[pos=adj]
 *** diez_a y siete ; ^ diez_a 0
-->grn papokõi_a
+->grn papokõi_v[pos=adj]
 *** diez_a y nueve ; ^ diez_a 0
-->grn paporundy_a
+->grn paporundy_v[pos=adj]
 *** diez_a y ocho ; ^ diez_a 0
-->grn papoapy_a
+->grn papoapy_v[pos=adj]
 *** diferente_a ; ^ diferente_a 0 ; #16
-->grn ambue_a ; #1003
-->grn opaichagua_a ; #125
+->grn ambue_v[pos=adj] ; #1003
+->grn opaichagua_v[pos=adj] ; #125
 *** diferentes_a ; ^ diferentes_a 0
-->grn opaichagua_a ; #125
+->grn opaichagua_v[pos=adj] ; #125
 *** dificultoso_a ; ^ dificultoso_a 0
-->grn <hovatavy_a
+->grn <hovatavy_v[pos=adj]
 *** difícil_a ; ^ difícil_a 0 ; #21
-->grn <hasy_a ; #321
-->grn jetu'u_a ; #4
+->grn <hasy_v[pos=adj] ; #321
+->grn jetu'u_v[pos=adj] ; #4
 *** bastante difícil_a ; ^ difícil_a 1
-->grn <hasy'imi_a
+->grn <hasy'imi_v[pos=adj]
 *** difícil_a en su trato ; ^ difícil_a 0 ; #21
-->grn <hekoita_a
+->grn <hekoita_v[pos=adj]
 *** un poco difícil_a ; ^ difícil_a 2
-->grn <hasy'imi_a
+->grn <hasy'imi_v[pos=adj]
 *** difícil_a de romperse ; ^ difícil_a 0 ; #21
-->grn jy_a
+->grn jy_v[pos=adj]
 *** difícil_a por demás ; ^ difícil_a 0 ; #21
-->grn <hasy'imi_a
+->grn <hasy'imi_v[pos=adj]
 *** digno_a ; ^ digno_a 0 ; #64
-->grn joheipyre_a ; #4
-->grn marangatu_a ; #69
+->grn joheipyre_v[pos=adj] ; #4
+->grn marangatu_v[pos=adj] ; #69
 *** digno_a de verse ; ^ digno_a 0 ; #64
-->grn <hechapyrã_a
+->grn <hechapyrã_v[pos=adj]
 *** digno_a de castigo ; ^ digno_a 0 ; #64
-->grn mbaparã_a
+->grn mbaparã_v[pos=adj]
 *** diminuto_a ; ^ diminuto_a 0
-->grn chu'i_a
-->grn michĩmi_a ; #26
+->grn chu'i_v[pos=adj]
+->grn michĩmi_v[pos=adj] ; #26
 *** diminuto_a en su especie ; ^ diminuto_a 0
-->grn karape_a
+->grn karape_v[pos=adj]
 *** dinámico_a ; ^ dinámico_a 0
-->grn ipu'akáva_a
+->grn ipu'akáva_v[pos=adj]
 *** disimulado_a ; ^ disimulado_a 0
-->grn apeguy_a
-->grn apeguypegua_a
+->grn apeguy_v[pos=adj]
+->grn apeguypegua_v[pos=adj]
 *** dispuesto_a ; ^ dispuesto_a 0 ; #28
-->grn <hetia'e_a ; #25
-->grn kyre'ỹ_a ; #66
+->grn <hetia'e_v[pos=adj] ; #25
+->grn kyre'ỹ_v[pos=adj] ; #66
 *** distante_a ; ^ distante_a 0
 ->grn amo_n mombyry
 *** distante_a en el espacio ; ^ distante_a 0
-->grn mombyry_a
+->grn mombyry_v[pos=adj]
 *** distinguido_a ; ^ distinguido_a 0 ; #6
-->grn mbojeroviapy_a
-->grn kate_a ; #2
+->grn mbojeroviapy_v[pos=adj]
+->grn kate_v[pos=adj] ; #2
 *** distinto_a ; ^ distinto_a 0 ; #3
-->grn juavy_a
-->grn joavy_a ; #18
+->grn juavy_v[pos=adj]
+->grn joavy_v[pos=adj] ; #18
 *** distraído_a ; ^ distraído_a 0
-->grn jurujái_a
+->grn jurujái_v[pos=adj]
 *** diurna_a ; ^ diurna_a 0
-->grn aragua_a
+->grn aragua_v[pos=adj]
 *** diurno_a ; ^ diurno_a 0
-->grn aragua_a
-->grn arapegua_a
+->grn aragua_v[pos=adj]
+->grn arapegua_v[pos=adj]
 *** diverso_a ; ^ diverso_a 0 ; #19
-->grn juavy_a
-->grn ambue_a ; #1003
-->grn joavy_a ; #18
+->grn juavy_v[pos=adj]
+->grn ambue_v[pos=adj] ; #1003
+->grn joavy_v[pos=adj] ; #18
 *** diversos_a ; ^ diversos_a 0
-->grn opaichagua_a
+->grn opaichagua_v[pos=adj]
 *** divertido_a ; ^ divertido_a 0
-->grn <hory_a ; #76
-->grn <hetia'e_a ; #25
+->grn <hory_v[pos=adj] ; #76
+->grn <hetia'e_v[pos=adj] ; #25
 *** divino_a ; ^ divino_a 0
 ->grn yvága_n ramiĝuarã'i
 *** diáfano_a ; ^ diáfano_a 0
-->grn mba'epotĩete_a
+->grn mba'epotĩete_v[pos=adj]
 *** doce_a ; ^ doce_a 0
-->grn pakõi_a
+->grn pakõi_v[pos=adj]
 *** doloroso_a ; ^ doloroso_a 0
-->grn <hasy_a
+->grn <hasy_v[pos=adj]
 *** dormilón_a ; ^ dormilón_a 0
-->grn kerana_a ; #10
-->grn ikeranáva_a
+->grn kerana_v[pos=adj] ; #10
+->grn ikeranáva_v[pos=adj]
 *** dos_a ; ^ dos_a 0
-->grn mokõi_a
+->grn mokõi_v[pos=adj]
 *** dos_a a dos ; ^ dos_a 0
 ->grn mokõi_n mokõi
 *** doscientos_a ; ^ doscientos_a 0
-->grn mokõisa_a
+->grn mokõisa_v[pos=adj]
 *** dudoso_a ; ^ dudoso_a 0
-->grn okuche_a
+->grn okuche_v[pos=adj]
 *** dulce_a ; ^ dulce_a 0 ; #20
-->grn asy_a ; #64
-->grn he'ẽ_a ; #12
+->grn asy_v[pos=adj] ; #64
+->grn he'ẽ_v[pos=adj] ; #12
 *** excesivamente dulce_a ; ^ dulce_a 1
-->grn he'ẽterei_a
+->grn he'ẽterei_v[pos=adj]
 *** duodécimo_a ; ^ duodécimo_a 0
-->grn pakõiha_a
+->grn pakõiha_v[pos=adj]
 *** duradero_a ; ^ duradero_a 0 ; #1
 ->grn <heko_n are
-->grn hi'aréva_a
-->grn hi'are_a ; #7
+->grn hi'aréva_v[pos=adj]
+->grn hi'are_v[pos=adj] ; #7
 *** duro_a ; ^ duro_a 0 ; #40
-->grn tupi_a ; #8
-->grn <hatã_a ; #94
-->grn jero_a ; #1
-->grn tajy_a ; #11
-->grn atã_a ; #6
-->grn mbarete_a ; #217
+->grn tupi_v[pos=adj] ; #8
+->grn <hatã_v[pos=adj] ; #94
+->grn jero_v[pos=adj] ; #1
+->grn tajy_v[pos=adj] ; #11
+->grn atã_v[pos=adj] ; #6
+->grn mbarete_v[pos=adj] ; #217
 *** duro_a de oído ; ^ duro_a 0 ; #40
-->grn apysape_a
+->grn apysape_v[pos=adj]
 *** duro_a para romperse ; ^ duro_a 0 ; #40
-->grn <hosã_a
+->grn <hosã_v[pos=adj]
 *** duro_a de corazón ; ^ duro_a 0 ; #40
-->grn py'ahatã_a
+->grn py'ahatã_v[pos=adj]
 *** débil_a ; ^ débil_a 0 ; #30
 ->grn pire_n pererĩ
-->grn chavi_a ; #3
-->grn kangy_a ; #28
+->grn chavi_v[pos=adj] ; #3
+->grn kangy_v[pos=adj] ; #28
 *** décimo_a ; ^ décimo_a 0
-->grn paha_a
+->grn paha_v[pos=adj]
 *** díscolo_a ; ^ díscolo_a 0
-->grn akãhatã_a
+->grn akãhatã_v[pos=adj]
 *** dócil_a ; ^ dócil_a 0
-->grn ñe'ẽrendu_a
+->grn ñe'ẽrendu_v[pos=adj]
 *** educado_a ; ^ educado_a 0
-->grn joheipyre_a ; #4
-->grn <hekoporã_a ; #16
+->grn joheipyre_v[pos=adj] ; #4
+->grn <hekoporã_v[pos=adj] ; #16
 *** eficaz_a ; ^ eficaz_a 0 ; #5
-->grn aje_a
-->grn pohe_a
+->grn aje_v[pos=adj]
+->grn pohe_v[pos=adj]
 *** efímero_a ; ^ efímero_a 0
-->grn sapy'agua_a
+->grn sapy'agua_v[pos=adj]
 *** ejemplar_a ; ^ ejemplar_a 0
-->grn <hembiecharã_a
+->grn <hembiecharã_v[pos=adj]
 *** electo_a ; ^ electo_a 0
-->grn poravopyre_a
+->grn poravopyre_v[pos=adj]
 *** elegante_a ; ^ elegante_a 0
-->grn kate_a ; #2
-->grn pakéte_a
-->grn chúka_a
+->grn kate_v[pos=adj] ; #2
+->grn pakéte_v[pos=adj]
+->grn chúka_v[pos=adj]
 *** elevado_a ; ^ elevado_a 0 ; #15
-->grn <hatã_a ; #94
-->grn <huvicha_a ; #84
-->grn tuicha_a ; #155
-->grn yvate_a ; #227
+->grn <hatã_v[pos=adj] ; #94
+->grn <huvicha_v[pos=adj] ; #84
+->grn tuicha_v[pos=adj] ; #155
+->grn yvate_v[pos=adj] ; #227
 *** elástico_a ; ^ elástico_a 0
-->grn ojepysóva_a
-->grn sambo_a
+->grn ojepysóva_v[pos=adj]
+->grn sambo_v[pos=adj]
 *** embarazada_a ; ^ embarazada_a 0
-->grn <hyeguasu_a
+->grn <hyeguasu_v[pos=adj]
 *** embelesado_a ; ^ embelesado_a 0
-->grn jurujái_a
+->grn jurujái_v[pos=adj]
 *** emocionante_a ; ^ emocionante_a 0
-->grn mbopy'akyrỹiva_a
+->grn mbopy'akyrỹiva_v[pos=adj]
 *** empecinado_a ; ^ empecinado_a 0
-->grn ijetu'u_a
+->grn ijetu'u_v[pos=adj]
 *** empinado_a ; ^ empinado_a 0 ; #1
-->grn opu'ãva_a ; #6
-->grn ojupíva_a
+->grn opu'ãva_v[pos=adj] ; #6
+->grn ojupíva_v[pos=adj]
 *** empírico_a ; ^ empírico_a 0
-->grn chae_a
+->grn chae_v[pos=adj]
 *** enamorado_a ; ^ enamorado_a 0 ; #3
-->grn akãraku_a ; #10
-->grn akãvai_a ; #1
+->grn akãraku_v[pos=adj] ; #10
+->grn akãvai_v[pos=adj] ; #1
 *** enano_a ; ^ enano_a 0 ; #1
-->grn karape_a ; #20
-->grn karape'i_a
+->grn karape_v[pos=adj] ; #20
+->grn karape'i_v[pos=adj]
 *** encantado_a ; ^ encantado_a 0 ; #1
-->grn <horypápe_a
-->grn vy'apópe_a ; #9
+->grn <horypápe_v[pos=adj]
+->grn vy'apópe_v[pos=adj] ; #9
 *** encerrado_a en la pieza ; ^ encerrado_a 0
-->grn kotyvy'a_a
+->grn kotyvy'a_v[pos=adj]
 *** encogido_a ; ^ encogido_a 0
-->grn cha'ỹ_a
-->grn cha'ĩ_a
+->grn cha'ỹ_v[pos=adj]
+->grn cha'ĩ_v[pos=adj]
 *** encontrado_a ; ^ encontrado_a 0 ; #7
-->grn juhupyre_a
-->grn johupyre_a
+->grn juhupyre_v[pos=adj]
+->grn johupyre_v[pos=adj]
 *** encorvado_a ; ^ encorvado_a 0
-->grn karapã_a
+->grn karapã_v[pos=adj]
 *** endemoniado_a ; ^ endemoniado_a 0
-->grn añatarova_a
+->grn añatarova_v[pos=adj]
 *** endiablado_a ; ^ endiablado_a 0
-->grn añatarova_a
+->grn añatarova_v[pos=adj]
 *** enfermizo_a ; ^ enfermizo_a 0
-->grn <hasyreíva_a
-->grn <hasykatúva_a
-->grn morombi_a
+->grn <hasyreíva_v[pos=adj]
+->grn <hasykatúva_v[pos=adj]
+->grn morombi_v[pos=adj]
 *** enfermo_a ; ^ enfermo_a 0
-->grn <hasy_a
+->grn <hasy_v[pos=adj]
 *** enfrentado_a ; ^ enfrentado_a 0
-->grn oikovaíva_a
+->grn oikovaíva_v[pos=adj]
 *** enfrentados_a ; ^ enfrentados_a 0
-->grn jovái_a
+->grn jovái_v[pos=adj]
 *** engañoso_a ; ^ engañoso_a 0 ; #10
-->grn pokarẽ_a ; #23
-->grn gua'u_a ; #11
-->grn japu_a ; #62
-->grn ñembojaru_a ; #1
+->grn pokarẽ_v[pos=adj] ; #23
+->grn gua'u_v[pos=adj] ; #11
+->grn japu_v[pos=adj] ; #62
+->grn ñembojaru_v[pos=adj] ; #1
 *** engreído_a ; ^ engreído_a 0 ; #1
-->grn jejapo_a ; #182
-->grn ovúva_a
-->grn tĩ'atã_a ; #1
+->grn jejapo_v[pos=adj] ; #182
+->grn ovúva_v[pos=adj]
+->grn tĩ'atã_v[pos=adj] ; #1
 *** enjuto_a ; ^ enjuto_a 0
-->grn ypi_a
+->grn ypi_v[pos=adj]
 *** enmascarado_a ; ^ enmascarado_a 0
 ->grn kamba_n ra'ãnga
 *** enojado_a ; ^ enojado_a 0 ; #13
-->grn pochy_a ; #160
-->grn ñarõ_a ; #17
+->grn pochy_v[pos=adj] ; #160
+->grn ñarõ_v[pos=adj] ; #17
 *** enorme_a ; ^ enorme_a 0 ; #4
-->grn <huvicha_a ; #84
-->grn tuicha_a ; #155
+->grn <huvicha_v[pos=adj] ; #84
+->grn tuicha_v[pos=adj] ; #155
 *** enredado_a ; ^ enredado_a 0
-->grn apañuãi_a ; #17
-->grn apokytã_a
+->grn apañuãi_v[pos=adj] ; #17
+->grn apokytã_v[pos=adj]
 *** enrevesado_a ; ^ enrevesado_a 0
-->grn javorái_a
+->grn javorái_v[pos=adj]
 *** ensangrentado_a ; ^ ensangrentado_a 0
-->grn <huguypáva_a
+->grn <huguypáva_v[pos=adj]
 *** enseñado_a ; ^ enseñado_a 0
-->grn mbo'epyre_a
+->grn mbo'epyre_v[pos=adj]
 *** ensimismado_a ; ^ ensimismado_a 0
-->grn guaikuru_a
+->grn guaikuru_v[pos=adj]
 *** entendido_a ; ^ entendido_a 0
-->grn oikuaáva_a
+->grn oikuaáva_v[pos=adj]
 *** entornado_a ; ^ entornado_a 0
-->grn juruvy_a
+->grn juruvy_v[pos=adj]
 *** entreabierto_a ; ^ entreabierto_a 0
-->grn juruvy_a
+->grn juruvy_v[pos=adj]
 *** enviado_a ; ^ enviado_a 0
-->grn <hemimbou_a
+->grn <hemimbou_v[pos=adj]
 *** envidioso_a ; ^ envidioso_a 0
-->grn py'arasy_a
+->grn py'arasy_v[pos=adj]
 *** envuelto_a ; ^ envuelto_a 0 ; #8
-->grn liapyre_a
-->grn apytĩmbyre_a
+->grn liapyre_v[pos=adj]
+->grn apytĩmbyre_v[pos=adj]
 *** enérgico_a ; ^ enérgico_a 0
-->grn mbarete_a
+->grn mbarete_v[pos=adj]
 *** erguido_a ; ^ erguido_a 0
-->grn opu'ãva_a
+->grn opu'ãva_v[pos=adj]
 *** erizado_a ; ^ erizado_a 0
-->grn havara_a
+->grn havara_v[pos=adj]
 *** escandaloso_a ; ^ escandaloso_a 0
-->grn tie'ỹ_a
+->grn tie'ỹ_v[pos=adj]
 *** escaso_a ; ^ escaso_a 0 ; #2
-->grn pokã_a ; #8
-->grn moõpy_a
+->grn pokã_v[pos=adj] ; #8
+->grn moõpy_v[pos=adj]
 *** escogido_a ; ^ escogido_a 0
-->grn poravopyre_a
+->grn poravopyre_v[pos=adj]
 *** escondido_a ; ^ escondido_a 0
-->grn ñemi_a
+->grn ñemi_v[pos=adj]
 *** escrito_a ; ^ escrito_a 0
-->grn haipyre_a
+->grn haipyre_v[pos=adj]
 *** esforzado_a ; ^ esforzado_a 0
-->grn py'ambarete_a
+->grn py'ambarete_v[pos=adj]
 *** espectacular_a ; ^ espectacular_a 0
-->grn <hechapyrãite_a
+->grn <hechapyrãite_v[pos=adj]
 *** espeso_a ; ^ espeso_a 0 ; #6
-->grn tajy_a ; #11
-->grn <hypy'ũ_a ; #10
+->grn tajy_v[pos=adj] ; #11
+->grn <hypy'ũ_v[pos=adj] ; #10
 *** espeso_a como la miel ; ^ espeso_a 0 ; #6
-->grn mbembe_a
+->grn mbembe_v[pos=adj]
 *** espinoso_a ; ^ espinoso_a 0
-->grn <hatĩ_a ; #20
-->grn <hatĩva_a
+->grn <hatĩ_v[pos=adj] ; #20
+->grn <hatĩva_v[pos=adj]
 *** espléndido_a ; ^ espléndido_a 0
-->grn tini_a
+->grn tini_v[pos=adj]
 *** esponjoso_a ; ^ esponjoso_a 0
-->grn vevúi_a ; #4
+->grn vevúi_v[pos=adj] ; #4
 *** esporádico_a ; ^ esporádico_a 0
-->grn pokã_a
+->grn pokã_v[pos=adj]
 *** espumoso_a ; ^ espumoso_a 0
-->grn <hyjúi_a ; #8
-->grn yjúi_a
+->grn <hyjúi_v[pos=adj] ; #8
+->grn yjúi_v[pos=adj]
 *** esquelético_a ; ^ esquelético_a 0
-->grn kanguerei_a
+->grn kanguerei_v[pos=adj]
 *** esquivo_a ; ^ esquivo_a 0
-->grn <hesaite_a
+->grn <hesaite_v[pos=adj]
 *** estable_a ; ^ estable_a 0 ; #6
-->grn hi'aréva_a
-->grn are_a ; #36
+->grn hi'aréva_v[pos=adj]
+->grn are_v[pos=adj] ; #36
 *** estimado_a ; ^ estimado_a 0 ; #15
-->grn joheipyre_a ; #4
-->grn marangatu_a ; #69
+->grn joheipyre_v[pos=adj] ; #4
+->grn marangatu_v[pos=adj] ; #69
 *** estirado_a ; ^ estirado_a 0
-->grn jestira_a
+->grn jestira_v[pos=adj]
 *** estrecho_a ; ^ estrecho_a 0 ; #6
-->grn po'i_a ; #29
-->grn chi'i_a
+->grn po'i_v[pos=adj] ; #29
+->grn chi'i_v[pos=adj]
 *** estropeado_a ; ^ estropeado_a 0
-->grn soro_a
+->grn soro_v[pos=adj]
 *** estudioso_a ; ^ estudioso_a 0
-->grn <hekokuaa_a
+->grn <hekokuaa_v[pos=adj]
 *** estupendo_a ; ^ estupendo_a 0
-->grn popeno_a
+->grn popeno_v[pos=adj]
 *** estéril_a ; ^ estéril_a 0 ; #25
-->grn a'ỹ_a
-->grn memby'ỹ_a
+->grn a'ỹ_v[pos=adj]
+->grn memby'ỹ_v[pos=adj]
 *** estúpido_a ; ^ estúpido_a 0
-->grn výro_a ; #14
-->grn akãtavy_a ; #5
+->grn výro_v[pos=adj] ; #14
+->grn akãtavy_v[pos=adj] ; #5
 *** eterno_a ; ^ eterno_a 0 ; #98
-->grn apyve'ỹ_a
-->grn apyra'ỹ_a
+->grn apyve'ỹ_v[pos=adj]
+->grn apyra'ỹ_v[pos=adj]
 *** exagerado_a ; ^ exagerado_a 0
-->grn chochõ_a
+->grn chochõ_v[pos=adj]
 *** excedente_a ; ^ excedente_a 0
-->grn <hembýva_a
+->grn <hembýva_v[pos=adj]
 *** excelente_a ; ^ excelente_a 0 ; #9
-->grn poravopyre_a ; #8
-->grn porãiterei_a ; #35
+->grn poravopyre_v[pos=adj] ; #8
+->grn porãiterei_v[pos=adj] ; #35
 *** excelso_a ; ^ excelso_a 0
-->grn poravopyre_a ; #8
+->grn poravopyre_v[pos=adj] ; #8
 *** excesivo_a ; ^ excesivo_a 0
-->grn chochõ_a
+->grn chochõ_v[pos=adj]
 *** explícito_a ; ^ explícito_a 0
-->grn <heraitépe_a
+->grn <heraitépe_v[pos=adj]
 *** extendido_a ; ^ extendido_a 0 ; #27
-->grn asãi_a
-->grn asãimby_a
-->grn myasãimbyre_a
+->grn asãi_v[pos=adj]
+->grn asãimby_v[pos=adj]
+->grn myasãimbyre_v[pos=adj]
 *** extenso_a ; ^ extenso_a 0
-->grn kakuaaite_a
+->grn kakuaaite_v[pos=adj]
 *** extenuado_a ; ^ extenuado_a 0
-->grn yguerei_a
+->grn yguerei_v[pos=adj]
 *** extranjero_a ; ^ extranjero_a 0
-->grn pytagua_a
+->grn pytagua_v[pos=adj]
 *** extranjeros_a ; ^ extranjeros_a 0
-->grn ñande'ỹva_a
+->grn ñande'ỹva_v[pos=adj]
 *** extraordinario_a ; ^ extraordinario_a 0
-->grn ijojaha'ỹva_a
+->grn ijojaha'ỹva_v[pos=adj]
 *** fallecido_a ; ^ fallecido_a 0
-->grn amyrỹi_a
+->grn amyrỹi_v[pos=adj]
 *** falso_a ; ^ falso_a 0 ; #47
-->grn pokarẽ_a ; #23
-->grn <hovamokõi_a ; #4
-->grn gua'u_a ; #11
-->grn ñembojaru_a ; #1
-->grn kesu_a ; #34
+->grn pokarẽ_v[pos=adj] ; #23
+->grn <hovamokõi_v[pos=adj] ; #4
+->grn gua'u_v[pos=adj] ; #11
+->grn ñembojaru_v[pos=adj] ; #1
+->grn kesu_v[pos=adj] ; #34
 *** falto_a de malicia ; ^ falto_a 0
-->grn py'apotĩ_a
+->grn py'apotĩ_v[pos=adj]
 *** familiar_a ; ^ familiar_a 0
-->grn ñemoña_a
+->grn ñemoña_v[pos=adj]
 *** famoso_a ; ^ famoso_a 0
-->grn <herakuã_a
+->grn <herakuã_v[pos=adj]
 *** fanfarrón_a ; ^ fanfarrón_a 0
-->grn mbóre_a
+->grn mbóre_v[pos=adj]
 *** fastidiado_a ; ^ fastidiado_a 0
-->grn kuerái_a
+->grn kuerái_v[pos=adj]
 *** fastidioso_a ; ^ fastidioso_a 0 ; #1
-->grn omboróva_a
-->grn mongueraiha_a
-->grn pohýi_a ; #44
+->grn omboróva_v[pos=adj]
+->grn mongueraiha_v[pos=adj]
+->grn pohýi_v[pos=adj] ; #44
 *** fatigado_a ; ^ fatigado_a 0
-->grn soso_a
+->grn soso_v[pos=adj]
 *** favorable_a ; ^ favorable_a 0
-->grn oikoporãva_a
+->grn oikoporãva_v[pos=adj]
 *** favorito_a ; ^ favorito_a 0
-->grn <hembiayhu_a
+->grn <hembiayhu_v[pos=adj]
 *** febril_a ; ^ febril_a 0
-->grn akãnundu_a
+->grn akãnundu_v[pos=adj]
 *** fecundo_a ; ^ fecundo_a 0
-->grn hi'áva_a
+->grn hi'áva_v[pos=adj]
 *** feliz_a ; ^ feliz_a 0
-->grn <hory_a
+->grn <hory_v[pos=adj]
 *** felpudo_a ; ^ felpudo_a 0
-->grn <haviju_a
+->grn <haviju_v[pos=adj]
 *** femenino_a ; ^ femenino_a 0
 ->grn kuña_n rehegua
 *** feo_a ; ^ feo_a 0 ; #5
-->grn mba'evai_a ; #109
-->grn vai_a ; #284
+->grn mba'evai_v[pos=adj] ; #109
+->grn vai_v[pos=adj] ; #284
 *** feroz_a ; ^ feroz_a 0
-->grn ñarõ_a
+->grn ñarõ_v[pos=adj]
 *** festivo_a ; ^ festivo_a 0
-->grn <hetia'e_a
+->grn <hetia'e_v[pos=adj]
 *** fiel_a ; ^ fiel_a 0 ; #65
-->grn jeroviapy_a
-->grn jeroviaha_a ; #5
+->grn jeroviapy_v[pos=adj]
+->grn jeroviaha_v[pos=adj] ; #5
 *** fiero_a ; ^ fiero_a 0
-->grn ipochýva_a
+->grn ipochýva_v[pos=adj]
 *** fijo_a ; ^ fijo_a 0
-->grn ova'ỹ_a
+->grn ova'ỹ_v[pos=adj]
 *** filósofo_a ; ^ filósofo_a 0
-->grn haimbe_a
+->grn haimbe_v[pos=adj]
 *** finado_a ; ^ finado_a 0
-->grn amyrỹi_a
+->grn amyrỹi_v[pos=adj]
 *** final_a ; ^ final_a 0
-->grn paha_a
+->grn paha_v[pos=adj]
 *** fingido_a ; ^ fingido_a 0 ; #3
-->grn gua'u_a ; #11
-->grn ñembojaru_a ; #1
+->grn gua'u_v[pos=adj] ; #11
+->grn ñembojaru_v[pos=adj] ; #1
 *** fino_a ; ^ fino_a 0 ; #39
-->grn po'i_a ; #29
-->grn sa'i_a ; #58
-->grn pererĩ_a ; #6
+->grn po'i_v[pos=adj] ; #29
+->grn sa'i_v[pos=adj] ; #58
+->grn pererĩ_v[pos=adj] ; #6
 *** flaco_a ; ^ flaco_a 0 ; #5
-->grn po'i_a ; #29
-->grn piru_a ; #34
-->grn ypi_a
+->grn po'i_v[pos=adj] ; #29
+->grn piru_v[pos=adj] ; #34
+->grn ypi_v[pos=adj]
 *** flexible_a ; ^ flexible_a 0
-->grn jepokáva_a
+->grn jepokáva_v[pos=adj]
 *** flojo_a ; ^ flojo_a 0
-->grn kangy_a ; #28
+->grn kangy_v[pos=adj] ; #28
 *** florido_a ; ^ florido_a 0
-->grn ipotýva_a
+->grn ipotýva_v[pos=adj]
 *** fluido_a ; ^ fluido_a 0
-->grn <hyku_a
+->grn <hyku_v[pos=adj]
 *** fofo_a ; ^ fofo_a 0
-->grn <hu'ũ_a ; #13
-->grn avevo_a
-->grn u'ũ_a
+->grn <hu'ũ_v[pos=adj] ; #13
+->grn avevo_v[pos=adj]
+->grn u'ũ_v[pos=adj]
 *** forastero_a ; ^ forastero_a 0 ; #23
-->grn ñande'ỹva_a ; #2
-->grn mombyrygua_a
+->grn ñande'ỹva_v[pos=adj] ; #2
+->grn mombyrygua_v[pos=adj]
 *** formal_a ; ^ formal_a 0
-->grn <hekoporãva_a ; #2
-->grn <hekoporã_a ; #16
+->grn <hekoporãva_v[pos=adj] ; #2
+->grn <hekoporã_v[pos=adj] ; #16
 *** formidable_a ; ^ formidable_a 0
-->grn momorãmbyrã_a
+->grn momorãmbyrã_v[pos=adj]
 *** franco_a ; ^ franco_a 0
-->grn py'aresakã_a
+->grn py'aresakã_v[pos=adj]
 *** fraudulento_a ; ^ fraudulento_a 0
-->grn pokarẽ_a
+->grn pokarẽ_v[pos=adj]
 *** frecuente_a ; ^ frecuente_a 0 ; #2
-->grn tapiagua_a
-->grn popy'ỹi_a
+->grn tapiagua_v[pos=adj]
+->grn popy'ỹi_v[pos=adj]
 *** frenético_a ; ^ frenético_a 0
-->grn py'atarova_a
+->grn py'atarova_v[pos=adj]
 *** fresco_a ; ^ fresco_a 0 ; #2
-->grn piro'y_a ; #34
-->grn ro'ysã_a ; #1
+->grn piro'y_v[pos=adj] ; #34
+->grn ro'ysã_v[pos=adj] ; #1
 *** frito_a ; ^ frito_a 0
-->grn chyryry_a ; #6
-->grn chyryrypyre_a
+->grn chyryry_v[pos=adj] ; #6
+->grn chyryrypyre_v[pos=adj]
 *** fructífero_a ; ^ fructífero_a 0
-->grn hi'áva_a
+->grn hi'áva_v[pos=adj]
 *** fruncido_a ; ^ fruncido_a 0
-->grn cha'ĩ_a
+->grn cha'ĩ_v[pos=adj]
 *** frágil_a ; ^ frágil_a 0 ; #2
-->grn kyrỹi_a ; #13
-->grn jekarei_a
+->grn kyrỹi_v[pos=adj] ; #13
+->grn jekarei_v[pos=adj]
 *** fría_a ; ^ fría_a 0
-->grn ro'ysã_a
+->grn ro'ysã_v[pos=adj]
 *** frío_a ; ^ frío_a 0
-->grn ro'y_a
+->grn ro'y_v[pos=adj]
 *** fuerte_a ; ^ fuerte_a 0 ; #153
-->grn kuimba'e_a ; #556
-->grn <hatã_a ; #94
-->grn pyasy_a ; #1
-->grn tajy_a ; #11
-->grn asy_a ; #64
-->grn atã_a ; #6
-->grn mbarete_a ; #217
+->grn kuimba'e_v[pos=adj] ; #556
+->grn <hatã_v[pos=adj] ; #94
+->grn pyasy_v[pos=adj] ; #1
+->grn tajy_v[pos=adj] ; #11
+->grn asy_v[pos=adj] ; #64
+->grn atã_v[pos=adj] ; #6
+->grn mbarete_v[pos=adj] ; #217
 ->grn <huguy_n mbarete
 *** fugaz_a ; ^ fugaz_a 0 ; #1
-->grn oguéva_a
-->grn sapy'agua_a
+->grn oguéva_v[pos=adj]
+->grn sapy'agua_v[pos=adj]
 *** fundido_a ; ^ fundido_a 0
-->grn jypyre_a
+->grn jypyre_v[pos=adj]
 *** furioso_a ; ^ furioso_a 0
-->grn ñarõ_a
+->grn ñarõ_v[pos=adj]
 *** fácil_a ; ^ fácil_a 0 ; #10
-->grn <hasy'ỹva_a
-->grn <hasy'ỹ_a
+->grn <hasy'ỹva_v[pos=adj]
+->grn <hasy'ỹ_v[pos=adj]
 *** fácil_a de enojarse ; ^ fácil_a 0 ; #10
-->grn kutipáila_a
+->grn kutipáila_v[pos=adj]
 *** fértil_a ; ^ fértil_a 0
-->grn hi'áva_a
+->grn hi'áva_v[pos=adj]
 *** fétido_a ; ^ fétido_a 0
-->grn katĩ_a ; #16
-->grn ne_a ; #90
-->grn rẽ_a
+->grn katĩ_v[pos=adj] ; #16
+->grn ne_v[pos=adj] ; #90
+->grn rẽ_v[pos=adj]
 *** fútil_a ; ^ fútil_a 0
-->grn katura'y_a
+->grn katura'y_v[pos=adj]
 *** ganadero_a ; ^ ganadero_a 0
-->grn <hymbahetáva_a
+->grn <hymbahetáva_v[pos=adj]
 *** gandul_a ; ^ gandul_a 0
-->grn ate'ỹ_a
+->grn ate'ỹ_v[pos=adj]
 *** gastado_a ; ^ gastado_a 0 ; #4
-->grn apĩ_a ; #6
+->grn apĩ_v[pos=adj] ; #6
 *** gelatinoso_a ; ^ gelatinoso_a 0
-->grn aisy_a
+->grn aisy_v[pos=adj]
 *** general_a ; ^ general_a 0
-->grn pavẽ_a
+->grn pavẽ_v[pos=adj]
 *** generoso_a ; ^ generoso_a 0
-->grn pojera_a
+->grn pojera_v[pos=adj]
 *** genio_a ; ^ genio_a 0
-->grn karakatu_a
+->grn karakatu_v[pos=adj]
 *** genuino_a ; ^ genuino_a 0
-->grn añetegua_a
+->grn añetegua_v[pos=adj]
 *** gigantesco_a ; ^ gigantesco_a 0
-->grn popeno_a
+->grn popeno_v[pos=adj]
 *** glorioso_a ; ^ glorioso_a 0
-->grn <herakuã_a
+->grn <herakuã_v[pos=adj]
 *** glotón_a ; ^ glotón_a 0
-->grn karúva_a
+->grn karúva_v[pos=adj]
 *** gordo_a ; ^ gordo_a 0 ; #8
-->grn avevo_a
-->grn kyra_a ; #45
+->grn avevo_v[pos=adj]
+->grn kyra_v[pos=adj] ; #45
 *** gozoso_a ; ^ gozoso_a 0
-->grn ovy'áva_a
+->grn ovy'áva_v[pos=adj]
 *** gracioso_a ; ^ gracioso_a 0 ; #1
-->grn juky_a ; #71
-->grn ka'avo_a ; #50
+->grn juky_v[pos=adj] ; #71
+->grn ka'avo_v[pos=adj] ; #50
 *** grande_a ; ^ grande_a 0 ; #693
-->grn <huvicha_a ; #84
-->grn guasu_a ; #1180
-->grn tuicha_a ; #155
+->grn <huvicha_v[pos=adj] ; #84
+->grn guasu_v[pos=adj] ; #1180
+->grn tuicha_v[pos=adj] ; #155
 *** grandes_a ; ^ grandes_a 0
-->grn <hesaguasu_a
+->grn <hesaguasu_v[pos=adj]
 *** grasiento_a ; ^ grasiento_a 0
-->grn kyra_a ; #45
-->grn ñandy_a ; #57
+->grn kyra_v[pos=adj] ; #45
+->grn ñandy_v[pos=adj] ; #57
 *** grave_a ; ^ grave_a 0
-->grn pohýi_a
+->grn pohýi_v[pos=adj]
 *** gringo_a ; ^ gringo_a 0
-->grn akãju_a
-->grn ñande'ỹva_a ; #2
+->grn akãju_v[pos=adj]
+->grn ñande'ỹva_v[pos=adj] ; #2
 *** gris_a ; ^ gris_a 0
-->grn hũngy_a
+->grn hũngy_v[pos=adj]
 *** grosero_a ; ^ grosero_a 0
-->grn kachiãi_a ; #1
-->grn tie'ỹ_a ; #14
-->grn arriéro_a ; #23
+->grn kachiãi_v[pos=adj] ; #1
+->grn tie'ỹ_v[pos=adj] ; #14
+->grn arriéro_v[pos=adj] ; #23
 *** grueso_a ; ^ grueso_a 0 ; #6
-->grn anambusu_a
-->grn ñanambusu_a
-->grn poguasu_a ; #21
+->grn anambusu_v[pos=adj]
+->grn ñanambusu_v[pos=adj]
+->grn poguasu_v[pos=adj] ; #21
 *** guapa_a ; ^ guapa_a 0
-->grn ipyapýva_a
+->grn ipyapýva_v[pos=adj]
 *** guapo_a ; ^ guapo_a 0 ; #1
-->grn porã_a ; #1590
-->grn kyre'ỹ_a ; #66
+->grn porã_v[pos=adj] ; #1590
+->grn kyre'ỹ_v[pos=adj] ; #66
 *** guisado_a ; ^ guisado_a 0
-->grn mbojypyre_a
+->grn mbojypyre_v[pos=adj]
 *** gustoso_a ; ^ gustoso_a 0
-->grn he_a
+->grn he_v[pos=adj]
 *** gutural_a ; ^ gutural_a 0
-->grn ahy'ogua_a
+->grn ahy'ogua_v[pos=adj]
 *** habilidoso_a ; ^ habilidoso_a 0
-->grn pohe_a
-->grn ae_a ; #13
-->grn ha'eve_a
+->grn pohe_v[pos=adj]
+->grn ae_v[pos=adj] ; #13
+->grn ha'eve_v[pos=adj]
 *** hablador_a ; ^ hablador_a 0 ; #1
-->grn my'ỹi_a
-->grn ñe'ẽngatu_a ; #3
+->grn my'ỹi_v[pos=adj]
+->grn ñe'ẽngatu_v[pos=adj] ; #3
 *** hacendado_a ; ^ hacendado_a 0
-->grn joheipyre_a
+->grn joheipyre_v[pos=adj]
 *** halagador_a ; ^ halagador_a 0
-->grn mboaguaráva_a
+->grn mboaguaráva_v[pos=adj]
 *** hambriento_a ; ^ hambriento_a 0 ; #17
-->grn ivare'áva_a
-->grn morombi_a
-->grn ñembyahýi_a ; #18
+->grn ivare'áva_v[pos=adj]
+->grn morombi_v[pos=adj]
+->grn ñembyahýi_v[pos=adj] ; #18
 *** haragán_a ; ^ haragán_a 0
-->grn ate'ỹ_a ; #15
+->grn ate'ỹ_v[pos=adj] ; #15
 ->grn karai_n tuja
-->grn <hekorei_a ; #8
+->grn <hekorei_v[pos=adj] ; #8
 *** harto_a ; ^ harto_a 0
-->grn kuerái_a
+->grn kuerái_v[pos=adj]
 *** hechizo_a ; ^ hechizo_a 0
-->grn mba'evai_a
+->grn mba'evai_v[pos=adj]
 *** hecho_a ; ^ hecho_a 0
-->grn jehúva_a
+->grn jehúva_v[pos=adj]
 *** mal hecho_a ; ^ hecho_a 1
-->grn kesu_a
+->grn kesu_v[pos=adj]
 *** hediondo_a ; ^ hediondo_a 0
-->grn katĩ_a ; #16
-->grn ne_a ; #90
-->grn rẽ_a
+->grn katĩ_v[pos=adj] ; #16
+->grn ne_v[pos=adj] ; #90
+->grn rẽ_v[pos=adj]
 *** hermoso_a ; ^ hermoso_a 0
 ->grn tóko_n vera
-->grn porã_a
+->grn porã_v[pos=adj]
 *** hervido_a ; ^ hervido_a 0
-->grn mimói_a ; #9
+->grn mimói_v[pos=adj] ; #9
 *** hinchado_a ; ^ hinchado_a 0 ; #2
-->grn ruru_a ; #6
+->grn ruru_v[pos=adj] ; #6
 *** hipócrita_a ; ^ hipócrita_a 0
-->grn <hovamokõi_a
+->grn <hovamokõi_v[pos=adj]
 *** holgazán_a ; ^ holgazán_a 0
-->grn ate'ỹ_a
+->grn ate'ỹ_v[pos=adj]
 *** hondo_a ; ^ hondo_a 0 ; #13
-->grn <hypy_a ; #1
-->grn pypuku_a
+->grn <hypy_v[pos=adj] ; #1
+->grn pypuku_v[pos=adj]
 *** honesto_a ; ^ honesto_a 0 ; #4
-->grn marangatu_a ; #69
-->grn kachiãi'ỹ_a
+->grn marangatu_v[pos=adj] ; #69
+->grn kachiãi'ỹ_v[pos=adj]
 *** honorable_a ; ^ honorable_a 0 ; #4
-->grn <huvicha_a ; #84
-->grn tuicha_a ; #155
+->grn <huvicha_v[pos=adj] ; #84
+->grn tuicha_v[pos=adj] ; #155
 *** honrado_a ; ^ honrado_a 0 ; #11
-->grn joheipyre_a ; #4
-->grn marangatu_a ; #69
-->grn mbojeroviapy_a
+->grn joheipyre_v[pos=adj] ; #4
+->grn marangatu_v[pos=adj] ; #69
+->grn mbojeroviapy_v[pos=adj]
 *** horrendo_a ; ^ horrendo_a 0
-->grn omondýiva_a
+->grn omondýiva_v[pos=adj]
 *** hosco_a ; ^ hosco_a 0
 ->grn <hova_n takuru
 *** hueco_a ; ^ hueco_a 0
-->grn nandi_a
+->grn nandi_v[pos=adj]
 *** huero_a ; ^ huero_a 0
-->grn guero_a
+->grn guero_v[pos=adj]
 *** huesudo_a ; ^ huesudo_a 0
 ->grn kangue_n guasu
 *** huidizo_a ; ^ huidizo_a 0
-->grn saite_a
-->grn saraki_a ; #11
-->grn sagua'a_a
+->grn saite_v[pos=adj]
+->grn saraki_v[pos=adj] ; #11
+->grn sagua'a_v[pos=adj]
 *** humilde_a ; ^ humilde_a 0 ; #28
-->grn mboriahu_a ; #66
-->grn poriahu_a ; #1
-->grn mi_a ; #37
-->grn oikotevẽva_a ; #10
+->grn mboriahu_v[pos=adj] ; #66
+->grn poriahu_v[pos=adj] ; #1
+->grn mi_v[pos=adj] ; #37
+->grn oikotevẽva_v[pos=adj] ; #10
 *** huraño_a ; ^ huraño_a 0
-->grn joha_a ; #3
-->grn sagua'a_a
+->grn joha_v[pos=adj] ; #3
+->grn sagua'a_v[pos=adj]
 *** huérfano_a ; ^ huérfano_a 0
-->grn tyre'ỹ_a
+->grn tyre'ỹ_v[pos=adj]
 *** hábil_a ; ^ hábil_a 0 ; #3
-->grn katupyry_a ; #252
-->grn pohe_a
-->grn ha'eve_a
+->grn katupyry_v[pos=adj] ; #252
+->grn pohe_v[pos=adj]
+->grn ha'eve_v[pos=adj]
 *** húmedo_a ; ^ húmedo_a 0
-->grn akỹ_a
-->grn <he'õ_a ; #2
+->grn akỹ_v[pos=adj]
+->grn <he'õ_v[pos=adj] ; #2
 *** idéntico_a ; ^ idéntico_a 0
-->grn peteĩcha_a ; #6
-->grn ojojáva_a
-->grn joja_a ; #46
+->grn peteĩcha_v[pos=adj] ; #6
+->grn ojojáva_v[pos=adj]
+->grn joja_v[pos=adj] ; #46
 *** idóneo_a ; ^ idóneo_a 0
-->grn ha'eve_a
+->grn ha'eve_v[pos=adj]
 *** ignorante_a ; ^ ignorante_a 0 ; #10
-->grn tavy_a ; #96
-->grn arriéro_a ; #23
-->grn oikuaa'ỹva_a ; #8
+->grn tavy_v[pos=adj] ; #96
+->grn arriéro_v[pos=adj] ; #23
+->grn oikuaa'ỹva_v[pos=adj] ; #8
 ->grn lápi_n mbyky
 *** igualado_a ; ^ igualado_a 0
-->grn joja_a
+->grn joja_v[pos=adj]
 *** ilimitado_a ; ^ ilimitado_a 0
-->grn apyve'ỹ_a
-->grn apyra'ỹ_a
-->grn apyre'ỹ_a
+->grn apyve'ỹ_v[pos=adj]
+->grn apyra'ỹ_v[pos=adj]
+->grn apyre'ỹ_v[pos=adj]
 *** iluminado_a ; ^ iluminado_a 0
-->grn sapepy_a
+->grn sapepy_v[pos=adj]
 *** iluso_a ; ^ iluso_a 0
-->grn anduavýva_a
+->grn anduavýva_v[pos=adj]
 *** ilustrado_a ; ^ ilustrado_a 0
-->grn mba'ekuaáva_a
+->grn mba'ekuaáva_v[pos=adj]
 *** ilustre_a ; ^ ilustre_a 0
-->grn <herãkuã_a
+->grn <herãkuã_v[pos=adj]
 *** imberbe_a ; ^ imberbe_a 0
 ->grn <hendyva_n sakã
 *** impedido_a ; ^ impedido_a 0
-->grn apysape_a
+->grn apysape_v[pos=adj]
 *** impenetrable_a ; ^ impenetrable_a 0
-->grn <hasa'ỹha_a
+->grn <hasa'ỹha_v[pos=adj]
 *** imperdonable_a ; ^ imperdonable_a 0
-->grn ñyrõ'ỹva_a
+->grn ñyrõ'ỹva_v[pos=adj]
 *** imperecedero_a ; ^ imperecedero_a 0
-->grn pavẽ'ỹ_a
+->grn pavẽ'ỹ_v[pos=adj]
 *** imperfecto_a ; ^ imperfecto_a 0
-->grn chae_a
-->grn apoporã'ỹ_a
-->grn marã_a
+->grn chae_v[pos=adj]
+->grn apoporã'ỹ_v[pos=adj]
+->grn marã_v[pos=adj]
 *** impoluto_a ; ^ impoluto_a 0
-->grn ãngaipa'ỹ_a
+->grn ãngaipa'ỹ_v[pos=adj]
 *** impotente_a ; ^ impotente_a 0
-->grn <hemboatã'ỹva_a
+->grn <hemboatã'ỹva_v[pos=adj]
 *** imprescindible_a ; ^ imprescindible_a 0
-->grn <hejapyrã'ỹ_a
+->grn <hejapyrã'ỹ_v[pos=adj]
 *** improductivo_a ; ^ improductivo_a 0
-->grn oĩreíva_a
+->grn oĩreíva_v[pos=adj]
 *** impropio_a ; ^ impropio_a 0
-->grn <hekope'ỹ_a
+->grn <hekope'ỹ_v[pos=adj]
 *** imprudente_a ; ^ imprudente_a 0
-->grn tĩ'atã_a
+->grn tĩ'atã_v[pos=adj]
 *** impuro_a ; ^ impuro_a 0 ; #77
-->grn tyai_a ; #4
-->grn ky'a_a ; #20
+->grn tyai_v[pos=adj] ; #4
+->grn ky'a_v[pos=adj] ; #20
 *** inagotable_a ; ^ inagotable_a 0
-->grn opa'ỹva_a
-->grn <hypa'ỹva_a
+->grn opa'ỹva_v[pos=adj]
+->grn <hypa'ỹva_v[pos=adj]
 *** inalterable_a ; ^ inalterable_a 0
-->grn va'ỹva_a
+->grn va'ỹva_v[pos=adj]
 *** incansable_a ; ^ incansable_a 0 ; #1
-->grn kane'õ'ỹva_a
-->grn ikane'õ'ỹva_a
+->grn kane'õ'ỹva_v[pos=adj]
+->grn ikane'õ'ỹva_v[pos=adj]
 *** incierto_a ; ^ incierto_a 0
-->grn katura'y_a
+->grn katura'y_v[pos=adj]
 *** incisivo_a ; ^ incisivo_a 0
-->grn kytĩha_a
+->grn kytĩha_v[pos=adj]
 *** inclinado_a ; ^ inclinado_a 0 ; #6
-->grn vã_a
-->grn jero'a_a
-->grn karapã_a
+->grn vã_v[pos=adj]
+->grn jero'a_v[pos=adj]
+->grn karapã_v[pos=adj]
 *** mal inclinado_a ; ^ inclinado_a 1
-->grn kechẽ_a
+->grn kechẽ_v[pos=adj]
 *** incoloro_a ; ^ incoloro_a 0
-->grn apatĩ_a
+->grn apatĩ_v[pos=adj]
 *** incomparable_a ; ^ incomparable_a 0
-->grn ijojaha'ỹva_a
+->grn ijojaha'ỹva_v[pos=adj]
 *** incompleto_a ; ^ incompleto_a 0
-->grn oĩmba'ỹ_a
+->grn oĩmba'ỹ_v[pos=adj]
 *** inconcluso_a ; ^ inconcluso_a 0
-->grn apopa'ỹva_a
+->grn apopa'ỹva_v[pos=adj]
 *** inconstante_a ; ^ inconstante_a 0 ; #4
-->grn py'atarova_a ; #6
-->grn tarara_a ; #1
+->grn py'atarova_v[pos=adj] ; #6
+->grn tarara_v[pos=adj] ; #1
 *** incorporado_a ; ^ incorporado_a 0
-->grn moingepyre_a
+->grn moingepyre_v[pos=adj]
 *** incorrecto_a ; ^ incorrecto_a 0
-->grn <hekope'ỹ_a
+->grn <hekope'ỹ_v[pos=adj]
 *** increíble_a ; ^ increíble_a 0
-->grn guerovia'ỹ_a
+->grn guerovia'ỹ_v[pos=adj]
 *** indebido_a ; ^ indebido_a 0
-->grn <hekopegua'ỹ_a
+->grn <hekopegua'ỹ_v[pos=adj]
 *** indecente_a ; ^ indecente_a 0
-->grn tie'ỹ_a
+->grn tie'ỹ_v[pos=adj]
 *** indeciso_a ; ^ indeciso_a 0
-->grn ovaváva_a
+->grn ovaváva_v[pos=adj]
 *** indefinido_a ; ^ indefinido_a 0
-->grn apyra'ỹ_a
+->grn apyra'ỹ_v[pos=adj]
 *** indigente_a ; ^ indigente_a 0 ; #1
-->grn mboriahu_a ; #66
+->grn mboriahu_v[pos=adj] ; #66
 ->grn mboriahu_n apĩ
-->grn poriahu_a ; #1
+->grn poriahu_v[pos=adj] ; #1
 *** indirecto_a ; ^ indirecto_a 0
-->grn karẽ_a ; #7
-->grn suguy_a
+->grn karẽ_v[pos=adj] ; #7
+->grn suguy_v[pos=adj]
 *** indisoluble_a ; ^ indisoluble_a 0
-->grn jorapyra'ỹ_a
+->grn jorapyra'ỹ_v[pos=adj]
 *** indispuesto_a ; ^ indispuesto_a 0
-->grn ãngau_a
+->grn ãngau_v[pos=adj]
 *** indocumentado_a ; ^ indocumentado_a 0
-->grn kuatia'ỹva_a
+->grn kuatia'ỹva_v[pos=adj]
 *** indomable_a ; ^ indomable_a 0
-->grn sarigue_a
+->grn sarigue_v[pos=adj]
 *** indulgente_a ; ^ indulgente_a 0
-->grn ñyrõva_a
+->grn ñyrõva_v[pos=adj]
 *** indómito_a ; ^ indómito_a 0 ; #1
-->grn <hesaite_a ; #12
-->grn sagua'a_a
+->grn <hesaite_v[pos=adj] ; #12
+->grn sagua'a_v[pos=adj]
 *** inesperado_a ; ^ inesperado_a 0
-->grn sapy'a_a
+->grn sapy'a_v[pos=adj]
 *** inexistente_a ; ^ inexistente_a 0
-->grn oĩ'ỹva_a
+->grn oĩ'ỹva_v[pos=adj]
 *** infantil_a ; ^ infantil_a 0
-->grn mitãrehegua_a
+->grn mitãrehegua_v[pos=adj]
 *** infatigable_a ; ^ infatigable_a 0
-->grn kane'õ'ỹva_a
-->grn ikane'õ'ỹva_a
+->grn kane'õ'ỹva_v[pos=adj]
+->grn ikane'õ'ỹva_v[pos=adj]
 *** infernal_a ; ^ infernal_a 0
-->grn añaretãmegua_a
+->grn añaretãmegua_v[pos=adj]
 *** infinito_a ; ^ infinito_a 0 ; #2
-->grn pavẽ'ỹ_a
-->grn <hypa'ỹva_a
-->grn apyra'ỹ_a
-->grn apyre'ỹ_a
+->grn pavẽ'ỹ_v[pos=adj]
+->grn <hypa'ỹva_v[pos=adj]
+->grn apyra'ỹ_v[pos=adj]
+->grn apyre'ỹ_v[pos=adj]
 *** influyente_a ; ^ influyente_a 0
-->grn ipokatúva_a
+->grn ipokatúva_v[pos=adj]
 *** informado_a ; ^ informado_a 0
-->grn oikuaáva_a
+->grn oikuaáva_v[pos=adj]
 *** informal_a ; ^ informal_a 0
-->grn kachiãi_a
+->grn kachiãi_v[pos=adj]
 *** ingenioso_a ; ^ ingenioso_a 0
-->grn jeporekakatu_a
+->grn jeporekakatu_v[pos=adj]
 *** inhábil_a ; ^ inhábil_a 0
-->grn katupyry'ỹva_a
-->grn chavi_a ; #3
+->grn katupyry'ỹva_v[pos=adj]
+->grn chavi_v[pos=adj] ; #3
 *** inigualable_a ; ^ inigualable_a 0
-->grn jojaha'ỹva_a
+->grn jojaha'ỹva_v[pos=adj]
 *** inmaduro_a ; ^ inmaduro_a 0
-->grn peky_a ; #1
-->grn hi'aky_a
+->grn peky_v[pos=adj] ; #1
+->grn hi'aky_v[pos=adj]
 *** inmenso_a ; ^ inmenso_a 0 ; #6
-->grn <huvicha_a ; #84
-->grn tuicha_a ; #155
+->grn <huvicha_v[pos=adj] ; #84
+->grn tuicha_v[pos=adj] ; #155
 *** inmundo_a ; ^ inmundo_a 0
-->grn ky'a_a
+->grn ky'a_v[pos=adj]
 *** inmóvil_a ; ^ inmóvil_a 0
-->grn omyi'ỹva_a
+->grn omyi'ỹva_v[pos=adj]
 *** innato_a ; ^ innato_a 0
-->grn ñepyrũ'ỹ_a
-->grn <hekoite_a
+->grn ñepyrũ'ỹ_v[pos=adj]
+->grn <hekoite_v[pos=adj]
 *** inodoro_a ; ^ inodoro_a 0
-->grn <hyakuã'ỹva_a
+->grn <hyakuã'ỹva_v[pos=adj]
 *** inquieto_a ; ^ inquieto_a 0
-->grn py'atarova_a ; #6
-->grn py'aguapy'ỹ_a
+->grn py'atarova_v[pos=adj] ; #6
+->grn py'aguapy'ỹ_v[pos=adj]
 *** insatisfecho_a ; ^ insatisfecho_a 0
-->grn <hyvãtã'ỹ_a
+->grn <hyvãtã'ỹ_v[pos=adj]
 *** inservible_a ; ^ inservible_a 0
-->grn chu'i_a
-->grn chavi_a ; #3
-->grn mbóre_a
+->grn chu'i_v[pos=adj]
+->grn chavi_v[pos=adj] ; #3
+->grn mbóre_v[pos=adj]
 *** insigne_a ; ^ insigne_a 0
-->grn <herãkuã_a
+->grn <herãkuã_v[pos=adj]
 *** insignificante_a ; ^ insignificante_a 0 ; #2
-->grn michĩmi_a ; #26
-->grn chavi_a ; #3
-->grn sa'i_a ; #58
+->grn michĩmi_v[pos=adj] ; #26
+->grn chavi_v[pos=adj] ; #3
+->grn sa'i_v[pos=adj] ; #58
 *** insistente_a ; ^ insistente_a 0
-->grn tĩ'atã_a
+->grn tĩ'atã_v[pos=adj]
 *** insolvente_a ; ^ insolvente_a 0
-->grn sogue_a
+->grn sogue_v[pos=adj]
 *** insulso_a ; ^ insulso_a 0
-->grn joha_a ; #3
-->grn ay_a ; #4
+->grn joha_v[pos=adj] ; #3
+->grn ay_v[pos=adj] ; #4
 *** insípido_a ; ^ insípido_a 0 ; #2
-->grn joha_a ; #3
-->grn ay_a ; #4
+->grn joha_v[pos=adj] ; #3
+->grn ay_v[pos=adj] ; #4
 *** intachable_a ; ^ intachable_a 0
-->grn joheipyre_a ; #4
-->grn marã'ỹ_a
+->grn joheipyre_v[pos=adj] ; #4
+->grn marã'ỹ_v[pos=adj]
 *** intacto_a ; ^ intacto_a 0
 ->grn <hete_n marã'ỹ
 *** inteligente_a ; ^ inteligente_a 0 ; #15
-->grn katupyry_a ; #252
+->grn katupyry_v[pos=adj] ; #252
 *** intenso_a ; ^ intenso_a 0 ; #3
-->grn <hatã_a ; #94
-->grn mbarete_a ; #217
+->grn <hatã_v[pos=adj] ; #94
+->grn mbarete_v[pos=adj] ; #217
 *** interesante_a ; ^ interesante_a 0
-->grn <hechapyrã_a ; #58
+->grn <hechapyrã_v[pos=adj] ; #58
 ->grn <hyakuã_n porã
 *** intermedio_a ; ^ intermedio_a 0
-->grn mbytepegua_a
+->grn mbytepegua_v[pos=adj]
 *** interminable_a ; ^ interminable_a 0
-->grn apyve'ỹ_a
-->grn apyra'ỹ_a
-->grn apyre'ỹ_a
-->grn pavẽ'ỹ_a
+->grn apyve'ỹ_v[pos=adj]
+->grn apyra'ỹ_v[pos=adj]
+->grn apyre'ỹ_v[pos=adj]
+->grn pavẽ'ỹ_v[pos=adj]
 *** intranquilo_a ; ^ intranquilo_a 0
-->grn py'atarova_a
+->grn py'atarova_v[pos=adj]
 *** intrincado_a ; ^ intrincado_a 0
-->grn javorái_a
+->grn javorái_v[pos=adj]
 *** intruso_a ; ^ intruso_a 0
-->grn oikereíva_a
+->grn oikereíva_v[pos=adj]
 *** intrépido_a ; ^ intrépido_a 0
-->grn py'aguasu_a
+->grn py'aguasu_v[pos=adj]
 *** intrínseco_a ; ^ intrínseco_a 0
-->grn <hyepypegua_a
+->grn <hyepypegua_v[pos=adj]
 *** inutil_a ; ^ inutil_a 0
-->grn pitua_a
-->grn pituva_a ; #2
+->grn pitua_v[pos=adj]
+->grn pituva_v[pos=adj] ; #2
 *** inválido_a ; ^ inválido_a 0
-->grn meĝua_a
+->grn meĝua_v[pos=adj]
 *** inútil_a ; ^ inútil_a 0 ; #10
-->grn pituva_a ; #2
-->grn apĩ_a ; #6
+->grn pituva_v[pos=adj] ; #2
+->grn apĩ_v[pos=adj] ; #6
 *** irregular_a ; ^ irregular_a 0
-->grn <hekope'ỹ_a
+->grn <hekope'ỹ_v[pos=adj]
 *** irrespetuoso_a ; ^ irrespetuoso_a 0
-->grn <hova'atã_a
+->grn <hova'atã_v[pos=adj]
 *** izquierdo_a ; ^ izquierdo_a 0 ; #58
-->grn asugua_a
-->grn asupegua_a
-->grn asu_a
+->grn asugua_v[pos=adj]
+->grn asupegua_v[pos=adj]
+->grn asu_v[pos=adj]
 *** jocoso_a ; ^ jocoso_a 0
-->grn <hory_a ; #76
-->grn mbopukáva_a
+->grn <hory_v[pos=adj] ; #76
+->grn mbopukáva_v[pos=adj]
 *** jorobada_a ; ^ jorobada_a 0
-->grn atuape_a
+->grn atuape_v[pos=adj]
 *** joven_a ; ^ joven_a 0
-->grn peky_a
+->grn peky_v[pos=adj]
 *** jovial_a ; ^ jovial_a 0
-->grn <hekoayhu_a ; #11
-->grn <hory_a ; #76
-->grn <hetia'e_a ; #25
+->grn <hekoayhu_v[pos=adj] ; #11
+->grn <hory_v[pos=adj] ; #76
+->grn <hetia'e_v[pos=adj] ; #25
 *** judicial_a ; ^ judicial_a 0
-->grn <hekorãvukára_a
+->grn <hekorãvukára_v[pos=adj]
 *** jugoso_a ; ^ jugoso_a 0
-->grn aysy_a
-->grn <hykue_a ; #53
+->grn aysy_v[pos=adj]
+->grn <hykue_v[pos=adj] ; #53
 *** juguetón_a ; ^ juguetón_a 0
-->grn saraki_a
+->grn saraki_v[pos=adj]
 *** juicioso_a ; ^ juicioso_a 0
-->grn akãguasu_a
+->grn akãguasu_v[pos=adj]
 *** justo_a ; ^ justo_a 0 ; #254
-->grn marangatu_a ; #69
-->grn <hekojoja_a ; #50
+->grn marangatu_v[pos=adj] ; #69
+->grn <hekojoja_v[pos=adj] ; #50
 *** laborioso_a ; ^ laborioso_a 0 ; #1
-->grn <hetia'e_a ; #25
-->grn kyre'ỹ_a ; #66
+->grn <hetia'e_v[pos=adj] ; #25
+->grn kyre'ỹ_v[pos=adj] ; #66
 *** labrado_a ; ^ labrado_a 0
-->grn apopy_a
+->grn apopy_v[pos=adj]
 *** lacio_a ; ^ lacio_a 0
-->grn japa'y_a
+->grn japa'y_v[pos=adj]
 *** ladeado_a ; ^ ladeado_a 0
-->grn joki_a
-->grn kechẽ_a ; #1
-->grn jero'a_a
+->grn joki_v[pos=adj]
+->grn kechẽ_v[pos=adj] ; #1
+->grn jero'a_v[pos=adj]
 *** lampiño_a ; ^ lampiño_a 0
-->grn perõ_a
+->grn perõ_v[pos=adj]
 *** lanzado_a ; ^ lanzado_a 0
-->grn mombopyre_a
+->grn mombopyre_v[pos=adj]
 *** largo_a ; ^ largo_a 0 ; #60
-->grn <hosã_a ; #8
-->grn puku_a ; #88
-->grn mbuku_a ; #14
+->grn <hosã_v[pos=adj] ; #8
+->grn puku_v[pos=adj] ; #88
+->grn mbuku_v[pos=adj] ; #14
 *** lateral_a ; ^ lateral_a 0
-->grn ykegua_a
+->grn ykegua_v[pos=adj]
 *** lechoso_a ; ^ lechoso_a 0
-->grn aysy_a
-->grn ñapatĩ_a
+->grn aysy_v[pos=adj]
+->grn ñapatĩ_v[pos=adj]
 *** legal_a ; ^ legal_a 0
-->grn <hekopegua_a
+->grn <hekopegua_v[pos=adj]
 *** legendario_a ; ^ legendario_a 0
-->grn ymaguare_a
+->grn ymaguare_v[pos=adj]
 *** legítimo_a ; ^ legítimo_a 0 ; #1
-->grn añetegua_a ; #30
-->grn tee_a ; #4
+->grn añetegua_v[pos=adj] ; #30
+->grn tee_v[pos=adj] ; #4
 *** lejano_a ; ^ lejano_a 0 ; #20
-->grn mombyry_a ; #88
+->grn mombyry_v[pos=adj] ; #88
 ->grn amo_n mombyry
 *** lento_a ; ^ lento_a 0 ; #3
-->grn mbegue_a ; #29
+->grn mbegue_v[pos=adj] ; #29
 ->grn tahýi_n guata
 *** leproso_a ; ^ leproso_a 0
-->grn aipochy_a
+->grn aipochy_v[pos=adj]
 *** lerdo_a ; ^ lerdo_a 0
-->grn mbegue_a ; #29
-->grn aruru_a
-->grn pohýi_a ; #44
+->grn mbegue_v[pos=adj] ; #29
+->grn aruru_v[pos=adj]
+->grn pohýi_v[pos=adj] ; #44
 *** levantado_a ; ^ levantado_a 0 ; #35
-->grn opu'ãva_a ; #6
-->grn pu'ãpyre_a
+->grn opu'ãva_v[pos=adj] ; #6
+->grn pu'ãpyre_v[pos=adj]
 *** leve_a ; ^ leve_a 0
-->grn vevúi_a
+->grn vevúi_v[pos=adj]
 *** liado_a ; ^ liado_a 0
-->grn liapyre_a
+->grn liapyre_v[pos=adj]
 *** libertino_a ; ^ libertino_a 0
-->grn <hekovai_a
+->grn <hekovai_v[pos=adj]
 *** libre_a ; ^ libre_a 0
-->grn sãso_a
+->grn sãso_v[pos=adj]
 *** libre_a de peligro ; ^ libre_a 0
-->grn ãngave'ỹ_a
+->grn ãngave'ỹ_v[pos=adj]
 *** ligado_a ; ^ ligado_a 0
-->grn apytĩmbyre_a
+->grn apytĩmbyre_v[pos=adj]
 *** ligero_a ; ^ ligero_a 0 ; #16
-->grn vevúi_a ; #4
-->grn akuã_a ; #1
-->grn pojava_a ; #2
-->grn atã_a ; #6
+->grn vevúi_v[pos=adj] ; #4
+->grn akuã_v[pos=adj] ; #1
+->grn pojava_v[pos=adj] ; #2
+->grn atã_v[pos=adj] ; #6
 *** limpio_a ; ^ limpio_a 0
-->grn potĩ_a
+->grn potĩ_v[pos=adj]
 *** limítrofe_a ; ^ limítrofe_a 0
-->grn ykeregua_a
+->grn ykeregua_v[pos=adj]
 *** lindo_a ; ^ lindo_a 0 ; #2
-->grn iporãva_a ; #92
-->grn morã_a
-->grn porã_a ; #1590
+->grn iporãva_v[pos=adj] ; #92
+->grn morã_v[pos=adj]
+->grn porã_v[pos=adj] ; #1590
 *** lisiado_a ; ^ lisiado_a 0
-->grn meĝua_a
+->grn meĝua_v[pos=adj]
 *** liso_a ; ^ liso_a 0 ; #2
-->grn apesỹi_a
-->grn apa'y_a
-->grn sỹi_a ; #2
+->grn apesỹi_v[pos=adj]
+->grn apa'y_v[pos=adj]
+->grn sỹi_v[pos=adj] ; #2
 *** lista_a ; ^ lista_a 0
-->grn guápa_a
+->grn guápa_v[pos=adj]
 *** listo_a ; ^ listo_a 0 ; #10
-->grn akãhatã_a ; #2
-->grn <hetia'e_a ; #25
-->grn kyre'ỹ_a ; #66
-->grn katupyry_a ; #252
-->grn arandu_a ; #266
+->grn akãhatã_v[pos=adj] ; #2
+->grn <hetia'e_v[pos=adj] ; #25
+->grn kyre'ỹ_v[pos=adj] ; #66
+->grn katupyry_v[pos=adj] ; #252
+->grn arandu_v[pos=adj] ; #266
 *** liviano_a ; ^ liviano_a 0
-->grn vevúi_a
+->grn vevúi_v[pos=adj]
 *** llamado_a ; ^ llamado_a 0 ; #160
-->grn eha_a ; #1
-->grn <henoipyre_a
+->grn eha_v[pos=adj] ; #1
+->grn <henoipyre_v[pos=adj]
 *** llano_a ; ^ llano_a 0 ; #15
-->grn pe_a ; #5405
-->grn apa'y_a
-->grn ruri_a
+->grn pe_v[pos=adj] ; #5405
+->grn apa'y_v[pos=adj]
+->grn ruri_v[pos=adj]
 *** lleno_a ; ^ lleno_a 0 ; #146
-->grn <henyhẽ_a ; #51
-->grn chovi_a ; #2
+->grn <henyhẽ_v[pos=adj] ; #51
+->grn chovi_v[pos=adj] ; #2
 *** lleno_a de polvo ; ^ lleno_a 0 ; #146
-->grn apatĩ_a
+->grn apatĩ_v[pos=adj]
 *** lleno_a de puntas agudas ; ^ lleno_a 0 ; #146
-->grn <hakuapa_a
+->grn <hakuapa_v[pos=adj]
 *** lleno_a de gorgojos ; ^ lleno_a 0 ; #146
-->grn tĩĝua'ãmba_a
+->grn tĩĝua'ãmba_v[pos=adj]
 *** lloroso_a ; ^ lloroso_a 0
-->grn <hasẽ_a ; #88
-->grn <hesaýva_a
+->grn <hasẽ_v[pos=adj] ; #88
+->grn <hesaýva_v[pos=adj]
 *** llorón_a ; ^ llorón_a 0
-->grn <hasẽngy_a
-->grn <hesangy_a ; #2
+->grn <hasẽngy_v[pos=adj]
+->grn <hesangy_v[pos=adj] ; #2
 *** lluvioso_a ; ^ lluvioso_a 0
-->grn amandy_a
+->grn amandy_v[pos=adj]
 *** loable_a ; ^ loable_a 0
-->grn momorãmbyrã_a
+->grn momorãmbyrã_v[pos=adj]
 *** local_a ; ^ local_a 0
-->grn ápegua_a
+->grn ápegua_v[pos=adj]
 *** loco_a ; ^ loco_a 0 ; #10
-->grn akãraku_a ; #10
-->grn tarova_a ; #32
-->grn akãvai_a ; #1
-->grn tavy_a ; #96
+->grn akãraku_v[pos=adj] ; #10
+->grn tarova_v[pos=adj] ; #32
+->grn akãvai_v[pos=adj] ; #1
+->grn tavy_v[pos=adj] ; #96
 *** locuaz_a ; ^ locuaz_a 0
-->grn ñe'ẽngatu_a
+->grn ñe'ẽngatu_v[pos=adj]
 *** longevo_a ; ^ longevo_a 0
-->grn oikovepukúva_a
+->grn oikovepukúva_v[pos=adj]
 *** lozano_a ; ^ lozano_a 0 ; #2
-->grn <hoky_a ; #12
-->grn <hovyũ_a ; #8
+->grn <hoky_v[pos=adj] ; #12
+->grn <hovyũ_v[pos=adj] ; #8
 *** lucrativo_a ; ^ lucrativo_a 0
-->grn virureruha_a
+->grn virureruha_v[pos=adj]
 *** lugareño_a ; ^ lugareño_a 0
-->grn ápegua_a
+->grn ápegua_v[pos=adj]
 *** lujoso_a ; ^ lujoso_a 0
-->grn kate_a
+->grn kate_v[pos=adj]
 *** lujurioso_a ; ^ lujurioso_a 0
-->grn <haguyrõ_a
+->grn <haguyrõ_v[pos=adj]
 *** luminoso_a ; ^ luminoso_a 0
-->grn <hendypu_a
+->grn <hendypu_v[pos=adj]
 *** lánguido_a ; ^ lánguido_a 0
-->grn kangy_a ; #28
-->grn ygue_a
-->grn jepokaparei_a
+->grn kangy_v[pos=adj] ; #28
+->grn ygue_v[pos=adj]
+->grn jepokaparei_v[pos=adj]
 *** lícito_a ; ^ lícito_a 0
-->grn <hekopegua_a
+->grn <hekopegua_v[pos=adj]
 *** líquido_a ; ^ líquido_a 0
-->grn <hykue_a ; #53
-->grn <hyku_a ; #6
+->grn <hykue_v[pos=adj] ; #53
+->grn <hyku_v[pos=adj] ; #6
 *** macho_a ; ^ macho_a 0
-->grn mácho_a
+->grn mácho_v[pos=adj]
 *** macilento_a ; ^ macilento_a 0
-->grn yguerei_a
+->grn yguerei_v[pos=adj]
 *** madura_a ; ^ madura_a 0
-->grn háka_a
+->grn háka_v[pos=adj]
 *** maduro_a ; ^ maduro_a 0
-->grn aju_a
+->grn aju_v[pos=adj]
 *** majadero_a ; ^ majadero_a 0
-->grn joha_a ; #3
-->grn mongueraiha_a
+->grn joha_v[pos=adj] ; #3
+->grn mongueraiha_v[pos=adj]
 *** malcriado_a ; ^ malcriado_a 0
-->grn jeroviapy_a
+->grn jeroviapy_v[pos=adj]
 *** maldito_a ; ^ maldito_a 0
-->grn ñaña_a
+->grn ñaña_v[pos=adj]
 *** maleducado_a ; ^ maleducado_a 0
-->grn kachape_a
+->grn kachape_v[pos=adj]
 *** malhumorado_a ; ^ malhumorado_a 0
-->grn <hetia'e'ỹ_a
-->grn pirevai_a
+->grn <hetia'e'ỹ_v[pos=adj]
+->grn pirevai_v[pos=adj]
 *** malicioso_a ; ^ malicioso_a 0
-->grn aña_a
+->grn aña_v[pos=adj]
 *** malo_a ; ^ malo_a 0 ; #238
-->grn ipochýva_a ; #6
-->grn mba'evai_a ; #109
-->grn vai_a ; #284
-->grn meĝua_a ; #1
-->grn aña_a ; #105
-->grn ñaña_a ; #66
+->grn ipochýva_v[pos=adj] ; #6
+->grn mba'evai_v[pos=adj] ; #109
+->grn vai_v[pos=adj] ; #284
+->grn meĝua_v[pos=adj] ; #1
+->grn aña_v[pos=adj] ; #105
+->grn ñaña_v[pos=adj] ; #66
 *** maloliente_a ; ^ maloliente_a 0
-->grn katĩ_a ; #16
+->grn katĩ_v[pos=adj] ; #16
 ->grn <hyakuã_n vai
-->grn ne_a ; #90
+->grn ne_v[pos=adj] ; #90
 *** malvado_a ; ^ malvado_a 0 ; #106
-->grn aña_a ; #105
-->grn ipochýva_a ; #6
-->grn ñaña_a ; #66
+->grn aña_v[pos=adj] ; #105
+->grn ipochýva_v[pos=adj] ; #6
+->grn ñaña_v[pos=adj] ; #66
 *** maléfico_a ; ^ maléfico_a 0
-->grn harúva_a
+->grn harúva_v[pos=adj]
 *** malévolo_a ; ^ malévolo_a 0
-->grn ñaña_a ; #66
+->grn ñaña_v[pos=adj] ; #66
 *** manchado_a ; ^ manchado_a 0
-->grn marã_a
+->grn marã_v[pos=adj]
 *** manco_a ; ^ manco_a 0
-->grn po'ỹ_a
+->grn po'ỹ_v[pos=adj]
 *** mancomunado_a ; ^ mancomunado_a 0
-->grn mono'õmbyre_a
+->grn mono'õmbyre_v[pos=adj]
 *** manoseado_a ; ^ manoseado_a 0
-->grn avykypyre_a
+->grn avykypyre_v[pos=adj]
 *** manso_a ; ^ manso_a 0 ; #8
-->grn marangatu_a ; #69
-->grn ñe'ẽrendu_a ; #44
+->grn marangatu_v[pos=adj] ; #69
+->grn ñe'ẽrendu_v[pos=adj] ; #44
 *** marchito_a ; ^ marchito_a 0 ; #2
-->grn aviru_a
-->grn mano_a ; #354
-->grn <haviru_a
+->grn aviru_v[pos=adj]
+->grn mano_v[pos=adj] ; #354
+->grn <haviru_v[pos=adj]
 *** mareado_a ; ^ mareado_a 0
-->grn akãnga'u_a
+->grn akãnga'u_v[pos=adj]
 *** ligeramente mareado_a ; ^ mareado_a 1
-->grn pichoro_a
+->grn pichoro_v[pos=adj]
 *** marino_a ; ^ marino_a 0
-->grn parapeguáva_a
+->grn parapeguáva_v[pos=adj]
 *** marrón_a ; ^ marrón_a 0
-->grn sa'yjuũ_a
+->grn sa'yjuũ_v[pos=adj]
 *** masculino_a ; ^ masculino_a 0
 ->grn kuimba'e_n rehegua
 *** mayor_a ; ^ mayor_a 0 ; #139
-->grn <huvicha_a ; #84
-->grn tuicha_a ; #155
+->grn <huvicha_v[pos=adj] ; #84
+->grn tuicha_v[pos=adj] ; #155
 *** mayúsculo_a ; ^ mayúsculo_a 0
-->grn popeno_a
+->grn popeno_v[pos=adj]
 *** mediano_a ; ^ mediano_a 0
-->grn mbytegua_a
+->grn mbytegua_v[pos=adj]
 *** medio_a ; ^ medio_a 0
-->grn mbyte_a
+->grn mbyte_v[pos=adj]
 *** medular_a ; ^ medular_a 0
-->grn apytere_a
+->grn apytere_v[pos=adj]
 *** mejor_a ; ^ mejor_a 0
-->grn iporãve_a
+->grn iporãve_v[pos=adj]
 *** melancólico_a ; ^ melancólico_a 0
-->grn py'angekói_a
+->grn py'angekói_v[pos=adj]
 *** melindroso_a ; ^ melindroso_a 0
-->grn <hekoita_a
+->grn <hekoita_v[pos=adj]
 *** mellizo_a ; ^ mellizo_a 0
-->grn pekõi_a
+->grn pekõi_v[pos=adj]
 *** mendigo_a ; ^ mendigo_a 0
-->grn oikotevẽva_a
+->grn oikotevẽva_v[pos=adj]
 *** menesteroso_a ; ^ menesteroso_a 0 ; #17
-->grn mboriahu_a ; #66
-->grn oikotevẽva_a ; #10
-->grn poriahu_a ; #1
+->grn mboriahu_v[pos=adj] ; #66
+->grn oikotevẽva_v[pos=adj] ; #10
+->grn poriahu_v[pos=adj] ; #1
 *** menor_a ; ^ menor_a 0 ; #63
-->grn michĩvéva_a ; #6
-->grn michĩve_a
+->grn michĩvéva_v[pos=adj] ; #6
+->grn michĩve_v[pos=adj]
 *** mentiroso_a ; ^ mentiroso_a 0
-->grn japu_a
+->grn japu_v[pos=adj]
 *** menudo_a ; ^ menudo_a 0 ; #9
-->grn ku'i_a ; #12
-->grn sa'i_a ; #58
+->grn ku'i_v[pos=adj] ; #12
+->grn sa'i_v[pos=adj] ; #58
 *** mestizo_a ; ^ mestizo_a 0
 ->grn <huguy_n joparáva
 *** metido_a ; ^ metido_a 0
-->grn moingepyre_a
+->grn moingepyre_v[pos=adj]
 *** mezquino_a ; ^ mezquino_a 0 ; #2
-->grn chi'õ_a ; #5
-->grn jopy_a ; #79
+->grn chi'õ_v[pos=adj] ; #5
+->grn jopy_v[pos=adj] ; #79
 *** miedoso_a ; ^ miedoso_a 0
-->grn py'aju_a
-->grn py'atytýi_a ; #5
-->grn py'amirĩ_a ; #4
+->grn py'aju_v[pos=adj]
+->grn py'atytýi_v[pos=adj] ; #5
+->grn py'amirĩ_v[pos=adj] ; #4
 *** mil_a ; ^ mil_a 0
-->grn su_a
+->grn su_v[pos=adj]
 *** dos mil_a ; ^ mil_a 1
-->grn mokõisu_a
+->grn mokõisu_v[pos=adj]
 *** millonario_a ; ^ millonario_a 0
-->grn mba'eheta_a
+->grn mba'eheta_v[pos=adj]
 *** mimado_a ; ^ mimado_a 0 ; #2
 ->grn <hesãi_n kyra
-->grn kunu'ũ_a ; #10
+->grn kunu'ũ_v[pos=adj] ; #10
 *** miope_a ; ^ miope_a 0
-->grn <hechambyky_a
+->grn <hechambyky_v[pos=adj]
 *** mirón_a ; ^ mirón_a 0
-->grn volu_a
+->grn volu_v[pos=adj]
 *** mismo_a ; ^ mismo_a 0
-->grn ete_a
+->grn ete_v[pos=adj]
 *** mocho_a ; ^ mocho_a 0
-->grn apĩ_a
+->grn apĩ_v[pos=adj]
 *** mocoso_a ; ^ mocoso_a 0
-->grn tĩsyry_a
+->grn tĩsyry_v[pos=adj]
 *** moderado_a ; ^ moderado_a 0
-->grn akãguapy_a
+->grn akãguapy_v[pos=adj]
 *** moderno_a ; ^ moderno_a 0
-->grn ko'aĝagua_a ; #9
-->grn pyahu_a ; #124
-->grn aĝagua_a
+->grn ko'aĝagua_v[pos=adj] ; #9
+->grn pyahu_v[pos=adj] ; #124
+->grn aĝagua_v[pos=adj]
 *** modesto_a ; ^ modesto_a 0
-->grn oikotevẽva_a ; #10
-->grn jegua'ỹ_a
+->grn oikotevẽva_v[pos=adj] ; #10
+->grn jegua'ỹ_v[pos=adj]
 *** mojado_a ; ^ mojado_a 0 ; #1
-->grn <hykue_a ; #53
+->grn <hykue_v[pos=adj] ; #53
 *** molesto_a ; ^ molesto_a 0
-->grn arhél_a
+->grn arhél_v[pos=adj]
 *** molestoso_a ; ^ molestoso_a 0
-->grn joha_a ; #3
-->grn pohýi_a ; #44
+->grn joha_v[pos=adj] ; #3
+->grn pohýi_v[pos=adj] ; #44
 *** molido_a ; ^ molido_a 0 ; #2
-->grn josopy_a
-->grn ku'i_a ; #12
-->grn aku'i_a
+->grn josopy_v[pos=adj]
+->grn ku'i_v[pos=adj] ; #12
+->grn aku'i_v[pos=adj]
 *** molido_a en polvo muy fino ; ^ molido_a 0 ; #2
-->grn ku'itumi_a
+->grn ku'itumi_v[pos=adj]
 *** momentáneo_a ; ^ momentáneo_a 0
-->grn sapy'agua_a
+->grn sapy'agua_v[pos=adj]
 *** mondo_a ; ^ mondo_a 0
-->grn apĩ_a ; #6
-->grn perõ_a ; #4
+->grn apĩ_v[pos=adj] ; #6
+->grn perõ_v[pos=adj] ; #4
 *** montaraz_a ; ^ montaraz_a 0
-->grn ka'agua_a
-->grn ka'aguygua_a ; #20
+->grn ka'agua_v[pos=adj]
+->grn ka'aguygua_v[pos=adj] ; #20
 *** morado_a ; ^ morado_a 0 ; #47
-->grn jumby_a
-->grn pytaũ_a
+->grn jumby_v[pos=adj]
+->grn pytaũ_v[pos=adj]
 *** moreno_a ; ^ moreno_a 0
-->grn kamba_a
+->grn kamba_v[pos=adj]
 *** moribundo_a ; ^ moribundo_a 0
-->grn manombotáva_a
+->grn manombotáva_v[pos=adj]
 *** morocho_a ; ^ morocho_a 0
-->grn tupi_a
+->grn tupi_v[pos=adj]
 *** mortal_a ; ^ mortal_a 0
-->grn ojukáva_a
+->grn ojukáva_v[pos=adj]
 *** moteado_a ; ^ moteado_a 0
-->grn tara_a
-->grn para_a ; #116
-->grn para'i_a
+->grn tara_v[pos=adj]
+->grn para_v[pos=adj] ; #116
+->grn para'i_v[pos=adj]
 *** mucho_a ; ^ mucho_a 0 ; #640
-->grn <huvicha_a ; #84
-->grn asy_a ; #64
-->grn <heta_a ; #1230
-->grn tuicha_a ; #155
+->grn <huvicha_v[pos=adj] ; #84
+->grn asy_v[pos=adj] ; #64
+->grn <heta_v[pos=adj] ; #1230
+->grn tuicha_v[pos=adj] ; #155
 *** muchos_a ; ^ muchos_a 0
-->grn <heta_a ; #1230
+->grn <heta_v[pos=adj] ; #1230
 *** mudo_a ; ^ mudo_a 0
-->grn ñe'engu_a
+->grn ñe'engu_v[pos=adj]
 *** muerto_a ; ^ muerto_a 0
-->grn omanóva_a
+->grn omanóva_v[pos=adj]
 *** mugriento_a ; ^ mugriento_a 0
-->grn jare_a ; #64
-->grn ky'a_a ; #20
+->grn jare_v[pos=adj] ; #64
+->grn ky'a_v[pos=adj] ; #20
 *** mujeriego_a ; ^ mujeriego_a 0
-->grn kuñareko_a
+->grn kuñareko_v[pos=adj]
 *** mullido_a ; ^ mullido_a 0
-->grn <hu'ũ_a ; #13
-->grn u'ũ_a
+->grn <hu'ũ_v[pos=adj] ; #13
+->grn u'ũ_v[pos=adj]
 *** mutilado_a ; ^ mutilado_a 0
-->grn chóto_a
+->grn chóto_v[pos=adj]
 *** mínimo_a ; ^ mínimo_a 0
-->grn michĩvete_a
+->grn michĩvete_v[pos=adj]
 *** móvil_a ; ^ móvil_a 0
-->grn omýiva_a
+->grn omýiva_v[pos=adj]
 *** recién nacido_a ; ^ nacido_a 1
-->grn jaramóva_a
-->grn aramóva_a
+->grn jaramóva_v[pos=adj]
+->grn aramóva_v[pos=adj]
 *** nadador_a ; ^ nadador_a 0
-->grn <hoytáva_a
+->grn <hoytáva_v[pos=adj]
 *** necesario_a ; ^ necesario_a 0
-->grn <hekotevẽva_a
+->grn <hekotevẽva_v[pos=adj]
 *** necesitado_a ; ^ necesitado_a 0 ; #18
-->grn mboriahu_a ; #66
-->grn morombi_a
-->grn poriahu_a ; #1
+->grn mboriahu_v[pos=adj] ; #66
+->grn morombi_v[pos=adj]
+->grn poriahu_v[pos=adj] ; #1
 *** necio_a ; ^ necio_a 0 ; #96
-->grn výro_a ; #14
-->grn akãhatã_a ; #2
-->grn tavy_a ; #96
+->grn výro_v[pos=adj] ; #14
+->grn akãhatã_v[pos=adj] ; #2
+->grn tavy_v[pos=adj] ; #96
 *** nefasto_a ; ^ nefasto_a 0
-->grn vai_a ; #284
-->grn mba'evairã_a
+->grn vai_v[pos=adj] ; #284
+->grn mba'evairã_v[pos=adj]
 *** negro_a ; ^ negro_a 0 ; #14
-->grn kamba_a ; #23
-->grn hũ_a ; #15
+->grn kamba_v[pos=adj] ; #23
+->grn hũ_v[pos=adj] ; #15
 *** negro_a no uniforme ; ^ negro_a 0 ; #14
-->grn hũmbara_a
+->grn hũmbara_v[pos=adj]
 *** negruzco_a ; ^ negruzco_a 0
-->grn hũngy_a
+->grn hũngy_v[pos=adj]
 *** nervioso_a ; ^ nervioso_a 0
-->grn <hajygue_a
+->grn <hajygue_v[pos=adj]
 *** noble_a ; ^ noble_a 0 ; #23
-->grn <hekoporã_a ; #16
-->grn kate_a ; #2
-->grn marangatu_a ; #69
+->grn <hekoporã_v[pos=adj] ; #16
+->grn kate_v[pos=adj] ; #2
+->grn marangatu_v[pos=adj] ; #69
 *** nocivo_a ; ^ nocivo_a 0 ; #1
-->grn vai_a ; #284
-->grn mba'evairã_a
+->grn vai_v[pos=adj] ; #284
+->grn mba'evairã_v[pos=adj]
 *** noctámbulo_a ; ^ noctámbulo_a 0
-->grn iko'ẽmbáva_a
+->grn iko'ẽmbáva_v[pos=adj]
 *** nombrado_a ; ^ nombrado_a 0 ; #9
-->grn <henoipyre_a
-->grn <heropyre_a
+->grn <henoipyre_v[pos=adj]
+->grn <heropyre_v[pos=adj]
 *** nostálgico_a ; ^ nostálgico_a 0
-->grn <hechaga'úva_a
+->grn <hechaga'úva_v[pos=adj]
 *** notable_a ; ^ notable_a 0
-->grn momorãmbyre_a
+->grn momorãmbyre_v[pos=adj]
 *** novecientos_a ; ^ novecientos_a 0
-->grn porundysa_a
+->grn porundysa_v[pos=adj]
 *** noveno_a ; ^ noveno_a 0
-->grn porundyha_a
+->grn porundyha_v[pos=adj]
 *** noventa_a ; ^ noventa_a 0
-->grn porundypa_a
+->grn porundypa_v[pos=adj]
 *** nueve_a ; ^ nueve_a 0
-->grn porundy_a
+->grn porundy_v[pos=adj]
 *** nuevo_a ; ^ nuevo_a 0 ; #185
-->grn pyahu_a ; #124
-->grn kyrỹi_a ; #13
+->grn pyahu_v[pos=adj] ; #124
+->grn kyrỹi_v[pos=adj] ; #13
 *** nulo_a ; ^ nulo_a 0
-->grn mba'evegua_a
+->grn mba'evegua_v[pos=adj]
 *** numeroso_a ; ^ numeroso_a 0
-->grn <heta_a
+->grn <heta_v[pos=adj]
 *** obediente_a ; ^ obediente_a 0 ; #3
-->grn jarakuaa_a
-->grn ñe'ẽrendu_a ; #44
+->grn jarakuaa_v[pos=adj]
+->grn ñe'ẽrendu_v[pos=adj] ; #44
 *** obeso_a ; ^ obeso_a 0
-->grn kyra_a
+->grn kyra_v[pos=adj]
 *** obscuro_a ; ^ obscuro_a 0
-->grn iñypytũ_a
-->grn pytũ_a ; #68
-->grn ypytũ_a ; #14
+->grn iñypytũ_v[pos=adj]
+->grn pytũ_v[pos=adj] ; #68
+->grn ypytũ_v[pos=adj] ; #14
 *** observador_a ; ^ observador_a 0
-->grn omañáva_a
+->grn omañáva_v[pos=adj]
 *** obstinado_a ; ^ obstinado_a 0
-->grn ijetu'u_a
+->grn ijetu'u_v[pos=adj]
 *** obtuso_a ; ^ obtuso_a 0
-->grn arandu'ỹ_a
-->grn hãimbe'ỹ_a
+->grn arandu'ỹ_v[pos=adj]
+->grn hãimbe'ỹ_v[pos=adj]
 *** ochenta_a ; ^ ochenta_a 0
-->grn poapypa_a
+->grn poapypa_v[pos=adj]
 *** ocho_a ; ^ ocho_a 0
-->grn poapy_a
+->grn poapy_v[pos=adj]
 *** ocho_a mil ; ^ ocho_a 0
-->grn poapysu_a
+->grn poapysu_v[pos=adj]
 *** ochocientos_a ; ^ ochocientos_a 0
-->grn poapysa_a
+->grn poapysa_v[pos=adj]
 *** ocioso_a ; ^ ocioso_a 0 ; #12
-->grn mba'apo'ỹ_a
-->grn <hekorei_a ; #8
+->grn mba'apo'ỹ_v[pos=adj]
+->grn <hekorei_v[pos=adj] ; #8
 *** octavo_a ; ^ octavo_a 0
-->grn poapyha_a
+->grn poapyha_v[pos=adj]
 *** oculto_a ; ^ oculto_a 0
-->grn ñemi_a
+->grn ñemi_v[pos=adj]
 *** oloroso_a ; ^ oloroso_a 0 ; #3
-->grn <hyakuã_a ; #27
-->grn <hyakuãva_a
+->grn <hyakuã_v[pos=adj] ; #27
+->grn <hyakuãva_v[pos=adj]
 *** olvidadizo_a ; ^ olvidadizo_a 0
-->grn akãvai_a
+->grn akãvai_v[pos=adj]
 *** olvidado_a ; ^ olvidado_a 0
-->grn <hesaraipyre_a
+->grn <hesaraipyre_v[pos=adj]
 *** omnipotente_a ; ^ omnipotente_a 0
-->grn ikatupáva_a
+->grn ikatupáva_v[pos=adj]
 *** once_a ; ^ once_a 0
-->grn pateĩ_a
+->grn pateĩ_v[pos=adj]
 *** ondulado_a ; ^ ondulado_a 0
-->grn apopẽ_a
+->grn apopẽ_v[pos=adj]
 *** oneroso_a ; ^ oneroso_a 0
-->grn <hepy_a
+->grn <hepy_v[pos=adj]
 *** oponente_a ; ^ oponente_a 0
-->grn ombohováiva_a
+->grn ombohováiva_v[pos=adj]
 *** oportuno_a ; ^ oportuno_a 0
-->grn hi'aragua_a
+->grn hi'aragua_v[pos=adj]
 *** opresivo_a ; ^ opresivo_a 0
-->grn ojopýva_a
+->grn ojopýva_v[pos=adj]
 *** oprimido_a ; ^ oprimido_a 0
-->grn soso_a
+->grn soso_v[pos=adj]
 *** optimista_a ; ^ optimista_a 0
-->grn <hetia'e_a ; #25
-->grn kyre'ỹ_a ; #66
+->grn <hetia'e_v[pos=adj] ; #25
+->grn kyre'ỹ_v[pos=adj] ; #66
 *** ordenado_a ; ^ ordenado_a 0
-->grn myatyrõmbyre_a
+->grn myatyrõmbyre_v[pos=adj]
 *** ordinario_a ; ^ ordinario_a 0 ; #1
-->grn kelembu_a
-->grn oikokatúva_a
-->grn kesu_a ; #34
+->grn kelembu_v[pos=adj]
+->grn oikokatúva_v[pos=adj]
+->grn kesu_v[pos=adj] ; #34
 *** orgulloso_a ; ^ orgulloso_a 0 ; #3
-->grn jero_a ; #1
-->grn jererovu_a ; #1
-->grn aguara_a ; #98
-->grn jejapo_a ; #182
-->grn tĩ'atã_a ; #1
+->grn jero_v[pos=adj] ; #1
+->grn jererovu_v[pos=adj] ; #1
+->grn aguara_v[pos=adj] ; #98
+->grn jejapo_v[pos=adj] ; #182
+->grn tĩ'atã_v[pos=adj] ; #1
 *** osado_a ; ^ osado_a 0
-->grn kose_a
-->grn otĩ'ỹva_a
+->grn kose_v[pos=adj]
+->grn otĩ'ỹva_v[pos=adj]
 *** oscuro_a ; ^ oscuro_a 0
-->grn pytũ_a
+->grn pytũ_v[pos=adj]
 *** otro_a ; ^ otro_a 0
-->grn ambue_a
+->grn ambue_v[pos=adj]
 *** ovíparo_a ; ^ ovíparo_a 0
-->grn ombo'áva_a
+->grn ombo'áva_v[pos=adj]
 *** paciente_a ; ^ paciente_a 0 ; #2
-->grn py'aguapy_a ; #103
-->grn támbo_a
+->grn py'aguapy_v[pos=adj] ; #103
+->grn támbo_v[pos=adj]
 *** pacífico_a ; ^ pacífico_a 0 ; #7
-->grn py'aguapy_a ; #103
+->grn py'aguapy_v[pos=adj] ; #103
 *** panzón_a ; ^ panzón_a 0
-->grn <hyeguasu_a
+->grn <hyeguasu_v[pos=adj]
 *** parado_a ; ^ parado_a 0
-->grn opytáva_a
+->grn opytáva_v[pos=adj]
 *** parcial_a ; ^ parcial_a 0
-->grn oĩmba'ỹ_a
+->grn oĩmba'ỹ_v[pos=adj]
 *** pardo_a ; ^ pardo_a 0 ; #1
-->grn <havẽ_a ; #6
-->grn hũngy_a
+->grn <havẽ_v[pos=adj] ; #6
+->grn hũngy_v[pos=adj]
 *** parecido_a ; ^ parecido_a 0 ; #6
-->grn nunga_a ; #16
-->grn <hapicha_a ; #348
-->grn joguaha_a ; #13
+->grn nunga_v[pos=adj] ; #16
+->grn <hapicha_v[pos=adj] ; #348
+->grn joguaha_v[pos=adj] ; #13
 *** parejo_a ; ^ parejo_a 0 ; #4
-->grn apesỹi_a
-->grn joja_a ; #46
+->grn apesỹi_v[pos=adj]
+->grn joja_v[pos=adj] ; #46
 *** parlanchín_a ; ^ parlanchín_a 0
-->grn ñe'ẽngatu_a
+->grn ñe'ẽngatu_v[pos=adj]
 *** parásito_a ; ^ parásito_a 0
-->grn juru'akua_a
+->grn juru'akua_v[pos=adj]
 *** pasado_a ; ^ pasado_a 0
-->grn <havẽ_a
+->grn <havẽ_v[pos=adj]
 *** pasajero_a ; ^ pasajero_a 0
-->grn sapy'agua_a
+->grn sapy'agua_v[pos=adj]
 *** pastoso_a ; ^ pastoso_a 0
-->grn <hu'ũ_a ; #13
-->grn u'ũ_a
+->grn <hu'ũ_v[pos=adj] ; #13
+->grn u'ũ_v[pos=adj]
 *** pausado_a ; ^ pausado_a 0
-->grn mbegue_a
+->grn mbegue_v[pos=adj]
 *** pavoroso_a ; ^ pavoroso_a 0
-->grn mopirĩva_a
+->grn mopirĩva_v[pos=adj]
 *** pecoso_a ; ^ pecoso_a 0
-->grn py'aũ_a
+->grn py'aũ_v[pos=adj]
 *** pegado_a ; ^ pegado_a 0
-->grn joaju_a
+->grn joaju_v[pos=adj]
 *** pegajoso_a ; ^ pegajoso_a 0
-->grn aysy_a
-->grn apovõ_a
-->grn jajy_a
+->grn aysy_v[pos=adj]
+->grn apovõ_v[pos=adj]
+->grn jajy_v[pos=adj]
 *** peinado_a ; ^ peinado_a 0
-->grn akãkarãi_a
+->grn akãkarãi_v[pos=adj]
 *** pelado_a ; ^ pelado_a 0
-->grn akãperõ_a ; #1
-->grn apĩ_a ; #6
-->grn perõ_a ; #4
+->grn akãperõ_v[pos=adj] ; #1
+->grn apĩ_v[pos=adj] ; #6
+->grn perõ_v[pos=adj] ; #4
 *** peleador_a ; ^ peleador_a 0
-->grn ñarõ_a
+->grn ñarõ_v[pos=adj]
 *** peliagudo_a ; ^ peliagudo_a 0
-->grn javorái_a
+->grn javorái_v[pos=adj]
 *** peligroso_a ; ^ peligroso_a 0
-->grn poromongyhyjéva_a
+->grn poromongyhyjéva_v[pos=adj]
 *** peludo_a ; ^ peludo_a 0
-->grn <hague_a
+->grn <hague_v[pos=adj]
 *** penetrante_a ; ^ penetrante_a 0
-->grn oikéva_a
+->grn oikéva_v[pos=adj]
 *** peor_a ; ^ peor_a 0
-->grn vaive_a
+->grn vaive_v[pos=adj]
 *** pequeño_a ; ^ pequeño_a 0 ; #82
-->grn ta'ýra_a ; #20
-->grn michĩ_a ; #35
-->grn karape_a ; #20
-->grn sa'i_a ; #58
-->grn mirĩ_a ; #16
+->grn ta'ýra_v[pos=adj] ; #20
+->grn michĩ_v[pos=adj] ; #35
+->grn karape_v[pos=adj] ; #20
+->grn sa'i_v[pos=adj] ; #58
+->grn mirĩ_v[pos=adj] ; #16
 *** perezoso_a ; ^ perezoso_a 0 ; #16
-->grn ate'ỹ_a ; #15
-->grn kuruchĩ_a
-->grn porasy_a
+->grn ate'ỹ_v[pos=adj] ; #15
+->grn kuruchĩ_v[pos=adj]
+->grn porasy_v[pos=adj]
 *** perezoso_a por debilidad ; ^ perezoso_a 0 ; #16
-->grn pijy_a
+->grn pijy_v[pos=adj]
 *** perfecto_a ; ^ perfecto_a 0
-->grn porã_a
+->grn porã_v[pos=adj]
 ->grn tóko_n vera
 *** perjudicial_a ; ^ perjudicial_a 0
-->grn mbyaiha_a
-->grn kose_a
+->grn mbyaiha_v[pos=adj]
+->grn kose_v[pos=adj]
 *** permanente_a ; ^ permanente_a 0
-->grn opytáva_a
+->grn opytáva_v[pos=adj]
 *** pernicioso_a ; ^ pernicioso_a 0 ; #1
-->grn mbyaiha_a
-->grn mba'evai_a ; #109
+->grn mbyaiha_v[pos=adj]
+->grn mba'evai_v[pos=adj] ; #109
 *** perspicaz_a ; ^ perspicaz_a 0
-->grn <hakua_a
+->grn <hakua_v[pos=adj]
 *** perverso_a ; ^ perverso_a 0
-->grn py'aro_a
+->grn py'aro_v[pos=adj]
 *** pervertido_a ; ^ pervertido_a 0
-->grn <hekovai_a
+->grn <hekovai_v[pos=adj]
 *** pesado_a ; ^ pesado_a 0
-->grn pohýi_a
+->grn pohýi_v[pos=adj]
 *** piadoso_a ; ^ piadoso_a 0
-->grn marangatu_a
+->grn marangatu_v[pos=adj]
 *** picado_a ; ^ picado_a 0
-->grn mbo'ipyre_a
+->grn mbo'ipyre_v[pos=adj]
 *** picante_a ; ^ picante_a 0
-->grn tái_a
-->grn hái_a ; #8
+->grn tái_v[pos=adj]
+->grn hái_v[pos=adj] ; #8
 *** pillo_a ; ^ pillo_a 0
-->grn akãhatã_a ; #2
-->grn añambaraka_a ; #3
+->grn akãhatã_v[pos=adj] ; #2
+->grn añambaraka_v[pos=adj] ; #3
 *** pintado_a ; ^ pintado_a 0
-->grn para_a
+->grn para_v[pos=adj]
 *** pisado_a ; ^ pisado_a 0
-->grn ku'i_a
+->grn ku'i_v[pos=adj]
 *** plano_a ; ^ plano_a 0 ; #3
-->grn pe_a ; #5405
-->grn joja_a ; #46
+->grn pe_v[pos=adj] ; #5405
+->grn joja_v[pos=adj] ; #46
 *** plausible_a ; ^ plausible_a 0
-->grn momorãmbyrã_a
+->grn momorãmbyrã_v[pos=adj]
 *** plegado_a ; ^ plegado_a 0
-->grn myasãimbyre_a
+->grn myasãimbyre_v[pos=adj]
 *** pleno_a ; ^ pleno_a 0
-->grn <henyhẽ_a
+->grn <henyhẽ_v[pos=adj]
 *** plácido_a ; ^ plácido_a 0 ; #1
-->grn py'aguapýva_a
-->grn guapy_a ; #205
+->grn py'aguapýva_v[pos=adj]
+->grn guapy_v[pos=adj] ; #205
 *** pobre_a ; ^ pobre_a 0 ; #143
-->grn sogue_a ; #3
-->grn mboriahu_a ; #66
-->grn poriahu_a ; #1
-->grn apĩ_a ; #6
-->grn oikotevẽva_a ; #10
+->grn sogue_v[pos=adj] ; #3
+->grn mboriahu_v[pos=adj] ; #66
+->grn poriahu_v[pos=adj] ; #1
+->grn apĩ_v[pos=adj] ; #6
+->grn oikotevẽva_v[pos=adj] ; #10
 *** poco_a ; ^ poco_a 0
-->grn pokã_a
+->grn pokã_v[pos=adj]
 *** pocos_a ; ^ pocos_a 0
-->grn sa'i_a ; #58
-->grn mbovy_a ; #18
+->grn sa'i_v[pos=adj] ; #58
+->grn mbovy_v[pos=adj] ; #18
 *** poderoso_a ; ^ poderoso_a 0 ; #86
-->grn mbarete_a ; #217
-->grn poguasu_a ; #21
+->grn mbarete_v[pos=adj] ; #217
+->grn poguasu_v[pos=adj] ; #21
 *** podrido_a ; ^ podrido_a 0 ; #3
-->grn ne_a ; #90
-->grn tuju_a ; #29
-->grn <hu'ũ_a ; #13
+->grn ne_v[pos=adj] ; #90
+->grn tuju_v[pos=adj] ; #29
+->grn <hu'ũ_v[pos=adj] ; #13
 *** popular_a ; ^ popular_a 0
-->grn ka'avo_a
+->grn ka'avo_v[pos=adj]
 *** poquísimo_a ; ^ poquísimo_a 0
-->grn avovi_a
+->grn avovi_v[pos=adj]
 *** porcino_a ; ^ porcino_a 0
 ->grn kure_n rehegua
 *** porfiado_a ; ^ porfiado_a 0
-->grn akãhatã_a
+->grn akãhatã_v[pos=adj]
 *** posible_a ; ^ posible_a 0
-->grn ikatupáva_a
+->grn ikatupáva_v[pos=adj]
 *** posterior_a ; ^ posterior_a 0
-->grn <hapykuerigua_a
+->grn <hapykuerigua_v[pos=adj]
 *** postizo_a ; ^ postizo_a 0
-->grn añetegua'ỹ_a
+->grn añetegua'ỹ_v[pos=adj]
 *** postrero_a ; ^ postrero_a 0
-->grn paha_a
+->grn paha_v[pos=adj]
 *** potente_a ; ^ potente_a 0
-->grn mbarete_a
+->grn mbarete_v[pos=adj]
 *** precario_a ; ^ precario_a 0
-->grn <hatã'ỹva_a
+->grn <hatã'ỹva_v[pos=adj]
 *** precioso_a ; ^ precioso_a 0 ; #68
-->grn <hepýva_a
-->grn <hepyete_a ; #3
+->grn <hepýva_v[pos=adj]
+->grn <hepyete_v[pos=adj] ; #3
 *** preferible_a ; ^ preferible_a 0
-->grn guei_a
+->grn guei_v[pos=adj]
 *** preferido_a ; ^ preferido_a 0
-->grn poravopyre_a ; #8
-->grn potapyre_a
+->grn poravopyre_v[pos=adj] ; #8
+->grn potapyre_v[pos=adj]
 *** prepotente_a ; ^ prepotente_a 0
-->grn mbarete_a
+->grn mbarete_v[pos=adj]
 *** presente_a ; ^ presente_a 0
-->grn oiméva_a
+->grn oiméva_v[pos=adj]
 *** preso_a ; ^ preso_a 0
-->grn monambipyre_a
+->grn monambipyre_v[pos=adj]
 *** prestigioso_a ; ^ prestigioso_a 0
-->grn ka'avo_a
+->grn ka'avo_v[pos=adj]
 *** presumido_a ; ^ presumido_a 0
-->grn jejapo_a ; #182
-->grn ha'esénte_a
-->grn jererovu_a ; #1
+->grn jejapo_v[pos=adj] ; #182
+->grn ha'esénte_v[pos=adj]
+->grn jererovu_v[pos=adj] ; #1
 *** presuntuoso_a ; ^ presuntuoso_a 0 ; #1
-->grn ha'esénte_a
-->grn jererovu_a ; #1
+->grn ha'esénte_v[pos=adj]
+->grn jererovu_v[pos=adj] ; #1
 *** previo_a ; ^ previo_a 0 ; #1
-->grn mboyvegua_a
-->grn raẽ_a ; #38
+->grn mboyvegua_v[pos=adj]
+->grn raẽ_v[pos=adj] ; #38
 *** primero_a ; ^ primero_a 0
-->grn peteĩha_a
+->grn peteĩha_v[pos=adj]
 *** problemático_a ; ^ problemático_a 0
-->grn jetu'u_a ; #4
-->grn ijetu'u_a
+->grn jetu'u_v[pos=adj] ; #4
+->grn ijetu'u_v[pos=adj]
 *** probo_a ; ^ probo_a 0
-->grn joheipyre_a ; #4
-->grn marangatu_a ; #69
+->grn joheipyre_v[pos=adj] ; #4
+->grn marangatu_v[pos=adj] ; #69
 *** profundo_a ; ^ profundo_a 0 ; #37
-->grn <hypy_a ; #1
-->grn asy_a ; #64
+->grn <hypy_v[pos=adj] ; #1
+->grn asy_v[pos=adj] ; #64
 *** pronto_a ; ^ pronto_a 0
-->grn pojava_a
+->grn pojava_v[pos=adj]
 *** propenso_a a hablar ; ^ propenso_a 0
-->grn ñe'ẽngatu_a
+->grn ñe'ẽngatu_v[pos=adj]
 *** propio_a ; ^ propio_a 0
-->grn tee_a
+->grn tee_v[pos=adj]
 *** provechoso_a ; ^ provechoso_a 0
-->grn deprovécho_a
+->grn deprovécho_v[pos=adj]
 *** proveniente_a ; ^ proveniente_a 0
-->grn oúva_a
+->grn oúva_v[pos=adj]
 *** provisional_a ; ^ provisional_a 0
-->grn sapy'agua_a
+->grn sapy'agua_v[pos=adj]
 *** provisorio_a ; ^ provisorio_a 0
-->grn sapy'agua_a
+->grn sapy'agua_v[pos=adj]
 *** práctico_a ; ^ práctico_a 0 ; #5
-->grn oikuaáva_a ; #28
-->grn ae_a ; #13
+->grn oikuaáva_v[pos=adj] ; #28
+->grn ae_v[pos=adj] ; #13
 *** próspero_a ; ^ próspero_a 0
-->grn oikoporãva_a
+->grn oikoporãva_v[pos=adj]
 *** próximo_a ; ^ próximo_a 0
-->grn áĝa_a
+->grn áĝa_v[pos=adj]
 *** puesto_a ; ^ puesto_a 0
-->grn moĩmbyre_a
+->grn moĩmbyre_v[pos=adj]
 *** pulido_a ; ^ pulido_a 0 ; #1
-->grn joheipyre_a ; #4
-->grn sỹi_a ; #2
+->grn joheipyre_v[pos=adj] ; #4
+->grn sỹi_v[pos=adj] ; #2
 *** puntiagudo_a ; ^ puntiagudo_a 0
-->grn <hatĩ_a ; #20
-->grn akuã_a ; #1
-->grn <hakua_a ; #41
+->grn <hatĩ_v[pos=adj] ; #20
+->grn akuã_v[pos=adj] ; #1
+->grn <hakua_v[pos=adj] ; #41
 *** puntual_a ; ^ puntual_a 0
-->grn ha'etépe_a
-->grn ha'etéva_a
+->grn ha'etépe_v[pos=adj]
+->grn ha'etéva_v[pos=adj]
 *** puro_a ; ^ puro_a 0 ; #63
-->grn joheipyre_a ; #4
-->grn ete_a
-->grn marã'ỹ_a
+->grn joheipyre_v[pos=adj] ; #4
+->grn ete_v[pos=adj]
+->grn marã'ỹ_v[pos=adj]
 *** pálido_a ; ^ pálido_a 0 ; #1
-->grn patĩ_a
-->grn sa'yju_a ; #23
-->grn akãpatĩ_a
+->grn patĩ_v[pos=adj]
+->grn sa'yju_v[pos=adj] ; #23
+->grn akãpatĩ_v[pos=adj]
 *** pícaro_a ; ^ pícaro_a 0
 ->grn karai_n tuja
-->grn morombi_a
-->grn añambaraka_a ; #3
+->grn morombi_v[pos=adj]
+->grn añambaraka_v[pos=adj] ; #3
 *** pío_a ; ^ pío_a 0
-->grn marangatu_a
+->grn marangatu_v[pos=adj]
 *** póstumo_a ; ^ póstumo_a 0
-->grn amyrỹigua_a
+->grn amyrỹigua_v[pos=adj]
 *** público_a ; ^ público_a 0 ; #7
-->grn ojekuaáva_a
-->grn pavẽ_a
+->grn ojekuaáva_v[pos=adj]
+->grn pavẽ_v[pos=adj]
 *** quebradizo_a ; ^ quebradizo_a 0
-->grn jekarei_a
+->grn jekarei_v[pos=adj]
 *** quebrado_a ; ^ quebrado_a 0 ; #17
-->grn pẽngue_a
-->grn soro_a ; #29
+->grn pẽngue_v[pos=adj]
+->grn soro_v[pos=adj] ; #29
 *** quejoso_a ; ^ quejoso_a 0
-->grn chi'õ_a
+->grn chi'õ_v[pos=adj]
 *** quemado_a ; ^ quemado_a 0
-->grn jy_a
+->grn jy_v[pos=adj]
 *** quemado_a hasta achicharrarse ; ^ quemado_a 0
-->grn akuruchĩ_a
+->grn akuruchĩ_v[pos=adj]
 *** querido_a ; ^ querido_a 0 ; #10
-->grn <hembiayhu_a ; #4
-->grn ka'avo_a ; #50
+->grn <hembiayhu_v[pos=adj] ; #4
+->grn ka'avo_v[pos=adj] ; #50
 *** quieto_a ; ^ quieto_a 0 ; #6
-->grn kirirĩ_a ; #60
+->grn kirirĩ_v[pos=adj] ; #60
 *** quince_a ; ^ quince_a 0
-->grn papo_a
+->grn papo_v[pos=adj]
 *** quinientos_a ; ^ quinientos_a 0
-->grn posa_a
+->grn posa_v[pos=adj]
 *** quisquilloso_a ; ^ quisquilloso_a 0
-->grn <hekoita_a
-->grn pochy_a ; #160
+->grn <hekoita_v[pos=adj]
+->grn pochy_v[pos=adj] ; #160
 *** rabioso_a ; ^ rabioso_a 0
-->grn ipochýva_a
+->grn ipochýva_v[pos=adj]
 *** radicado_a ; ^ radicado_a 0
-->grn opytáva_a
+->grn opytáva_v[pos=adj]
 *** rajado_a ; ^ rajado_a 0
-->grn jekakue_a
+->grn jekakue_v[pos=adj]
 *** ralo_a ; ^ ralo_a 0
-->grn pokã_a
+->grn pokã_v[pos=adj]
 *** rancio_a ; ^ rancio_a 0
-->grn <havẽ_a
+->grn <havẽ_v[pos=adj]
 *** raquítico_a ; ^ raquítico_a 0
-->grn po'i_a ; #29
-->grn chavi_a ; #3
-->grn ypi_a
+->grn po'i_v[pos=adj] ; #29
+->grn chavi_v[pos=adj] ; #3
+->grn ypi_v[pos=adj]
 *** raro_a ; ^ raro_a 0
-->grn tapichare'ỹ_a
-->grn pokã_a ; #8
-->grn <hekope'ỹ_a ; #1
+->grn tapichare'ỹ_v[pos=adj]
+->grn pokã_v[pos=adj] ; #8
+->grn <hekope'ỹ_v[pos=adj] ; #1
 *** raso_a ; ^ raso_a 0
-->grn perõ_a ; #4
-->grn ruri_a
+->grn perõ_v[pos=adj] ; #4
+->grn ruri_v[pos=adj]
 *** ratero_a ; ^ ratero_a 0
-->grn popinda_a
+->grn popinda_v[pos=adj]
 *** razonable_a ; ^ razonable_a 0
-->grn <hekopegua_a
+->grn <hekopegua_v[pos=adj]
 *** reacio_a ; ^ reacio_a 0
-->grn oñemoĩva_a
+->grn oñemoĩva_v[pos=adj]
 *** real_a ; ^ real_a 0 ; #52
-->grn añetegua_a ; #30
-->grn añete_a ; #219
-->grn tee_a ; #4
+->grn añetegua_v[pos=adj] ; #30
+->grn añete_v[pos=adj] ; #219
+->grn tee_v[pos=adj] ; #4
 *** realizado_a ; ^ realizado_a 0 ; #1
-->grn apopy_a ; #33
-->grn apopyre_a
+->grn apopy_v[pos=adj] ; #33
+->grn apopyre_v[pos=adj]
 *** rebelde_a ; ^ rebelde_a 0
-->grn oñembohováiva_a
+->grn oñembohováiva_v[pos=adj]
 *** receloso_a ; ^ receloso_a 0
-->grn jepoyhu_a
+->grn jepoyhu_v[pos=adj]
 *** reciente_a ; ^ reciente_a 0
-->grn angetegua_a
+->grn angetegua_v[pos=adj]
 *** recio_a ; ^ recio_a 0 ; #7
-->grn tajy_a ; #11
-->grn mbarete_a ; #217
+->grn tajy_v[pos=adj] ; #11
+->grn mbarete_v[pos=adj] ; #217
 *** recogido_a ; ^ recogido_a 0
-->grn mono'õmbyre_a
+->grn mono'õmbyre_v[pos=adj]
 *** reconocido_a ; ^ reconocido_a 0
-->grn ohechakuaáva_a
+->grn ohechakuaáva_v[pos=adj]
 *** recreativo_a ; ^ recreativo_a 0
-->grn ombovy'áva_a
+->grn ombovy'áva_v[pos=adj]
 *** recto_a ; ^ recto_a 0
-->grn marangatu_a
+->grn marangatu_v[pos=adj]
 *** redondo_a ; ^ redondo_a 0 ; #8
-->grn amandáva_a
-->grn guachiko_a
-->grn apu'a_a ; #43
+->grn amandáva_v[pos=adj]
+->grn guachiko_v[pos=adj]
+->grn apu'a_v[pos=adj] ; #43
 *** reducido_a ; ^ reducido_a 0
-->grn chi'i_a
+->grn chi'i_v[pos=adj]
 *** refinado_a ; ^ refinado_a 0
-->grn mopotĩmbyre_a
+->grn mopotĩmbyre_v[pos=adj]
 *** relleno_a ; ^ relleno_a 0
-->grn chovi_a
+->grn chovi_v[pos=adj]
 *** reluciente_a ; ^ reluciente_a 0
-->grn mimbi_a
+->grn mimbi_v[pos=adj]
 *** rematado_a ; ^ rematado_a 0
-->grn añatarova_a
+->grn añatarova_v[pos=adj]
 *** remoto_a ; ^ remoto_a 0
-->grn mombyry_a
+->grn mombyry_v[pos=adj]
 *** rencoroso_a ; ^ rencoroso_a 0
-->grn py'arẽ_a
-->grn py'aro_a ; #16
+->grn py'arẽ_v[pos=adj]
+->grn py'aro_v[pos=adj] ; #16
 *** rendido_a ; ^ rendido_a 0 ; #2
-->grn pituva_a ; #2
+->grn pituva_v[pos=adj] ; #2
 *** renegado_a ; ^ renegado_a 0
-->grn oguevíva_a
+->grn oguevíva_v[pos=adj]
 *** rengo_a ; ^ rengo_a 0
-->grn karẽ_a ; #7
+->grn karẽ_v[pos=adj] ; #7
 *** renombrado_a ; ^ renombrado_a 0
-->grn <herãkuã_a
+->grn <herãkuã_v[pos=adj]
 *** repleto_a ; ^ repleto_a 0 ; #1
-->grn <henyhẽmba_a
-->grn chovi_a ; #2
+->grn <henyhẽmba_v[pos=adj]
+->grn chovi_v[pos=adj] ; #2
 *** reposado_a ; ^ reposado_a 0
-->grn akãguapy_a
+->grn akãguapy_v[pos=adj]
 *** repuesto_a ; ^ repuesto_a 0
-->grn py'atã_a
+->grn py'atã_v[pos=adj]
 *** resbaladizo_a ; ^ resbaladizo_a 0
-->grn sỹi_a
+->grn sỹi_v[pos=adj]
 *** resentido_a ; ^ resentido_a 0 ; #1
-->grn py'atyai_a
-->grn py'arasy_a ; #10
+->grn py'atyai_v[pos=adj]
+->grn py'arasy_v[pos=adj] ; #10
 *** reservado_a ; ^ reservado_a 0 ; #17
-->grn kirirĩ_a ; #60
-->grn suguy_a
+->grn kirirĩ_v[pos=adj] ; #60
+->grn suguy_v[pos=adj]
 *** restante_a ; ^ restante_a 0 ; #1
-->grn <hemby_a ; #25
-->grn <hembýva_a ; #4
+->grn <hemby_v[pos=adj] ; #25
+->grn <hembýva_v[pos=adj] ; #4
 *** resuelto_a ; ^ resuelto_a 0
-->grn kose_a
+->grn kose_v[pos=adj]
 *** resultante_a ; ^ resultante_a 0
-->grn osẽva_a
+->grn osẽva_v[pos=adj]
 *** retirado_a ; ^ retirado_a 0 ; #2
-->grn mombyry_a ; #88
-->grn ha'eño_a ; #23
+->grn mombyry_v[pos=adj] ; #88
+->grn ha'eño_v[pos=adj] ; #23
 *** retorcido_a ; ^ retorcido_a 0
 ->grn jepoka_n poka
-->grn jepoka_a ; #3
+->grn jepoka_v[pos=adj] ; #3
 *** retrasado_a ; ^ retrasado_a 0
-->grn <hakykue_a
+->grn <hakykue_v[pos=adj]
 *** retraído_a ; ^ retraído_a 0
-->grn ha'eño_a
+->grn ha'eño_v[pos=adj]
 *** reunido_a ; ^ reunido_a 0 ; #47
-->grn no'õmby_a
-->grn mono'õmbyre_a
+->grn no'õmby_v[pos=adj]
+->grn mono'õmbyre_v[pos=adj]
 *** revoltoso_a ; ^ revoltoso_a 0
-->grn akãhatã_a
+->grn akãhatã_v[pos=adj]
 *** revuelto_a ; ^ revuelto_a 0 ; #2
-->grn kanduha_a
-->grn kunda_a
-->grn chara_a ; #2
+->grn kanduha_v[pos=adj]
+->grn kunda_v[pos=adj]
+->grn chara_v[pos=adj] ; #2
 *** rezagado_a ; ^ rezagado_a 0
-->grn <hapykuerigua_a
+->grn <hapykuerigua_v[pos=adj]
 *** reñido_a ; ^ reñido_a 0
-->grn <hatatĩ_a
+->grn <hatatĩ_v[pos=adj]
 *** rico_a ; ^ rico_a 0
-->grn he_a
+->grn he_v[pos=adj]
 *** riguroso_a ; ^ riguroso_a 0
-->grn kanguero_a
+->grn kanguero_v[pos=adj]
 *** risueño_a ; ^ risueño_a 0
-->grn <hory_a
+->grn <hory_v[pos=adj]
 *** rival_a ; ^ rival_a 0
-->grn ombohováiva_a
+->grn ombohováiva_v[pos=adj]
 *** rizado_a ; ^ rizado_a 0
-->grn cha'ĩ_a
-->grn apopẽ_a
+->grn cha'ĩ_v[pos=adj]
+->grn apopẽ_v[pos=adj]
 *** rojo_a ; ^ rojo_a 0
-->grn pytã_a
+->grn pytã_v[pos=adj]
 *** romo_a ; ^ romo_a 0
-->grn apĩ_a
+->grn apĩ_v[pos=adj]
 *** ronco_a ; ^ ronco_a 0
 ->grn ahy'o_n korõrõ
 *** rosado_a ; ^ rosado_a 0
-->grn pytangy_a
+->grn pytangy_v[pos=adj]
 *** roto_a ; ^ roto_a 0 ; #9
-->grn chalái_a
-->grn pẽngue_a
-->grn soro_a ; #29
+->grn chalái_v[pos=adj]
+->grn pẽngue_v[pos=adj]
+->grn soro_v[pos=adj] ; #29
 *** roñoso_a ; ^ roñoso_a 0
-->grn jare_a ; #64
-->grn ky'a_a ; #20
+->grn jare_v[pos=adj] ; #64
+->grn ky'a_v[pos=adj] ; #20
 *** rubio_a ; ^ rubio_a 0
-->grn akãju_a
+->grn akãju_v[pos=adj]
 *** rudimentario_a ; ^ rudimentario_a 0
-->grn chae_a
+->grn chae_v[pos=adj]
 *** rudo_a ; ^ rudo_a 0 ; #3
-->grn havara_a
-->grn py'ahatã_a ; #1
-->grn mamymba_a
+->grn havara_v[pos=adj]
+->grn py'ahatã_v[pos=adj] ; #1
+->grn mamymba_v[pos=adj]
 *** rugoso_a ; ^ rugoso_a 0
-->grn korócho_a
+->grn korócho_v[pos=adj]
 *** ruin_a ; ^ ruin_a 0 ; #2
-->grn vai_a ; #284
-->grn ñaña_a ; #66
+->grn vai_v[pos=adj] ; #284
+->grn ñaña_v[pos=adj] ; #66
 *** rural_a ; ^ rural_a 0
-->grn ñumegua_a
+->grn ñumegua_v[pos=adj]
 *** rutilante_a ; ^ rutilante_a 0
-->grn tini_a
+->grn tini_v[pos=adj]
 *** rápido_a ; ^ rápido_a 0 ; #2
-->grn akuã_a ; #1
-->grn pojava_a ; #2
-->grn atã_a ; #6
-->grn pyryrỹi_a ; #2
+->grn akuã_v[pos=adj] ; #1
+->grn pojava_v[pos=adj] ; #2
+->grn atã_v[pos=adj] ; #6
+->grn pyryrỹi_v[pos=adj] ; #2
 *** rígido_a ; ^ rígido_a 0
-->grn kanguero_a
+->grn kanguero_v[pos=adj]
 *** rústico_a ; ^ rústico_a 0
-->grn arriéro_a ; #23
-->grn koygua_a ; #3
+->grn arriéro_v[pos=adj] ; #23
+->grn koygua_v[pos=adj] ; #3
 *** sabido_a ; ^ sabido_a 0
-->grn ojekuaáva_a
+->grn ojekuaáva_v[pos=adj]
 *** sabio_a ; ^ sabio_a 0 ; #146
-->grn iñarandúva_a ; #10
-->grn mba'ekuaa_a ; #97
-->grn mba'ekuaáva_a ; #4
-->grn arandu_a ; #266
+->grn iñarandúva_v[pos=adj] ; #10
+->grn mba'ekuaa_v[pos=adj] ; #97
+->grn mba'ekuaáva_v[pos=adj] ; #4
+->grn arandu_v[pos=adj] ; #266
 *** sabroso_a ; ^ sabroso_a 0 ; #3
-->grn mba'ehe_a
-->grn he_a ; #78
+->grn mba'ehe_v[pos=adj]
+->grn he_v[pos=adj] ; #78
 *** sagaz_a ; ^ sagaz_a 0
-->grn pohe_a
+->grn pohe_v[pos=adj]
 *** sagrado_a ; ^ sagrado_a 0 ; #12
-->grn karai_a ; #1300
-->grn marangatu_a ; #69
+->grn karai_v[pos=adj] ; #1300
+->grn marangatu_v[pos=adj] ; #69
 *** excesivamente salado_a ; ^ salado_a 1
-->grn he'ẽterei_a
+->grn he'ẽterei_v[pos=adj]
 *** saliente_a ; ^ saliente_a 0
-->grn osẽva_a
+->grn osẽva_v[pos=adj]
 *** saludable_a ; ^ saludable_a 0
-->grn <hesãi_a
+->grn <hesãi_v[pos=adj]
 *** sangriento_a ; ^ sangriento_a 0
-->grn <huguýva_a
+->grn <huguýva_v[pos=adj]
 *** sanguinario_a ; ^ sanguinario_a 0
-->grn mba'epochy_a
+->grn mba'epochy_v[pos=adj]
 *** sano_a ; ^ sano_a 0
-->grn <hesãi_a
+->grn <hesãi_v[pos=adj]
 *** santo_a ; ^ santo_a 0
-->grn marangatu_a ; #69
+->grn marangatu_v[pos=adj] ; #69
 *** satisfecho_a ; ^ satisfecho_a 0 ; #7
-->grn itaro_a
-->grn <henyhẽ_a ; #51
+->grn itaro_v[pos=adj]
+->grn <henyhẽ_v[pos=adj] ; #51
 *** satisfecho_a hasta el hartazgo ; ^ satisfecho_a 0 ; #7
-->grn <hyĝuatãro_a
+->grn <hyĝuatãro_v[pos=adj]
 *** saturado_a ; ^ saturado_a 0
-->grn <hyvãtã_a
+->grn <hyvãtã_v[pos=adj]
 *** satánico_a ; ^ satánico_a 0
 ->grn aña_n rehegua
 *** sazonado_a ; ^ sazonado_a 0 ; #1
-->grn aju_a ; #80
-->grn apeju_a
+->grn aju_v[pos=adj] ; #80
+->grn apeju_v[pos=adj]
 *** seco_a ; ^ seco_a 0 ; #48
-->grn po'i_a ; #29
-->grn kã_a ; #10
-->grn <hypa_a ; #9
-->grn pokã_a ; #8
+->grn po'i_v[pos=adj] ; #29
+->grn kã_v[pos=adj] ; #10
+->grn <hypa_v[pos=adj] ; #9
+->grn pokã_v[pos=adj] ; #8
 *** secreto_a ; ^ secreto_a 0
-->grn ñemihapegua_a
+->grn ñemihapegua_v[pos=adj]
 *** sedicioso_a ; ^ sedicioso_a 0
-->grn opu'ãva_a ; #6
+->grn opu'ãva_v[pos=adj] ; #6
 ->grn sarambi_n apoha
 *** sediento_a ; ^ sediento_a 0
-->grn y'uhéi_a
+->grn y'uhéi_v[pos=adj]
 *** seductor_a ; ^ seductor_a 0
-->grn py'arerahaha_a
+->grn py'arerahaha_v[pos=adj]
 *** seguido_a ; ^ seguido_a 0
-->grn ruri_a
+->grn ruri_v[pos=adj]
 *** segundo_a ; ^ segundo_a 0
-->grn mokõiha_a
+->grn mokõiha_v[pos=adj]
 *** seguro_a ; ^ seguro_a 0
-->grn añete_a
+->grn añete_v[pos=adj]
 *** seis_a ; ^ seis_a 0
-->grn poteĩ_a
+->grn poteĩ_v[pos=adj]
 *** seiscientos_a ; ^ seiscientos_a 0
-->grn poteĩsa_a
+->grn poteĩsa_v[pos=adj]
 *** selecto_a ; ^ selecto_a 0
-->grn poravopyre_a
+->grn poravopyre_v[pos=adj]
 *** sencillo_a ; ^ sencillo_a 0 ; #5
-->grn jejapo'ỹ_a
-->grn jegua'ỹ_a
-->grn <hasy'ỹ_a
+->grn jejapo'ỹ_v[pos=adj]
+->grn jegua'ỹ_v[pos=adj]
+->grn <hasy'ỹ_v[pos=adj]
 *** sensacional_a ; ^ sensacional_a 0
-->grn <hechapyrã_a
+->grn <hechapyrã_v[pos=adj]
 *** sensato_a ; ^ sensato_a 0 ; #3
-->grn py'aguapy_a ; #103
-->grn akãguapy_a
+->grn py'aguapy_v[pos=adj] ; #103
+->grn akãguapy_v[pos=adj]
 *** sentido_a ; ^ sentido_a 0
-->grn andu_a
+->grn andu_v[pos=adj]
 *** sereno_a ; ^ sereno_a 0 ; #2
-->grn py'aguapýva_a
-->grn py'aguapy_a ; #103
-->grn akãguapy_a
+->grn py'aguapýva_v[pos=adj]
+->grn py'aguapy_v[pos=adj] ; #103
+->grn akãguapy_v[pos=adj]
 *** serio_a ; ^ serio_a 0 ; #2
-->grn <hekoporãva_a ; #2
-->grn <hovasy_a ; #10
+->grn <hekoporãva_v[pos=adj] ; #2
+->grn <hovasy_v[pos=adj] ; #10
 *** sesenta_a ; ^ sesenta_a 0
-->grn poteĩpa_a
+->grn poteĩpa_v[pos=adj]
 *** setecientos_a ; ^ setecientos_a 0
-->grn pokõisa_a
+->grn pokõisa_v[pos=adj]
 *** setenta_a ; ^ setenta_a 0
-->grn pokõipa_a
+->grn pokõipa_v[pos=adj]
 *** severo_a ; ^ severo_a 0
-->grn py'ahatã_a
+->grn py'ahatã_v[pos=adj]
 *** sexto_a ; ^ sexto_a 0
-->grn poteĩha_a
+->grn poteĩha_v[pos=adj]
 *** siete_a ; ^ siete_a 0
-->grn pokõi_a
+->grn pokõi_v[pos=adj]
 *** silencioso_a ; ^ silencioso_a 0
-->grn kirirĩ_a
+->grn kirirĩ_v[pos=adj]
 *** silvestre_a ; ^ silvestre_a 0 ; #11
-->grn saite_a
-->grn saraki_a ; #11
+->grn saite_v[pos=adj]
+->grn saraki_v[pos=adj] ; #11
 *** similar_a ; ^ similar_a 0 ; #2
-->grn joguaha_a ; #13
-->grn joguaháva_a
+->grn joguaha_v[pos=adj] ; #13
+->grn joguaháva_v[pos=adj]
 *** simple_a ; ^ simple_a 0 ; #3
-->grn ño_a
-->grn año_a ; #21
+->grn ño_v[pos=adj]
+->grn año_v[pos=adj] ; #21
 *** simpático_a ; ^ simpático_a 0
-->grn juky_a ; #71
-->grn ka'avo_a ; #50
+->grn juky_v[pos=adj] ; #71
+->grn ka'avo_v[pos=adj] ; #50
 *** sincero_a ; ^ sincero_a 0
 ->grn he'íva_n añetegua
 *** siniestro_a ; ^ siniestro_a 0
-->grn asu_a
+->grn asu_v[pos=adj]
 *** sinuoso_a ; ^ sinuoso_a 0
-->grn konikoníva_a
+->grn konikoníva_v[pos=adj]
 *** soberbio_a ; ^ soberbio_a 0 ; #62
-->grn jererovu_a ; #1
-->grn tĩ'atã_a ; #1
+->grn jererovu_v[pos=adj] ; #1
+->grn tĩ'atã_v[pos=adj] ; #1
 *** sobrante_a ; ^ sobrante_a 0
-->grn <hemby_a
+->grn <hemby_v[pos=adj]
 *** sobresaliente_a ; ^ sobresaliente_a 0
-->grn ohasáva_a
+->grn ohasáva_v[pos=adj]
 *** solidario_a ; ^ solidario_a 0
-->grn py'aporã_a
+->grn py'aporã_v[pos=adj]
 *** solitario_a ; ^ solitario_a 0 ; #3
-->grn añoite_a ; #20
-->grn ha'eño_a ; #23
-->grn ño_a
+->grn añoite_v[pos=adj] ; #20
+->grn ha'eño_v[pos=adj] ; #23
+->grn ño_v[pos=adj]
 *** solo_a ; ^ solo_a 0 ; #144
-->grn ha'eño_a ; #23
-->grn ae_a ; #13
-->grn año_a ; #21
+->grn ha'eño_v[pos=adj] ; #23
+->grn ae_v[pos=adj] ; #13
+->grn año_v[pos=adj] ; #21
 *** soltero_a ; ^ soltero_a 0 ; #2
-->grn ha'eño_a ; #23
-->grn omenda'ỹva_a
-->grn menda'ỹ_a
+->grn ha'eño_v[pos=adj] ; #23
+->grn omenda'ỹva_v[pos=adj]
+->grn menda'ỹ_v[pos=adj]
 *** sonoro_a ; ^ sonoro_a 0
-->grn <hyapúva_a
+->grn <hyapúva_v[pos=adj]
 *** sonriente_a ; ^ sonriente_a 0
-->grn juruvyrei_a
+->grn juruvyrei_v[pos=adj]
 *** soporífero_a ; ^ soporífero_a 0
-->grn mongéva_a
+->grn mongéva_v[pos=adj]
 *** sordo_a ; ^ sordo_a 0
-->grn apysa'ỹ_a
+->grn apysa'ỹ_v[pos=adj]
 *** algo sordo_a ; ^ sordo_a 1
-->grn apysape_a
+->grn apysape_v[pos=adj]
 *** sorprendente_a ; ^ sorprendente_a 0
-->grn <hechapyrã_a
+->grn <hechapyrã_v[pos=adj]
 *** sosegado_a ; ^ sosegado_a 0
-->grn kirirĩ_a ; #60
-->grn guapy_a ; #205
-->grn py'aguapy_a ; #103
+->grn kirirĩ_v[pos=adj] ; #60
+->grn guapy_v[pos=adj] ; #205
+->grn py'aguapy_v[pos=adj] ; #103
 *** soso_a ; ^ soso_a 0
-->grn he'ỹ_a
-->grn ay_a ; #4
-->grn juky'ỹ_a
+->grn he'ỹ_v[pos=adj]
+->grn ay_v[pos=adj] ; #4
+->grn juky'ỹ_v[pos=adj]
 *** sospechoso_a ; ^ sospechoso_a 0
 ->grn <hyakuã_n vai
 *** soñoliento_a ; ^ soñoliento_a 0 ; #1
-->grn kerai_a ; #1
-->grn <hopehýi_a ; #4
-->grn rambi_a ; #2
+->grn kerai_v[pos=adj] ; #1
+->grn <hopehýi_v[pos=adj] ; #4
+->grn rambi_v[pos=adj] ; #2
 *** suave_a ; ^ suave_a 0 ; #16
-->grn vevúi_a ; #4
-->grn asy_a ; #64
-->grn sỹi_a ; #2
-->grn <hu'ũ_a ; #13
+->grn vevúi_v[pos=adj] ; #4
+->grn asy_v[pos=adj] ; #64
+->grn sỹi_v[pos=adj] ; #2
+->grn <hu'ũ_v[pos=adj] ; #13
 *** suavizante_a del término ; ^ suavizante_a 0
-->grn añaraki_a
+->grn añaraki_v[pos=adj]
 *** sublime_a ; ^ sublime_a 0
-->grn angatu_a
+->grn angatu_v[pos=adj]
 *** sucesivo_a ; ^ sucesivo_a 0
-->grn memegua_a
+->grn memegua_v[pos=adj]
 *** sucio_a ; ^ sucio_a 0 ; #3
-->grn tajasu_a ; #35
-->grn jare_a ; #64
-->grn ky'a_a ; #20
+->grn tajasu_v[pos=adj] ; #35
+->grn jare_v[pos=adj] ; #64
+->grn ky'a_v[pos=adj] ; #20
 *** sudoroso_a ; ^ sudoroso_a 0
-->grn <hy'ái_a ; #20
-->grn <hy'áiva_a
+->grn <hy'ái_v[pos=adj] ; #20
+->grn <hy'áiva_v[pos=adj]
 *** suelto_a ; ^ suelto_a 0 ; #15
-->grn jera_a ; #10
+->grn jera_v[pos=adj] ; #10
 *** suficiente_a ; ^ suficiente_a 0
-->grn iporãma_a
+->grn iporãma_v[pos=adj]
 *** sulo_a ; ^ sulo_a 0
-->grn ambu'a_a
+->grn ambu'a_v[pos=adj]
 *** sumergido_a ; ^ sumergido_a 0
-->grn yguy_a
+->grn yguy_v[pos=adj]
 *** superior_a ; ^ superior_a 0 ; #11
-->grn <huvicha_a ; #84
-->grn tuicha_a ; #155
+->grn <huvicha_v[pos=adj] ; #84
+->grn tuicha_v[pos=adj] ; #155
 *** sutil_a ; ^ sutil_a 0
-->grn vevúi_a ; #4
-->grn pererĩ_a ; #6
+->grn vevúi_v[pos=adj] ; #4
+->grn pererĩ_v[pos=adj] ; #6
 *** séptimo_a ; ^ séptimo_a 0
-->grn pokõiha_a
+->grn pokõiha_v[pos=adj]
 *** sólido_a ; ^ sólido_a 0 ; #4
-->grn <hatã_a ; #94
-->grn mbarete_a ; #217
+->grn <hatã_v[pos=adj] ; #94
+->grn mbarete_v[pos=adj] ; #217
 *** sórdido_a ; ^ sórdido_a 0
-->grn ky'a_a
+->grn ky'a_v[pos=adj]
 *** súbito_a ; ^ súbito_a 0
-->grn sapy'agua_a
+->grn sapy'agua_v[pos=adj]
 *** tacaño_a ; ^ tacaño_a 0 ; #1
-->grn moõpy_a
-->grn pojopy_a
+->grn moõpy_v[pos=adj]
+->grn pojopy_v[pos=adj]
 *** taciturno_a ; ^ taciturno_a 0
-->grn ha'eño_a ; #23
-->grn kirirĩ_a ; #60
+->grn ha'eño_v[pos=adj] ; #23
+->grn kirirĩ_v[pos=adj] ; #60
 *** taimado_a ; ^ taimado_a 0
-->grn añambaraka_a
+->grn añambaraka_v[pos=adj]
 *** talentoso_a ; ^ talentoso_a 0
-->grn akãporã_a
+->grn akãporã_v[pos=adj]
 *** tapado_a ; ^ tapado_a 0
-->grn jaho'ipy_a
-->grn aho'i_a
+->grn jaho'ipy_v[pos=adj]
+->grn aho'i_v[pos=adj]
 *** tarado_a ; ^ tarado_a 0
-->grn meĝua_a
+->grn meĝua_v[pos=adj]
 *** tardo_a ; ^ tardo_a 0
-->grn ate'ỹ_a
+->grn ate'ỹ_v[pos=adj]
 *** tartamudo_a ; ^ tartamudo_a 0
-->grn kũmbe_a
+->grn kũmbe_v[pos=adj]
 *** tembloroso_a ; ^ tembloroso_a 0
-->grn mba'eryrýi_a
+->grn mba'eryrýi_v[pos=adj]
 *** temeroso_a ; ^ temeroso_a 0 ; #11
-->grn py'aju_a
-->grn py'amirĩ_a ; #4
+->grn py'aju_v[pos=adj]
+->grn py'amirĩ_v[pos=adj] ; #4
 *** tenaz_a ; ^ tenaz_a 0
-->grn <hekoatã_a
+->grn <hekoatã_v[pos=adj]
 *** tenebroso_a ; ^ tenebroso_a 0
-->grn aña_a
+->grn aña_v[pos=adj]
 *** tenso_a ; ^ tenso_a 0
-->grn pyatã_a ; #7
-->grn atã_a ; #6
+->grn pyatã_v[pos=adj] ; #7
+->grn atã_v[pos=adj] ; #6
 *** tenue_a ; ^ tenue_a 0
-->grn pererĩ_a
+->grn pererĩ_v[pos=adj]
 *** tercero_a ; ^ tercero_a 0
-->grn mbohapyha_a
+->grn mbohapyha_v[pos=adj]
 *** terco_a ; ^ terco_a 0
-->grn akãhatã_a
+->grn akãhatã_v[pos=adj]
 *** terrestre_a ; ^ terrestre_a 0
-->grn yvyjere_a
+->grn yvyjere_v[pos=adj]
 *** terrible_a ; ^ terrible_a 0 ; #18
-->grn jero_a ; #1
-->grn mopirĩmbáva_a
+->grn jero_v[pos=adj] ; #1
+->grn mopirĩmbáva_v[pos=adj]
 *** terso_a ; ^ terso_a 0
-->grn apesỹingue_a
+->grn apesỹingue_v[pos=adj]
 *** testarudo_a ; ^ testarudo_a 0
-->grn akãhatã_a
+->grn akãhatã_v[pos=adj]
 *** tibio_a ; ^ tibio_a 0 ; #1
 ->grn <haku_n vevúi
-->grn <hakuvy_a ; #3
+->grn <hakuvy_v[pos=adj] ; #3
 *** tierno_a ; ^ tierno_a 0 ; #7
-->grn peky_a ; #1
-->grn ky_a ; #72
-->grn kyrỹi_a ; #13
+->grn peky_v[pos=adj] ; #1
+->grn ky_v[pos=adj] ; #72
+->grn kyrỹi_v[pos=adj] ; #13
 ->grn mitã_n aky
 *** tieso_a ; ^ tieso_a 0
-->grn <hatã_a ; #94
-->grn mbarete_a ; #217
+->grn <hatã_v[pos=adj] ; #94
+->grn mbarete_v[pos=adj] ; #217
 *** tirado_a ; ^ tirado_a 0
-->grn mombopyre_a
+->grn mombopyre_v[pos=adj]
 *** absolutamente todos_a ; ^ todos_a 1
-->grn enterovete_a
+->grn enterovete_v[pos=adj]
 *** tonto_a ; ^ tonto_a 0
-->grn výro_a ; #14
-->grn <hovatavy_a ; #4
-->grn tavy_a ; #96
-->grn akãtavy_a ; #5
+->grn výro_v[pos=adj] ; #14
+->grn <hovatavy_v[pos=adj] ; #4
+->grn tavy_v[pos=adj] ; #96
+->grn akãtavy_v[pos=adj] ; #5
 *** torcido_a ; ^ torcido_a 0 ; #23
-->grn karẽ_a ; #7
-->grn meĝua_a ; #1
-->grn jepoka_a ; #3
-->grn kechẽ_a ; #1
+->grn karẽ_v[pos=adj] ; #7
+->grn meĝua_v[pos=adj] ; #1
+->grn jepoka_v[pos=adj] ; #3
+->grn kechẽ_v[pos=adj] ; #1
 *** tosco_a ; ^ tosco_a 0 ; #1
-->grn joha_a ; #3
-->grn chara_a ; #2
-->grn arriéro_a ; #23
+->grn joha_v[pos=adj] ; #3
+->grn chara_v[pos=adj] ; #2
+->grn arriéro_v[pos=adj] ; #23
 *** tostado_a ; ^ tostado_a 0 ; #4
-->grn maimbe_a ; #18
-->grn mbichy_a ; #14
+->grn maimbe_v[pos=adj] ; #18
+->grn mbichy_v[pos=adj] ; #14
 *** total_a ; ^ total_a 0
-->grn oĩmbáva_a
+->grn oĩmbáva_v[pos=adj]
 *** tozudo_a ; ^ tozudo_a 0
-->grn akãhatã_a
+->grn akãhatã_v[pos=adj]
 *** trabajador_a ; ^ trabajador_a 0
-->grn katupyry_a
+->grn katupyry_v[pos=adj]
 *** tragón_a ; ^ tragón_a 0
-->grn juru'akua_a
+->grn juru'akua_v[pos=adj]
 *** traicionero_a ; ^ traicionero_a 0
-->grn oja'yveréva_a
+->grn oja'yveréva_v[pos=adj]
 *** tramposo_a ; ^ tramposo_a 0 ; #2
-->grn pokarẽ_a ; #23
-->grn mbóre_a
+->grn pokarẽ_v[pos=adj] ; #23
+->grn mbóre_v[pos=adj]
 *** tranquilo_a ; ^ tranquilo_a 0 ; #10
-->grn kirirĩ_a ; #60
-->grn py'aguapy_a ; #103
-->grn guapy_a ; #205
+->grn kirirĩ_v[pos=adj] ; #60
+->grn py'aguapy_v[pos=adj] ; #103
+->grn guapy_v[pos=adj] ; #205
 *** transitorio_a ; ^ transitorio_a 0
-->grn sapy'agua_a
+->grn sapy'agua_v[pos=adj]
 *** transparente_a ; ^ transparente_a 0 ; #1
-->grn sakã_a
-->grn satĩ_a
+->grn sakã_v[pos=adj]
+->grn satĩ_v[pos=adj]
 *** transparente_a en sus manifestaciones ; ^ transparente_a 0 ; #1
-->grn py'aresakã_a
+->grn py'aresakã_v[pos=adj]
 *** traslúcido_a ; ^ traslúcido_a 0
-->grn <hesatĩ_a
+->grn <hesatĩ_v[pos=adj]
 *** trece_a ; ^ trece_a 0
-->grn paapy_a
+->grn paapy_v[pos=adj]
 *** treinta_a ; ^ treinta_a 0
-->grn mbohapypa_a
+->grn mbohapypa_v[pos=adj]
 *** tremendo_a ; ^ tremendo_a 0
-->grn kyhyjerã_a
+->grn kyhyjerã_v[pos=adj]
 *** trenzado_a ; ^ trenzado_a 0
-->grn ñopẽ_a
+->grn ñopẽ_v[pos=adj]
 *** trepador_a ; ^ trepador_a 0
-->grn ojupíva_a
+->grn ojupíva_v[pos=adj]
 *** tres_a ; ^ tres_a 0
-->grn mbohapy_a
+->grn mbohapy_v[pos=adj]
 *** trescientos_a ; ^ trescientos_a 0
-->grn mbohapysa_a
+->grn mbohapysa_v[pos=adj]
 *** trigésima_a ; ^ trigésima_a 0
-->grn mbohapypaha_a
+->grn mbohapypaha_v[pos=adj]
 *** trigésimo_a ; ^ trigésimo_a 0
-->grn mbohapypaha_a
+->grn mbohapypaha_v[pos=adj]
 *** triste_a ; ^ triste_a 0 ; #20
-->grn mba'embyasy_a ; #10
-->grn <hovasy_a ; #10
-->grn tindy_a ; #1
+->grn mba'embyasy_v[pos=adj] ; #10
+->grn <hovasy_v[pos=adj] ; #10
+->grn tindy_v[pos=adj] ; #1
 *** trémulo_a ; ^ trémulo_a 0
-->grn oryrýiva_a
+->grn oryrýiva_v[pos=adj]
 *** tuerto_a ; ^ tuerto_a 0
-->grn <hesatũ_a
-->grn satũ_a
-->grn sakuape_a
-->grn karapã_a
+->grn <hesatũ_v[pos=adj]
+->grn satũ_v[pos=adj]
+->grn sakuape_v[pos=adj]
+->grn karapã_v[pos=adj]
 *** tullido_a ; ^ tullido_a 0
-->grn apa_a
-->grn akuruchĩ_a
-->grn chapĩ_a
+->grn apa_v[pos=adj]
+->grn akuruchĩ_v[pos=adj]
+->grn chapĩ_v[pos=adj]
 *** turbio_a ; ^ turbio_a 0
-->grn tyai_a
+->grn tyai_v[pos=adj]
 *** tímido_a ; ^ tímido_a 0
-->grn py'amirĩ_a ; #4
-->grn saraki_a ; #11
-->grn koygua_a ; #3
+->grn py'amirĩ_v[pos=adj] ; #4
+->grn saraki_v[pos=adj] ; #11
+->grn koygua_v[pos=adj] ; #3
 *** ufano_a ; ^ ufano_a 0
-->grn ovúva_a
-->grn jerovu_a
+->grn ovúva_v[pos=adj]
+->grn jerovu_v[pos=adj]
 *** unido_a ; ^ unido_a 0 ; #12
-->grn joaju_a ; #50
-->grn joapy_a ; #16
+->grn joaju_v[pos=adj] ; #50
+->grn joapy_v[pos=adj] ; #16
 *** unilateral_a ; ^ unilateral_a 0
-->grn yketeĩ_a
+->grn yketeĩ_v[pos=adj]
 *** universal_a ; ^ universal_a 0
-->grn pavẽ_a
-->grn oparupigua_a
+->grn pavẽ_v[pos=adj]
+->grn oparupigua_v[pos=adj]
 *** uno_a ; ^ uno_a 0
-->grn peteĩ_a
+->grn peteĩ
 *** unánime_a ; ^ unánime_a 0
-->grn pavẽ_a
+->grn pavẽ_v[pos=adj]
 *** urbano_a ; ^ urbano_a 0
-->grn tavaygua_a
+->grn tavaygua_v[pos=adj]
 *** usado_a ; ^ usado_a 0 ; #4
-->grn apĩ_a ; #6
+->grn apĩ_v[pos=adj] ; #6
 *** usual_a ; ^ usual_a 0
-->grn jepokuaáva_a
-->grn jeporúva_a
+->grn jepokuaáva_v[pos=adj]
+->grn jeporúva_v[pos=adj]
 *** utilitario_a ; ^ utilitario_a 0
-->grn purupyrã_a
+->grn purupyrã_v[pos=adj]
 *** vacante_a ; ^ vacante_a 0
-->grn nandi_a
+->grn nandi_v[pos=adj]
 *** vacuno_a ; ^ vacuno_a 0
 ->grn vaka_n rehegua
 *** vacío_a ; ^ vacío_a 0
-->grn nandi_a
+->grn nandi_v[pos=adj]
 *** vagabundo_a ; ^ vagabundo_a 0
-->grn churi_a
+->grn churi_v[pos=adj]
 *** vago_a ; ^ vago_a 0
-->grn <hekorei_a
+->grn <hekorei_v[pos=adj]
 *** valedero_a ; ^ valedero_a 0
-->grn ipurupy_a
-->grn ovaléva_a
+->grn ipurupy_v[pos=adj]
+->grn ovaléva_v[pos=adj]
 *** valeroso_a ; ^ valeroso_a 0 ; #5
-->grn vale_a ; #52
-->grn py'aguasu_a ; #20
+->grn vale_v[pos=adj] ; #52
+->grn py'aguasu_v[pos=adj] ; #20
 *** valiente_a ; ^ valiente_a 0 ; #96
-->grn vale_a ; #52
-->grn py'aguasu_a ; #20
-->grn jero_a ; #1
-->grn ñarõ_a ; #17
+->grn vale_v[pos=adj] ; #52
+->grn py'aguasu_v[pos=adj] ; #20
+->grn jero_v[pos=adj] ; #1
+->grn ñarõ_v[pos=adj] ; #17
 *** valioso_a ; ^ valioso_a 0 ; #2
-->grn iporãva_a ; #92
-->grn <hepy_a ; #62
+->grn iporãva_v[pos=adj] ; #92
+->grn <hepy_v[pos=adj] ; #62
 *** vanidoso_a ; ^ vanidoso_a 0 ; #2
-->grn aguara_a ; #98
-->grn ha'esénte_a
-->grn jererovu_a ; #1
+->grn aguara_v[pos=adj] ; #98
+->grn ha'esénte_v[pos=adj]
+->grn jererovu_v[pos=adj] ; #1
 *** vano_a ; ^ vano_a 0
-->grn katura'y_a
+->grn katura'y_v[pos=adj]
 *** vaporoso_a ; ^ vaporoso_a 0
-->grn <haviru_a
+->grn <haviru_v[pos=adj]
 *** varado_a ; ^ varado_a 0
-->grn opa'ãva_a
-->grn pa'ã_a ; #29
+->grn opa'ãva_v[pos=adj]
+->grn pa'ã_v[pos=adj] ; #29
 *** variable_a ; ^ variable_a 0
-->grn opyta'ỹva_a
+->grn opyta'ỹva_v[pos=adj]
 *** variado_a ; ^ variado_a 0
-->grn joparapyre_a
+->grn joparapyre_v[pos=adj]
 *** varios_a ; ^ varios_a 0
-->grn joparapara_a
-->grn <hetami_a
+->grn joparapara_v[pos=adj]
+->grn <hetami_v[pos=adj]
 *** vasto_a ; ^ vasto_a 0
-->grn <huvicha_a ; #84
-->grn tuicha_a ; #155
+->grn <huvicha_v[pos=adj] ; #84
+->grn tuicha_v[pos=adj] ; #155
 *** vecino_a ; ^ vecino_a 0
-->grn tavaygua_a
+->grn tavaygua_v[pos=adj]
 *** veinte_a ; ^ veinte_a 0
-->grn mokõipa_a
+->grn mokõipa_v[pos=adj]
 *** veleidoso_a ; ^ veleidoso_a 0
-->grn mbatara_a
+->grn mbatara_v[pos=adj]
 *** velludo_a ; ^ velludo_a 0 ; #1
-->grn <haviju_a ; #2
-->grn aviju_a
-->grn <hague_a ; #244
+->grn <haviju_v[pos=adj] ; #2
+->grn aviju_v[pos=adj]
+->grn <hague_v[pos=adj] ; #244
 *** veloz_a ; ^ veloz_a 0 ; #8
-->grn ãkuã_a
-->grn akuã_a ; #1
-->grn atã_a ; #6
+->grn ãkuã_v[pos=adj]
+->grn akuã_v[pos=adj] ; #1
+->grn atã_v[pos=adj] ; #6
 *** venerable_a ; ^ venerable_a 0
-->grn marangatu_a
+->grn marangatu_v[pos=adj]
 *** venidero_a ; ^ venidero_a 0
-->grn oútava_a
+->grn oútava_v[pos=adj]
 *** ventajoso_a ; ^ ventajoso_a 0
-->grn jesarekoha_a
+->grn jesarekoha_v[pos=adj]
 *** venturoso_a ; ^ venturoso_a 0
-->grn oikoporãva_a
+->grn oikoporãva_v[pos=adj]
 *** verdadero_a ; ^ verdadero_a 0 ; #48
-->grn añetegua_a ; #30
-->grn añete_a ; #219
-->grn tee_a ; #4
+->grn añetegua_v[pos=adj] ; #30
+->grn añete_v[pos=adj] ; #219
+->grn tee_v[pos=adj] ; #4
 *** verde_a ; ^ verde_a 0 ; #20
-->grn peky_a ; #1
-->grn ky_a ; #72
-->grn kyrỹi_a ; #13
-->grn <hovy_a ; #42
+->grn peky_v[pos=adj] ; #1
+->grn ky_v[pos=adj] ; #72
+->grn kyrỹi_v[pos=adj] ; #13
+->grn <hovy_v[pos=adj] ; #42
 *** verde_a azulado ; ^ verde_a 0 ; #20
-->grn <hovyũ_a
+->grn <hovyũ_v[pos=adj]
 *** verde_a amarillento ; ^ verde_a 0 ; #20
-->grn <hovyju_a
+->grn <hovyju_v[pos=adj]
 *** verde_a oscuro ; ^ verde_a 0 ; #20
-->grn <hovyũ_a
+->grn <hovyũ_v[pos=adj]
 *** verde_a intenso ; ^ verde_a 0 ; #20
-->grn <hovyũ_a
+->grn <hovyũ_v[pos=adj]
 *** verde_a claro ; ^ verde_a 0 ; #20
-->grn <hovykãngy_a
+->grn <hovykãngy_v[pos=adj]
 *** verde_a oscuro de la selva ; ^ verde_a 0 ; #20
-->grn <hovana_a
+->grn <hovana_v[pos=adj]
 *** verdoso_a ; ^ verdoso_a 0
-->grn chovy_a
+->grn chovy_v[pos=adj]
 *** vergonzoso_a ; ^ vergonzoso_a 0
-->grn otĩva_a
+->grn otĩva_v[pos=adj]
 *** versado_a ; ^ versado_a 0
-->grn oikuaáva_a
+->grn oikuaáva_v[pos=adj]
 *** versátil_a ; ^ versátil_a 0
-->grn py'ahetáva_a
-->grn pyta'ỹ_a
+->grn py'ahetáva_v[pos=adj]
+->grn pyta'ỹ_v[pos=adj]
 *** verídico_a ; ^ verídico_a 0
-->grn añetegua_a ; #30
-->grn japugua'ỹ_a
+->grn añetegua_v[pos=adj] ; #30
+->grn japugua'ỹ_v[pos=adj]
 *** vespertino_a ; ^ vespertino_a 0
-->grn ka'arugua_a
+->grn ka'arugua_v[pos=adj]
 *** vetusto_a ; ^ vetusto_a 0
-->grn tujakue_a
+->grn tujakue_v[pos=adj]
 *** viajero_a ; ^ viajero_a 0
-->grn oguatáva_a
+->grn oguatáva_v[pos=adj]
 *** viciado_a ; ^ viciado_a 0
-->grn marã_a
+->grn marã_v[pos=adj]
 *** vicioso_a ; ^ vicioso_a 0
-->grn <hekovai_a
+->grn <hekovai_v[pos=adj]
 *** viejo_a ; ^ viejo_a 0 ; #64
-->grn tuja_a ; #128
-->grn ymaguare_a ; #164
+->grn tuja_v[pos=adj] ; #128
+->grn ymaguare_v[pos=adj] ; #164
 *** viejo_a y feo ; ^ viejo_a 0 ; #64
-->grn vaikue_a
+->grn vaikue_v[pos=adj]
 *** viejo_a[g=f] ; ^ viejo_a 0
-->grn ĝuaiĝui_a
+->grn ĝuaiĝui_v[pos=adj]
 *** vigente_a ; ^ vigente_a 0
-->grn aĝagua_a
+->grn aĝagua_v[pos=adj]
 *** vigilante_a ; ^ vigilante_a 0
-->grn omañáva_a
+->grn omañáva_v[pos=adj]
 *** vigoroso_a ; ^ vigoroso_a 0
-->grn mbarete_a
+->grn mbarete_v[pos=adj]
 *** vigésimo_a ; ^ vigésimo_a 0
-->grn mokõipaha_a
+->grn mokõipaha_v[pos=adj]
 *** vil_a ; ^ vil_a 0
-->grn ayvy_a
+->grn ayvy_v[pos=adj]
 *** violento_a ; ^ violento_a 0 ; #14
-->grn ñarõ_a ; #17
-->grn <hatatĩ_a ; #14
-->grn mbarete_a ; #217
+->grn ñarõ_v[pos=adj] ; #17
+->grn <hatatĩ_v[pos=adj] ; #14
+->grn mbarete_v[pos=adj] ; #217
 *** virtuoso_a ; ^ virtuoso_a 0 ; #4
-->grn joheipyre_a ; #4
-->grn marangatu_a ; #69
+->grn joheipyre_v[pos=adj] ; #4
+->grn marangatu_v[pos=adj] ; #69
 *** viscoso_a ; ^ viscoso_a 0
-->grn apovõ_a
+->grn apovõ_v[pos=adj]
 *** visible_a ; ^ visible_a 0 ; #1
-->grn <hechapy_a
-->grn ojehecháva_a
+->grn <hechapy_v[pos=adj]
+->grn ojehecháva_v[pos=adj]
 *** visto_a ; ^ visto_a 0
-->grn <hechapyre_a
+->grn <hechapyre_v[pos=adj]
 *** vital_a ; ^ vital_a 0
 ->grn <hekove_n rehegua
 *** viudo_a[g=m] ; ^ viudo_a 0
-->grn <hembireko'ỹva_a
+->grn <hembireko'ỹva_v[pos=adj]
 *** viudo_a[g=f] ; ^ viudo_a 0
-->grn mena'ỹ_a
+->grn mena'ỹ_v[pos=adj]
 *** vividor_a ; ^ vividor_a 0
-->grn juru'akua_a
+->grn juru'akua_v[pos=adj]
 *** viviente_a ; ^ viviente_a 0
-->grn oikovéva_a
+->grn oikovéva_v[pos=adj]
 *** vivo_a ; ^ vivo_a 0 ; #118
-->grn <hetia'e_a ; #25
-->grn saraki_a ; #11
-->grn kyre'ỹ_a ; #66
-->grn katupyry_a ; #252
-->grn oikovéva_a ; #4
+->grn <hetia'e_v[pos=adj] ; #25
+->grn saraki_v[pos=adj] ; #11
+->grn kyre'ỹ_v[pos=adj] ; #66
+->grn katupyry_v[pos=adj] ; #252
+->grn oikovéva_v[pos=adj] ; #4
 *** volatil_a ; ^ volatil_a 0
-->grn ovevéva_a
+->grn ovevéva_v[pos=adj]
 *** voluble_a ; ^ voluble_a 0
-->grn py'ahetáva_a
-->grn pyta'ỹ_a
+->grn py'ahetáva_v[pos=adj]
+->grn pyta'ỹ_v[pos=adj]
 *** voluntarioso_a ; ^ voluntarioso_a 0
-->grn rari_a ; #1
-->grn <hetia'e_a ; #25
-->grn kyre'ỹ_a ; #66
+->grn rari_v[pos=adj] ; #1
+->grn <hetia'e_v[pos=adj] ; #25
+->grn kyre'ỹ_v[pos=adj] ; #66
 *** volátil_a ; ^ volátil_a 0
-->grn opyta'ỹva_a
+->grn opyta'ỹva_v[pos=adj]
 *** vulgar_a ; ^ vulgar_a 0
-->grn asãi_a
-->grn asãimby_a
-->grn ojehayhúva_a
+->grn asãi_v[pos=adj]
+->grn asãimby_v[pos=adj]
+->grn ojehayhúva_v[pos=adj]
 *** yerto_a ; ^ yerto_a 0
-->grn apa_a
-->grn myi'ỹ_a
+->grn apa_v[pos=adj]
+->grn myi'ỹ_v[pos=adj]
 *** zalamero_a ; ^ zalamero_a 0
-->grn mboaguaraha_a
+->grn mboaguaraha_v[pos=adj]
 *** zambo_a ; ^ zambo_a 0
-->grn <henypy'ãva_a
+->grn <henypy'ãva_v[pos=adj]
 *** zonzo_a ; ^ zonzo_a 0
-->grn <hovatavy_a
+->grn <hovatavy_v[pos=adj]
 *** zurdo_a ; ^ zurdo_a 0
-->grn asu_a
+->grn asu_v[pos=adj]
 *** zángano_a ; ^ zángano_a 0
-->grn ate'ỹ_a
+->grn ate'ỹ_v[pos=adj]
 *** ácido_a ; ^ ácido_a 0
-->grn hái_a
+->grn hái_v[pos=adj]
 *** áspera_a ; ^ áspera_a 0
-->grn korócho_a
-->grn <haviru_a
+->grn korócho_v[pos=adj]
+->grn <haviru_v[pos=adj]
 *** áspero_a ; ^ áspero_a 0 ; #35
-->grn joha_a ; #3
+->grn joha_v[pos=adj] ; #3
 *** ético_a ; ^ ético_a 0
-->grn <hekopõrãmbo'éva_a
+->grn <hekopõrãmbo'éva_v[pos=adj]
 *** ínfimo_a ; ^ ínfimo_a 0
-->grn kýto_a
+->grn kýto_v[pos=adj]
 *** íntegro_a ; ^ íntegro_a 0
-->grn oĩmbáva_a
+->grn oĩmbáva_v[pos=adj]
 *** óptimo_a ; ^ óptimo_a 0
-->grn <hasakuaa'ỹva_a
+->grn <hasakuaa'ỹva_v[pos=adj]
 *** último_a ; ^ último_a 0
-->grn paha_a
+->grn paha_v[pos=adj]
 *** único_a ; ^ único_a 0 ; #27
-->grn añoite_a ; #20
-->grn ha'eño_a ; #23
-->grn peteĩnte_a ; #6
-->grn año_a ; #21
+->grn añoite_v[pos=adj] ; #20
+->grn ha'eño_v[pos=adj] ; #23
+->grn peteĩnte_v[pos=adj] ; #6
+->grn año_v[pos=adj] ; #21
 *** útil_a ; ^ útil_a 0 ; #9
-->grn vale_a ; #52
-->grn iporãva_a ; #92
-->grn purupyrã_a
+->grn vale_v[pos=adj] ; #52
+->grn iporãva_v[pos=adj] ; #92
+->grn purupyrã_v[pos=adj]

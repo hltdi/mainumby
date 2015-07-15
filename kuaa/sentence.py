@@ -107,7 +107,7 @@ class Document(list):
     poss_end_re = re.compile('[")\]}]{0,2}[?!][)"\]]{0,2}')
     end_re = re.compile('[")\]}]{0,2}\.[.)"\]]{0,2}')
 
-    def __init__(self, language=None, target=None, text=''):
+    def __init__(self, language=None, target=None, text='', proc=False):
         self.set_id()
         self.language = language
         self.target = target
@@ -115,6 +115,8 @@ class Document(list):
         # Intermediate representations: list of word-like tokens and ints representing types
         self.tokens = []
         list.__init__(self)
+        if proc:
+            self.process()
 
     def set_id(self):
         self.id = Document.id
@@ -221,7 +223,8 @@ class Sentence:
     word_width = 10
 
     def __init__(self, raw='', language=None, tokens=None,
-                 nodes=None, groups=None, target=None, verbosity=0):
+                 nodes=None, groups=None, target=None, init=False,
+                 verbosity=0):
         self.set_id()
         # A list of string tokens, created by a Document object including this sentence
         # or None if the Sentence is created outside of Document
@@ -257,11 +260,15 @@ class Sentence:
         self.variables = {}
         # Solver to find solutions
         self.solver = Solver(self.constraints, self.dstore,
+                             # evaluator=self.group_count_score,
+                             varselect=self.get_w2gn_vars,
                              description='group selection', verbosity=verbosity)
         # Solutions found during parsing
         self.solutions = []
         if verbosity:
             print("Created Sentence object {}".format(self))
+        if init:
+            self.initialize()
 
     def set_id(self):
         self.id = Sentence.id
@@ -325,7 +332,8 @@ class Sentence:
                 if translate and self.target:
                     solution.translate(verbosity=verbosity, all_sols=all_sols)
                 else:
-                    # Display the parse/translation
+#                if not translate:
+                    # Display the parse
                     self.display()
                 if all_sols:
                     continue
@@ -336,6 +344,8 @@ class Sentence:
                 print('No more solutions')
         if not self.solutions:
             print("NO SOLUTIONS FOUND for {}".format(self))
+#        elif translate and self.target:
+#            self.translate(all_trans=all_sols, verbosity=verbosity)
 
     def translate(self, sol_index=-1, all_trans=False, verbosity=0):
         """Translate the solution with sol_index or all solutions if index is negative."""
@@ -349,6 +359,8 @@ class Sentence:
         2015.06.07: Save the analyzed tokens as well as nodes.
         2015.06.10: Apply MorphoSyns before creating nodes.
         2015.06.11: If incl_del is True, create nodes for elements deleted by MorphoSyns.
+        2015.07: Document normally does the tokenization, so only morphological
+        analysis and morphosyn matching happen here.
         """
         if verbosity:
             print("Tokenizing {}".format(self))
@@ -608,6 +620,40 @@ class Sentence:
                 tree.update(group_dict[mgi][0])
                 Sentence.make_tree(group_dict, mgi, tree)
 
+    # Methods to help constrain search
+    def group_count_score(self, dstore):
+        """Assign a score to the domain store based on the upper bound on the number of groups (value of $groups);
+        it's just the count itself."""
+        groupvar = self.variables['groups']
+        return len(groupvar.get_upper(dstore))
+
+    def get_w2gn_vars(self, undecvars, dstore):
+        """Given a set of undecided variables in a domain store, find a snode->gnode variable
+        that has at last one value that is part of a group with more than one node and
+        at least one other value that is part of a group with only one node. Use this
+        to select variable and values in search (distribution).
+        """
+        variables = [node.variables.get('gnodes') for node in self.nodes]
+        # Variable whose possible values are tuples of gnodes for individual groups
+        gn_pos = self.variables.get('gnode_pos')
+        if gn_pos:
+            gn_pairs = gn_pos.get_upper(dstore=dstore)
+            for var in variables:
+                if var not in undecvars:
+                    continue
+                # gnode indices that are in pairs or not in pairs
+                inpair = []
+                notinpair = []
+                varundec = var.get_undecided(dstore=dstore)
+                for value in varundec:
+                    if any([value in pair for pair in gn_pairs]):
+                        inpair.append(value)
+                    else:
+                        notinpair.append(value)
+                if inpair and notinpair:
+                    prefval = inpair[0]
+                    return var, {prefval}, varundec - {prefval}
+
     def create_solution(self, dstore=None, verbosity=0):
         """Assuming essential variables are determined in a domain store, make a Solution object.
         Adds solution to self.solutions and also returns the solution."""
@@ -650,7 +696,8 @@ class Sentence:
         # Just keep the snode indices in each tree
         trees = [x[1][2] for x in trees]
         # Get the indices of the GNodes for each SNode
-        solution = Solution(self, ginsts, s2gnodes, len(self.solutions), trees=trees)
+        solution = Solution(self, ginsts, s2gnodes, len(self.solutions),
+                            trees=trees, dstore=dstore)
         self.solutions.append(solution)
         return solution
 
@@ -938,15 +985,22 @@ class GInst:
 #                                    {'align': list(range(len(self.nodes)))}]
         ntokens = len(self.group.tokens)
         for tgroup, s2t_dict in translations:
+            nttokens = len(tgroup.tokens)
             if verbosity > 1:
                 print(" set_translations(): tgroup {}', s2t_dict {}".format(tgroup, s2t_dict))
             # If there's no explicit alignment, it's the obvious default
-            alignment = s2t_dict.get('align', list(range(ntokens)))
+            if 'align' in s2t_dict:
+                alignment = s2t_dict.get('align')
+            else:
+                alignment = list(range(ntokens))
+                for ia, a in enumerate(alignment):
+                    if a >= nttokens:
+                        alignment[ia] = -1
             if isinstance(tgroup, str):
                 # First find the target Group object
                 tgroup = self.target.groupnames[tgroup]
+#            print("Alignment: {}".format(alignment))
             # Make any TNodes (for target words not corresponding to any source words)
-            nttokens = len(tgroup.tokens)
             tnodes = []
             if nttokens > ntokens:
                 # Target group has more nodes than source group.
@@ -959,18 +1013,26 @@ class GInst:
                     tnodes.append(TNode(empty_t_token, empty_t_feats, self, i))
             # Deal with individual gnodes in the group
             gnodes = []
+            tokens = tgroup.tokens
+            features = tgroup.features
+            # Go through source group nodes, finding alignments and agreement constraints
+            # with target group nodes
             for gn_index, gnode in enumerate(self.nodes):
+#                print("tgroup {}, gnode {}, gn_index {}".format(tgroup, gnode, gn_index))
                 # Align gnodes with target tokens and features
-                tokens = tgroup.tokens
-                features = tgroup.features
                 targ_index = alignment[gn_index]
                 if targ_index < 0:
                     # This means there's no target language token for this GNode.
                     continue
                 agrs = None
-#                print("s2t_dict {}".format(s2t_dict))
                 if s2t_dict.get('agr'):
-                    agrs = s2t_dict['agr'][targ_index]
+                    agr = s2t_dict['agr'][gn_index]
+                    if agr:
+                        tindex, stagr = agr
+                        targ_index = tindex
+#                        print(" s2t_dict agrs {}, tindex {}, stagr {}".format(agrs, tindex, stagr))
+#                    agrs = s2t_dict['agr'][targ_index]
+                        agrs = stagr
                 token = tokens[targ_index]
                 feats = features[targ_index] if features else None
                 gnodes.append((gnode, token, feats, agrs, targ_index))
@@ -1057,7 +1119,7 @@ class Solution:
     GNode in a selected group. Created when a complete variable assignment
     is found for a sentence."""
 
-    def __init__(self, sentence, ginsts, s2gnodes, index, trees=None):
+    def __init__(self, sentence, ginsts, s2gnodes, index, trees=None, dstore=None):
         self.sentence = sentence
         # List of sets of gnode indices
         self.s2gnodes = s2gnodes
@@ -1069,6 +1131,8 @@ class Solution:
         # List of Translation objects; multiple translations are possible
         # for a given solution because of multiple translations for groups
         self.translations = []
+        # Variable domain store for solution state
+        self.dstore = dstore
 
     def __repr__(self):
         return "|< {} >|({})".format(self.sentence.raw, self.index)
@@ -1091,7 +1155,11 @@ class Solution:
         """Do everything you need to create the translation."""
         self.merge_nodes(verbosity=verbosity)
         for ginst in self.ginsts:
-            ginst.set_translations(verbosity=verbosity)
+            if ginst.translations:
+                if verbosity:
+                    print("{} translations already set in other solution".format(ginst))
+            else:
+                ginst.set_translations(verbosity=verbosity)
         self.make_translations(verbosity=verbosity, all_sols=all_sols)
 
     def make_translations(self, verbosity=0, display=True, all_sols=False):
@@ -1099,6 +1167,11 @@ class Solution:
         separate gnodes into a dict for each translation."""
         if verbosity:
             print("Making translations for {}".format(self))
+#        for g in self.ginsts:
+#            print("Translations ({}) for GInst {}".format(len(g.translations), g))
+#            for t in g.translations:
+#                print("  {}".format(t))
+        # This is wrong; there's lot of duplication; each group may be translated multiple times
         translations = itertools.product(*[g.translations for g in self.ginsts])
         for index, translation in enumerate(translations):
             t = Translation(self, translation, index, trees=copy.deepcopy(self.trees), verbosity=verbosity)
@@ -1109,7 +1182,7 @@ class Solution:
             self.translations.append(t)
             if all_sols:
                 continue
-            if not input('SEARCH FOR ANOTHER TRANSLATION FOR THIS ANALYSIS? [yes/NO] '):
+            if not input('SEARCH FOR ANOTHER TRANSLATION FOR ANALYSIS {}? [yes/NO] '.format(self)):
                 return
         if verbosity:
             print("No more translations for analysis")
@@ -1544,7 +1617,7 @@ class Translation:
                     print('FOUND REALIZATION {}'.format(self.outputs[-1]))
                 if all_sols:
                     continue
-                if not input('SEARCH FOR ANOTHER REALIZATION FOR TRANSLATION? [yes/NO] '):
+                if not input('SEARCH FOR ANOTHER REALIZATION FOR TRANSLATION {}? [yes/NO] '.format(self)):
                     proceed = False
         except StopIteration:
             if verbosity:
