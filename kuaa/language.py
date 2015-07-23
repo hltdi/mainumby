@@ -132,8 +132,8 @@ class Language:
                  use=ANALYSIS,
 #                 source=True, target=False,
 #                 words=None, lexemes=None, grams=None, classes=None,
-#                 mwes=None, groups=None, forms=None,
-                 groups=None, genforms=None,
+                 groups=None, groupnames=None,
+#                 genforms=None,
                  # Added from morphology/language
                  pos=None, cache=True):
         """Initialize dictionaries and names."""
@@ -142,6 +142,8 @@ class Language:
 #        self.words = words or {}
 #        self.forms = forms or {}
         self.groups = groups or {}
+        # Explicit groups to load instead of default
+        self.groupnames = groupnames
         self.ms = []
         self.use = use
 #        self.source = source
@@ -155,7 +157,7 @@ class Language:
         # For generation (target) language, a dictionary of morphologically generated words:
         # {lexeme: {(feat, val): {(feat, val): wordform,...}, ...}, ...}
 #        if not source:
-        self.genforms = genforms or {}
+#        self.genforms = genforms or {}
         Language.languages[abbrev] = self
         ## 2015.5.15 Copied from morphology/language
         self.pos = pos or []
@@ -191,7 +193,7 @@ class Language:
             self.set_anal_cached()
         # Load groups now if not to be used for translation
         if use in (ANALYSIS,):
-            self.read_groups()
+            self.read_groups(files=groupnames)
 
     def quit(self):
         """Do stuff when the program exits."""
@@ -1220,7 +1222,7 @@ class Language:
     def from_dict(d, reverse=True, use=ANALYSIS):
         """Convert a dict (loaded from a yaml file) to a Language object."""
         l = Language(d.get('name'), d.get('abbrev'), use=use)
-        l.possible = d.get('possible')
+#        l.possible = d.get('possible')
 #        groups = d.get('groups')
 #        if groups:
 #            l.groups = {}
@@ -1230,28 +1232,28 @@ class Language:
 #                # Add groups to groupnames dict
 #                for go in group_objs:
 #                    l.groupnames[go.name] = go
-        forms = d.get('forms')
-        if forms:
-            l.forms = {}
-            for k, v in forms.items():
-                # v should be a dict or a list of dicts
-                # Convert features value to a FeatStruct object
-                if isinstance(v, dict):
-                    if 'features' in v:
-                        v['features'] = FeatStruct(v['features'])
-                else:
-                    for d in v:
-                        if 'features' in d:
-                            d['features'] = FeatStruct(d['features'])
-                l.forms[k] = v
-                if reverse:
-                    # Add item to genform dict
-                    if isinstance(v, dict):
-                        if 'seg' not in v:
-                            l.add_genform(k, v['root'], v.get('features'))
-                    else:
-                        for d in v:
-                            l.add_genform(k, d['root'], d.get('features'))
+#        forms = d.get('forms')
+#        if forms:
+#            l.forms = {}
+#            for k, v in forms.items():
+#                # v should be a dict or a list of dicts
+#                # Convert features value to a FeatStruct object
+#                if isinstance(v, dict):
+#                    if 'features' in v:
+#                        v['features'] = FeatStruct(v['features'])
+#                else:
+#                    for d in v:
+#                        if 'features' in d:
+#                            d['features'] = FeatStruct(d['features'])
+#                l.forms[k] = v
+#                if reverse:
+#                    # Add item to genform dict
+#                    if isinstance(v, dict):
+#                        if 'seg' not in v:
+#                            l.add_genform(k, v['root'], v.get('features'))
+#                    else:
+#                        for d in v:
+#                            l.add_genform(k, d['root'], d.get('features'))
         return l
 
     @staticmethod
@@ -1263,7 +1265,7 @@ class Language:
             return Language.from_dict(dct, use=use)
 
     @staticmethod
-    def load_trans(source, target):
+    def load_trans(source, target, groups=None):
         """Load a source and a target language, given as abbreviations.
         Read in groups for source language, including target language translations at the end.
         If the languages are already loaded, don't load them."""
@@ -1285,7 +1287,7 @@ class Language:
                 return
         # Load groups for source language now
         if not loaded:
-            srclang.read_groups(target=targlang)
+            srclang.read_groups(files=groups, target=targlang)
             srclang.read_ms(target=targlang)
         return srclang, targlang
         
@@ -1311,34 +1313,34 @@ class Language:
     ### Basic setters. Create entries (dicts) for item. For debugging purposes, include name
     ### in entry.
 
-    def add_form(self, form, dct, reverse=True):
-        """Form dict has root, features, cats.
-        If reverse is True, also add the form to the genforms dict."""
-        if form not in self.forms:
-            self.forms[form] = dct
-        else:
-            entry = self.forms[form]
-            if isinstance(entry, dict):
-                # Make this the second entry
-                self.forms[form] = [entry, dct]
-            else:
-                # There are already two or more entries in a list
-                entry.append(dct)
-        if reverse:
-            lexeme = dct['root']
-            features = dct['features']
-            self.add_genform(form, lexeme, features)
-
-    def add_genform(self, form, lexeme, features):
-        """Add the form to a lexeme- and feature-keyed dict."""
-        if lexeme not in self.genforms:
-            self.genforms[lexeme] = {}
-        featdict = self.genforms[lexeme]
-        # features is a FeatStruct object; convert it to a list of tuples
-        features = tuple(features.to_list())
-        featdict[features] = form
-#        feat = features.pop(0)
-#        self.make_featdict(featdict, feat, features, form)
+#    def add_form(self, form, dct, reverse=True):
+#        """Form dict has root, features, cats.
+#        If reverse is True, also add the form to the genforms dict."""
+#        if form not in self.forms:
+#            self.forms[form] = dct
+#        else:
+#            entry = self.forms[form]
+#            if isinstance(entry, dict):
+#                # Make this the second entry
+#                self.forms[form] = [entry, dct]
+#            else:
+#                # There are already two or more entries in a list
+#                entry.append(dct)
+#        if reverse:
+#            lexeme = dct['root']
+#            features = dct['features']
+#            self.add_genform(form, lexeme, features)
+#
+#    def add_genform(self, form, lexeme, features):
+#        """Add the form to a lexeme- and feature-keyed dict."""
+#        if lexeme not in self.genforms:
+#            self.genforms[lexeme] = {}
+#        featdict = self.genforms[lexeme]
+#        # features is a FeatStruct object; convert it to a list of tuples
+#        features = tuple(features.to_list())
+#        featdict[features] = form
+##        feat = features.pop(0)
+##        self.make_featdict(featdict, feat, features, form)
 
 #    def add_group(self, tokens, head_index=-1, head='', name='', features=None):
 #        group = Group(tokens, head_index=head_index, head=head,

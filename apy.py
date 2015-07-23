@@ -272,6 +272,7 @@ def bueno():
     d = kuaa.Document(e, g, "el muchacho es bueno.", True)
     s = d[0]
     s.initialize()
+    s.solve(all_sols=True)
     return s
 
 ##def get_ambig(language, write="../LingData/EsGn/ambig.txt"):
@@ -293,11 +294,13 @@ def bueno():
 ##        return ambig
 
 def ver(verbosity=0):
-    spa, grn = kuaa.Language.load_trans('spa', 'grn')
-    s = kuaa.Sentence('vimos a el profesor', language=spa, target=grn)
+    spa, grn = kuaa.Language.load_trans('spa', 'grn', groups=['spa'])
+    d = kuaa.Document(spa, grn, 'vimos a el profesor.', True)
+    s = d[0]
     s.initialize(verbosity=verbosity)
 #    s.solve(translate=False, all_sols=True, verbosity=verbosity)
-    return s
+    s.solve(all_sols=True)
+    return s, s.solutions[0].treetranss
 
 def future(verbosity=0):
     spa, grn = kuaa.Language.load_trans('spa', 'grn')

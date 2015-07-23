@@ -2,14 +2,3 @@ name: guarani
 abbrev: grn
 source: False
 target: True
-
-groups:
-  guata_v:
-  - words: [guata_v]
-  - words: [kuehe, guata_v]
-  juka_v:
-  - words: [juka_v]
-  Peru:
-  - words: [Peru]
-
-forms:

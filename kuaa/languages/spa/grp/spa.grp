@@ -1,21 +1,21 @@
-*** caminar_ ; ^ caminar_ 0
+*** caminar_v ; ^ caminar_v 0
 ->grn guata_v ; 0==0 n:ns,p:ps,tm:tmp,asp,neg
-->eng walk_ ; 0==0 n,n
+->eng walk_v ; 0==0 n,n
 *** ayer
 ->grn kuehe
-*** ir_[+rflx] ; ^ ir_ 0
+*** ir_v[+rflx] ; ^ ir_v 0
 ->grn ha_v ; 0==0 n:ns,p:ps,tm:tmp,asp,neg
-*** $n_prs cantar_ las cuarenta; ^ cantar_ 1
-->eng read_ $n_prs the riot act ; || 1, 0, 2, 3 ; 1==0 tm,n,p
-->eng give_ $n_prs a piece of $a_pos mind ; || 1, 0, 2, 3 ; 1==0 tm,n,p ; 1=5 n,p
-*** abrir_[+psv] ; ^ abrir_ 0
+*** $n_prs cantar_v las cuarenta; ^ cantar_v 1
+->eng read_v $n_prs the riot act ; || 1, 0, 2, 3 ; 1==0 tm,n,p
+->eng give_v $n_prs a piece of $a_pos mind ; || 1, 0, 2, 3 ; 1==0 tm,n,p ; 1=5 n,p
+*** abrir_v[+r] ; ^ abrir_v 0
 ->grn jepe'a_v ; 0==0 n:ns,p:ps,tm:tmp,asp,neg
 ->grn jera_v ; 0==0 n:ns,p:ps,tm:tmp,asp,neg
-*** ventana_ ; ^ ventana_ 0
+*** ventana_n ; ^ ventana_n 0
 ->grn ovetã_n ; 0==0 n:n
-*** ver_ a $n_prs ; ^ ver_ 0
+*** ver_v a $n_prs ; ^ ver_v 0
 ->grn <hecha_v $n_prs[caso=pe] ; || 0, -1, 1 ; 0==0 n:ns,p:ps,tm:tmp
-*** el profesor_ ; ^ profesor_ 1
+*** el profesor_n ; ^ profesor_n 1
 ->grn mbo'ehára_n ; || -1, 0 ; 0==0 n:n
 *** Pedro
 ->grn Peru_n
