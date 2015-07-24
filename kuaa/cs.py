@@ -209,7 +209,7 @@ class Solver:
         constraint1, constraint2 = self.make_constraints(var, dstore=state.dstore,
                                                          subset1=values1, subset2=values2,
                                                          verbosity=verbosity)
-        print('Selected constraints {}, {}'.format(constraint1, constraint2))
+#        print('Selected constraints {}, {}'.format(constraint1, constraint2))
         if verbosity:
             print('Distribution constraints: a -- {}, b -- {}'.format(constraint1, constraint2))
         # The constraints of the selected variable (make copies)

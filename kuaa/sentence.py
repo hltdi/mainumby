@@ -82,6 +82,9 @@
 #      abrió matchs abrir_v[-r] but not abrir_v[+r]
 # 2015.07.11
 # -- Changed Text to Document (to agree with database class)
+# 2015.07.17-25
+# -- Translation class replaced by TreeTrans class, with instances
+#    for each GInst
 
 import itertools, copy, re
 from .ui import *
@@ -881,6 +884,8 @@ class GInst:
         self.nanodes = len([n for n in self.nodes if n.cat])
         # Number of concrete nodes
         self.ncgnodes = self.ngnodes - self.nanodes
+        # TreeTrans instance for this GInst; saved here so to prevent multiple TreeTrans translations
+        self.treetrans = None
 
     def __repr__(self):
         return '<<{}:{}>>'.format(self.group.name, self.group.id)
@@ -1130,7 +1135,7 @@ class Solution:
         self.trees = trees
         self.index = index
         # A list of pairs for each snode: (gnodes, features)
-        self.snodes = []
+        self.gnodes_feats = []
         # List of Translation objects; multiple translations are possible
         # for a given solution because of multiple translations for groups
         self.translations = []
@@ -1183,7 +1188,7 @@ class Solution:
                     features.append(snode_anal[1])
             # Could this fail??
             features = FeatStruct.unify_all(features)
-            self.snodes.append((gnodes, features))
+            self.gnodes_feats.append((gnodes, features))
 
     def make_translations(self, verbosity=0, display=True, all_sols=False):
         """Combine GInsts for each translation in translation products, and
@@ -1200,38 +1205,39 @@ class Solution:
         treetranss = []
         ttindex = 0
         for tree, ginst in zip(self.trees, self.ginsts):
-            # Exclude this tree if it's a subset of any other
-            is_top = not any([(tree < other_tree) for other_tree in self.trees])
-#                continue
-#            sub_ginsts = []
-#            sub_trees = []
-#            for t, g in zip(self.trees, self.ginsts):
-#                if g != ginst and t < tree:
-#                    sub_ginsts.append(g)
-#                    sub_trees.append(t)
-            treetrans = TreeTrans(self, tree=tree.copy(), ginst=ginst, attribs=[x[:3] for x in ginst.translations],
-                                  gnode_dict=gnode_dict,
-                                  abs_gnode_dict=abs_gnode_dict, index=ttindex, top=is_top)
-            treetranss.append(treetrans)
-            ttindex += 1
+            if ginst.treetrans:
+#                print("Not recreating treetrans for {}".format(ginst))
+                treetranss.append(ginst.treetrans)
+            else:
+                is_top = not any([(tree < other_tree) for other_tree in self.trees])
+                treetrans = TreeTrans(self, tree=tree.copy(),
+                                      ginst=ginst, attribs=[x[:3] for x in ginst.translations],
+                                      gnode_dict=gnode_dict, abs_gnode_dict=abs_gnode_dict,
+                                      index=ttindex, top=is_top)
+                treetranss.append(treetrans)
+                ttindex += 1
         self.treetranss = treetranss
         for tt in treetranss:
-            trans_index=0
-            built = True
-            while built:
-                built = tt.build(trans_index=trans_index)
-                if not built:
-                    print("No more translations for {}".format(tt))
-                    break
-                if tt.top:
-                    tt.generate_words()
-                    tt.make_order_pairs()
-                    tt.create_variables()
-                    tt.create_constraints()
-                    tt.realize(all_sols=all_sols)
-                if not input('SEARCH FOR ANOTHER TRANSLATION FOR {}? [yes/NO] '.format(tt)):
-                    break
-                trans_index += 1
+            if tt.outputs:
+#                print("TreeTrans {} already processed".format(tt))
+                tt.display_all()
+            else:
+                trans_index=0
+                built = True
+                while built:
+                    built = tt.build(trans_index=trans_index)
+                    if not built:
+                        print("No more translations for {}".format(tt))
+                        break
+                    if tt.top:
+                        tt.generate_words()
+                        tt.make_order_pairs()
+                        tt.create_variables()
+                        tt.create_constraints()
+                        tt.realize(all_sols=all_sols)
+                    if not input('SEARCH FOR ANOTHER TRANSLATION FOR {}? [yes/NO] '.format(tt)):
+                        break
+                    trans_index += 1
 
 #        # Now relate treetrans to each other
 #        for tt in self.treetranss:
@@ -1278,10 +1284,12 @@ class TreeTrans:
         snode_indices = list(tree)
         snode_indices.sort()
         self.snodes = [self.sentence.nodes[i] for i in snode_indices]
-        self.sol_snodes = [solution.snodes[i] for i in snode_indices]
+        self.sol_gnodes_feats = [solution.gnodes_feats[i] for i in snode_indices]
         self.nodes = []
         # The GInst at the top of the tree
         self.ginst = ginst
+        # Save this TreeTrans in the GInst
+        ginst.treetrans = self
         self.index = index
         # A list of triples: (tgroup, tgnodes, tnodes), where
         # gnodes is (tgnode_inst, tnode_string, tnode_feats, agr_pairs, gnode_index)
@@ -1298,12 +1306,13 @@ class TreeTrans:
                     self.abs_gnode_dict[tgnode] = (tgroup, tokens, feats, agrs, t_index)
                 elif tgnode in self.gnode_dict:
                     self.gnode_dict[tgnode].append((tgroup, tokens, feats, agrs, t_index))
-                    print(" tgnode {} already in gnode_dict with value {}".format(tgnode, self.gnode_dict[tgnode]))
+#                    print(" tgnode {} already in gnode_dict with value {}".format(tgnode, self.gnode_dict[tgnode]))
                 else:
 #                    print("Adding tgnode {} to gnode_dict".format(tgnode))
                     self.gnode_dict[tgnode] = [(tgroup, tokens, feats, agrs, t_index)]
 #                    self.gnode_dict[tgnode] = (tgroup, tokens, feats, agrs, t_index)
             self.group_attribs.append((tgroup, tnodes, tgroup.agr))
+#            print("Tgroups for TT: {}".format([t[0] for t in self.group_attribs]))
         # Root domain store for variables
         self.dstore = DStore(name="TT{}".format(self.index))
         # Order variables for each node, tree variables for groups
@@ -1314,6 +1323,8 @@ class TreeTrans:
         self.constraints = []
         self.solver = Solver(self.constraints, self.dstore, description='target tree realization',
                              verbosity=verbosity)
+#        # Positions of target words
+#        self.positions = []
         # These are produced in self.build()
         self.node_features = None
         self.group_nodes = None
@@ -1324,10 +1335,14 @@ class TreeTrans:
         self.output_strings = []
 
     def __repr__(self):
-        return "{}[{}] ->".format(self.solution, self.ginst)
+        return "[{}] ->".format(self.ginst)
 
     def display(self, index):
         print("{}  {}".format(self, self.output_strings[index]))
+
+    def display_all(self):
+        for index in range(len(self.outputs)):
+            self.display(index)
 
     @staticmethod
     def output_string(output):
@@ -1339,14 +1354,13 @@ class TreeTrans:
                 l.append('|'.join(word_list))
         return ' '.join(l)
 
-    def initialize(self, verbosity=0):
-        """Set up everything needed to run the constraints and generate the translation."""
-        if verbosity:
-            print("Initializing treetrans {}".format(self))
-        self.build(verbosity=verbosity)
-        self.generate_words(verbosity=verbosity)
-#        self.set_chunks(verbosity=verbosity)
-        self.make_order_pairs(verbosity=verbosity)
+#    def initialize(self, verbosity=0):
+#        """Set up everything needed to run the constraints and generate the translation."""
+#        if verbosity:
+#            print("Initializing treetrans {}".format(self))
+#        self.build(verbosity=verbosity)
+#        self.generate_words(verbosity=verbosity)
+#        self.make_order_pairs(verbosity=verbosity)
 #        self.create_variables(verbosity=verbosity)
 #        self.create_constraints(verbosity=verbosity)
 
@@ -1361,7 +1375,7 @@ class TreeTrans:
         node_features = []
         agreements = {}
         group_nodes = {}
-        for snode, (gnodes, features) in zip(self.snodes, self.sol_snodes):
+        for snode, (gnodes, features) in zip(self.snodes, self.sol_gnodes_feats):
             if verbosity > 1:
                 print(" build(): snode {}, gnodes {}, features {}, tnode_index {}".format(snode, gnodes, features.__repr__(), tnode_index))
                 print("   gnode_dict: {}".format(self.gnode_dict))
@@ -1386,8 +1400,8 @@ class TreeTrans:
                     # Check if there is no translation for one or the other; if so, skip this snode and
                     # don't increment tnode_index
                     # gna is a single tuple, gnc is a list of tuples for different translations
-                    if len(gnc) < trans_index:
-                        print("No more translations for {}".format(self))
+                    if len(gnc) <= trans_index:
+#                        print("No more translations for {}".format(self))
                         return False
                     # Select the tuple to be used (trans_index)
                     gnc = gnc[trans_index]
@@ -1408,14 +1422,15 @@ class TreeTrans:
                         print("Creating merger for snode index {}, tnode index {}".format(snode.index, tnode_index))
                         self.mergers.append([tnode_index, tg])
                 else:
+                    # only one gnode in list
                     gnode = gnodes[0]
                     if gnode not in self.gnode_dict:
                         continue
                     else:
                         gnode = gnodes[0]
                         gnode_tuple_list = self.gnode_dict[gnode]
-                        if len(gnode_tuple_list) < trans_index:
-                            print("No more translations for {}".format(self))
+                        if len(gnode_tuple_list) <= trans_index:
+#                            print("No more translations for {}".format(self))
                             return False
 #                        tgroup, token, targ_feats, agrs, t_index = self.gnode_dict[gnode]
                         tgroup, token, targ_feats, agrs, t_index = gnode_tuple_list[trans_index]
@@ -1464,6 +1479,8 @@ class TreeTrans:
     def generate_words(self, verbosity=0):
         """Do inter-group agreement constraints, and generate wordforms for each target node."""
 #        print('Generating words for {}'.format(self))
+        # Reinitialize nodes
+        self.nodes = []
         for group, agr_constraints in self.agreements.items():
             for agr_constraint in agr_constraints:
                 i1, i2 = agr_constraint[0], agr_constraint[1]
@@ -1488,10 +1505,13 @@ class TreeTrans:
                 self.nodes.append((output, index))
             if verbosity:
                 print("Generating target node {}: {}".format(index, output))
+#        print("nodes after generation: {}".format(self.nodes))
 
     def make_order_pairs(self, verbosity=0):
         """Convert group/index pairs to integer (index) order pairs.
         Constrain order in merged groups."""
+        # Reinitialize order pairs
+        self.order_pairs.clear()
 #        print("Ordering pairs for {}".format(self))
         tgroup_dict = {}
         for index, (forms, constraints) in enumerate(self.nodes):
@@ -1537,7 +1557,7 @@ class TreeTrans:
                 for o in foll_outer:
                     for i in other_inner:
                         self.order_pairs.append([i, o])
-        print('  Order pairs: {}'.format(self.order_pairs))
+#        print('  Order pairs: {}'.format(self.order_pairs))
 
     def svar(self, name, lower, upper, lower_card=0, upper_card=MAX, ess=True):
         return Var(name, lower, upper, lower_card, upper_card,
@@ -1545,7 +1565,10 @@ class TreeTrans:
 
     def create_variables(self, verbosity=0):
         """Create an order IVar for each translation node and variables for each group tree."""
+        # Reinitialize variables
+        self.variables.clear()
         nnodes = len(self.nodes)
+#        print("Creating variables: nnodes {}, order pairs {}".format(nnodes, self.order_pairs))
         self.variables['order_pairs'] = DetVar("order_pairs", set([tuple(positions) for positions in self.order_pairs]))
         self.variables['order'] = [IVar("o{}".format(i), set(range(nnodes)), rootDS=self.dstore, essential=True) for i in range(nnodes)]
 #        # target-language trees
@@ -1559,6 +1582,8 @@ class TreeTrans:
 
     def create_constraints(self, verbosity=0):
         """Make order and disjunction constraints."""
+        # Reinitialize constraints
+        self.constraints.clear()
         if verbosity:
             print("Creating constraints for {}".format(self))
         ## Order constraints
@@ -1582,6 +1607,7 @@ class TreeTrans:
                 succeeding_state = next(generator)
                 order_vars = self.variables['order']
                 positions = [list(v.get_value(dstore=succeeding_state.dstore))[0] for v in order_vars]
+#                print("Found positions {}".format(positions))
                 node_pos = list(zip([n[0] for n in self.nodes], positions))
                 node_pos.sort(key=lambda x: x[1])
                 output = [n[0] for n in node_pos]

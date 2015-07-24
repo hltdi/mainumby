@@ -1,5 +1,5 @@
 #   
-#   Ñe'ẽasa constraints.
+#   Mbojereha constraints.
 #
 ########################################################################
 #
@@ -193,7 +193,8 @@ class Member(Constraint):
         """The variable's values are restricted to the intersection of
         their current values and the constraint's domain."""
         var = self.get_var()
-        if var.strengthen(self.domain, dstore=dstore, constraint=(verbosity>1 or var in tracevar) and self):
+        # was var.strengthen( ... but there is no strengthen in this version of constraint
+        if var.strengthen_upper(self.domain, dstore=dstore, constraint=(verbosity>1 or var in tracevar) and self):
             return Constraint.entailed, {var}
         return Constraint.entailed, set()
 
