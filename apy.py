@@ -46,19 +46,19 @@ def load_eg():
 
 def bueno():
     e, g = load_eg()
-    d = kuaa.Document(e, g, "el muchacho es bueno.", True)
+    d = kuaa.Document(e, g, "el muchacho ya es bueno.", True)
     s = d[0]
     s.initialize()
-    s.solve(all_sols=True)
+    s.solve(all_sols=False, all_trans=False)
     return s
 
 def ver(verbosity=0):
     spa, grn = kuaa.Language.load_trans('spa', 'grn', groups=['spa'])
-    d = kuaa.Document(spa, grn, 'vimos a el profesor.', True)
+    d = kuaa.Document(spa, grn, 'otro día vimos a el profesor.', True)
     s = d[0]
     s.initialize(verbosity=verbosity)
 #    s.solve(translate=False, all_sols=True, verbosity=verbosity)
-    s.solve(all_sols=True)
+    s.solve(all_sols=False, all_trans=False)
     return s, s.solutions[0].treetranss
 
 def future(verbosity=0):
