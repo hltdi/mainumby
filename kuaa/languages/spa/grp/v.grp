@@ -13582,6 +13582,8 @@
 ->grn <hesaho_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp
 *** ver_v[-r] ; ^ ver_v 0
 ->grn <hecha_v ; 0==0 n:ns,p:ps,tm:tmp,asp:asp
+*** $$pro_3oj ver_v[-r] a $n_prs ; ^ ver_v 1
+->grn <hecha_v $n_prs[caso=pe] ; || -1, 0, -1, 1 ; 1==0 n:ns,p:ps,tm:tmp,asp:asp
 *** ver_v[+r] considerado ; ^ ver_v 0
 ->grn jechakatu_v ; 0==0 n:ns,p:ps,tm:tmp,asp:asp
 *** ver_v[+r] ; ^ ver_v 0

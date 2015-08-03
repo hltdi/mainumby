@@ -24,51 +24,98 @@
 # =========================================================================
 #
 # Created 2015.06.12
+# 2015.07
+# -- Views for loading languages, entering document, sentence, and translation.
+# 2015.08.02
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-from kuaa import app, translate, load
+from kuaa import app, translate, make_document, load
 
-GRN = None
-SPA = None
+SPA = GRN = DOC = SENT = None
+SINDEX = 0
 
 def load_languages():
     global GRN, SPA
     SPA, GRN = load()
 
+def make_doc(text):
+    global DOC
+    DOC = make_document(SPA, GRN, text)
+
+def get_sentence():
+    global SINDEX
+    global SENTENCE
+    SENTENCE = DOC[SINDEX]
+    SINDEX += 1
+
 @app.route('/')
 def index():
+    print("In index...")
     return redirect(url_for('base'))
 
 @app.route('/base', methods=['GET', 'POST'])
 def base():
+#    if not SPA:
+#        print("Cargando idiomas...")
+#        load_languages()
+#    return render_template('doc.html')
+    print("In base...")
     if request.method == 'POST' and 'Cargar' in request.form:
         return render_template('doc.html')
     return render_template('base.html')
 
 @app.route('/doc', methods=['GET', 'POST'])
 def doc():
-    if request.method == 'POST':
-        form = request.form
-        print("Form for doc: {}".format(form))
-        if 'enviar' in request.form:
-            return render_template('tra.html', translation=None, sentence=None, next=False)
+    print("In doc...")
+    if not SPA:
+        load_languages()
+#    global DOC
+#    if request.method == 'POST' and 'text' in request.form:
+#        print("Form for doc: {}".format(request.form))
+#        sindex = 0
+#        DOC = make_document(SPA, GRN, request.form.get('text'))
+#        print("Created document {}".format(DOC))
+#        sentence = DOC[sindex]
+#        print("First sentence {}".format(sentence))
+#        return render_template('tra.html', translation=None, sindex=sindex, sentence=sentence, next=False)
     return render_template('doc.html')
 
 @app.route('/tra', methods=['GET', 'POST'])
 def tra():
-    if not SPA:
-        load_languages()
-    print("Idiomas cargados")
-    if request.method == 'POST':
-        form = request.form
-        print("Form for tra: {}".format(form))
-        if form.get('next'):
-            return render_template('tra.html', translation=None, sentence=None, next=False)
-        elif form.get('sentence'):
-            s = form['sentence']
-            print("Sentence {}".format(s))
-            t = translate(s, SPA, GRN)
-            print("Translations {}".format(t))
-            return render_template('tra.html', translation=t, sentence=s)
-    return render_template('tra.html', translation=None, sentence=None, next=False)
+    print("In tra...")
+    form = request.form
+    print("Form for tra: {}".format(form))
+    if 'tra' in form:
+        t = translate(SENTENCE, SPA, GRN)
+        print("Translations {}".format(t))
+        return render_template('tra.html', sentence=SENTENCE, translation=t)
+    elif 'enter' in form:
+        return render_template('tra.html', sentence=SENTENCE, translation=None)
+    return_template('tra.html', sentence=None, translation=None)
+
+@app.route('/sent', methods=['GET', 'POST'])
+def sent():
+    print("In sent...")
+    form = request.form
+    print("Form for sent: {}".format(form))
+    if 'text' in form and not DOC:
+        make_doc(form['text'])
+        print("Created document {}".format(DOC))
+        get_sentence()
+        print("Current sentence {}".format(SENTENCE))
+#    if 'tra' in form:
+#        print("Translating sentence {}".format(sentence.raw))
+#        return render_template('tra.html', sentence=sentence, translation=['foo', 'bar', 'baz'], next=False)
+    return render_template('sent.html', sentence=SENTENCE, translation=None, next=False)
+#    if request.method == 'POST':
+#        sindex = form.get('sindex', 0)
+#        if form.get('next'):
+#            sentence = DOC[sindex+1]
+#            return render_template('tra.html', sindex=sindex+1, sentence=sentence, translation=None, next=False)
+#        elif form.get('sentence'):
+#            s = form['sentence']
+#            print("Sentence {}".format(s))
+#            t = translate(s, SPA, GRN)
+#            print("Translations {}".format(t))
+#            return render_template('tra.html', translation=t, sentence=s, sindex=sindex, next=False)
 

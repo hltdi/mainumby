@@ -13721,6 +13721,8 @@
 ->grn apoha_n ; 0==0 n:n
 *** profesor_n ; ^ profesor_n 0
 ->grn mbo'ehára_n ; 0==0 n:n
+*** el profesor_n ; ^ profesor_n 1
+->grn mbo'ehára_n ; || -1, 0 ; 0==0 n:n
 *** profesora_n ; ^ profesora_n 0
 ->grn mbo'ehára_n ; 0==0 n:n
 *** profeta_n ; ^ profeta_n 0 ; #332

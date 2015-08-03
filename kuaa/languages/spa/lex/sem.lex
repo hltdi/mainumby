@@ -8048,7 +8048,7 @@ kilovatio_n $n
 kilómetro_n $n
 kuwaití_n $n
 la_a $art
-la $pro
+la $pro,$pro_3oj
 laberinto_n $n
 labio_n $n
 labor_n $n
@@ -8120,7 +8120,7 @@ largo_a $a
 laringe_n $n
 larva_n $n
 las_a $art
-las $pro
+las $pro,$pro_3oj
 lascivia_n $n
 lasitud_n $n
 lastimadura_n $n
@@ -8157,7 +8157,7 @@ laxitud_n $n
 lazada_n $n
 lazar_v $v
 lazo_n $n
-le $pro
+le $pro,$pro_3oj
 leal_n $n
 leal_a $a
 lealtad_n $n
@@ -8212,7 +8212,7 @@ leopardo_n $n
 lepra_n $n
 leproso_a $a
 lerdo_a $a
-les $pro
+les $pro,$pro_3oj
 lesbiana_n $n
 letra_n $n
 letrero_n $n
@@ -8365,7 +8365,7 @@ llovizna_n $n
 lloviznar_v $v
 lluvia_n $n
 lluvioso_a $a
-lo $pro
+lo $pro,$pro_3oj
 loa_n $n
 loable_a $a
 loar_v $v
@@ -8403,7 +8403,7 @@ lonja_n $n
 lord_n $n
 loro_n $n
 los_a $art
-los $pro
+los $pro,$pro_3oj
 losa_n $n
 lote_n $n
 lotería_n $n

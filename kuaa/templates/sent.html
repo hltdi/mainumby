@@ -40,8 +40,7 @@ h2
 	font-weight: bold;
 	margin-top: .75em;
 	margin-bottom: .35em;
-        text-align: center;
-        color: #00F;
+	color: #00F;
 }
 h3
 {
@@ -56,7 +55,13 @@ p
 	margin-bottom: .35em;
         clear: left;
 }
-span.document
+span.root
+{
+   font-weight: bold;
+   color: #900;
+   border: thin solid;
+}
+span.sentence
 {
    font-size: 100%;
    font-weight: bold;
@@ -76,22 +81,40 @@ span.document
 
 <h1>Mbojereha: Traducción del Castellano al Guaraní</h1>
 
-<!--
-<h2>¡Bienvenido/a a Mbojereha! Tereg̃uahẽ porãite Mbojereha-pe!
-</h2>
--->
-
 <h3>Uso</h3>
-<p>Introducí un documento que querés traducir.</p>
-
-<form method=POST action='sent'>
-
-<TEXTAREA NAME="text" ROWS=15 COLS=75 style="font-family:
-Verdana"></TEXTAREA>
 
 <p>
-<input type=submit value='Enviar' name='enviar' style="font-family: Verdana; font-size: 100%;">
+Para pedirle a MJH que traduzca la oración, hac&eacute; clic en "Traducir".
 </p>
+
+<!--
+<form method=POST>
+<TEXTAREA NAME="sentence" ROWS=10 COLS=60 ></TEXTAREA>
+<p>
+<input type=submit value='enviar'>
+</p>
+-->
+<!--
+<input type=text style="font-family: Verdana; font-size: 100%;"
+name=sentence>
+-->
+
+<p></p>
+<hr>
+
+{% if sentence %}
+<p></p><p></p>
+<p>Actual oración: <span class="sentence">{{ sentence.raw }}</span>
+</p>
+{% endif %}
+
+<form method=POST action='tra'>
+
+<input type=submit style="font-family: Verdana; font-size: 80%;"
+action='tra' name='tra' value='Traducir automáticamente'>
+
+<input type=submit style="font-family: Verdana; font-size: 80%;"
+action='enter' name='enter' value='Introducir tu propia traducción'>
 
 </form>
 

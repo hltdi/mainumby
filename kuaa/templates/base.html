@@ -40,7 +40,8 @@ h2
 	font-weight: bold;
 	margin-top: .75em;
 	margin-bottom: .35em;
-	color: #00F;
+        text-align: center;
+        color: #00F;
 }
 h3
 {
@@ -59,7 +60,7 @@ p
 
 <script>
 function loading() {
-    document.getElementById("loading").innerHTML = "Cargando...";
+    document.getElementById("loading").innerHTML = "Cargando idiomas (podría tardarse)...";
     window.location.assign("doc");
 }
 </script>
@@ -72,15 +73,16 @@ function loading() {
 
 <h1>Mbojereha: Traducción del Castellano al Guaraní</h1>
 
-<h3>¡Bienvenido/a a Mbojereha! Tereg̃uahẽ porãite Mbojereha-pe!
-</h3>
+<h2>¡Bienvenido/a a Mbojereha! Tereg̃uahẽ porãite Mbojereha-pe!
+</h2>
 
-<input id="load" style="font-family: Verdana; font-size: 100%;"
-type=button name="Cargar" value="Hac&eacute; clic para cargar base de datos" onclick="loading()">
+<input id="load" style="font-family: Verdana; font-size: 80%;"
+type=button name="Cargar" value="Hac&eacute; clic para cargar idiomas" onclick="loading()">
 
 <hr>
 
 <p id="loading"></p>
+
 </body>
 
 </html>

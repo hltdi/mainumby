@@ -88,6 +88,13 @@
 # 2015.07.28
 # -- all_sols and all_trans options are separate. (Usually we'll want only
 #    one solution but multiple translations?)
+# 2015.07.29
+# -- Segmentation of contractions; lowercasing of capitalized words.
+#    Optional capitalization of first word in sentence translation.
+# 2015.08.03
+# -- Matching of "set items" in groups, like $$pro_3oj for 3p object pronouns
+#    in Spanish. These don't result in "abstract" GNodes that must merge
+#    with "concrete" GNodes. Rather they are concrete.
 
 import itertools, copy, re
 from .ui import *
@@ -294,6 +301,11 @@ class Sentence:
         else:
             return '|| {} sentence {} ||'.format(self.language, self.id)
 
+    def pretty(self):
+        """Print sentence more or less as it originally appeared."""
+        # Later combine ending punctuation with preceding word.
+        return self.raw
+
     def display(self, show_all_sols=True, show_trans=True, word_width=0):
         """Show the sentence and one or more solutions in terminal."""
         s = "   "
@@ -305,13 +317,32 @@ class Sentence:
         for solution in solutions:
             solution.display(word_width=word_width)
 
-    def trans_strings(self, sol_index=-1):
-        """Translation strings for indexed solution or all solutions."""
-        solutions = self.solutions if sol_index < 0 else [self.solutions[index]]
-        strings = []
-        for solution in solutions:
-            strings.extend(solution.trans_strings())
-        return strings
+#    def trans_strings(self, sol_index=-1):
+#        """Translation strings for indexed solution or all solutions."""
+#        solutions = self.solutions if sol_index < 0 else [self.solutions[index]]
+#        strings = []
+#        for solution in solutions:
+#            strings.extend(solution.trans_strings())
+#        return strings
+
+    def segment(self, token, tok_index, verbosity=0):
+        """Segment token if possible, replacing it in self.tokens with segmentation."""
+        segmentation = self.language.segs.get(token)
+        if segmentation:
+            self.tokens[tok_index:tok_index+1] = segmentation
+
+    def lowercase(self):
+        for index, token in enumerate(self.tokens):
+            if token.istitle():
+                self.tokens[index] = token.lower()
+
+    def preprocess(self, verbosity=0):
+        """Segment contracted expressions, and lowercase all words. Must follow word tokenization.
+        Segmentation can add to the number of tokens in the sentence."""
+        self.lowercase()
+        for index, token in zip(range(len(self.tokens)-1, -1, -1), self.tokens[-1::-1]):
+#            print('index {}, token {}'.format(index, token))
+            self.segment(token, index)
 
     def initialize(self, verbosity=0):
         """Things to do before running constraint satisfaction."""
@@ -327,7 +358,7 @@ class Sentence:
             self.create_constraints(verbosity=verbosity)
             return True
 
-    def solve(self, translate=True, all_sols=False, all_trans=False, verbosity=0):
+    def solve(self, translate=True, all_sols=False, all_trans=False, interactive=False, verbosity=0):
         """Generate solutions and translations (if translate is true)."""
         if not self.groups:
             print("NO GROUPS FOUND for {}, so NO SOLUTIONS POSSIBLE".format(self))
@@ -341,14 +372,14 @@ class Sentence:
                 if verbosity:
                     print('FOUND ANALYSIS', solution)
                 if translate and self.target:
-                    solution.translate(verbosity=verbosity, all_trans=all_trans)
+                    solution.translate(verbosity=verbosity, all_trans=all_trans, interactive=interactive)
                 else:
 #                if not translate:
                     # Display the parse
                     self.display()
                 if all_sols:
                     continue
-                if not input('SEARCH FOR ANOTHER ANALYSIS? [yes/NO] '):
+                if not interactive or not input('SEARCH FOR ANOTHER ANALYSIS? [yes/NO] '):
                     proceed = False
         except StopIteration:
             if verbosity:
@@ -372,18 +403,19 @@ class Sentence:
         2015.06.11: If incl_del is True, create nodes for elements deleted by MorphoSyns.
         2015.07: Document normally does the tokenization, so only morphological
         analysis and morphosyn matching happen here.
+        2015.07.29: Segmentation and lowercasing of first word.
         """
         if verbosity:
             print("Tokenizing {}".format(self))
         if not self.nodes:
             # (Otherwise it's already done.)
             # Split at spaces by default (later allow for dedicated language-specific tokenizers).
-            if self.tokens:
-                tokens = self.tokens
-            else:
-                tokens = self.raw.split()
-            # First do morphological analysis (2015.06.07)
-            self.analyses = [[token, self.language.anal_word(token)] for token in tokens]
+            if not self.tokens:
+                self.tokens = self.raw.split()
+            # Lower-case capitalized words and segment contractions, possibly adding new tokens.
+            self.preprocess()
+            # Next do morphological analysis (2015.06.07)
+            self.analyses = [[token, self.language.anal_word(token)] for token in self.tokens]
             # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
             if verbosity:
                 print("Running Morphosyns for {} on {}".format(self.language, self))
@@ -723,7 +755,7 @@ class Sentence:
                     self.trans_outputs.append(tt1)
         self.trans_outputs.sort()
 
-    def get_complete_trans(self):
+    def get_complete_trans(self, capfirst=True):
         """Produce complete translations (list of lists of strings) from tree trans outputs for solutions, filling
         in gaps with source words where necessary."""
         trans = []
@@ -734,13 +766,33 @@ class Sentence:
             for indices, forms in tt:
                 start, end = indices
                 if start > end_index+1:
-                    tt_complete.append(self.tokens[end_index+1:start])
+                    # Some word(s) not translated; use source forms with # prefix
+                    tt_complete.append([self.verbatim(n) for n in self.nodes[end_index+1:start]])
                 tt_complete.append(forms)
                 end_index = end
-            if end_index+1 < len(self.tokens):
-                tt_complete.append(self.tokens[end_index+1:])
+            if end_index+1 < len(self.nodes):
+                # Some word(s) not translated; use source forms with # prefix
+                tt_complete.append([self.verbatim(n) for n in self.nodes[end_index+1:]])
+            if capfirst:
+                # Capitalize first word
+                tt_complete[0] = [Sentence.capitalize(w) for w in tt_complete[0]]
             trans.append(tt_complete)
         return trans
+
+    def verbatim(self, node):
+        """Use the source token in the target complete translation."""
+        # If token consists of only punctuation or digits, just return it
+        token = node.token
+        if token[0].isdigit() or token[0] in self.language.morphology.punctuation:
+            return token
+        else:
+            return '#' + token
+
+    @staticmethod
+    def capitalize(token):
+        if token[0] == '#':
+            return '#' + token[1:].capitalize()
+        return token.capitalize()
                 
 class SNode:
     """Sentence token and its associated analyses and variables."""
@@ -850,6 +902,9 @@ class SNode:
         if Entry.is_cat(grp_item):
             if verbosity:
                 print('    Cat item, looking in {}'.format(self.cats))
+            # Check whether this group item is really a set item (starting with '$$'); if so, drop the first '$' before matching
+            if Entry.is_set(grp_item):
+                grp_item = grp_item[1:]
             if self.cats and grp_item in self.cats:
 #                print("   Token {} is in cat {}".format(self.token, grp_item))
                 if not self.analyses or not grp_feats:
@@ -1086,6 +1141,7 @@ class GNode:
     """Representation of a single node (word, position) within a GInst object."""
 
     def __init__(self, ginst, index, snodes):
+#        print("Creating GNode for {} with snodes {}".format(ginst, snodes))
         self.ginst = ginst
         self.index = index
         self.sentence = ginst.sentence
@@ -1094,7 +1150,12 @@ class GNode:
         # Whether this is the head of the group
         self.head = index == ginst.group.head_index
         # Group word, etc. associated with this node
-        self.token = ginst.group.tokens[index]
+        gtoken = ginst.group.tokens[index]
+        # If this is a set node, use the sentence token instead of the cat name
+        if Entry.is_set(gtoken):
+            self.token = self.sentence.nodes[snodes[0][0]].token
+        else:
+            self.token = gtoken
 #        self.pos = ''
 #        if self.head:
 #            self.pos = self.token.partition('_')[-1]
@@ -1189,21 +1250,22 @@ class Solution:
             g.display(word_width=word_width, s2gnodes=self.s2gnodes)
 
     def get_ttrans_outputs(self):
-        """Return a list of (snode_indices, translation strings) for the solution's tree translations."""
+        """Return a list of (snode_start_end_indices, translation strings) for the solution's tree translations."""
         if not self.ttrans_outputs:
-            self.ttrans_outputs = [((tt.snode_indices[0], tt.snode_indices[-1]), tt.output_strings) for tt in self.treetranss if tt.output_strings]
+            self.ttrans_outputs = [((tt.snode_indices[0], tt.snode_indices[-1]), tt.output_strings)\
+                                    for tt in self.treetranss if tt.output_strings]
         return self.ttrans_outputs
 
-    def trans_strings(self, index=-1):
-        """Return a list of translation strings for the translation indexed or all translations
-        for this solution."""
-        translations = self.translations if index < 0 else [self.translation[index]]
-        strings = []
-        for translation in translations:
-            strings.extend(translation.output_strings)
-        return strings
+#    def trans_strings(self, index=-1):
+#        """Return a list of translation strings for the translation indexed or all translations
+#        for this solution."""
+#        translations = self.translations if index < 0 else [self.translation[index]]
+#        strings = []
+#        for translation in translations:
+#            strings.extend(translation.output_strings)
+#        return strings
 
-    def translate(self, verbosity=0, all_trans=False):
+    def translate(self, verbosity=0, all_trans=False, interactive=False):
         """Do everything you need to create the translation."""
         self.merge_nodes(verbosity=verbosity)
         for ginst in self.ginsts:
@@ -1212,7 +1274,7 @@ class Solution:
                     print("{} translations already set in other solution".format(ginst))
             else:
                 ginst.set_translations(verbosity=verbosity)
-        self.make_translations(verbosity=verbosity, all_trans=all_trans)
+        self.make_translations(verbosity=verbosity, all_trans=all_trans, interactive=interactive)
 
     def merge_nodes(self, verbosity=0):
         """Merge the source features of cat and inst GNodes associated with each SNode."""
@@ -1234,7 +1296,7 @@ class Solution:
             features = FeatStruct.unify_all(features)
             self.gnodes_feats.append((gnodes, features))
 
-    def make_translations(self, verbosity=0, display=True, all_trans=False):
+    def make_translations(self, verbosity=0, display=True, all_trans=False, interactive=False):
         """Combine GInsts for each translation in translation products, and
         separate gnodes into a dict for each translation."""
         if verbosity:
@@ -1278,10 +1340,12 @@ class Solution:
                         tt.make_order_pairs()
                         tt.create_variables()
                         tt.create_constraints()
-                        tt.realize(all_trans=all_trans)
-                    if not input('SEARCH FOR ANOTHER TRANSLATION FOR {}? [yes/NO] '.format(tt)):
-                        break
+                        tt.realize(all_trans=all_trans, interactive=interactive)
                     trans_index += 1
+                    if all_trans:
+                        continue
+                    if not interactive or not input('SEARCH FOR ANOTHER TRANSLATION FOR {}? [yes/NO] '.format(tt)):
+                        break
 
 #        # Now relate treetrans to each other
 #        for tt in self.treetranss:
@@ -1456,7 +1520,7 @@ class TreeTrans:
                     targ_feats = FeatStruct.unify_all(targ_feats)
                     if self.top:
                         # Merge the agreements
-                        agrs = Translation.merge_agrs(agrs)
+                        agrs = TreeTrans.merge_agrs(agrs)
                         t_indices.append((tgroups[0], gna[-1]))
                         t_indices.append((tgroups[1], gnc[-1]))
                         ## Record this node and its groups in mergers
@@ -1521,6 +1585,32 @@ class TreeTrans:
         self.agreements = agreements
         return True
 
+    @staticmethod
+    def get_root_POS(token):
+        """Token may be something like guata_, guata_v, or guata_v_t."""
+        root, x, pos = token.partition("_")
+        return root, pos
+
+    @staticmethod
+    def merge_agrs(agr_list):
+        """Merge agr dicts in agr_list into a single agr dict."""
+#        print("  Merging agreements for merged nodes {}".format(agr_list))
+        result = {}
+        for agr in agr_list:
+            if not agr:
+                continue
+            for k, v in agr:
+                if k in result:
+                    if result[k] != v:
+                        print("Warning: agrs in {} failed to merge".format(agr_list))
+                        return 'fail'
+                    else:
+                        continue
+                else:
+                    result[k] = v
+#        print("  Result", result)
+        return result
+
     def generate_words(self, verbosity=0):
         """Do inter-group agreement constraints, and generate wordforms for each target node."""
 #        print('Generating words for {}'.format(self))
@@ -1540,7 +1630,7 @@ class TreeTrans:
         for token, features, index in self.node_features:
             if verbosity:
                 print("Token {}, features {}, index {}".format(token, features.__repr__(), index))
-            root, pos = Translation.get_root_POS(token)
+            root, pos = TreeTrans.get_root_POS(token)
             output = [token]
             if not pos:
                 # This word doesn't require generation, just return it in a list
@@ -1634,7 +1724,7 @@ class TreeTrans:
 #            # Convexity (projectivity)
 #            self.constraints.append(SetConvexity(tree))
 
-    def realize(self, verbosity=0, display=True, all_trans=False):
+    def realize(self, verbosity=0, display=True, all_trans=False, interactive=False):
         """Run constraint satisfaction on the order and disjunction constraints,
         and convert variable values to sentence positions."""
 #        print("Realizing {}".format(self))
@@ -1642,12 +1732,15 @@ class TreeTrans:
         try:
             proceed = True
             while proceed:
+                # Run solver to find positions (values of 'order' variables)
                 succeeding_state = next(generator)
                 order_vars = self.variables['order']
                 positions = [list(v.get_value(dstore=succeeding_state.dstore))[0] for v in order_vars]
 #                print("Found positions {}".format(positions))
+                # list of (form, position) pairs; sort by position
                 node_pos = list(zip([n[0] for n in self.nodes], positions))
                 node_pos.sort(key=lambda x: x[1])
+                # just the form
                 output = [n[0] for n in node_pos]
                 self.outputs.append(output)
                 self.output_strings.append(TreeTrans.output_string(output))
@@ -1657,7 +1750,7 @@ class TreeTrans:
                     print('FOUND REALIZATION {}'.format(self.outputs[-1]))
                 if all_trans:
                     continue
-                if not input('SEARCH FOR ANOTHER REALIZATION FOR TRANSLATION {}? [yes/NO] '.format(self)):
+                if not interactive or not input('SEARCH FOR ANOTHER REALIZATION FOR TRANSLATION {}? [yes/NO] '.format(self)):
                     proceed = False
         except StopIteration:
             if verbosity:

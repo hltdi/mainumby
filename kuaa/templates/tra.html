@@ -81,14 +81,12 @@ span.sentence
 
 <h1>Mbojereha: Traducción del Castellano al Guaraní</h1>
 
-<h3>Uso</h3>
 <!--
-<p>Introducí el texto que querés traducir, por ejemplo, <i>Pedro
-está cantando en su casa</i>.</p>
--->
+<h3>Uso</h3>
 <p>
 Para pedirle a MJH que traduzca la oración, hac&eacute; clic en "Traducir".
 </p>
+-->
 
 <!--
 <form method=POST>
@@ -107,7 +105,7 @@ name=sentence>
 
 {% if sentence %}
 <p></p><p></p>
-<p>Actual oración: <span class="sentence">{{ sentence }}</span>
+<p>Actual oración: <span class="sentence">{{ sentence.raw }}</span>
 </p>
 {% endif %}
 
@@ -122,31 +120,27 @@ Traducciones
 </p>
 {% endfor %}
 
-<input type=submit style="font-family: Verdana; font-size: 100%;"
-action='tra' name='next' value='¿Traducir la próxima oración?'>
+<form method=POST action='sent'>
+<input type=submit style="font-family: Verdana; font-size: 80%;"
+action='tra' name='next' value='¿Próxima oración?'>
+<input type=submit style='font-family: Verdana; font-size: 80%;"
+action='sug' name='sug' value='Hacer comentario'>
+
 {% endif %}
 
-<form>
-<input type=submit value=''>
-</form>
-
 <!--
-<h3>Dirección de procesamiento</h3>
-<input id="anal" type=radio name="direccion" value="a" onchange="toAnal()">análisis<br>
-<input id="gen" type=radio name="direccion" value="g" onchange="toGen()">generación
-
-<p></p>
-
-<h3>Idioma</h3>
-<input id="spa" type=radio name="idioma" value="e" onchange="toSpa()">castellano<br>
-<input id="grn" type=radio name="idioma" value="g" onchange="toGrn()">guarani
-
-<p></p>
-
-<hr>
-
-<p id="loading"></p>
+<form method=POST>
+<input type=submit style="font-family: Verdana; font-size: 80%;"
+action='tra', name='tra', value='Traducir'>
 -->
+
+<p></p>
+<select name='multtrans'>
+  <option value="jahecharaka'e">jahecharaka'e</option>
+  <option value="rohecha'akue">rohecha'akue</option>
+  <option value="rohecha">rohecha</option>
+</select>
+</form>
 
 </body>
 

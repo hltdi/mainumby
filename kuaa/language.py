@@ -188,6 +188,10 @@ class Language:
         # List of abbreviations (needed for tokenization)
         self.abbrevs = []
         self.read_abbrevs()
+        # Segmentation dicts
+        self.segs = {}
+        self.rev_segs = {}
+        self.read_segs()
         # Cached entries read in when language is loaded if language will be used for analysis
         if use in (ANALYSIS, SOURCE):
             self.set_anal_cached()
@@ -274,6 +278,11 @@ class Language:
                 names = [self.abbrev]
         return [os.path.join(d, name + '.grp') for name in names]
 
+    def get_seg_file(self):
+        """Pathname for file containing segmentable forms, e.g., del, they're."""
+        d = self.get_lex_dir()
+        return os.path.join(d, 'seg.lex')
+
     def add_new_anal(self, word, anals):
         self.new_anals[word] = anals
 
@@ -300,6 +309,22 @@ class Language:
                     self.abbrevs.append(line.strip())
         except IOError:
             print('No such abbrevs file as {}'.format(file))
+
+    def read_segs(self):
+        """Read in segmentations from seg file."""
+        file = self.get_seg_file()
+        try:
+            with open(file, encoding='utf8') as f:
+                for line in f:
+                    form, seg = line.split('=')
+                    form = form.strip()
+                    seg = seg.strip()
+                    if self.use in [ANALYSIS, SOURCE]:
+                        self.segs[form] = seg.split()
+                    if self.use in [GENERATION, TARGET]:
+                        self.rev_segs[seg] = form
+        except IOError:
+            print('No such seg file as {}'.format(file))
 
     def write_cache(self, name=''):
         """Write a dictionary of cached entries to a cache file."""

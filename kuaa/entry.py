@@ -61,6 +61,10 @@
 # 2015.06.08...
 # -- Morphosyn class: patterns that relate syntax to morphology, by modifying FeatStructs
 #    in word analyses and deleting free grammatical morphemes that trigger the changes.
+# 2015.08.03
+# -- Group elements may be "set items" (names beginning with '$$'), implemented as categories
+#    but unlike "category items", not intended to merge with nodes in other group instances
+#    during sentence analysis.
 
 import copy, itertools
 import yaml
@@ -71,6 +75,7 @@ from kuaa.morphology.fs import *
 ## Group files
 LEXEME_CHAR = '_'
 CAT_CHAR = '$'
+SET_CHAR = '$$'
 ATTRIB_SEP = ';'
 WITHIN_ATTRIB_SEP = ','
 ## Regular expressions for reading groups from text files
@@ -128,6 +133,11 @@ class Entry:
     def is_cat(name):
         """Is this the name of a category?"""
         return CAT_CHAR in name
+
+    @staticmethod
+    def is_set(name):
+        """Is this the name of a set (implemented as a category)?"""
+        return SET_CHAR in name
 
     @staticmethod
     def is_lexeme(name):
