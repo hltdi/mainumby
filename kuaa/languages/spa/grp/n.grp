@@ -10993,6 +10993,9 @@
 *** muchacha_n ; ^ muchacha_n 0 ; #20
 ->grn mitãkuña_n ; 0==0 n:n ; #142 ; ##7
 ->grn kuñataĩ_n ; 0==0 n:n ; #121 ; ##10
+*** la muchacha_n ; ^ muchacha_n 1
+->grn mitãkuña_n ; 1==0 n:n
+->grn kuñataĩ_n ; 1==0 n:n
 *** muchacho_n ; ^ muchacho_n 0 ; #48
 ->grn mitã_n ; 0==0 n:n ; #830 ; ##25
 ->grn mitãrusu_n ; 0==0 n:n ; #94 ; ##4

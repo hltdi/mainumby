@@ -1,5 +1,5 @@
 #   
-#   Hiiktuu UI: initial attempt at a user interface for creating languages
+#   Mbojereha UI: initial attempt at a user interface for creating languages
 #
 ########################################################################
 #
@@ -30,6 +30,8 @@
 # -- UI class
 # 2014.03.18
 # -- Adding groups
+# 2015
+# -- Needs to be updated to agree with new language and group features.
 
 from .language import *
 import os, sys
@@ -112,8 +114,7 @@ class UI:
         """Get the words that will be in the group. make_group() creates the group."""
         words = input(
         """Write the words, lexemes, or classes in the group in their typical order.
-Precede any lexemes with % and any classes with $.
->> """)
+        Precede any lexemes with % and any classes with $. """)
         words = words.split()
         response = input("Are these the words you want in the group?\n{}\n".format(', '.join(words)))
         if UI.yes(response):

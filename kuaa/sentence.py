@@ -95,6 +95,9 @@
 # -- Matching of "set items" in groups, like $$pro_3oj for 3p object pronouns
 #    in Spanish. These don't result in "abstract" GNodes that must merge
 #    with "concrete" GNodes. Rather they are concrete.
+# 2015.08.06
+# -- Sentence can create HTML for translated segments from solutions treetrans
+#    objects.
 
 import itertools, copy, re
 from .ui import *
@@ -120,7 +123,7 @@ class Document(list):
     poss_end_re = re.compile('[")\]}]{0,2}[?!][)"\]]{0,2}')
     end_re = re.compile('[")\]}]{0,2}\.[.)"\]]{0,2}')
 
-    def __init__(self, language=None, target=None, text='', proc=False):
+    def __init__(self, language=None, target=None, text='', proc=True):
         self.set_id()
         self.language = language
         self.target = target
@@ -235,6 +238,7 @@ class Sentence:
 
     id = 0
     word_width = 10
+    tt_colors = ['red', 'blue', 'green', 'purple', 'red', 'blue', 'green', 'purple', 'red', 'blue', 'green', 'purple']
 
     def __init__(self, raw='', language=None, tokens=None,
                  nodes=None, groups=None, target=None, init=False,
@@ -358,12 +362,14 @@ class Sentence:
             self.create_constraints(verbosity=verbosity)
             return True
 
-    def solve(self, translate=True, all_sols=False, all_trans=False, interactive=False, verbosity=0):
+    def solve(self, translate=True, all_sols=False, all_trans=True, interactive=False,
+              verbosity=0, tracevar=None):
         """Generate solutions and translations (if translate is true)."""
         if not self.groups:
             print("NO GROUPS FOUND for {}, so NO SOLUTIONS POSSIBLE".format(self))
             return
-        generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity)
+        generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity,
+                                          tracevar=tracevar)
         try:
             proceed = True
             while proceed:
@@ -423,9 +429,11 @@ class Sentence:
                 ms.apply(self, verbosity=verbosity)
             self.nodes = []
             index = 0
-            for token, anals in self.analyses:
+            incorp_indices = []
+            for tokindex, (token, anals) in enumerate(self.analyses):
                 if not incl_del and MorphoSyn.del_token(token):
                     # Ignore elements deleted by MorphoSyns
+                    incorp_indices.append(tokindex)
                     continue
                 if anals:
                     # Multiple dicts: ambiguity; let node handle it
@@ -439,7 +447,10 @@ class Sentence:
                         pos = features.get('pos') if features else ''
                         if pos:
                             anal['pos'] = pos
-                    self.nodes.append(SNode(token, index, anals, self))
+#                    print("Creating node for {} with incorp_indices {}".format(token, incorp_indices))
+                    incorp_indices.append(tokindex)
+                    self.nodes.append(SNode(token, index, anals, self, incorp_indices))
+                    incorp_indices = []
                     index += 1
                 else:
                     # No analysis, just use the raw string
@@ -449,7 +460,8 @@ class Sentence:
                         anals = [{'cats': cats}]
                     else:
                         anals = None
-                    self.nodes.append(SNode(token, index, anals, self))
+                    self.nodes.append(SNode(token, index, anals, self, [tokindex]))
+                    incorp_indices = []
                     index += 1
 
     def split(self):
@@ -744,6 +756,8 @@ class Sentence:
         self.solutions.append(solution)
         return solution
 
+    ### Various ways of displaying translation outputs.
+    
     def set_trans_outputs(self):
         """Combine the tree trans outputs from all solutions, excluding repeated ones."""
         if not self.solutions:
@@ -754,6 +768,56 @@ class Sentence:
                 if tt1 not in self.trans_outputs:
                     self.trans_outputs.append(tt1)
         self.trans_outputs.sort()
+
+    def get_sol_segs(self, solution):
+        """A list of triples: (start/end_within_sentence, translation, snode_tokens)."""
+        tt = solution.get_ttrans_outputs()
+        tt_segs = []
+        end_index = -1
+        for indices, forms in tt:
+            start, end = indices
+            if start > end_index+1:
+                src_tokens = self.tokens[end_index+1:start]
+                tt_segs.append(((end_index+1, start-1), [], src_tokens))
+#                                [n.token for n in self.nodes[end_index+1:start]]))
+                # Some word(s) not translated; use source forms with # prefix
+#                verbatim = [self.verbatim(n) for n in self.nodes[end_index+1:start]]
+#                tt_segs.append([' '.join(verbatim)])
+            src_tokens = self.tokens[start:end+1]
+            tt_segs.append((indices, forms, src_tokens))
+#                            [n.token for n in self.nodes[start:end+1]]))
+            end_index = end
+        if end_index+1 < len(self.tokens):
+#            len(self.nodes):
+            # Some word(s) not translated; use source forms with # prefix
+            src_tokens = self.tokens[end_index+1:len(self.tokens)]
+            tt_segs.append(((end_index+1, len(self.tokens)-1), [], src_tokens))
+#                            [n.token for n in self.nodes[end_index+1:len(self.nodes)]]))
+        return tt_segs
+
+    def html_segs(self, segs):
+        """Convert a list of segments (from the last method) to a list of marked-up phrases."""
+        res = []
+        for i, (indices, trans, tokens) in enumerate(segs):
+            color = 'gray' if not trans else Sentence.tt_colors[i]
+            transhtml = 'Traducciones:<br/><table border=1>'
+            for t in trans:
+                if '|' in t:
+                    t = t.replace('|', '<br/>')
+                if ' ' in t:
+                    transhtml += '<tr>'
+                    ts = t.split()
+                    for tt in ts:
+                        transhtml += '<td>' + tt + '</td>'
+                    transhtml += '</tr>'
+                else:
+                    transhtml += '<tr><td>' + t + '</td></tr>'
+            transhtml += '</table>'
+            tokens = ' '.join(tokens)
+            if i==0:
+                tokens = tokens.capitalize()
+            res.append((tokens, color, transhtml))
+        return res
 
     def get_complete_trans(self, capfirst=True):
         """Produce complete translations (list of lists of strings) from tree trans outputs for solutions, filling
@@ -767,16 +831,58 @@ class Sentence:
                 start, end = indices
                 if start > end_index+1:
                     # Some word(s) not translated; use source forms with # prefix
-                    tt_complete.append([self.verbatim(n) for n in self.nodes[end_index+1:start]])
+                    verbatim = [self.verbatim(n) for n in self.nodes[end_index+1:start]]
+                    tt_complete.append([' '.join(verbatim)])
+#                    tt_complete.append([self.verbatim(n) for n in self.nodes[end_index+1:start]])
                 tt_complete.append(forms)
                 end_index = end
             if end_index+1 < len(self.nodes):
                 # Some word(s) not translated; use source forms with # prefix
-                tt_complete.append([self.verbatim(n) for n in self.nodes[end_index+1:]])
+                verbatim = [self.verbatim(n) for n in self.nodes[end_index+1:len(self.nodes)]]
+                tt_complete.append([' '.join(verbatim)])
             if capfirst:
                 # Capitalize first word
                 tt_complete[0] = [Sentence.capitalize(w) for w in tt_complete[0]]
             trans.append(tt_complete)
+        return trans
+
+    @staticmethod
+    def webify_trans(translation):
+        """Make a translation (a list of TreeTrans outputs and verbatim words)
+        into a list more suitable for template processing."""
+        trans = []
+        for tt in translation:
+            # Each tt is the output of a TreeTrans object; a list of alternative translations within a given solution
+            # Mark each as single with or without morphological alternatives,
+            # multiple with or without morphological alternatives
+            mult = False
+            morphalt = False
+            if len(tt) > 1:
+                mult = True
+            tx = []
+            for ttt in tt:
+                # An alternative may be two or more words separated by spaces, but they only need to be separated
+                # if one has alternative morphological outputs separated by '|'
+                if '|' in ttt:
+                    morphalt = True
+                    ttx = []
+                    # Create a sublist separated by spaces
+                    for tttt in ttt.split():
+                        if '|' in tttt:
+                            ttx.append(tttt.split('|'))
+                        else:
+                            ttx.append(tttt)
+                    tx.append(ttx)
+                else:
+                    tx.append(ttt)
+            if mult and morphalt:
+                trans.append([3, tx])
+            elif mult:
+                trans.append([2, tx])
+            elif morphalt:
+                trans.append([1, tx[0]])
+            else:
+                trans.append([0, tx[0]])
         return trans
 
     def verbatim(self, node):
@@ -792,17 +898,21 @@ class Sentence:
     def capitalize(token):
         if token[0] == '#':
             return '#' + token[1:].capitalize()
+        elif '|' in token:
+            return '|'.join([t.capitalize() for t in token.split('|')])
         return token.capitalize()
                 
 class SNode:
     """Sentence token and its associated analyses and variables."""
 
-    def __init__(self, token, index, analyses, sentence):
+    def __init__(self, token, index, analyses, sentence, raw_indices):
 #        print("Creating SNode with args {}, {}, {}, {}".format(token, index, analyses, sentence))
         # Raw form in sentence (possibly result of segmentation)
         self.token = token
         # Position in sentence
         self.index = index
+        # Positions in original sentence
+        self.raw_indices = raw_indices
         # List of analyses
         if analyses and not isinstance(analyses, list):
             analyses = [analyses]
@@ -1252,8 +1362,20 @@ class Solution:
     def get_ttrans_outputs(self):
         """Return a list of (snode_start_end_indices, translation strings) for the solution's tree translations."""
         if not self.ttrans_outputs:
-            self.ttrans_outputs = [((tt.snode_indices[0], tt.snode_indices[-1]), tt.output_strings)\
-                                    for tt in self.treetranss if tt.output_strings]
+            self.ttrans_outputs = []
+            for tt in self.treetranss:
+                if not tt.output_strings:
+                    continue
+                indices = tt.snode_indices
+                raw_indices = []
+                for index in indices:
+                    node = self.sentence.nodes[index]
+                    raw1 = node.raw_indices
+                    raw_indices.extend(raw1)
+                raw_indices.sort()
+                self.ttrans_outputs.append(((raw_indices[0], raw_indices[-1]), tt.output_strings))
+#            self.ttrans_outputs = [((tt.snode_indices[0], tt.snode_indices[-1]), tt.output_strings)\
+#                                    for tt in self.treetranss if tt.output_strings]
         return self.ttrans_outputs
 
 #    def trans_strings(self, index=-1):

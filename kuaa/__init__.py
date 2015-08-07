@@ -19,12 +19,22 @@ def load(source='spa', target='grn'):
 
 def translate(sentence, source, target,
               all_sols=False, all_trans=True, interactive=False, verbosity=0):
-    """Translate sentence from source to target language."""
+    """Translate sentence from source to target language. Use only first solution but multiple translation options."""
 #    s = kuaa.Sentence(raw=sentence, language=source, target=target)
     sentence.initialize(verbosity=verbosity)
     sentence.solve(translate=True,
-                   all_sols=all_sols, all_trans=False, interactive=interactive, verbosity=verbosity)
-    return sentence.get_complete_trans()
+                   all_sols=all_sols, all_trans=all_trans, interactive=interactive, verbosity=verbosity)
+    ttrans = sentence.get_complete_trans()[0]
+    return Sentence.webify_trans(ttrans)
+
+def seg_trans(sentence, source, target, verbosity=0):
+    """Translate sentence and return marked-up sentence with segments colored."""
+    sentence.initialize(verbosity=verbosity)
+    sentence.solve(translate=True, all_sols=False, all_trans=True, interactive=False, verbosity=verbosity)
+    if sentence.solutions:
+        segs = sentence.get_sol_segs(sentence.solutions[0])
+        tags = sentence.html_segs(segs)
+        return tags
 
 def make_document(source, target, text):
     """Create an Mbojereha document with the text."""

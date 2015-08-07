@@ -65,12 +65,24 @@ span.sentence
 {
    font-size: 100%;
    font-weight: bold;
-   color: #F00
    border: thin solid;
+}
+span.choice
+{
+   font-size: 80%;
+}
+span.instruction
+{
+   font-size: 100%;
+   font-style: italic;
 }
 </style>
 
 <script>
+function seg(text) {
+    document.write(text)
+    document.getElementById("segtrans").innerHTML = text;
+}
 </script>
 
 <title>Mbojereha: Traducción del Castellano al Guaraní</title>
@@ -81,40 +93,44 @@ span.sentence
 
 <h1>Mbojereha: Traducción del Castellano al Guaraní</h1>
 
-<h3>Uso</h3>
-
-<p>
-Para pedirle a MJH que traduzca la oración, hac&eacute; clic en "Traducir".
-</p>
-
-<!--
-<form method=POST>
-<TEXTAREA NAME="sentence" ROWS=10 COLS=60 ></TEXTAREA>
-<p>
-<input type=submit value='enviar'>
-</p>
--->
-<!--
-<input type=text style="font-family: Verdana; font-size: 100%;"
-name=sentence>
--->
-
-<p></p>
-<hr>
-
 {% if sentence %}
 <p></p><p></p>
-<p>Actual oración: <span class="sentence">{{ sentence.raw }}</span>
-</p>
+
+{# Write the sentence with colors represented translated segments #}
+<p>Actual oración:
+<span class='sentence'>
+{% for seg in sentence %}
+{# Each segment responds to mouse clicks which replace the segtrans section with a table of translations #}
+<span onmouseover="this.style.cursor='pointer'"
+onmouseout="this.style.cursor='default'"
+onclick="document.getElementById('segtrans').innerHTML={{'%r'|format(seg[2])|e}}"><font color={{ seg[1] }}> {{ seg[0] }} </font></span>
+{% endfor %}
+</span>
+
 {% endif %}
 
+<p id="segtrans"></p>
+
+<hr/>
+
+<form method=POST action='sent'>
+
+<input type=submit style="font-family: Verdana; font-size: 80%;" action='sent' name='sent' value='Próxima oración'>
+
+<hr/>
+
+<TEXTAREA NAME="text" ROWS=2 COLS=75 style="font-family:Verdana"></TEXTAREA>
+<p>
+<input type=submit value='Tu traducción' name='tra' style="font-family: Verdana; font-size: 80%;">
+</p>
+
+<!--
 <form method=POST action='tra'>
-
-<input type=submit style="font-family: Verdana; font-size: 80%;"
-action='tra' name='tra' value='Traducir automáticamente'>
-
-<input type=submit style="font-family: Verdana; font-size: 80%;"
-action='enter' name='enter' value='Introducir tu propia traducción'>
+<input type='radio' name='next' value='tra' checked> <span class='choice'>Traducir automáticamente</span><br/>
+<input type='radio' name='next' value='enter'> <span class='choice'>Introducir tu propia traducción</span><br/>
+<input type=submit style="font-family: Verdana; font-size: 80%;" value='enviar'>
+</form>
+-->
 
 </form>
 

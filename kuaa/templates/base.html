@@ -60,7 +60,7 @@ p
 
 <script>
 function loading() {
-    document.getElementById("loading").innerHTML = "Cargando idiomas (podría tardarse)...";
+    document.getElementById("loading").innerHTML = "Cargando (podría tardarse)...";
     window.location.assign("doc");
 }
 </script>
@@ -73,15 +73,19 @@ function loading() {
 
 <h1>Mbojereha: Traducción del Castellano al Guaraní</h1>
 
-<h2>¡Bienvenido/a a Mbojereha! Tereg̃uahẽ porãite Mbojereha-pe!
+<h2>¡Bienvenida/o a Mbojereha! Tereg̃uahẽ porãite Mbojereha-pe!
 </h2>
 
+<p id="loading">
 <input id="load" style="font-family: Verdana; font-size: 80%;"
-type=button name="Cargar" value="Hac&eacute; clic para cargar idiomas" onclick="loading()">
+type=button name="Cargar" value="Cargar idiomas" onclick="loading()">
+</p>
 
-<hr>
-
-<p id="loading"></p>
+<!--
+<button type="button"
+onclick="document.getElementById('loading').innerHTML = {{'%r'|format(['foo', 'bar'])}}">
+Try it</button>
+-->
 
 </body>
 

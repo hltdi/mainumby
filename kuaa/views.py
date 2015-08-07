@@ -29,7 +29,7 @@
 # 2015.08.02
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-from kuaa import app, translate, make_document, load
+from kuaa import app, translate, make_document, load, seg_trans
 
 SPA = GRN = DOC = SENT = None
 SINDEX = 0
@@ -45,6 +45,13 @@ def make_doc(text):
 def get_sentence():
     global SINDEX
     global SENTENCE
+    global DOC
+    if SINDEX >= len(DOC):
+        SENTENCE = None
+        # Save DOC in database or translation cache here
+        DOC = None
+        SINDEX = 0
+        return
     SENTENCE = DOC[SINDEX]
     SINDEX += 1
 
@@ -85,13 +92,16 @@ def tra():
     print("In tra...")
     form = request.form
     print("Form for tra: {}".format(form))
-    if 'tra' in form:
+    if form.get('next') == 'tra':
+#    if 'tra' in form:
         t = translate(SENTENCE, SPA, GRN)
         print("Translations {}".format(t))
         return render_template('tra.html', sentence=SENTENCE, translation=t)
-    elif 'enter' in form:
-        return render_template('tra.html', sentence=SENTENCE, translation=None)
-    return_template('tra.html', sentence=None, translation=None)
+    elif form.get('next') == 'enter':
+        return render_template('tra.html', sentence=None, translation=None)
+    elif form.get('next') == 'sent':
+        return render_template('sent.html', sentence=None, translation=None)
+    return render_template('tra.html', sentence=None, translation=None)
 
 @app.route('/sent', methods=['GET', 'POST'])
 def sent():
@@ -101,12 +111,17 @@ def sent():
     if 'text' in form and not DOC:
         make_doc(form['text'])
         print("Created document {}".format(DOC))
-        get_sentence()
-        print("Current sentence {}".format(SENTENCE))
+    get_sentence()
+    print("Current sentence {}".format(SENTENCE))
+    if not SENTENCE:
+        return render_template('doc.html')
+    else:
+        segs = seg_trans(SENTENCE, SPA, GRN)
+    print("Found segs {}".format(segs))
 #    if 'tra' in form:
 #        print("Translating sentence {}".format(sentence.raw))
 #        return render_template('tra.html', sentence=sentence, translation=['foo', 'bar', 'baz'], next=False)
-    return render_template('sent.html', sentence=SENTENCE, translation=None, next=False)
+    return render_template('sent.html', sentence=segs)
 #    if request.method == 'POST':
 #        sindex = form.get('sindex', 0)
 #        if form.get('next'):

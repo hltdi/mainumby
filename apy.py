@@ -44,7 +44,7 @@ def load_eg():
     spa, grn = kuaa.Language.load_trans('spa', 'grn')
     return spa, grn
 
-def sefue(all_trans=False, all_sols=False):
+def sefue(all_trans=True, all_sols=False):
     e, g = load_eg()
     d = kuaa.Document(e, g, "El muchacho se fue.", True)
     s = d[0]
@@ -52,7 +52,7 @@ def sefue(all_trans=False, all_sols=False):
     s.solve(all_sols=all_sols, all_trans=all_trans)
     return s
 
-def bueno(all_trans=False, all_sols=False):
+def bueno(all_trans=True, all_sols=False):
     e, g = load_eg()
     d = kuaa.Document(e, g, "el muchacho ya es bueno.", True)
     s = d[0]
@@ -60,12 +60,11 @@ def bueno(all_trans=False, all_sols=False):
     s.solve(all_sols=all_sols, all_trans=all_trans)
     return s
 
-def ver(all_trans=False, all_sols=False, verbosity=0):
-    spa, grn = kuaa.Language.load_trans('spa', 'grn', groups=['spa'])
-    d = kuaa.Document(spa, grn, 'otro día vimos a el profesor.', True)
+def ver(all_trans=True, all_sols=False, verbosity=0):
+    spa, grn = load_eg()
+    d = kuaa.Document(spa, grn, 'El muchacho le vio al profesor.', True)
     s = d[0]
     s.initialize(verbosity=verbosity)
-#    s.solve(translate=False, all_sols=True, verbosity=verbosity)
     s.solve(all_sols=all_sols, all_trans=all_trans)
     return s
 
@@ -367,75 +366,7 @@ def ui():
     e, s = kuaa.Language("English", 'eng'), kuaa.Language("español", 'spa')
     return u, e, s
 
-##def agr_test1():
-##    # This should constraint seq vars seq0 and seq2 to be {2} and {3}
-##    sel = kuaa.DetVar('sel', {(0, 1, ('sn', 'sn'), ('sp', 'sp')),
-##                                (2, 3, ('tam', 'tns'))})
-##    seq = [kuaa.Var('seq0', set(), {1, 2}, 1, 1), kuaa.DetVar('seq1', {0}),
-##           kuaa.Var('seq2', set(), {3, 5}, 1, 1), kuaa.DetVar('seq3', {4})]
-##    feat = [kuaa.DetLVar('f0', [kuaa.Features({'sn': 0, 'sp': 3})]),
-##            kuaa.DetLVar('f1', [kuaa.Features({'sn': 1})]),
-##            kuaa.DetLVar('f2', [kuaa.Features({'sn': 0, 'sp': 3, 'sg': 1})]),
-##            kuaa.DetLVar('f3', [kuaa.Features({'tam': 'ps'})]),
-##            kuaa.DetLVar('f4', [kuaa.Features({'tns': 'ps'})]),
-##            kuaa.DetLVar('f5', [kuaa.Features({'tam': 'pr'})])]
-##    agr = kuaa.AgrSelection(feat, sel, seq)
-##    return agr
-##
-##def agr_test2():
-##    # This should constrain feat var f0 to [{sn: 1, sp: 3}]
-##    sel = kuaa.DetVar('sel', {(0, 1, ('sn', 'sn'), ('sp', 'sp')),
-##                                (2, 3, ('tam', 'tns'))})
-##    seq = [kuaa.DetVar('seq0', {2}), kuaa.DetVar('seq1', {0}),
-##           kuaa.Var('seq2', set(), {3, 5}, 1, 1), kuaa.DetVar('seq3', {4})]
-##    feat = [kuaa.LVar('f0', [], [kuaa.Features({'sn': 0, 'sp': 3}),
-##                                   kuaa.Features({'sn': 0, 'sp': 2}),
-##                                   kuaa.Features({'sn': 1, 'sp': 3})],
-##                        1, 1),
-##            kuaa.DetLVar('f1', [kuaa.Features({'sn': 1})]),
-##            kuaa.DetLVar('f2', [kuaa.Features({'sn': 0, 'sp': 3, 'sg': 1})]),
-##            kuaa.DetLVar('f3', [kuaa.Features({'tam': 'ps'})]),
-##            kuaa.DetLVar('f4', [kuaa.Features({'tns': 'ps'})]),
-##            kuaa.DetLVar('f5', [kuaa.Features({'tam': 'pr'})])]
-##    agr = kuaa.AgrSelection(feat, sel, seq)
-##    return agr
-##
-##def agr_test3():
-##    # This should fail.
-##    sel = kuaa.DetVar('sel', {(0, 1, ('sn', 'sn'), ('sp', 'sp')),
-##                                (2, 3, ('tam', 'tns'))})
-##    seq = [kuaa.DetVar('seq0', {2}), kuaa.DetVar('seq1', {0}),
-##           kuaa.Var('seq2', set(), {3, 5}, 1, 1), kuaa.DetVar('seq3', {4})]
-##    feat = [kuaa.LVar('f0', [], [kuaa.Features({'sn': 0, 'sp': 3}),
-##                                   kuaa.Features({'sn': 0, 'sp': 2}),
-##                                   kuaa.Features({'sn': 1, 'sp': 3})],
-##                        1, 1),
-##            kuaa.DetLVar('f1', [kuaa.Features({'sn': 1})]),
-##            kuaa.DetLVar('f2', [kuaa.Features({'sn': 0, 'sp': 1, 'sg': 1})]),
-##            kuaa.DetLVar('f3', [kuaa.Features({'tam': 'ps'})]),
-##            kuaa.DetLVar('f4', [kuaa.Features({'tns': 'ps'})]),
-##            kuaa.DetLVar('f5', [kuaa.Features({'tam': 'pr'})])]
-##    agr = kuaa.AgrSelection(feat, sel, seq)
-##    return agr
-##
-##def agr_test4():
-##    # This should be entailed.
-##    sel = kuaa.DetVar('sel', {(0, 1, ('sn', 'sn'), ('sp', 'sp')),
-##                                (2, 3, ('tam', 'tns'))})
-##    seq = [kuaa.DetVar('seq0', {2}), kuaa.DetVar('seq1', {0}),
-##           kuaa.Var('seq2', set(), {3, 5}, 1, 1), kuaa.DetVar('seq3', {4})]
-##    feat = [kuaa.LVar('f0', [], [kuaa.Features({'sn': 0, 'sp': 1}),
-##                                   kuaa.Features({'sn': 0, 'sp': 1, 'sg': 1}),
-##                                   kuaa.Features({'sn': 0, 'sg': 3})],
-##                        1, 1),
-##            kuaa.DetLVar('f1', [kuaa.Features({'sn': 1})]),
-##            kuaa.DetLVar('f2', [kuaa.Features({'sn': 0, 'sp': 1, 'sg': 1})]),
-##            kuaa.DetLVar('f3', [kuaa.Features({'tam': 'ps'})]),
-##            kuaa.DetLVar('f4', [kuaa.Features({'tns': 'ps'})]),
-##            kuaa.DetLVar('f5', [kuaa.Features({'tam': 'ps', 'sn': 2})])]
-##    agr = kuaa.AgrSelection(feat, sel, seq)
-##    return agr
 
 if __name__ == "__main__":
-    print("Tereg̃uahẽ porãite Mbojereha-pe, versión {}\n".format(__version__))
-#    kuaa.app.run(debug=True)
+#    print("Tereg̃uahẽ porãite Mbojereha-pe, versión {}\n".format(__version__))
+    kuaa.app.run(debug=True)

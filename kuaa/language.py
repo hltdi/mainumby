@@ -273,10 +273,11 @@ class Language:
         if not names:
             if self.morphology:
                 # POS abbreviations
-                names = list(self.morphology.keys())
+                names = ['misc'] + list(self.morphology.keys())
             else:
                 names = [self.abbrev]
-        return [os.path.join(d, name + '.grp') for name in names]
+        paths = [os.path.join(d, name + '.grp') for name in names]
+        return [path for path in paths if os.path.exists(path)]
 
     def get_seg_file(self):
         """Pathname for file containing segmentable forms, e.g., del, they're."""
@@ -1427,6 +1428,7 @@ class Language:
         output = []
         if pos:
             posmorph = morf[pos]
+#            print("Generating root {} with features {}".format(root, features.__repr__()))
             output = posmorph.gen(root, update_feats=features, guess=guess, only_words=True)
         else:
             for posmorph in list(morf.values()):

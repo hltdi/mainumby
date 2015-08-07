@@ -55,6 +55,10 @@
 # -- Complex constraints make selection variables for indices out of main sel
 #    selection variables (groups in Ñe'ẽasa) non-essential once the constraint
 #    is entailed.
+# 2015.08.05
+# -- Fixed a bug in UnionSelection: the constraint was allowed to change a sequence
+#    variable in an impossible way, by making the upper bound smaller than the
+#    lower cardinality; now this causes failure.
 
 from .variable import *
 # This is imported in another branch too...
@@ -863,6 +867,7 @@ class UnionSelection(Selection):
                         # unused_up is everything in seq's upper bound that's not in mainvalue
                     unused_up = seq_up - mainvalue
                     if unused_up:
+#                        print("seqvar {}: seq_up {}, unused_up {}".format(seq, seq_up, unused_up))
                         if len(seq_up - unused_up) < seq.get_lower_card(dstore=dstore):
                             if verbosity:
                                 if seq in tracevar:
@@ -996,8 +1001,14 @@ class UnionSelection(Selection):
                     continue
                 seq = seqvars[j]
 #                if seq in tracevar:
-                if seq.discard_upper(seq_main_diff, dstore=dstore,
-                                     constraint=(verbosity>1 or seq in tracevar) and self):
+                if len(seqvar_upper - seq_main_diff) < seq.get_lower_card(dstore=dstore):
+                    if verbosity:
+                        if seq in tracevar:
+                            s = '  {} attempting to discard {} from upper bound of {}, making it too small'
+                            print(s.format(self, unused_up, seq))
+                        print('{} failed'.format(self))
+                    return Constraint.failed, set()
+                elif seq.discard_upper(seq_main_diff, dstore=dstore, constraint=(verbosity>1 or seq in tracevar) and self):
 #                    print(self, 'discarding', seq_main_diff, 'from', seq,
 #                          'mainvar_upper', mainvar_upper,
 #                          'seqvar_upper', seqvar_upper,
