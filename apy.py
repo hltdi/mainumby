@@ -40,6 +40,13 @@ import kuaa
 
 ### Español -> Guarani
 
+def eg_sent(sentence):
+    e, g = load_eg()
+    d = kuaa.Document(e, g, sentence, True)
+    s = d[0]
+    s.initialize()
+    return s
+
 def load_eg():
     spa, grn = kuaa.Language.load_trans('spa', 'grn')
     return spa, grn
@@ -368,5 +375,5 @@ def ui():
 
 
 if __name__ == "__main__":
-#    print("Tereg̃uahẽ porãite Mbojereha-pe, versión {}\n".format(__version__))
-    kuaa.app.run(debug=True)
+    print("Tereg̃uahẽ porãite Mbojereha-pe, versión {}\n".format(__version__))
+#    kuaa.app.run(debug=True)

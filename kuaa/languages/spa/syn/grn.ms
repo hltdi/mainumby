@@ -16,3 +16,7 @@ reflexivo/1p :: nos [pos=v,p=1,n=1,voz=reflx,+r] ; // 0
 
 ## negativo
 negativo :: no [pos=v,+neg] ; // 0
+
+## posesivo
+posesivo/1s.s :: mi [pos=n,n=0,poses=[+ext,pp=1,np=0]] ; // 0
+posesivo/1s.p :: mis [pos=n,n=1,poses=[+ext,pp=1,np=0]] ; // 0

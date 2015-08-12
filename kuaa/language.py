@@ -689,7 +689,8 @@ class Language:
 #                    Language.T.add(wd.strip(), gls.strip(), self.abbrev)
 
                 else:
-                    raise ValueError("bad line: {}".format(line))
+                    print("Warning: can't interpret line in .mrf file: {}".format(line))
+#                    raise ValueError("bad line: {}".format(line))
 
             if punc:
                 # Make punc list into a string

@@ -1,5 +1,9 @@
+name: guaraní
+
+# lang backup: es
+
 seg: a e i o u y á é í ó ú ý ã ẽ ĩ õ ũ ỹ
-     b d f h j l ñ p s t v ' g ĝ g̃ k
+     b d f h j l ñ p s t v ' g ĝ g̃ k _
      A E I O U Y Á É Í Ó Ú Ý Ã Ẽ Ĩ Õ Ũ Ỹ
      B D F G Ĝ G̃ H J K L Ñ P S T V
      ch m mb n nd nt ng r rr
@@ -105,7 +109,8 @@ s = caus
   
 #  mod (modo) = ind (indic) |
 #               imp (imper) |
-#               opt (opt)
+#               opt (opt) |
+#               None
 
   # only relevant for future tense
   prob (probabilidad) = None | hi | lo
@@ -143,7 +148,8 @@ s = caus
                   fut (fut) |
 		  ipv (imperv) |
 		  ipf (imperf) |
-		  pcp (pluscmprf)
+		  pcp (pluscmprf) |
+		  inf (infinitivo)
 
 #  tm (tmp) = None | vaekue | vaerã | va | akue | mi | ne | arã | moã | kuri | rakae | ta | chéne
 #  tm (tmp) = None | vaekue | vaerã | akue | mi | ne | arã | moã | kuri | rakae | ta
@@ -170,7 +176,8 @@ s = caus
         mante = False | True;
         katu = False | True;
         prg = False | True;
-        hikóni = False | True
+        hikóni = False | True;
+	vol = False | True
  
   misc = se    = False | True;
          rei   = False | True;
@@ -216,7 +223,13 @@ s = caus
   ab: ext = exter
   ab: int = inter
   ab: je = j/ñe
+  ab: pp = pers poses
+  ab: np = numposes
+  ab: cp = cluposes
   ab: None = mba'eve
+
+#  pp (pers poses) = *3 | 2 | 1
+#  np (num poses) = *0 | 1
 
   inter = *False | True
   neg = *False | True
@@ -254,7 +267,12 @@ s = caus
 
   grd = *None | ve | ive | ete | eterei | rasa | etereirasa
  
-  poses (poses) = *None | ext | int
+#  poses (poses) = *None | ext | int
+  poses (poses) = pp = 0 | 3 | 2 | 1;
+                  np = 0 | 1;
+		  ext = True | False
+# no default for clusivity?		  
+#		  cp = True | False
 
   %t (traducción de raíz) = es = 
 

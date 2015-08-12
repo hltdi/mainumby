@@ -4164,12 +4164,8 @@
 *** despreciar_v[-r] ; ^ despreciar_v 0
 ->grn royrõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** desprender_v[+r] ; ^ desprender_v 0 ; #2
-->grn ñemomýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #7
 ->grn kukúi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #5
-->grn jehekýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #11
-->grn 'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #168 ; ##1
 ->grn kúi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #3
-->grn piã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #3
 ->grn jepe'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #24
 ->grn jei_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #61
 *** desprender_v[-r] ; ^ desprender_v 0
@@ -4522,7 +4518,6 @@
 ->grn mbohi'aju_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn <hesy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #22
 ->grn mbosa'yju_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #1
-*** dormir_v[-r] con sueño poco profundo ; ^ dormir_v 0
 *** dormir_v[-r] ; ^ dormir_v 0
 ->grn ke_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** dormir_v[-r] dando ronquidos ; ^ dormir_v 0
@@ -12841,21 +12836,8 @@
 *** tender_v[-r] ; ^ tender_v 0 ; #138
 ->grn mosaingo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #2
 ->grn myasãi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #24 ; ##2
-*** tener_v[-r] diarrea ; ^ tener_v 0
-->grn <hye_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** tener_v[-r] conocimiento de la gente ; ^ tener_v 0
-->grn porokuaa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** no tener_v[-r] lo necesario ; ^ tener_v 1
+*** tener_v[-r,+neg] lo necesario ; ^ tener_v 0
 ->grn so_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** tener_v[-r] felicidad ; ^ tener_v 0
-->grn angapyhy_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** no tener_v[-r] ganas ; ^ tener_v 1
-->grn kaigue_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** tener_v[-r] prisa ; ^ tener_v 0
-->grn <haĝe_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** tener_v[-r] miedo ; ^ tener_v 0
-->grn py'atytýi_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-->grn kyhyje_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** tener_v[-r] en poco ; ^ tener_v 0
 ->grn japo'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** tener_v[-r] asco de algo ; ^ tener_v 0
@@ -12886,8 +12868,6 @@
 ->grn angapyhy_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** tener_v[-r] un poder mágico ; ^ tener_v 0
 ->grn kurundu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** tener_v[-r] ganas ; ^ tener_v 0
-->grn kyre'ỹ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** tener_v[-r] simpatía ; ^ tener_v 0
 ->grn cha'e_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** tener_v[-r] un auténtico y verdadero modo de ser ; ^ tener_v 0

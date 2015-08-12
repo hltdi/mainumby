@@ -4134,11 +4134,12 @@
 ->grn arandukuaavete_n ; 0==0 n:n
 *** conocimiento_n empírico ; ^ conocimiento_n 0
 ->grn aranduka'aty_n ; 0==0 n:n
-*** conocimiento_n de las cosas ; ^ conocimiento_n 0
 *** conocimiento_n ; ^ conocimiento_n 0
 ->grn kuaa_n ; 0==0 n:n
 *** conocimiento_n de brujería ; ^ conocimiento_n 0
 ->grn mba'ejekuaa_n ; 0==0 n:n
+*** tener_v[-r] conocimiento_n de la gente ; ^ conocimiento_n 1
+->grn porokuaa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** conquistador_n ; ^ conquistador_n 0
 ->grn gáucho_n ; 0==0 n:n
 *** consagración_n del matrimonio ; ^ consagración_n 0
@@ -16521,8 +16522,7 @@
 *** trabajo_n insalubre ; ^ trabajo_n 0 ; #86
 ->grn mba'apone_n ; 0==0 n:n
 *** trabajo_n ; ^ trabajo_n 0 ; #86
-->grn apo_n ; 0==0 n:n ; #126 ; ##1
-->grn <hembiapo_n ; 0==0 n:n ; #454 ; ##29
+->grn <hembiapo_n ; 0==0 n:n,poses:poses ; #454 ; ##29
 *** trabajo_n y tecnología ; ^ trabajo_n 0 ; #86
 ->grn mba'apo_n ha aporeko ; 0==0 n:n
 *** trabazón_n ; ^ trabazón_n 0
@@ -17842,3 +17842,15 @@
 ->grn ai_n ka'aty ; 0==0 n:n ; #24
 *** último_n ; ^ último_n 0
 ->grn paha_n ; 0==0 n:n
+*** tener_v[-r] diarrea_n ; ^ diarrea_n 1
+->grn <hye_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] felicidad_n ; ^ felicidad_n 1
+->grn angapyhy_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] gana_n[n=1] ; ^ gana_n 1
+->grn kyre'ỹ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r,+neg] gana_n[n=1] ; ^ gana_n 1
+->grn kaigue_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] prisa_n ; ^ prisa_n 1
+->grn <haĝe_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] miedo_n ; ^ miedo_n 1
+->grn kyhyje_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
