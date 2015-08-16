@@ -101,8 +101,10 @@
 # 2015.08.13
 # -- TreeTrans objects aren't recreated for segments that already have one,
 #    unless that one resulted from a merger.
+# 2015.08.16
+# -- Working on evaluator function for search states.
 
-import itertools, copy, re
+import itertools, copy, re, random
 from .ui import *
 from .cs import *
 
@@ -283,7 +285,7 @@ class Sentence:
         self.variables = {}
         # Solver to find solutions
         self.solver = Solver(self.constraints, self.dstore,
-                             evaluator=self.group_count_score,
+                             evaluator=self.state_eval,
                              varselect=self.get_w2gn_vars,
                              description='group selection', verbosity=verbosity)
         # Solutions found during parsing
@@ -681,12 +683,39 @@ class Sentence:
                 Sentence.make_tree(group_dict, mgi, tree)
 
     # Methods to help constrain search
-    def group_count_score(self, dstore):
-        """Assign a score to the domain store based on the upper bound on the number of groups (value of $groups)
-        and the number of undetermined essential variables."""
-        groupvar = self.variables['groups']
+    def state_eval(self, dstore, var_value, group_size_wt=2):
+        """Assign a score to the domain store based on the number of undetermined essential variables
+        and how much the selected variable's value leads to large groups.
+        group_size_wt controls how much these two components are weighted in the sum."""
+        # No point in checking dstore since it's the same across states at time of evaluation
+        varscore = 0
+        if var_value:
+            variable, value = var_value
+            typ = Sentence.get_var_type(variable)
+            if typ == 'sn->gn':
+                # sn->gn variables are good to the extent they point to gnodes in large groups
+                for gni in value:
+                    gn = self.gnodes[gni]
+                    varscore -= gn.ginst.ngnodes
+            elif typ == 'groups':
+                # groups variable is good if it's big
+                for gi in value:
+                    group = self.groups[gi]
+                    varscore += group.ngnodes
+#        print(" Varscore for {}: {}".format(dstore, varscore))
         undet = dstore.ess_undet
-        return len(groupvar.get_upper(dstore)) + len(undet)
+        # Tie breaker
+        ran = random.random() / 100.0
+        return len(undet) + group_size_wt*varscore + ran # - multiword_groups + len(group_upper_indices)
+
+    @staticmethod
+    def get_var_type(variable):
+        name = variable.name
+        if 'groups' in name:
+            return 'groups'
+        if '->gn' in name:
+            return 'sn->gn'
+        return None
 
     def get_w2gn_vars(self, undecvars, dstore):
         """Given a set of undecided variables in a domain store, find a snode->gnode variable

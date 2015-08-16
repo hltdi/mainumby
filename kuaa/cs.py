@@ -73,7 +73,7 @@ class Solver:
     def __repr__(self):
         return "Solver{}".format(self.name)
 
-    def generator(self, cutoff=100, initial=None,
+    def generator(self, cutoff=50, initial=None,
                   test_verbosity=False, expand_verbosity=False,
                   tracevar=None):
         '''A generator for solutions. Uses best-first search.'''
@@ -110,7 +110,7 @@ class Solver:
                 for attribs, next_state in self.distribute(state=state, verbosity=expand_verbosity):
                     # If there's no evaluator function, just the order of states returned by distribute
                     if self.evaluator:
-                        val = next_state.get_value(evaluator=self.evaluator)
+                        val = next_state.get_value(evaluator=self.evaluator, var_value=attribs)
                     else:
                         # Score is just the index of the state in the list returned by distribute
                         val = score
@@ -208,18 +208,18 @@ class Solver:
 #                                   verbosity=verbosity)
         var, values1, values2 = self.select_var_values(undet, dstore=state.dstore,
                                                        func=self.varselect, verbosity=verbosity)
-        print('Selected variable {} and value sets {},{}'.format(var, values1, values2))
+#        print('Selected variable {} and value sets {},{}'.format(var, values1, values2))
         constraint1, constraint2 = self.make_constraints(var, dstore=state.dstore,
                                                          subset1=values1, subset2=values2,
                                                          verbosity=verbosity)
-        print('Selected constraints {}, {}'.format(constraint1, constraint2))
+#        print('Selected constraints {}, {}'.format(constraint1, constraint2))
         if verbosity:
             print('Distribution constraints: a -- {}, b -- {}'.format(constraint1, constraint2))
         # The constraints of the selected variable (make copies)
         constraints = var.constraints[:]
         # Create the new solvers (states), applying one of the constraints to each
-        new_dstore1 = state.dstore.clone(constraint1, name=self.name+'a')
-        new_dstore2 = state.dstore.clone(constraint2, name=self.name+'b')
+        new_dstore1 = state.dstore.clone(constraint1, name=state.name+'a')
+        new_dstore2 = state.dstore.clone(constraint2, name=state.name+'b')
         # Create a new Solver for each dstore, preserving the accumulateod penalty
         state1 = SearchState(constraints=constraints, dstore=new_dstore1,
                              name=state.name+'a', depth=state.depth+1,
@@ -230,7 +230,7 @@ class Solver:
                              parent=state,
                              verbosity=verbosity)
         state.children.extend([state1, state2])
-        return [((var, constraint1), state1), ((var, constraint2), state2)]
+        return [((var, values1), state1), ((var, values2), state2)]
 
 class SearchState:
 
@@ -258,14 +258,12 @@ class SearchState:
     def __repr__(self):
         return "<SS {}/{}>".format(self.name, self.depth)
 
-    def get_value(self, evaluator=None):
+    def get_value(self, evaluator=None, var_value=None):
         """A measure of how promising this state is. Unless there is an explicit evaluator
         for the solver, by default, this is how many undetermined essential variables there are."""
         if evaluator:
-#            print("Value of {}".format(evaluator(self.dstore)))
-            return evaluator(self.dstore)
+            return evaluator(self.dstore, var_value)
         else:
-#            print("Value of {}".format(len(self.dstore.ess_undet)))
             return len(self.dstore.ess_undet)
 
     def exit(self, result, verbosity=0):
