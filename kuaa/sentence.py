@@ -98,6 +98,9 @@
 # 2015.08.06
 # -- Sentence can create HTML for translated segments from solutions treetrans
 #    objects.
+# 2015.08.13
+# -- TreeTrans objects aren't recreated for segments that already have one,
+#    unless that one resulted from a merger.
 
 import itertools, copy, re
 from .ui import *
@@ -280,13 +283,15 @@ class Sentence:
         self.variables = {}
         # Solver to find solutions
         self.solver = Solver(self.constraints, self.dstore,
-                             # evaluator=self.group_count_score,
+                             evaluator=self.group_count_score,
                              varselect=self.get_w2gn_vars,
                              description='group selection', verbosity=verbosity)
         # Solutions found during parsing
         self.solutions = []
         # Outputs from tree translation
         self.trans_outputs = []
+        # Complete translations
+        self.complete_trans = []
         if verbosity:
             print("Created Sentence object {}".format(self))
         if init:
@@ -382,7 +387,7 @@ class Sentence:
                 else:
 #                if not translate:
                     # Display the parse
-                    self.display()
+                    self.display(show_all_sols=False)
                 if all_sols:
                     continue
                 if not interactive or not input('SEARCH FOR ANOTHER ANALYSIS? [yes/NO] '):
@@ -677,10 +682,11 @@ class Sentence:
 
     # Methods to help constrain search
     def group_count_score(self, dstore):
-        """Assign a score to the domain store based on the upper bound on the number of groups (value of $groups);
-        it's just the count itself."""
+        """Assign a score to the domain store based on the upper bound on the number of groups (value of $groups)
+        and the number of undetermined essential variables."""
         groupvar = self.variables['groups']
-        return len(groupvar.get_upper(dstore))
+        undet = dstore.ess_undet
+        return len(groupvar.get_upper(dstore)) + len(undet)
 
     def get_w2gn_vars(self, undecvars, dstore):
         """Given a set of undecided variables in a domain store, find a snode->gnode variable
@@ -688,6 +694,8 @@ class Sentence:
         at least one other value that is part of a group with only one node. Use this
         to select variable and values in search (distribution).
         """
+#        group_var = self.variables['groups']
+#        print("Values for group var {}, {}".format(group_var.get_upper(dstore), group_var.get_lower(dstore)))
         variables = [node.variables.get('gnodes') for node in self.nodes]
         # Variable whose possible values are tuples of gnodes for individual groups
         gn_pos = self.variables.get('gnode_pos')
@@ -775,7 +783,7 @@ class Sentence:
         tt_segs = []
         end_index = -1
         for indices, forms in tt:
-            start, end = indices
+            start, end = indices[0], indices[-1]
             if start > end_index+1:
                 src_tokens = self.tokens[end_index+1:start]
                 tt_segs.append(((end_index+1, start-1), [], src_tokens))
@@ -822,6 +830,8 @@ class Sentence:
     def get_complete_trans(self, capfirst=True):
         """Produce complete translations (list of lists of strings) from tree trans outputs for solutions, filling
         in gaps with source words where necessary."""
+        if self.complete_trans:
+            return self.complete_trans
         trans = []
         for solution in self.solutions:
             tt = solution.get_ttrans_outputs()
@@ -844,6 +854,7 @@ class Sentence:
                 # Capitalize first word
                 tt_complete[0] = [Sentence.capitalize(w) for w in tt_complete[0]]
             trans.append(tt_complete)
+        self.complete_trans = trans
         return trans
 
     @staticmethod
@@ -1360,7 +1371,7 @@ class Solution:
             g.display(word_width=word_width, s2gnodes=self.s2gnodes)
 
     def get_ttrans_outputs(self):
-        """Return a list of (snode_start_end_indices, translation strings) for the solution's tree translations."""
+        """Return a list of (snode_indices, translation_strings) for the solution's tree translations."""
         if not self.ttrans_outputs:
             self.ttrans_outputs = []
             for tt in self.treetranss:
@@ -1373,7 +1384,7 @@ class Solution:
                     raw1 = node.raw_indices
                     raw_indices.extend(raw1)
                 raw_indices.sort()
-                self.ttrans_outputs.append(((raw_indices[0], raw_indices[-1]), tt.output_strings))
+                self.ttrans_outputs.append((raw_indices, tt.output_strings))
 #            self.ttrans_outputs = [((tt.snode_indices[0], tt.snode_indices[-1]), tt.output_strings)\
 #                                    for tt in self.treetranss if tt.output_strings]
         return self.ttrans_outputs
@@ -1433,7 +1444,9 @@ class Solution:
         treetranss = []
         ttindex = 0
         for tree, ginst in zip(self.trees, self.ginsts):
-            if ginst.treetrans:
+            if ginst.treetrans and ginst.treetrans.top:
+                # There's a treetrans already and it's not the result of a merger,
+                # so just use it rather than creating a new one.
 #                print("Not recreating treetrans for {}".format(ginst))
                 treetranss.append(ginst.treetrans)
             else:
@@ -1583,7 +1596,10 @@ class TreeTrans:
                 l.append(word_list[0])
             else:
                 l.append('|'.join(word_list))
-        return ' '.join(l)
+        string = ' '.join(l)
+        # _ is a placeholder for space
+        string = string.replace('_', ' ')
+        return string
 
 #    def initialize(self, verbosity=0):
 #        """Set up everything needed to run the constraints and generate the translation."""
@@ -1724,7 +1740,7 @@ class TreeTrans:
             for k, v in agr:
                 if k in result:
                     if result[k] != v:
-                        print("Warning: agrs in {} failed to merge".format(agr_list))
+                        print("Warning: agrs in {} failed to merge; {} and {} don't match".format(agr_list, result[k], v))
                         return 'fail'
                     else:
                         continue

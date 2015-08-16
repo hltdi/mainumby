@@ -2053,6 +2053,8 @@
 *** negro_a ; ^ negro_a 0 ; #14
 ->grn kamba_v[pos=adj] ; #23
 ->grn hũ_v[pos=adj] ; #15
+*** ser_v negro_a ; ^ negro_a 1
+->grn hũ_v[pos=v] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,neg:neg
 *** negro_a no uniforme ; ^ negro_a 0 ; #14
 ->grn hũmbara_v[pos=adj]
 *** negruzco_a ; ^ negruzco_a 0

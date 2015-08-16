@@ -79,7 +79,9 @@ class Solver:
         '''A generator for solutions. Uses best-first search.'''
         tracevar = tracevar or []
         fringe = queue.PriorityQueue()
+#        print("Created fringe {}".format(fringe))
         init_state = initial or self.init_state
+#        print(" Init state on fringe: {}, value {}".format(init_state, init_state.get_value(evaluator=self.evaluator)))
         fringe.put((init_state.get_value(evaluator=self.evaluator), init_state))
         n = 0
         solutions = []
@@ -146,6 +148,7 @@ class Solver:
         prefer smaller upper domains and random order."""
         selected = func(variables, dstore) if func else None
         if not selected:
+            print("Var sel function failed")
             variable = sorted(variables, key=lambda v: len(v.get_upper(dstore=dstore)))[0]
             undecided = variable.get_undecided(dstore=dstore)
             # Split undecided into two non-empty subsets
@@ -205,11 +208,11 @@ class Solver:
 #                                   verbosity=verbosity)
         var, values1, values2 = self.select_var_values(undet, dstore=state.dstore,
                                                        func=self.varselect, verbosity=verbosity)
-#        print('Selected variable {} and value sets {},{}'.format(var, values1, values2))
+        print('Selected variable {} and value sets {},{}'.format(var, values1, values2))
         constraint1, constraint2 = self.make_constraints(var, dstore=state.dstore,
                                                          subset1=values1, subset2=values2,
                                                          verbosity=verbosity)
-#        print('Selected constraints {}, {}'.format(constraint1, constraint2))
+        print('Selected constraints {}, {}'.format(constraint1, constraint2))
         if verbosity:
             print('Distribution constraints: a -- {}, b -- {}'.format(constraint1, constraint2))
         # The constraints of the selected variable (make copies)
@@ -259,8 +262,10 @@ class SearchState:
         """A measure of how promising this state is. Unless there is an explicit evaluator
         for the solver, by default, this is how many undetermined essential variables there are."""
         if evaluator:
+#            print("Value of {}".format(evaluator(self.dstore)))
             return evaluator(self.dstore)
         else:
+#            print("Value of {}".format(len(self.dstore.ess_undet)))
             return len(self.dstore.ess_undet)
 
     def exit(self, result, verbosity=0):
@@ -334,5 +339,6 @@ class SearchState:
                 awaken.update(update_cons)
         if verbosity > 1:
             print('# changed vars {}'.format(len(all_changed)))
+
         return awaken
 

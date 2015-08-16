@@ -367,11 +367,23 @@ class FeatStruct:
 #            print("Agreeing on {}:{}".format(src_feat, targ_feat))
             if src_feat in self:
                 src_value = self[src_feat]
-                if not force and targ_feat in target and target[targ_feat] != src_value:
-                    # Clash; fail!
-                    return 'fail'
-                else:
+                if targ_feat not in target:
                     target[targ_feat] = src_value
+                else:
+                    targ_value = target[targ_feat]
+                    u = simple_unify(src_value, targ_value)
+                    if u == 'fail':
+                        if force:
+                            target[targ_feat] = src_value
+                        else:
+                            return 'fail'
+                    else:
+                        target[targ_feat] = u
+#                if not force and targ_feat in target and target[targ_feat] != src_value:
+#                    # Clash; fail!
+#                    return 'fail'
+#                else:
+#                    target[targ_feat] = src_value
 
     def mutual_agree(self, target, agrs):
         """Make target agree with self and self agree with target

@@ -1,3 +1,23 @@
+## ver is an example of what happens with transitive verbs
+## -- 1,2 object [-r] ? (use feature match failure)
+## -- antipassive [-r] cosas => mba'e... (what to use instead of cosas)
+## -- antipassive [-r] personas => poro... (not there yet)
+## -- 3s object [-r,po=3,no=0]
+## -- 3p object [-r,po=3,no=1]
+## -- NP object [-r] a $n_prs
+## -- passive [+r]
+*** ver_v[-r] ; ^ ver_v 0
+->grn <hecha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
+*** ver_v[-r] cosas ; ^ ver_v 0
+->grn mba'erecha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** ver_v[-r,po=3,no=0] ; ^ ver_v 0
+->grn <hecha_v[pos=v] ichupe ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** ver_v[-r,po=3,no=1] ; ^ ver_v 0
+->grn <hecha_v[pos=v] ichupekuéra ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** ver_v[-r] a $n_prs ; ^ ver_v 0
+->grn <hecha_v $n_prs[caso=pe] ; || 0, -1, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** ver_v[+r] ; ^ ver_v 0
+->grn jehecha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** abajar_v[-r] ; ^ abajar_v 0
 ->grn mbokarape_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** abalanzar_v[+r] ; ^ abalanzar_v 0
@@ -4965,7 +4985,6 @@
 *** encontrar_v[+r] ; ^ encontrar_v 0 ; #32
 ->grn jejuhu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #28 ; ##2
 ->grn juhu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #400 ; ##5
-*** encontrar_v[+r] uno con otro ; ^ encontrar_v 0 ; #32
 *** encontrar_v[+r] mutuamente ; ^ encontrar_v 0 ; #32
 ->grn ñeñuãitĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** encordar_v[+r] ; ^ encordar_v 0
@@ -5346,6 +5365,8 @@
 ->grn ñopẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** entretener_v[-r] ; ^ entretener_v 0
 ->grn mbo'are_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** entretener_v[+r] ; ^ entretener_v 0
+->grn ñemoko'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** entrever_v[-r] ; ^ entrever_v 0
 ->grn <hechagi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #1
 ->grn <hesaho_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
@@ -9206,7 +9227,6 @@
 *** morir_v[-r] de quebranto ; ^ morir_v 0
 ->grn jepy'ajuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** morir_v[-r] ; ^ morir_v 0
-->grn pytupa_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn mano_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** mostrar_v[-r] los dientes ; ^ mostrar_v 0
 ->grn ñemohãimbiti_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
@@ -9986,8 +10006,8 @@
 ->grn mbohovái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** podar_v[-r] ; ^ podar_v 0
 ->grn kapa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** poder_v[-r] ; ^ poder_v 0
-->grn pojái_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** poder_v[-r] $v; ^ poder_v 0
+->grn katu_v[cat=che] $v ; 1==1 n:ns,p:ps,tm:tmp,asp:asp ; 0==0 neg:neg
 *** podrir_v[+r] ; ^ podrir_v 0
 ->grn ñembotuju_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** podrir_v[-r] ; ^ podrir_v 0 ; #14
@@ -12035,36 +12055,23 @@
 *** ser_v[-r] visto ; ^ ser_v 0
 ->grn jekuaa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn jehecha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] inteligente ; ^ ser_v 0
-->grn arandu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] preguntado ; ^ ser_v 0
 ->grn ñeporandu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] progresado ; ^ ser_v 0
 ->grn ñemopu'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] perfecto ; ^ ser_v 0
-->grn <hekokatu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] engordado o cebado ; ^ ser_v 0
 ->grn ñemongyra_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] competente ; ^ ser_v 0
-->grn ñembokatupyry_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] creído ; ^ ser_v 0
 ->grn jererovia_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] difícil ; ^ ser_v 0
-->grn <hasy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] sacado ; ^ ser_v 0
 ->grn ñenohẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] parado ; ^ ser_v 0
 ->grn ñemombyta_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] antipático ; ^ ser_v 0
-->grn mbohái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-->grn mbohuguy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] enviado ; ^ ser_v 0
 ->grn ñembou_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn mbou_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn ñemondo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn jejokuái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] generoso ; ^ ser_v 0
-->grn ñepome'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] dividido ; ^ ser_v 0
 ->grn ñemboja'o_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn ñembovo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
@@ -12080,13 +12087,8 @@
 ->grn ñembopyhare_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] echado ; ^ ser_v 0
 ->grn ñemosẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] diferente ; ^ ser_v 0
-->grn juavy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-->grn joavy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] contado ; ^ ser_v 0
 ->grn ñemombe'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] difícil de entender ; ^ ser_v 0
-->grn <hypy'ũ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] extraido ; ^ ser_v 0
 ->grn ñenohẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] sobrador ; ^ ser_v 0
@@ -12113,8 +12115,6 @@
 ->grn jejuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] puesto ; ^ ser_v 0
 ->grn ñemoĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] feliz ; ^ ser_v 0
-->grn vy'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] atado con cuerda ; ^ ser_v 0
 ->grn ñemosã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] abraviado ; ^ ser_v 0
@@ -12122,12 +12122,8 @@
 *** ser_v[-r] enterrado ; ^ ser_v 0
 ->grn ñemboyvy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn jejaty_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] espeso ; ^ ser_v 0
-->grn <hypy'ũ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] recluido ; ^ ser_v 0
 ->grn ñemboty_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] necesario ; ^ ser_v 0
-->grn <hekotevẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] reemplazado ; ^ ser_v 0
 ->grn ñemyengovia_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] ofendido ; ^ ser_v 0
@@ -12138,41 +12134,25 @@
 ->grn ñemombe'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn ñemomarandu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn ñemyangekói_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] llevado o condenado a vivir a otro lugar ; ^ ser_v 0
-->grn ñedestina_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] degollado ; ^ ser_v 0
 ->grn jejajura'o_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] iguales ; ^ ser_v 0
-->grn joja_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] detenido ; ^ ser_v 0
 ->grn ñemombyta_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] picado ; ^ ser_v 0
 ->grn jejopi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] castigado ; ^ ser_v 0
 ->grn ñembyepoti_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] entretenido o entretenerse ; ^ ser_v 0
-->grn ñemoko'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] grosero ; ^ ser_v 0
-->grn mokachiãi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] puesto de lado ; ^ ser_v 0
 ->grn ñemboyke_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] estrangulado ; ^ ser_v 0
 ->grn jejuvy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] indiscreto ; ^ ser_v 0
-->grn ñe'ẽreirei_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] poseído ; ^ ser_v 0
 ->grn je'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] bondadoso ; ^ ser_v 0
-->grn <hekokatu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] charlatán ; ^ ser_v 0
-->grn ñe'ẽmbuku_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] juntado ; ^ ser_v 0
 ->grn ñembojoapy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] informado ; ^ ser_v 0
 ->grn ñemombe'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn ñemomarandu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] cortante ; ^ ser_v 0
-->grn <haimbe_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] expoliado ; ^ ser_v 0
 ->grn ñemonda_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] ayudado ; ^ ser_v 0
@@ -12182,8 +12162,6 @@
 ->grn je'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] rozado ; ^ ser_v 0
 ->grn ñeñopũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] negligente ; ^ ser_v 0
-->grn <hechagi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] ocultado ; ^ ser_v 0
 ->grn ñemokañy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn ñeñomi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
@@ -12193,22 +12171,16 @@
 ->grn jejokuái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] cadáver ; ^ ser_v 0
 ->grn <he'õngue_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] hablador ; ^ ser_v 0
-->grn ñe'ẽmby'ỹi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] adulado ; ^ ser_v 0
 ->grn ñemboaguara_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] honrado ; ^ ser_v 0
 ->grn <hekokatu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] pobre ; ^ ser_v 0
-->grn kotevẽ_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] atado de manos ; ^ ser_v 0
 ->grn jepokua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] apuñalado ; ^ ser_v 0
 ->grn jekutu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] calentada una cosa al sol o al fuego ; ^ ser_v 0
 ->grn jejope_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] denso ; ^ ser_v 0
-->grn <hypy'ũ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] blanco de los tiros ; ^ ser_v 0
 ->grn ñeha'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] desgarrado ; ^ ser_v 0
@@ -12217,10 +12189,6 @@
 ->grn ñeporandu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] ; ^ ser_v 0
 ->grn ime_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] correcto ; ^ ser_v 0
-->grn <hekokatu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] sincero ; ^ ser_v 0
-->grn py'aporã_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] despojado ; ^ ser_v 0
 ->grn ñemonda_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] confundido ; ^ ser_v 0
@@ -12233,18 +12201,12 @@
 ->grn ñeñotỹ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] consentido ; ^ ser_v 0
 ->grn ñembojerovia_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] grosero e irrespetuoso ; ^ ser_v 0
-->grn motĩe'ỹ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] importante ; ^ ser_v 0
-->grn <hekotevẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] insultado ; ^ ser_v 0
 ->grn jeja'o_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] engreído ; ^ ser_v 0
 ->grn jejapo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] aplacado ; ^ ser_v 0
 ->grn ñemoñyrõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] ávido de ; ^ ser_v 0
-->grn taryrýi_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] ahorcado ; ^ ser_v 0
 ->grn jejuvy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** no ser_v[-r] tenido en cuenta ; ^ ser_v 1
@@ -12266,16 +12228,12 @@
 ->grn ñemyengovia_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] propietario ; ^ ser_v 0
 ->grn mba'erereko_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] útil ; ^ ser_v 0
-->grn jeporu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] pedigueño ; ^ ser_v 0
 ->grn mba'ejerure_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] destinado ; ^ ser_v 0
 ->grn jejokuái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] sentido ; ^ ser_v 0
 ->grn ñeñandu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] atento ; ^ ser_v 0
-->grn mba'erechakuaa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] examinado ; ^ ser_v 0
 ->grn ñeporandu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] nivelado ; ^ ser_v 0
@@ -12284,8 +12242,6 @@
 ->grn je'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] captado ; ^ ser_v 0
 ->grn ñeñandu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] arrogante ; ^ ser_v 0
-->grn ñembotuvicha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] perforado ; ^ ser_v 0
 ->grn ñembokua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] comilón ; ^ ser_v 0
@@ -12310,13 +12266,8 @@
 ->grn ñembohysýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] acarreado ; ^ ser_v 0
 ->grn jereroja_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] infiel ; ^ ser_v 0
-->grn moakãratĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-->grn momokõi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] obsequiado con tierra ; ^ ser_v 0
 ->grn ñemboyvy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] amarillo ; ^ ser_v 0
-->grn <hesa'yju_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] encontrado ; ^ ser_v 0
 ->grn jejuhu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] cubierto ; ^ ser_v 0
@@ -12349,8 +12300,6 @@
 ->grn ñemonda_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] pelado o pelarse a sí mismo ; ^ ser_v 0
 ->grn ñeñapĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] poderoso ; ^ ser_v 0
-->grn pu'aka_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] arrojado ; ^ ser_v 0
 ->grn ñemombo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] escondido ; ^ ser_v 0
@@ -12366,8 +12315,6 @@
 ->grn ñenohẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] trasladado ; ^ ser_v 0
 ->grn jererova_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] miserable ; ^ ser_v 0
-->grn chi'õ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] impulsado ; ^ ser_v 0
 ->grn ñemýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] partido ; ^ ser_v 0
@@ -12383,8 +12330,6 @@
 ->grn ñembojoja_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] observado ; ^ ser_v 0
 ->grn jeja'o_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] caro ; ^ ser_v 0
-->grn <hepy_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] robado ; ^ ser_v 0
 ->grn ñemonda_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn jejavyky_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
@@ -12419,8 +12364,6 @@
 ->grn ñemongu'e_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] agujereado ; ^ ser_v 0
 ->grn ñembokua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] ocupado ; ^ ser_v 0
-->grn jejokuái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] retado o amonestado ; ^ ser_v 0
 ->grn ñemyakãky'o_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] considerado ; ^ ser_v 0
@@ -12433,11 +12376,9 @@
 ->grn ñemongaru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] defendido ; ^ ser_v 0
 ->grn ñeñuã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] irónico ; ^ ser_v 0
-->grn ñemotĩcha'ĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] violado ; ^ ser_v 0
 ->grn ñemomarã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] oido ; ^ ser_v 0
+*** ser_v[-r] oído ; ^ ser_v 0
 ->grn ñehendu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] recreado ; ^ ser_v 0
 ->grn ñembovy'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
@@ -12450,16 +12391,12 @@
 ->grn ñeñapytĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] querido ; ^ ser_v 0
 ->grn ñemokunu'ũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] quisquilloso ; ^ ser_v 0
-->grn jero_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] herido con proyectil ; ^ ser_v 0
 ->grn jejapi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] uniformado ; ^ ser_v 0
 ->grn ñembojoja_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] puesto en remojo ; ^ ser_v 0
 ->grn ñemboaruru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] rápido ; ^ ser_v 0
-->grn ñembopya'e_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] seguido ; ^ ser_v 0
 ->grn ñemuña_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ser_v[-r] adormecido ; ^ ser_v 0
@@ -13542,6 +13479,10 @@
 ->grn peju_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #36
 *** ventosear_v[-r] ; ^ ventosear_v 0
 ->grn jehague'o_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** ver_v[+r] considerado ; ^ ver_v 0
+->grn jechakatu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** ver_v[-r] algo por casualidad ; ^ ver_v 0
+->grn <hesaho_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ver_v[+r] recíprocamente el uno al otro ; ^ ver_v 0
 ->grn joecha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ver_v[+r] en anormalidad ; ^ ver_v 0
@@ -13555,18 +13496,6 @@
 ->grn <hesaho_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ver_v[-r] las cosas de poca monta o la preocupación ; ^ ver_v 0
 ->grn <hechagi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ver_v[-r] cosas ; ^ ver_v 0
-->grn mba'erecha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ver_v[-r] algo por casualidad ; ^ ver_v 0
-->grn <hesaho_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ver_v[-r] ; ^ ver_v 0
-->grn <hecha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** $$pro_3oj ver_v[-r] a $n_prs ; ^ ver_v 1
-->grn <hecha_v $n_prs[caso=pe] ; || -1, 0, -1, 1 ; 1==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ver_v[+r] considerado ; ^ ver_v 0
-->grn jechakatu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ver_v[+r] ; ^ ver_v 0
-->grn jehecha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ver_v[+r] a menudo ; ^ ver_v 0
 ->grn joechapy'ỹi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** ver_v[+r] con trabas ; ^ ver_v 0

@@ -65,6 +65,9 @@
 # -- Group elements may be "set items" (names beginning with '$$'), implemented as categories
 #    but unlike "category items", not intended to merge with nodes in other group instances
 #    during sentence analysis.
+# 2015.08.13
+# -- Forced feature agreement in MorphoSyn matching works with embedded features (doesn't
+#    override existing subfeature values)
 
 import copy, itertools
 import yaml
@@ -80,8 +83,8 @@ ATTRIB_SEP = ';'
 WITHIN_ATTRIB_SEP = ','
 ## Regular expressions for reading groups from text files
 # non-empty form string followed by possibly empty FS string
-FORM_FEATS = re.compile("([$<'?\-\w]+)\s*((?:\[.+\])?)$")
-HEAD = re.compile("\s*\^\s*([<'\w]+)\s+(\d)\s*$")
+FORM_FEATS = re.compile("([$<'?!\-\w]+)\s*((?:\[.+\])?)$")
+HEAD = re.compile("\s*\^\s*([<'?!\-\w]+)\s+(\d)\s*$")
 # Within agreement spec
 # 1=3 n,p
 WITHIN_AGR = re.compile("\s*(\d)\s*=\s*(\d)\s*(.+)$")
@@ -544,6 +547,7 @@ class MorphoSyn(Entry):
             print("Attempting to apply {} to {}".format(self, sentence))
         match = self.match(sentence, verbosity=verbosity)
         if match:
+#            print(" Match {}".format(match))
             self.enforce_constraints(match, verbosity=verbosity)
             self.insert_match(match, sentence, verbosity=verbosity)
 
@@ -699,8 +703,9 @@ class MorphoSyn(Entry):
             elem = elements[fm_index]
             feats_list = elem[1]
             for feats in feats_list:
-#                print("Updating feat{} with fm_feats {}".format(feats.__repr__(), fm_feats.__repr__()))
-                feats.update_inside(fm_feats)
+                print("Updating feat{} with fm_feats {}".format(feats.__repr__(), fm_feats.__repr__()))
+                if isinstance(feats, FeatStruct):
+                    feats.update_inside(fm_feats)
 
     def insert_match(self, match, sentence, verbosity=0):
         """Replace matched portion of sentence with elements in match.

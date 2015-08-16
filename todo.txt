@@ -1,0 +1,9 @@
+2015.8.13
+— need negative feature matching for Groups and maybe MorphoSyns
+— need a way to handle 2 person plural (3 person in Spanish) and maybe
+  polite 2 person singular
+— need the possibility of gaps in Group patterns
+  a x[pos!=n]#0-2 $n => x.. $n[caso=pe]
+— hikuái: generate is a suffix [ps=3,ns=1] => _hikuái
+— en el país de Carlos: Kalo retãme
+— relative clauses
