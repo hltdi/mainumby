@@ -7,3 +7,11 @@
 — hikuái: generate is a suffix [ps=3,ns=1] => _hikuái
 — en el país de Carlos: Kalo retãme
 — relative clauses
+
+2015.8.17
+-- possessive
+   $n del país_n ; ^ país_n 2
+   -> tetã $n[poses=[pp=3,+ext] ; || 1, -1, 0
+
+   país de $n
+   -> $n retã

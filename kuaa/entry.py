@@ -84,6 +84,8 @@ WITHIN_ATTRIB_SEP = ','
 ## Regular expressions for reading groups from text files
 # non-empty form string followed by possibly empty FS string
 FORM_FEATS = re.compile("([$<'?!\-\w]+)\s*((?:\[.+\])?)$")
+# !FS(#1-#2), representing a sequence of #1 to #2 negative FS matches
+NEG_FEATS = re.compile("\s*!(\[.+\])(\(\d-\d\))$")
 HEAD = re.compile("\s*\^\s*([<'?!\-\w]+)\s+(\d)\s*$")
 # Within agreement spec
 # 1=3 n,p
@@ -105,6 +107,8 @@ FORMALT_SEP = '|'
 MS_ATTRIB_SEP = ';'
 # possibly empty form string followed by possibly empty FS string, for MorphoSyn pattern
 MS_FORM_FEATS = re.compile("\s*([$<'|\w]*)\s*((?:\[.+\])?)$")
+# negative features: ![] with only features catpured
+MS_NEG_FEATS = re.compile("\s*!(\[.+\])$")
 MS_AGR = re.compile("\s*(\d)\s*=>\s*(\d)\s*(.+)$")
 MS_DELETE = re.compile("\s*//\s*(.+)$")
 # digit -> [FS], all obligatory
@@ -404,11 +408,16 @@ class Group(Entry):
         for index, token in enumerate(tokens):
             name_toks.append(token)
             foundfeats = False
+#            negm = NEG_FEATS.match(token)
+#            if negm:
+#                negfeats, counts = negm.groups()
+#                print("Negative match: {}, {}".format(negfeats, counts))
+#                continue
             # separate features if any
             m = FORM_FEATS.match(token)
             if not m:
                 print("No form/feats match for {}".format(tokens))
-            tok, feats = FORM_FEATS.match(token).groups()
+            tok, feats = m.groups()
             if feats:
                 foundfeats = True
                 features.append(FeatStruct(feats))
@@ -531,11 +540,16 @@ class MorphoSyn(Entry):
             print("Something wrong with attribute {}".format(attrib))
         p = []
         for item in tokens.split(MS_PATTERN_SEP):
-            forms, feats = MS_FORM_FEATS.match(item).groups()
-            if feats:
-                feats = FeatStruct(feats)
-            forms = [f.strip() for f in forms.split(FORMALT_SEP) if f]
-            p.append((forms, feats))
+            negmatch = MS_NEG_FEATS.match(item)
+            if negmatch:
+                negfeats = negmatch.groups()[0]
+                print("Found negative match {}".format(negfeats))
+            else:
+                forms, feats = MS_FORM_FEATS.match(item).groups()
+                if feats:
+                    feats = FeatStruct(feats)
+                forms = [f.strip() for f in forms.split(FORMALT_SEP) if f]
+                p.append((forms, feats))
         return p
 
     def pattern_length(self):
@@ -679,19 +693,27 @@ class MorphoSyn(Entry):
                 print("Enforcing agreement on features {} from {} to {}".format(feats, src_elem, trg_elem))
             src_tok, src_feats_list = src_elem
             trg_tok, trg_feats_list = trg_elem
-            for trg_feats in trg_feats_list:
+            for tf_index, trg_feats in enumerate(trg_feats_list):
                 if not trg_feats:
                     # target features could be False
                     continue
 #                print("trg_feats {}, frozen? {}".format(trg_feats.__repr__(), trg_feats.frozen()))
+                # Because it may be mutated, use a copy of trg_feats
+#                trg_feats1 = trg_feats.copy()
+#                changed = False
                 for src_feats in src_feats_list:
                     if src_feats:
                         # source features could be False
                         # Force target to agree with source on feature pairs
                         src_feats.agree(trg_feats, feats, force=True)
+#                        changed = True
 #            a = src_feats.agree(trg_feats, feats, force=True)
                         if verbosity:
                             print("Result of agreement: {}".format(trg_feats.__repr__()))
+                # Replace original feats with copy
+#                if changed:
+#                    print("Feature {} replaced with copy".format(trg_feats.__repr__()))
+#                    trg_feats_list[tf_index] = trg_feats1
         if self.del_indices:
             for i in self.del_indices:
                 if verbosity:
@@ -702,10 +724,14 @@ class MorphoSyn(Entry):
             fm_index, fm_feats = self.featmod
             elem = elements[fm_index]
             feats_list = elem[1]
-            for feats in feats_list:
-                print("Updating feat{} with fm_feats {}".format(feats.__repr__(), fm_feats.__repr__()))
+            for index, feats in enumerate(feats_list):
                 if isinstance(feats, FeatStruct):
+#                    print("Updating feat {} with fm_feats {}".format(feats.__repr__(), fm_feats.__repr__()))
+#                    feats1 = feats.copy()
+#                    print("Feature {} replaced with copy".format(feats.__repr__()))
                     feats.update_inside(fm_feats)
+#                    feats_list[index] = feats1
+#                print("Feature {} after update".format(feats.__repr__()))
 
     def insert_match(self, match, sentence, verbosity=0):
         """Replace matched portion of sentence with elements in match.

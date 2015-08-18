@@ -13573,7 +13573,7 @@ ultraje_n $n
 ultrajoso_a $a
 ulular_v $v
 umbral_n $n
-un_a $a,$num
+un $num
 unanimidad_n $n
 uncir_v $v
 undécimo_n $n

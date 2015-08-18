@@ -48,7 +48,7 @@ from .entry import *
 from kuaa.morphology.morpho import Morphology, POS
 from kuaa.morphology.semiring import FSSet, TOP
 
-import os, yaml, re
+import os, yaml, re, copy
 
 LANGUAGE_DIR = os.path.join(os.path.dirname(__file__), 'languages')
 
@@ -383,8 +383,8 @@ class Language:
                     pos = entry['features'].get('pos', '')
                     entry['root'] = Language.make_root(entry['root'], pos)
             self.cached[word] = entries[1:]
-            return entries[1:]
-        return entries
+            return copy.deepcopy(entries[1:])
+        return copy.deepcopy(entries)
                 
     @staticmethod
     def make_char_string(chars):
@@ -1040,6 +1040,7 @@ class Language:
             analyses.extend(suff_anal)
             if cache and not pretty:
                 to_cache.extend(suff_anal)
+
         if not analyses or get_all:
             if not only_guess:
                 for pos, POS in self.morphology.items():

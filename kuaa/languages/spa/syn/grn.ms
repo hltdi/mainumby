@@ -14,6 +14,9 @@ reflexivo/1s :: me [pos=v,p=1,n=0,voz=reflx,+r] ; // 0
 reflexivo/2s :: te [pos=v,p=2,n=0,voz=reflx,+r] ; // 0
 reflexivo/1p :: nos [pos=v,p=1,n=1,voz=reflx,+r] ; // 0
 
+### ser + adj with no noun following
+#ser_adj :: ser_v [pos=a] ![pos=n] ; 0=>1 p,n,tm ; // 0 ; 1-> [pos=v]
+
 ## otros pronombres clíticos
 objeto/1s :: me [pos=v,po=1,no=0] ; // 0
 objeto/2s :: te [pos=v,po=2,no=0] ; // 0
@@ -43,5 +46,9 @@ posesivo/1p.p :: nuestros [pos=n,n=1,poses=[+ext,pp=1,np=1]] ; // 0
 posesivo/1p.s :: nuestra [pos=n,n=0,poses=[+ext,pp=1,np=1]] ; // 0
 posesivo/1p.p :: nuestras [pos=n,n=1,poses=[+ext,pp=1,np=1]] ; // 0
 
-## ser + adj
-#ser_adj :: ser_v [pos=a] ; 0=>1 p,n,tm ; // 0 ; 1-> [pos=v]
+## artículos definitivos
+artdef/ms :: el [pos=n,n=0] ; // 0
+artdef/fs :: la [pos=n,n=0] ; // 0
+artdef/mp :: los [pos=n,n=1] ; // 0
+artdef/fp :: las [pos=n,n=1] ; // 0
+
