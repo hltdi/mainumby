@@ -76,6 +76,20 @@ span.instruction
    font-size: 100%;
    font-style: italic;
 }
+table
+{
+   border-collapse: collapse;
+}
+th.TM
+{
+   width: 85%;
+   color: silver;
+}
+td.mbojereha
+{
+   text-align: center;
+   padding: 20px;
+}
 </style>
 
 <script>
@@ -85,13 +99,15 @@ function seg(text) {
 }
 </script>
 
-<title>Mbojereha: Traducción del Castellano al Guaraní</title>
+<title>Mbojereha: un Ayudante para la Traducción Castellano-Guaraní</title>
 
 </head>
 
 <body>
 
-<h1>Mbojereha: Traducción del Castellano al Guaraní</h1>
+<h1>Mbojereha: un Ayudante para la Traducción Castellano-Guaraní</h1>
+
+<form method=POST action='sent'>
 
 {% if sentence %}
 <p></p><p></p>
@@ -106,17 +122,22 @@ onmouseout="this.style.cursor='default'"
 onclick="document.getElementById('segtrans').innerHTML={{'%r'|format(seg[2])|e}}"><font color={{ seg[1] }}> {{ seg[0] }} </font></span>
 {% endfor %}
 </span>
-
-{% endif %}
-
-<p id="segtrans"></p>
-
-<hr/>
-
-<form method=POST action='sent'>
+<p></p>
 
 <input type=submit style="font-family: Verdana; font-size: 80%;"
 action='sent' name='sent' value='Próxima oración'>
+
+<hr/>
+
+{% endif %}
+
+<h3>Sugerencias</h3>
+
+<table border=1>
+  <tr><th>Mbojereha</th><th class='TM' color="silver">Mandu'a</th></tr>
+  <tr><td class='mbojereha' id="segtrans"></td><td><p>  </p><p>  </p><p>  </p><p>  </p></td></tr>
+</table>
+
 <!--
 <input type=submit style="font-family: Verdana; font-size: 80%;"
 action='anal' name='anal' value='Próximo análisis'>

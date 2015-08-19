@@ -52,3 +52,11 @@ artdef/fs :: la [pos=n,n=0] ; // 0
 artdef/mp :: los [pos=n,n=1] ; // 0
 artdef/fp :: las [pos=n,n=1] ; // 0
 
+## intensificación (necesita concordancia grd:grd)
+muy :: muy [pos=a,grd=ete] ; // 0
+
+### preposiciones
+#a/pp :: a [pos=n,caso=pe] ; // 0
+#en/pp :: en [pos=n,caso=pe] ; // 0
+
+

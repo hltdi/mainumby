@@ -1,7 +1,27 @@
-*** una ; ^ una 0
-->grn peteĩ
 *** a $n ; ^ a 0
 ->grn $n[caso=pe] ; || -1, 0
+*** en $n ; ^ en 0
+->grn $n[caso=pe] ; || -1, 0
+*** con $n ; ^ con 0
+->grn $n ndive ; || 1, 0
+*** una ; ^ una 0
+->grn peteĩ
+*** yo ; ^ yo 0
+->grn che
+*** vos ; ^ vos 0
+->grn nde
+*** nosotros ; ^ nosotros 0
+->grn ore
+*** nosotros ; ^ nosotros 0
+->grn ñande
+*** él ; ^ él 0
+->grn ha'e
+*** ella ; ^ ella 0
+->grn ha'e
+*** ellos ; ^ ellos 0
+->grn ha'ekuéra
+*** ellas ; ^ ellas 0
+->grn ha'ekuéra
 *** hay
 ->grn oĩ
 *** no hay ; ^ hay 1

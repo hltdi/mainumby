@@ -9,9 +9,19 @@
 — relative clauses
 
 2015.8.17
--- possessive
-   $n del país_n ; ^ país_n 2
-   -> tetã $n[poses=[pp=3,+ext] ; || 1, -1, 0
+— possessive
+  $n del país_n ; ^ país_n 2
+  -> tetã $n[poses=[pp=3,+ext] ; || 1, -1, 0
 
-   país de $n
-   -> $n retã
+  país de $n
+  -> $n retã
+
+  why not both?
+
+2015.8.18
+— need to ensure that group patterns or parts of patterns with
+  no abstract node do not admit intervening words
+  en nuestra casa
+
+— translating other “tenses”: imv, sbi, sbp
+  let context handle subjunctive?

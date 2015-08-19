@@ -4976,7 +4976,6 @@
 *** encontrar_v[-r] ; ^ encontrar_v 0 ; #116
 ->grn topa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #45 ; ##8
 ->grn juhu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #400 ; ##34
-->grn jotopa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg ; #8 ; ##8
 *** encontrar_v[-r] novio o novia ; ^ encontrar_v 0 ; #116
 ->grn jejuhu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** encontrar_v[+r] cara a cara ; ^ encontrar_v 0 ; #32
