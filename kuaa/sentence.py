@@ -511,6 +511,7 @@ class Sentence:
         # Now filter candidates to see if all words are present in the sentence
         # For each group, save a list of sentence token indices that correspond
         # to the group's words
+        print("Found {} candidate groups".format(len(candidates)))
         groups = []
         for head_i, group in candidates:
             # Matching snodes, along with root and unified features if any
@@ -857,6 +858,7 @@ class Sentence:
                     transhtml += '</tr>'
                 else:
                     transhtml += '<tr><td>' + t + '</td></tr>'
+            transhtml = transhtml.replace('_', ' ')
             transhtml += '</table>'
             tokens = ' '.join(tokens)
             if i==0:
@@ -1505,7 +1507,7 @@ class Solution:
                 while built:
                     built = tt.build(trans_index=trans_index)
                     if not built:
-                        print("No more translations for {}".format(tt))
+#                        print("No more translations for {}".format(tt))
                         break
                     if tt.top:
                         tt.generate_words()
@@ -1628,6 +1630,7 @@ class TreeTrans:
 
     @staticmethod
     def output_string(output):
+#        print("Converting output {} to string".format(output))
         l = []
         for word_list in output:
             if len(word_list) == 1:
@@ -1636,7 +1639,7 @@ class TreeTrans:
                 l.append('|'.join(word_list))
         string = ' '.join(l)
         # _ is a placeholder for space
-        string = string.replace('_', ' ')
+#        string = string.replace('_', ' ')
         return string
 
 #    def initialize(self, verbosity=0):

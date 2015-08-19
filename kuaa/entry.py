@@ -280,17 +280,19 @@ class Group(Entry):
     def match_nodes(self, snodes, head_sindex, verbosity=0):
         """Attempt to match the group tokens (and features) with snodes from a sentence,
         returning the snode indices and root and unified features if any."""
-#        print("Does {} match {}".format(self, snodes))
+        if verbosity > 1:
+            print("Does {} match {}".format(self, snodes))
         match_snodes = []
+        last_sindex = -1
         for index, token in enumerate(self.tokens):
             match_snodes1 = []
             feats = self.features[index] if self.features else None
-            if verbosity:
+            if verbosity > 1:
                 print(" Attempting to match {}".format(token))
             matched = False
             for node in snodes:
-                if verbosity:
-                    print("  Trying {}, token index {}, snode index {} head index {}".format(node, index, node.index, head_sindex))
+                if verbosity > 1:
+                    print("  Trying {}, token index {}, snode index {}, head index {}, last s index {}".format(node, index, node.index, head_sindex, last_sindex))
                 if index == self.head_index:
                     # This token is the head of the group
                     if node.index == head_sindex:
@@ -300,23 +302,38 @@ class Group(Entry):
                             # This has to match, so fail now
                             return False
                         else:
+                            # Check whether the token is in the right position with respect to others
+                            if index > 0 and last_sindex >=0 and node.index - last_sindex != 1:
+                                if verbosity:
+                                    print(" Group head token {} in sentence position {} doesn't follow last token".format(token, node.index))
+                                return False
                             match_snodes1.append((node.index, node_match))
                             if verbosity:
+                                print(" Group token {} matched node {} in {}, node index {}, last_sindex {}".format(token, node, self, node.index, last_sindex))
+                            last_sindex = node.index
+                            if verbosity > 1:
                                 print("  Head matched already".format(node))
                             matched = True
                             # Don't look further for an snode to match this token
                             break
                 else:
                     node_match = node.match(token, feats)
-                    if verbosity:
+                    if verbosity > 1:
                         print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
                     if node_match != False:
+                        if not Group.is_cat(token) and index > 0 and last_sindex >= 0 and node.index - last_sindex != 1:
+                            if verbosity:
+                                print(" Group token {} in sentence position {} doesn't follow last token".format(token, node.index))
+                            return False
                         match_snodes1.append((node.index, node_match))
                         if verbosity:
+                            print(" Group token {} matched node {} in {}, node index {}, last_sindex {}".format(token, node, self, node.index, last_sindex))
+                        last_sindex = node.index
+                        if verbosity > 1:
                             print("  Matched node {}".format(node))
                         matched = True
             if not matched:
-                if verbosity:
+                if verbosity > 1:
                     print("  {} not matched; failed".format(token))
                 return False
             else:

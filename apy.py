@@ -374,5 +374,5 @@ def ui():
     return u, e, s
 
 if __name__ == "__main__":
-#    print("Tereg̃uahẽ porãite Mbojereha-pe, versión {}\n".format(__version__))
-    kuaa.app.run(debug=True)
+    print("Tereg̃uahẽ porãite Mbojereha-pe, versión {}\n".format(__version__))
+#    kuaa.app.run(debug=True)
