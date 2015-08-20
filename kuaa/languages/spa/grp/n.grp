@@ -1,3 +1,14 @@
+## patterns for nouns
+# adj N -> N adj
+# N de $n ->
+# ? num N ->
+# N que ->
+# other relative clause patterns?
+# N con/por/de/para el/la/lo/los/las que
+*** $a profesor_n ; ^ profesor_n 1
+->grn mbo'ehára_n $a ; || 1, 0 ; 1==0 n:n,poses:poses
+*** profesor_n de $n ; ^ profesor_n 0
+->grn $n mbo'ehára_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 *** Venus_n ; ^ Venus_n 0
 ->grn mbyja_n ko'ẽ ; 0==0 n:n,poses:poses
 *** WC_n ; ^ WC_n 0

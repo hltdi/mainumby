@@ -1,3 +1,7 @@
+
+*** bueno_a $n ; ^ bueno_a 0
+->grn $n porã_v[pos=adj] ; || 1, 0
+
 # ser + pp
 *** ser_v[-r] temido ; ^ ser_v 0
 ->grn jekyhyje_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg

@@ -385,8 +385,6 @@
 *** bueno_a ; ^ bueno_a 0 ; #337
 ->grn porã_v[pos=adj] ; #1590
 ->grn marangatu_v[pos=adj] ; #69
-*** bueno_a $n ; ^ bueno_a 0
-->grn $n porã_v[pos=adj] ; || 1, 0
 *** ser_v bueno_a ; ^ bueno_a 1
 ->grn porã_v[pos=v] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,neg:neg
 *** burdo_a ; ^ burdo_a 0

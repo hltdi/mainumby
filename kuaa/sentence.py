@@ -695,16 +695,18 @@ class Sentence:
             typ = Sentence.get_var_type(variable)
             if typ == 'sn->gn':
                 # sn->gn variables are good to the extent they point to gnodes in large groups
-                for gni in value:
-                    gn = self.gnodes[gni]
-                    varscore -= gn.ginst.ngnodes
-                varscore /= len(value)
+                if value:
+                    for gni in value:
+                        gn = self.gnodes[gni]
+                        varscore -= gn.ginst.ngnodes
+                    varscore /= len(value)
             elif typ == 'groups':
                 # groups variable is good if it's big
-                for gi in value:
-                    group = self.groups[gi]
-                    varscore += group.ngnodes
-                varscore /= len(value)
+                if value:
+                    for gi in value:
+                        group = self.groups[gi]
+                        varscore += group.ngnodes
+                    varscore /= len(value)
 #            print(" Varscore for {} with {} in {}: {}".format(variable, value, dstore, varscore))
         undet = dstore.ess_undet
         undet_count = len(undet)
@@ -877,7 +879,7 @@ class Sentence:
             tt_complete = []
             end_index = -1
             for indices, forms in tt:
-                start, end = indices
+                start, end = indices[0], indices[-1]
                 if start > end_index+1:
                     # Some word(s) not translated; use source forms with # prefix
                     verbatim = [self.verbatim(n) for n in self.nodes[end_index+1:start]]
@@ -896,44 +898,44 @@ class Sentence:
         self.complete_trans = trans
         return trans
 
-    @staticmethod
-    def webify_trans(translation):
-        """Make a translation (a list of TreeTrans outputs and verbatim words)
-        into a list more suitable for template processing."""
-        trans = []
-        for tt in translation:
-            # Each tt is the output of a TreeTrans object; a list of alternative translations within a given solution
-            # Mark each as single with or without morphological alternatives,
-            # multiple with or without morphological alternatives
-            mult = False
-            morphalt = False
-            if len(tt) > 1:
-                mult = True
-            tx = []
-            for ttt in tt:
-                # An alternative may be two or more words separated by spaces, but they only need to be separated
-                # if one has alternative morphological outputs separated by '|'
-                if '|' in ttt:
-                    morphalt = True
-                    ttx = []
-                    # Create a sublist separated by spaces
-                    for tttt in ttt.split():
-                        if '|' in tttt:
-                            ttx.append(tttt.split('|'))
-                        else:
-                            ttx.append(tttt)
-                    tx.append(ttx)
-                else:
-                    tx.append(ttt)
-            if mult and morphalt:
-                trans.append([3, tx])
-            elif mult:
-                trans.append([2, tx])
-            elif morphalt:
-                trans.append([1, tx[0]])
-            else:
-                trans.append([0, tx[0]])
-        return trans
+#    @staticmethod
+#    def webify_trans(translation):
+#        """Make a translation (a list of TreeTrans outputs and verbatim words)
+#        into a list more suitable for template processing."""
+#        trans = []
+#        for tt in translation:
+#            # Each tt is the output of a TreeTrans object; a list of alternative translations within a given solution
+#            # Mark each as single with or without morphological alternatives,
+#            # multiple with or without morphological alternatives
+#            mult = False
+#            morphalt = False
+#            if len(tt) > 1:
+#                mult = True
+#            tx = []
+#            for ttt in tt:
+#                # An alternative may be two or more words separated by spaces, but they only need to be separated
+#                # if one has alternative morphological outputs separated by '|'
+#                if '|' in ttt:
+#                    morphalt = True
+#                    ttx = []
+#                    # Create a sublist separated by spaces
+#                    for tttt in ttt.split():
+#                        if '|' in tttt:
+#                            ttx.append(tttt.split('|'))
+#                        else:
+#                            ttx.append(tttt)
+#                    tx.append(ttx)
+#                else:
+#                    tx.append(ttt)
+#            if mult and morphalt:
+#                trans.append([3, tx])
+#            elif mult:
+#                trans.append([2, tx])
+#            elif morphalt:
+#                trans.append([1, tx[0]])
+#            else:
+#                trans.append([0, tx[0]])
+#        return trans
 
     def verbatim(self, node):
         """Use the source token in the target complete translation."""
@@ -1400,6 +1402,7 @@ class Solution:
         self.ttrans_outputs = None
         # Variable domain store for solution state
         self.dstore = dstore
+        print("Created solution with ginsts {}".format(ginsts))
 
     def __repr__(self):
         return "|< {} >|({})".format(self.sentence.raw, self.index)

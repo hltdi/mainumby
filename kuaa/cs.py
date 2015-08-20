@@ -208,7 +208,8 @@ class Solver:
 #                                   verbosity=verbosity)
         var, values1, values2 = self.select_var_values(undet, dstore=state.dstore,
                                                        func=self.varselect, verbosity=verbosity)
-#        print('Selected variable {} and value sets {},{}'.format(var, values1, values2))
+        if verbosity:
+            print('Selected variable {} and value sets {},{}'.format(var, values1, values2))
         constraint1, constraint2 = self.make_constraints(var, dstore=state.dstore,
                                                          subset1=values1, subset2=values2,
                                                          verbosity=verbosity)

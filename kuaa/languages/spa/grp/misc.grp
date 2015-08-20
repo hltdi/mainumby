@@ -2,26 +2,28 @@
 ->grn $n[caso=pe] ; || -1, 0
 *** en $n ; ^ en 0
 ->grn $n[caso=pe] ; || -1, 0
+*** con $pro ; ^ con 0
+->grn $pro[caso=ndive] ; -1, 0
 *** con $n ; ^ con 0
 ->grn $n ndive ; || 1, 0
 *** una ; ^ una 0
 ->grn peteĩ
 *** yo ; ^ yo 0
-->grn che
+->grn che_n
 *** vos ; ^ vos 0
-->grn nde
+->grn nde_n
 *** nosotros ; ^ nosotros 0
-->grn ore
+->grn ore_n
 *** nosotros ; ^ nosotros 0
-->grn ñande
+->grn ñande_n
 *** él ; ^ él 0
-->grn ha'e
+->grn ha'e_n
 *** ella ; ^ ella 0
-->grn ha'e
+->grn ha'e_n
 *** ellos ; ^ ellos 0
-->grn ha'ekuéra
+->grn ha'e_n[n=1]
 *** ellas ; ^ ellas 0
-->grn ha'ekuéra
+->grn ha'e_n[n=1]
 *** hay
 ->grn oĩ
 *** no hay ; ^ hay 1
@@ -684,12 +686,6 @@
 ->grn mba'eteko
 *** cómo? ; ^ cómo? 0
 ->grn mba'éichapa
-*** de ; ^ de 0
-->grn gua
-->grn guare
-->grn gui
-->grn guive
-->grn pegua
 *** de la parte de debajo ; ^ debajo 4
 ->grn guy
 *** debajo ; ^ debajo 0
