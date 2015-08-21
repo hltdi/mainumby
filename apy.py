@@ -38,16 +38,16 @@ __version__ = 1.0
 
 import kuaa
 
-### Español -> Guarani
+### Español -> Guarani.
 
-def eg_sent(sentence):
-    e, g = load_eg()
+def eg_oracion(sentence):
+    e, g = cargar_eg()
     d = kuaa.Document(e, g, sentence, True)
     s = d[0]
     s.initialize()
     return s
 
-def load_eg():
+def cargar_eg():
     spa, grn = kuaa.Language.load_trans('spa', 'grn')
     return spa, grn
 

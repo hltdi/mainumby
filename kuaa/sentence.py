@@ -362,7 +362,7 @@ class Sentence:
         self.tokenize(verbosity=verbosity)
         self.lexicalize(verbosity=verbosity)
         if not self.groups:
-            print("No groups found for {}".format(self))
+            print("Ningunos grupos encontrados para {}".format(self))
             return False
         else:
             self.create_variables(verbosity=verbosity)
@@ -373,7 +373,7 @@ class Sentence:
               verbosity=0, tracevar=None):
         """Generate solutions and translations (if translate is true)."""
         if not self.groups:
-            print("NO GROUPS FOUND for {}, so NO SOLUTIONS POSSIBLE".format(self))
+            print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SOLUCIÓN POSIBLE".format(self))
             return
         generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity,
                                           tracevar=tracevar)
@@ -398,7 +398,7 @@ class Sentence:
             if verbosity:
                 print('No more solutions')
         if not self.solutions:
-            print("NO SOLUTIONS FOUND for {}".format(self))
+            print("NINGUNAS SOLUCIONES encontradas para {}".format(self))
 #        elif translate and self.target:
 #            self.translate(all_trans=all_trans, verbosity=verbosity)
 
@@ -511,7 +511,7 @@ class Sentence:
         # Now filter candidates to see if all words are present in the sentence
         # For each group, save a list of sentence token indices that correspond
         # to the group's words
-        print("Found {} candidate groups".format(len(candidates)))
+#        print("{} candidatos para grupos encontrados".format(len(candidates)))
         groups = []
         for head_i, group in candidates:
             # Matching snodes, along with root and unified features if any
@@ -528,6 +528,7 @@ class Sentence:
             groups.append((head_i, snodes, group))
         # Create a GInst object and GNodes for each surviving group
         self.groups = [GInst(group, self, head_i, snodes, index) for index, (head_i, snodes, group) in enumerate(groups)]
+        print("{} grupos encontrados".format(len(self.groups)))
         # Assign sentence-level indices to each GNode; store gnodes in list
         sent_index = 0
         for group in self.groups:
@@ -953,7 +954,7 @@ class Sentence:
         elif '|' in token:
             return '|'.join([t.capitalize() for t in token.split('|')])
         return token.capitalize()
-                
+
 class SNode:
     """Sentence token and its associated analyses and variables."""
 
@@ -1059,7 +1060,7 @@ class SNode:
         """Does this node match the group item (word, root, category) and
         any features associated with it?"""
         if verbosity:
-            print('   SNode {} with features {} trying to match item {} with features {}'.format(self, self.analyses, grp_item, grp_feats))
+            print('   SNode {} with features {} trying to match item {} with features {}'.format(self, self.analyses, grp_item, grp_feats.__repr__()))
         # If item is a category, don't bother looking at token
         if Entry.is_cat(grp_item):
             if verbosity:
@@ -1078,7 +1079,9 @@ class SNode:
                         if node_features:
                             # 2015.7.5: strict option added to force True feature in grp_features
                             # to be present in node_features, e.g., for Spanish reflexive
-                            u_features = node_features.unify(grp_feats, strict=True)
+                            u_features = simple_unify(node_features, grp_feats, strict=True)
+#                            u_features = node_features.unify(grp_feats, strict=True)
+#                            print("Unifying {} and {}".format(node_features.__repr__(), grp_feats.__repr__()))
                             if u_features != 'fail':
                                 return analysis.get('root'), u_features
 #                        print("   Matching group features {} and sentence features {}".format(grp_feats, node_features))
@@ -1105,7 +1108,9 @@ class SNode:
 #                        return root, grp_feats
                     else:
                         # There must be an explicit match with group features, so strict=True
-                        u_features = node_features.unify(grp_feats, strict=True)
+#                        u_features = node_features.unify(grp_feats, strict=True)
+                        u_features = simple_unify(node_features, grp_feats, strict=True)
+#                        print("   Unifying node features {} with group features {}".format(node_features.__repr__(), grp_feats.__repr__()))
                         if u_features != 'fail':
 #                            print(" Succeeded by unification")
                             return root, u_features
@@ -1236,7 +1241,8 @@ class GInst:
         translations = self.group.get_translations()
         # Sort group translations by their translation frequency
         Group.sort_trans(translations)
-#        print("Translations {}".format(translations))
+        if verbosity:
+            print("Translations {}".format(translations))
             # self.target.abbrev, False)
         # If alignments are missing, add default alignment
         for i, t in enumerate(translations):
@@ -1282,6 +1288,7 @@ class GInst:
                 # Align gnodes with target tokens and features
                 targ_index = alignment[gn_index]
                 if targ_index < 0:
+#                    print("No targ item for gnode {}".format(gnode))
                     # This means there's no target language token for this GNode.
                     continue
                 agrs = None
@@ -1508,9 +1515,11 @@ class Solution:
                 trans_index=0
                 built = True
                 while built:
+                    if verbosity:
+                        print("Building {}".format(tt))
                     built = tt.build(trans_index=trans_index)
                     if not built:
-#                        print("No more translations for {}".format(tt))
+                        print("No more translations for {}".format(tt))
                         break
                     if tt.top:
                         tt.generate_words()
@@ -1585,8 +1594,7 @@ class TreeTrans:
         for tgroup, tgnodes, tnodes in attribs:
 #            print('tgroup {}, tgnodes {}, tnodes {}, ginst {}'.format(tgroup, tgnodes, tnodes, ginst))
             for tgnode, tokens, feats, agrs, t_index in tgnodes:
-#                if tgnode not in self.gnode_dict:
-#                    self.gnode_dict[tgnode] = []
+#                print("Adding to gnode dicts: {}, cat? {}".format(tgnode, tgnode.cat))
                 if tgnode.cat:
 #                    print(" tgnode {} is abstract".format(tgnode))
                     self.abs_gnode_dict[tgnode] = (tgroup, tokens, feats, agrs, t_index)
@@ -1672,7 +1680,7 @@ class TreeTrans:
             if verbosity > 1:
                 print(" build(): snode {}, trans_index {}, gnodes {}, features {}, tnode_index {}".format(snode, trans_index,
                                                                                                           gnodes, features.__repr__(), tnode_index))
-#            print("   gnode_dict: {}".format(self.gnode_dict))
+                print("   gnode_dict: {}".format(self.gnode_dict))
             if not gnodes:
                 # snode is not covered by any group
                 node_index_map[snode.index] = tnode_index
@@ -1682,13 +1690,19 @@ class TreeTrans:
                 gna, gnc, token = None, None, None
                 t_indices = []
                 targ_feats, agrs = None, None
+                if verbosity:
+                    if len(gnodes) > 1:
+                        print(" Gnodes: {}".format(gnodes))
+                        print(" Abs gnode dict: {}".format(self.abs_gnode_dict))
                 if gnodes[0] in self.abs_gnode_dict:
-#                    print("{}: gnodes {} contain an abs gnode dict in first position".format(self, gnodes))
-#                    print(" Looking for concrete node in gnode_dict {}".format(self.gnode_dict))
+                    if verbosity:
+                        print("{}: gnodes {} contain an abs gnode dict in first position".format(self, gnodes))
+                        print(" Looking for concrete node in gnode_dict {}".format(self.gnode_dict))
                     gna = self.abs_gnode_dict[gnodes[0]]
                     gnc = self.gnode_dict[gnodes[1]]
                 elif len(gnodes) > 1 and gnodes[1] in self.abs_gnode_dict:
-#                    print("{}: gnodes {} contain an abs gnode dict in second position".format(self, gnodes))
+                    if verbosity:
+                        print("{}: gnodes {} contain an abs gnode dict in second position".format(self, gnodes))
                     gna = self.abs_gnode_dict[gnodes[1]]
                     gnc = self.gnode_dict[gnodes[0]]
                 if gna:
@@ -1698,7 +1712,8 @@ class TreeTrans:
                     # don't increment tnode_index
                     # gna is a single tuple, gnc is a list of tuples for different translations
                     if len(gnc) <= trans_index:
-                        print("No more translations for {}".format(self))
+                        if verbosity:
+                            print(" No more translations for {}".format(self))
                         return False
                     # Select the tuple to be used (trans_index)
 #                    gnc1 = gnc[trans_index]
@@ -1732,10 +1747,13 @@ class TreeTrans:
                     # only one gnode in list
                     gnode = gnodes[0]
                     if gnode not in self.gnode_dict:
+                        if verbosity:
+                            print("Gnode {} not in gnode dict".format(gnode, self.gnode_dict))
+#                        return False
                         continue
                     else:
-                        gnode = gnodes[0]
                         gnode_tuple_list = self.gnode_dict[gnode]
+#                        print("Gnode tuple list {}, trans_index {}".format(gnode_tuple_list, trans_index))
                         if len(gnode_tuple_list) <= trans_index:
                             print("No more translations for {}".format(self))
                             return False

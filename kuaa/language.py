@@ -295,7 +295,7 @@ class Language:
                     form, sem = line.strip().split()
                     self.cats[form] = sem.split(',')
         except IOError:
-            print('No such sem file as {}'.format(file))
+            print("El archivo semántico {} no existe".format(file))
 
     def get_cats(self, form):
 #        print("Getting cats for {}".format(form))
@@ -309,7 +309,7 @@ class Language:
                 for line in f:
                     self.abbrevs.append(line.strip())
         except IOError:
-            print('No such abbrevs file as {}'.format(file))
+            print("El archivo de abreviaturas {} no existe".format(file))
 
     def read_segs(self):
         """Read in segmentations from seg file."""
@@ -325,7 +325,7 @@ class Language:
                     if self.use in [GENERATION, TARGET]:
                         self.rev_segs[seg] = form
         except IOError:
-            print('No such seg file as {}'.format(file))
+            print('El archivo de de segmentaciónes {} no existe'.format(file))
 
     def write_cache(self, name=''):
         """Write a dictionary of cached entries to a cache file."""
@@ -354,7 +354,7 @@ class Language:
         cache = self.get_cache_file(name=name)
         try:
             with open(cache, encoding='utf8') as f:
-                print("Reading cached file")
+#                print("Leyendo archivo almacenado")
                 for line in f:
                     split_line = line.strip().split(" || ")
                     word, analyses = split_line
@@ -420,9 +420,9 @@ class Language:
         """Load morphological data from .mrf file."""
         path = os.path.join(self.get_dir(), self.abbrev + '.mrf')
         if not os.path.exists(path):
-            print("No morphological data file for {}".format(self.abbrev))
+            print("No existe archivo morfológico para {}".format(self.abbrev))
             return
-        print('Parsing morphological data for {}'.format(self.abbrev))
+        print('Cargando datos morfológicos para {}'.format(self.abbrev))
         with open(path, encoding='utf8') as data:
             contents = data.read()
             lines = contents.split('\n')[::-1]
@@ -1202,7 +1202,7 @@ class Language:
         target_groups = []
         for gfile in self.get_group_files(files):
             with open(gfile, encoding='utf8') as file:
-                print("Reading groups for {} from {}".format(self.name, gfile))
+                print("Leyendo grupos para {} de {}".format(self.name, gfile))
                 # Groups separated by GROUP_SEP string
                 groups = file.read().split(GROUP_SEP)
                 # Preamble precedes first instance of GROUP_SEP
@@ -1232,7 +1232,7 @@ class Language:
         path = self.get_ms_file(target.abbrev)
         try:
             with open(path, encoding='utf8') as f:
-                print("Reading morphosyns from {}".format(path))
+                print("Leyendo morphosyns para {}".format(path))
                 lines = f.read().split('\n')[::-1]
                 # the order of MorphoSyns matterns
                 while lines:
@@ -1306,10 +1306,10 @@ class Language:
             try:
                 srcpath = os.path.join(Language.get_language_dir(source), source + '.lg')
                 srclang = Language.read(srcpath, use=SOURCE)
-                print("Loaded source language {}".format(srclang))
+                print("Lengua fuente {} cargada".format(srclang))
                 targpath = os.path.join(Language.get_language_dir(target), target + '.lg')
                 targlang = Language.read(targpath, use=TARGET)
-                print("Loaded target language {}".format(targlang))
+                print("Lengua destino {} cargada".format(targlang))
             except IOError:
                 print("One of these languages doesn't exist.")
                 return

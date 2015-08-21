@@ -39,8 +39,8 @@ posesivo/1s.s :: mi [pos=n,n=0,poses=[+ext,pp=1,np=0]] ; // 0
 posesivo/1s.p :: mis [pos=n,n=1,poses=[+ext,pp=1,np=0]] ; // 0
 posesivo/2s.s :: tu [pos=n,n=0,poses=[+ext,pp=2,np=0]] ; // 0
 posesivo/2s.p :: mus [pos=n,n=1,poses=[+ext,pp=2,np=0]] ; // 0
-posesivo/3s.s :: su [pos=n,n=0,poses=[+ext,pp=3]] ; // 0
-posesivo/3s.p :: sus [pos=n,n=1,poses=[+ext,pp=3]] ; // 0
+posesivo/3s.s :: su [pos=n,n=0,poses=[-ext,pp=3]] ; // 0
+posesivo/3s.p :: sus [pos=n,n=1,poses=[-ext,pp=3]] ; // 0
 posesivo/1p.s :: nuestro [pos=n,n=0,poses=[+ext,pp=1,np=1]] ; // 0
 posesivo/1p.p :: nuestros [pos=n,n=1,poses=[+ext,pp=1,np=1]] ; // 0
 posesivo/1p.s :: nuestra [pos=n,n=0,poses=[+ext,pp=1,np=1]] ; // 0

@@ -2,6 +2,135 @@
 *** bueno_a $n ; ^ bueno_a 0
 ->grn $n porã_v[pos=adj] ; || 1, 0
 
+# tener + n
+*** no tener_v[-r] gracia ni gusto ; ^ tener_v 1
+->grn mbohuguy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] un poder mágico ; ^ tener_v 0
+->grn kurundu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] ganas de defecar ; ^ tener_v 0
+->grn <hekakahýi_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] un censor para captar sobre las cosas ; ^ tener_v 0
+->grn arandu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] ideas claras de las cosas ; ^ tener_v 0
+->grn kumby_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] confianza en una persona ; ^ tener_v 0
+->grn jepoka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] perfección moral ; ^ tener_v 0
+->grn <hekokatu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] una salida inoportuna ; ^ tener_v 0
+->grn mbohuguy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r,+neg] lo necesario ; ^ tener_v 0
+->grn so_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] en poco ; ^ tener_v 0
+->grn japo'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] por malo ; ^ tener_v 0
+->grn mbovai_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[+r] por superior ; ^ tener_v 0
+->grn ñembotuvicha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] a distancia ; ^ tener_v 0
+->grn mosambuku_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+
+*** tener_v[-r] ojo aplastado ; ^ tener_v 0
+->grn <hesape_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] los ojos irritados ; ^ tener_v 0
+->grn <hesako'õ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] el cuerpo dolorido ; ^ tener_v 0
+->grn <heterasy_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] el vientre hinchado ; ^ tener_v 0
+->grn <hyevu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+
+*** tener_v[-r] rostro ; ^ tener_v 0
+->grn <hova_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] cara ; ^ tener_v 0
+->grn <hova_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] pelo ; ^ tener_v 0
+->grn <hague_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] mano ; ^ tener_v 0
+->grn po_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] entrañas ; ^ tener_v 0
+->grn <hyepy_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] cuerpo ; ^ tener_v 0
+->grn <hete_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] vientre ; ^ tener_v 0
+->grn <hye_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] barriga ; ^ tener_v 0
+->grn <hye_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] saliva ; ^ tener_v 0
+->grn <hendy_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] panza ; ^ tener_v 0
+->grn <hye_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+
+*** tener_v[-r] carraspera ; ^ tener_v 0
+->grn mboahy'opyáu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] náuseas ; ^ tener_v 0
+->grn jeguaru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] asco ; ^ tener_v 0
+->grn jeguaru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+
+*** tener_v[-r] brotes ; ^ tener_v 0
+->grn <hoky_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] resíduo ; ^ tener_v 0
+->grn <hembyre_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] espuma ; ^ tener_v 0
+->grn <hyjúi_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] rencor ; ^ tener_v 0
+->grn py'aro_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] gozo ; ^ tener_v 0
+->grn angapyhy_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] simpatía ; ^ tener_v 0
+->grn cha'e_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] vida ; ^ tener_v 0
+->grn ikove_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] existencia ; ^ tener_v 0
+->grn ikove_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] crédito ; ^ tener_v 0
+->grn jererovia_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] sobra ; ^ tener_v 0
+->grn <hembyre_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] título ; ^ tener_v 0
+->grn <héra_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] añoranza ; ^ tener_v 0
+->grn nga'u_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] paz ; ^ tener_v 0
+->grn py'aguapy_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] ganas de orinar ; ^ tener_v 0
+->grn <hyahýi_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] prosperidad ; ^ tener_v 0
+->grn akãrapu'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] apodo ; ^ tener_v 0
+->grn jehero_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] consideración ; ^ tener_v 0
+->grn mbopepo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] lucro ; ^ tener_v 0
+->grn mono'õ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] ruido ; ^ tener_v 0
+->grn <hyapu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] líquido ; ^ tener_v 0
+->grn <hykue_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] jugo ; ^ tener_v 0
+->grn <hykue_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] irritación ; ^ tener_v 0
+->grn <hesako'õ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] resto ; ^ tener_v 0
+->grn <hembyre_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] repugnancia ; ^ tener_v 0
+->grn jeguaru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] físico ; ^ tener_v 0
+->grn <hete_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] satisfacción ; ^ tener_v 0
+->grn angapyhy_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] zumo ; ^ tener_v 0
+->grn <hykue_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] olor ; ^ tener_v 0
+->grn <hyakuã_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] reemplazante ; ^ tener_v 0
+->grn ñembuekovia_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tener_v[-r] costo ; ^ tener_v 0
+->grn <hepy_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+
+*** tener_v[-r] nombre ; ^ tener_v 0
+->grn <héra_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+
 # ser + pp
 *** ser_v[-r] temido ; ^ ser_v 0
 ->grn jekyhyje_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg

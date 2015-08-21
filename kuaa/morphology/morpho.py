@@ -505,7 +505,7 @@ class POS:
         file = self.get_gen_cache_file(name=name)
         try:
             with open(file, encoding='utf8') as f:
-                print("Reading generation cached file for {}".format(self.pos))
+                print("Leyendo archivo almacenado de generación para {}".format(self.pos))
                 for line in f:
                     root_fs, words = line.strip().split(" || ")
                     root, fs = root_fs.split(':')

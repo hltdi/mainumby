@@ -3,7 +3,7 @@
 *** en $n ; ^ en 0
 ->grn $n[caso=pe] ; || -1, 0
 *** con $pro ; ^ con 0
-->grn $pro[caso=ndive] ; -1, 0
+->grn $pro[caso=ndi] ; || -1, 0
 *** con $n ; ^ con 0
 ->grn $n ndive ; || 1, 0
 *** una ; ^ una 0
@@ -11,6 +11,8 @@
 *** yo ; ^ yo 0
 ->grn che_n
 *** vos ; ^ vos 0
+->grn nde_n
+*** usted ; ^ usted 0
 ->grn nde_n
 *** nosotros ; ^ nosotros 0
 ->grn ore_n
@@ -553,9 +555,6 @@
 ->grn ndive
 *** con que ; ^ con 0
 ->grn ra'e
-*** con ; ^ con 0
-->grn ndi
-->grn ndive
 *** concientemente ; ^ concientemente 0
 ->grn hekopete
 *** conjuntamente ; ^ conjuntamente 0

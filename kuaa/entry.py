@@ -623,7 +623,7 @@ class MorphoSyn(Entry):
 #                    print("Match result {}".format(result))
                     # Is this the end of the pattern? If so, succeed.
                     if self.pattern_length() == pindex + 1:
-                        print("MS {} succeeded with result {}".format(self, result))
+                        print("MS {} tuvo éxito con resultado {}".format(self, result))
                         results.append((mindex, sindex+1, result))
                         mindex = -1
                         pindex = 0
