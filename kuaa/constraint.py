@@ -234,6 +234,7 @@ class Superset(Constraint):
         var = self.get_var()
         if var.strengthen_lower(self.subset, dstore=dstore,
                                 constraint=(verbosity>1 or var in tracevar) and self):
+#            print("Superset strengthening lower for {} to {} in {}".format(var, var.get_lower(dstore=dstore), dstore))
             return Constraint.entailed, {var}
         return Constraint.entailed, set()
 
@@ -266,6 +267,7 @@ class Subset(Constraint):
         of the current upper bound and superset."""
         var = self.get_var()
         if var.strengthen_upper(self.superset, dstore=dstore, constraint=(verbosity>1 or var in tracevar) and self):
+#            print("Subset strengthening upper for {} to {} in {}".format(var, var.get_upper(dstore=dstore), dstore))
             return Constraint.entailed, {var}
         return Constraint.entailed, set()
 

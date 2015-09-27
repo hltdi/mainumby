@@ -115,7 +115,7 @@ class Solver:
                         # Score is just the index of the state in the list returned by distribute
                         val = score
                         score += 1
-#                    print("next state {}, value {}".format(next_state, val))
+                    print("next state {}, value {}".format(next_state, val))
                     # Add next state where it belongs in the queue
                     fringe.put((val, next_state))
             n += 1
@@ -176,9 +176,11 @@ class Solver:
         """Return a pair of constraints for the selected variable."""
         if not subset1:
             subset1, subset2 = self.split_var_values(variable, verbosity=verbosity)
+#        print("Make constraints: subset1 {}, subset2 {}".format(subset1, subset2))
+#        print("{} lower {}, upper {}".format(variable, variable.get_lower(dstore=dstore), variable.get_upper(dstore=dstore)))
         if isinstance(variable, IVar):
             if verbosity:
-                print(' values: {}, {}'.format(subset1, subset2))
+                print(' making constraints with values: {}, {}'.format(subset1, subset2))
             return Member(variable, subset1, record=False), Member(variable, subset2, record=False)
         else:
             # For a set Var, add subset1 to the lower bound, subtract subset1
@@ -186,7 +188,7 @@ class Solver:
             v1 = variable.get_lower(dstore=dstore) | subset1
             v2 = variable.get_upper(dstore=dstore) - subset1
             if verbosity:
-                print(' values: {}, {}'.format(subset1, subset2))
+                print(' making constraints with values: {}, {}'.format(v1, v2))
             return Superset(variable, v1, record=False), Subset(variable, v2, record=False)
 
     def distribute(self, state=None, verbosity=0):
@@ -221,6 +223,8 @@ class Solver:
         # Create the new solvers (states), applying one of the constraints to each
         new_dstore1 = state.dstore.clone(constraint1, name=state.name+'a')
         new_dstore2 = state.dstore.clone(constraint2, name=state.name+'b')
+#        # Selected variable is determined in dstore2; try to determine it in dstore1
+#        var.determined(dstore=new_dstore1, verbosity=2)
         # Create a new Solver for each dstore, preserving the accumulateod penalty
         state1 = SearchState(constraints=constraints, dstore=new_dstore1,
                              name=state.name+'a', depth=state.depth+1,
@@ -231,6 +235,7 @@ class Solver:
                              parent=state,
                              verbosity=verbosity)
         state.children.extend([state1, state2])
+#        print("state 1: {}, values {}; state 2: {}, values {}".format(state1, values1, state2, values2))
         return [((var, values1), state1), ((var, values2), state2)]
 
 class SearchState:

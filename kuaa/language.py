@@ -43,6 +43,8 @@
 # -- Updated group-reading methods.
 # 2015.07.03
 # -- Added abbreviations.
+# 2015.09.26
+# -- Groups with a particular key are ordered by the group priority method.
 
 from .entry import *
 from kuaa.morphology.morpho import Morphology, POS
@@ -325,7 +327,7 @@ class Language:
                     if self.use in [GENERATION, TARGET]:
                         self.rev_segs[seg] = form
         except IOError:
-            print('El archivo de de segmentaciónes {} no existe'.format(file))
+            print('El archivo de de segmentaciones {} no existe'.format(file))
 
     def write_cache(self, name=''):
         """Write a dictionary of cached entries to a cache file."""
@@ -385,7 +387,7 @@ class Language:
             self.cached[word] = entries[1:]
             return copy.deepcopy(entries[1:])
         return copy.deepcopy(entries)
-                
+    
     @staticmethod
     def make_char_string(chars):
         """Used in making list of seg units for language."""
@@ -420,9 +422,9 @@ class Language:
         """Load morphological data from .mrf file."""
         path = os.path.join(self.get_dir(), self.abbrev + '.mrf')
         if not os.path.exists(path):
-            print("No existe archivo morfológico para {}".format(self.abbrev))
+            print("No existe archivo morfológico para {}".format(self.name))
             return
-        print('Cargando datos morfológicos para {}'.format(self.abbrev))
+        print('Cargando datos morfológicos para {}'.format(self.name))
         with open(path, encoding='utf8') as data:
             contents = data.read()
             lines = contents.split('\n')[::-1]
@@ -1226,6 +1228,11 @@ class Language:
                     # Creates the group and any target groups specified and adds them to self.groups
                     Group.from_string(source_group, self, translations, target=target, trans=False)
 
+        # Sort groups for each key by priority
+        for key, groups in self.groups.items():
+            if len(groups) > 1:
+                groups.sort(key=lambda g: g.priority(), reverse=True)
+
     def read_ms(self, target=None, verbosity=0):
         """Read in MorphoSyns for target from a .ms file. If target is not None (must be a language), read in translation groups
         and cross-lingual features as well."""
@@ -1429,6 +1436,9 @@ class Language:
         morf = self.morphology
         output = []
         if pos:
+            if pos not in morf:
+                prin("POS {} not in morphology {}".format(pos, morf))
+                return [root]
             posmorph = morf[pos]
 #            print("Generating root {} with features {}".format(root, features.__repr__()))
             output = posmorph.gen(root, update_feats=features, guess=guess, only_words=True)

@@ -1,3 +1,1399 @@
+## hacer + X, etc.
+
+*** hacer_v[-r] pasear ; ^ hacer_v 0
+->grn mboguata_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] decir ; ^ hacer_v 0
+->grn euka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] recular ; ^ hacer_v 0
+->grn mboguevi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] desnudar ; ^ hacer_v 0
+->grn moñemboi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] girar ; ^ hacer_v 0
+->grn mopyryrỹi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] volver en sí ; ^ hacer_v 0
+->grn moingove_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] quedar mal a alguien ; ^ hacer_v 0
+->grn motĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] empezar ; ^ hacer_v 0
+->grn moñepyrũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] enrojecer ; ^ hacer_v 0
+->grn mopytã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] estallar ; ^ hacer_v 0
+->grn mbokapu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbotiri_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] revivir ; ^ hacer_v 0
+->grn moingove_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] callar ; ^ hacer_v 0
+->grn mbojurumboty_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] latir ; ^ hacer_v 0
+->grn mbotytýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] caer con estrépito ; ^ hacer_v 0
+->grn mboguarara_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] podrir ; ^ hacer_v 0
+->grn mbotuju_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] madurar fruto ; ^ hacer_v 0
+->grn motyãrõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+oi] perder a uno hasta el último céntimo ; ^ hacer_v 0
+->grn ñemondoho_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] amar ; ^ hacer_v 0
+->grn jehayhuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ver ; ^ hacer_v 0
+->grn moma'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn <hechauka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbojekuaa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] madurar ; ^ hacer_v 0
+->grn mbyaju_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] querer ; ^ hacer_v 0
+->grn jehayhuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] rebotar ; ^ hacer_v 0
+->grn ñembopopo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] sentir por uno tristeza ; ^ hacer_v 0
+->grn ñembyasyuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] meter la mano ; ^ hacer_v 0
+->grn mopo'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] sangrar ; ^ hacer_v 0
+->grn mbohuguy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cuidar ; ^ hacer_v 0
+->grn moñangareko_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] parar ; ^ hacer_v 0
+->grn moñembo'y_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] perseguir ; ^ hacer_v 0
+->grn muñauka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] brincar ; ^ hacer_v 0
+->grn mborari_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbopopo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] freir ; ^ hacer_v 0
+->grn mbochyryry_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] contemplar ; ^ hacer_v 0
+->grn moma'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] tirar ; ^ hacer_v 0
+->grn mombouka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn moha'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cerrar el ojo ; ^ hacer_v 0
+->grn mbosapymi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] detonar ; ^ hacer_v 0
+->grn mbohyapu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] correr una carrera ; ^ hacer_v 0
+->grn moñani_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] elevar ; ^ hacer_v 0
+->grn ñemopu'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] recelar ; ^ hacer_v 0
+->grn moñemyrõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] poner los dientes ; ^ hacer_v 0
+->grn mohãi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] reir ; ^ hacer_v 0
+->grn mbopuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] sacar punta ; ^ hacer_v 0
+->grn mohembe'y_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] duchar ; ^ hacer_v 0
+->grn mbojahu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] fluir constantemente ; ^ hacer_v 0
+->grn mbochivivi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] sonar los dedos ; ^ hacer_v 0
+->grn ñekuãmbopu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] llegar al orgasmo ; ^ hacer_v 0
+->grn mombauka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] florecer ; ^ hacer_v 0
+->grn mbopoty_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] confundir ; ^ hacer_v 0
+->grn mbohesarea_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] llorar ; ^ hacer_v 0
+->grn myasẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbohesay_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbojahe'o_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] acostar ; ^ hacer_v 0
+->grn moñeno_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] llovisnar ; ^ hacer_v 0
+->grn mboayvi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] crujir los dientes o los huesos ; ^ hacer_v 0
+->grn mopurũrũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] venir ; ^ hacer_v 0
+->grn mbou_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] saludar ; ^ hacer_v 0
+->grn momaitei_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] largar ; ^ hacer_v 0
+->grn mbopoi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] hurgar ; ^ hacer_v 0
+->grn mbojepovyvy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] lavar la cara ; ^ hacer_v 0
+->grn mbojovahéi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] resentir ; ^ hacer_v 0
+->grn moñemyrõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pasar rápidamente venciendo vallas ; ^ hacer_v 0
+->grn mbojapyhara_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] fecundar a la mujer ; ^ hacer_v 0
+->grn momemby_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] tocar ; ^ hacer_v 0
+->grn mbopoko_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] poner de pie ; ^ hacer_v 0
+->grn mopu'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn moñembo'y_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] rebosar ; ^ hacer_v 0
+->grn mbochovi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] gachar la cabeza ; ^ hacer_v 0
+->grn motĩndy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] sobrar ; ^ hacer_v 0
+->grn mohemby_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] verter lágrimas ; ^ hacer_v 0
+->grn mbohesay_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] retroceder ; ^ hacer_v 0
+->grn mboguevi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbojevy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] criar ; ^ hacer_v 0
+->grn moñemuña_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pisar fuerte ; ^ hacer_v 0
+->grn mopyambu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] caer ; ^ hacer_v 0
+->grn ñemomýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ñemongu'e_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ty_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] espiar ; ^ hacer_v 0
+->grn mbokytu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] rodillar ; ^ hacer_v 0
+->grn moñesũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] chorrear ; ^ hacer_v 0
+->grn mbochivi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] mentir ; ^ hacer_v 0
+->grn mbojapu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] despertar ; ^ hacer_v 0
+->grn mombáy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] caer un edificio de repente y con estrépito ; ^ hacer_v 0
+->grn mboguarara_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] descansar ; ^ hacer_v 0
+->grn mbojeko_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mombytu'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mopytuhẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mboguapy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] terminar ; ^ hacer_v 0
+->grn mboapýra_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ilusionar ; ^ hacer_v 0
+->grn mbojeroviarei_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn moha'ãrõrei_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] atar ; ^ hacer_v 0
+->grn ñeñapytĩuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] rogar ; ^ hacer_v 0
+->grn ñemboheko_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] enhebrar ; ^ hacer_v 0
+->grn mbohesyvõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] beber a sorbo ruidosamente ; ^ hacer_v 0
+->grn mboisyryku_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] mirar ; ^ hacer_v 0
+->grn ñemoma'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] estribar ; ^ hacer_v 0
+->grn mbojepytaso_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] lloviznar ; ^ hacer_v 0
+->grn mbohayvi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] oir ; ^ hacer_v 0
+->grn ñehenduka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] cortar el pelo ; ^ hacer_v 0
+->grn ñeñapĩuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] conocer ; ^ hacer_v 0
+->grn kuaauka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbojekuaa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] funcionar ; ^ hacer_v 0
+->grn moingo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] flotar ; ^ hacer_v 0
+->grn mbovevúi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] fermentar ; ^ hacer_v 0
+->grn mohaguino_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] decir mentira ; ^ hacer_v 0
+->grn mbojapu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] erguir ; ^ hacer_v 0
+->grn moakãrapu'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] entrar ; ^ hacer_v 0
+->grn ñemoĩngue_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] quedar obstinadamente en un lugar ; ^ hacer_v 0
+->grn mbojetu'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] llover ; ^ hacer_v 0
+->grn mongy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] subir ; ^ hacer_v 0
+->grn mbojupi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] palpar ; ^ hacer_v 0
+->grn mbojepovyvy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbopoko_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] bajar ; ^ hacer_v 0
+->grn mboguejy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] encontrar ; ^ hacer_v 0
+->grn mbojuhu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbojehu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] olvidar ; ^ hacer_v 0
+->grn mbohesarái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] adornar ; ^ hacer_v 0
+->grn mbojegua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] recordar ; ^ hacer_v 0
+->grn ñemomandu'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] respetar ; ^ hacer_v 0
+->grn ñeñanduka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] hablar ; ^ hacer_v 0
+->grn moñe'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] dar la bendición ; ^ hacer_v 0
+->grn mbohovasa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbojovasa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] extender ; ^ hacer_v 0
+->grn mbojepyso_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] nadar ; ^ hacer_v 0
+->grn mbohyeguy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbo'yta_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] caer el uno al otro ; ^ hacer_v 0
+->grn joity_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] tener diarrea ; ^ hacer_v 0
+->grn mboye_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] mirar ; ^ hacer_v 0
+->grn moma'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] alcanzar ; ^ hacer_v 0
+->grn moingo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] desviar ; ^ hacer_v 0
+->grn ñemombia_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ondular ; ^ hacer_v 0
+->grn mboveve_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] apoyar el pie ; ^ hacer_v 0
+->grn mopyrũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] fritar ; ^ hacer_v 0
+->grn mbochyryry_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] perder la paciencia ; ^ hacer_v 0
+->grn mbojahéi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] rogar ; ^ hacer_v 0
+->grn mboheko_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] detener ; ^ hacer_v 0
+->grn mombyta_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] meditar ; ^ hacer_v 0
+->grn mbosapo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] llegar ; ^ hacer_v 0
+->grn moĝuahẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] atar ; ^ hacer_v 0
+->grn mosãuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] dudar ; ^ hacer_v 0
+->grn mbopy'aheta_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn moherã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] hablar el uno con otro ; ^ hacer_v 0
+->grn moñe'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] caer dando vueltas ; ^ hacer_v 0
+->grn mbojaparo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] dormir ; ^ hacer_v 0
+->grn ñemonge_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] alumbrar ; ^ hacer_v 0
+->grn ñembohesape_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] rozar ; ^ hacer_v 0
+->grn mopysykuãi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ladear la cara ; ^ hacer_v 0
+->grn mbohovayke_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] levantar ; ^ hacer_v 0
+->grn ñemopu'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] lagrimear ; ^ hacer_v 0
+->grn mbohesay_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] volver ; ^ hacer_v 0
+->grn mbojevy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] comer ; ^ hacer_v 0
+->grn mongaruka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] correr líquido ; ^ hacer_v 0
+->grn mbosyry_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] quitar la paciencia ; ^ hacer_v 0
+->grn mbojahéi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] desconfiar ; ^ hacer_v 0
+->grn mborari_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] abrir los ojos ; ^ hacer_v 0
+->grn mbohesape'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] buscar generalmente los medios de vida ; ^ hacer_v 0
+->grn mbojeheka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] mamar al ternero la primera leche ; ^ hacer_v 0
+->grn mboapoja_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] preparar ; ^ hacer_v 0
+->grn moñembosako'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] abortar ; ^ hacer_v 0
+->grn momembykua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] abrir la boca ; ^ hacer_v 0
+->grn mbojurupe'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pasar toda la noche hasta el amanecer ; ^ hacer_v 0
+->grn moko'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] bailar ; ^ hacer_v 0
+->grn mbojeroky_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mopyryrỹi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] buscar ; ^ hacer_v 0
+->grn <hekauka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] desviar ; ^ hacer_v 0
+->grn mombia_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] rodar ; ^ hacer_v 0
+->grn mboapajeréi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mboapajere_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbojere_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cobijar ; ^ hacer_v 0
+->grn moñeñuã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] reflejar ; ^ hacer_v 0
+->grn mbohesape_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cubrir ; ^ hacer_v 0
+->grn mbojaho'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] toser ; ^ hacer_v 0
+->grn mbohu'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] huir ; ^ hacer_v 0
+->grn mbotatapeju_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] resbalar ; ^ hacer_v 0
+->grn mbopyi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mopysyrỹi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] soltar ; ^ hacer_v 0
+->grn mbopoi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] tintinear ; ^ hacer_v 0
+->grn mbochililin_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] aparecer la nariz ; ^ hacer_v 0
+->grn motĩmbu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] clamar insistentemente ; ^ hacer_v 0
+->grn mbotarova_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] esperar ; ^ hacer_v 0
+->grn moha'ãrõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] perder la razón ; ^ hacer_v 0
+->grn mbotarova_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] atragantar ; ^ hacer_v 0
+->grn mboahy'opa'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] gritar ; ^ hacer_v 0
+->grn mbosapukái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] saltar chispas ; ^ hacer_v 0
+->grn mboaviju_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] levantar ; ^ hacer_v 0
+->grn mopu'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] inclinar ; ^ hacer_v 0
+->grn moñeyke'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] chocar ; ^ hacer_v 0
+->grn mbojapi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] arrastrar ; ^ hacer_v 0
+->grn mbosyryry_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] untar ; ^ hacer_v 0
+->grn moapamona_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ir ; ^ hacer_v 0
+->grn mondo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] habilitar ; ^ hacer_v 0
+->grn moingo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] probar ; ^ hacer_v 0
+->grn moha'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] atender ; ^ hacer_v 0
+->grn moma'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] castañear ; ^ hacer_v 0
+->grn mbotarara_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] dar vueltas varias veces ; ^ hacer_v 0
+->grn mboapajeréi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] reconocer ; ^ hacer_v 0
+->grn momba'erechakuaa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] venir ; ^ hacer_v 0
+->grn ñembou_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] llevar ; ^ hacer_v 0
+->grn rahauka_v[subcat=gue] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pedar ; ^ hacer_v 0
+->grn mopyno_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] trabajar ; ^ hacer_v 0
+->grn momba'apo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] tender la hamaca ; ^ hacer_v 0
+->grn moñotĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] alimentar ; ^ hacer_v 0
+->grn ñemongaruka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] bendecir ; ^ hacer_v 0
+->grn mongarai_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ñemongarai_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] dormir ; ^ hacer_v 0
+->grn mbopytu'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn monge_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mombytu'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] estallar la música ; ^ hacer_v 0
+->grn mbopuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] correr con fuerza ; ^ hacer_v 0
+->grn mbosyryry_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] recordar ; ^ hacer_v 0
+->grn momandu'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pender ; ^ hacer_v 0
+->grn mosaingo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] tapar ; ^ hacer_v 0
+->grn mbojaho'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] apresar ; ^ hacer_v 0
+->grn mosãuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] derramar ; ^ hacer_v 0
+->grn moñohẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] crujir ; ^ hacer_v 0
+->grn mbopururu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] dar de comer ; ^ hacer_v 0
+->grn ñemongaruka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] sacar ; ^ hacer_v 0
+->grn mbojei_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] traer ; ^ hacer_v 0
+->grn ruka_v[subcat=gue] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] andar ; ^ hacer_v 0
+->grn mboguata_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn moingo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn momba'apo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] calmar ; ^ hacer_v 0
+->grn mbopytu'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] reventar ; ^ hacer_v 0
+->grn mombuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] desaparecer ; ^ hacer_v 0
+->grn mboje'o_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] esperar inultimente ; ^ hacer_v 0
+->grn moha'ãrõrei_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] alcanzar al que va adelante ; ^ hacer_v 0
+->grn <hupytyuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] secar un lugar húmedo ; ^ hacer_v 0
+->grn mbo'ypa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbohypa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] prosperar ; ^ hacer_v 0
+->grn moakãrapu'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] errar ; ^ hacer_v 0
+->grn mbojavy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] hervir ; ^ hacer_v 0
+->grn mbopupu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] enseñar ; ^ hacer_v 0
+->grn ñembo'e_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ñembo'euka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] caer una lluvia de piedras ; ^ hacer_v 0
+->grn mboayvi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] seguir ; ^ hacer_v 0
+->grn muñauka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] saber ; ^ hacer_v 0
+->grn kuaauka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn euka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] brillar ; ^ hacer_v 0
+->grn mbovera_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] sentar ; ^ hacer_v 0
+->grn mboguapy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] intentar ; ^ hacer_v 0
+->grn moha'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ondear ; ^ hacer_v 0
+->grn mboveve_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] sudar ; ^ hacer_v 0
+->grn mbyakuvo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbohy'ái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] medir ; ^ hacer_v 0
+->grn moha'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] refrescar ; ^ hacer_v 0
+->grn mopiro'ysã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cesar ; ^ hacer_v 0
+->grn mombi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn momba_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] hinchar ; ^ hacer_v 0
+->grn mboaruru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pasar ; ^ hacer_v 0
+->grn mbohasa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] mover ; ^ hacer_v 0
+->grn momýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] tambalear ; ^ hacer_v 0
+->grn mbokacha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] temblar ; ^ hacer_v 0
+->grn mbosysýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbotarara_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mosũsũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mboryrýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] amanecer ; ^ hacer_v 0
+->grn moko'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] tronar ; ^ hacer_v 0
+->grn mosunu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbosununu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] aparecer ; ^ hacer_v 0
+->grn mbojehu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] tomar mate caliente ; ^ hacer_v 0
+->grn mongay'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] temer ; ^ hacer_v 0
+->grn mongyhyje_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] adular ; ^ hacer_v 0
+->grn mboheko_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] encaminar ; ^ hacer_v 0
+->grn mboguata_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] doler el brazo ; ^ hacer_v 0
+->grn mbojyvarasy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] pelar ; ^ hacer_v 0
+->grn ñeñapĩuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] comprar ; ^ hacer_v 0
+->grn mbojogua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] librar ; ^ hacer_v 0
+->grn mopysyrõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] valer ; ^ hacer_v 0
+->grn mboete_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn momba'e_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mboaje_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] estremecer ; ^ hacer_v 0
+->grn mbotarara_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] esperar la noche ; ^ hacer_v 0
+->grn mbopyhare_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ensartar ; ^ hacer_v 0
+->grn mbohesyvõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn myesyvõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] pasar ; ^ hacer_v 0
+->grn ñembohasa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] equivocar ; ^ hacer_v 0
+->grn mbojavy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] enviar ; ^ hacer_v 0
+->grn ñembou_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] envejecer ; ^ hacer_v 0
+->grn mbotuja_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] sonar un tambor ; ^ hacer_v 0
+->grn mbyapepu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] agachar ; ^ hacer_v 0
+->grn mbojaivy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pelear ; ^ hacer_v 0
+->grn moñorairõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] quedar ; ^ hacer_v 0
+->grn mombyta_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] reposar ; ^ hacer_v 0
+->grn mboguapy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] ver ; ^ hacer_v 0
+->grn jekuaauka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] absorber ; ^ hacer_v 0
+->grn mboisyryku_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] creer inutilmente ; ^ hacer_v 0
+->grn mbojeroviarei_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] salir del camino ; ^ hacer_v 0
+->grn mombia_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mombia_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] evaporar ; ^ hacer_v 0
+->grn mbyakuvo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] hundir en el pantano ; ^ hacer_v 0
+->grn mboapasuru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] entrar a la fuerza ; ^ hacer_v 0
+->grn mbyasuru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] sentir ; ^ hacer_v 0
+->grn ñeñanduka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] fugar ; ^ hacer_v 0
+->grn ñemombia_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] dar agua ; ^ hacer_v 0
+->grn ñemboy'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] volar ; ^ hacer_v 0
+->grn mboveve_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pasar vergüenza ; ^ hacer_v 0
+->grn <hapy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] castañear los dientes o los huesos ; ^ hacer_v 0
+->grn mopurũrũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] achispar ; ^ hacer_v 0
+->grn mbotiri_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] remedar ; ^ hacer_v 0
+->grn moha'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] casar ; ^ hacer_v 0
+->grn momenda_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] alegrar ; ^ hacer_v 0
+->grn mbohetia'e_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] retoñar ; ^ hacer_v 0
+->grn mbohoky_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] informar ; ^ hacer_v 0
+->grn jekuaauka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] volver hacia atrás ; ^ hacer_v 0
+->grn mboguevi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cesar la lluvia ; ^ hacer_v 0
+->grn mbopi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] mamar ; ^ hacer_v 0
+->grn mokambu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] entrar a la fuerza y con violencia ; ^ hacer_v 0
+->grn mbosuru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] avisar ; ^ hacer_v 0
+->grn jekuaauka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ladear ; ^ hacer_v 0
+->grn moñeke'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] eyacular ; ^ hacer_v 0
+->grn mombauka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] sacar punta terminar ; ^ hacer_v 0
+->grn mboapýra_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] carar ; ^ hacer_v 0
+->grn moñembojovái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] saltar ; ^ hacer_v 0
+->grn mbopopo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] descanzar ; ^ hacer_v 0
+->grn momytuhẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] fluir la palabra ; ^ hacer_v 0
+->grn moñe'ẽry_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] tiritar ; ^ hacer_v 0
+->grn mbotarara_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] salir ; ^ hacer_v 0
+->grn mosẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbojei_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] engendrar ; ^ hacer_v 0
+->grn moñemuña_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] impacientar ; ^ hacer_v 0
+->grn mbojahéi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pisar ; ^ hacer_v 0
+->grn mopyrõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] levantar la cabeza ; ^ hacer_v 0
+->grn moakãrapu'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] aletear ; ^ hacer_v 0
+->grn mboperepepe_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] orinar ; ^ hacer_v 0
+->grn monguaru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] abrigar ; ^ hacer_v 0
+->grn moñuã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] atorar ; ^ hacer_v 0
+->grn mboahy'opa'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] escuchar ; ^ hacer_v 0
+->grn mbojapysaka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cantar ; ^ hacer_v 0
+->grn mbopurahéi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] transportar cosas por alguien ; ^ hacer_v 0
+->grn rahauka_v[subcat=gue] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] dar vueltas ; ^ hacer_v 0
+->grn mboapajere_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] alzar ; ^ hacer_v 0
+->grn ñemopu'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] crecer ; ^ hacer_v 0
+->grn ñemongakuaa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mongakuaa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] sonar la nariz ; ^ hacer_v 0
+->grn moñambyvo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] enseñar ; ^ hacer_v 0
+->grn mbo'euka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] caminar ; ^ hacer_v 0
+->grn mboguata_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn moingo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] flotar en el agua ; ^ hacer_v 0
+->grn mbo'yta_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] enredar ; ^ hacer_v 0
+->grn mbohesarea_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] negociar ; ^ hacer_v 0
+->grn moñemu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] aletear a un ave prisionero ; ^ hacer_v 0
+->grn mbopepe_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] jadear ; ^ hacer_v 0
+->grn mbojuku'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] respirar ; ^ hacer_v 0
+->grn mopytuhẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] correr ; ^ hacer_v 0
+->grn muña_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn moñani_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] brotar ; ^ hacer_v 0
+->grn mbohoky_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] oyo en la tierra o la madera ; ^ hacer_v 0
+->grn jo'o_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] hallar ; ^ hacer_v 0
+->grn mbojehu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] caer frutas sacudiendo el árbol ; ^ hacer_v 0
+->grn mboguarara_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] evaporar un líquido ; ^ hacer_v 0
+->grn mbohypa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] educar ; ^ hacer_v 0
+->grn mbo'euka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] bañar ; ^ hacer_v 0
+->grn mbojahu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] enfriar ; ^ hacer_v 0
+->grn ñemoro'ysã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] chorrear sin parar ; ^ hacer_v 0
+->grn mbochivivi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] fingir ; ^ hacer_v 0
+->grn jejapo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] explotar una bomba ; ^ hacer_v 0
+->grn mbopu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+
+*** hacer_v[-r] que alguien se aparte ; ^ hacer_v 0
+->grn mbopoi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que una cosa aumente de volumen ; ^ hacer_v 0
+->grn mboavevo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que alguien vierta lágrimas ; ^ hacer_v 0
+->grn mbohesay_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que un líquido se vuelva sólido ; ^ hacer_v 0
+->grn mbohypy'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que se sacuda ; ^ hacer_v 0
+->grn mbojaryvo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que se acueste ; ^ hacer_v 0
+->grn ñemoñeno_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que uno se equivoque ; ^ hacer_v 0
+->grn mopo'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que alguien guiñe el ojo ; ^ hacer_v 0
+->grn mbohesavi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que alguien sea grosero ; ^ hacer_v 0
+->grn motĩe'ỹ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que sobre ; ^ hacer_v 0
+->grn ñemohemby_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que muera ; ^ hacer_v 0
+->grn mote'õ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que ocurra ; ^ hacer_v 0
+->grn moingo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que se habra un forúnculo ; ^ hacer_v 0
+->grn mombu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que una cosa fija se mueva ; ^ hacer_v 0
+->grn mboku'e_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que alguien se ponga serio ; ^ hacer_v 0
+->grn mbohovasy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que algo se apolille ; ^ hacer_v 0
+->grn motĩĝua'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que alguien se sienta amargado y rencoroso ; ^ hacer_v 0
+->grn mbopy'aro_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que caiga el rocío ; ^ hacer_v 0
+->grn mboysapy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que sean muchos ; ^ hacer_v 0
+->grn mboheta_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que alguien se agache ; ^ hacer_v 0
+->grn mbojaivy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que tenga burbuja o espuma ; ^ hacer_v 0
+->grn mbohyjúi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que se seque ; ^ hacer_v 0
+->grn mbopiru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] que sea ágil ; ^ hacer_v 0
+->grn mborari_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+
+*** hacer_v[+r] bravo ; ^ hacer_v 0
+->grn ñemoñarõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] espeso y gomoso ; ^ hacer_v 0
+->grn moapovõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] angosto ; ^ hacer_v 0
+->grn mbopy'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] tarde ; ^ hacer_v 0
+->grn ñemonga'aru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] infrecuente ; ^ hacer_v 0
+->grn mopokã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] redonda ; ^ hacer_v 0
+->grn mboapu'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbyapu'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] gomoso ; ^ hacer_v 0
+->grn moapovõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] diferente ; ^ hacer_v 0
+->grn moingoe_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] claro ; ^ hacer_v 0
+->grn ñemyesakã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] feo ; ^ hacer_v 0
+->grn ñembovai_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] bajo de una cosa ; ^ hacer_v 0
+->grn mbokarape_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] distinto ; ^ hacer_v 0
+->grn ñemoambue_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] servil ; ^ hacer_v 0
+->grn motembiguái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] antipático ; ^ hacer_v 0
+->grn ñembohuguy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] fuerte ; ^ hacer_v 0
+->grn ñemohatã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ñemombarete_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] semejante ; ^ hacer_v 0
+->grn mbojogua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] joven ; ^ hacer_v 0
+->grn ñemongaria'y_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] líquido ; ^ hacer_v 0
+->grn ñembohyku_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] difícil una solución ; ^ hacer_v 0
+->grn mbohasy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] bello ; ^ hacer_v 0
+->grn moporã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] célebre ; ^ hacer_v 0
+->grn ñemoherãkuãngatu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] hábil ; ^ hacer_v 0
+->grn ñembokatupyry_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] áspero ; ^ hacer_v 0
+->grn mborora_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cojo ; ^ hacer_v 0
+->grn moñepã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn moparĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] chico ; ^ hacer_v 0
+->grn mbomini_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn momini_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] grueso ; ^ hacer_v 0
+->grn mbopoguasu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] crocante ; ^ hacer_v 0
+->grn mboaviru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] realizable ; ^ hacer_v 0
+->grn mbokatu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbokatu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] espeso ; ^ hacer_v 0
+->grn mohypy'ũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] alegre ; ^ hacer_v 0
+->grn ñembohory_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] visible ; ^ hacer_v 0
+->grn myesakã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] solo ; ^ hacer_v 0
+->grn mopokã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] oscuro ; ^ hacer_v 0
+->grn moñepytũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] cruel ; ^ hacer_v 0
+->grn ñembojero_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] perdurable ; ^ hacer_v 0
+->grn mbojepigua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pesado ; ^ hacer_v 0
+->grn mbopohýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] pesado ; ^ hacer_v 0
+->grn ñembopohýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] filoso ; ^ hacer_v 0
+->grn mohaimbe_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] grande ; ^ hacer_v 0
+->grn ñemongakuaa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] redondo ; ^ hacer_v 0
+->grn ñemboapu'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] uno ; ^ hacer_v 0
+->grn mopeteĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cóncavo ; ^ hacer_v 0
+->grn mopyko'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] agrio ; ^ hacer_v 0
+->grn mbohái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] rengo ; ^ hacer_v 0
+->grn ñemokarẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] rengo ; ^ hacer_v 0
+->grn moparĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mokarẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] posible ; ^ hacer_v 0
+->grn mboae_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] duro ; ^ hacer_v 0
+->grn ñemyatã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] más grande ; ^ hacer_v 0
+->grn mongakuaave_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] facil ; ^ hacer_v 0
+->grn mbohasy'ỹ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] leve ; ^ hacer_v 0
+->grn mombyky_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] corto ; ^ hacer_v 0
+->grn mombyky_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] resbaladizo ; ^ hacer_v 0
+->grn mosỹi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] azul ; ^ hacer_v 0
+->grn ñembohovy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] verde ; ^ hacer_v 0
+->grn ñembohovy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] más feo ; ^ hacer_v 0
+->grn mbovaive_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] defectuoso ; ^ hacer_v 0
+->grn momeĝua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] valiente ; ^ hacer_v 0
+->grn ñembopy'aguasu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cruel e indiferente ; ^ hacer_v 0
+->grn mopy'ahatã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] obscuro ; ^ hacer_v 0
+->grn mopytũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] parecido ; ^ hacer_v 0
+->grn mbojogua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] fulgente ; ^ hacer_v 0
+->grn mbojajái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] difícil ; ^ hacer_v 0
+->grn ñembohasy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] lustroso ; ^ hacer_v 0
+->grn mbovera_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cruel ; ^ hacer_v 0
+->grn mbojero_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] rico ; ^ hacer_v 0
+->grn mbohe_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] apetitoso ; ^ hacer_v 0
+->grn mbohe_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] enfermo ; ^ hacer_v 0
+->grn ñembohasy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] transparente ; ^ hacer_v 0
+->grn myesakã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] mucho ; ^ hacer_v 0
+->grn mboheta_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] mucho ; ^ hacer_v 0
+->grn ñemboheta_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] sabio ; ^ hacer_v 0
+->grn moarandu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] sabio ; ^ hacer_v 0
+->grn ñemoarandu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] bueno ; ^ hacer_v 0
+->grn ñemomorã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] accesible ; ^ hacer_v 0
+->grn <hupytyuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+
+*** hacer_v[+r] el loco ; ^ hacer_v 0
+->grn ñembotarova_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el tonto ; ^ hacer_v 0
+->grn ñembovýro_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ñembotavy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] amigo ; ^ hacer_v 0
+->grn ñemomu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] espacio ; ^ hacer_v 0
+->grn ñemopa'ũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el dormido ; ^ hacer_v 0
+->grn ñemonge_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] la comida ; ^ hacer_v 0
+->grn ñembi'uapo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el callado ; ^ hacer_v 0
+->grn ñemokirirĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] la cama ; ^ hacer_v 0
+->grn jehupapo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cosquillas ; ^ hacer_v 0
+->grn mokyrỹi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn joykécho_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] cosquillas mutuamente ; ^ hacer_v 0
+->grn ñomokyrỹi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] la cruz ; ^ hacer_v 0
+->grn ñemongurusu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el olvidado ; ^ hacer_v 0
+->grn ñembuesarái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el borracho ; ^ hacer_v 0
+->grn ñemonga'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ñemonga'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] sangre ; ^ hacer_v 0
+->grn ñembohuguy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] por superior ; ^ hacer_v 0
+->grn ñembotuvicha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] seguidamente ; ^ hacer_v 0
+->grn mbojoakykue_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] preparativos ; ^ hacer_v 0
+->grn moñembosako'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ñembosako'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ruido ; ^ hacer_v 0
+->grn mboayvu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn moparãrã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn pararã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn <hyapu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbopiriri_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] el sexo ; ^ hacer_v 0
+->grn poreno_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] el amor ; ^ hacer_v 0
+->grn poro'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ñoña_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn myrũ'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn poreno_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] un favor ; ^ hacer_v 0
+->grn mbojerovia_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] deporte ; ^ hacer_v 0
+->grn jetepyso_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ñeanga_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pedazos ; ^ hacer_v 0
+->grn moakytã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pedazos una cosa ; ^ hacer_v 0
+->grn mondoro_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** no hacer_v[-r] caso ; ^ hacer_v 1
+->grn <hechagi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] de vez en cuando ; ^ hacer_v 0
+->grn mopokãpokã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] periódicamente ; ^ hacer_v 0
+->grn mbojepigua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] frío ; ^ hacer_v 0
+->grn <ho'ysã_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mboro'y_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] trampas ; ^ hacer_v 0
+->grn moñuhã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] broma ; ^ hacer_v 0
+->grn mbojaru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] dos veces ; ^ hacer_v 0
+->grn mbojoivy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] el engreído ; ^ hacer_v 0
+->grn mboheko_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] locuras ; ^ hacer_v 0
+->grn ñe'ẽrei_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] viento ; ^ hacer_v 0
+->grn mboyvytu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] masaje ; ^ hacer_v 0
+->grn pokyty_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] humo ; ^ hacer_v 0
+->grn motatatĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn myatatĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pipi ; ^ hacer_v 0
+->grn kuaru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] fuego ; ^ hacer_v 0
+->grn mbojepota_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn myatapỹi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn jatapy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] calor sofocante y húmedo ; ^ hacer_v 0
+->grn mbyakuvo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] nuevamente ; ^ hacer_v 0
+->grn mbopyahujey_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] sombra ; ^ hacer_v 0
+->grn mokuarahy'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn monguarahy'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mo'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+
+*** hacer_v[+r] a la noche ; ^ hacer_v 0
+->grn ñembopyhare_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] barro ; ^ hacer_v 0
+->grn ñembotuju_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el nido ; ^ hacer_v 0
+->grn jehupapo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el dueño ; ^ hacer_v 0
+->grn ñemomba'e_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el melindroso ; ^ hacer_v 0
+->grn ñemboheko_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] camino ; ^ hacer_v 0
+->grn ñembohape_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] de casa ; ^ hacer_v 0
+->grn jehogapo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ñembo'óga_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el grande ; ^ hacer_v 0
+->grn ñembotuvicha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] una comida toda grumosa ; ^ hacer_v 0
+->grn myakytã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] de casa o vivienda ; ^ hacer_v 0
+->grn jogapo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] borde ; ^ hacer_v 0
+->grn ñemohembe'y_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el prepotente ; ^ hacer_v 0
+->grn ñemombarete_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el montaraz ; ^ hacer_v 0
+->grn ñembohesaite_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] hombre formal ; ^ hacer_v 0
+->grn ñembokaraiguasu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] piedra ; ^ hacer_v 0
+->grn ñemboita_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] grueso ; ^ hacer_v 0
+->grn ñemoanambusu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] una boca ; ^ hacer_v 0
+->grn ñembojuru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el atolondrado ; ^ hacer_v 0
+->grn ñembotavyrai_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] memoria ; ^ hacer_v 0
+->grn ñemomandu'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el ávido ; ^ hacer_v 0
+->grn ñembotaryrýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] compañia en la cama ; ^ hacer_v 0
+->grn ñembopohýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] de la boca pequeña ; ^ hacer_v 0
+->grn ñembojuru'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] nudo ; ^ hacer_v 0
+->grn ñemoapokytã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el señor ; ^ hacer_v 0
+->grn ñembokarai_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] de menos ; ^ hacer_v 0
+->grn ñemomichĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] un ovillo ; ^ hacer_v 0
+->grn ñyñýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn kuruchĩ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el triste contando sus propias penas ; ^ hacer_v 0
+->grn ñembyasyuka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] bolsa ; ^ hacer_v 0
+->grn ñembovosa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] de erudito ; ^ hacer_v 0
+->grn ñemoarandu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el indolente ; ^ hacer_v 0
+->grn ñemopy'aratã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] intervalo ; ^ hacer_v 0
+->grn ñemopa'ũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el desfachatado ; ^ hacer_v 0
+->grn ñembohova'atã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] a un lado ; ^ hacer_v 0
+->grn ñemohembe'y_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] de compañera ; ^ hacer_v 0
+->grn ñemboaguasa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] la costura ; ^ hacer_v 0
+->grn mbovyvy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] del viejo ; ^ hacer_v 0
+->grn ñembotuja_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] rezongón ; ^ hacer_v 0
+->grn ñemoñe'ẽnguru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] a uno ampollas ; ^ hacer_v 0
+->grn ñemboapiru'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] del pobre ; ^ hacer_v 0
+->grn ñemomboriahu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] cola y prado ; ^ hacer_v 0
+->grn ñembohuguái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] un lugar ; ^ hacer_v 0
+->grn ñemohenda_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el mimoso ; ^ hacer_v 0
+->grn ñemokunu'ũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] del valentón ; ^ hacer_v 0
+->grn mopy'ahatã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] la barba ; ^ hacer_v 0
+->grn ñehendyvapo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] mugre ; ^ hacer_v 0
+->grn ñembojare_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] agujero ; ^ hacer_v 0
+->grn ñembokua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] del mudo ; ^ hacer_v 0
+->grn ñemoñe'ẽngu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] de nido ; ^ hacer_v 0
+->grn jehaitypo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ñembohaity_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] del perezoso ; ^ hacer_v 0
+->grn ñemoate'ỹ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el débil ; ^ hacer_v 0
+->grn ñemokãngy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el nido ; ^ hacer_v 0
+->grn jaitypo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] cara dura ; ^ hacer_v 0
+->grn ñembohova'atã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el hábitad ; ^ hacer_v 0
+->grn jehupapo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] frente uno con otro ; ^ hacer_v 0
+->grn ñembohovái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ñembojovake_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] costra ; ^ hacer_v 0
+->grn ñembojare_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] bosque ; ^ hacer_v 0
+->grn ñemboka'aguy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el joven ; ^ hacer_v 0
+->grn ñembokaria'y_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] hediondo ; ^ hacer_v 0
+->grn ñemone_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] de tierra ; ^ hacer_v 0
+->grn ñemboyvy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ñembo'yvy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] del simpático ; ^ hacer_v 0
+->grn mokachiãi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] de un nombre ; ^ hacer_v 0
+->grn ñembohéra_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] probo o santo ; ^ hacer_v 0
+->grn ñemomarãngatu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] mal olor ; ^ hacer_v 0
+->grn mone_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+r] el enojado o resentido ; ^ hacer_v 0
+->grn ñemoñemyrõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+
+*** hacer_v[-r] una mano ; ^ hacer_v 0
+->grn mbopo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] hondo ; ^ hacer_v 0
+->grn mbohypy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] una boca ; ^ hacer_v 0
+->grn mbojuru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cruz con el dedo ; ^ hacer_v 0
+->grn mongurusu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] muecas arrugando la nariz ; ^ hacer_v 0
+->grn ñemotĩcha'ĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] proyectos ; ^ hacer_v 0
+->grn mo'ãnga'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] acrobácia ; ^ hacer_v 0
+->grn ñemborari_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] el ombligo ; ^ hacer_v 0
+->grn mbopuru'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] un parentesis ; ^ hacer_v 0
+->grn mopa'ũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ceniza ; ^ hacer_v 0
+->grn motanimbu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] totalmente polvo ; ^ hacer_v 0
+->grn mongu'ichõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] polvo de una cosa ; ^ hacer_v 0
+->grn myangu'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] murmullo ; ^ hacer_v 0
+->grn mboguyryry_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] zanjas por debajo ; ^ hacer_v 0
+->grn guyru_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] de nuevo otra vez ; ^ hacer_v 0
+->grn mbopyahujey_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] goteos ; ^ hacer_v 0
+->grn mondyky_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] racimos ; ^ hacer_v 0
+->grn moapesã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] plieges ; ^ hacer_v 0
+->grn mbopy'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pedazos de tejidos ; ^ hacer_v 0
+->grn mondoro_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] camino ; ^ hacer_v 0
+->grn mbohape_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] seña ; ^ hacer_v 0
+->grn jepoyru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pisar con firmeza ; ^ hacer_v 0
+->grn mopyrũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ojitos ; ^ hacer_v 0
+->grn ñembuesavi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] con ahínco ; ^ hacer_v 0
+->grn ñepia'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] el interesante ; ^ hacer_v 0
+->grn mboheko_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] reverencia ; ^ hacer_v 0
+->grn moñesũpẽhẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] diestro ; ^ hacer_v 0
+->grn mbokatupyry_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] el hilado por torcido a mano ; ^ hacer_v 0
+->grn povã_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] punta ; ^ hacer_v 0
+->grn mbohakua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ralas ; ^ hacer_v 0
+->grn myesakã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] dúo ; ^ hacer_v 0
+->grn mbojoyvy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] liga ; ^ hacer_v 0
+->grn mboliga_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pedacitos ; ^ hacer_v 0
+->grn myangu'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mongu'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] hedor ; ^ hacer_v 0
+->grn mohaguino_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] crias ; ^ hacer_v 0
+->grn moñemuña_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[+oi] bizco ; ^ hacer_v 0
+->grn mbohesavi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] costumbre ; ^ hacer_v 0
+->grn mbojepigua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] revisar minuciosamente ; ^ hacer_v 0
+->grn mbojepovyvy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cosas ; ^ hacer_v 0
+->grn mba'ejapo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] sabroso ; ^ hacer_v 0
+->grn mbohe_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] gimnasia ; ^ hacer_v 0
+->grn jetepyso_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] más pesado ; ^ hacer_v 0
+->grn mbopohyive_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] piel a algo ; ^ hacer_v 0
+->grn mbopire_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ostentación de agilidad ; ^ hacer_v 0
+->grn ñemborari_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] genuflexión ; ^ hacer_v 0
+->grn moñesũpẽhẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] joven ; ^ hacer_v 0
+->grn mongaria'y_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] el melindroso ; ^ hacer_v 0
+->grn mboheko_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] un hilado de doble filamento ; ^ hacer_v 0
+->grn mbojoivy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] reverencias en genuflexión ; ^ hacer_v 0
+->grn jerojy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] llaga ; ^ hacer_v 0
+->grn mbyai_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] polvareda ; ^ hacer_v 0
+->grn timbo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] coto ; ^ hacer_v 0
+->grn mboju'ái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] terrones ; ^ hacer_v 0
+->grn myakytã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn moapokytã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] contramarcha ; ^ hacer_v 0
+->grn ñembojevy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] gargara profunda ; ^ hacer_v 0
+->grn mboahy'opyguara_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] nudos ; ^ hacer_v 0
+->grn moakytã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn myakytã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] papel desairado ; ^ hacer_v 0
+->grn mbohuguy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] aguda la punta ; ^ hacer_v 0
+->grn mbohakua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] partícipe de ; ^ hacer_v 0
+->grn mboja'o_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] de bastonero ; ^ hacer_v 0
+->grn mbo'ýva_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] genuflexiones ; ^ hacer_v 0
+->grn jerojy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] piz ; ^ hacer_v 0
+->grn kuaru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] un patio ; ^ hacer_v 0
+->grn mongorapy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] en teoría ; ^ hacer_v 0
+->grn moñesyrũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ruido de campanilla ; ^ hacer_v 0
+->grn mbochililin_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] arrorró ; ^ hacer_v 0
+->grn mbotorore_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] guiñada ; ^ hacer_v 0
+->grn ñembohesavi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] dobleces ; ^ hacer_v 0
+->grn mboyvapa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] análisis ; ^ hacer_v 0
+->grn <hesa'ỹijo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] un mal papel ; ^ hacer_v 0
+->grn mbohái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] hombre ; ^ hacer_v 0
+->grn mongaria'y_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ruido como al tostarse el maíz ; ^ hacer_v 0
+->grn mbopororo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] morisqueta ; ^ hacer_v 0
+->grn ñembohovavai_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ruido al masticar cosas crocantes ; ^ hacer_v 0
+->grn mopurũrũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] hoyo ; ^ hacer_v 0
+->grn mopyko'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] huellas con el pie ; ^ hacer_v 0
+->grn mbopypore_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] para que otra persona coma ; ^ hacer_v 0
+->grn mongaruka_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] seña negativa con el dedo ; ^ hacer_v 0
+->grn ñekuãmbovava_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] hilo ; ^ hacer_v 0
+->grn povã_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mba'epovã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] hincapié ; ^ hacer_v 0
+->grn moñesũpẽhẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] añicos ; ^ hacer_v 0
+->grn myangu'i_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ruido el viento ; ^ hacer_v 0
+->grn mboguyryry_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] rastra ; ^ hacer_v 0
+->grn mbohapykuere_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] mal al ojo ; ^ hacer_v 0
+->grn mbohesavi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] un examen de conciencia ; ^ hacer_v 0
+->grn ñamindu'u_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] encabezamiento ; ^ hacer_v 0
+->grn moakã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] retazos ; ^ hacer_v 0
+->grn mboa'y_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] un propósito ; ^ hacer_v 0
+->grn ñembopy'apeteĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] del hombre guapo ; ^ hacer_v 0
+->grn ñembokaria'y_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] mal uso de la lengua ; ^ hacer_v 0
+->grn ñe'ẽvai_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] montoncito de hojas ; ^ hacer_v 0
+->grn mbochovi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] pereza ; ^ hacer_v 0
+->grn myate'ỹ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbokaigue_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] un hoyo ; ^ hacer_v 0
+->grn mbokua_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] montículo ; ^ hacer_v 0
+->grn mbochovi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] esguince ; ^ hacer_v 0
+->grn mokoni_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] cornudo ; ^ hacer_v 0
+->grn moakãratĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] por turno ; ^ hacer_v 0
+->grn mbojopyru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] ruido ; ^ hacer_v 0
+->grn mboperere_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] nido ; ^ hacer_v 0
+->grn jaitypo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] muecas despectivas con la boca ; ^ hacer_v 0
+->grn ñembojurukechẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] papelones ; ^ hacer_v 0
+->grn mone_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** hacer_v[-r] harina de una cosa ; ^ hacer_v 0
+->grn mongu'ichõ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+
+## transitive verbs
+## -- antipassive (voz subsuntiva) [-r] (cosas) => mba'e... 
+## -- antipassive (voz subsuntiva) [-r] (a personas) => poro...
+*** ver_v[-r] cosas ; ^ ver_v 0
+->grn mba'erecha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** ver_v[-r] a personas ; ^ ver_v 0
+->grn porohecha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+
+# mba'e + root
+*** aplastar_v[-r] algo ; ^ aplastar_v 0 ; #7
+->grn mba'ejopy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** apreciar_v[-r] las cosas ; ^ apreciar_v 0 ; #6
+->grn mba'erayhu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** apretar_v[-r] algo ; ^ apretar_v 0
+->grn mba'ejopy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** atajar_v[-r] algo ; ^ atajar_v 0
+->grn mba'ejoko_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** besuquear_v[-r] las cosas ; ^ besuquear_v 0
+->grn mba'eretũretũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** chupar_v[-r] algo ; ^ chupar_v 0 ; #2
+->grn mba'epyte_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** coger_v[-r] algo ; ^ coger_v 0 ; #14
+->grn mba'epysy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** cubrir_v[-r] algo ; ^ cubrir_v 0 ; #153
+->grn mba'emo'ã_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** cuestionar_v[-r] algo ; ^ cuestionar_v 0
+->grn mba'erekýi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** cuidar_v[-r] las cosas ; ^ cuidar_v 0
+->grn mba'eñangareko_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** dar_v[-r] algo a alguien ; ^ dar_v 0
+->grn mba'eremime'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** desear_v[-r] algo de alguien ; ^ desear_v 0
+->grn mba'erembipota_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** despachar_v[-r] encomienda ; ^ despachar_v 0
+->grn mba'emondo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** enseñar_v[-r] algo ; ^ enseñar_v 0 ; #166
+->grn mba'embo'e_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** entristecer_v[-r] a alguien ; ^ entristecer_v 0 ; #18
+->grn mba'eremimbyasy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** enviar_v[-r] algo ; ^ enviar_v 0 ; #585
+->grn mba'emondo_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mba'eremimbou_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mba'embou_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** liar_v[-r] cosas ; ^ liar_v 0
+->grn mba'emama_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** lograr_v[-r] un objetivo ; ^ lograr_v 0
+->grn mba'ejehupyty_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** oler_v[-r] las cosas ; ^ oler_v 0 ; #3
+->grn mba'eretũ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** oprimir_v[-r] a alguien ; ^ oprimir_v 0
+->grn mba'ejopy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** pedir_v[-r] cosas a alguien ; ^ pedir_v 0
+->grn mba'ejerure_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** prensar_v[-r] alguna cosa ; ^ prensar_v 0
+->grn mba'ejopy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** prestar_v[-r] una cosa ; ^ prestar_v 0 ; #32
+->grn mba'eporu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** quemar_v[-r] cosas ; ^ quemar_v 0 ; #154
+->grn mba'ehapy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** revolver_v[-r] algo por dentro ; ^ revolver_v 0 ; #4
+->grn mba'epyvu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** robar_v[-r] cosa de pequeño valor ; ^ robar_v 0
+->grn mba'eavyky_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** saber_v[-r] escuchar las cosas ; ^ saber_v 0
+->grn mba'erendu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** sembrar_v[-r] algo ; ^ sembrar_v 0 ; #77
+->grn mba'eñotỹ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** sentir_v[-r] cariño hacia las cosas ; ^ sentir_v 0 ; #66
+->grn mba'erayhu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tomar_v[-r] algo ; ^ tomar_v 0 ; #805
+->grn mba'epysy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn japokói_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** traer_v[-r] cosas ; ^ traer_v 0
+->grn mba'ereru_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+*** tratar_v[-r] una obra ajena ; ^ tratar_v 0 ; #48
+->grn mba'eavyky_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+
 
 *** bueno_a $n ; ^ bueno_a 0
 ->grn $n porã_v[pos=adj] ; || 1, 0

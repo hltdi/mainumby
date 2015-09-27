@@ -68,6 +68,9 @@
 # 2015.08.13
 # -- Forced feature agreement in MorphoSyn matching works with embedded features (doesn't
 #    override existing subfeature values)
+# 2015.09.26
+# -- Groups have a priority method that assigns a score based on the number of tokens and
+#    features; used in ordering groups for particular keys.
 
 import copy, itertools
 import yaml
@@ -111,6 +114,7 @@ MS_FORM_FEATS = re.compile("\s*([$<'|\w]*)\s*((?:\[.+\])?)$")
 MS_NEG_FEATS = re.compile("\s*!(\[.+\])$")
 MS_AGR = re.compile("\s*(\d)\s*=>\s*(\d)\s*(.+)$")
 MS_DELETE = re.compile("\s*//\s*(.+)$")
+MS_ADD = re.compile("\s*\+\+\s*(.+)$")
 # digit -> [FS], all obligatory
 MS_FEATMOD = re.compile("\s*(\d)\s*->\s*(\[.+\])$")
 
@@ -254,6 +258,12 @@ class Group(Entry):
     def make_name(tokens):
         """Each token is either a string or a (string, feat_dict) pair. In name, they're separated by '.'."""
         return '.'.join(tokens)
+
+    def priority(self):
+        """Returns a value that is used in sorting the groups associated with a particular key. Groups with more tokens and more features
+        have priority."""
+        featscore = .3 * sum([len(f) for f in self.features if f]) if self.features else 0.0
+        return len(self.tokens) + featscore
 
     # Serialization
 
@@ -532,6 +542,7 @@ class MorphoSyn(Entry):
         attribs = pattern[1:]
         self.agr = None
         self.del_indices = []
+        self.add_items = []
         self.featmod = None
         for attrib in attribs:
             # Within pattern feature agreement
@@ -558,13 +569,21 @@ class MorphoSyn(Entry):
                 for d in del_string.split():
                     self.del_indices.append(int(d))
                 continue
+            match = MS_ADD.match(attrib)
+            if match:
+                add_string = match.groups()[0].split(',')
+                for item in add_string:
+                    add_index, add_item = item.split()
+                    add_index = int(add_index)
+                    self.add_items.append((add_index, add_item))
+                continue
             # Index of pattern elements whose features are to be modified
             match = MS_FEATMOD.match(attrib)
             if match:
                 fm_index, fm_feats = match.groups()
                 self.featmod = int(fm_index), FeatStruct(fm_feats)
                 continue
-            print("Something wrong with attribute {}".format(attrib))
+            print("Something wrong with MS attribute {}".format(attrib))
         p = []
         for item in tokens.split(MS_PATTERN_SEP):
             negmatch = MS_NEG_FEATS.match(item)
@@ -723,8 +742,8 @@ class MorphoSyn(Entry):
         Works by mutating the features in match.
         If there are deletion constraints, prefix * to the relevant tokens.
         """
-        if verbosity:
-            print(" Enforcing constraints for match {}".format(match))
+#        if verbosity:
+        print(" Enforcing constraints for match {}".format(match))
         start, end, elements = match
         if self.agr:
             srci, trgi, feats = self.agr
@@ -760,6 +779,10 @@ class MorphoSyn(Entry):
                 if verbosity:
                     print("Recording deletion for match element {}".format(elements[i]))
                 elements[i][0] = '~' + elements[i][0]
+        if self.add_items:
+            print("Warning: Adding items in match Morphosyn not yet implemented!")
+#            for i, item in self.add_items:
+#                print("Adding item {} in position {}".format(item, i))
         if self.featmod:
             # Modify features in indexed element
             fm_index, fm_feats = self.featmod

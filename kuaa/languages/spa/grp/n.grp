@@ -1,14 +1,1074 @@
 ## patterns for nouns
 # adj N -> N adj
-# N de $n ->
+# N de $n -> (these appear at the end, except for the two examples)
 # ? num N ->
 # N que ->
 # other relative clause patterns?
 # N con/por/de/para el/la/lo/los/las que
-*** $a profesor_n ; ^ profesor_n 1
-->grn mbo'ehára_n $a ; || 1, 0 ; 1==0 n:n,poses:poses
+*** abogado_n de $n ; ^ abogado_n 0
+->grn $n pysyrõha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n avogádo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** abundancia_n de $n ; ^ abundancia_n 0
+->grn $n <heta_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n api'i_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** aceite_n de $n ; ^ aceite_n 0
+->grn $n ñandy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñandyry_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** actividad_n de $n ; ^ actividad_n 0
+->grn $n <hembiapo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hetia'e_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** acuerdo_n de $n ; ^ acuerdo_n 0
+->grn $n <hekopyty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jekopyty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** advertencia_n de $n ; ^ advertencia_n 0
+->grn $n jehesape'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n marandu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** agradecimiento_n de $n ; ^ agradecimiento_n 0
+->grn $n <hepyme'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n aguyje_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mba'erechakuaa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** alegría_n de $n ; ^ alegría_n 0
+->grn $n vy'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hory_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** alianza_n de $n ; ^ alianza_n 0
+->grn $n añama_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n anama_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kuãirũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ana_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** alma_n de $n ; ^ alma_n 0
+->grn $n py'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ánga_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** ambiente_n de $n ; ^ ambiente_n 0
+->grn $n <heko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hekoha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** amigo_n de $n ; ^ amigo_n 0
+->grn $n irũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n angirũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** amor_n de $n ; ^ amor_n 0
+->grn $n <hayhu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hembiayhu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mborayhu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kunu'ũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** angustia_n de $n ; ^ angustia_n 0
+->grn $n angata_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jepy'apy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** anhelo_n de $n ; ^ anhelo_n 0
+->grn $n mba'epota_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n angata_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jepota_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hembipota_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** anillo_n de $n ; ^ anillo_n 0
+->grn $n kuãirũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kuairũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** ansia_n de $n ; ^ ansia_n 0
+->grn $n py'apy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n angata_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n py'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n potaiterei_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** apertura_n de $n ; ^ apertura_n 0
+->grn $n tano_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jepe'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** apoyo_n de $n ; ^ apoyo_n 0
+->grn $n jejoko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jepytaso_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** asamblea_n de $n ; ^ asamblea_n 0
+->grn $n amandaje_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mbyano'õ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n no'õ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** aspiración_n de $n ; ^ aspiración_n 0
+->grn $n mba'epota_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hembipota_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** atención_n de $n ; ^ atención_n 0
+->grn $n ñeñangareko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hesa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n japysaka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jesareko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** aumento_n de $n ; ^ aumento_n 0
+->grn $n jerumo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñembojo'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemboheta_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** ausencia_n de $n ; ^ ausencia_n 0
+->grn $n ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pore'ỹ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n piã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** ayuda_n de $n ; ^ ayuda_n 0
+->grn $n ñepytyvõ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pysyrõ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** bajada_n de $n ; ^ bajada_n 0
+->grn $n guejyha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n guejy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** banco_n de $n ; ^ banco_n 0
+->grn $n apyka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n guapyha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** barco_n de $n ; ^ barco_n 0
+->grn $n yga_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ygára_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n garata_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** bondad_n de $n ; ^ bondad_n 0
+->grn $n mba'eporã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ãngatu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hekokatu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** brote_n de $n ; ^ brote_n 0
+->grn $n <hoky_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <ha'ỹi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hembo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** búsqueda_n de $n ; ^ búsqueda_n 0
+->grn $n mboaguera_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <heka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jetypeka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** caballo_n de $n ; ^ caballo_n 0
+->grn $n kavaju_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** cabo_n de $n ; ^ cabo_n 0
+->grn $n <hembe'y_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apýra_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** cadena_n de $n ; ^ cadena_n 0
+->grn $n apytĩ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n itasã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** caja_n de $n ; ^ caja_n 0
+->grn $n <hyru_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mba'eyru_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mba'yru_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** caldo_n de $n ; ^ caldo_n 0
+->grn $n <hykue_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jukysy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** capacidad_n de $n ; ^ capacidad_n 0
+->grn $n akã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ha'eve_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** carga_n de $n ; ^ carga_n 0
+->grn $n jokuapy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mba'epohýi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mbohýi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** caso_n de $n ; ^ caso_n 0
+->grn $n ojehúva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jehu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** castigo_n de $n ; ^ castigo_n 0
+->grn $n jejokua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mbarakaja_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** caída_n de $n ; ^ caída_n 0
+->grn $n ñemomýi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** centro_n de $n ; ^ centro_n 0
+->grn $n puru'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mbyte_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pyte_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apyte_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** ciudadano_n de $n ; ^ ciudadano_n 0
+->grn $n tavaygua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n tavagua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hetãygua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** claridad_n de $n ; ^ claridad_n 0
+->grn $n <hesakã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hesape_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** clase_n de $n ; ^ clase_n 0
+->grn $n mbo'esyry_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n lája_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** cobertura_n de $n ; ^ cobertura_n 0
+->grn $n <hesamo'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ahoja_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** comercio_n de $n ; ^ comercio_n 0
+->grn $n ñemuha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** comienzo_n de $n ; ^ comienzo_n 0
+->grn $n ypy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñepyrũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** comparación_n de $n ; ^ comparación_n 0
+->grn $n mbojojáva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñe'ẽnga_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñembojoja_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** compañero_n de $n ; ^ compañero_n 0
+->grn $n irũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mitã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** compra_n de $n ; ^ compra_n 0
+->grn $n mba'ejogua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jejogua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** comunidad_n de $n ; ^ comunidad_n 0
+->grn $n <henda_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hekoa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n aty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** confusión_n de $n ; ^ confusión_n 0
+->grn $n sarambi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n javorái_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** conjunto_n de $n ; ^ conjunto_n 0
+->grn $n aty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n no'õ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** consejo_n de $n ; ^ consejo_n 0
+->grn $n <hesape'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemoñe'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** consentimiento_n de $n ; ^ consentimiento_n 0
+->grn $n ñembojerovia_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemonei_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** consideración_n de $n ; ^ consideración_n 0
+->grn $n apo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mba'erechakuaa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hechakuaa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** convenio_n de $n ; ^ convenio_n 0
+->grn $n oñoñe'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñe'ẽme'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** coraje_n de $n ; ^ coraje_n 0
+->grn $n kyhyje'ỹ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n py'aguasu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** corazón_n de $n ; ^ corazón_n 0
+->grn $n korasõ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n py'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñe'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** corrección_n de $n ; ^ corrección_n 0
+->grn $n ñemyatyrõ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n porã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hekokatu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** corriente_n de $n ; ^ corriente_n 0
+->grn $n ngululu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n gululu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** costo_n de $n ; ^ costo_n 0
+->grn $n <hepyme'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hepy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** costumbre_n de $n ; ^ costumbre_n 0
+->grn $n <hekove_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <heko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** creador_n de $n ; ^ creador_n 0
+->grn $n mba'eapohára_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apohára_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** cría_n de $n ; ^ cría_n 0
+->grn $n ñemuñare_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemoña_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** cuestión_n de $n ; ^ cuestión_n 0
+->grn $n ñembojovake_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñembohovái_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** cuidado_n de $n ; ^ cuidado_n 0
+->grn $n jerereko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñeñangareko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n angata_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n py'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** cultivo_n de $n ; ^ cultivo_n 0
+->grn $n ñemitỹ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hemitỹngue_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** cultura_n de $n ; ^ cultura_n 0
+->grn $n arandukuaa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <heko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n arandupy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** cumbre_n de $n ; ^ cumbre_n 0
+->grn $n <hu'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n akã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** círculo_n de $n ; ^ círculo_n 0
+->grn $n jerekuévo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñama_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kora_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** deber_n de $n ; ^ deber_n 0
+->grn $n apoukapy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hekorã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** decisión_n de $n ; ^ decisión_n 0
+->grn $n py'apeteĩ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñembopy'apeteĩ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** defensa_n de $n ; ^ defensa_n 0
+->grn $n pysyrõ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñepysyrõ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hakate'ỹ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** demostración_n de $n ; ^ demostración_n 0
+->grn $n <hechaukarã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jehechauka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** depósito_n de $n ; ^ depósito_n 0
+->grn $n <hembe'y_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** desarrollo_n de $n ; ^ desarrollo_n 0
+->grn $n ñemyasãi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemopu'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemongakuaa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** desastre_n de $n ; ^ desastre_n 0
+->grn $n guyryry_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n aru_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** deseo_n de $n ; ^ deseo_n 0
+->grn $n mba'epota_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hembipota_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** desesperación_n de $n ; ^ desesperación_n 0
+->grn $n py'aropu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n vy'ave'ỹ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** desgracia_n de $n ; ^ desgracia_n 0
+->grn $n jehuvai_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pane_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñembohuguy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** desprecio_n de $n ; ^ desprecio_n 0
+->grn $n jepoyhu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n royrõ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jeguaru_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** diferencia_n de $n ; ^ diferencia_n 0
+->grn $n juavy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n joavy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** dificultad_n de $n ; ^ dificultad_n 0
+->grn $n <hasy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hovatavy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pa'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hypy'ũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** dinero_n de $n ; ^ dinero_n 0
+->grn $n viru_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pirapire_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** disciplina_n de $n ; ^ disciplina_n 0
+->grn $n mbo'epy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mbo'eha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kuaaty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** discurso_n de $n ; ^ discurso_n 0
+->grn $n ñe'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemoñe'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** disposición_n de $n ; ^ disposición_n 0
+->grn $n sako'i_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n akã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hetia'e_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** división_n de $n ; ^ división_n 0
+->grn $n ñemboja'o_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñembovo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** diálogo_n de $n ; ^ diálogo_n 0
+->grn $n ñemongeta_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñomongeta_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemoñe'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** dolor_n de $n ; ^ dolor_n 0
+->grn $n mba'asy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hasy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** duda_n de $n ; ^ duda_n 0
+->grn $n moherã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n py'aheta_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n py'amokõi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** dueño_n de $n ; ^ dueño_n 0
+->grn $n jára_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n karai_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** eficacia_n de $n ; ^ eficacia_n 0
+->grn $n aje_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mbarete_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** eje_n de $n ; ^ eje_n 0
+->grn $n mbytegua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jere'ýva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n povãha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** ejemplo_n de $n ; ^ ejemplo_n 0
+->grn $n <hechapyrã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hechauka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** elección_n de $n ; ^ elección_n 0
+->grn $n <hesa'o_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jeporavo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** elevación_n de $n ; ^ elevación_n 0
+->grn $n jejupi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jehupi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** enfermedad_n de $n ; ^ enfermedad_n 0
+->grn $n mba'asy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hasy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** enseñanza_n de $n ; ^ enseñanza_n 0
+->grn $n mbo'e_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <heko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** entendimiento_n de $n ; ^ entendimiento_n 0
+->grn $n arandu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kuaa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apytu'ũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** era_n de $n ; ^ era_n 0
+->grn $n ñemitỹ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kokue_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** error_n de $n ; ^ error_n 0
+->grn $n avy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jejavy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** escala_n de $n ; ^ escala_n 0
+->grn $n hupiha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jupiha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** escalera_n de $n ; ^ escalera_n 0
+->grn $n hupiha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jupiha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** esfuerzo_n de $n ; ^ esfuerzo_n 0
+->grn $n <ha'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñeha'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jepytaso_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** espacio_n de $n ; ^ espacio_n 0
+->grn $n <henda_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pa'ũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n arapy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** espíritu_n de $n ; ^ espíritu_n 0
+->grn $n py'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ánga_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n póra_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pytu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** estación_n de $n ; ^ estación_n 0
+->grn $n guejyha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pytaha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** excusa_n de $n ; ^ excusa_n 0
+->grn $n jeekopia_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jepia_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** existencia_n de $n ; ^ existencia_n 0
+->grn $n <hekove_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <heko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** exposición_n de $n ; ^ exposición_n 0
+->grn $n <hecharã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hechaukaha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** extensión_n de $n ; ^ extensión_n 0
+->grn $n ñemyasãi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jepyso_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** extremo_n de $n ; ^ extremo_n 0
+->grn $n <hembe'y_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** fecha_n de $n ; ^ fecha_n 0
+->grn $n jasy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n arange_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ára_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** fin_n de $n ; ^ fin_n 0
+->grn $n opa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n paha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apýra_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** final_n de $n ; ^ final_n 0
+->grn $n <hu'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n paha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** firmeza_n de $n ; ^ firmeza_n 0
+->grn $n jepytaso_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mbarete_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n guata_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** fondo_n de $n ; ^ fondo_n 0
+->grn $n <hugua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n guy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** forma_n de $n ; ^ forma_n 0
+->grn $n <ha'anga_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ysaja_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** fracaso_n de $n ; ^ fracaso_n 0
+->grn $n pu'aka'ỹ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pane_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** frente_n de $n ; ^ frente_n 0
+->grn $n <henonde_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n syva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hovái_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** fruto_n de $n ; ^ fruto_n 0
+->grn $n a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n yva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** fundador_n de $n ; ^ fundador_n 0
+->grn $n mopu'ãha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n moñepyrũha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** fundamento_n de $n ; ^ fundamento_n 0
+->grn $n <hapyta_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jepytasoha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñepyrũha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** gala_n de $n ; ^ gala_n 0
+->grn $n jegua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jeguaka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** ganado_n de $n ; ^ ganado_n 0
+->grn $n <hymba_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mymbakuéra_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hymba_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** gente_n de $n ; ^ gente_n 0
+->grn $n <hapicha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n yvypóra_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n lomitã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** gloria_n de $n ; ^ gloria_n 0
+->grn $n jajái_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hesape_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n verapy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** golpe_n de $n ; ^ golpe_n 0
+->grn $n jejokua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pete_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** guardián_n de $n ; ^ guardián_n 0
+->grn $n ñongatuha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñangarekoha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** guía_n de $n ; ^ guía_n 0
+->grn $n <hendota_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n sambyhyha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mboguataha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** habitante_n de $n ; ^ habitante_n 0
+->grn $n oikovéva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n tavagua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n yvypóra_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** habla_n de $n ; ^ habla_n 0
+->grn $n ñe'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ayvu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** hacienda_n de $n ; ^ hacienda_n 0
+->grn $n mba'ekuéra_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hymba_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** hambre_n de $n ; ^ hambre_n 0
+->grn $n py'arasy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n vare'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñembyahýi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** hecho_n de $n ; ^ hecho_n 0
+->grn $n <hembiasa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ojehúva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n añetegua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** hijo_n de $n ; ^ hijo_n 0
+->grn $n mitã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n memby_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** hilo_n de $n ; ^ hilo_n 0
+->grn $n poyvi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** hipócrita_n de $n ; ^ hipócrita_n 0
+->grn $n <hovamokõi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ijapeguypeguáva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** historia_n de $n ; ^ historia_n 0
+->grn $n <hembiasakue_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mombe'upy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n káso_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ojehúva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n morangu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** hombre_n de $n ; ^ hombre_n 0
+->grn $n kuimba'e_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n yvypóra_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ava_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** horizonte_n de $n ; ^ horizonte_n 0
+->grn $n ararapo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n arapaha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** humanidad_n de $n ; ^ humanidad_n 0
+->grn $n taupaha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hekoasy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** idioma_n de $n ; ^ idioma_n 0
+->grn $n ñe'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ayvu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** iglesia_n de $n ; ^ iglesia_n 0
+->grn $n tupão_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n tupao_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** igual_n de $n ; ^ igual_n 0
+->grn $n <hapicha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ojoguáva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñaimo'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** igualdad_n de $n ; ^ igualdad_n 0
+->grn $n joja_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <heko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hekojoja_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jojaha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** imaginación_n de $n ; ^ imaginación_n 0
+->grn $n py'ápe_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hemimo'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n angata_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** indicación_n de $n ; ^ indicación_n 0
+->grn $n jehechauka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hechauka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** informe_n de $n ; ^ informe_n 0
+->grn $n ñemombe'u_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n marandu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** inicio_n de $n ; ^ inicio_n 0
+->grn $n ypy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n akã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñepyrũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** inquietud_n de $n ; ^ inquietud_n 0
+->grn $n ãngareko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n angata_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jepy'apy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** inteligencia_n de $n ; ^ inteligencia_n 0
+->grn $n akã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n arandu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** intento_n de $n ; ^ intento_n 0
+->grn $n pia'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñeha'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** interior_n de $n ; ^ interior_n 0
+->grn $n <hyepypegua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n koty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hyepy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** investigación_n de $n ; ^ investigación_n 0
+->grn $n <hembikuaareka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mboaguera_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jetypeka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** jefe_n de $n ; ^ jefe_n 0
+->grn $n mburuvicha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <huvicha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** juicio_n de $n ; ^ juicio_n 0
+->grn $n akã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apytu'ũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** lado_n de $n ; ^ lado_n 0
+->grn $n <hova_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n yke_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** lago_n de $n ; ^ lago_n 0
+->grn $n yno'õ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ypa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** lección_n de $n ; ^ lección_n 0
+->grn $n mbo'epy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mbo'eha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** lectura_n de $n ; ^ lectura_n 0
+->grn $n moñe'ẽrã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemoñe'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** lengua_n de $n ; ^ lengua_n 0
+->grn $n kũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñe'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** levantamiento_n de $n ; ^ levantamiento_n 0
+->grn $n sununu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n guyryry_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñepu'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** liberación_n de $n ; ^ liberación_n 0
+->grn $n jei_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pysyrõ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** libertad_n de $n ; ^ libertad_n 0
+->grn $n sãso_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pysyrõ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jei_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñepysyrõ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** limpieza_n de $n ; ^ limpieza_n 0
+->grn $n satĩ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hesa'ỹijo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** lista_n de $n ; ^ lista_n 0
+->grn $n <hysýi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hysỹi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** llegada_n de $n ; ^ llegada_n 0
+->grn $n ñeĝuahẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ĝuahẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** lucha_n de $n ; ^ lucha_n 0
+->grn $n ñorairõ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñeha'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** lugar_n de $n ; ^ lugar_n 0
+->grn $n <henda_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mamo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** lujo_n de $n ; ^ lujo_n 0
+->grn $n jegua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jeguaka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** luz_n de $n ; ^ luz_n 0
+->grn $n jasy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hendy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hesape_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** mar_n de $n ; ^ mar_n 0
+->grn $n ypara_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n para_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n parana_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** marca_n de $n ; ^ marca_n 0
+->grn $n pere_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hechaukaha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** marzo_n de $n ; ^ marzo_n 0
+->grn $n jasypo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jasyapy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** mañana_n de $n ; ^ mañana_n 0
+->grn $n pyhareve_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ko'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** medida_n de $n ; ^ medida_n 0
+->grn $n <ha'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <ha'ãha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** medio_n de $n ; ^ medio_n 0
+->grn $n ku'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mbyte_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apyte_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** mesa_n de $n ; ^ mesa_n 0
+->grn $n mesa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n karuháva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n karuha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** meta_n de $n ; ^ meta_n 0
+->grn $n hupytyrã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jejaporã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hupytyrã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** mezcla_n de $n ; ^ mezcla_n 0
+->grn $n jopara_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jehe'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** mitad_n de $n ; ^ mitad_n 0
+->grn $n mbyte_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ku'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** modelo_n de $n ; ^ modelo_n 0
+->grn $n <hechaukarã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hembiecharã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** molestia_n de $n ; ^ molestia_n 0
+->grn $n jehýi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hesako'õ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** montón_n de $n ; ^ montón_n 0
+->grn $n atýra_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n aty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** movimiento_n de $n ; ^ movimiento_n 0
+->grn $n mýi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ku'e_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemomýi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** muerto_n de $n ; ^ muerto_n 0
+->grn $n <he'ongue_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hetekue_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** muestra_n de $n ; ^ muestra_n 0
+->grn $n <hechauka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hechaukaha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hechapyrã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** mundo_n de $n ; ^ mundo_n 0
+->grn $n yvy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n arapy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** música_n de $n ; ^ música_n 0
+->grn $n mba'epu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pumbasy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** negocio_n de $n ; ^ negocio_n 0
+->grn $n mba'eñemuha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemuha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** niño_n de $n ; ^ niño_n 0
+->grn $n mitã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mitã'i_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** número_n de $n ; ^ número_n 0
+->grn $n papaha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n papapy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** objetivo_n de $n ; ^ objetivo_n 0
+->grn $n hupytyrã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jehupytyrã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hupytyrã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jejaporã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** oeste_n de $n ; ^ oeste_n 0
+->grn $n kuarahyresẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kuarahyreike_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** olvido_n de $n ; ^ olvido_n 0
+->grn $n <hesarái_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mandu'ave'ỹ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** oportunidad_n de $n ; ^ oportunidad_n 0
+->grn $n <hekopete_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ja_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** orden_n de $n ; ^ orden_n 0
+->grn $n ñemyatyrõ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kuái_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** origen_n de $n ; ^ origen_n 0
+->grn $n <hapo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ypy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** padre_n de $n ; ^ padre_n 0
+->grn $n pa'i_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ru_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** pago_n de $n ; ^ pago_n 0
+->grn $n <hepyme'ẽva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mboekoviaha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hepyme'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** participación_n de $n ; ^ participación_n 0
+->grn $n jeike_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kuatia'atã'i_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n marandu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** partida_n de $n ; ^ partida_n 0
+->grn $n aty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jeho_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n je'ói_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** paz_n de $n ; ^ paz_n 0
+->grn $n pytu'u_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** peca_n de $n ; ^ peca_n 0
+->grn $n pititi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mbara_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pini_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** peligro_n de $n ; ^ peligro_n 0
+->grn $n je'aha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mongyhyjeha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** pena_n de $n ; ^ pena_n 0
+->grn $n py'apy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jepy'apy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mba'embyasy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñembyasy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** pendiente_n de $n ; ^ pendiente_n 0
+->grn $n michãi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n namichãi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** pensamiento_n de $n ; ^ pensamiento_n 0
+->grn $n py'amongeta_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñeimo'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n py'aho_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñe'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** permiso_n de $n ; ^ permiso_n 0
+->grn $n sãso_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemosãso_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** persecución_n de $n ; ^ persecución_n 0
+->grn $n ñemuña_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemoña_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** persona_n de $n ; ^ persona_n 0
+->grn $n <hekove_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hapicha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ava_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** pieza_n de $n ; ^ pieza_n 0
+->grn $n koty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n akytã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** planta_n de $n ; ^ planta_n 0
+->grn $n yvyra_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ka'avo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** pobreza_n de $n ; ^ pobreza_n 0
+->grn $n <hekotevẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n poriahu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jehasa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mboriahu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n sogue_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** polvo_n de $n ; ^ polvo_n 0
+->grn $n <hu'i_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n yvytimbo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** pregunta_n de $n ; ^ pregunta_n 0
+->grn $n porandu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñeporandu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** presidente_n de $n ; ^ presidente_n 0
+->grn $n kuaihára_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n akã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mburuvicha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** primavera_n de $n ; ^ primavera_n 0
+->grn $n arapoty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n arayvoty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** principio_n de $n ; ^ principio_n 0
+->grn $n ypy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n akã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñepyrũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** prisión_n de $n ; ^ prisión_n 0
+->grn $n ka'irãi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pysy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** producto_n de $n ; ^ producto_n 0
+->grn $n ome'ẽva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n osẽva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mbokatukue_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** promesa_n de $n ; ^ promesa_n 0
+->grn $n kuave'ẽmby_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñe'ẽme'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñekuãve'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** propietario_n de $n ; ^ propietario_n 0
+->grn $n jára_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** prosperidad_n de $n ; ^ prosperidad_n 0
+->grn $n ñemotenonde_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n akãrapu'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** protección_n de $n ; ^ protección_n 0
+->grn $n ãngareko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñeñangareko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pysyrõ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** prudencia_n de $n ; ^ prudencia_n 0
+->grn $n akãguapy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kirirĩ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** préstamo_n de $n ; ^ préstamo_n 0
+->grn $n jepuru_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mba'epuru_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jepuruka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** pueblo_n de $n ; ^ pueblo_n 0
+->grn $n <hekoha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n táva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** puerto_n de $n ; ^ puerto_n 0
+->grn $n guejyha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñai_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** punta_n de $n ; ^ punta_n 0
+->grn $n akã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apýra_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** punto_n de $n ; ^ punto_n 0
+->grn $n <hu'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ta_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kyta_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** pérdida_n de $n ; ^ pérdida_n 0
+->grn $n <hundi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kañy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñekañy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** quiebra_n de $n ; ^ quiebra_n 0
+->grn $n jejoka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n yvytypa'ũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** rama_n de $n ; ^ rama_n 0
+->grn $n <hakã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n akã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** ramo_n de $n ; ^ ramo_n 0
+->grn $n apesã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hakã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** rastro_n de $n ; ^ rastro_n 0
+->grn $n mbore_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pore_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n vore_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** realidad_n de $n ; ^ realidad_n 0
+->grn $n añete_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n añetegua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** reconocimiento_n de $n ; ^ reconocimiento_n 0
+->grn $n mba'erechakuaa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hechakuaa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** recuerdo_n de $n ; ^ recuerdo_n 0
+->grn $n py'aho_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mandu'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** reflexión_n de $n ; ^ reflexión_n 0
+->grn $n py'amongeta_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n py'añemongeta_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jepy'amongeta_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** regla_n de $n ; ^ regla_n 0
+->grn $n mbo'epy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** regreso_n de $n ; ^ regreso_n 0
+->grn $n jevy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ju_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n guevi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** relevo_n de $n ; ^ relevo_n 0
+->grn $n <hekovia_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** reparación_n de $n ; ^ reparación_n 0
+->grn $n mboekoviaha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemyatyrõ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** reparto_n de $n ; ^ reparto_n 0
+->grn $n mboja'o_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mboja'opy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** repetición_n de $n ; ^ repetición_n 0
+->grn $n je'ejey_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apojey_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** resistencia_n de $n ; ^ resistencia_n 0
+->grn $n jepytaso_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hatã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hosã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** respeto_n de $n ; ^ respeto_n 0
+->grn $n mboaje_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemboaje_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n momorã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** respuesta_n de $n ; ^ respuesta_n 0
+->grn $n mbohovái_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñembohovái_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** reto_n de $n ; ^ reto_n 0
+->grn $n akãky'o_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jeja'o_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ja'o_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** retorno_n de $n ; ^ retorno_n 0
+->grn $n jevy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jeapa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** retribución_n de $n ; ^ retribución_n 0
+->grn $n mboekoviaha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemyengovia_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hechakuaa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** reunión_n de $n ; ^ reunión_n 0
+->grn $n atýra_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n aty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** revolución_n de $n ; ^ revolución_n 0
+->grn $n sununu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n javo'ói_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n churuchuchu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** robo_n de $n ; ^ robo_n 0
+->grn $n javyky_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mondare_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemonda_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** ruido_n de $n ; ^ ruido_n 0
+->grn $n <hyapu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ayvu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** régimen_n de $n ; ^ régimen_n 0
+->grn $n porokuái_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kuái_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** salida_n de $n ; ^ salida_n 0
+->grn $n jei_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñesẽha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñesẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** salud_n de $n ; ^ salud_n 0
+->grn $n <hesãirã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hesãi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** satisfacción_n de $n ; ^ satisfacción_n 0
+->grn $n <hyĝuatã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n vy'apavẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n vy'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** seguridad_n de $n ; ^ seguridad_n 0
+->grn $n kyhyje'ỹ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n py'apeteĩ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** semejanza_n de $n ; ^ semejanza_n 0
+->grn $n <hekojoja_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hekora'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** seno_n de $n ; ^ seno_n 0
+->grn $n pyti'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** sensibilidad_n de $n ; ^ sensibilidad_n 0
+->grn $n ñeñandu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n andu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n py'akangy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** sentimiento_n de $n ; ^ sentimiento_n 0
+->grn $n <hemiandu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hembiayhu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñeñandu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** separación_n de $n ; ^ separación_n 0
+->grn $n jepe'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jei_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jopoi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** sexo_n de $n ; ^ sexo_n 0
+->grn $n <hegua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n poreno_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** señora_n de $n ; ^ señora_n 0
+->grn $n ña_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kuñakarai_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** silencio_n de $n ; ^ silencio_n 0
+->grn $n kirirĩ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** silla_n de $n ; ^ silla_n 0
+->grn $n apyka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n guapyha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** sitio_n de $n ; ^ sitio_n 0
+->grn $n <henda_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemongora_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mamo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** situación_n de $n ; ^ situación_n 0
+->grn $n <heko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <heko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** solicitud_n de $n ; ^ solicitud_n 0
+->grn $n jerure_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hembijerure_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n py'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** sombra_n de $n ; ^ sombra_n 0
+->grn $n ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kuarahy'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** sospecha_n de $n ; ^ sospecha_n 0
+->grn $n jepoyhu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemo'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jepoyhu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hyakuã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hetũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** sueño_n de $n ; ^ sueño_n 0
+->grn $n kerayvoty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kéra_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** sufrimiento_n de $n ; ^ sufrimiento_n 0
+->grn $n <hekoasy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hekoasy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hembiasa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** tarea_n de $n ; ^ tarea_n 0
+->grn $n apopyrã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemba'apo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** taza_n de $n ; ^ taza_n 0
+->grn $n ña'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n kagua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** techo_n de $n ; ^ techo_n 0
+->grn $n <hóga_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hóga_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** tema_n de $n ; ^ tema_n 0
+->grn $n ñe'ẽrã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mbo'epyrã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** testimonio_n de $n ; ^ testimonio_n 0
+->grn $n <hechaukaha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** tierra_n de $n ; ^ tierra_n 0
+->grn $n yvy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hetã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <heko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** tolerancia_n de $n ; ^ tolerancia_n 0
+->grn $n <hechagi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mba'erechakuaa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** tortura_n de $n ; ^ tortura_n 0
+->grn $n ñembyepoti_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñenupã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mbyepoti_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** trabajo_n de $n ; ^ trabajo_n 0
+->grn $n <hembiapo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** tranquilidad_n de $n ; ^ tranquilidad_n 0
+->grn $n <hekoguapy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n py'aguapy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n piro'y_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** transporte_n de $n ; ^ transporte_n 0
+->grn $n jegueroja_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jeroja_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n mba'eguata_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** triunfo_n de $n ; ^ triunfo_n 0
+->grn $n <hupyty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n pu'aka_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** trozo_n de $n ; ^ trozo_n 0
+->grn $n akytã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n vore_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** unión_n de $n ; ^ unión_n 0
+->grn $n ñembojoaju_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n apytĩ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n joapy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n joaju_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jehe'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n aty_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemboja_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** uso_n de $n ; ^ uso_n 0
+->grn $n jepokuaa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jeporu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** vaso_n de $n ; ^ vaso_n 0
+->grn $n kagua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ygua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n y'uha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** venta_n de $n ; ^ venta_n 0
+->grn $n ñeñemu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñemuha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** verdad_n de $n ; ^ verdad_n 0
+->grn $n añete_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n añetegua_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** vida_n de $n ; ^ vida_n 0
+->grn $n <hekove_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <heko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** vigilancia_n de $n ; ^ vigilancia_n 0
+->grn $n <hesápe_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñeñangareko_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** virtud_n de $n ; ^ virtud_n 0
+->grn $n pyatã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hekokatu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** visita_n de $n ; ^ visita_n 0
+->grn $n mbohupa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hemiandu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** voluntad_n de $n ; ^ voluntad_n 0
+->grn $n ñeha'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <hetia'e_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** voz_n de $n ; ^ voz_n 0
+->grn $n ahy'o_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñe'ẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** vuelta_n de $n ; ^ vuelta_n 0
+->grn $n jere_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n jevy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** vínculo_n de $n ; ^ vínculo_n 0
+->grn $n apytĩ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n joaju_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñembojoaju_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** ángulo_n de $n ; ^ ángulo_n 0
+->grn $n <hakamby_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n akãmby_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 *** profesor_n de $n ; ^ profesor_n 0
 ->grn $n mbo'ehára_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** casa_n de $n ; ^ casa_n 0
+->grn $n <hóga_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** $a profesor_n ; ^ profesor_n 1
+->grn mbo'ehára_n $a ; || 1, 0 ; 1==0 n:n,poses:poses
+*** casa_n ; ^ casa_n 0 ; #1293
+->grn <hóga_n ; 0==0 n:n,poses:poses ; #430 ; ##583
 *** Venus_n ; ^ Venus_n 0
 ->grn mbyja_n ko'ẽ ; 0==0 n:n,poses:poses
 *** WC_n ; ^ WC_n 0
@@ -48,10 +1108,6 @@
 ->grn juru_n ; 0==0 n:n,poses:poses ; #66
 ->grn pa'ũ_n ; 0==0 n:n,poses:poses ; #76
 ->grn kua_n ; 0==0 n:n,poses:poses ; #36
-*** la abertura_n[n=0] ; ^ abertura_n 1
-->grn juru_n[n=0] ; || -1, 0
-->grn pa'ũ_n[n=0] ; || -1, 0
-->grn kua_n[n=0] ; || -1, 0
 *** abigeato_n ; ^ abigeato_n 0
 ->grn mymbañemonda_n ; 0==0 n:n,poses:poses
 *** abogado_n ; ^ abogado_n 0 ; #2
@@ -126,7 +1182,6 @@
 *** aceite_n ; ^ aceite_n 0 ; #119
 ->grn ñandy_n ; 0==0 n:n,poses:poses ; #57 ; ##5
 ->grn ñandyry_n ; 0==0 n:n,poses:poses
-->grn aséite_n ; 0==0 n:n,poses:poses
 *** aceite_n de árbol ; ^ aceite_n 0 ; #119
 ->grn yvyrañandy_n ; 0==0 n:n,poses:poses
 *** aceleración_n del ritmo cardiaco ; ^ aceleración_n 0
@@ -246,7 +1301,6 @@
 ->grn <hetãmba'eñangareko_n ; 0==0 n:n,poses:poses
 *** administrador_n ; ^ administrador_n 0 ; #7
 ->grn <herekua_n ; 0==0 n:n,poses:poses ; #25 ; ##2
-->grn <herekoha_n ; 0==0 n:n,poses:poses
 ->grn ñangarekohára_n ; 0==0 n:n,poses:poses ; #3
 *** admiración_n ; ^ admiración_n 0 ; #1
 ->grn jererohory_n ; 0==0 n:n,poses:poses
@@ -275,7 +1329,6 @@
 ->grn jegua_n ; 0==0 n:n,poses:poses ; #38 ; ##4
 ->grn jeguaka_n ; 0==0 n:n,poses:poses ; #24 ; ##7
 ->grn apesã_n ; 0==0 n:n,poses:poses ; #7 ; ##2
-->grn atýra_n atýra ; 0==0 n:n,poses:poses
 *** adorno_n elegante ; ^ adorno_n 0 ; #13
 ->grn <haĝua_n ; 0==0 n:n,poses:poses
 ->grn aĝua_n ; 0==0 n:n,poses:poses
@@ -339,7 +1392,6 @@
 *** aflicción_n extrema ; ^ aflicción_n 0 ; #76
 ->grn py'ajuka_n ; 0==0 n:n,poses:poses
 *** aflicción_n ; ^ aflicción_n 0 ; #76
-->grn angata_n ; 0==0 n:n,poses:poses ; #4
 ->grn jepy'apy_n ; 0==0 n:n,poses:poses ; #50
 ->grn ñembyasy_n ; 0==0 n:n,poses:poses ; #21
 ->grn vy'a'ỹ_n ; 0==0 n:n,poses:poses ; #10 ; ##3
@@ -607,7 +1659,6 @@
 *** alba_n roja ; ^ alba_n 0 ; #14
 ->grn ko'ẽpytã_n ; 0==0 n:n,poses:poses
 *** alba_n ; ^ alba_n 0 ; #14
-->grn arasẽ_n ; 0==0 n:n,poses:poses
 ->grn ko'ẽtĩ_n ; 0==0 n:n,poses:poses ; #11 ; ##1
 *** albergue_n para una noche ; ^ albergue_n 0
 ->grn ko'ẽrã_n ; 0==0 n:n,poses:poses
@@ -745,7 +1796,6 @@
 *** alma_n ; ^ alma_n 0 ; #285
 ->grn py'a_n ; 0==0 n:n,poses:poses ; #86 ; ##63
 ->grn ánga_n ; 0==0 n:n,poses:poses ; #23 ; ##15
-->grn ñe'ã_n ; 0==0 n:n,poses:poses ; #30 ; ##1
 ->grn ã_n ; 0==0 n:n,poses:poses ; #292 ; ##2
 *** alma_n hermosa ; ^ alma_n 0 ; #285
 ->grn ãngaturã_n ; 0==0 n:n,poses:poses
@@ -786,7 +1836,6 @@
 *** almizcle_n ; ^ almizcle_n 0
 ->grn tambakuare_n ; 0==0 n:n,poses:poses
 *** almohada_n ; ^ almohada_n 0 ; #2
-->grn akãrupa_n ; 0==0 n:n,poses:poses
 ->grn aramboha_n ; 0==0 n:n,poses:poses ; #12
 ->grn akãngyta_n ; 0==0 n:n,poses:poses ; #3 ; ##1
 *** almuerzo_n ; ^ almuerzo_n 0
@@ -887,7 +1936,6 @@
 *** amiga_n ; ^ amiga_n 0 ; #1
 ->grn irũ_n ; 0==0 n:n,poses:poses ; #338 ; ##1
 ->grn angirũ_n ; 0==0 n:n,poses:poses ; #53
-->grn áma_n ; 0==0 n:n,poses:poses
 *** amigo_n mío ; ^ amigo_n 0 ; #76
 ->grn chamígo_n ; 0==0 n:n,poses:poses
 *** amigo_n del alma ; ^ amigo_n 0 ; #76
@@ -908,7 +1956,6 @@
 *** amistad_n verdadera ; ^ amistad_n 0 ; #6
 ->grn jeayhuete_n ; 0==0 n:n,poses:poses
 *** amonestación_n ; ^ amonestación_n 0 ; #4
-->grn akãky'o_n ; 0==0 n:n,poses:poses
 ->grn ñemoñe'ẽ_n ; 0==0 n:n,poses:poses ; #25 ; ##1
 *** amor_n mutuo ; ^ amor_n 0 ; #197
 ->grn joayhu_n ; 0==0 n:n,poses:poses
@@ -996,8 +2043,6 @@
 *** anhelo_n ; ^ anhelo_n 0 ; #4
 ->grn mba'epota_n ; 0==0 n:n,poses:poses ; #38
 ->grn angata_n ; 0==0 n:n,poses:poses ; #4
-->grn potapy_n ; 0==0 n:n,poses:poses ; #2
-->grn py'aho_n ; 0==0 n:n,poses:poses ; #2
 ->grn jepota_n ; 0==0 n:n,poses:poses ; #12
 ->grn <hembipota_n ; 0==0 n:n,poses:poses ; #24 ; ##1
 *** anillo_n perdido ; ^ anillo_n 0 ; #13
@@ -1567,7 +2612,6 @@
 ->grn oñenduha_n ; 0==0 n:n,poses:poses
 ->grn nambikua_n ; 0==0 n:n,poses:poses
 *** aurora_n ; ^ aurora_n 0 ; #3
-->grn arasẽ_n ; 0==0 n:n,poses:poses
 ->grn ko'ẽju_n ; 0==0 n:n,poses:poses ; #18 ; ##1
 ->grn ko'ẽtĩ_n ; 0==0 n:n,poses:poses ; #11
 *** aurora_n rosada ; ^ aurora_n 0 ; #3
@@ -2152,8 +3196,6 @@
 *** borde_n ; ^ borde_n 0 ; #18
 ->grn <hembe_n ; 0==0 n:n,poses:poses ; #20 ; ##4
 ->grn <hembe'y_n ; 0==0 n:n,poses:poses ; #56 ; ##9
-->grn kokue_n rembe'y ; 0==0 n:n,poses:poses
-->grn kokue_n akã ; 0==0 n:n,poses:poses
 *** borde_n saliente ; ^ borde_n 0 ; #18
 ->grn pepo_n ; 0==0 n:n,poses:poses
 *** borla_n ; ^ borla_n 0
@@ -2500,7 +3542,6 @@
 *** cagada_n ; ^ cagada_n 0
 ->grn <hekaka_n ; 0==0 n:n,poses:poses
 *** caja_n ; ^ caja_n 0 ; #4
-->grn mba'eryru_n ; 0==0 n:n,poses:poses ; #4
 ->grn <hyru_n ; 0==0 n:n,poses:poses ; #18 ; ##2
 ->grn mba'eyru_n ; 0==0 n:n,poses:poses ; #7
 ->grn mba'yru_n ; 0==0 n:n,poses:poses ; #66
@@ -2573,8 +3614,6 @@
 ->grn py'apytu'u_n ; 0==0 n:n,poses:poses
 *** calmante_n ; ^ calmante_n 0
 ->grn mbopytu'uha_n ; 0==0 n:n,poses:poses
-*** calor_n ; ^ calor_n 0
-->grn <haku_n ; 0==0 n:n,poses:poses
 *** tener_v[-r] calor_n ; ^ calor_n 1
 ->grn mbyry'ái_v[cat=che] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** calor_n interior ; ^ calor_n 0
@@ -2587,6 +3626,8 @@
 ->grn hakuvo_n ; 0==0 n:n,poses:poses
 *** calor_n estomacal ; ^ calor_n 0
 ->grn py'araku_n ; 0==0 n:n,poses:poses
+*** calor_n ; ^ calor_n 0
+->grn <haku_n ; 0==0 n:n,poses:poses
 *** caloría_n ; ^ caloría_n 0
 ->grn <haku_n ; 0==0 n:n,poses:poses
 *** calvicie_n ; ^ calvicie_n 0
@@ -2679,15 +3720,18 @@
 *** campanilla_n silvestre ; ^ campanilla_n 0 ; #1
 ->grn jetyrã_n ; 0==0 n:n,poses:poses
 *** campesina_n ; ^ campesina_n 0
-->grn okaygua_n ; 0==0 n:n,poses:poses
+->grn okaraygua_n ; 0==0 n:n,poses:poses ; #61
+->grn chokokue_n ; 0==0 n:n,poses:poses ; #15
+->grn koygua_n ; 0==0 n:n,poses:poses ; #3
 *** campesino_n ; ^ campesino_n 0
 ->grn okaraygua_n ; 0==0 n:n,poses:poses ; #61
 ->grn chokokue_n ; 0==0 n:n,poses:poses ; #15
 ->grn koygua_n ; 0==0 n:n,poses:poses ; #3
+*** campo_n ; ^ campo_n 0
+->grn ñu_n ; 0==0 n:n,poses:poses
+->grn okára_n ; 0==0 n:n,poses:poses
 *** campo_n cerrado ; ^ campo_n 0
 ->grn ñuaĩ_n ; 0==0 n:n,poses:poses
-*** campo_n que tiene muchos árboles o arbustos ; ^ campo_n 0
-->grn ñuai_n ; 0==0 n:n,poses:poses
 *** campo_n grande ; ^ campo_n 0
 ->grn ñuguasu_n ; 0==0 n:n,poses:poses
 *** campo_n limpio ; ^ campo_n 0
@@ -2696,9 +3740,6 @@
 ->grn ñumbe_n ; 0==0 n:n,poses:poses
 *** campo_n rodeado de selvas ; ^ campo_n 0
 ->grn ñujere_n ; 0==0 n:n,poses:poses
-*** campo_n ; ^ campo_n 0
-->grn ñu_n ; 0==0 n:n,poses:poses
-->grn koty_n ka'avo ; 0==0 n:n,poses:poses
 *** campo_n del conocimiento ; ^ campo_n 0
 ->grn aranduty_n ; 0==0 n:n,poses:poses
 *** campo_n verde ; ^ campo_n 0
@@ -2945,13 +3986,10 @@
 *** cariño_n ; ^ cariño_n 0 ; #2
 ->grn <hayhu_n ; 0==0 n:n,poses:poses ; #216 ; ##1
 ->grn mborayhu_n ; 0==0 n:n,poses:poses ; #145 ; ##1
-->grn kunu'ũ_n ; 0==0 n:n,poses:poses ; #10
 *** cariño_n a las cosas ; ^ cariño_n 0 ; #2
 ->grn mba'erayhu_n ; 0==0 n:n,poses:poses
 *** carnada_n ; ^ carnada_n 0
 ->grn pirarembi'u_n ; 0==0 n:n,poses:poses
-*** carne_n ; ^ carne_n 0
-->grn so'o_n ; 0==0 n:n,poses:poses
 *** tener_v[-r] carne_n ; ^ carne_n 1
 ->grn so'o_v[cat=che] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** carne_n picada ; ^ carne_n 0
@@ -2982,6 +4020,8 @@
 ->grn so'o_n ; 0==0 n:n,poses:poses
 *** carne_n molida ; ^ carne_n 0
 ->grn so'o_n ku'i ; 0==0 n:n,poses:poses
+*** carne_n ; ^ carne_n 0
+->grn so'o_n ; 0==0 n:n,poses:poses
 *** carnívoro_n ; ^ carnívoro_n 0
 ->grn so'o'uha_n ; 0==0 n:n,poses:poses
 *** carpintero_n ; ^ carpintero_n 0
@@ -3044,15 +4084,13 @@
 ->grn mba'epochyreko_n ; 0==0 n:n,poses:poses
 *** perteneciente a la casa_n ; ^ casa_n 3
 ->grn ogapegua_n ; 0==0 n:n,poses:poses
-*** casa_n ; ^ casa_n 0 ; #1293
-->grn <hóga_n ; 0==0 n:n,poses:poses ; #430 ; ##583
 *** tener_v[-r] casa_n ; ^ casa_n 1
 ->grn <hóga_v[cat=che] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** casa_n pequeña ; ^ casa_n 0 ; #1293
 ->grn kope_n ; 0==0 n:n,poses:poses
 ->grn tapỹi_n ; 0==0 n:n,poses:poses
-*** casa_n comunal ; ^ casa_n 0 ; #1293
-->grn <hóga_n guasu ; 0==0 n:n,poses:poses ; #430 ; ##583
+*** casa_n comunal ; ^ casa_n 0
+->grn <hóga_n guasu ; 0==0 n:n,poses:poses
 *** casa_n cuna ; ^ casa_n 0 ; #1293
 ->grn tyre'ỹ_n róga ; 0==0 n:n,poses:poses
 ->grn mitãnguéra_n róga ; 0==0 n:n,poses:poses
@@ -3068,8 +4106,8 @@
 ->grn kotyjovái_n ; 0==0 n:n,poses:poses
 *** casa_n del mburika ; ^ casa_n 0 ; #1293
 ->grn mburikao_n ; 0==0 n:n,poses:poses
-*** casa_n grande ; ^ casa_n 0 ; #1293
-->grn <hóga_n guasu ; 0==0 n:n,poses:poses ; #430 ; ##583
+*** casa_n grande ; ^ casa_n 0
+->grn <hóga_n guasu ; 0==0 n:n,poses:poses
 *** casa_n mortuoria ; ^ casa_n 0 ; #1293
 ->grn manoharóga_n ; 0==0 n:n,poses:poses
 *** casa_n en forma alargada ; ^ casa_n 0 ; #1293
@@ -3326,7 +4364,6 @@
 ->grn kure_n ; 0==0 n:n,poses:poses
 *** cerebro_n ; ^ cerebro_n 0 ; #3
 ->grn apytu'ũ_n ; 0==0 n:n,poses:poses ; #33 ; ##1
-->grn akã_n apytu'ũ ; 0==0 n:n,poses:poses
 *** cereza_n ; ^ cereza_n 0
 ->grn yvapu_n ; 0==0 n:n,poses:poses
 *** cerezo_n común ; ^ cerezo_n 0
@@ -3429,7 +4466,6 @@
 ->grn mitã_n ; 0==0 n:n,poses:poses ; #830 ; ##1
 ->grn mitãmi_n ; 0==0 n:n,poses:poses ; #40
 ->grn mitã'i_n ; 0==0 n:n,poses:poses ; #24
-->grn mitãkuimba'e_n ; 0==0 n:n,poses:poses ; #11
 *** chico_n mimado ; ^ chico_n 0 ; #4
 ->grn mitã_n ñemokunu'ũ ; 0==0 n:n,poses:poses ; #830 ; ##1
 *** chillido_n del pecho ; ^ chillido_n 0
@@ -3517,7 +4553,6 @@
 *** ciervo_n ; ^ ciervo_n 0 ; #2
 ->grn guasuvira_n ; 0==0 n:n,poses:poses ; #1
 ->grn pacha_n ; 0==0 n:n,poses:poses
-->grn guasu_n ; 0==0 n:n,poses:poses ; #1180 ; ##2
 *** ciervo_n colorado ; ^ ciervo_n 0 ; #2
 ->grn guasu_n pytã'i ; 0==0 n:n,poses:poses ; #1180 ; ##2
 *** cifosis_n ; ^ cifosis_n 0
@@ -3773,7 +4808,6 @@
 ->grn itaty_n ; 0==0 n:n,poses:poses
 *** colina_n ; ^ colina_n 0 ; #7
 ->grn yvyty_n ; 0==0 n:n,poses:poses ; #70 ; ##6
-->grn yvytymi_n ; 0==0 n:n,poses:poses ; #1
 *** colisión_n ; ^ colisión_n 0
 ->grn ñembota_n ojuehe ; 0==0 n:n,poses:poses
 ->grn jotopa_n ; 0==0 n:n,poses:poses ; #8
@@ -3877,17 +4911,14 @@
 *** comida_n ; ^ comida_n 0 ; #61
 ->grn <hembi'u_n ; 0==0 n:n,poses:poses ; #184 ; ##28
 ->grn karu_n ; 0==0 n:n,poses:poses ; #163 ; ##3
-->grn karuse_n eterei ; 0==0 n:n,poses:poses
 ->grn hi'upy_n ; 0==0 n:n,poses:poses ; #74 ; ##4
 *** comida_n hecha ; ^ comida_n 0 ; #61
 ->grn <hembi'uapo_n ; 0==0 n:n,poses:poses
 *** comida_n de buen gusto ; ^ comida_n 0 ; #61
 ->grn jyhe_n ; 0==0 n:n,poses:poses
 *** comienzo_n ; ^ comienzo_n 0 ; #8
-->grn kokue_n rembe'y ; 0==0 n:n,poses:poses
 ->grn ypy_n ; 0==0 n:n,poses:poses ; #122
 ->grn ñepyrũ_n ; 0==0 n:n,poses:poses ; #173 ; ##1
-->grn kokue_n akã ; 0==0 n:n,poses:poses
 *** comienzo_n de los tiempos ; ^ comienzo_n 0 ; #8
 ->grn araypy_n ; 0==0 n:n,poses:poses
 *** comilla_n[n=1] ; ^ comilla_n 0
@@ -3919,7 +4950,6 @@
 *** compañera_n ; ^ compañera_n 0 ; #2
 ->grn irũ_n ; 0==0 n:n,poses:poses ; #338 ; ##1
 ->grn angirũ_n ; 0==0 n:n,poses:poses ; #53
-->grn mitã_n ; 0==0 n:n,poses:poses ; #830
 *** compañerismo_n ; ^ compañerismo_n 0
 ->grn irũngatu_n ; 0==0 n:n,poses:poses
 *** compañero_n de rezo ; ^ compañero_n 0 ; #59
@@ -3986,6 +5016,8 @@
 *** compra_n ; ^ compra_n 0 ; #6
 ->grn mba'ejogua_n ; 0==0 n:n,poses:poses ; #2
 ->grn jejogua_n ; 0==0 n:n,poses:poses ; #3
+*** hacer_v[-r] compra_n[n=1] ; ^ compra_n 1
+->grn mba'ejogua_v[pos=v] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** comprador_n ; ^ comprador_n 0 ; #2
 ->grn joguaha_n ; 0==0 n:n,poses:poses ; #13
 ->grn <hapicha_n ; 0==0 n:n,poses:poses ; #348
@@ -4010,10 +5042,8 @@
 ->grn takãmbyha'ãha_n ; 0==0 n:n,poses:poses
 *** comunidad_n ; ^ comunidad_n 0 ; #9
 ->grn <henda_n ; 0==0 n:n,poses:poses ; #357 ; ##1
-->grn yvypóra_n renda ; 0==0 n:n,poses:poses
 ->grn <hekoa_n ; 0==0 n:n,poses:poses ; #53
 ->grn aty_n ; 0==0 n:n,poses:poses ; #172 ; ##1
-->grn no'õ_n ; 0==0 n:n,poses:poses ; #16
 *** comunión_n ; ^ comunión_n 0
 ->grn komuño_n ; 0==0 n:n,poses:poses
 *** concentración_n ; ^ concentración_n 0
@@ -4363,7 +5393,6 @@
 *** corral_n ; ^ corral_n 0 ; #2
 ->grn korapy_n ; 0==0 n:n,poses:poses ; #29
 ->grn kora_n ; 0==0 n:n,poses:poses ; #55 ; ##2
-->grn <hokái_n ; 0==0 n:n,poses:poses
 *** correa_n ; ^ correa_n 0
 ->grn tukumbo_n ; 0==0 n:n,poses:poses
 *** correa_n arrollada ; ^ correa_n 0
@@ -4465,10 +5494,8 @@
 *** costumbre_n ; ^ costumbre_n 0 ; #33
 ->grn <hekove_n ; 0==0 n:n,poses:poses ; #304 ; ##1
 ->grn <heko_n ; 0==0 n:n,poses:poses ; #858 ; ##1
-->grn lája_n ; 0==0 n:n,poses:poses ; #2
-*** costumbre_n ajena ; ^ costumbre_n 0 ; #33
-->grn <heko_n mboae ; 0==0 n:n,poses:poses ; #858 ; ##1
-->grn <heko_n ãmbue ; 0==0 n:n,poses:poses ; #858 ; ##1
+*** costumbre_n ajena ; ^ costumbre_n 0
+->grn <heko_n ambue ; 0==0 n:n,poses:poses
 *** costurera_n ; ^ costurera_n 0
 ->grn mbovyvyhára_n ; 0==0 n:n,poses:poses
 *** costurero_n ; ^ costurero_n 0
@@ -15036,7 +16063,6 @@
 ->grn itaimbey_n ; 0==0 n:n,poses:poses
 *** río_n ; ^ río_n 0 ; #122
 ->grn y_n ; 0==0 n:n,poses:poses ; #1108 ; ##48
-->grn ysyry_n guasu ; 0==0 n:n,poses:poses ; #199 ; ##80
 ->grn ysyry_n ; 0==0 n:n,poses:poses ; #199 ; ##80
 ->grn <hy_n ; 0==0 n:n,poses:poses ; #65 ; ##2
 *** río_n crecido ; ^ río_n 0 ; #122
@@ -15094,7 +16120,6 @@
 ->grn jetyvyro_n ; 0==0 n:n,poses:poses ; #15
 *** saeta_n ; ^ saeta_n 0 ; #6
 ->grn hu'y_n ; 0==0 n:n,poses:poses ; #80 ; ##5
-->grn u'y_n ; 0==0 n:n,poses:poses
 *** sal_n fina ; ^ sal_n 0
 ->grn juky_n ku'i ; 0==0 n:n,poses:poses
 *** sal_n común ; ^ sal_n 0
@@ -15337,7 +16362,6 @@
 ->grn kama_n ; 0==0 n:n,poses:poses
 ->grn káma_n ; 0==0 n:n,poses:poses
 *** seno_n ; ^ seno_n 0 ; #20
-->grn <hapypa'ũ_n ; 0==0 n:n,poses:poses
 ->grn pyti'a_n ; 0==0 n:n,poses:poses ; #21 ; ##1
 *** seno_n levantado ; ^ seno_n 0 ; #20
 ->grn kama_n tembetary ; 0==0 n:n,poses:poses
@@ -15368,7 +16392,6 @@
 *** sentimiento_n ; ^ sentimiento_n 0 ; #2
 ->grn <hemiandu_n ; 0==0 n:n,poses:poses ; #46 ; ##1
 ->grn <hembiayhu_n ; 0==0 n:n,poses:poses ; #4
-->grn andu_n ; 0==0 n:n,poses:poses ; #2
 ->grn ñeñandu_n ; 0==0 n:n,poses:poses ; #38
 *** sentimiento_n de admiración ; ^ sentimiento_n 0 ; #2
 ->grn techaramo_n ; 0==0 n:n,poses:poses
@@ -15464,7 +16487,6 @@
 *** señor_n ; ^ señor_n 0
 ->grn karai_n ; 0==0 n:n,poses:poses
 *** señora_n ; ^ señora_n 0 ; #11
-->grn áma_n ; 0==0 n:n,poses:poses
 ->grn ña_n ; 0==0 n:n,poses:poses ; #291
 ->grn kuñakarai_n ; 0==0 n:n,poses:poses ; #194 ; ##1
 *** señorita_n ; ^ señorita_n 0
@@ -15509,7 +16531,6 @@
 *** silbido_n ; ^ silbido_n 0
 ->grn turuñe'ẽ_n ; 0==0 n:n,poses:poses
 *** silencio_n ; ^ silencio_n 0 ; #20
-->grn ñekirirĩ_n ; 0==0 n:n,poses:poses ; #2
 ->grn kirirĩ_n ; 0==0 n:n,poses:poses ; #60 ; ##1
 *** silla_n ; ^ silla_n 0 ; #18
 ->grn apyka_n ; 0==0 n:n,poses:poses ; #40 ; ##1
@@ -15776,9 +16797,7 @@
 ->grn tĩky'a_n ; 0==0 n:n,poses:poses
 *** sudor_n frío ; ^ sudor_n 0 ; #2
 ->grn <hy'ái_n ro'ysã ; 0==0 n:n,poses:poses ; #20 ; ##2
-->grn <hy'airo'ysã_n ; 0==0 n:n,poses:poses
 *** sudor_n ; ^ sudor_n 0 ; #2
-->grn ty'ai_n ; 0==0 n:n,poses:poses
 ->grn <hy'ái_n ; 0==0 n:n,poses:poses ; #20 ; ##2
 *** sudor_n de perro ; ^ sudor_n 0 ; #2
 ->grn jaguary'ái_n ; 0==0 n:n,poses:poses
@@ -16212,7 +17231,6 @@
 *** testigo_n ; ^ testigo_n 0
 ->grn menda_n rechaha ; 0==0 n:n,poses:poses
 *** testimonio_n ; ^ testimonio_n 0 ; #146
-->grn <hechahare_n mombe'u ; 0==0 n:n,poses:poses
 ->grn <hechaukaha_n ; 0==0 n:n,poses:poses ; #7 ; ##3
 *** testículo_n ; ^ testículo_n 0 ; #1
 ->grn <ha'ỹi_n ; 0==0 n:n,poses:poses ; #39
@@ -16510,8 +17528,6 @@
 ->grn mba'apomi_n ; 0==0 n:n,poses:poses
 *** trabajo_n de urgencia ; ^ trabajo_n 0 ; #86
 ->grn mba'apo_n raĝe ; 0==0 n:n,poses:poses
-*** trabajo_n rústico o artesanal o chabacano o chapucero o casero o primitivo ; ^ trabajo_n 0 ; #86
-->grn <hembiapo_n chae ; 0==0 n:n,poses:poses ; #454 ; ##29
 *** trabajo_n hecho ; ^ trabajo_n 0 ; #86
 ->grn mba'eapokue_n ; 0==0 n:n,poses:poses
 *** trabajo_n sin costo ; ^ trabajo_n 0 ; #86
@@ -16684,7 +17700,6 @@
 *** triunfo_n ; ^ triunfo_n 0 ; #5
 ->grn <hupyty_n ; 0==0 n:n,poses:poses ; #228
 ->grn pu'aka_n ; 0==0 n:n,poses:poses ; #82 ; ##2
-->grn akãrapu'ã_n ; 0==0 n:n,poses:poses
 *** triángulo_n ; ^ triángulo_n 0
 ->grn apymbohapy_n ; 0==0 n:n,poses:poses
 *** trocha_n ; ^ trocha_n 0
@@ -16948,7 +17963,6 @@
 ->grn <hope_n ; 0==0 n:n,poses:poses ; #9
 *** vajilla_n ; ^ vajilla_n 0 ; #3
 ->grn <hembiporu_n ; 0==0 n:n,poses:poses ; #36 ; ##3
-->grn <hembipuru_n ; 0==0 n:n,poses:poses
 *** valentía_n ; ^ valentía_n 0
 ->grn py'aguasu_n ; 0==0 n:n,poses:poses
 *** valija_n ; ^ valija_n 0
@@ -17029,7 +18043,6 @@
 ->grn tyryru_n ; 0==0 n:n,poses:poses
 *** vela_n ; ^ vela_n 0 ; #10
 ->grn <hataindy_n ; 0==0 n:n,poses:poses ; #13 ; ##1
-->grn ytapa_n ; 0==0 n:n,poses:poses
 *** vela_n prendida ; ^ vela_n 0 ; #10
 ->grn tataindy_n rendy ; 0==0 n:n,poses:poses
 *** vello_n ; ^ vello_n 0
@@ -17370,7 +18383,6 @@
 ->grn <hesakã_n ; 0==0 n:n,poses:poses ; #33
 *** visita_n ; ^ visita_n 0 ; #2
 ->grn mbohupa_n ; 0==0 n:n,poses:poses ; #9 ; ##1
-->grn andu_n ; 0==0 n:n,poses:poses ; #2
 ->grn <hemiandu_n ; 0==0 n:n,poses:poses ; #46
 *** visita_n pegajosa ; ^ visita_n 0 ; #2
 ->grn <hevija_n ; 0==0 n:n,poses:poses
@@ -17431,8 +18443,6 @@
 *** vivienda_n ; ^ vivienda_n 0 ; #2
 ->grn <henda_n ; 0==0 n:n,poses:poses ; #357
 ->grn <hekoha_n ; 0==0 n:n,poses:poses ; #157
-->grn yvypóra_n renda ; 0==0 n:n,poses:poses
-->grn tapỹi_n ; 0==0 n:n,poses:poses ; #19
 ->grn <hóga_n ; 0==0 n:n,poses:poses ; #430 ; ##2
 *** vivienda_n subterránea ; ^ vivienda_n 0 ; #2
 ->grn kuaty_n ; 0==0 n:n,poses:poses
@@ -17653,7 +18663,6 @@
 ->grn pyrehegua_n ; 0==0 n:n,poses:poses
 ->grn sapatu_n ; 0==0 n:n,poses:poses ; #46
 *** zarcillo_n ; ^ zarcillo_n 0 ; #2
-->grn michãi_n ; 0==0 n:n,poses:poses
 ->grn namichãi_n ; 0==0 n:n,poses:poses ; #2 ; ##1
 *** zarigüeya_n ; ^ zarigüeya_n 0
 ->grn mykurẽ_n ; 0==0 n:n,poses:poses
@@ -17666,7 +18675,6 @@
 ->grn yryvu_n ; 0==0 n:n,poses:poses
 *** zorra_n ; ^ zorra_n 0 ; #1
 ->grn aguara_n ; 0==0 n:n,poses:poses ; #98 ; ##1
-->grn aguara'i_n ; 0==0 n:n,poses:poses ; #4
 *** zorrillo_n ; ^ zorrillo_n 0
 ->grn mykurẽ_n ; 0==0 n:n,poses:poses ; #11
 ->grn jaguane_n ; 0==0 n:n,poses:poses

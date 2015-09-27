@@ -103,6 +103,13 @@
 #    unless that one resulted from a merger.
 # 2015.08.16
 # -- Working on evaluator function for search states.
+# 2015.09.24
+# -- Changed evaluator function so it favors preferred analyses of cached words
+#    (these have lower group indices).
+# 2015.09.25
+# -- For each key in the groups dict, only allow one to match (the entries are
+#    ordered from most to least specific). Later allow exceptions to this. See
+#    lexicalize().
 
 import itertools, copy, re, random
 from .ui import *
@@ -381,7 +388,8 @@ class Sentence:
             proceed = True
             while proceed:
                 succeeding_state = next(generator)
-                solution = self.create_solution(dstore=succeeding_state.dstore, verbosity=verbosity)
+                ds = succeeding_state.dstore
+                solution = self.create_solution(dstore=ds, verbosity=verbosity)
                 if verbosity:
                     print('FOUND ANALYSIS', solution)
                 if translate and self.target:
@@ -484,7 +492,8 @@ class Sentence:
         candidates = []
         for node in self.nodes:
             # Get keys into lexicon for this node
-            keys = {node.token}
+#            keys = {node.token}
+            keys = [node.token]
             anals = node.analyses
             if anals:
                 if not isinstance(anals, list):
@@ -492,11 +501,15 @@ class Sentence:
                     anals = [anals]
                 for a in anals:
                     root = a.get('root')
-                    keys.add(root)
+                    if root not in keys:
+                        keys.append(root)
+#                    keys.add(root)
                     pos = a.get('pos')
-                    if pos:
-                        keys.add(root + '_' +pos)
-#            print("Found lex keys {} for node {}".format(keys, node))
+                    if pos and '_' not in root:
+                        k = root + '_' + pos
+                        if k not in keys:
+                            keys.append(k)
+#                        keys.add(root + '_' +pos)
             # Look up candidate groups in lexicon
             for k in keys:
                 if k in self.language.groups:
@@ -506,23 +519,30 @@ class Sentence:
                         if self.target and not group.get_translations():
                             print("No translation for {}".format(group))
                             continue
-                        candidates.append((node.index, group))
+                        candidates.append((node.index, k, group))
 #            print("Found candidates {}".format(candidates))
         # Now filter candidates to see if all words are present in the sentence
         # For each group, save a list of sentence token indices that correspond
         # to the group's words
 #        print("{} candidatos para grupos encontrados".format(len(candidates)))
         groups = []
-        for head_i, group in candidates:
+        matched_keys = []
+        for head_i, key, group in candidates:
             # Matching snodes, along with root and unified features if any
             if verbosity > 1:
                 print("Matching group {}".format(group))
-            snodes = group.match_nodes(self.nodes, head_i)
+            if key in matched_keys:
+                # Already matched one for this key, so don't bother checking.
+                if verbosity:
+                    print("Already matched group with key {}".format(key))
+                continue
+            snodes = group.match_nodes(self.nodes, head_i, verbosity=verbosity)
             if not snodes:
                 # This group is out
                 if verbosity > 1:
                     print("Failed to match")
                 continue
+            matched_keys.append(key)
             if verbosity > 1:
                 print('Group {} matches snodes {}'.format(group, snodes))
             groups.append((head_i, snodes, group))
@@ -686,9 +706,9 @@ class Sentence:
 
     # Methods to help constrain search
     def state_eval(self, dstore, var_value, group_size_wt=2):
-        """Assign a score to the domain store based on the number of undetermined essential variables
-        and how much the selected variable's value leads to large groups.
-        group_size_wt controls how much these two components are weighted in the sum."""
+        """Assign a score to the domain store based on how much the selected variable's value leads to large groups
+        and how low the indices are (since preferred analyses have lower indices).
+        Changed 2015.09.24, adding second constraint and eliminating number of undetermined esssential variables."""
         # No point in checking dstore since it's the same across states at time of evaluation
         varscore = 0
         if var_value:
@@ -696,25 +716,35 @@ class Sentence:
             typ = Sentence.get_var_type(variable)
             if typ == 'sn->gn':
                 # sn->gn variables are good to the extent they point to gnodes in large groups
+                # and have lower indices (because preferred interpretations are earlier)
                 if value:
+                    total = 0
                     for gni in value:
+                        total += gni
                         gn = self.gnodes[gni]
                         varscore -= gn.ginst.ngnodes
+                    av = total / len(value)
                     varscore /= len(value)
+                    varscore += av
             elif typ == 'groups':
-                # groups variable is good if it's big
+                # groups variable is good if it's big and has lower indices
                 if value:
+                    total = 0
                     for gi in value:
+                        total += gi
                         group = self.groups[gi]
                         varscore += group.ngnodes
+                    av = total / len(value)
                     varscore /= len(value)
-#            print(" Varscore for {} with {} in {}: {}".format(variable, value, dstore, varscore))
-        undet = dstore.ess_undet
-        undet_count = len(undet)
-#        print(" Undet score for {}: {}".format(dstore, undet_count))
+                    varscore += av
+            print(" Varscore for {} with {} in {}: {}".format(variable, value, dstore, varscore))
+#        undet = dstore.ess_undet
+#        undet_count = len(undet)
+#        print(" Undet score for {}: {}, vars: {}".format(dstore, undet_count, undet))
         # Tie breaker
         ran = random.random() / 100.0
-        return undet_count + group_size_wt*varscore + ran # - multiword_groups + len(group_upper_indices)
+        return varscore + ran
+    #undet_count + group_size_wt*varscore + ran # - multiword_groups + len(group_upper_indices)
 
     @staticmethod
     def get_var_type(variable):
@@ -763,6 +793,7 @@ class Sentence:
         ginsts = [self.groups[g] for g in groups]
         s2gnodes = []
         for node in self.nodes:
+#            print("Creating solution for {}, gnodes {}".format(node, node.variables['gnodes'].get_value(dstore=dstore)))
             gnodes = list(node.variables['gnodes'].get_value(dstore=dstore))
             s2gnodes.append(gnodes)
         # Create trees for each group
@@ -770,6 +801,7 @@ class Sentence:
         for snindex, sg in enumerate(s2gnodes):
             for gn in sg:
                 gnode = self.gnodes[gn]
+#                print("  Creating solution for {}: {}".format(snindex, gnode))
                 gn_group = gnode.ginst.index
                 if gn_group not in tree_attribs:
                     tree_attribs[gn_group] = [[], []]
@@ -1409,7 +1441,7 @@ class Solution:
         self.ttrans_outputs = None
         # Variable domain store for solution state
         self.dstore = dstore
-        print("Created solution with ginsts {}".format(ginsts))
+        print("Created solution with dstore {} and ginsts {}".format(dstore, ginsts))
 
     def __repr__(self):
         return "|< {} >|({})".format(self.sentence.raw, self.index)

@@ -23,7 +23,7 @@ objeto/2s :: te [pos=v,po=2,no=0] ; // 0
 objeto/1p :: nos [pos=v,po=1,no=1] ; // 0
 objeto/3sm :: lo [pos=v,po=3,no=0] ; // 0
 objeto/3sf :: la [pos=v,po=3,no=0] ; // 0
-objeto/3sd :: le [pos=v,po=3,no=0] ; // 0
+objeto/3sd :: le [pos=v,po=3,no=0] ; // 0 ; ++ 2 a, 3 él
 objeto/3pm :: los [pos=v,po=3,no=1] ; // 0
 objeto/3pf :: las [pos=v,po=3,no=1] ; // 0
 objeto/3pd :: les [pos=v,po=3,no=1] ; // 0
@@ -38,7 +38,7 @@ potencial :: poder_v [pos=v,tm=inf] ; 0=>1 p,n,tm
 posesivo/1s.s :: mi [pos=n,n=0,poses=[+ext,pp=1,np=0]] ; // 0
 posesivo/1s.p :: mis [pos=n,n=1,poses=[+ext,pp=1,np=0]] ; // 0
 posesivo/2s.s :: tu [pos=n,n=0,poses=[+ext,pp=2,np=0]] ; // 0
-posesivo/2s.p :: mus [pos=n,n=1,poses=[+ext,pp=2,np=0]] ; // 0
+posesivo/2s.p :: tus [pos=n,n=1,poses=[+ext,pp=2,np=0]] ; // 0
 posesivo/3s.s :: su [pos=n,n=0,poses=[-ext,pp=3]] ; // 0
 posesivo/3s.p :: sus [pos=n,n=1,poses=[-ext,pp=3]] ; // 0
 posesivo/1p.s :: nuestro [pos=n,n=0,poses=[+ext,pp=1,np=1]] ; // 0
@@ -58,6 +58,9 @@ artdef/fp_adj :: las [pos=a,n=1] [pos=n,n=1] ; // 0
 
 ## intensificación (necesita concordancia grd:grd)
 muy :: muy [pos=a,grd=ete] ; // 0
+
+## cláusulas relativas
+rel_sj :: que [pos=v,+rel] ; // 0
 
 ### preposiciones
 #a/pp :: a [pos=n,caso=pe] ; // 0

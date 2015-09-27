@@ -42,7 +42,8 @@ feats:
   xf~: inter = inter
   xf~: tm = tmp
   xf~: asp = asp
-  xf~: relv = rel
+  xf~: rel = rel
+#  xf~: relv = rel
 #  xf~: cnj = conj
 #  xf~: caso = caso
   xf~: grd = grd
@@ -81,7 +82,6 @@ s = caus
 #  +1,-2,+p = 1 persona exclusiva
 #  -1,+2,+p = 2 persona plural
 
-  rel = *False | True
   med = *False | True
   # False = exlusive (ore); True = inclusive (ñande)
 # Leave out of defaults
@@ -158,7 +158,9 @@ s = caus
 #%            mbae = False | True
 
 #%   relv = None | ha | hague | harã | harangue | va | vaekue | vaerã  # vae
-  relv = None | ha | hague | harã | va | vaekue | vaerã
+#  rel (relativo) = *None | ha | hague | harã | va | vaekue | vaerã
+  rel (relativo) = *False | True
+  relobl (relativo oblícuo) = *False | True
 
 #%   pp (pospos) = *None | peve | jeve | jave | vove | kuevo | ramo | jepe | rire | haguã | ramojepe | vo | gui | guive | pe | re | icha
   pp (pospos) = *None | peve | jave | ramo | rire | haguã | vo | gui | guive | pe | re | icha
