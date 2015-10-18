@@ -111,7 +111,7 @@
 #    ordered from most to least specific). Later allow exceptions to this. See
 #    lexicalize().
 
-import itertools, copy, re, random
+import itertools, copy, re, random, copy
 from .ui import *
 from .cs import *
 
@@ -252,13 +252,20 @@ class Sentence:
     word_width = 10
     tt_colors = ['red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple']
 
-    def __init__(self, raw='', language=None, tokens=None,
+    def __init__(self, raw='', language=None, tokens=None, toktypes=None,
                  nodes=None, groups=None, target=None, init=False,
+                 analyses=None,
                  verbosity=0):
         self.set_id()
         # A list of string tokens, created by a Document object including this sentence
         # or None if the Sentence is created outside of Document
-        if tokens:
+        if toktypes:
+            # if copying these will already be assigned
+            self.tokens = tokens
+            self.toktypes = toktypes
+            self.raw = raw
+        elif tokens:
+            # tokens is a list of pairs passed from Document object
             self.tokens = [t[0] for t in tokens]
             self.toktypes = [t[1] for t in tokens]
             self.raw = ' '.join(self.tokens)
@@ -273,7 +280,7 @@ class Sentence:
         # Target language: a language object or None
         self.target = target
         # A list of tuples of analyzed words
-        self.analyses = []
+        self.analyses = analyses or []
         # A list of SNode objects, one for each token
         self.nodes = nodes or []
         # A list of candidate groups (realized as GInst objects) found during lexicalization
@@ -290,6 +297,8 @@ class Sentence:
         self.dstore = DStore(name="S{}".format(self.id))
         # A dict of sentence-level variables
         self.variables = {}
+        # Modified copies of the sentence for cases of syntactic ambiguity; "alternate syntax"
+        self.altsyns = []
         # Solver to find solutions
         self.solver = Solver(self.constraints, self.dstore,
                              evaluator=self.state_eval,
@@ -310,6 +319,7 @@ class Sentence:
         self.id = Sentence.id
         Sentence.id += 1
 
+    ## Display
     def __repr__(self):
         """Print name."""
         if self.tokens:
@@ -343,6 +353,18 @@ class Sentence:
 #            strings.extend(solution.trans_strings())
 #        return strings
 
+    ## Copying, for alternate syntactic representations
+
+    def copy(self):
+        """Make a copy of the sentence, assumed to happen following analysis but before node creation."""
+        s = Sentence(raw=self.raw[:], tokens=self.tokens[:], toktypes=self.toktypes[:],
+                     language=self.language, target=self.target,
+                     analyses=copy.deepcopy(self.analyses))
+        print("Copied {} as {}".format(self, s))
+        self.altsyns.append(s)
+
+    ## Initial processing
+    
     def segment(self, token, tok_index, verbosity=0):
         """Segment token if possible, replacing it in self.tokens with segmentation."""
         segmentation = self.language.segs.get(token)
@@ -362,61 +384,31 @@ class Sentence:
 #            print('index {}, token {}'.format(index, token))
             self.segment(token, index)
 
-    def initialize(self, verbosity=0):
+    def initialize(self, ambig=False, verbosity=0):
         """Things to do before running constraint satisfaction."""
         if verbosity:
             print("Initializing {}".format(self))
-        self.tokenize(verbosity=verbosity)
+        self.tokenize(verbosity=verbosity, ambig=ambig)
+        # Tokenization could result in altsyns
+        self.nodify(verbosity=verbosity)
         self.lexicalize(verbosity=verbosity)
-        if not self.groups:
+        for s in self.altsyns:
+            s.nodify(verbosity=verbosity)
+            s.lexicalize(verbosity=verbosity)
+        anygroups=False
+        for s in [self] + self.altsyns:
+            if not s.groups:
+                continue
+            s.create_variables(verbosity=verbosity)
+            s.create_constraints(verbosity=verbosity)
+            anygroups=True
+        if not anygroups:
             print("Ningunos grupos encontrados para {}".format(self))
             return False
         else:
-            self.create_variables(verbosity=verbosity)
-            self.create_constraints(verbosity=verbosity)
             return True
 
-    def solve(self, translate=True, all_sols=False, all_trans=True, interactive=False,
-              verbosity=0, tracevar=None):
-        """Generate solutions and translations (if translate is true)."""
-        if not self.groups:
-            print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SOLUCIÓN POSIBLE".format(self))
-            return
-        generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity,
-                                          tracevar=tracevar)
-        try:
-            proceed = True
-            while proceed:
-                succeeding_state = next(generator)
-                ds = succeeding_state.dstore
-                solution = self.create_solution(dstore=ds, verbosity=verbosity)
-                if verbosity:
-                    print('FOUND ANALYSIS', solution)
-                if translate and self.target:
-                    solution.translate(verbosity=verbosity, all_trans=all_trans, interactive=interactive)
-                else:
-#                if not translate:
-                    # Display the parse
-                    self.display(show_all_sols=False)
-                if all_sols:
-                    continue
-                if not interactive or not input('SEARCH FOR ANOTHER ANALYSIS? [yes/NO] '):
-                    proceed = False
-        except StopIteration:
-            if verbosity:
-                print('No more solutions')
-        if not self.solutions:
-            print("NINGUNAS SOLUCIONES encontradas para {}".format(self))
-#        elif translate and self.target:
-#            self.translate(all_trans=all_trans, verbosity=verbosity)
-
-    def translate(self, sol_index=-1, all_trans=False, verbosity=0):
-        """Translate the solution with sol_index or all solutions if index is negative."""
-        solutions = self.solutions if sol_index < 0 else [self.solutions[sol_index]]
-        for solution in solutions:
-            solution.translate(all_trans=all_trans, verbosity=verbosity)
-
-    def tokenize(self, incl_del=False, verbosity=0):
+    def tokenize(self, ambig=False, verbosity=0):
         """Segment the sentence string into tokens, analyze them morphologically,
         and create a SNode object for each.
         2015.06.07: Save the analyzed tokens as well as nodes.
@@ -425,6 +417,8 @@ class Sentence:
         2015.07: Document normally does the tokenization, so only morphological
         analysis and morphosyn matching happen here.
         2015.07.29: Segmentation and lowercasing of first word.
+        2015.10.17: Added copy() possibility when there is morphosyntactic ambiguity.
+        ambig option determines whether this happens.
         """
         if verbosity:
             print("Tokenizing {}".format(self))
@@ -441,43 +435,49 @@ class Sentence:
             if verbosity:
                 print("Running Morphosyns for {} on {}".format(self.language, self))
             for ms in self.language.ms:
-                ms.apply(self, verbosity=verbosity)
-            self.nodes = []
-            index = 0
-            incorp_indices = []
-            for tokindex, (token, anals) in enumerate(self.analyses):
-                if not incl_del and MorphoSyn.del_token(token):
-                    # Ignore elements deleted by MorphoSyns
-                    incorp_indices.append(tokindex)
-                    continue
-                if anals:
-                    # Multiple dicts: ambiguity; let node handle it
-                    # Get cats
-                    for anal in anals:
-                        root = anal['root']   # there has to be one of these
-                        cats = self.language.get_cats(root)
-                        if cats:
-                            anal['cats'] = cats
-                        features = anal['features']
-                        pos = features.get('pos') if features else ''
-                        if pos:
-                            anal['pos'] = pos
-#                    print("Creating node for {} with incorp_indices {}".format(token, incorp_indices))
-                    incorp_indices.append(tokindex)
-                    self.nodes.append(SNode(token, index, anals, self, incorp_indices))
-                    incorp_indices = []
-                    index += 1
-                else:
-                    # No analysis, just use the raw string
-                    # First check for categories
-                    cats = self.language.get_cats(token)
+                # If ms applies and is "ambiguous", create a new copy of the sentence and add to altsyns
+                # (this happens in MorphoSyn)
+                ms.apply(self, ambig=ambig, verbosity=verbosity)
+
+    def nodify(self, incl_del=False, verbosity=0):
+        """Create nodes for sentence.
+        2015.10.17: Split off from tokenize().
+        """
+        self.nodes = []
+        index = 0
+        incorp_indices = []
+        for tokindex, (token, anals) in enumerate(self.analyses):
+            if not incl_del and MorphoSyn.del_token(token):
+                # Ignore elements deleted by MorphoSyns
+                incorp_indices.append(tokindex)
+                continue
+            if anals:
+                # Multiple dicts: ambiguity; let node handle it
+                # Get cats
+                for anal in anals:
+                    root = anal['root']   # there has to be one of these
+                    cats = self.language.get_cats(root)
                     if cats:
-                        anals = [{'cats': cats}]
-                    else:
-                        anals = None
-                    self.nodes.append(SNode(token, index, anals, self, [tokindex]))
-                    incorp_indices = []
-                    index += 1
+                        anal['cats'] = cats
+                    features = anal['features']
+                    pos = features.get('pos') if features else ''
+                    if pos:
+                        anal['pos'] = pos
+                incorp_indices.append(tokindex)
+                self.nodes.append(SNode(token, index, anals, self, incorp_indices))
+                incorp_indices = []
+                index += 1
+            else:
+                # No analysis, just use the raw string
+                # First check for categories
+                cats = self.language.get_cats(token)
+                if cats:
+                    anals = [{'cats': cats}]
+                else:
+                    anals = None
+                self.nodes.append(SNode(token, index, anals, self, [tokindex]))
+                incorp_indices = []
+                index += 1
 
     def split(self):
         """Split the raw sentence into words, separating off punctuation."""
@@ -571,6 +571,59 @@ class Sentence:
             snode.gnodes = gnodes
             if gnodes:
                 self.covered_indices.append(snode.index)
+
+    ## Solving: parsing and translation
+
+    def solve(self, translate=True, all_sols=False, all_trans=True, interactive=False,
+              verbosity=0, tracevar=None):
+        """Generate solutions (for all analyses if all_sols is True) and translations (if translate is True)."""
+        self.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
+                    verbosity=verbosity, tracevar=tracevar)
+        if all_sols:
+            for s in self.altsyns:
+                s.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
+                         verbosity=verbosity, tracevar=tracevar)
+    
+    def solve1(self, translate=True, all_sols=False,
+              all_trans=True, interactive=False,
+              verbosity=0, tracevar=None):
+        """Generate solutions and translations (if translate is true)."""
+        if not self.groups:
+            print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SOLUCIÓN POSIBLE".format(self))
+            return
+        generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity,
+                                          tracevar=tracevar)
+        try:
+            proceed = True
+            while proceed:
+                succeeding_state = next(generator)
+                ds = succeeding_state.dstore
+                solution = self.create_solution(dstore=ds, verbosity=verbosity)
+                if verbosity:
+                    print('FOUND ANALYSIS', solution)
+                if translate and self.target:
+                    solution.translate(verbosity=verbosity, all_trans=all_trans, interactive=interactive)
+                else:
+#                if not translate:
+                    # Display the parse
+                    self.display(show_all_sols=False)
+                if all_sols:
+                    continue
+                if not interactive or not input('SEARCH FOR ANOTHER ANALYSIS? [yes/NO] '):
+                    proceed = False
+        except StopIteration:
+            if verbosity:
+                print('No more solutions')
+        if not self.solutions:
+            print("NINGUNAS SOLUCIONES encontradas para {}".format(self))
+#        elif translate and self.target:
+#            self.translate(all_trans=all_trans, verbosity=verbosity)
+
+    def translate(self, sol_index=-1, all_trans=False, verbosity=0):
+        """Translate the solution with sol_index or all solutions if index is negative."""
+        solutions = self.solutions if sol_index < 0 else [self.solutions[sol_index]]
+        for solution in solutions:
+            solution.translate(all_trans=all_trans, verbosity=verbosity)
 
     ## Create IVars and (set) Vars with sentence DS as root DS
 

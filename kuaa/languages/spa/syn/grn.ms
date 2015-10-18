@@ -21,12 +21,12 @@ reflexivo/1p :: nos [pos=v,p=1,n=1,voz=reflx,+r] ; // 0
 objeto/1s :: me [pos=v,po=1,no=0] ; // 0
 objeto/2s :: te [pos=v,po=2,no=0] ; // 0
 objeto/1p :: nos [pos=v,po=1,no=1] ; // 0
-objeto/3sm :: lo [pos=v,po=3,no=0] ; // 0
-objeto/3sf :: la [pos=v,po=3,no=0] ; // 0
+objeto/3sm :: lo [pos=v,po=3,no=0] ; >< 0 1
+objeto/3sf :: la [pos=v,po=3,no=0] ; >< 0 1
 objeto/3sd :: le [pos=v,po=3,no=0] ; // 0 ; ++ 2 a, 3 él
-objeto/3pm :: los [pos=v,po=3,no=1] ; // 0
-objeto/3pf :: las [pos=v,po=3,no=1] ; // 0
-objeto/3pd :: les [pos=v,po=3,no=1] ; // 0
+objeto/3pm :: los [pos=v,po=3,no=1] ; >< 0 1
+objeto/3pf :: las [pos=v,po=3,no=1] ; >< 0 1
+objeto/3pd :: les [pos=v,po=3,no=1] ; >< 0 1
 
 ## negativo
 negativo :: no [pos=v,+neg] ; // 0
@@ -56,11 +56,15 @@ artdef/fs_adj :: la [pos=a,n=0] [pos=n,n=0] ; // 0
 artdef/mp_adj :: los [pos=a,n=1] [pos=n,n=1] ; // 0
 artdef/fp_adj :: las [pos=a,n=1] [pos=n,n=1] ; // 0
 
-## intensificación (necesita concordancia grd:grd)
-muy :: muy [pos=a,grd=ete] ; // 0
+## intensificación (necesita concordancia grd:grd);
+## en casos predicativos, estar o ser recibe el rasgo grd
+## en casos atributivos, es el adjetivo
+estar_muy :: estar_v[grd=ete] muy ; // 1
+ser_muy :: ser_v[grd=ete] muy ; // 1
+muy_adj :: muy [pos=a,grd=ete] ; // 0
 
 ## cláusulas relativas
-rel_sj :: que [pos=v,+rel] ; // 0
+*rel_sj :: [pos=n] que [pos=v,+rel] ; // 1
 
 ### preposiciones
 #a/pp :: a [pos=n,caso=pe] ; // 0

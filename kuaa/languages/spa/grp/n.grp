@@ -10962,8 +10962,6 @@
 *** látigo_n ; ^ látigo_n 0 ; #4
 ->grn mborevi_n pire ; 0==0 n:n,poses:poses
 ->grn tukumbo_n ; 0==0 n:n,poses:poses ; #17 ; ##3
-*** líder_n del partido colorado ; ^ líder_n 0
-->grn kolo'o_n ruvicha ; 0==0 n:n,poses:poses
 *** líder_n de los borrachos ; ^ líder_n 0
 ->grn ka'u_n ruvicha ; 0==0 n:n,poses:poses
 *** líder_n ; ^ líder_n 0
@@ -13346,7 +13344,7 @@
 *** parálisis_n ; ^ parálisis_n 0
 ->grn apa_n ; 0==0 n:n,poses:poses
 ->grn akuruchĩ_n ; 0==0 n:n,poses:poses
-*** parásito_n del intestino delgado de los mamíferos ; ^ parásito_n 0
+*** parásito_n del intestino ; ^ parásito_n 0
 ->grn <hyesevo'i_n ; 0==0 n:n,poses:poses
 *** paréntesis_n ; ^ paréntesis_n 0
 ->grn <hokái_n ; 0==0 n:n,poses:poses
@@ -14615,8 +14613,6 @@
 ->grn pyasy_n ; 0==0 n:n,poses:poses ; #1
 ->grn andu_n ; 0==0 n:n,poses:poses ; #2
 ->grn <hyakuã_n ; 0==0 n:n,poses:poses ; #27
-*** presidente_n de la anr ; ^ presidente_n 0 ; #1
-->grn kolo'o_n ruvicha ; 0==0 n:n,poses:poses
 *** presidente_n ; ^ presidente_n 0 ; #1
 ->grn kuaihára_n ; 0==0 n:n,poses:poses
 ->grn akã_n ; 0==0 n:n,poses:poses ; #168

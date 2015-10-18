@@ -71,6 +71,9 @@
 # 2015.09.26
 # -- Groups have a priority method that assigns a score based on the number of tokens and
 #    features; used in ordering groups for particular keys.
+# 2015.10.01
+# -- Morphosyn patterns can swap elements (and make no other changes), for example,
+#    lo + [pos=v] --> [pos=v] + lo
 
 import copy, itertools
 import yaml
@@ -115,6 +118,7 @@ MS_NEG_FEATS = re.compile("\s*!(\[.+\])$")
 MS_AGR = re.compile("\s*(\d)\s*=>\s*(\d)\s*(.+)$")
 MS_DELETE = re.compile("\s*//\s*(.+)$")
 MS_ADD = re.compile("\s*\+\+\s*(.+)$")
+MS_SWAP = re.compile("\s*><\s*(.+)$")
 # digit -> [FS], all obligatory
 MS_FEATMOD = re.compile("\s*(\d)\s*->\s*(\[.+\])$")
 
@@ -524,6 +528,10 @@ class MorphoSyn(Entry):
         """Pattern is a string."""
         return "{{ " + pattern + " }}"
 
+    def is_ambig(self):
+        """Is this an optional transformation; that is, is the sentence it succeeds on syntactically ambiguous?"""
+        return self.name[0] == '*'
+
     def expand(self, pattern):
         """
         Pattern is a string consisting of elements separated by MS_ATTRIB_SEP.
@@ -537,13 +545,18 @@ class MorphoSyn(Entry):
         """
         # For now, just split the string into a list of items.
         pattern = pattern.split(MS_ATTRIB_SEP)
+        # Actual pattern
         tokens = pattern[0].strip()
-        # Attributes: agreement, delete
+        # Attributes: agreement, delete, swap, add
         attribs = pattern[1:]
         self.agr = None
         self.del_indices = []
         self.add_items = []
+        self.swap_indices = []
         self.featmod = None
+        # Wordform token (no features) near left end of pattern (for left-to-right direction)
+        self.head_index = -1
+        # Expand attributes
         for attrib in attribs:
             # Within pattern feature agreement
             match = MS_AGR.match(attrib)
@@ -577,6 +590,11 @@ class MorphoSyn(Entry):
                     add_index = int(add_index)
                     self.add_items.append((add_index, add_item))
                 continue
+            match = MS_SWAP.match(attrib)
+            if match:
+                swap_indices = [int(i) for i in match.groups()[0].split()]
+                self.swap_indices = swap_indices
+                continue
             # Index of pattern elements whose features are to be modified
             match = MS_FEATMOD.match(attrib)
             if match:
@@ -585,7 +603,7 @@ class MorphoSyn(Entry):
                 continue
             print("Something wrong with MS attribute {}".format(attrib))
         p = []
-        for item in tokens.split(MS_PATTERN_SEP):
+        for index, item in enumerate(tokens.split(MS_PATTERN_SEP)):
             negmatch = MS_NEG_FEATS.match(item)
             if negmatch:
                 negfeats = negmatch.groups()[0]
@@ -595,23 +613,33 @@ class MorphoSyn(Entry):
                 if feats:
                     feats = FeatStruct(feats)
                 forms = [f.strip() for f in forms.split(FORMALT_SEP) if f]
+                if not feats and self.head_index == -1:
+                    self.head_index = index
                 p.append((forms, feats))
         return p
 
     def pattern_length(self):
         return len(self.pattern)
 
-    def apply(self, sentence, verbosity=0):
-        """Apply the MorphoSyn pattern to the sentence if there is at least one match on some portion."""
+    def apply(self, sentence, ambig=False, verbosity=0):
+        """Apply the MorphoSyn pattern to the sentence if there is at least one match on some portion.
+        2015.10.17: if ambig is True and this is an "ambiguous" MorphoSyn, copy the sentence
+        before enforcing constraints.
+        """
         if verbosity:
             print("Attempting to apply {} to {}".format(self, sentence))
         matches = self.match(sentence, verbosity=verbosity)
         if matches:
+            if ambig and self.is_ambig():
+                # Copy the sentence as an altsyn
+                sentence.copy()
             for match in matches:
                 if verbosity:
                     print(" Match {}".format(match))
                 self.enforce_constraints(match, verbosity=verbosity)
                 self.insert_match(match, sentence, verbosity=verbosity)
+            return True
+        return False
 
     @staticmethod
     def del_token(token):
@@ -627,7 +655,7 @@ class MorphoSyn(Entry):
         if verbosity:
             print("{} matching {}".format(self, sentence))
         if self.direction:
-            # Left-to-right
+            # Left-to-right; index of item within the pattern
             pindex = 0
             # Index of sentence token where successful matching starts
             mindex = -1
@@ -780,9 +808,13 @@ class MorphoSyn(Entry):
                     print("Recording deletion for match element {}".format(elements[i]))
                 elements[i][0] = '~' + elements[i][0]
         if self.add_items:
-            print("Warning: Adding items in match Morphosyn not yet implemented!")
+            print("Warning: Adding items in Morphosyn not yet implemented!")
 #            for i, item in self.add_items:
 #                print("Adding item {} in position {}".format(item, i))
+        if self.swap_indices:
+            i1, i2 = self.swap_indices
+            elements[i1], elements[i2] = elements[i2], elements[i1]
+            
         if self.featmod:
             # Modify features in indexed element
             fm_index, fm_feats = self.featmod
@@ -807,32 +839,40 @@ class MorphoSyn(Entry):
         # start and end are indices within the sentence; some may have been
         # ignored within the pattern during matching
         m_index = 0
-        for s_elem in sentence.analyses[start:end]:
-            s_token = s_elem[0]
-            if MorphoSyn.del_token(s_token):
-                # Skip this sentence element; don't increment m_index
-                continue
-            m_elem = m_elements[m_index]
-            m_index += 1
-            # Replace the token (could have * now)
-            s_elem[0] = m_elem[0]
-            # Replace the features if match element has any
-            m_feats_list = m_elem[1]
-            s_anals = s_elem[1]
-            new_s_anals = []
-            if m_feats_list:
-                for m_feats, s_anal in zip(m_feats_list, s_anals):
-                    if not m_feats:
-                        # This anal failed to match pattern; filter it out
-                        continue
-                    else:
-                        s_feats = s_anal['features']
-                        if s_feats != m_feats:
-                            # Replace sentence features with match features if something
-                            # has changed
-                            s_anal['features'] = m_feats
-                        new_s_anals.append(s_anal)
-            s_elem[1] = new_s_anals
+        # Swap sentence.analyses and tokens elements if there are swap_indices in the MS
+        # Note: this only works if there are no other constraints to enforce.
+        if self.swap_indices:
+            mstart, mend = self.swap_indices
+            sstart, send = start+mstart, start+mend
+            sentence.analyses[sstart], sentence.analyses[send] = sentence.analyses[send], sentence.analyses[sstart]
+            sentence.tokens[sstart], sentence.tokens[send] = sentence.tokens[send], sentence.tokens[sstart]
+        else:
+            for s_elem in sentence.analyses[start:end]:
+                s_token = s_elem[0]
+                if MorphoSyn.del_token(s_token):
+                    # Skip this sentence element; don't increment m_index
+                    continue
+                m_elem = m_elements[m_index]
+                m_index += 1
+                # Replace the token (could have * now)
+                s_elem[0] = m_elem[0]
+                # Replace the features if match element has any
+                m_feats_list = m_elem[1]
+                s_anals = s_elem[1]
+                new_s_anals = []
+                if m_feats_list:
+                    for m_feats, s_anal in zip(m_feats_list, s_anals):
+                        if not m_feats:
+                            # This anal failed to match pattern; filter it out
+                            continue
+                        else:
+                            s_feats = s_anal['features']
+                            if s_feats != m_feats:
+                                # Replace sentence features with match features if something
+                                # has changed
+                                s_anal['features'] = m_feats
+                            new_s_anals.append(s_anal)
+                s_elem[1] = new_s_anals
 
 class EntryError(Exception):
     '''Class for errors encountered when attempting to update an entry.'''

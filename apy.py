@@ -40,11 +40,13 @@ import kuaa
 
 ### Español -> Guarani.
 
-def eg_oracion(sentence):
+def eg_oracion(sentence, ambig=True, solve=False):
     e, g = cargar_eg()
     d = kuaa.Document(e, g, sentence, True)
     s = d[0]
-    s.initialize()
+    s.initialize(ambig=ambig)
+    if solve:
+        s.solve(all_sols=ambig)
     return s
 
 def cargar_eg():

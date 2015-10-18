@@ -1,5 +1,9 @@
+*** lo ; ^ lo 0
+->grn chupe
+*** los ; ^ los 0
+->grn chupekuéra
 *** a él ; ^ él 1
-->grn ichupe
+->grn chupe
 *** a $n ; ^ a 0
 ->grn $n[caso=pe] ; || -1, 0
 *** en $n ; ^ en 0
