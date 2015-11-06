@@ -159,8 +159,8 @@ s = caus
 
 #%   relv = None | ha | hague | harã | harangue | va | vaekue | vaerã  # vae
 #  rel (relativo) = *None | ha | hague | harã | va | vaekue | vaerã
-  rel (relativo) = *False | True
-  relobl (relativo oblícuo) = *False | True
+  rel (relativo) = *None | sjoj | obl
+#  relobl (relativo oblícuo) = *False | True
 
 #%   pp (pospos) = *None | peve | jeve | jave | vove | kuevo | ramo | jepe | rire | haguã | ramojepe | vo | gui | guive | pe | re | icha
   pp (pospos) = *None | peve | jave | ramo | rire | haguã | vo | gui | guive | pe | re | icha

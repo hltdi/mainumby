@@ -74,6 +74,11 @@
 # 2015.10.01
 # -- Morphosyn patterns can swap elements (and make no other changes), for example,
 #    lo + [pos=v] --> [pos=v] + lo
+# 2015.10.18-20
+# -- Morphosyn patterns can include ambiguity, with sentence copied and constraints applied
+#    to original or copy (depending on which interpretation is preferred)
+# 2015.10.26
+# -- Morphosyns can fail if others have succeeded (see **2formal in spa/syn/grn.ms)
 
 import copy, itertools
 import yaml
@@ -89,10 +94,10 @@ ATTRIB_SEP = ';'
 WITHIN_ATTRIB_SEP = ','
 ## Regular expressions for reading groups from text files
 # non-empty form string followed by possibly empty FS string
-FORM_FEATS = re.compile("([$<'?!\-\w]+)\s*((?:\[.+\])?)$")
+FORM_FEATS = re.compile("([$<'¿?¡!\-\w]+)\s*((?:\[.+\])?)$")
 # !FS(#1-#2), representing a sequence of #1 to #2 negative FS matches
 NEG_FEATS = re.compile("\s*!(\[.+\])(\(\d-\d\))$")
-HEAD = re.compile("\s*\^\s*([<'?!\-\w]+)\s+(\d)\s*$")
+HEAD = re.compile("\s*\^\s*([<'¿?¡!\-\w]+)\s+(\d)\s*$")
 # Within agreement spec
 # 1=3 n,p
 WITHIN_AGR = re.compile("\s*(\d)\s*=\s*(\d)\s*(.+)$")
@@ -119,6 +124,7 @@ MS_AGR = re.compile("\s*(\d)\s*=>\s*(\d)\s*(.+)$")
 MS_DELETE = re.compile("\s*//\s*(.+)$")
 MS_ADD = re.compile("\s*\+\+\s*(.+)$")
 MS_SWAP = re.compile("\s*><\s*(.+)$")
+MS_FAILIF = re.compile("\s*FAILIF\s*(.+)$")
 # digit -> [FS], all obligatory
 MS_FEATMOD = re.compile("\s*(\d)\s*->\s*(\[.+\])$")
 
@@ -511,7 +517,7 @@ class Group(Entry):
         translations.sort(key=lambda x: x[1].get('count', 0), reverse=True)
 
 class MorphoSyn(Entry):
-    """Within-language patterns that modify morphology a word/root on the basis of the occurrence of other words."""
+    """Within-language patterns that modify morphology and can delete words on the basis of the occurrence of other words or features."""
 
     def __init__(self, language, name=None, pattern=None):
         """pattern and change are strings, which get expanded at initialization.
@@ -531,6 +537,11 @@ class MorphoSyn(Entry):
     def is_ambig(self):
         """Is this an optional transformation; that is, is the sentence it succeeds on syntactically ambiguous?"""
         return self.name[0] == '*'
+
+    def is_not_preferred(self):
+        """For ambiguous sentences, whether the version to be modified syntactically is not preferred over the non-modified
+        version. '**' means not preferred."""
+        return self.name.startswith('**')
 
     def expand(self, pattern):
         """
@@ -553,11 +564,13 @@ class MorphoSyn(Entry):
         self.del_indices = []
         self.add_items = []
         self.swap_indices = []
-        self.featmod = None
+        self.failif = None
+        self.featmod = []
         # Wordform token (no features) near left end of pattern (for left-to-right direction)
         self.head_index = -1
         # Expand attributes
         for attrib in attribs:
+            attrib = attrib.strip()
             # Within pattern feature agreement
             match = MS_AGR.match(attrib)
             if match:
@@ -595,11 +608,16 @@ class MorphoSyn(Entry):
                 swap_indices = [int(i) for i in match.groups()[0].split()]
                 self.swap_indices = swap_indices
                 continue
+            match = MS_FAILIF.match(attrib)
+            if match:
+                self.failif = match.groups()[0]
+#                print("Found failif {} for {}".format(self.failif, self))
+                continue
             # Index of pattern elements whose features are to be modified
             match = MS_FEATMOD.match(attrib)
             if match:
                 fm_index, fm_feats = match.groups()
-                self.featmod = int(fm_index), FeatStruct(fm_feats)
+                self.featmod.append((int(fm_index), FeatStruct(fm_feats)))
                 continue
             print("Something wrong with MS attribute {}".format(attrib))
         p = []
@@ -625,19 +643,26 @@ class MorphoSyn(Entry):
         """Apply the MorphoSyn pattern to the sentence if there is at least one match on some portion.
         2015.10.17: if ambig is True and this is an "ambiguous" MorphoSyn, copy the sentence
         before enforcing constraints.
+        2015.10.20: constraints can be applied either to sentence or its copy (in altsyns list)
         """
         if verbosity:
             print("Attempting to apply {} to {}".format(self, sentence))
         matches = self.match(sentence, verbosity=verbosity)
+        s = sentence
         if matches:
             if ambig and self.is_ambig():
                 # Copy the sentence as an altsyn
-                sentence.copy()
+                copy = sentence.copy()
+                if self.is_not_preferred():
+                    s = copy
             for match in matches:
+                start, end, elements = match
+                sentence.morphosyns.append((self, start, end))
+                # Change either the sentence or the latest altsyn copy
                 if verbosity:
                     print(" Match {}".format(match))
                 self.enforce_constraints(match, verbosity=verbosity)
-                self.insert_match(match, sentence, verbosity=verbosity)
+                self.insert_match(match, s, verbosity=verbosity)
             return True
         return False
 
@@ -663,6 +688,17 @@ class MorphoSyn(Entry):
             for sindex, (stoken, sanals) in enumerate(sentence.analyses):
                 if MorphoSyn.del_token(stoken):
                     continue
+                # Check next whether this is a FAILIF Morphosysn that should fail because of what
+                # MorphoSyns have already succeeded for the sentence
+                if self.failif:
+                    failed = False
+                    for ms, start, end in sentence.morphosyns:
+                        if ms.name.startswith(self.failif) and start <= sindex <= end:
+                            print("{} fails because {} has already succeeded".format(self, ms))
+                            failed = True
+                            break
+                    if failed:
+                        continue
                 # sentence.analyses consists of pairs of word tokens and a list of analysis dicts
                 match = self.match_item(stoken, sanals, pindex, verbosity=verbosity)
                 if match:
@@ -671,6 +707,8 @@ class MorphoSyn(Entry):
                     # Is this the end of the pattern? If so, succeed.
                     if self.pattern_length() == pindex + 1:
                         print("MS {} tuvo éxito con resultado {}".format(self, result))
+                        if mindex < 0:
+                            mindex = sindex
                         results.append((mindex, sindex+1, result))
                         mindex = -1
                         pindex = 0
@@ -722,7 +760,7 @@ class MorphoSyn(Entry):
         if verbosity:
             print("Matching sentence token {} and analyses {} against pattern forms {}".format(stoken, sanals, pforms))
         if any([stoken == f for f in pforms]):
-            # Do any of th pattern items match the sentence word?
+            # Do any of the pattern items match the sentence word?
             if verbosity:
                 print(" Succeeded on token")
             return [stoken, False]
@@ -817,17 +855,21 @@ class MorphoSyn(Entry):
             
         if self.featmod:
             # Modify features in indexed element
-            fm_index, fm_feats = self.featmod
-            elem = elements[fm_index]
-            feats_list = elem[1]
-            for index, feats in enumerate(feats_list):
-                if isinstance(feats, FeatStruct):
+            for fm_index, fm_feats in self.featmod:
+                elem = elements[fm_index]
+                feats_list = elem[1]
+                if not feats_list:
+                    elem[1] = [fm_feats.copy()]
+                else:
+                    for index, feats in enumerate(feats_list):
+                        if isinstance(feats, FeatStruct):
 #                    print("Updating feat {} with fm_feats {}".format(feats.__repr__(), fm_feats.__repr__()))
 #                    feats1 = feats.copy()
 #                    print("Feature {} replaced with copy".format(feats.__repr__()))
-                    feats.update_inside(fm_feats)
+#                    print("Modifying features {}, {}, {}".format(elem, feats.__repr__(), fm_feats.__repr__()))
+                            feats.update_inside(fm_feats)
 #                    feats_list[index] = feats1
-#                print("Feature {} after update".format(feats.__repr__()))
+#                    print("Feature {} after update".format(feats.__repr__()))
 
     def insert_match(self, match, sentence, verbosity=0):
         """Replace matched portion of sentence with elements in match.
@@ -861,6 +903,8 @@ class MorphoSyn(Entry):
                 s_anals = s_elem[1]
                 new_s_anals = []
                 if m_feats_list:
+                    if not s_anals:
+                        new_s_anals = [{'features': mfl, 'root': s_token} for mfl in m_feats_list]
                     for m_feats, s_anal in zip(m_feats_list, s_anals):
                         if not m_feats:
                             # This anal failed to match pattern; filter it out

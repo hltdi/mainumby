@@ -3553,7 +3553,6 @@
 ->grn mbohevi_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 *** dejar_v[-r] pelado ; ^ dejar_v 0 ; #386
 ->grn mopẽrõ_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
-*** dejar_v[-r] huérfano ; ^ dejar_v 0 ; #386
 *** delatar_v[-r] ; ^ delatar_v 0
 ->grn mombe'u_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 *** deleitar_v[+r] ; ^ deleitar_v 0
@@ -6300,8 +6299,8 @@
 *** hablar_v[-r] en voz baja ; ^ hablar_v 0 ; #776
 ->grn ñe'ẽmbegue_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 *** hablar_v[-r] ; ^ hablar_v 0 ; #776
-->grn ñemongeta_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel ; #52 ; ##7
-->grn ñe'ẽ_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel ; #1544 ; ##334
+->grn ñemongeta_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,negipv:negipv ; #52 ; ##7
+->grn ñe'ẽ_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,negipv:negipv ; #1544 ; ##334
 *** hablar_v[-r] jerigonza ; ^ hablar_v 0 ; #776
 ->grn ñe'ẽjopara_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 *** hablar_v[-r] airadamente con cólera y violencia ; ^ hablar_v 0 ; #776

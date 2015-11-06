@@ -299,6 +299,8 @@ class Sentence:
         self.variables = {}
         # Modified copies of the sentence for cases of syntactic ambiguity; "alternate syntax"
         self.altsyns = []
+        # MorphoSyns applied to sentence along with their start and end
+        self.morphosyns = []
         # Solver to find solutions
         self.solver = Solver(self.constraints, self.dstore,
                              evaluator=self.state_eval,
@@ -356,12 +358,14 @@ class Sentence:
     ## Copying, for alternate syntactic representations
 
     def copy(self):
-        """Make a copy of the sentence, assumed to happen following analysis but before node creation."""
+        """Make a copy of the sentence, assumed to happen following analysis but before node creation.
+        For ambiguous morphosyntax. Return the copy so it can be used by MorphoSyn.apply()."""
         s = Sentence(raw=self.raw[:], tokens=self.tokens[:], toktypes=self.toktypes[:],
                      language=self.language, target=self.target,
                      analyses=copy.deepcopy(self.analyses))
         print("Copied {} as {}".format(self, s))
         self.altsyns.append(s)
+        return s
 
     ## Initial processing
     

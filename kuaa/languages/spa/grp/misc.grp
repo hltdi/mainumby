@@ -1,3 +1,19 @@
+*** ¿ dónde ; ^ dónde 1
+->grn moõpa
+*** ¿ adónde ; ^ adónde 1
+->grn moõpa
+*** ¿ qué ; ^ qué 1
+->grn mba'épa
+*** ¿ quién ; ^ quién 1
+->grn mávapa
+*** ¿ cómo ; ^ cómo 1
+->grn mba'éichapa
+*** ¿ cuándo ; ^ cuándo 1
+->grn araka'épa
+*** ¿ cuánto ; ^ cuánto 1
+->grn mbovýpa
+*** ¿ por qué; ^ qué 2
+->grn mba'érepa
 *** lo ; ^ lo 0
 ->grn chupe
 *** los ; ^ los 0
@@ -566,7 +582,6 @@
 *** conjuntamente ; ^ conjuntamente 0
 ->grn pýri
 *** conmigo ; ^ conmigo 0
-->grn chejehe
 ->grn chendive
 *** consigo ; ^ consigo 0
 ->grn ondive
@@ -1615,11 +1630,7 @@
 *** mútuamente ; ^ mútuamente 0
 ->grn ojuehe
 *** nada ; ^ nada 0
-->grn avave
-->grn marãve
 ->grn mba'eve
-->grn mbovyve
-->grn mboyve
 *** nada en absoluto ; ^ nada 0
 ->grn mba'evete
 *** para nada ; ^ nada 1
@@ -1634,10 +1645,11 @@
 *** ninguno ; ^ ninguno 0
 ->grn avave
 ->grn nipeteĩ
+*** no[+ipv] ; ^ no 0
+->grn ani
 *** no ; ^ no 0
 ->grn anichéne
 ->grn nahániri
-->grn tove
 ->grn ani
 *** no más ; ^ no 0
 ->grn anive
@@ -1849,7 +1861,6 @@
 ->grn mba'éguipa
 ->grn mba'érepa
 *** por ; ^ por 0
-->grn gui
 ->grn haguére
 ->grn rehe
 ->grn rupi
