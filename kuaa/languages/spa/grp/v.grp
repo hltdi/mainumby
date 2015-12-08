@@ -1979,7 +1979,6 @@
 *** calentar_v[+r] al fuego o cerca del brasero ; ^ calentar_v 0
 ->grn jepe'e_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 *** callar_v[+r] ; ^ callar_v 0 ; #3
-->grn ñekirirĩ_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel ; #2
 ->grn kirirĩ_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel ; #60 ; ##3
 *** calmar_v[-r] un dolor ; ^ calmar_v 0 ; #10
 ->grn mombi_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel

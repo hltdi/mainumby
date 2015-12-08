@@ -53,6 +53,8 @@ def cargar_eg():
     spa, grn = kuaa.Language.load_trans('spa', 'grn')
     return spa, grn
 
+## Particular Spanish-Guarani examples
+
 def sefue(all_trans=True, all_sols=False):
     e, g = load_eg()
     d = kuaa.Document(e, g, "El muchacho se fue.", True)
@@ -128,6 +130,18 @@ def ayer_caminé(verbosity=0):
     s.solve(translate=True, all_sols=True,verbosity=verbosity)
     return s    
 
+def ui():
+    """Create a UI and two languages."""
+    u = kuaa.UI()
+    e, s = kuaa.Language("English", 'eng'), kuaa.Language("español", 'spa')
+    return u, e, s
+
+## To run the web app, uncomment the second line.
+if __name__ == "__main__":
+    print("Tereg̃uahẽ porãite Mbojereha-pe, versión {}\n".format(__version__))
+#    kuaa.app.run(debug=True)
+
+## OLD STUFF: Spanish, English, Amharic, Oromo
 # Profiling
 #import cProfile
 #import pstats
@@ -369,12 +383,4 @@ def ayer_caminé(verbosity=0):
 ##    else:
 ##        return ambig
 
-def ui():
-    """Create a UI and two languages."""
-    u = kuaa.UI()
-    e, s = kuaa.Language("English", 'eng'), kuaa.Language("español", 'spa')
-    return u, e, s
 
-if __name__ == "__main__":
-    print("Tereg̃uahẽ porãite Mbojereha-pe, versión {}\n".format(__version__))
-#    kuaa.app.run(debug=True)

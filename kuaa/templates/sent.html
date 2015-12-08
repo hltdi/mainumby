@@ -92,27 +92,29 @@ td.mbojereha
 }
 </style>
 
+{# Not currently used
 <script>
 function seg(text) {
     document.write(text)
     document.getElementById("segtrans").innerHTML = text;
 }
 </script>
+#}
 
-<title>Mbojereha: un Ayudante para la Traducción Castellano-Guaraní</title>
+<title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
 
 </head>
 
 <body>
 
-<h1>Mbojereha: un Ayudante para la Traducción Castellano-Guaraní</h1>
+<h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
 
 <form method=POST action='sent'>
 
 {% if sentence %}
 <p></p><p></p>
 
-{# Write the sentence with colors represented translated segments #}
+{# Write the sentence with colors representing different translated segments #}
 <p>Actual oración:
 <span class='sentence'>
 {% for seg in sentence %}

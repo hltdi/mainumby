@@ -815,6 +815,8 @@
 ->grn $n <hu'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n ta_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n kyta_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** página_n de $n ; ^ página_n 0
+->grn $n <hogue_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 *** pérdida_n de $n ; ^ pérdida_n 0
 ->grn $n <hundi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n kañy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
@@ -12112,8 +12114,6 @@
 ->grn <hasyguejy_n ; 0==0 n:n,poses:poses
 *** mujer_n digna ; ^ mujer_n 0
 ->grn kuña_n jero ; 0==0 n:n,poses:poses
-*** mujer_n[n=1] ; ^ mujer_n 0
-->grn lokuña_n ; 0==0 n:n,poses:poses
 *** mujer_n ; ^ mujer_n 0
 ->grn kuña_n ; 0==0 n:n,poses:poses
 *** mujer_n joven y soltera ; ^ mujer_n 0
@@ -15002,7 +15002,6 @@
 *** puño_n de la hamaca ; ^ puño_n 0
 ->grn apykua_n ; 0==0 n:n,poses:poses
 *** página_n ; ^ página_n 0
-->grn kuatiarogue_n ; 0==0 n:n,poses:poses
 ->grn <hogue_n ; 0==0 n:n,poses:poses ; #39
 *** pájaro_n hechicero ; ^ pájaro_n 0
 ->grn guyra_n paje ; 0==0 n:n,poses:poses
@@ -15044,7 +15043,7 @@
 ->grn <hundi_n ; 0==0 n:n,poses:poses
 ->grn kañy_n ; 0==0 n:n,poses:poses ; #146
 ->grn ñekañy_n ; 0==0 n:n,poses:poses ; #4
-*** pérdida_n de la confianza o de la creencia o de la fe o del asentimiento ; ^ pérdida_n 0 ; #7
+*** pérdida_n de la confianza ; ^ pérdida_n 0 ; #7
 ->grn jerovia'ỹ_n ; 0==0 n:n,poses:poses
 *** pétalo_n ; ^ pétalo_n 0
 ->grn <hope_n ; 0==0 n:n,poses:poses

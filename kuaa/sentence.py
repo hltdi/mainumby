@@ -552,7 +552,7 @@ class Sentence:
             groups.append((head_i, snodes, group))
         # Create a GInst object and GNodes for each surviving group
         self.groups = [GInst(group, self, head_i, snodes, index) for index, (head_i, snodes, group) in enumerate(groups)]
-        print("{} grupos encontrados".format(len(self.groups)))
+        print("{} grupo(s) encontrado(s) para {}".format(len(self.groups), self))
         # Assign sentence-level indices to each GNode; store gnodes in list
         sent_index = 0
         for group in self.groups:
