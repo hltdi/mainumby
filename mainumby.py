@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Mbojereha. Parsing and translation with minimal dependency grammars.
+# Mainumby: Mbojereha. Parsing and translation with minimal dependency grammars.
 #
 ########################################################################
 #
@@ -26,13 +26,15 @@
 # =========================================================================
 
 # 2014.02.09
-# -- Created
+# -- Created (as Hiiktuu)
 # 2015.05.20
 # -- Changed to Ñe'ẽasa, after incorporating morphological analysis/generation
 # 2015.06.12
 # -- Started Web app
 # 2015.07.04
 # -- Changed name to Mbojereha
+# 2015.12.07
+# -- Changed name of repository and folder to mainumby
 
 __version__ = 1.0
 

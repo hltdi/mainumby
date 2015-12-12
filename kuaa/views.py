@@ -1,4 +1,4 @@
-# Ñe'ẽasa. Parsing and translation with minimal dependency grammars.
+# Mainumby. Parsing and translation with minimal dependency grammars.
 #
 ########################################################################
 #

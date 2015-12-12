@@ -1,4 +1,4 @@
-"""Ñe'ẽasa: Create simple bilingual lexicons and grammars for language pairs."""
+"""Mainumby: Create simple bilingual lexicons and grammars for language pairs."""
 
 __all__ = ['language', 'entry', 'ui', 'constraint', 'db', 'views', 'variable', 'sentence', 'cs', 'learn', 'utils']
 
