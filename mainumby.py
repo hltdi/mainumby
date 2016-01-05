@@ -140,8 +140,8 @@ def ui():
 
 ## To run the web app, uncomment the second line.
 if __name__ == "__main__":
-    print("Tereg̃uahẽ porãite Mbojereha-pe, versión {}\n".format(__version__))
-#    kuaa.app.run(debug=True)
+#    print("Tereg̃uahẽ porãite Mbojereha-pe, versión {}\n".format(__version__))
+    kuaa.app.run(debug=True)
 
 ## OLD STUFF: Spanish, English, Amharic, Oromo
 # Profiling
