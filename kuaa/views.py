@@ -6,7 +6,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2015, HLTDI <gasser@cs.indiana.edu>
+#   Copyright (C) 2015, 2016, HLTDI <gasser@cs.indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -26,7 +26,8 @@
 # Created 2015.06.12
 # 2015.07
 # -- Views for loading languages, entering document, sentence, and translation.
-# 2015.08.02
+# 2016.01.05
+# -- Added run line.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
 from kuaa import app, translate, make_document, load, seg_trans
@@ -122,5 +123,8 @@ def tra():
     elif form.get('next') == 'sent':
         return render_template('sent.html', sentence=None, translation=None)
     return render_template('tra.html', sentence=None, translation=None)
+
+if __name__ == "__main__":
+    kuaa.app.run(host='0.0.0.0')
 
 
