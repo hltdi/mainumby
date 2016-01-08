@@ -1,5 +1,5 @@
 #   
-#   Mbojereha sentences and how to parse and translate them.
+#   Mainumby: sentences and how to parse and translate them.
 #
 ########################################################################
 #
@@ -7,7 +7,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015, HLTDI <gasser@cs.indiana.edu>
+#   Copyright (C) 2014, 2015, 2016 HLTDI <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -110,10 +110,12 @@
 # -- For each key in the groups dict, only allow one to match (the entries are
 #    ordered from most to least specific). Later allow exceptions to this. See
 #    lexicalize().
+# 2016.01.06
+# -- Split off segment.py.
 
-import itertools, copy, re, random, copy
+import copy, re, random
 from .ui import *
-from .cs import *
+from .segment import *
 
 class Document(list):
     """A ist of of Sentences, split from a text string."""
@@ -250,6 +252,7 @@ class Sentence:
 
     id = 0
     word_width = 10
+    # colors to display sentence segments in interface
     tt_colors = ['red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple']
 
     def __init__(self, raw='', language=None, tokens=None, toktypes=None,
@@ -347,14 +350,6 @@ class Sentence:
         for solution in solutions:
             solution.display(word_width=word_width)
 
-#    def trans_strings(self, sol_index=-1):
-#        """Translation strings for indexed solution or all solutions."""
-#        solutions = self.solutions if sol_index < 0 else [self.solutions[index]]
-#        strings = []
-#        for solution in solutions:
-#            strings.extend(solution.trans_strings())
-#        return strings
-
     ## Copying, for alternate syntactic representations
 
     def copy(self):
@@ -376,19 +371,20 @@ class Sentence:
             self.tokens[tok_index:tok_index+1] = segmentation
 
     def lowercase(self):
+        """Make capitalized tokens lowercase."""
         for index, token in enumerate(self.tokens):
             if token.istitle():
                 self.tokens[index] = token.lower()
 
     def preprocess(self, verbosity=0):
-        """Segment contracted expressions, and lowercase all words. Must follow word tokenization.
+        """Segment contractions, and lowercase all words. Must follow word tokenization.
         Segmentation can add to the number of tokens in the sentence."""
         self.lowercase()
         for index, token in zip(range(len(self.tokens)-1, -1, -1), self.tokens[-1::-1]):
 #            print('index {}, token {}'.format(index, token))
             self.segment(token, index)
 
-    def initialize(self, ambig=False, verbosity=0):
+    def initialize(self, ambig=True, verbosity=0):
         """Things to do before running constraint satisfaction."""
         if verbosity:
             print("Initializing {}".format(self))
@@ -412,7 +408,7 @@ class Sentence:
         else:
             return True
 
-    def tokenize(self, ambig=False, verbosity=0):
+    def tokenize(self, ambig=True, verbosity=0):
         """Segment the sentence string into tokens, analyze them morphologically,
         and create a SNode object for each.
         2015.06.07: Save the analyzed tokens as well as nodes.
@@ -427,13 +423,13 @@ class Sentence:
         if verbosity:
             print("Tokenizing {}".format(self))
         if not self.nodes:
-            # (Otherwise it's already done.)
+            # Don't do this if nodes have already been created.
             # Split at spaces by default (later allow for dedicated language-specific tokenizers).
             if not self.tokens:
                 self.tokens = self.raw.split()
-            # Lower-case capitalized words and segment contractions, possibly adding new tokens.
+            # Lowercase capitalized words and segment contractions, possibly adding new tokens.
             self.preprocess()
-            # Next do morphological analysis (2015.06.07)
+            # Do morphological analysis (added 2015.06.07)
             self.analyses = [[token, self.language.anal_word(token)] for token in self.tokens]
             # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
             if verbosity:
@@ -595,6 +591,8 @@ class Sentence:
         if not self.groups:
             print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SOLUCIÓN POSIBLE".format(self))
             return
+        print("Solving {} with analyses {}".format(self, self.analyses))
+        print("Alt analyses: {}".format(self.altsyns))
         generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity,
                                           tracevar=tracevar)
         try:
@@ -795,9 +793,6 @@ class Sentence:
                     varscore /= len(value)
                     varscore += av
             print(" Varscore for {} with {} in {}: {}".format(variable, value, dstore, varscore))
-#        undet = dstore.ess_undet
-#        undet_count = len(undet)
-#        print(" Undet score for {}: {}, vars: {}".format(dstore, undet_count, undet))
         # Tie breaker
         ran = random.random() / 100.0
         return varscore + ran
@@ -903,60 +898,38 @@ class Sentence:
                     self.trans_outputs.append(tt1)
         self.trans_outputs.sort()
 
-    def get_sol_segs(self, solution=None):
-        """A list of triples: (start/end_within_sentence, translation, snode_tokens)."""
-        if not solution:
-            if not self.solutions:
-                return
-            solution = self.solutions[0]
-        tt = solution.get_ttrans_outputs()
-        tt_segs = []
-        end_index = -1
-        for indices, forms in tt:
-            start, end = indices[0], indices[-1]
-            if start > end_index+1:
-                src_tokens = self.tokens[end_index+1:start]
-                tt_segs.append(((end_index+1, start-1), [], src_tokens))
-#                                [n.token for n in self.nodes[end_index+1:start]]))
-                # Some word(s) not translated; use source forms with # prefix
-#                verbatim = [self.verbatim(n) for n in self.nodes[end_index+1:start]]
-#                tt_segs.append([' '.join(verbatim)])
-            src_tokens = self.tokens[start:end+1]
-            tt_segs.append((indices, forms, src_tokens))
-#                            [n.token for n in self.nodes[start:end+1]]))
-            end_index = end
-        if end_index+1 < len(self.tokens):
-#            len(self.nodes):
-            # Some word(s) not translated; use source forms with # prefix
-            src_tokens = self.tokens[end_index+1:len(self.tokens)]
-            tt_segs.append(((end_index+1, len(self.tokens)-1), [], src_tokens))
-#                            [n.token for n in self.nodes[end_index+1:len(self.nodes)]]))
-        return tt_segs
-
-    def html_segs(self, segs):
-        """Convert a list of segments (from the last method) to a list of marked-up phrases."""
-        res = []
-        for i, (indices, trans, tokens) in enumerate(segs):
-            color = 'Silver' if not trans else Sentence.tt_colors[i]
-            transhtml = '<table border=1>'
-            for t in trans:
-                if '|' in t:
-                    t = t.replace('|', '<br/>')
-                if ' ' in t:
-                    transhtml += '<tr>'
-                    ts = t.split()
-                    for tt in ts:
-                        transhtml += '<td>' + tt + '</td>'
-                    transhtml += '</tr>'
-                else:
-                    transhtml += '<tr><td>' + t + '</td></tr>'
-            transhtml = transhtml.replace('_', ' ')
-            transhtml += '</table>'
-            tokens = ' '.join(tokens)
-            if i==0:
-                tokens = tokens.capitalize()
-            res.append((tokens, color, transhtml))
-        return res
+#    def get_sol_segs(self, solution=None):
+#        """A list of triples: (start/end_within_sentence, translation, snode_tokens)."""
+#        if not solution:
+#            if not self.solutions:
+#                return
+#            solution = self.solutions[0]
+#        return solution.get_segs()
+#
+#    def html_segs(self, segs):
+#        """Convert a list of segments (from the last method) to a list of marked-up phrases."""
+#        res = []
+#        for i, (indices, trans, tokens) in enumerate(segs):
+#            color = 'Silver' if not trans else Sentence.tt_colors[i]
+#            transhtml = '<table border=1>'
+#            for t in trans:
+#                if '|' in t:
+#                    t = t.replace('|', '<br/>')
+#                if ' ' in t:
+#                    transhtml += '<tr>'
+#                    ts = t.split()
+#                    for tt in ts:
+#                        transhtml += '<td>' + tt + '</td>'
+#                    transhtml += '</tr>'
+#                else:
+#                    transhtml += '<tr><td>' + t + '</td></tr>'
+#            transhtml = transhtml.replace('_', ' ')
+#            transhtml += '</table>'
+#            tokens = ' '.join(tokens)
+#            if i==0:
+#                tokens = tokens.capitalize()
+#            res.append((tokens, color, transhtml))
+#        return res
 
     def get_complete_trans(self, capfirst=True):
         """Produce complete translations (list of lists of strings) from tree trans outputs for solutions, filling
@@ -988,45 +961,6 @@ class Sentence:
         self.complete_trans = trans
         return trans
 
-#    @staticmethod
-#    def webify_trans(translation):
-#        """Make a translation (a list of TreeTrans outputs and verbatim words)
-#        into a list more suitable for template processing."""
-#        trans = []
-#        for tt in translation:
-#            # Each tt is the output of a TreeTrans object; a list of alternative translations within a given solution
-#            # Mark each as single with or without morphological alternatives,
-#            # multiple with or without morphological alternatives
-#            mult = False
-#            morphalt = False
-#            if len(tt) > 1:
-#                mult = True
-#            tx = []
-#            for ttt in tt:
-#                # An alternative may be two or more words separated by spaces, but they only need to be separated
-#                # if one has alternative morphological outputs separated by '|'
-#                if '|' in ttt:
-#                    morphalt = True
-#                    ttx = []
-#                    # Create a sublist separated by spaces
-#                    for tttt in ttt.split():
-#                        if '|' in tttt:
-#                            ttx.append(tttt.split('|'))
-#                        else:
-#                            ttx.append(tttt)
-#                    tx.append(ttx)
-#                else:
-#                    tx.append(ttt)
-#            if mult and morphalt:
-#                trans.append([3, tx])
-#            elif mult:
-#                trans.append([2, tx])
-#            elif morphalt:
-#                trans.append([1, tx[0]])
-#            else:
-#                trans.append([0, tx[0]])
-#        return trans
-
     def verbatim(self, node):
         """Use the source token in the target complete translation."""
         # If token consists of only punctuation or digits, just return it
@@ -1043,436 +977,6 @@ class Sentence:
         elif '|' in token:
             return '|'.join([t.capitalize() for t in token.split('|')])
         return token.capitalize()
-
-class SNode:
-    """Sentence token and its associated analyses and variables."""
-
-    def __init__(self, token, index, analyses, sentence, raw_indices):
-#        print("Creating SNode with args {}, {}, {}, {}".format(token, index, analyses, sentence))
-        # Raw form in sentence (possibly result of segmentation)
-        self.token = token
-        # Position in sentence
-        self.index = index
-        # Positions in original sentence
-        self.raw_indices = raw_indices
-        # List of analyses
-        if analyses and not isinstance(analyses, list):
-            analyses = [analyses]
-        self.analyses = analyses
-        # Back pointer to sentence
-        self.sentence = sentence
-        # We'll need these for multiple matchings
-        self.cats = self.get_cats()
-        # Indices of candidate gnodes for this snode found during lexicalization
-        self.gnodes = None
-        # Dict of variables specific to this SNode
-        self.variables = {}
-        ## Tokens in target language for this SNode
-        self.translations = []
-
-    def __repr__(self):
-        """Print name."""
-        return "*{}:{}".format(self.token, self.index)
-
-    ## Create IVars and (set) Vars with sentence DS as root DS
-
-    def ivar(self, key, name, domain, ess=False):
-        self.variables[key] = IVar(name, domain, rootDS=self.sentence.dstore,
-                                   essential=ess)
-
-    def svar(self, key, name, lower, upper, lower_card=0, upper_card=MAX,
-             ess=False):
-        self.variables[key] = Var(name, lower, upper, lower_card, upper_card,
-                                  rootDS=self.sentence.dstore, essential=ess)
-
-    def lvar(self, key, name, lower, upper, lower_card=0, upper_card=MAX,
-             ess=False):
-        self.variables[key] = LVar(name, lower, upper, lower_card, upper_card,
-                                   rootDS=self.sentence.dstore, essential=ess)
-
-    def create_variables(self, verbosity=0):
-        if not self.gnodes:
-            # Nothing matched this snode; all variables empty
-            self.variables['gnodes'] = EMPTY
-            self.variables['cgnodes'] = EMPTY
-            self.variables['agnodes'] = EMPTY
-#            self.variables['mgnodes'] = EMPTY
-            self.variables['features'] = EMPTY
-        else:
-            # GNodes associated with this SNode: 0, 1, or 2
-            self.svar('gnodes', "w{}->gn".format(self.index), set(),
-                      set(range(self.sentence.ngnodes)),
-                      0, 2, ess=True)
-            # Concrete GNodes associated with this SNode: must be 1
-            self.svar('cgnodes', "w{}->cgn".format(self.index), set(),
-                      {gn.sent_index for gn in self.sentence.gnodes if not gn.cat},
-                      1, 1)
-            # Abstract GNodes associated with this SNode: 0 or 1
-            self.svar('agnodes', "w{}->agn".format(self.index), set(),
-                      {gn.sent_index for gn in self.sentence.gnodes if gn.cat},
-                      0, 1)
-            # Merged concrete GNodes associated with this SNode: 0 or 1
-#            self.svar('mgnodes', "w{}->mgn".format(self.index), set(),
-#                      {gn.sent_index for gn in self.sentence.gnodes if not gn.cat},
-#                      0, 1)
-            # Features
-            features = self.get_features()
-            if len(features) > 1:
-                self.lvar('features', 'w{}f'.format(self.index),
-                          [], features, 1, 1)
-            else:
-                # Only one choice so features are determined for this SNode
-                self.variables['features'] = DetLVar('w{}f'.format(self.index), features)
-
-    def get_cats(self):
-        """The set of categories for the node's token, or None."""
-        if not self.analyses:
-            return None
-        cats = set()
-        for analysis in self.analyses:
-            if 'cats' in analysis:
-                cats.update(analysis['cats'])
-        return cats
-
-    def get_features(self):
-        """The list of possible FeatStruct objects for the SNode."""
-        features = []
-        if self.analyses:
-            for analysis in self.analyses:
-                if 'features' in analysis:
-                    features.append(analysis['features'])
-                else:
-                    features.append(FeatStruct({}))
-        return features
-
-    def match(self, grp_item, grp_feats, verbosity=0):
-        """Does this node match the group item (word, root, category) and
-        any features associated with it?"""
-        if verbosity:
-            print('   SNode {} with features {} trying to match item {} with features {}'.format(self, self.analyses, grp_item, grp_feats.__repr__()))
-        # If item is a category, don't bother looking at token
-        if Entry.is_cat(grp_item):
-            if verbosity:
-                print('    Cat item, looking in {}'.format(self.cats))
-            # Check whether this group item is really a set item (starting with '$$'); if so, drop the first '$' before matching
-            if Entry.is_set(grp_item):
-                grp_item = grp_item[1:]
-            if self.cats and grp_item in self.cats:
-#                print("   Token {} is in cat {}".format(self.token, grp_item))
-                if not self.analyses or not grp_feats:
-                    # Match; failure would be False
-                    return None
-                else:
-                    for analysis in self.analyses:
-                        node_features = analysis.get('features')
-                        if node_features:
-                            # 2015.7.5: strict option added to force True feature in grp_features
-                            # to be present in node_features, e.g., for Spanish reflexive
-                            u_features = simple_unify(node_features, grp_feats, strict=True)
-#                            u_features = node_features.unify(grp_feats, strict=True)
-#                            print("Unifying {} and {}".format(node_features.__repr__(), grp_feats.__repr__()))
-                            if u_features != 'fail':
-                                return analysis.get('root'), u_features
-#                        print("   Matching group features {} and sentence features {}".format(grp_feats, node_features))
-#                        if node_features and node_features.unify(grp_feats) != 'fail':
-#                            return True
-                    # None succeeded
-                    return False
-        elif self.token == grp_item:
-            # grp_item matches this node's token; features are irrelevant
-            return None
-        elif self.analyses:
-            # Check each combination of root and analysis features
-            for analysis in self.analyses:
-                root = analysis.get('root', '')
-                node_features = analysis.get('features')
-                if root == grp_item:
-#                    if grp_feats:
-#                        print("Matching group item features {} against snode features {}".format(grp_feats.__repr__(), node_features.__repr__()))
-                    if not grp_feats:
-                        return root, node_features
-                    elif not node_features:
-                        # Fail because there must be an explicit match with group features
-                        return False
-#                        return root, grp_feats
-                    else:
-                        # There must be an explicit match with group features, so strict=True
-#                        u_features = node_features.unify(grp_feats, strict=True)
-                        u_features = simple_unify(node_features, grp_feats, strict=True)
-#                        print("   Unifying node features {} with group features {}".format(node_features.__repr__(), grp_feats.__repr__()))
-                        if u_features != 'fail':
-#                            print(" Succeeded by unification")
-                            return root, u_features
-        return False
-
-class GInst:
-
-    """Instantiation of a group; holds variables and GNode objects."""
-
-    def __init__(self, group, sentence, head_index, snode_indices, index):
-        # The Group object that this "instantiates"
-        self.group = group
-        self.sentence = sentence
-        self.target = sentence.target
-        # Index of group within the sentence
-        self.index = index
-        # Index of SNode associated with group head
-        self.head_index = head_index
-#        self.head_pos = group.pos
-        # List of GNodes
-        self.nodes = [GNode(self, index, indices) for index, indices in enumerate(snode_indices)]
-        # Dict of variables specific to this group
-        self.variables = {}
-        # List of target language groups, gnodes, tnodes
-        self.translations = []
-        self.ngnodes = len(self.nodes)
-        # Number of abstract nodes
-        self.nanodes = len([n for n in self.nodes if n.cat])
-        # Number of concrete nodes
-        self.ncgnodes = self.ngnodes - self.nanodes
-        # TreeTrans instance for this GInst; saved here so to prevent multiple TreeTrans translations
-        self.treetrans = None
-
-    def __repr__(self):
-        return '<<{}:{}>>'.format(self.group.name, self.group.id)
-
-    def display(self, word_width=10, s2gnodes=None):
-        """Show group in terminal."""
-        s = '<{}>'.format(self.index)
-        n_index = 0
-        n = self.nodes[n_index]
-        ngnodes = len(self.nodes)
-        for gn_indices in s2gnodes:
-            if n.sent_index in gn_indices:
-                i = '*{}*' if n.head else "{}"
-                s += i.format(n.index).center(word_width)
-                n_index += 1
-                if n_index >= ngnodes:
-                    break
-                else:
-                    n = self.nodes[n_index]
-            else:
-                s += ' '*word_width
-        print(s)
-
-    def pos_pairs(self):
-        """Return position constraint pairs for gnodes in the group."""
-        gnode_pos = [gn.sent_index for gn in self.nodes]
-        return set(itertools.combinations(gnode_pos, 2))
-
-    def gnode_sent_index(self, index):
-        """Convert gnode index to gnode sentence index."""
-        return self.nodes[index].sent_index
-
-    def get_agr(self):
-        """Return agr constraints for group, converted to tuples."""
-        result = []
-        if self.group.agr:
-            for a in copy.deepcopy(self.group.agr):
-                feats = [tuple(pair) for pair in a[2:]]
-                a[2:] = feats
-                # Convert gnode positions to sentence positions
-                a[0] = self.gnode_sent_index(a[0])
-                a[1] = self.gnode_sent_index(a[1])
-                result.append(tuple(a))
-        return set(result)
-
-    ## Create IVars and (set) Vars with sentence DS as root DS
-
-    def ivar(self, key, name, domain, ess=False):
-        self.variables[key] = IVar(name, domain, rootDS=self.sentence.dstore,
-                                   essential=ess)
-
-    def svar(self, key, name, lower, upper, lower_card=0, upper_card=MAX,
-             ess=False):
-        self.variables[key] = Var(name, lower, upper, lower_card, upper_card,
-                                  rootDS=self.sentence.dstore,
-                                  essential=ess)
-
-    def create_variables(self, verbosity=0):
-        ngroups = len(self.sentence.groups)
-        nsnodes = len(self.sentence.nodes)
-        cand_snodes = self.sentence.covered_indices
-#        print("Creating variables for {}, # abs nodes {}".format(self, self.nanodes))
-        # GNode indices for this GInst (determined)
-        self.variables['gnodes'] = DetVar('g{}->gnodes'.format(self.index), {gn.sent_index for gn in self.nodes})
-        # Abstract GNode indices for GInst (determined)
-        if self.nanodes:
-            self.variables['agnodes'] = DetVar('g{}->agnodes'.format(self.index), {gn.sent_index for gn in self.nodes if gn.cat})
-            # Concrete GNode indices for GInst (determined)
-            self.variables['cgnodes'] = DetVar('g{}->cgnodes'.format(self.index), {gn.sent_index for gn in self.nodes if not gn.cat})
-        else:
-            self.variables['agnodes'] = EMPTY
-            self.variables['cgnodes'] = self.variables['gnodes']
-        # SNode positions of GNodes for this GInst
-        self.svar('gnodes_pos', 'g{}->gnodes_pos'.format(self.index),
-                  set(), set(cand_snodes), self.ngnodes, self.ngnodes)
-        # SNode positions of abstract GNodes for this GInst
-        if self.nanodes == 0:
-            # No abstract nodes
-            self.variables['agnodes_pos'] = EMPTY
-            # SNode positions of concrete GNodes for this GInst
-            self.variables['cgnodes_pos'] = self.variables['gnodes_pos']
-        else:
-            # Position for each abstract node in the group
-            self.svar('agnodes_pos', 'g{}->agnodes_pos'.format(self.index),
-                      set(), set(cand_snodes), self.nanodes, self.nanodes)
-            # Position for each concrete node in the group
-            self.svar('cgnodes_pos', 'g{}->cgnodes_pos'.format(self.index),
-                      set(), set(cand_snodes), self.ncgnodes, self.ncgnodes)
-        # Determined variable for within-source agreement constraints, gen: 0}
-        agr = self.get_agr()
-        if agr:
-            self.variables['agr'] = DetVar('g{}agr'.format(self.index), agr)
-        
-    def set_translations(self, verbosity=0):
-        """Find the translations of the group in the target language."""
-        translations = self.group.get_translations()
-        # Sort group translations by their translation frequency
-        Group.sort_trans(translations)
-        if verbosity:
-            print("Translations {}".format(translations))
-            # self.target.abbrev, False)
-        # If alignments are missing, add default alignment
-        for i, t in enumerate(translations):
-            if len(t) == 1:
-                translations[i] = [t[0], {}]
-#                                    {'align': list(range(len(self.nodes)))}]
-        ntokens = len(self.group.tokens)
-        for tgroup, s2t_dict in translations:
-            nttokens = len(tgroup.tokens)
-            if verbosity > 1:
-                print(" set_translations(): tgroup {}', s2t_dict {}".format(tgroup, s2t_dict))
-            # If there's no explicit alignment, it's the obvious default
-            if 'align' in s2t_dict:
-                alignment = s2t_dict.get('align')
-            else:
-                alignment = list(range(ntokens))
-                for ia, a in enumerate(alignment):
-                    if a >= nttokens:
-                        alignment[ia] = -1
-            if isinstance(tgroup, str):
-                # First find the target Group object
-                tgroup = self.target.groupnames[tgroup]
-#            print("Alignment: {}".format(alignment))
-            # Make any TNodes (for target words not corresponding to any source words)
-            tnodes = []
-            if nttokens > ntokens:
-                # Target group has more nodes than source group.
-                # Indices of groups that are not empty:
-                full_t_indices = set(alignment)
-                empty_t_indices = set(range(nttokens)) - full_t_indices
-                for i in empty_t_indices:
-                    empty_t_token = tgroup.tokens[i]
-                    empty_t_feats = tgroup.features[i] if tgroup.features else None
-                    tnodes.append(TNode(empty_t_token, empty_t_feats, self, i))
-            # Deal with individual gnodes in the group
-            gnodes = []
-            tokens = tgroup.tokens
-            features = tgroup.features
-            # Go through source group nodes, finding alignments and agreement constraints
-            # with target group nodes
-            for gn_index, gnode in enumerate(self.nodes):
-#                print("tgroup {}, gnode {}, gn_index {}".format(tgroup, gnode, gn_index))
-                # Align gnodes with target tokens and features
-                targ_index = alignment[gn_index]
-                if targ_index < 0:
-#                    print("No targ item for gnode {}".format(gnode))
-                    # This means there's no target language token for this GNode.
-                    continue
-                agrs = None
-                if s2t_dict.get('agr'):
-                    agr = s2t_dict['agr'][gn_index]
-                    if agr:
-                        tindex, stagr = agr
-                        targ_index = tindex
-#                        print(" s2t_dict agrs {}, tindex {}, stagr {}".format(agrs, tindex, stagr))
-#                    agrs = s2t_dict['agr'][targ_index]
-                        agrs = stagr
-                token = tokens[targ_index]
-                feats = features[targ_index] if features else None
-                gnodes.append((gnode, token, feats, agrs, targ_index))
-            self.translations.append((tgroup, gnodes, tnodes))
-
-class GNode:
-
-    """Representation of a single node (word, position) within a GInst object."""
-
-    def __init__(self, ginst, index, snodes):
-#        print("Creating GNode for {} with snodes {}".format(ginst, snodes))
-        self.ginst = ginst
-        self.index = index
-        self.sentence = ginst.sentence
-        self.snode_indices = [s[0] for s in snodes]
-        self.snode_anal = [s[1] for s in snodes]
-        # Whether this is the head of the group
-        self.head = index == ginst.group.head_index
-        # Group word, etc. associated with this node
-        gtoken = ginst.group.tokens[index]
-        # If this is a set node, use the sentence token instead of the cat name
-        if Entry.is_set(gtoken):
-            self.token = self.sentence.nodes[snodes[0][0]].token
-        else:
-            self.token = gtoken
-#        self.pos = ''
-#        if self.head:
-#            self.pos = self.token.partition('_')[-1]
-#        print("Getting POS for GNode: {}, {}".format(self.token, self.pos))
-        # Whether the associated token is abstract (a category)
-        self.cat = Entry.is_cat(self.token)
-        # Features associated with this group node
-        groupfeats = ginst.group.features
-        if groupfeats:
-            self.features = groupfeats[index]
-        else:
-            self.features = None
-        self.variables = {}
-        # List of target-language token and features associated with this gnode
-#        self.translations = []
-
-    def __repr__(self):
-        return "{}|{}".format(self.ginst, self.token)
-
-    ## Create IVars and (set) Vars with sentence DS as root DS
-
-    def ivar(self, key, name, domain, ess=False):
-        self.variables[key] = IVar(name, domain, rootDS=self.sentence.dstore,
-                                   essential=ess)
-
-    def svar(self, key, name, lower, upper, lower_card=0, upper_card=MAX,
-             ess=False):
-        self.variables[key] = Var(name, lower, upper, lower_card, upper_card,
-                                  rootDS=self.sentence.dstore,
-                                  essential=ess)
-
-    def create_variables(self, verbosity=0):
-        nsnodes = len(self.sentence.nodes)
-        # SNode index for this GNode
-        self.ivar('snodes', "gn{}->w".format(self.sent_index), set(self.snode_indices))
-
-class TNode:
-
-    """Representation of a node within a target language group that doesn't
-    have a corresponding node in the source language group that it's the
-    translation of."""
-
-    def __init__(self, token, features, ginst, index):
-        self.token = token
-        self.features = features
-        self.ginst = ginst
-        self.sentence = ginst.sentence
-        self.index = index
-
-    def generate(self, verbosity=0):
-        """Generate forms for the TNode."""
-        print("Generating form for target token {} and features {}".format(self.token, self.features))
-        if Entry.is_lexeme(self.token):
-            return self.sentence.target.generate(self.token, self.features)
-        else:
-            return [self.token]
-
-    def __repr__(self):
-        return "~{}|{}".format(self.ginst, self.token)
 
 class Solution:
     
@@ -1498,6 +1002,8 @@ class Solution:
         self.ttrans_outputs = None
         # Variable domain store for solution state
         self.dstore = dstore
+        # List of SolSegs, sentence segments with translations
+        self.segments = []
         print("Created solution with dstore {} and ginsts {}".format(dstore, ginsts))
 
     def __repr__(self):
@@ -1527,14 +1033,45 @@ class Solution:
 #                                    for tt in self.treetranss if tt.output_strings]
         return self.ttrans_outputs
 
-#    def trans_strings(self, index=-1):
-#        """Return a list of translation strings for the translation indexed or all translations
-#        for this solution."""
-#        translations = self.translations if index < 0 else [self.translation[index]]
-#        strings = []
-#        for translation in translations:
-#            strings.extend(translation.output_strings)
-#        return strings
+    def get_segs(self):
+        tt = self.get_ttrans_outputs()
+#        tt_segs = []
+        end_index = -1
+        tokens = self.sentence.tokens
+        for indices, forms in tt:
+            start, end = indices[0], indices[-1]
+            if start > end_index+1:
+                src_tokens = tokens[end_index+1:start]
+                seg = SolSeg(self, (end_index+1, start-1), [], src_tokens)
+                self.segments.append(seg)
+#                tt_segs.append(((end_index+1, start-1), [], src_tokens))
+#                                [n.token for n in self.nodes[end_index+1:start]]))
+                # Some word(s) not translated; use source forms with # prefix
+#                verbatim = [self.verbatim(n) for n in self.nodes[end_index+1:start]]
+#                tt_segs.append([' '.join(verbatim)])
+            src_tokens = tokens[start:end+1]
+            seg = SolSeg(self, indices, forms, src_tokens)
+            self.segments.append(seg)
+#            tt_segs.append((indices, forms, src_tokens))
+#                            [n.token for n in self.nodes[start:end+1]]))
+            end_index = end
+        if end_index+1 < len(tokens):
+#            len(self.nodes):
+            # Some word(s) not translated; use source forms with # prefix
+            src_tokens = tokens[end_index+1:len(tokens)]
+            seg = SolSeg(self, (end_index+1, len(tokens)-1), [], src_tokens)
+            self.segments.append(seg)
+#            tt_segs.append(((end_index+1, len(tokens)-1), [], src_tokens))
+#                            [n.token for n in self.nodes[end_index+1:len(self.nodes)]]))
+        self.seg_html()
+#        return tt_segs
+
+    def seg_html(self):
+        for i, segment in enumerate(self.segments):
+            segment.set_html(i)
+
+    def get_seg_html(self):
+        return [segment.html for segment in self.segments]
 
     def translate(self, verbosity=0, all_trans=False, interactive=False):
         """Do everything you need to create the translation."""
@@ -1608,7 +1145,7 @@ class Solution:
                         print("Building {}".format(tt))
                     built = tt.build(trans_index=trans_index)
                     if not built:
-                        print("No more translations for {}".format(tt))
+#                        print("No more translations for {}".format(tt))
                         break
                     if tt.top:
                         tt.generate_words()
@@ -1621,863 +1158,3 @@ class Solution:
                         continue
                     if not interactive or not input('SEARCH FOR ANOTHER TRANSLATION FOR {}? [yes/NO] '.format(tt)):
                         break
-
-#        # Now relate treetrans to each other
-#        for tt in self.treetranss:
-#            tree = tt.tree
-#            for tt1 in self.treetranss:
-#                if tt1 != tt and tt1.tree < tree:
-#                    tt.sub_tts.append(tt1)
-#                    tt1.super_tts.append(tt)
-#        # This is wrong; there's lots of duplication; each group may be translated multiple times
-#        translations = itertools.product(*[g.translations for g in self.ginsts])
-#        for index, translation in enumerate(translations):
-#            t = Translation(self, translation, index, trees=copy.deepcopy(self.trees), verbosity=verbosity)
-#            t.initialize(verbosity=verbosity)
-#            t.realize(verbosity=verbosity, display=display, all_trans=all_trans)
-#            self.translations.append(t)
-#            if all_trans:
-#                continue
-#            if not input('SEARCH FOR ANOTHER TRANSLATION FOR ANALYSIS {}? [yes/NO] '.format(self)):
-#                return
-#        if verbosity:
-#            print("No more translations for analysis")
-
-class TreeTrans:
-    """Translation of a tree: a group or two or more groups joined by merged nodes."""
-
-    def __init__(self, solution, tree=None, ginst=None, abs_gnode_dict=None, gnode_dict=None,
-                 attribs=None, index=0, top=False, verbosity=0):
-        # The solution generating this translation
-        self.solution = solution
-        self.sentence = solution.sentence
-        # Dict keeping information about each gnode; this dict is shared across different TreeTrans instances
-        self.abs_gnode_dict = abs_gnode_dict
-        self.gnode_dict = gnode_dict
-#        # TreeTrans instances under this one within the same tree
-#        self.sub_tts = []
-#        # TreeTrans instance above this one if any within the same tree
-#        self.super_tts = []
-        # A set of sentence node indices
-        self.tree = tree
-        # Whether this is the top of a tree
-        self.top = top
-        # Merged group indices
-        self.mergers = []
-        snode_indices = list(tree)
-        snode_indices.sort()
-        self.snode_indices = snode_indices
-        self.snodes = [self.sentence.nodes[i] for i in snode_indices]
-        self.sol_gnodes_feats = [solution.gnodes_feats[i] for i in snode_indices]
-        self.nodes = []
-        # The GInst at the top of the tree
-        self.ginst = ginst
-        # Save this TreeTrans in the GInst
-        ginst.treetrans = self
-        self.index = index
-        # A list of triples: (tgroup, tgnodes, tnodes), where
-        # gnodes is (tgnode_inst, tnode_string, tnode_feats, agr_pairs, gnode_index)
-        self.attribs = attribs
-        self.group_attribs = []
-#        self.gnode_dict = {}
-        for tgroup, tgnodes, tnodes in attribs:
-#            print('tgroup {}, tgnodes {}, tnodes {}, ginst {}'.format(tgroup, tgnodes, tnodes, ginst))
-            for tgnode, tokens, feats, agrs, t_index in tgnodes:
-#                print("Adding to gnode dicts: {}, cat? {}".format(tgnode, tgnode.cat))
-                if tgnode.cat:
-#                    print(" tgnode {} is abstract".format(tgnode))
-                    self.abs_gnode_dict[tgnode] = (tgroup, tokens, feats, agrs, t_index)
-                elif tgnode in self.gnode_dict:
-                    self.gnode_dict[tgnode].append((tgroup, tokens, feats, agrs, t_index))
-#                    print(" tgnode {} already in gnode_dict with value {}".format(tgnode, self.gnode_dict[tgnode]))
-                else:
-#                    print("Adding tgnode {} to gnode_dict".format(tgnode))
-                    self.gnode_dict[tgnode] = [(tgroup, tokens, feats, agrs, t_index)]
-#                    self.gnode_dict[tgnode] = (tgroup, tokens, feats, agrs, t_index)
-            self.group_attribs.append((tgroup, tnodes, tgroup.agr))
-#            print("Tgroups for TT: {}".format([t[0] for t in self.group_attribs]))
-        # Root domain store for variables
-        self.dstore = DStore(name="TT{}".format(self.index))
-        # Order variables for each node, tree variables for groups
-        self.variables = {}
-        # pairs of node indices representing order constraints
-        self.order_pairs = []
-        # Order and disjunction constraints
-        self.constraints = []
-        self.solver = Solver(self.constraints, self.dstore, description='target tree realization',
-                             verbosity=verbosity)
-#        # Positions of target words
-#        self.positions = []
-        # These are produced in self.build()
-        self.node_features = None
-        self.group_nodes = None
-        self.agreements = None
-        # Final outputs; different ones have alternate word orders
-        self.outputs = []
-        # Strings representing outputs
-        self.output_strings = []
-#        print("Created TreeTrans {} with gnode_dict {}, abs_gnode_dict {}".format(self, self.gnode_dict, self.abs_gnode_dict))
-
-    def __repr__(self):
-        return "[{}] ->".format(self.ginst)
-
-    def display(self, index):
-        print("{}  {}".format(self, self.output_strings[index]))
-
-    def display_all(self):
-        for index in range(len(self.outputs)):
-            self.display(index)
-
-    @staticmethod
-    def output_string(output):
-#        print("Converting output {} to string".format(output))
-        l = []
-        for word_list in output:
-            if len(word_list) == 1:
-                l.append(word_list[0])
-            else:
-                l.append('|'.join(word_list))
-        string = ' '.join(l)
-        # _ is a placeholder for space
-#        string = string.replace('_', ' ')
-        return string
-
-#    def initialize(self, verbosity=0):
-#        """Set up everything needed to run the constraints and generate the translation."""
-#        if verbosity:
-#            print("Initializing treetrans {}".format(self))
-#        self.build(verbosity=verbosity)
-#        self.generate_words(verbosity=verbosity)
-#        self.make_order_pairs(verbosity=verbosity)
-#        self.create_variables(verbosity=verbosity)
-#        self.create_constraints(verbosity=verbosity)
-
-    def build(self, trans_index=0, verbosity=0):
-        """Unify translation features for merged nodes, map agr features from source to target,
-        generate surface target forms from resulting roots and features."""
-        if verbosity:
-            print('Building {} with trans index {}'.format(self, trans_index))
-        # Reinitialize mergers
-        self.mergers = []
-        # Dictionary mapping source node indices to initial target node indices
-        tnode_index = 0
-        node_index_map = {}
-        node_features = []
-        agreements = {}
-        group_nodes = {}
-        for snode, (gnodes, features) in zip(self.snodes, self.sol_gnodes_feats):
-            if verbosity > 1:
-                print(" build(): snode {}, trans_index {}, gnodes {}, features {}, tnode_index {}".format(snode, trans_index,
-                                                                                                          gnodes, features.__repr__(), tnode_index))
-                print("   gnode_dict: {}".format(self.gnode_dict))
-            if not gnodes:
-                # snode is not covered by any group
-                node_index_map[snode.index] = tnode_index
-                node_features.append((snode.token, None, []))
-                tnode_index += 1
-            else:
-                gna, gnc, token = None, None, None
-                t_indices = []
-                targ_feats, agrs = None, None
-                if verbosity:
-                    if len(gnodes) > 1:
-                        print(" Gnodes: {}".format(gnodes))
-                        print(" Abs gnode dict: {}".format(self.abs_gnode_dict))
-                if gnodes[0] in self.abs_gnode_dict:
-                    if verbosity:
-                        print("{}: gnodes {} contain an abs gnode dict in first position".format(self, gnodes))
-                        print(" Looking for concrete node in gnode_dict {}".format(self.gnode_dict))
-                    gna = self.abs_gnode_dict[gnodes[0]]
-                    gnc = self.gnode_dict[gnodes[1]]
-                elif len(gnodes) > 1 and gnodes[1] in self.abs_gnode_dict:
-                    if verbosity:
-                        print("{}: gnodes {} contain an abs gnode dict in second position".format(self, gnodes))
-                    gna = self.abs_gnode_dict[gnodes[1]]
-                    gnc = self.gnode_dict[gnodes[0]]
-                if gna:
-#                    print(" gna: {}, gnc: {}".format(gna, gnc))
-                    # There are two gnodes for this snode; only the concrete node can have translations
-                    # Check if there is no translation for one or the other; if so, skip this snode and
-                    # don't increment tnode_index
-                    # gna is a single tuple, gnc is a list of tuples for different translations
-                    if len(gnc) <= trans_index:
-                        if verbosity:
-                            print(" No more translations for {}".format(self))
-                        return False
-                    # Select the tuple to be used (trans_index)
-#                    gnc1 = gnc[trans_index]
-#                    print(" Selected {}th gnc: {}".format(trans_index, gnc1))
-#                    merge_attribs = [zip(gna, gnc1) for gnc1 in gnc]
-#                    tgroups, tokens, targ_feats, agrs, t_index = merge_attribs[0]
-#                    # The token that's not a cat
-#                    token = tokens[1]
-#                    targ_feats = FeatStruct.unify_all(targ_feats)
-                    # Needs to be fixed; for now it only merges the abstract node with the *first*
-                    # translation of the concrete node (that is the first tuple in gnc)
-                    if self.top:
-#                        if verbosity and len(gnc) > 1:
-#                        print("Multiple translations {} for concrete node".format(gnc))
-                        gnc1 = gnc[trans_index]
-                        tgroups, tokens, targ_feats, agrs, t_index = zip(gna, gnc1)
-                        token = tokens[1]
-                        targ_feats = FeatStruct.unify_all(targ_feats)
-                        # Merge the agreements
-                        agrs = TreeTrans.merge_agrs(agrs)
-                        t_indices.append((tgroups[0], gna[-1]))
-                        t_indices.append((tgroups[1], gnc1[-1]))
-                        ## Record this node and its groups in mergers
-                        tg = list(zip(tgroups, gnodes))
-                        # Sort the groups by which is the "outer" group in the merger
-                        tg.sort(key=lambda x: x[1].cat)
-                        tg = [x[0] for x in tg]
-                        print("Creating merger {} for snode index {}, tnode index {}".format(tg, snode.index, tnode_index))
-                        self.mergers.append([tnode_index, tg])
-                else:
-                    # only one gnode in list
-                    gnode = gnodes[0]
-                    if gnode not in self.gnode_dict:
-                        if verbosity:
-                            print("Gnode {} not in gnode dict".format(gnode, self.gnode_dict))
-#                        return False
-                        continue
-                    else:
-                        gnode_tuple_list = self.gnode_dict[gnode]
-#                        print("Gnode tuple list {}, trans_index {}".format(gnode_tuple_list, trans_index))
-                        if len(gnode_tuple_list) <= trans_index:
-                            print("No more translations for {}".format(self))
-                            return False
-#                        tgroup, token, targ_feats, agrs, t_index = self.gnode_dict[gnode]
-                        tgroup, token, targ_feats, agrs, t_index = gnode_tuple_list[trans_index]
-                        if len(tgroup.tokens) > 1:
-                            t_indices.append((tgroup, t_index))
-                            
-                # Make target and source features agree as required
-                if not targ_feats:
-                    targ_feats = FeatStruct({})
-                if agrs and self.top:
-                    # Use an (unfrozen) copy of target features
-                    targ_feats = targ_feats.copy(True)
-                    features.agree(targ_feats, agrs)
-                node_index_map[snode.index] = tnode_index
-                tnode_index += 1
-                node_features.append((token, targ_feats, t_indices))
-                for t_index in t_indices:
-                    group_nodes[t_index] = (token, targ_feats)
-        # Fix indices in tgroup trees
-        tree = []
-        for src_index in tree:
-            if src_index in node_index_map:
-                tree.append(node_index_map[src_index])
-        self.tree = tree
-        # Add TNode elements
-        tgnode_elements = []
-        for ginst_i, (tginst, tnodes, agr) in enumerate(self.group_attribs):
-#            print("  tginst {}".format(tginst))
-            if agr:
-                agreements[tginst] = agr
-                if verbosity:
-                    print(" build(): tginst {} agr {}, agreements {}".format(tginst, agr, agreements))
-            if tnodes:
-                for tnode in tnodes:
-                    features = tnode.features or FeatStruct({})
-                    src_index = len(node_features)
-                    self.tree.append(src_index)
-                    index = [(tginst, tnode.index)]
-                    node_features.append((tnode.token, features, index))
-                    group_nodes[index[0]] = (tnode.token, features)
-        self.node_features = node_features
-        self.group_nodes = group_nodes
-        self.agreements = agreements
-        return True
-
-    @staticmethod
-    def get_root_POS(token):
-        """Token may be something like guata_, guata_v, or guata_v_t."""
-        root, x, pos = token.partition("_")
-        return root, pos
-
-    @staticmethod
-    def merge_agrs(agr_list):
-        """Merge agr dicts in agr_list into a single agr dict."""
-#        print("  Merging agreements for merged nodes {}".format(agr_list))
-        result = {}
-        for agr in agr_list:
-            if not agr:
-                continue
-            for k, v in agr:
-                if k in result:
-                    if result[k] != v:
-                        print("Warning: agrs in {} failed to merge; {} and {} don't match".format(agr_list, result[k], v))
-                        return 'fail'
-                    else:
-                        continue
-                else:
-                    result[k] = v
-#        print("  Result", result)
-        return result
-
-    def generate_words(self, verbosity=0):
-        """Do inter-group agreement constraints, and generate wordforms for each target node."""
-#        print('Generating words for {}'.format(self))
-        # Reinitialize nodes
-        self.nodes = []
-        for group, agr_constraints in self.agreements.items():
-            for agr_constraint in agr_constraints:
-                i1, i2 = agr_constraint[0], agr_constraint[1]
-                feature_pairs = agr_constraint[2:]
-                # Find the sentence nodes for the agreeing group nodes in the group_nodes dict
-                agr_node1 = self.group_nodes[(group, i1)]
-                agr_node2 = self.group_nodes[(group, i2)]
-#                print("Found node1 {} and node2 {} for constraint {}".format(agr_node1, agr_node2, feature_pairs))
-                agr_feats1, agr_feats2 = agr_node1[1], agr_node2[1]
-                agr_feats1.mutual_agree(agr_feats2, feature_pairs)
-        generator = self.sentence.target.generate
-        for token, features, index in self.node_features:
-            if verbosity:
-                print("Token {}, features {}, index {}".format(token, features.__repr__(), index))
-            root, pos = TreeTrans.get_root_POS(token)
-            output = [token]
-            if not pos:
-                # This word doesn't require generation, just return it in a list
-                self.nodes.append((output, index))
-            else:
-#                print("Generating {} : {} : {}".format(root, features.__repr__(), pos))
-                output = generator(root, features, pos=pos)
-                self.nodes.append((output, index))
-            if verbosity:
-                print("Generating target node {}: {}".format(index, output))
-#        print("nodes after generation: {}".format(self.nodes))
-
-    def make_order_pairs(self, verbosity=0):
-        """Convert group/index pairs to integer (index) order pairs.
-        Constrain order in merged groups."""
-        # Reinitialize order pairs
-        self.order_pairs.clear()
-#        print("Ordering pairs for {}, mergers {}, nodes {}".format(self, self.mergers, self.nodes))
-        tgroup_dict = {}
-        for index, (forms, constraints) in enumerate(self.nodes):
-#            print("Order pairs for node {} with forms {} and constraints {}".format(index, forms, constraints))
-#            print("Constraints {} for tdict {}".format(index, constraints))
-            for tgroup, tg_index in constraints:
-                if tgroup not in tgroup_dict:
-                    tgroup_dict[tgroup] = []
-                tgroup_dict[tgroup].append((index, tg_index))
-        for pairs in tgroup_dict.values():
-            for pairpair in itertools.combinations(pairs, 2):
-                pairpair = list(pairpair)
-                # Sort by the target index
-                pairpair.sort(key=lambda x: x[1])
-                self.order_pairs.append([x[0] for x in pairpair])
-        # Order nodes within merged groups
-        for node, (inner, outer) in self.mergers:
-#            print("Merger: tnode index {}, inner group {}, outer group {}".format(node, inner, outer))
-            # node is sentence node index; inner and outer are groups
-            # Indices (input, tgroup) in inner and outer groups
-            inner_nodes = tgroup_dict[inner]
-            outer_nodes = tgroup_dict[outer]
-            # Get the tgroup index for the merge node
-            merge_tg_i = dict(outer_nodes)[node]
-            # Get input indices for outer group's units before and after the merged node
-            prec_outer = [n for n, i in outer_nodes if i < merge_tg_i]
-            foll_outer = [n for n, i in outer_nodes if i > merge_tg_i]
-            if prec_outer or foll_outer:
-                # Get input indices for inner group nodes other than the merge node
-                other_inner = [n for n, i in inner_nodes if n != node]
-                # Each outer group node before the merge node must precede all inner group nodes,
-                # and each outer group node after the merge node must follow all inner group nodes.
-                # Add order pair constraints (using input indices) for these constraints.
-                for o in prec_outer:
-                    for i in other_inner:
-                        self.order_pairs.append([o, i])
-                for o in foll_outer:
-                    for i in other_inner:
-                        self.order_pairs.append([i, o])
-#        print('  Order pairs: {}'.format(self.order_pairs))
-
-    def svar(self, name, lower, upper, lower_card=0, upper_card=MAX, ess=True):
-        return Var(name, lower, upper, lower_card, upper_card,
-                   essential=ess, rootDS=self.dstore)
-
-    def create_variables(self, verbosity=0):
-        """Create an order IVar for each translation node and variables for each group tree."""
-        # Reinitialize variables
-        self.variables.clear()
-        nnodes = len(self.nodes)
-#        print("Creating variables: nnodes {}, order pairs {}".format(nnodes, self.order_pairs))
-        self.variables['order_pairs'] = DetVar("order_pairs", set([tuple(positions) for positions in self.order_pairs]))
-        self.variables['order'] = [IVar("o{}".format(i), set(range(nnodes)), rootDS=self.dstore, essential=True) for i in range(nnodes)]
-#        # target-language trees
-#        self.variables['tree_sindices'] = []
-#        self.variables['trees'] = []
-#        for i, t in enumerate(self.trees):
-#            if len(t) > 1:
-#                # Only make a variable if the tree has more than one node.
-#                self.variables['tree_sindices'].append(DetVar("tree{}_sindices".format(i), set(t)))
-#                self.variables['trees'].append(self.svar("tree{}".format(i), set(), set(range(nnodes)), len(t), len(t), ess=False))
-
-    def create_constraints(self, verbosity=0):
-        """Make order and disjunction constraints."""
-        # Reinitialize constraints
-        self.constraints.clear()
-        if verbosity:
-            print("Creating constraints for {}".format(self))
-        ## Order constraints
-        order_vars = self.variables['order']
-        self.constraints.append(PrecedenceSelection(self.variables['order_pairs'], order_vars))
-        self.constraints.append(Order(order_vars))
-#        ## Tree constraints
-#        for i_var, tree in zip(self.variables['tree_sindices'], self.variables['trees']):
-#            self.constraints.append(UnionSelection(tree, i_var, order_vars))
-#            # Convexity (projectivity)
-#            self.constraints.append(SetConvexity(tree))
-
-    def realize(self, verbosity=0, display=True, all_trans=False, interactive=False):
-        """Run constraint satisfaction on the order and disjunction constraints,
-        and convert variable values to sentence positions."""
-#        print("Realizing {}".format(self))
-        generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity)
-        try:
-            proceed = True
-            while proceed:
-                # Run solver to find positions (values of 'order' variables)
-                succeeding_state = next(generator)
-                order_vars = self.variables['order']
-                positions = [list(v.get_value(dstore=succeeding_state.dstore))[0] for v in order_vars]
-#                print("Found positions {}".format(positions))
-                # list of (form, position) pairs; sort by position
-                node_pos = list(zip([n[0] for n in self.nodes], positions))
-                node_pos.sort(key=lambda x: x[1])
-                # just the form
-                output = [n[0] for n in node_pos]
-                self.outputs.append(output)
-                self.output_strings.append(TreeTrans.output_string(output))
-                if display:
-                    self.display(len(self.outputs)-1)
-                if verbosity:
-                    print('FOUND REALIZATION {}'.format(self.outputs[-1]))
-                if all_trans:
-                    continue
-                if not interactive or not input('SEARCH FOR ANOTHER REALIZATION FOR TRANSLATION {}? [yes/NO] '.format(self)):
-                    proceed = False
-        except StopIteration:
-            if verbosity:
-                print('No more realizations for translation')
-
-##class Translation:
-##    """Representation of a single translation for an input sentence (with
-##    multiple possible orders and morphological realizations of individual
-##    words). Multiple translations are possible with a single Solution."""
-##
-##    def __init__(self, solution, attribs, index, trees=None, verbosity=0):
-##        self.solution = solution
-##        self.index = index
-##        self.sentence = solution.sentence
-##        self.verbosity = verbosity
-##        # Create GNode dict and list of target group, gnodes and tnodes
-##        # from attributes
-##        self.gnode_dict = {}
-##        self.group_attribs = []
-##        for tgroup, tgnodes, tnodes, ginst in attribs: 
-##            print('Translation: tgroup {}, tgnodes {}, tnodes {}, ginst {}'.format(tgroup, tgnodes, tnodes, ginst))
-##            for tgnode, tokens, feats, agrs, t_index in tgnodes:
-##                if tgnode in self.gnode_dict:
-##                    print(" Translation: tgnode {} already in gnode_dict with value {}".format(tgnode, self.gnode_dict[tgnode]))
-##                self.gnode_dict[tgnode] = (tgroup, tokens, feats, agrs, t_index)
-##            self.group_attribs.append((tgroup, tnodes, ginst, tgroup.agr))
-##        # form list / order constraint pairs for each sentence position
-##        self.nodes = []
-##        # Ordered units: merged groups or uncovered words
-##        self.chunks = []
-##        # Merged group indices
-##        self.mergers = []
-##        # pairs of node indices representing order constraints
-##        self.order_pairs = []
-##        # Source-sentence indices for tgroup trees
-##        self.trees = trees
-##        # Root domain store for variables
-##        self.dstore = DStore(name="T{}".format(self.index))
-##        # Order variables for each node, tree variables for groups
-##        self.variables = {}
-##        # Order and disjunction constraints
-##        self.constraints = []
-##        # Translation needs a solver to figure out positions of words
-##        self.solver = Solver(self.constraints, self.dstore,
-##                             description='target realization',
-##                             verbosity=verbosity)
-##        # These are produced in self.build()
-##        self.node_features = None
-##        self.group_nodes = None
-##        self.agreements = None
-##        # Final outputs; different ones have alternate word orders
-##        self.outputs = []
-##        # Strings representing outputs
-##        self.output_strings = []
-##
-##    def __repr__(self):
-##        return "{}[{}] ->".format(self.solution, self.index)
-##
-##    def display(self, index):
-##        print("{}  {}".format(self, self.output_strings[index]))
-##                              #self.out_string(index)))
-##
-##    def display_all(self):
-##        for index in range(len(self.outputs)):
-##            self.display(index)
-##
-###    def out_string(self, index):
-###        '''Convert output to a string for pretty printing.'''
-###        l = []
-###        for word_list in self.outputs[index]:
-###            if len(word_list) == 1:
-###                l.append(word_list[0])
-###            else:
-###                l.append('|'.join(word_list))
-###        return ' '.join(l)
-##
-##    @staticmethod
-##    def output_string(output):
-##        l = []
-##        for word_list in output:
-##            if len(word_list) == 1:
-##                l.append(word_list[0])
-##            else:
-##                l.append('|'.join(word_list))
-##        return ' '.join(l)
-##
-##    def initialize(self, verbosity=0):
-##        """Set up everything needed to run the constraints and generate the translation."""
-##        if verbosity:
-##            print("Initializing translation {}".format(self))
-##        self.build(verbosity=verbosity)
-##        self.generate_words(verbosity=verbosity)
-##        self.set_chunks(verbosity=verbosity)
-##        self.make_order_pairs(verbosity=verbosity)
-##        self.create_variables(verbosity=verbosity)
-##        self.create_constraints(verbosity=verbosity)
-##
-##    def build(self, verbosity=0):
-##        """Unify translation features for merged nodes, map agr features from source to target,
-##        generate surface target forms from resulting roots and features."""
-##        if verbosity:
-##            print('Building {}'.format(self))
-##        tginsts, tgnodes, trans_index = self.group_attribs, self.gnode_dict, self.index
-###        print("Tginsts {}, tgnodes {}, trans_index {}".format(tginsts, tgnodes, trans_index))
-##        # Figure out the target forms for each snode
-###        print('tgnodes {}'.format(tgnodes))
-##        # Dictionary mapping source node indices to initial target node indices
-##        tnode_index = 0
-##        node_index_map = {}
-##        node_features = []
-##        agreements = {}
-##        group_nodes = {}
-##        for snode, (gnodes, features) in zip(self.sentence.nodes, self.solution.snodes):
-##            if verbosity > 1:
-##                print(" Translation: build(): snode {}, gnodes {}, features {}, tnode_index {}".format(snode, gnodes, features.__repr__(), tnode_index))
-##                print("   gnode_dict: {}".format(self.gnode_dict))
-##            if not gnodes:
-##                # snode is not covered by any group
-##                node_index_map[snode.index] = tnode_index
-##                node_features.append((snode.token, None, []))
-##                tnode_index += 1
-##            else:
-##                t_indices = []
-##                if len(gnodes) > 1:
-##                    # There are two gnodes for this snode; only the concrete node can have translations
-##                    # Check if there is no translation for one or the other; if so, skip this snode and
-##                    # don't increment tnode_index
-##                    if gnodes[0] not in tgnodes or gnodes[1] not in tgnodes:
-###                        print("No translation for {}".format(snode))
-##                        continue
-##                    gn0, gn1 = tgnodes[gnodes[0]], tgnodes[gnodes[1]]
-##                    if verbosity > 1:
-##                        print(" build(): gn0 {}".format(gn0))
-##                        print("          gn1 {}".format(gn1))
-##                    tgroups, tokens, targ_feats, agrs, t_index = zip(gn0, gn1)
-##                    token = False
-##                    i = 0
-##                    # Find the token that's not a cat
-##                    while not token:
-##                        t = tokens[i]
-##                        if not Entry.is_cat(t):
-##                            token = t
-##                        i += 1
-##                    targ_feats = FeatStruct.unify_all(targ_feats)
-###                    print(" token {}, targ feats {}".format(token, targ_feats.__repr__()))
-##                    # Merge the agreements
-##                    agrs = Translation.merge_agrs(agrs)
-###                    print(" merged agrs {}".format(agrs))
-##                    t_indices.append((tgroups[0], gn0[-1]))
-##                    t_indices.append((tgroups[1], gn1[-1]))
-##                    ## Record this node and its groups in mergers
-##                    tg = list(zip(tgroups, gnodes))
-###                    print(" tgroups/gnodes {}".format(tg))
-##                    # Sort the groups by which is the "outer" group in the merger
-##                    tg.sort(key=lambda x: x[1].cat)
-##                    tg = [x[0] for x in tg]
-###                    print("  sorted tg {}".format(tg))
-##                    print("Creating merger for snode index {}, tnode index {}".format(snode.index, tnode_index))
-##                    self.mergers.append([tnode_index, tg])
-###                    print(' tgroups {}, token {}, t_indices {}'.format(tgroups, token, t_indices))
-##                else:
-##                    gnode = gnodes[0]
-##                    if gnode not in tgnodes:
-###                        print(' snode {} / gnode {} has no translation'.format(snode, gnode))
-##                        continue
-##                    else:
-##                        gnode = gnodes[0]
-##                        tgroup, token, targ_feats, agrs, t_index = tgnodes[gnode]
-###                        if targ_feats:
-###                            print("targ feats {}, frozen? {}".format(targ_feats.__repr__(), targ_feats.frozen()))
-##                        if len(tgroup.tokens) > 1:
-##                            t_indices.append((tgroup, t_index))
-###                    print(' tgroup {}, token {}, t_index {}'.format(tgroup, token, t_index))
-##                            
-##                # Make target and source features agree as required
-##                if not targ_feats:
-##                    targ_feats = FeatStruct({})
-###                print("Making targ feats {} and agrs {} agree".format(targ_feats.__repr__(), agrs))
-##                if agrs:
-##                    # Use an (unfrozen) copy of target features
-##                    targ_feats = targ_feats.copy(True)
-##                    features.agree(targ_feats, agrs)
-##                node_index_map[snode.index] = tnode_index
-##                tnode_index += 1
-##                node_features.append((token, targ_feats, t_indices))
-##                for t_index in t_indices:
-##                    group_nodes[t_index] = (token, targ_feats)
-###        print("S->T index mapping {}".format(node_index_map))
-###        print('Trees {}'.format(self.trees))
-##        # Fix indices in tgroup trees
-##        trees = []
-##        for t in self.trees:
-##            tree = []
-##            for src_index in t:
-##                if src_index in node_index_map:
-##                    tree.append(node_index_map[src_index])
-##            trees.append(tree)
-##        self.trees = trees
-###        print('Mapped tree indices {}'.format(self.trees))
-##        # Add TNode elements
-##        tgnode_elements = []
-##        for ginst_i, (tginst, tnodes, ginst, agr) in enumerate(tginsts):
-##            if agr:
-##                agreements[tginst] = agr
-##                if verbosity:
-##                    print(" build(): ginst {} agr {}, agreements {}".format(ginst, agr, agreements))
-##            if tnodes:
-##                for tnode in tnodes:
-##                    features = tnode.features or FeatStruct({})
-##                    src_index = len(node_features)
-###                    print('TG {}, tnode {}, sindex {}, ginst {}'.format(tginst, tnode, src_index, ginst))
-##                    self.trees[ginst_i].append(src_index)
-##                    index = [(tginst, tnode.index)]
-##                    node_features.append((tnode.token, features, index))
-##                    group_nodes[index[0]] = (tnode.token, features)
-###        if agreements:
-###            print("Agreements {}".format(agreements))
-###        print("Node features: {}".format(node_features))
-##        self.node_features = node_features
-##        self.group_nodes = group_nodes
-##        self.agreements = agreements
-##
-##    def generate_words(self, verbosity=0):
-##        """Do inter-group agreement constraints, and generate wordforms for each target node."""
-##        for group, agr_constraints in self.agreements.items():
-##            for agr_constraint in agr_constraints:
-##                i1, i2 = agr_constraint[0], agr_constraint[1]
-##                feature_pairs = agr_constraint[2:]
-##                # Find the sentence nodes for the agreeing group nodes in the group_nodes dict
-##                agr_node1 = self.group_nodes[(group, i1)]
-##                agr_node2 = self.group_nodes[(group, i2)]
-###                print("Found node1 {} and node2 {} for constraint {}".format(agr_node1, agr_node2, feature_pairs))
-##                agr_feats1, agr_feats2 = agr_node1[1], agr_node2[1]
-##                agr_feats1.mutual_agree(agr_feats2, feature_pairs)
-##        generator = self.sentence.target.generate
-##        for token, features, index in self.node_features:
-##            if verbosity:
-##                print("Token {}, features {}, index {}".format(token, features.__repr__(), index))
-##            root, pos = Translation.get_root_POS(token)
-##            output = [token]
-##            if not pos:
-##                # This word doesn't require generation, just return it in a list
-##                self.nodes.append((output, index))
-##            else:
-##                output = generator(root, features, pos=pos)
-##                self.nodes.append((output, index))
-##            if verbosity:
-##                print("Generating target node {}: {}".format(index, output))
-##
-##    @staticmethod
-##    def get_root_POS(token):
-##        """Token may be something like guata_, guata_v, or guata_v_t."""
-##        root, x, pos = token.partition("_")
-##        return root, pos
-##
-##    def set_chunks(self, verbosity=0):
-##        """Find output chunks: a list of sets of snode indices."""
-##        chunk_attribs = []
-##        for index, (tokens, constraints) in enumerate(self.nodes):
-##            # Is this an uncovered node/token
-##            if not constraints:
-##                chunk_attribs.append((tokens[0], {index}))
-##            else:
-##                # Groups that the node belongs to
-##                for g in [c[0] for c in constraints]:
-##                    # Find previous chunk list if it exists
-##                    found = False
-##                    for c, i in chunk_attribs:
-##                        if c == g:
-##                            i.add(index)
-##                            found = True
-##                            break
-##                    if not found:
-##                        chunk_attribs.append((g, {index}))
-##        # Merge chunks that share nodes
-##        for index, (label, indices) in enumerate(chunk_attribs):
-##            if self.chunks and indices.intersection(self.chunks[-1]):
-##                # merged this chunk with the last
-##                self.chunks[-1].update(indices)
-##            else:
-##                self.chunks.append(indices)
-##
-##    @staticmethod
-##    def merge_agrs(agr_list):
-##        """Merge agr dicts in agr_list into a single agr dict."""
-###        print("  Merging agreements for merged nodes {}".format(agr_list))
-##        result = {}
-##        for agr in agr_list:
-##            if not agr:
-##                continue
-##            for k, v in agr:
-##                if k in result:
-##                    if result[k] != v:
-##                        print("Warning: agrs in {} failed to merge".format(agr_list))
-##                        return 'fail'
-##                    else:
-##                        continue
-##                else:
-##                    result[k] = v
-###        print("  Result", result)
-##        return result
-##
-##    def make_order_pairs(self, verbosity=0):
-##        """Convert group/index pairs to integer (index) order pairs.
-##        Constrain chunks to appear in source-language order.
-##        Constrain order in merged groups."""
-##        tgroup_dict = {}
-##        for index, (forms, constraints) in enumerate(self.nodes):
-###            print("Order pairs for node {} with forms {} and constraints {}".format(index, forms, constraints))
-##            for tgroup, tg_index in constraints:
-##                if tgroup not in tgroup_dict:
-##                    tgroup_dict[tgroup] = []
-##                tgroup_dict[tgroup].append((index, tg_index))
-###                print(" Tgroup_dict entry for tgroup {}: node index {}, tg index {}".format(tgroup, index, tg_index))
-##        for pairs in tgroup_dict.values():
-###            print(' pairs {}'.format(pairs))
-##            for pairpair in itertools.combinations(pairs, 2):
-##                pairpair = list(pairpair)
-###                print('  pairpair {}'.format(pairpair))
-##                # Sort by the target index
-##                pairpair.sort(key=lambda x: x[1])
-##                self.order_pairs.append([x[0] for x in pairpair])
-##        # Chunks; order every node in each chunk before every node in the next chunk
-##        for ci, indices in enumerate(self.chunks[:-1]):
-##            next_indices = self.chunks[ci+1]
-##            for index in indices:
-##                for next_index in next_indices:
-##                    self.order_pairs.append([index, next_index])
-##        # Order nodes within merged groups
-##        for node, (inner, outer) in self.mergers:
-###            print("Merger: tnode index {}, inner group {}, outer group {}".format(node, inner, outer))
-##            # node is sentence node index; inner and outer are groups
-##            # Indices (input, tgroup) in inner and outer groups
-##            inner_nodes = tgroup_dict[inner]
-##            outer_nodes = tgroup_dict[outer]
-##            # Get the tgroup index for the merge node
-###            print("tgroup_dict {}, inner {}, outer {}, node {}".format(tgroup_dict, inner, outer, node))
-##            merge_tg_i = dict(outer_nodes)[node]
-###            print("pos of merge node in outer group: {}".format(merge_tg_i))
-##            # Get input indices for outer group's units before and after the merged node
-##            prec_outer = [n for n, i in outer_nodes if i < merge_tg_i]
-##            foll_outer = [n for n, i in outer_nodes if i > merge_tg_i]
-###            print("outer nodes before {} / after {} merger node".format(prec_outer, foll_outer))
-##            if prec_outer or foll_outer:
-##                # Get input indices for inner group nodes other than the merge node
-##                other_inner = [n for n, i in inner_nodes if n != node]
-###                print('inner nodes other than merge node: {}'.format(other_inner))
-##                # Each outer group node before the merge node must precede all inner group nodes,
-##                # and each outer group node after the merge node must follow all inner group nodes.
-##                # Add order pair constraints (using input indices) for these constraints.
-##                for o in prec_outer:
-##                    for i in other_inner:
-##                        self.order_pairs.append([o, i])
-##                for o in foll_outer:
-##                    for i in other_inner:
-##                        self.order_pairs.append([i, o])
-###        print('Order pairs: {}'.format(self.order_pairs))
-##
-##    def svar(self, name, lower, upper, lower_card=0, upper_card=MAX, ess=True):
-##        return Var(name, lower, upper, lower_card, upper_card,
-##                   essential=ess, rootDS=self.dstore)
-##
-##    def create_variables(self, verbosity=0):
-##        """Create an IVar for each translation node and variables for each group tree."""
-##        nnodes = len(self.nodes)
-##        self.variables['order_pairs'] = DetVar("order_pairs", set([tuple(positions) for positions in self.order_pairs]))
-##        self.variables['order'] = [IVar("o{}".format(i), set(range(nnodes)), rootDS=self.dstore, essential=True) for i in range(nnodes)]
-##        # target-language trees
-##        self.variables['tree_sindices'] = []
-##        self.variables['trees'] = []
-##        for i, t in enumerate(self.trees):
-###            print('Tree {}: {}'.format(i, t))
-##            if len(t) > 1:
-##                # Only make a variable if the tree has more than one node.
-##                self.variables['tree_sindices'].append(DetVar("tree{}_sindices".format(i), set(t)))
-##                self.variables['trees'].append(self.svar("tree{}".format(i), set(), set(range(nnodes)), len(t), len(t), ess=False))
-##
-##    def create_constraints(self, verbosity=0):
-##        """Make order and disjunction constraints."""
-##        if verbosity:
-##            print("Creating constraints for {}".format(self))
-##        ## Order constraints
-##        order_vars = self.variables['order']
-###        print("Order pairs {}".format(self.variables['order_pairs']))
-##        self.constraints.append(PrecedenceSelection(self.variables['order_pairs'], order_vars))
-##        self.constraints.append(Order(order_vars))
-##        ## Tree constraints
-##        for i_var, tree in zip(self.variables['tree_sindices'], self.variables['trees']):
-##            self.constraints.append(UnionSelection(tree, i_var, order_vars))
-###            i_var.pprint()
-###            tree.pprint()
-###            print("Tree union {}".format(self.constraints[-1]))
-##            # Convexity (projectivity)
-##            self.constraints.append(SetConvexity(tree))
-###        for c in self.constraints:
-###            print(c)
-##
-##    def realize(self, verbosity=0, display=True, all_trans=False):
-##        """Run constraint satisfaction on the order and disjunction constraints,
-##        and convert variable values to sentence positions."""
-##        generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity)
-##        try:
-##            proceed = True
-##            while proceed:
-##                succeeding_state = next(generator)
-##                order_vars = self.variables['order']
-##                positions = [list(v.get_value(dstore=succeeding_state.dstore))[0] for v in order_vars]
-##                node_pos = list(zip([n[0] for n in self.nodes], positions))
-##                node_pos.sort(key=lambda x: x[1])
-##                output = [n[0] for n in node_pos]
-##                self.outputs.append(output)
-##                self.output_strings.append(Translation.output_string(output))
-##                if display:
-##                    self.display(len(self.outputs)-1)
-##                if verbosity:
-##                    print('FOUND REALIZATION {}'.format(self.outputs[-1]))
-##                if all_trans:
-##                    continue
-##                if not input('SEARCH FOR ANOTHER REALIZATION FOR TRANSLATION {}? [yes/NO] '.format(self)):
-##                    proceed = False
-##        except StopIteration:
-##            if verbosity:
-##                print('No more realizations for translation')

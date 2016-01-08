@@ -5521,6 +5521,8 @@
 ->grn ñembo'okupemiri_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 *** escribir_v[-r] ; ^ escribir_v 0
 ->grn hai_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
+*** escribir_v[+r] ; ^ escribir_v 0
+->grn jehai_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 *** escuchar_v[-r] bien ; ^ escuchar_v 0 ; #136
 ->grn japysaka_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel ; #82 ; ##11
 *** escuchar_v[-r] ; ^ escuchar_v 0 ; #136

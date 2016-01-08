@@ -1,5 +1,5 @@
 #   
-#   Mbojereha CS: what is needed to implement l3 style constraint satisfaction
+#   Mainumby: CS: what is needed to implement l3 style constraint satisfaction
 #   using the lexicon/grammars created.
 #
 ########################################################################
@@ -8,7 +8,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015, HLTDI <gasser@cs.indiana.edu>
+#   Copyright (C) 2014, 2015, 2016 HLTDI <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as

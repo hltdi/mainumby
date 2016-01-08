@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Mainumby: Mbojereha. Parsing and translation with minimal dependency grammars.
+# Mainumby: Parsing and translation with minimal dependency grammars.
 #
 ########################################################################
 #
@@ -8,7 +8,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015, HLTDI <gasser@cs.indiana.edu>
+#   Copyright (C) 2014, 2015, 2016, HLTDI <gasser@cs.indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -140,8 +140,8 @@ def ui():
 
 ## To run the web app, uncomment the second line.
 if __name__ == "__main__":
-#    print("Tereg̃uahẽ porãite Mbojereha-pe, versión {}\n".format(__version__))
-    kuaa.app.run(debug=True)
+    print("Tereg̃uahẽ porãite Mainumby-me, versión {}\n".format(__version__))
+#    kuaa.app.run(debug=True)
 
 ## OLD STUFF: Spanish, English, Amharic, Oromo
 # Profiling

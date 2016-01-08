@@ -6,7 +6,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2015, 2016, HLTDI <gasser@cs.indiana.edu>
+#   Copyright (C) 2015, 2016, HLTDI <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -26,21 +26,22 @@
 # Created 2015.06.12
 # 2015.07
 # -- Views for loading languages, entering document, sentence, and translation.
-# 2016.01.05
-# -- Added run line.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-from kuaa import app, translate, make_document, load, seg_trans
+from kuaa import app, make_document, load, seg_trans
 
+# Global variables for views; probably a better way to do this...
 SPA = GRN = DOC = SENT = None
 SINDEX = 0
-SOLINDEX = 0
+# SOLINDEX = 0
 
 def load_languages():
+    """Load Spanish and Guarani data."""
     global GRN, SPA
     SPA, GRN = load()
 
 def make_doc(text):
+    """Create a Document object from the text."""
     global DOC
     DOC = make_document(SPA, GRN, text)
 
@@ -72,58 +73,60 @@ def index():
 
 @app.route('/base', methods=['GET', 'POST'])
 def base():
-#    if not SPA:
-#        print("Cargando idiomas...")
-#        load_languages()
-#    return render_template('doc.html')
     print("In base...")
     if request.method == 'POST' and 'Cargar' in request.form:
         return render_template('doc.html')
     return render_template('base.html')
 
+# View for document entry
 @app.route('/doc', methods=['GET', 'POST'])
 def doc():
     print("In doc...")
+    # Load Spanish and Guarani if they're not loaded.
     if not SPA:
         load_languages()
     return render_template('doc.html')
 
+# View for displaying parsed sentence and sentence translation
 @app.route('/sent', methods=['GET', 'POST'])
 def sent():
     print("In sent...")
     form = request.form
     print("Form for sent: {}".format(form))
     if 'text' in form and not DOC:
+        # Create a new document
         make_doc(form['text'])
         print("Created document {}".format(DOC))
+    # Get the next sentence in the document
     get_sentence()
     print("Current sentence {}".format(SENTENCE))
     if not SENTENCE:
+        # No more sentences, return to doc.html for a new document
         return render_template('doc.html')
     else:
+        # Translate and segment the sentence
         segs = seg_trans(SENTENCE, SPA, GRN)
     print("Found segs {}".format(segs))
-#    if 'tra' in form:
-#        print("Translating sentence {}".format(sentence.raw))
-#        return render_template('tra.html', sentence=sentence, translation=['foo', 'bar', 'baz'], next=False)
+    # Show segmented sentence
     return render_template('sent.html', sentence=segs)
 
-@app.route('/tra', methods=['GET', 'POST'])
-def tra():
-    print("In tra...")
-    form = request.form
-    print("Form for tra: {}".format(form))
-    if form.get('next') == 'tra':
-#    if 'tra' in form:
-        t = translate(SENTENCE, SPA, GRN)
-        print("Translations {}".format(t))
-        return render_template('tra.html', sentence=SENTENCE, translation=t)
-    elif form.get('next') == 'enter':
-        return render_template('tra.html', sentence=None, translation=None)
-    elif form.get('next') == 'sent':
-        return render_template('sent.html', sentence=None, translation=None)
-    return render_template('tra.html', sentence=None, translation=None)
+# View for displaying segment translation (not currently used)
+#@app.route('/tra', methods=['GET', 'POST'])
+#def tra():
+#    print("In tra...")
+#    form = request.form
+#    print("Form for tra: {}".format(form))
+#    if form.get('next') == 'tra':
+#        t = translate(SENTENCE, SPA, GRN)
+#        print("Translations {}".format(t))
+#        return render_template('tra.html', sentence=SENTENCE, translation=t)
+#    elif form.get('next') == 'enter':
+#        return render_template('tra.html', sentence=None, translation=None)
+#    elif form.get('next') == 'sent':
+#        return render_template('sent.html', sentence=None, translation=None)
+#    return render_template('tra.html', sentence=None, translation=None)
 
+# Not needed because this is in runserver.py and mainumby.py.
 if __name__ == "__main__":
     kuaa.app.run(host='0.0.0.0')
 

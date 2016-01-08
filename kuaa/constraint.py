@@ -1,13 +1,13 @@
 #   
-#   Mbojereha constraints.
+#   Mainumby constraints.
 #
 ########################################################################
 #
-#   This file is part of the Ñe'ẽasa project
+#   This file is part of the HLTDI L^3 project
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015 HLTDI <gasser@cs.indiana.edu>
+#   Copyright (C) 2014, 2015, 2016 HLTDI <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as

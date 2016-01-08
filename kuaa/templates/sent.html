@@ -119,8 +119,7 @@ function seg(text) {
 <span class='sentence'>
 {% for seg in sentence %}
 {# Each segment responds to mouse clicks which replace the segtrans section with a table of translations #}
-<span onmouseover="this.style.cursor='pointer'"
-onmouseout="this.style.cursor='default'"
+<span onmouseover="this.style.cursor='pointer'" onmouseout="this.style.cursor='default'"
 onclick="document.getElementById('segtrans').innerHTML={{'%r'|format(seg[2])|e}}"><font color={{ seg[1] }}> {{ seg[0] }} </font></span>
 {% endfor %}
 </span>

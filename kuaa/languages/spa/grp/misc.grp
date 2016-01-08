@@ -18,16 +18,6 @@
 ->grn chupe
 *** los ; ^ los 0
 ->grn chupekuéra
-*** a él ; ^ él 1
-->grn chupe
-*** a $n ; ^ a 0
-->grn $n[caso=pe] ; || -1, 0
-*** en $n ; ^ en 0
-->grn $n[caso=pe] ; || -1, 0
-*** con $pro ; ^ con 0
-->grn $pro[caso=ndi] ; || -1, 0
-*** con $n ; ^ con 0
-->grn $n ndive ; || 1, 0
 *** una ; ^ una 0
 ->grn peteĩ
 *** yo ; ^ yo 0
@@ -45,9 +35,106 @@
 *** ella ; ^ ella 0
 ->grn ha'e_n
 *** ellos ; ^ ellos 0
-->grn ha'e_n[n=1]
+->grn ha'ekuéra
 *** ellas ; ^ ellas 0
-->grn ha'e_n[n=1]
+->grn ha'ekuéra
+*** a él ; ^ él 1
+->grn chupe
+*** a $n ; ^ a 0
+->grn $n[caso=pe] ; || -1, 0
+*** en $n ; ^ en 0
+->grn $n[caso=pe] ; || -1, 0
+*** con ello ; ^ ello 1
+->grn heseve
+*** con $pro ; ^ con 0
+->grn $pro[caso=ndi] ; || -1, 0
+*** con $n ; ^ con 0
+->grn $n ndive ; || 1, 0
+*** me mismo ; ^ me 0
+->grn chejehe
+*** me misma ; ^ me 0
+->grn chejehe
+*** dentro ; ^ dentro 0
+->grn ipýpe
+*** dentro de mí ; ^ dentro 0
+->grn chepype
+*** en mí ; ^ en 0
+->grn chepype
+*** de mí ; ^ mí 1
+->grn chehegui
+->grn chemba'e
+*** por mí ; ^ por 0
+->grn chehegui
+->grn cherehe
+*** por él ; ^ por 0
+->grn hesehápe
+*** por vos ; ^ por 0
+->grn nderehe
+->grn ndehegui
+*** por ti ; ^ por 0
+->grn nderehe
+->grn ndehegui
+*** por usted ; ^ por 0
+->grn nderehe
+->grn ndehegui
+*** a mí mismo ; ^ mismo 2
+->grn chejehe
+*** a mí misma ; ^ mismo 2
+->grn chejehe
+*** por mí mismo ; ^ por 0
+->grn chejehe
+*** por mí misma ; ^ por 0
+->grn chejehe
+*** por vos mismo ; ^ por 0
+->grn ndejehe
+*** por vos misma ; ^ por 0
+->grn ndejehe
+*** por usted mismo ; ^ por 0
+->grn ndejehe
+*** por usted misma ; ^ por 0
+->grn ndejehe
+*** a sí mismo ; ^ mismo 2
+->grn ojoupe
+->grn ojupe
+*** a ti mismo ; ^ mismo 2
+->grn ndejupe
+*** a usted mismo ; ^ mismo 2
+->grn ndejupe
+*** a él mismo ; ^ mismo 2
+->grn hovápe
+*** con uno mismo ; ^ mismo 2
+->grn ondive
+*** de por sí mismo ; ^ mismo 3
+->grn ijehegui
+*** de sí mismo ; ^ mismo 2
+->grn ijehegui
+->grn ojehegui
+*** contra ti ; ^ contra 0
+->grn nderehe
+*** contra ; ^ contra 0
+->grn rehe
+*** el mismo ; ^ mismo 1
+->grn hesegua
+*** de entre sí ; ^ entre 1
+->grn ojuehegui
+*** entre ; ^ entre 0
+->grn apyte
+->grn apytépe
+->grn mbytépe
+*** entre sí ; ^ entre 0
+->grn ojuapére
+->grn ojuehe
+->grn ojuehegui
+->grn ojupe
+*** por sí mismo ; ^ mismo 2
+->grn ojehe
+*** yo por mí mismo ; ^ mismo 3
+->grn chejehe
+*** para sí mismo ; ^ para 0
+->grn ojuehe
+*** para ; ^ para 0
+->grn guarã
+->grn haĝuáicha
 *** hay
 ->grn oĩ
 *** no hay ; ^ hay 1
@@ -603,10 +690,6 @@
 ->grn tekóvy
 *** contra ; ^ contra 0
 ->grn rovái
-*** contra ti ; ^ contra 0
-->grn nderehe
-*** contra ; ^ contra 0
-->grn rehe
 *** de contrabando ; ^ contrabando 1
 ->grn ka'ípe
 *** lo contrario ; ^ contrario 1
@@ -734,10 +817,6 @@
 *** demasiado ; ^ demasiado 0
 ->grn eterei
 ->grn soro
-*** dentro ; ^ dentro 0
-->grn ipýpe
-*** dentro de mí ; ^ dentro 0
-->grn chepype
 *** desacertadamente ; ^ desacertadamente 0
 ->grn hendape'ỹ
 *** descompuesto ; ^ descompuesto 0
@@ -911,12 +990,8 @@
 ->grn arã
 *** por ejemplo ; ^ ejemplo 1
 ->grn techapyrã
-*** con ello ; ^ ello 1
-->grn heseve
 *** sin embargo ; ^ embargo 1
 ->grn uvei
-*** en mí ; ^ en 0
-->grn chepype
 *** en qué cosa ; ^ en 0
 ->grn mba'épepa
 *** en qué forma ; ^ en 0
@@ -968,19 +1043,8 @@
 ->grn aipóramo
 *** de entre medio ; ^ entre 1
 ->grn ijapytégui
-*** de entre sí ; ^ entre 1
-->grn ojuehegui
-*** entre ; ^ entre 0
-->grn apyte
-->grn apytépe
-->grn mbytépe
 *** entre muchos ; ^ entre 0
 ->grn apytépe
-*** entre sí ; ^ entre 0
-->grn ojuapére
-->grn ojuehe
-->grn ojuehegui
-->grn ojupe
 *** entremedio ; ^ entremedio 0
 ->grn apytépe
 *** entretanto ; ^ entretanto 0
@@ -1339,16 +1403,12 @@
 ->grn gua'u
 *** juntamente ; ^ juntamente 0
 ->grn joa
-->grn joaju
-->grn ndive
 *** junto ; ^ junto 0
 ->grn aĝui
 ->grn ndive
 *** juntos ; ^ juntos 0
 ->grn joa
 ->grn joaju
-->grn joja
-->grn ondive
 ->grn oñondive
 *** todos juntos ; ^ juntos 1
 ->grn joa
@@ -1472,8 +1532,6 @@
 ->grn ko'ẽrõite
 *** muy pronto de mañana ; ^ mañana 3
 ->grn ko'ẽroite
-*** me ; ^ me 0
-->grn chejehe
 *** mediante ; ^ mediante 0
 ->grn rupi
 *** mediante que ; ^ mediante 0
@@ -1509,32 +1567,8 @@
 ->grn javeve
 *** mientras tanto ; ^ mientras 0
 ->grn upeaja
-*** a mí mismo ; ^ mismo 2
-->grn chejehe
-*** a sí mismo ; ^ mismo 2
-->grn ojoupe
-->grn ojupe
-*** a ti mismo ; ^ mismo 2
-->grn ndejupe
-*** a usted mismo ; ^ mismo 2
-->grn ndejupe
-*** a él mismo ; ^ mismo 2
-->grn hovápe
-*** con uno mismo ; ^ mismo 2
-->grn ondive
-*** de por sí mismo ; ^ mismo 3
-->grn ijehegui
-*** de sí mismo ; ^ mismo 2
-->grn ijehegui
-->grn ojehegui
-*** el mismo ; ^ mismo 1
-->grn hesegua
 *** lo mismo ; ^ mismo 1
 ->grn peteĩcha
-*** por sí mismo ; ^ mismo 2
-->grn ojehe
-*** yo por mí mismo ; ^ mismo 3
-->grn chejehe
 *** con moderación ; ^ moderación 1
 ->grn katui
 *** moderadamente ; ^ moderadamente 0
@@ -1612,9 +1646,6 @@
 ->grn mandivoi
 *** un poco más ; ^ más 2
 ->grn mive
-*** de mí ; ^ mí 1
-->grn chehegui
-->grn chemba'e
 *** la mía ; ^ mía 1
 ->grn chemba'e
 *** mía ; ^ mía 0
@@ -1708,11 +1739,6 @@
 ->grn mba'erã
 *** para qué? ; ^ para 0
 ->grn maerãpa
-*** para sí mismo ; ^ para 0
-->grn ojuehe
-*** para ; ^ para 0
-->grn guarã
-->grn haĝuáicha
 *** para que ; ^ para 0
 ->grn haĝua
 *** parado ; ^ parado 0
@@ -1831,10 +1857,6 @@
 ->grn ajevéramo
 *** por lo que ; ^ por 0
 ->grn ajeve
-*** por mí mismo ; ^ por 0
-->grn chejehe
-*** por mí ; ^ por 0
-->grn chehegui
 *** por qué ; ^ por 0
 ->grn mba'égui
 ->grn mba'éguipa
@@ -1844,15 +1866,8 @@
 ->grn mba'érepa
 *** por sí ; ^ por 0
 ->grn ojuehe
-*** por ti ; ^ por 0
-->grn ndejehe
-->grn nderehe
 *** por todas partes ; ^ por 0
 ->grn opárupi
-*** por usted ; ^ por 0
-->grn nderehe
-*** por él ; ^ por 0
-->grn hesehápe
 *** por qué no? ; ^ por 0
 ->grn mba'éguitepa
 *** por qué? ; ^ por 0
