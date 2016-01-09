@@ -40,8 +40,7 @@ h2
 	font-weight: bold;
 	margin-top: .75em;
 	margin-bottom: .35em;
-        text-align: center;
-        color: #00F;
+	color: #00F;
 }
 h3
 {
@@ -56,37 +55,16 @@ p
 	margin-bottom: .35em;
         clear: left;
 }
-span.document
-{
-   font-size: 100%;
-   font-weight: bold;
-   color: #F00
-   border: thin solid;
-}
-span.instruction
-{
-   font-size: 100%;
-   font-style: italic;
-}
 </style>
 
+{# Not currently used
 <script>
-function OnEnviar()
-{
-    document.Form1.action = "sent"
-    document.Form1.target = "_self";     // Same window
-    document.Form1.submit();             // Submit the page
-    return true;
-}
-
-function OnSalir()
-{
-    document.Form1.action = "fin"
-    document.Form1.target = "_self";     // Same window
-    document.Form1.submit();             // Submit the page
-    return true;
+function seg(text) {
+    document.write(text)
+    document.getElementById("segtrans").innerHTML = text;
 }
 </script>
+#}
 
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
 
@@ -96,29 +74,11 @@ function OnSalir()
 
 <h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
 
-<!--
-<h2>¡Bienvenido/a a Mainumby! Tereg̃uahẽ porãite Mainumby-me!
-</h2>
--->
+<p>¡Gracias por usar Mainumby!</p>
 
-<!--
-<h3>Uso</h3>
--->
-<p>
-<span class='instruction'>
-Introducí un documento que querés traducir.
-</span>
-</p>
+<form method=POST action='base'>
 
-<form name="Form1" method=POST>
-
-<TEXTAREA NAME="text" ROWS=15 COLS=75 style="font-family:
-Verdana"></TEXTAREA>
-
-<p>
-<input type=submit value='Enviar' name='enviar' onclick="return OnEnviar();" style="font-family: Verdana; font-size: 100%;">
-<input type=submit value='Salir' name='salir' onclick="return OnSalir();" style="font-family: Verdana; font-size: 100%;">
-</p>
+<input type=submit style="font-family: Verdana; font-size: 80%;" action='reiniciar' name='reiniciar' value='Reiniciar'>
 
 </form>
 

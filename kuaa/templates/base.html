@@ -48,13 +48,19 @@ h3
  	font-size: 110%;
 	font-weight: bold;
 	margin-top: .5em;
-	margin-bottom: .35em;
+	margin-bottom: .5em;
 }
 p
 {
-	margin-top: .35em;
-	margin-bottom: .35em;
+	margin-top: .5em;
+	margin-bottom: .5em;
         clear: left;
+}
+p.center
+{
+        margin-top: .5em;
+        margin-bottom: .5em;
+        text-align: center;
 }
 </style>
 
@@ -76,7 +82,30 @@ function loading() {
 <h2>¡Bienvenida/o a Mainumby!<br/>¡Tereg̃uahẽ porãite Mainumby-me!
 </h2>
 
-<p id="loading">
+<h3>¿Qu&eacute; es?
+</h3>
+
+<p>
+Mainumby es una aplicación que ayuda a traducir del
+castellano al guaraní.
+En su forma final, tendrá dos componentes: un traductor automático
+rudimentario (Mbojereha) y una memoria de traducción (Mandu'a).
+En la versión actual, tiene el traductor nomas.
+</p>
+
+<h3>¿Cómo funciona?
+</h3>
+
+<p>
+En la versión actual de Mainumby, deb&eacute;s introducir o pegar el
+texto que quer&eacute;s traducir.
+(Finalmente va a ser posible subir documentos.)
+Mainumby segmenta el texto en oraciones.
+Para cada oración el traductor Mbojereha busca frases en su base de
+datos que puede traducir al guaraní.
+</p>
+
+<p class="center" id="loading">
 <input id="load" style="font-family: Verdana; font-size: 100%;"
 type=button name="Cargar" value="Cargar idiomas" onclick="loading()">
 </p>

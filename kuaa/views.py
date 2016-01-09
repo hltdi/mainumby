@@ -28,7 +28,7 @@
 # -- Views for loading languages, entering document, sentence, and translation.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-from kuaa import app, make_document, load, seg_trans
+from kuaa import app, make_document, load, seg_trans, quit
 
 # Global variables for views; probably a better way to do this...
 SPA = GRN = DOC = SENT = None
@@ -109,6 +109,12 @@ def sent():
     print("Found segs {}".format(segs))
     # Show segmented sentence
     return render_template('sent.html', sentence=segs)
+
+@app.route('/fin', methods=['GET', 'POST'])
+def fin():
+    print("In fin...")
+    quit()
+    return render_template('fin.html')
 
 # View for displaying segment translation (not currently used)
 #@app.route('/tra', methods=['GET', 'POST'])
