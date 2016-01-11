@@ -7,7 +7,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015, HLTDI <gasser@cs.indiana.edu>
+#   Copyright (C) 2014, 2015, 2016 HLTDI <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -1211,19 +1211,34 @@ class Language:
                 preamble = groups[0]
                 # Handle preamble ...
                 for group_spec in groups[1:]:
-                    group_trans = group_spec.split(TRANS_START)
+                    group_trans = group_spec.split('\n')
+                    n = 0
+                    group_line = group_trans[n].strip()
+                    while len(group_line) == 0 or group_line[0] == '#':
+                        # Skip comment lines
+                        n += 1
+                        group_line = group_trans[n].strip()
                     # A string starting with tokens and with other attributes separated by ;
-                    source_group = group_trans[0].strip()
+                    source_group = group_line
+#                    group_trans = group_spec.split(TRANS_START)
+#                    source_group = group_trans[0].strip()
                     # Not sure whether head should be used to speed up reading group from string?
 #                    head, source_group = source_group.split(HEAD_SEP)
 #                    source_group = source_group.strip()
                     source_groups.append(source_group)
                     translations = []
+                    n += 1
                     if target:
-                        for t in group_trans[1:]:
-                            tlang, x, tgroup = t.strip().partition(' ')
-                            if tlang == target_abbrev:
-                                translations.append(tgroup)
+#                        for t in group_trans[1:]:
+                        for t in group_trans[n:]:
+                            # Skip comment lines
+                            if len(t) > 0 and t[0] == '#':
+                                continue
+                            t = t.partition(TRANS_START)[2].strip()
+                            if t:
+                                tlang, x, tgroup = t.strip().partition(' ')
+                                if tlang == target_abbrev:
+                                    translations.append(tgroup)
                         target_groups.extend(translations)
                     # Creates the group and any target groups specified and adds them to self.groups
                     Group.from_string(source_group, self, translations, target=target, trans=False)

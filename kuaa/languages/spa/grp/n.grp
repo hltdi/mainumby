@@ -699,7 +699,6 @@
 ->grn $n <hapo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n ypy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 *** padre_n de $n ; ^ padre_n 0
-->grn $n pa'i_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n ru_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 *** pago_n de $n ; ^ pago_n 0
 ->grn $n <hepyme'ẽva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
@@ -13001,7 +13000,6 @@
 *** padre_n creador ; ^ padre_n 0 ; #850
 ->grn moñahára_n ; 0==0 n:n,poses:poses
 *** padre_n ; ^ padre_n 0 ; #850
-->grn pa'i_n ; 0==0 n:n,poses:poses ; #210 ; ##15
 ->grn ru_n ; 0==0 n:n,poses:poses ; #1049 ; ##267
 *** padrino_n de casamiento ; ^ padrino_n 0
 ->grn menda_n ruãnga ; 0==0 n:n,poses:poses

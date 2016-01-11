@@ -61,4 +61,6 @@ target/
 venv/
 
 # Mainumby DB
+kuaa/languages/spa/cache/
+kuaa/languages/grn/cache/
 

@@ -55,93 +55,92 @@ def cargar_eg():
     spa, grn = kuaa.Language.load_trans('spa', 'grn')
     return spa, grn
 
-## Particular Spanish-Guarani examples
-
-def sefue(all_trans=True, all_sols=False):
-    e, g = load_eg()
-    d = kuaa.Document(e, g, "El muchacho se fue.", True)
-    s = d[0]
-    s.initialize()
-    s.solve(all_sols=all_sols, all_trans=all_trans)
-    return s
-
-def bueno(all_trans=True, all_sols=False):
-    e, g = load_eg()
-    d = kuaa.Document(e, g, "el muchacho ya es bueno.", True)
-    s = d[0]
-    s.initialize()
-    s.solve(all_sols=all_sols, all_trans=all_trans)
-    return s
-
-def ver(all_trans=True, all_sols=False, verbosity=0):
-    spa, grn = load_eg()
-    d = kuaa.Document(spa, grn, 'El muchacho le vio al profesor.', True)
-    s = d[0]
-    s.initialize(verbosity=verbosity)
-    s.solve(all_sols=all_sols, all_trans=all_trans)
-    return s
-
-def future(verbosity=0):
-    spa, grn = kuaa.Language.load_trans('spa', 'grn')
-    s1 = kuaa.Sentence('Juan va a caminar mañana', language=spa, target=grn)
-    s1.initialize()
-    s1.solve(all_sols=True)
-    return s1
-
-def eg_morphosyn(verbosity=0):
-    spa, grn = kuaa.Language.load_trans('spa', 'grn')
-    s1 = kuaa.Sentence(raw='la ventana no fue abierta', language=spa,
-                       target=grn, verbosity=verbosity)
-    s1.initialize(verbosity=verbosity)
-    s1.solve(all_sols=True, verbosity=verbosity)
-    s2 = kuaa.Sentence(raw='José se fue ayer', language=spa,
-                       target=grn, verbosity=verbosity)
-    s2.initialize(verbosity=verbosity)
-    s2.solve(all_sols=True, verbosity=verbosity)
-    return s1, s2
-
-def caminaste(verbosity=0):
-    spa, grn = kuaa.Language.load_trans('spa', 'grn')
-    s = kuaa.Sentence(raw="caminaste", language=spa, target=grn,
-                         verbosity=verbosity)
-    s.initialize(verbosity=verbosity)
-    s.solve(translate=True, all_sols=True, verbosity=verbosity)
-    return s
-
-def pedro_camina(verbosity=0):
-    spa, grn = kuaa.Language.load_trans('spa', 'grn')
-    s = kuaa.Sentence(raw="Pedro camina", language=spa, target=grn,
-                         verbosity=verbosity)
-    s.initialize(verbosity=verbosity)
-    s.solve(translate=True, all_sols=True, verbosity=verbosity)
-    return s
-
-def caminamos(verbosity=0):
-    spa, grn = kuaa.Language.load_trans('spa', 'grn')
-    s = kuaa.Sentence(raw="caminamos", language=spa, target=grn,
-                         verbosity=verbosity)
-    s.initialize(verbosity=verbosity)
-    s.solve(translate=True, all_sols=True,verbosity=verbosity)
-    return s
-
-def ayer_caminé(verbosity=0):
-    spa, grn = kuaa.Language.load_trans('spa', 'grn')
-    s = kuaa.Sentence(raw="ayer caminé", language=spa, target=grn,
-                         verbosity=verbosity)
-    s.initialize(verbosity=verbosity)
-    s.solve(translate=True, all_sols=True,verbosity=verbosity)
-    return s    
-
-def ui():
-    """Create a UI and two languages."""
-    u = kuaa.UI()
-    e, s = kuaa.Language("English", 'eng'), kuaa.Language("español", 'spa')
-    return u, e, s
-
-## To run the web app, uncomment the second line.
 if __name__ == "__main__":
     print("Tereg̃uahẽ porãite Mainumby-me, versión {}\n".format(__version__))
 #    kuaa.app.run(debug=True)
+
+#### Particular Spanish-Guarani examples
+##
+##def sefue(all_trans=True, all_sols=False):
+##    e, g = load_eg()
+##    d = kuaa.Document(e, g, "El muchacho se fue.", True)
+##    s = d[0]
+##    s.initialize()
+##    s.solve(all_sols=all_sols, all_trans=all_trans)
+##    return s
+##
+##def bueno(all_trans=True, all_sols=False):
+##    e, g = load_eg()
+##    d = kuaa.Document(e, g, "el muchacho ya es bueno.", True)
+##    s = d[0]
+##    s.initialize()
+##    s.solve(all_sols=all_sols, all_trans=all_trans)
+##    return s
+##
+##def ver(all_trans=True, all_sols=False, verbosity=0):
+##    spa, grn = load_eg()
+##    d = kuaa.Document(spa, grn, 'El muchacho le vio al profesor.', True)
+##    s = d[0]
+##    s.initialize(verbosity=verbosity)
+##    s.solve(all_sols=all_sols, all_trans=all_trans)
+##    return s
+##
+##def future(verbosity=0):
+##    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+##    s1 = kuaa.Sentence('Juan va a caminar mañana', language=spa, target=grn)
+##    s1.initialize()
+##    s1.solve(all_sols=True)
+##    return s1
+##
+##def eg_morphosyn(verbosity=0):
+##    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+##    s1 = kuaa.Sentence(raw='la ventana no fue abierta', language=spa,
+##                       target=grn, verbosity=verbosity)
+##    s1.initialize(verbosity=verbosity)
+##    s1.solve(all_sols=True, verbosity=verbosity)
+##    s2 = kuaa.Sentence(raw='José se fue ayer', language=spa,
+##                       target=grn, verbosity=verbosity)
+##    s2.initialize(verbosity=verbosity)
+##    s2.solve(all_sols=True, verbosity=verbosity)
+##    return s1, s2
+##
+##def caminaste(verbosity=0):
+##    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+##    s = kuaa.Sentence(raw="caminaste", language=spa, target=grn,
+##                         verbosity=verbosity)
+##    s.initialize(verbosity=verbosity)
+##    s.solve(translate=True, all_sols=True, verbosity=verbosity)
+##    return s
+##
+##def pedro_camina(verbosity=0):
+##    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+##    s = kuaa.Sentence(raw="Pedro camina", language=spa, target=grn,
+##                         verbosity=verbosity)
+##    s.initialize(verbosity=verbosity)
+##    s.solve(translate=True, all_sols=True, verbosity=verbosity)
+##    return s
+##
+##def caminamos(verbosity=0):
+##    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+##    s = kuaa.Sentence(raw="caminamos", language=spa, target=grn,
+##                         verbosity=verbosity)
+##    s.initialize(verbosity=verbosity)
+##    s.solve(translate=True, all_sols=True,verbosity=verbosity)
+##    return s
+##
+##def ayer_caminé(verbosity=0):
+##    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+##    s = kuaa.Sentence(raw="ayer caminé", language=spa, target=grn,
+##                         verbosity=verbosity)
+##    s.initialize(verbosity=verbosity)
+##    s.solve(translate=True, all_sols=True,verbosity=verbosity)
+##    return s    
+##
+##def ui():
+##    """Create a UI and two languages."""
+##    u = kuaa.UI()
+##    e, s = kuaa.Language("English", 'eng'), kuaa.Language("español", 'spa')
+##    return u, e, s
 
 ## OLD STUFF: Spanish, English, Amharic, Oromo
 # Profiling

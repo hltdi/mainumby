@@ -1,0 +1,17 @@
+guarani.soic.indiana.edu
+
+mainumby:
+/var/www/mainumby
+
+restarting apache:
+sudo /etc/init.d/apache2 restart
+
+apache error log:
+/var/log/apache2/error.log
+
+pulling from git:
+git pull https://github.com/hltdi/mainumby.git
+pushing to git:
+git push https://github.com/hltdi/mainumby.git
+
+apache config file:
