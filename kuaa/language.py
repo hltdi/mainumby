@@ -45,6 +45,8 @@
 # -- Added abbreviations.
 # 2015.09.26
 # -- Groups with a particular key are ordered by the group priority method.
+# 2016.01.10
+# -- Group files can have comments (# at beginning of line only).
 
 from .entry import *
 from kuaa.morphology.morpho import Morphology, POS

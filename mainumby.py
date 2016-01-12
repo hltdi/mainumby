@@ -42,6 +42,7 @@ import kuaa
 
 ### Español -> Guarani.
 
+## Creación de oración simple y de documento.
 def eg_oracion(sentence, ambig=True, solve=False):
     e, g = cargar_eg()
     d = kuaa.Document(e, g, sentence, True)
@@ -51,6 +52,12 @@ def eg_oracion(sentence, ambig=True, solve=False):
         s.solve(all_sols=ambig)
     return s
 
+def eg_doc(text, proc=True):
+    e, g = cargar_eg()
+    d = kuaa.Document(e, g, text, proc=proc)
+    return d
+
+## Cargar castellano y guaraní. Devuelve las 2 lenguas.
 def cargar_eg():
     spa, grn = kuaa.Language.load_trans('spa', 'grn')
     return spa, grn

@@ -13619,6 +13619,8 @@ usanza_n $n
 usar_v $v,$v_t,$v_p
 uso_n $n
 usual_a $a
+usted $pro
+ustedes $pro
 usuario_n $n
 usura_n $n
 usurero_a $a

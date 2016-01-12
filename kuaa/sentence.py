@@ -112,6 +112,8 @@
 #    lexicalize().
 # 2016.01.06
 # -- Split off segment.py.
+# 2016.01.11
+# -- Added ?! to end-of-sentence characters.
 
 import copy, re, random
 from .ui import *
@@ -135,7 +137,8 @@ class Document(list):
     puncsep_re = re.compile(r"([(\[{¡¿—\"*]*)([\w\-/+#.'`~@$%^&=\|<>]+)([)\]}!?\"*,:;]*)$")
     start_re = re.compile('[—¿¡"(\[]+$')
     poss_end_re = re.compile('[")\]}]{0,2}[?!][)"\]]{0,2}')
-    end_re = re.compile('[")\]}]{0,2}\.[.)"\]]{0,2}')
+    # 0-2 pre-end characters (like ")"), 1 end character (.?!), 0-2 post-end characters (like ")")
+    end_re = re.compile('[")\]}]{0,2}[.?!][.)"\]]{0,2}')
 
     def __init__(self, language=None, target=None, text='', proc=True):
         self.set_id()

@@ -1,3 +1,33 @@
+## PRONOMBRES PERSONALES
+*** yo ; ^ yo 0
+->grn che_n
+*** vos ; ^ vos 0
+->grn nde_n
+*** usted ; ^ usted 0
+->grn nde_n
+*** ustedes ; ^ ustedes 0
+->grn pende_n[n=1]
+*** nosotros ; ^ nosotros 0
+->grn ore_n[n=1]
+->grn ñande_n[n=1]
+*** él ; ^ él 0
+->grn ha'e_n
+*** ella ; ^ ella 0
+->grn ha'e_n
+*** ellos ; ^ ellos 0
+->grn ha'e_n[n=1]
+*** ellas ; ^ ellas 0
+->grn ha'e_n[n=1]
+#  CON MISMO (JEHE); BUT WHICH IS THE HEAD?
+*** me mismo ; ^ me 0
+->grn chejehe
+*** me misma ; ^ me 0
+->grn chejehe
+*** él mismo ; ^ él 0
+->grn hesegua
+*** ella misma ; ^ ella 0
+->grn hesegua
+## PALABRAS INTERROGATIVAS
 *** ¿ dónde ; ^ dónde 1
 ->grn moõpa
 *** ¿ adónde ; ^ adónde 1
@@ -14,56 +44,105 @@
 ->grn mbovýpa
 *** ¿ por qué; ^ qué 2
 ->grn mba'érepa
-## pronouns and articles
-*** lo ; ^ lo 0
-->grn chupe
-*** los ; ^ los 0
-->grn chupekuéra
-*** una ; ^ una 0
-->grn peteĩ
-*** yo ; ^ yo 0
-->grn che_n
-*** vos ; ^ vos 0
-->grn nde_n
-*** usted ; ^ usted 0
-->grn nde_n
-*** nosotros ; ^ nosotros 0
-->grn ore_n
-*** nosotros ; ^ nosotros 0
-->grn ñande_n
-*** él ; ^ él 0
-->grn ha'e_n
-*** ella ; ^ ella 0
-->grn ha'e_n
-*** ellos ; ^ ellos 0
-->grn ha'ekuéra
-*** ellas ; ^ ellas 0
-->grn ha'ekuéra
-*** a él ; ^ él 1
-->grn chupe
+## PRE/POSPOSICIONES, ADVERBIOS DE LUGAR Y TIEMPO
+# DE
+*** de mí ; ^ mí 1
+->grn chehegui
+->grn chemba'e
+*** de por sí mismo ; ^ mismo 3
+->grn ijehegui
+*** de sí mismo ; ^ mismo 2
+->grn ijehegui
+->grn ojehegui
+# A
 *** a $n ; ^ a 0
 ->grn $n[caso=pe] ; || -1, 0
+*** a él ; ^ él 1
+->grn chupe
+*** a éste ; ^ éste 1
+->grn kóape
+->grn kóvape
+*** a mí mismo ; ^ mismo 2
+->grn chejehe
+*** a mí misma ; ^ mismo 2
+->grn chejehe
+*** a sí mismo ; ^ mismo 2
+->grn ojoupe
+->grn ojupe
+*** a ti mismo ; ^ mismo 2
+->grn ndejupe
+*** a usted mismo ; ^ mismo 2
+->grn ndejupe
+*** a él mismo ; ^ mismo 2
+->grn hovápe
+# EN
 *** en $n ; ^ en 0
 ->grn $n[caso=pe] ; || -1, 0
-*** con ello ; ^ ello 1
-->grn heseve
+*** en $pro ; ^ en 0
+->grn $pro[caso=pype] ; || -1, 0
+# CON
 *** con $pro ; ^ con 0
 ->grn $pro[caso=ndi] ; || -1, 0
 *** con $n ; ^ con 0
 ->grn $n ndive ; || 1, 0
-*** me mismo ; ^ me 0
-->grn chejehe
-*** me misma ; ^ me 0
-->grn chejehe
+*** con ello ; ^ ello 1
+->grn heseve
+*** con uno mismo ; ^ mismo 2
+->grn ondive
+# COMO
+*** como $pro ; ^ como 0
+->grn $pro[caso=icha] ; || -1, 0
+*** como $n ; ^ como 0
+->grn $n[caso=icha] ; || 1, 0
+*** como éstas ; ^ éstas 1
+->grn ãichagua
+*** como éstos ; ^ éstos 1
+->grn ãicha
+->grn ãichagua
+# FUERA (DE)
+*** fuera ; ^ fuera 0
+->grn okápe
+# ENFRENTE (DE)
+*** enfrente ; ^ enfrente 0
+->grn hovái
+->grn jovái
+# DEBAJO (DE)
+*** debajo ; ^ debajo 0
+->grn guy
+*** debajo de él ; ^ debajo 0
+->grn iguýpe
+*** por debajo ; ^ debajo 1
+->grn guýre
+*** debajo de ; ^ debajo 0
+->grn guýpe
+# ENCIMA (DE)
+*** encima ; ^ encima 0
+->grn hi'ári
+->grn pýri
+*** encima ; ^ encima 0
+->grn ári
+*** encima de ; ^ encima 0
+->grn ári
+# ANTES (DE)
+*** antes ; ^ antes 0
+->grn akue
+->grn are
+->grn va'ekue
+->grn yma
+->grn ymaguare
+*** antes de ; ^ antes 0
+->grn mboyve
+# DENTRO (DE)
 *** dentro ; ^ dentro 0
 ->grn ipýpe
 *** dentro de mí ; ^ dentro 0
 ->grn chepype
-*** en mí ; ^ en 0
-->grn chepype
-*** de mí ; ^ mí 1
-->grn chehegui
-->grn chemba'e
+# CONTRA
+*** contra ti ; ^ contra 0
+->grn nderehe
+*** contra ; ^ contra 0
+->grn rehe
+# POR
 *** por mí ; ^ por 0
 ->grn chehegui
 ->grn cherehe
@@ -78,10 +157,6 @@
 *** por usted ; ^ por 0
 ->grn nderehe
 ->grn ndehegui
-*** a mí mismo ; ^ mismo 2
-->grn chejehe
-*** a mí misma ; ^ mismo 2
-->grn chejehe
 *** por mí mismo ; ^ por 0
 ->grn chejehe
 *** por mí misma ; ^ por 0
@@ -93,29 +168,12 @@
 *** por usted mismo ; ^ por 0
 ->grn ndejehe
 *** por usted misma ; ^ por 0
+*** por sí mismo ; ^ mismo 2
+->grn ojehe
+*** yo por mí mismo ; ^ mismo 3
+->grn chejehe
 ->grn ndejehe
-*** a sí mismo ; ^ mismo 2
-->grn ojoupe
-->grn ojupe
-*** a ti mismo ; ^ mismo 2
-->grn ndejupe
-*** a usted mismo ; ^ mismo 2
-->grn ndejupe
-*** a él mismo ; ^ mismo 2
-->grn hovápe
-*** con uno mismo ; ^ mismo 2
-->grn ondive
-*** de por sí mismo ; ^ mismo 3
-->grn ijehegui
-*** de sí mismo ; ^ mismo 2
-->grn ijehegui
-->grn ojehegui
-*** contra ti ; ^ contra 0
-->grn nderehe
-*** contra ; ^ contra 0
-->grn rehe
-*** el mismo ; ^ mismo 1
-->grn hesegua
+# ENTRE
 *** de entre sí ; ^ entre 1
 ->grn ojuehegui
 *** entre ; ^ entre 0
@@ -127,15 +185,19 @@
 ->grn ojuehe
 ->grn ojuehegui
 ->grn ojupe
-*** por sí mismo ; ^ mismo 2
-->grn ojehe
-*** yo por mí mismo ; ^ mismo 3
-->grn chejehe
+# PARA
 *** para sí mismo ; ^ para 0
 ->grn ojuehe
 *** para ; ^ para 0
 ->grn guarã
 ->grn haĝuáicha
+## ARTÍCULOS Y OTROS PRONOMBRES
+*** lo ; ^ lo 0
+->grn chupe
+*** los ; ^ los 0
+->grn chupekuéra
+*** una ; ^ una 0
+->grn peteĩ
 *** hay
 ->grn oĩ
 *** no hay ; ^ hay 1
@@ -312,20 +374,10 @@
 ->grn ange
 *** anteriormente ; ^ anteriormente 0
 ->grn va'ekue
-*** antes ; ^ antes 0
-->grn akue
-->grn are
-->grn va'ekue
-->grn yma
-->grn ymaguare
 *** como antes ; ^ antes 1
 ->grn ymaguare
 *** de más antes ; ^ antes 2
 ->grn ymave
-*** antes ; ^ antes 0
-->grn mboyve
-*** antes de ; ^ antes 0
-->grn mboyve
 *** antes que ; ^ antes 0
 ->grn mboyve
 *** con anticipación ; ^ anticipación 1
@@ -407,13 +459,12 @@
 *** asentimiento ; ^ asentimiento 0
 ->grn he'ẽ
 ->grn heẽ
-*** asi ; ^ asi 0
-->grn ãicha
 *** asiduamente ; ^ asiduamente 0
 ->grn manterei
 *** asombro ; ^ asombro 0
 ->grn mba'eguasu
 *** así ; ^ así 0
+->grn ãicha
 ->grn kóicha
 ->grn peichagua
 ->grn péicha
@@ -790,14 +841,6 @@
 ->grn mba'éichapa
 *** de la parte de debajo ; ^ debajo 4
 ->grn guy
-*** debajo ; ^ debajo 0
-->grn guy
-*** debajo de él ; ^ debajo 0
-->grn iguýpe
-*** por debajo ; ^ debajo 1
-->grn guýre
-*** debajo de ; ^ debajo 0
-->grn guýpe
 *** como debe ser ; ^ debe 1
 ->grn hekópe
 *** debidamente ; ^ debidamente 0
@@ -1000,18 +1043,8 @@
 ->grn moõ
 *** en ; ^ en 0
 ->grn pe
-*** encima ; ^ encima 0
-->grn hi'ári
-->grn pýri
-*** encima ; ^ encima 0
-->grn ári
-*** encima de ; ^ encima 0
-->grn ári
-*** encuanto ; ^ encuanto 0
+<*** encuanto ; ^ encuanto 0
 ->grn vove
-*** enfrente ; ^ enfrente 0
-->grn hovái
-->grn jovái
 *** enfáticamente ; ^ enfáticamente 0
 ->grn voi
 *** enseguida ; ^ enseguida 0
@@ -1231,8 +1264,6 @@
 ->grn mboypýri
 *** de su fuego ; ^ fuego 2
 ->grn hataypýpe
-*** fuera ; ^ fuera 0
-->grn okápe
 *** de carácter fuerte ; ^ fuerte 2
 ->grn hekombarete
 *** fuertemente ; ^ fuertemente 0
@@ -2593,21 +2624,11 @@
 ->grn ojoykére
 *** átona ; ^ átona 0
 ->grn mante
-*** como él ; ^ él 1
-->grn ha'éicha
-*** de época actual ; ^ época 1
-->grn ko'aĝagua
-*** como éstas ; ^ éstas 1
-->grn ãichagua
-*** a éste ; ^ éste 1
-->grn kóape
-->grn kóvape
-*** como éstos ; ^ éstos 1
-->grn ãicha
-->grn ãichagua
 *** en el ínterin ; ^ ínterin 2
 ->grn upeaja
 *** al último ; ^ último 1
 ->grn ipahápe
 *** último ; ^ último 0
 ->grn ipaha
+*** de época actual ; ^ época 1
+->grn ko'aĝagua

@@ -136,7 +136,6 @@ s = caus
 #        intrans_caus_reflx (intransitivo causativo reflexivo) |
 #        intrans_caus_recip (intransitivo causativo recíproco)
 
-#%   grd (grado) = *None | ve | ive | mive | ete | eterei | rasa | etereirasa
    grd (grado) = *None | ve | ete | eterei
 
   tmp (tmp_abs) = prs (pres) |
@@ -153,16 +152,9 @@ s = caus
   impopt = mi = False | True;
            ke = False | True;
            na = False | True
-#%            mo = False | True;
-#%            katu = False | True;
-#%            mbae = False | True
 
-#%   relv = None | ha | hague | harã | harangue | va | vaekue | vaerã  # vae
-#  rel (relativo) = *None | ha | hague | harã | va | vaekue | vaerã
   rel (relativo) = *None | sjoj | obl
-#  relobl (relativo oblícuo) = *False | True
 
-#%   pp (pospos) = *None | peve | jeve | jave | vove | kuevo | ramo | jepe | rire | haguã | ramojepe | vo | gui | guive | pe | re | icha
   pp (pospos) = *None | peve | jave | ramo | rire | haguã | vo | gui | guive | pe | re | icha
 
   asp = va = False | True;
@@ -175,6 +167,7 @@ s = caus
         katu = False | True;
         prg = False | True;
         hikóni = False | True;
+	ramo = False | True;
 	vol = False | True
  
   misc = se    = False | True;
