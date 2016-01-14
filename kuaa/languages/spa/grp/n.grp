@@ -1,10 +1,10 @@
 ## patterns for nouns
 # adj N -> N adj
-# N de $n -> (these appear at the end, except for the two examples)
 # ? num N ->
 # N que ->
 # other relative clause patterns?
 # N con/por/de/para el/la/lo/los/las que
+## N de $n ->
 *** abogado_n de $n ; ^ abogado_n 0
 ->grn $n pysyrõha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n avogádo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n

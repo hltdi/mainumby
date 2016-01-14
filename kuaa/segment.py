@@ -65,7 +65,13 @@ class SolSeg:
                 transhtml += '<tr>'
                 ts = t.split()
                 for tt in ts:
-                    transhtml += '<td>' + tt + '</td>'
+                    if '/' in tt:
+                        transhtml += '<td><table>'
+                        for ttt in tt.split('/'):
+                            transhtml += '<tr><td>' + ttt + '</td></tr>'
+                        transhtml += '</table></td>'
+                    else:
+                        transhtml += '<td>' + tt + '</td>'
                 transhtml += '</tr>'
             else:
                 transhtml += '<tr><td>' + t + '</td></tr>'

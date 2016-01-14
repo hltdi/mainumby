@@ -901,39 +901,6 @@ class Sentence:
                     self.trans_outputs.append(tt1)
         self.trans_outputs.sort()
 
-#    def get_sol_segs(self, solution=None):
-#        """A list of triples: (start/end_within_sentence, translation, snode_tokens)."""
-#        if not solution:
-#            if not self.solutions:
-#                return
-#            solution = self.solutions[0]
-#        return solution.get_segs()
-#
-#    def html_segs(self, segs):
-#        """Convert a list of segments (from the last method) to a list of marked-up phrases."""
-#        res = []
-#        for i, (indices, trans, tokens) in enumerate(segs):
-#            color = 'Silver' if not trans else Sentence.tt_colors[i]
-#            transhtml = '<table border=1>'
-#            for t in trans:
-#                if '|' in t:
-#                    t = t.replace('|', '<br/>')
-#                if ' ' in t:
-#                    transhtml += '<tr>'
-#                    ts = t.split()
-#                    for tt in ts:
-#                        transhtml += '<td>' + tt + '</td>'
-#                    transhtml += '</tr>'
-#                else:
-#                    transhtml += '<tr><td>' + t + '</td></tr>'
-#            transhtml = transhtml.replace('_', ' ')
-#            transhtml += '</table>'
-#            tokens = ' '.join(tokens)
-#            if i==0:
-#                tokens = tokens.capitalize()
-#            res.append((tokens, color, transhtml))
-#        return res
-
     def get_complete_trans(self, capfirst=True):
         """Produce complete translations (list of lists of strings) from tree trans outputs for solutions, filling
         in gaps with source words where necessary."""
@@ -1021,6 +988,7 @@ class Solution:
         """Return a list of (snode_indices, translation_strings) for the solution's tree translations."""
         if not self.ttrans_outputs:
             self.ttrans_outputs = []
+            last_indices = [-1]
             for tt in self.treetranss:
                 if not tt.output_strings:
                     continue
@@ -1031,7 +999,13 @@ class Solution:
                     raw1 = node.raw_indices
                     raw_indices.extend(raw1)
                 raw_indices.sort()
-                self.ttrans_outputs.append((raw_indices, tt.output_strings))
+                # If indices of this treetrans are within those of the last one, merge them
+                if raw_indices[-1] < last_indices[-1]:
+                    output_strings = '/'.join(tt.output_strings)
+                    self.ttrans_outputs[-1][1] = [ttt + ' ' + output_strings for ttt in self.ttrans_outputs[-1][1]]
+                else:
+                    self.ttrans_outputs.append([raw_indices, tt.output_strings])
+                    last_indices = raw_indices
 #            self.ttrans_outputs = [((tt.snode_indices[0], tt.snode_indices[-1]), tt.output_strings)\
 #                                    for tt in self.treetranss if tt.output_strings]
         return self.ttrans_outputs

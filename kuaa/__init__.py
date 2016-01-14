@@ -46,8 +46,7 @@ def load(source='spa', target='grn'):
 #    sentence.initialize(verbosity=verbosity)
 #    sentence.solve(translate=True,
 #                   all_sols=all_sols, all_trans=all_trans, interactive=interactive, verbosity=verbosity)
-#    ttrans = sentence.get_complete_trans()[0]
-#    return Sentence.webify_trans(ttrans)
+#    return sentence.complete_trans()[0]
 
 def seg_trans(sentence, source, target, verbosity=0):
     """Translate sentence and return marked-up sentence with segments colored.
@@ -57,9 +56,6 @@ def seg_trans(sentence, source, target, verbosity=0):
     if sentence.solutions:
         solution = sentence.solutions[0]
         solution.get_segs()
-#        segs = sentence.get_sol_segs(sentence.solutions[0])
-#        tags = sentence.html_segs(segs)
-#        return tags
         return solution.get_seg_html()
 
 def make_document(source, target, text):

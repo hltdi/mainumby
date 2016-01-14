@@ -44,11 +44,12 @@
 ->grn mbovýpa
 *** ¿ por qué; ^ qué 2
 ->grn mba'érepa
+*** ¿ por qué no ; ^ qué 2
+->grn mba'éguitepa
 ## PRE/POSPOSICIONES, ADVERBIOS DE LUGAR Y TIEMPO
-# DE
-*** de mí ; ^ mí 1
-->grn chehegui
-->grn chemba'e
+# DE (MOST HANDLED IN n.grp)
+*** de $pro ; ^ de 0
+->grn $pro[caso=gui] ; || -1, 0
 *** de por sí mismo ; ^ mismo 3
 ->grn ijehegui
 *** de sí mismo ; ^ mismo 2
@@ -93,12 +94,44 @@
 *** como $pro ; ^ como 0
 ->grn $pro[caso=icha] ; || -1, 0
 *** como $n ; ^ como 0
-->grn $n[caso=icha] ; || 1, 0
+->grn $n[caso=icha] ; || -1, 0
 *** como éstas ; ^ éstas 1
 ->grn ãichagua
 *** como éstos ; ^ éstos 1
 ->grn ãicha
 ->grn ãichagua
+# POR
+# *** por ; ^ por 0
+# ->grn haguére
+# ->grn rehe
+# ->grn rupi
+*** por $pro ; ^ por 0
+->grn $pro[caso=re] ; || -1, 0
+->grn $pro[caso=gui] ; || -1, 0
+*** por $n ; ^ por 0
+->grn $n rehe ; || 1, 0
+->grn $n rupi ; || 1, 0
+*** por él ; ^ por 0
+->grn hesehápe
+*** por mí mismo ; ^ por 0
+->grn chejehe
+*** por mí misma ; ^ por 0
+->grn chejehe
+*** por vos mismo ; ^ por 0
+->grn ndejehe
+*** por vos misma ; ^ por 0
+->grn ndejehe
+*** por usted mismo ; ^ por 0
+->grn ndejehe
+*** por usted misma ; ^ por 0
+->grn ndejehe
+*** por sí mismo ; ^ mismo 2
+->grn ojehe
+# DENTRO (DE)
+*** dentro ; ^ dentro 0
+->grn ipýpe
+*** dentro de $pro ; ^ dentro 0
+->grn $pro[caso=pype] ; || -1, -1, 0
 # FUERA (DE)
 *** fuera ; ^ fuera 0
 ->grn okápe
@@ -132,47 +165,11 @@
 ->grn ymaguare
 *** antes de ; ^ antes 0
 ->grn mboyve
-# DENTRO (DE)
-*** dentro ; ^ dentro 0
-->grn ipýpe
-*** dentro de mí ; ^ dentro 0
-->grn chepype
 # CONTRA
 *** contra ti ; ^ contra 0
 ->grn nderehe
 *** contra ; ^ contra 0
 ->grn rehe
-# POR
-*** por mí ; ^ por 0
-->grn chehegui
-->grn cherehe
-*** por él ; ^ por 0
-->grn hesehápe
-*** por vos ; ^ por 0
-->grn nderehe
-->grn ndehegui
-*** por ti ; ^ por 0
-->grn nderehe
-->grn ndehegui
-*** por usted ; ^ por 0
-->grn nderehe
-->grn ndehegui
-*** por mí mismo ; ^ por 0
-->grn chejehe
-*** por mí misma ; ^ por 0
-->grn chejehe
-*** por vos mismo ; ^ por 0
-->grn ndejehe
-*** por vos misma ; ^ por 0
-->grn ndejehe
-*** por usted mismo ; ^ por 0
-->grn ndejehe
-*** por usted misma ; ^ por 0
-*** por sí mismo ; ^ mismo 2
-->grn ojehe
-*** yo por mí mismo ; ^ mismo 3
-->grn chejehe
-->grn ndejehe
 # ENTRE
 *** de entre sí ; ^ entre 1
 ->grn ojuehegui
@@ -750,8 +747,6 @@
 ->grn cheha
 *** esta cosa ; ^ cosa 1
 ->grn kóva
-*** por qué cosa? ; ^ cosa? 2
-->grn mba'ére
 *** sin cosas ; ^ cosas 1
 ->grn mba'evete
 *** como de costumbre ; ^ costumbre 2
@@ -1898,22 +1893,10 @@
 ->grn ojuehe
 *** por todas partes ; ^ por 0
 ->grn opárupi
-*** por qué no? ; ^ por 0
-->grn mba'éguitepa
-*** por qué? ; ^ por 0
-->grn mba'ehápa
-->grn mba'erehépa
-->grn mba'éguipa
-->grn mba'érepa
-*** por ; ^ por 0
-->grn haguére
-->grn rehe
-->grn rupi
 *** porque ; ^ porque 0
 ->grn ajeve
 ->grn ajevéramo
 ->grn hi'ãitégui
-*** porque ; ^ porque 0
 ->grn gui
 ->grn rupi
 *** portento ; ^ portento 0
