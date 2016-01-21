@@ -114,6 +114,8 @@
 # -- Split off segment.py.
 # 2016.01.11
 # -- Added ?! to end-of-sentence characters.
+# 2016.01.18
+# -- Fixed TreeTrans.build() call so that multiple translations work with groups involving merging.
 
 import copy, re, random
 from .ui import *
@@ -1102,10 +1104,25 @@ class Solution:
                 print("Not recreating treetrans for {}".format(ginst))
                 treetranss.append(ginst.treetrans)
             else:
+                # Figure the various features for the next TreeTrans instance.
                 is_top = not any([(tree < other_tree) for other_tree in self.trees])
+                group_attribs = []
+                for tgroup, tgnodes, tnodes in ginst.translations:
+                    for tgnode, tokens, feats, agrs, t_index in tgnodes:
+                        if tgnode.cat:
+                            if tgnode in abs_gnode_dict:
+                                abs_gnode_dict[tgnode].append((tgroup, tokens, feats, agrs, t_index))
+                            else:
+                                abs_gnode_dict[tgnode] = [(tgroup, tokens, feats, agrs, t_index)]
+                        elif tgnode in gnode_dict:
+                            gnode_dict[tgnode].append((tgroup, tokens, feats, agrs, t_index))
+                        else:
+                            gnode_dict[tgnode] = [(tgroup, tokens, feats, agrs, t_index)]
+                    group_attribs.append((tgroup, tnodes, tgroup.agr))
+
                 treetrans = TreeTrans(self, tree=tree.copy(),
-                                      ginst=ginst, attribs=ginst.translations,
-                                      gnode_dict=gnode_dict, abs_gnode_dict=abs_gnode_dict,
+                                      ginst=ginst, # attribs=ginst.translations,
+                                      gnode_dict=gnode_dict, abs_gnode_dict=abs_gnode_dict, group_attribs=group_attribs,
                                       index=ttindex, top=is_top)
                 treetranss.append(treetrans)
                 ttindex += 1
@@ -1116,21 +1133,39 @@ class Solution:
                 tt.display_all()
             else:
                 trans_index=0
+                trans_index2=0
                 built = True
-                while built:
-                    if verbosity:
-                        print("Building {}".format(tt))
-                    built = tt.build(trans_index=trans_index)
-                    if not built:
+                # Figure the maximum number of translations for nodes that will not be merged
+                n_trans_nomerge = 1
+                n_trans_merge = 1
+                nomerge = [s for s, f in tt.sol_gnodes_feats if len(s) == 1]
+                if nomerge:
+                    n_trans_nomerge = max([len(tt.gnode_dict.get(s[0],[])) for s in nomerge])
+                merge = [s for s, f in tt.sol_gnodes_feats if len(s) > 1]
+                if merge:
+                    n_trans_merge = max([max([len(tt.gnode_dict.get(ss,[0])) for ss in s]) for s in merge])
+#                print("Max # translations for {}: merge {}, no merge {}".format(tt, n_trans_merge, n_trans_nomerge))
+                for tm_i in range(n_trans_merge):
+                    for tnm_i in range(n_trans_nomerge):
+                        built = tt.build(trans_index=tm_i, trans_index2=tnm_i)
+#                while built:
+#                    if verbosity:
+#                        print("Building {}".format(tt))
+#                    built = tt.build(trans_index=trans_index, trans_index2=trans_index2)
+#                    if not built:
 #                        print("No more translations for {}".format(tt))
-                        break
-                    if tt.top:
-                        tt.generate_words()
-                        tt.make_order_pairs()
-                        tt.create_variables()
-                        tt.create_constraints()
-                        tt.realize(all_trans=all_trans, interactive=interactive)
-                    trans_index += 1
+#                        break
+                        if tt.top:
+                            tt.generate_words()
+                            tt.make_order_pairs()
+                            tt.create_variables()
+                            tt.create_constraints()
+                            tt.realize(all_trans=all_trans, interactive=interactive)
+#                    if trans_index2 < n_trans_nomerge-1:
+#                        trans_index2 += 1
+#                    else:
+#                        trans_index += 1
+#                        trans_index2 = 0
                     if all_trans:
                         continue
                     if not interactive or not input('SEARCH FOR ANOTHER TRANSLATION FOR {}? [yes/NO] '.format(tt)):

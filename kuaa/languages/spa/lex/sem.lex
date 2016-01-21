@@ -13574,6 +13574,7 @@ ultrajoso_a $a
 ulular_v $v,$v_i
 umbral_n $n
 un $num
+una $num
 unanimidad_n $n
 uncir_v $v
 undécimo_n $n

@@ -101,10 +101,6 @@
 ->grn ãicha
 ->grn ãichagua
 # POR
-# *** por ; ^ por 0
-# ->grn haguére
-# ->grn rehe
-# ->grn rupi
 *** por $pro ; ^ por 0
 ->grn $pro[caso=re] ; || -1, 0
 ->grn $pro[caso=gui] ; || -1, 0
@@ -193,6 +189,8 @@
 ->grn chupe
 *** los ; ^ los 0
 ->grn chupekuéra
+*** un ; ^ un 0
+->grn peteĩ
 *** una ; ^ una 0
 ->grn peteĩ
 *** hay

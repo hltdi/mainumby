@@ -36,6 +36,8 @@
 #    states during best-first search and an explicit variable and value selection
 #    function to be used in distribution. Normally one or the other would be
 #    used; currently this is the variable selection function.
+# 2016.01.17
+# -- Random value added to basic value for state evaluation to avoid ties
 
 from .constraint import *
 import queue, random
@@ -106,7 +108,7 @@ class Solver:
                 yield state
             # Expand to next states if distributable
             if state.status == SearchState.distributable:
-                score = 0
+                score = random.random() / 100.0
                 for attribs, next_state in self.distribute(state=state, verbosity=expand_verbosity):
                     # If there's no evaluator function, just the order of states returned by distribute
                     if self.evaluator:
