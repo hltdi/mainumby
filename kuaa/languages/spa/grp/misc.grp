@@ -104,6 +104,9 @@
 *** por $pro ; ^ por 0
 ->grn $pro[caso=re] ; || -1, 0
 ->grn $pro[caso=gui] ; || -1, 0
+*** por $num $n ; ^ por 0
+->grn $num $n rehe ; || 2, 0, 1
+->grn $num $n rupi ; || 2, 0, 1
 *** por $n ; ^ por 0
 ->grn $n rehe ; || 1, 0
 ->grn $n rupi ; || 1, 0

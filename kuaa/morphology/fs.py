@@ -1,7 +1,7 @@
 """
-This file is part of the ParaMorfo project.
-    Copyright (C) 2014
-    by the HLTDI L^3 Team <gasser@cs.indiana.edu>
+This file is part of the L3Morpho and Mainumby projects.
+    Copyright (C) 2014, 2015, 2016
+    by the HLTDI L^3 Team <gasser@indiana.edu>
 
     L3Morpho is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@ This file is part of the ParaMorfo project.
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with AmMorpho.  If not, see <http://www.gnu.org/licenses/>.
+    along with L3Morpho.  If not, see <http://www.gnu.org/licenses/>.
 
 ---------------------------------------------------
 fs.py is a modification of featstruct.py in NLTK.

@@ -271,8 +271,8 @@ class Group(Entry):
         return '.'.join(tokens)
 
     def priority(self):
-        """Returns a value that is used in sorting the groups associated with a particular key. Groups with more tokens and more features
-        have priority."""
+        """Returns a value that is used in sorting the groups associated with a particular key.
+        Groups with more tokens and more features have priority."""
         featscore = .3 * sum([len(f) for f in self.features if f]) if self.features else 0.0
         return len(self.tokens) + featscore
 
@@ -435,6 +435,8 @@ class Group(Entry):
                                 feat_pairs.append((sf.strip(), tf.strip()))
                             else:
                                 feat_pairs.append((f.strip(), f.strip()))
+                        # 2016.1.26: changed to tuple so it can be part of a dict index later on
+                        feat_pairs = tuple(feat_pairs)
                         # Changed 2015.07.13 to include index of target item
                         trans_agrs[int(si)] = (int(ti), feat_pairs)
                         continue
@@ -498,6 +500,8 @@ class Group(Entry):
         if target and not trans:
             g.trans = tgroups
         language.add_group(g)
+#        if trans_agrs:
+#            trans_agrs = tuple(trans_agrs)
         return g, trans_agrs, alignment, trans_count
 
     ### Translations

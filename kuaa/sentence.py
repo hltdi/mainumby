@@ -1147,7 +1147,8 @@ class Solution:
 #                print("Max # translations for {}: merge {}, no merge {}".format(tt, n_trans_merge, n_trans_nomerge))
                 for tm_i in range(n_trans_merge):
                     for tnm_i in range(n_trans_nomerge):
-                        built = tt.build(trans_index=tm_i, trans_index2=tnm_i)
+                        if tt.top:
+                            built = tt.build(trans_index=tm_i, trans_index2=tnm_i)
 #                while built:
 #                    if verbosity:
 #                        print("Building {}".format(tt))
@@ -1155,7 +1156,7 @@ class Solution:
 #                    if not built:
 #                        print("No more translations for {}".format(tt))
 #                        break
-                        if tt.top:
+#                        if tt.top:
                             tt.generate_words()
                             tt.make_order_pairs()
                             tt.create_variables()

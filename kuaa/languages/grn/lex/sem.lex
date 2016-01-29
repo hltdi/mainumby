@@ -613,7 +613,7 @@ ipahágue $adv
 ipahápe $adv
 iporãmante $adv
 ipýpe $adv
-irundy_ $a
+irundy_ $a,$num
 irũ_ $n
 ita_ $n
 itaembo_ $n
@@ -1120,7 +1120,7 @@ mboguataha_ $n
 mboguejy_ $v,$v_t
 mboguevi_ $v,$v_t
 mbohakua_ $v,$v_t
-mbohapy_ $a
+mbohapy_ $a,$num
 mbohapypa_ $a
 mbohasa_ $v,$v_t
 mbohe_ $v,$v_t
@@ -1271,7 +1271,7 @@ mokunu'ũ_ $v,$v_t
 mokã_ $v,$v_t
 mokãha_ $n
 mokõ_ $v,$v_t
-mokõi_ $a
+mokõi_ $a,$num
 mokõiha_ $a
 momaitei_ $v,$v_t
 momarandu_ $n
