@@ -33,6 +33,9 @@
 # 2016.01.26
 # -- Fixed it so that groups can have multiple abstract nodes, for example, <por $num $n>, and
 #    match concrete nodes in multiple other groups.
+# 2016.02.01
+# -- Cache added to TreeTrans to save feature and node merger information during build, preventing
+#    repetition.
 
 import itertools, copy
 from .cs import *
@@ -589,9 +592,8 @@ class TreeTrans:
         self.outputs = []
         # Strings representing outputs
         self.output_strings = []
-        # Cache for node mergers; pair of lists instead of dict because of unfrozen features that can't be keys
-        self.cache_merger_keys = []
-        self.cache_mergers = []
+        # Cache for node mergers
+        self.cache = {}
         print("Created TreeTrans {}".format(self))
 #        print("Created TreeTrans {} with attribs".format(self))
 #        for a in attribs:
@@ -634,16 +636,14 @@ class TreeTrans:
     def build(self, trans_index=0, trans_index2=0, verbosity=0):
         """Unify translation features for merged nodes, map agr features from source to target,
         generate surface target forms from resulting roots and features."""
-#        if verbosity:
-        print('Building {} with trans indices {}/{}'.format(self, trans_index, trans_index2))
+        if verbosity:
+            print('Building {} with trans indices {}/{}'.format(self, trans_index, trans_index2))
         # Reinitialize mergers
 #        self.mergers = []
         # Dictionary mapping source node indices to initial target node indices
         tnode_index = 0
-        node_index_map = {}
+        node_index_map, agreements, group_nodes = {}, {}, {}
         node_features = []
-        agreements = {}
-        group_nodes = {}
         # reinitialize mergers
         self.mergers = []
         for snode, (gnodes, features) in zip(self.snodes, self.sol_gnodes_feats):
@@ -656,17 +656,16 @@ class TreeTrans:
                 node_features.append((snode.token, None, []))
                 tnode_index += 1
             else:
+                cache_key = None
                 gna, gnc, token = None, None, None
-                t_indices = []
                 targ_feats, agrs = None, None
+                t_indices = []
                 if verbosity:
                     if len(gnodes) > 1:
                         print(" Gnodes: {}".format(gnodes))
-                        print(" Abs gnode dict: {}".format(self.abs_gnode_dict))
                 if gnodes[0] in self.abs_gnode_dict:
                     if verbosity:
                         print("{}: gnodes {} contain an abs gnode dict in first position".format(self, gnodes))
-                        print(" Looking for concrete node in gnode_dict {}".format(self.gnode_dict))
                     gna = self.abs_gnode_dict[gnodes[0]]
                     gnc = self.gnode_dict[gnodes[1]]
                 elif len(gnodes) > 1 and gnodes[1] in self.abs_gnode_dict:
@@ -674,9 +673,8 @@ class TreeTrans:
                         print("{}: gnodes {} contain an abs gnode dict in second position".format(self, gnodes))
                     gna = self.abs_gnode_dict[gnodes[1]]
                     gnc = self.gnode_dict[gnodes[0]]
-#                if len(gnodes) > 1:
-#                    print(" Gnodes {}, abs_dict {}, conc_dict {}".format(gnodes, self.abs_gnode_dict, self.gnode_dict))
                 if gna:
+                    # Two nodes to be merged
                     if verbosity:
                         print(" gna: {}, gnc: {}".format(gna, gnc))
                     # There are two gnodes for this snode, one concrete, one abstract;
@@ -693,67 +691,98 @@ class TreeTrans:
                         print("  Multiple translations {} for abstract node group".format(gna))
                     gnc1 = gnc[ct_index]
                     gna1 = gna[trans_index2]
-                    print("  Merging nodes: concrete {}, abstract {}".format(gnc1, gna1))
-                    cache_key = (gnc1, gna1)
-                    if cache_key in self.cache_merger_keys:
-                        print("   Already in cache: {}".format(self.cache_mergers[self.cache_merger_keys.index(cache_key)]))
-                    tgroups, tokens, targ_feats, agrs, t_index = zip(gna1, gnc1)
-                    token = tokens[1]
-                    targ_feats = FeatStruct.unify_all(targ_feats)
-                    # Merge the agreements
-                    agrs = TreeTrans.merge_agrs(agrs)
-                    t_indices.append((tgroups[0], gna1[-1]))
-                    t_indices.append((tgroups[1], gnc1[-1]))
-                    ## Record this node and its groups in mergers
-                    tg = list(zip(tgroups, gnodes))
-                    # Sort the groups by which is the "outer" group in the merger
-                    tg.sort(key=lambda x: x[1].cat)
-                    tg = [x[0] for x in tg]
-                    print("  Creating merger {} for snode index {}, tnode index {}".format(tg, snode.index, tnode_index))
-                    self.mergers.append((tnode_index, tg))
-                    print("  {} mergers: {}".format(self, self.mergers))
-                    if cache_key not in self.cache_merger_keys:
-                        self.cache_mergers.append((tnode_index, tg, agrs, targ_feats))
-                        self.cache_merger_keys.append(cache_key)
+                    if verbosity:
+                        print("  Merging nodes: concrete {}, abstract {}".format(gnc1, gna1))
+                    cache_key = ((gnc1[0], gnc1[-1]), (gna1[0], gna1[-1]))
+                    if cache_key in self.cache:
+                        tok, tn_i, t_i, tg, t_feats = self.cache[cache_key]
+                        if verbosity > 1:
+                            print("   Merger already in cache: {}".format(self.cache[cache_key]))
+                        self.mergers.append((tn_i, tg))
+                        if verbosity:
+                            print("  {} mergers: {}".format(self, self.mergers))
+                        node_index_map[snode.index] = tn_i
+                        node_features.append((tok, t_feats, t_i))
+                        for t_index in t_i:
+                            group_nodes[t_index] = (tok, t_feats)
+                    else:
+                        tgroups, tokens, targ_feats, agrs, t_index = zip(gna1, gnc1)
+                        token = tokens[1]
+                        targ_feats = FeatStruct.unify_all(targ_feats)
+                        # Merge the agreements
+                        agrs = TreeTrans.merge_agrs(agrs)
+                        t_indices.append((tgroups[0], gna1[-1]))
+                        t_indices.append((tgroups[1], gnc1[-1]))
+                        ## Record this node and its groups in mergers
+                        tg = list(zip(tgroups, gnodes))
+                        # Sort the groups by which is the "outer" group in the merger
+                        tg.sort(key=lambda x: x[1].cat)
+                        tg = [x[0] for x in tg]
+                        if verbosity:
+                            print("   Creating merger {} for snode index {}, tnode index {}".format(tg, snode.index, tnode_index))
+                        self.mergers.append((tnode_index, tg))
+                        if verbosity:
+                            print("  {} mergers: {}".format(self, self.mergers))
+                        # Make target and source features agree as required
+                        if not targ_feats:
+                            targ_feats = FeatStruct({})
+                        if agrs:
+                            # Use an (unfrozen) copy of target features
+                            targ_feats = targ_feats.copy(True)
+                            features.agree(targ_feats, agrs)
+                        node_index_map[snode.index] = tnode_index
+                        node_features.append((token, targ_feats, t_indices))
+                        for t_index in t_indices:
+                            group_nodes[t_index] = (token, targ_feats)
+                        if verbosity:
+                            print("  Storing cache key {} in cache".format(cache_key))
+                        self.cache[cache_key] = (token, tnode_index, t_indices, tg, targ_feats)
                     
                 else:
                     # only one gnode in list
                     gnode = gnodes[0]
-#                    if verbosity:
-                    print("  Single node to generate: {}".format(gnode))
+                    if verbosity:
+                        print("  Single node to generate: {}".format(gnode))
                     if gnode not in self.gnode_dict:
                         if verbosity:
                             print("Gnode {} not in gnode dict".format(gnode, self.gnode_dict))
                         continue
                     else:
                         gnode_tuple_list = self.gnode_dict[gnode]
-#                        print("  Gnode tuple list {}, trans_index {}".format(gnode_tuple_list, trans_index))
                         at_index = trans_index2
                         if len(gnode_tuple_list) <= trans_index2:
                             # Use 0 instead
                             at_index = 0
-#                            print(" No more translations for {} in gnode tuple list, continuing".format(self))
-#                            continue
-#                        tgroup, token, targ_feats, agrs, t_index = self.gnode_dict[gnode]
                         tgroup, token, targ_feats, agrs, t_index = gnode_tuple_list[at_index]
-                        print("  targ feats {}, agrs {}".format(targ_feats, agrs))
-                        if len(tgroup.tokens) > 1:
-                            t_indices.append((tgroup, t_index))
+                        cache_key = tgroup, t_index
+                        if cache_key in self.cache:
+                            tok, tn_i, t_i, x, t_feats = self.cache[cache_key]
+                            if verbosity:
+                                print("   Single node already in cache: {}".format(self.cache[cache_key]))
+                            node_index_map[snode.index] = tn_i
+                            node_features.append((tok, t_feats, t_i))
+                            for t_index in t_i:
+                                group_nodes[t_index] = (tok, t_feats)
+                        else:
+                            if len(tgroup.tokens) > 1:
+                                t_indices.append((tgroup, t_index))
+                            # Make target and source features agree as required
+                            if not targ_feats:
+                                targ_feats = FeatStruct({})
+                            if agrs:
+                                # Use an (unfrozen) copy of target features
+                                targ_feats = targ_feats.copy(True)
+                                features.agree(targ_feats, agrs)
+                            node_index_map[snode.index] = tnode_index
+                            node_features.append((token, targ_feats, t_indices))
+                            for t_index in t_indices:
+                                group_nodes[t_index] = (token, targ_feats)
+                            if verbosity:
+                                print("  Storing cache key {} in cache".format(cache_key))
+                            self.cache[cache_key] = (token, tnode_index, t_indices, None, targ_feats)
                             
-                # Make target and source features agree as required
-                if not targ_feats:
-                    targ_feats = FeatStruct({})
-                if agrs:
-                    # Use an (unfrozen) copy of target features
-                    targ_feats = targ_feats.copy(True)
-                    print("  Making targ feats {} agree with source feats {} and agrs {}".format(targ_feats, features, agrs))
-                    features.agree(targ_feats, agrs)
-#                    print("  Targ feats now {}".format(targ_feats))
-                node_index_map[snode.index] = tnode_index
                 tnode_index += 1
-                node_features.append((token, targ_feats, t_indices))
-                for t_index in t_indices:
-                    group_nodes[t_index] = (token, targ_feats)
+                        
         # Fix indices in tgroup trees
         tree = []
         for src_index in tree:
@@ -861,7 +890,8 @@ class TreeTrans:
                 self.order_pairs.append([x[0] for x in pairpair])
         # Order nodes within merged groups
         for node, (inner, outer) in self.mergers:
-#            print("Merger: tnode index {}, inner group {}, outer group {}".format(node, inner, outer))
+            if verbosity:
+                print(" Merger: tnode index {}, inner group {}, outer group {}".format(node, inner, outer))
             # node is sentence node index; inner and outer are groups
             # Indices (input, tgroup) in inner and outer groups
             inner_nodes = tgroup_dict[inner]
