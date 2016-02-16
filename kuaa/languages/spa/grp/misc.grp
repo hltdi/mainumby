@@ -1,4 +1,4 @@
-## PRONOMBRES PERSONALES
+### PRONOMBRES PERSONALES
 *** yo ; ^ yo 0
 ->grn che_n
 *** vos ; ^ vos 0
@@ -18,15 +18,253 @@
 ->grn ha'e_n[n=1]
 *** ellas ; ^ ellas 0
 ->grn ha'e_n[n=1]
-#  CON MISMO (JEHE); BUT WHICH IS THE HEAD?
-*** me mismo ; ^ me 0
+#  CON MISMO, LOS UNOS A LOS OTROS
+*** a mí mismo ; ^ mí 1
 ->grn chejehe
-*** me misma ; ^ me 0
+*** a mí misma ; ^ mí 1
 ->grn chejehe
-*** él mismo ; ^ él 0
-->grn hesegua
-*** ella misma ; ^ ella 0
-->grn hesegua
+*** de mí mismo ; ^ mí 1
+->grn chejehegui
+*** de mí misma ; ^ mí 1
+->grn chejehegui
+*** por mí mismo ; ^ mí 1
+->grn chejehegui
+*** por mí misma ; ^ mí 1
+->grn chejehegui
+*** a vos mismo ; ^ mi 1
+->grn ndejehe
+*** a vos misma ; ^ ti 1
+->grn ndejehe
+*** de vos mismo ; ^ ti 1
+->grn ndejehegui
+*** de vos misma ; ^ ti 1
+->grn ndejehegui
+*** por vos mismo ; ^ ti 1
+->grn ndejehegui
+*** por vos misma ; ^ ti 1
+->grn ndejehegui
+*** a usted mismo ; ^ mi 1
+->grn ndejehe
+*** a usted misma ; ^ ti 1
+->grn ndejehe
+*** de usted mismo ; ^ ti 1
+->grn ndejehegui
+*** de usted misma ; ^ ti 1
+->grn ndejehegui
+*** por usted mismo ; ^ ti 1
+->grn ndejehegui
+*** por usted misma ; ^ ti 1
+->grn ndejehegui
+*** a sí mismo ; ^ sí 1
+->grn ijehe
+*** por sí mismo ; ^ sí 1
+->grn ijehegui
+*** de sí mismo ; ^ sí 1
+->grn ijehegui
+*** a sí misma ; ^ sí 1
+->grn ijehe
+*** por sí misma ; ^ sí 1
+->grn ijehegui
+*** de sí misma ; ^ sí 1
+->grn ijehegui
+*** a nosotros mismos ; ^ nosotros 1
+->grn ñandejehe
+->grn orejehe
+*** por nosotros mismos ; ^ nosotros 1
+->grn ñandejehegui
+->grn orejehegui
+*** de nosotros mismos ; ^ nosotros 1
+->grn ñandejehegui
+->grn orejehegui
+*** a nosotras mismas ; ^ nosotras 1
+->grn ñandejehe
+->grn orejehe
+*** por nosotras mismas ; ^ nosotras 1
+->grn ñandejehegui
+->grn orejehegui
+*** de nosotras mismas ; ^ nosotras 1
+->grn ñandejehegui
+->grn orejehegui
+*** a ustedes mismos ; ^ ustedes 1
+->grn pendejehe
+*** por ustedes mismos ; ^ ustedes 1
+->grn pendejehegui
+*** de ustedes mismos ; ^ ustedes 1
+->grn pendejehegui
+*** a ustedes mismas ; ^ ustedes 1
+->grn pendejehe
+*** por ustedes mismas ; ^ ustedes 1
+->grn pendejehegui
+*** de ustedes mismas ; ^ ustedes 1
+->grn pendejehegui
+# ijehekuéra??
+*** a sí mismos ; ^ sí 1
+->grn ijehe
+*** por sí mismos ; ^ sí 1
+->grn ijehegui
+*** de sí mismos ; ^ sí 1
+->grn ijehegui
+*** a sí mismas ; ^ sí 1
+->grn ijehe
+*** por sí mismas ; ^ sí 1
+->grn ijehegui
+*** de sí mismas ; ^ sí 1
+->grn ijehegui
+*** los unos a los otros ; ^ unos 1
+->grn ojuehe
+### DEMONSTRATIVOS
+## este, etc.
+# adjetivo
+*** este $n[n=0] ; ^ este 0
+->grn ko $n ; || 0, 1
+*** esta $n[n=0] ; ^ esta 0
+->grn ko $n ; || 0, 1
+*** estos $n[n=1] ; ^ estos 0
+->grn ko'ã $n ; || 0, 1
+*** estas $n[n=1] ; ^ estas 0
+->grn ko'ã $n ; || 0, 1
+# pronombre
+*** este ; ^ este 0
+->grn kóva
+*** esta ; ^ esta 0
+->grn kóva
+*** esto; ^ esto 0
+->grn kóva
+*** éste; ^ éste 0
+->grn kóva
+*** ésta; ^ ésta 0
+->grn kóva
+*** estos ; ^ estos 0
+->grn ko'ãva
+*** estas ; ^ estas 0
+->grn ko'ãva
+*** éstos ; ^ éstos 0
+->grn ko'ãva
+*** éstas ; ^ éstas 0
+->grn ko'ãva
+## ese, etc.
+# adjetivo
+*** ese $n[n=0] ; ^ ese 0
+->grn upe $n ; || 0, 1
+->grn pe $n ; || 0, 1
+->grn ako $n ; || 0, 1
+->grn aipo $n ; || 0, 1
+*** esa $n[n=0] ; ^ esa 0
+->grn upe $n ; || 0, 1
+->grn pe $n ; || 0, 1
+->grn ako $n ; || 0, 1
+->grn aipo $n ; || 0, 1
+*** esos $n[n=1]; ^ esos 0
+->grn umi $n ; || 0, 1
+*** esas $n[n=1]; ^ esas 0
+->grn umi $n ; || 0, 1
+# pronombre
+*** ese ; ^ ese 0
+->grn péva
+->grn upéva
+->grn aipóva
+*** esa ; ^ esa 0
+->grn péva
+->grn upéva
+->grn aipóva
+*** esos ; ^ esos 0
+->grn umíva
+*** esas ; ^ esas 0
+->grn umíva
+*** ése ; ^ ése 0
+->grn péva
+->grn upéva
+->grn aipóva
+*** ésa ; ^ ésa 0
+->grn péva
+->grn upéva
+->grn aipóva
+*** eso ; ^ eso 0
+->grn péva
+->grn upéva
+->grn aipóva
+*** ésos ; ^ ésos 0
+->grn umíva
+*** ésas ; ^ ésas 0
+->grn umíva
+## aquel, etc.
+# adjetivos
+*** aquel $n[n=0]; ^ aquel 0
+->grn ako $n ; || 0, 1
+->grn amo $n ; || 0, 1
+->grn ku $n ; || 0, 1
+->grn upe $n ; || 0, 1
+->grn aipo $n ; || 0, 1
+*** aquella $n[n=0]; ^ aquella 0
+->grn ako $n ; || 0, 1
+->grn amo $n ; || 0, 1
+->grn ku $n ; || 0, 1
+->grn upe $n ; || 0, 1
+->grn aipo $n ; || 0, 1
+*** aquellos $n[n=1]; ^ aquellos 0
+->grn umi $n ; || 0, 1
+->grn amo $n ; || 0, 1
+*** aquellas $n[n=1]; ^ aquellas 0
+->grn umi $n ; || 0, 1
+->grn amo $n ; || 0, 1
+# pronombres
+*** aquel ; ^ aquel 0
+->grn upéva
+->grn amóva
+->grn aipóva
+*** aquél ; ^ aquél 0
+->grn upéva
+->grn amóva
+->grn aipóva
+*** aquella ; ^ aquella 0
+->grn upéva
+->grn amóva
+->grn aipóva
+*** aquélla ; ^ aquélla 0
+->grn upéva
+->grn amóva
+->grn aipóva
+*** aquellos ; ^ aquellos 0
+->grn umíva
+->grn amóva
+*** aquéllos ; ^ aquéllos 0
+->grn umíva
+->grn amóva
+*** aquellas ; ^ aquellas 0
+->grn umíva
+->grn amóva
+*** aquéllas ; ^ aquéllas 0
+->grn umíva
+->grn amóva
+### Preposiciones + demostrativos
+*** a esta ; ^ esta 1
+->grn kóvape
+*** como esta ; ^ esta 1
+->grn koichagua
+*** de esta ; ^ esta 1
+->grn kóvagui
+*** en esta ; ^ esta 1
+->grn kóvape
+*** como este ; ^ este 1
+->grn koichagua
+*** de este ; ^ este 1
+->grn kóvagui
+*** en este ; ^ este 1
+->grn kóvape
+*** a esto ; ^ esto 1
+->grn kóvape
+*** como esto ; ^ esto 1
+->grn koichagua
+*** con esto ; ^ esto 1
+->grn kóvape
+*** de esto ; ^ esto 1
+->grn kóvagui
+*** en esto ; ^ esto 1
+->grn kóvape
+*** a aquella ; ^ aquella 1
+->grn amóape
+*** a aquel ; ^ aquel 1
+->grn amóape
 ## PALABRAS INTERROGATIVAS
 *** ¿ dónde ; ^ dónde 1
 ->grn moõpa
@@ -46,36 +284,15 @@
 ->grn mba'érepa
 *** ¿ por qué no ; ^ qué 2
 ->grn mba'éguitepa
-## PRE/POSPOSICIONES, ADVERBIOS DE LUGAR Y TIEMPO
-# DE (MOST HANDLED IN n.grp)
+### PRE/POSPOSICIONES, ADVERBIOS DE LUGAR Y TIEMPO
+# DE (GENITIVO DE SUSTANTIVOS en n.grp)
 *** de $pro ; ^ de 0
 ->grn $pro[caso=gui] ; || -1, 0
-*** de por sí mismo ; ^ mismo 3
-->grn ijehegui
-*** de sí mismo ; ^ mismo 2
-->grn ijehegui
-->grn ojehegui
 # A
 *** a $n ; ^ a 0
 ->grn $n[caso=pe] ; || -1, 0
-*** a él ; ^ él 1
-->grn chupe
 *** a éste ; ^ éste 1
-->grn kóape
 ->grn kóvape
-*** a mí mismo ; ^ mismo 2
-->grn chejehe
-*** a mí misma ; ^ mismo 2
-->grn chejehe
-*** a sí mismo ; ^ mismo 2
-->grn ojoupe
-->grn ojupe
-*** a ti mismo ; ^ mismo 2
-->grn ndejupe
-*** a usted mismo ; ^ mismo 2
-->grn ndejupe
-*** a él mismo ; ^ mismo 2
-->grn hovápe
 # EN
 *** en $n ; ^ en 0
 ->grn $n[caso=pe] ; || -1, 0
@@ -395,27 +612,6 @@
 ->grn mante
 *** apropiadamente ; ^ apropiadamente 0
 ->grn hekópe
-*** a aquel ; ^ aquel 1
-->grn amóape
-*** aquel ; ^ aquel 0
-->grn ako
-->grn amo
-->grn amóva
-->grn ku
-->grn upe
-*** a aquella ; ^ aquella 1
-->grn amóape
-*** aquella ; ^ aquella 0
-->grn aipo
-->grn ako
-->grn amo
-->grn amóva
-*** aquellas ; ^ aquellas 0
-->grn aipo
-*** aquello ; ^ aquello 0
-->grn ako
-*** aquellos ; ^ aquellos 0
-->grn aipo
 *** aquí ; ^ aquí 0
 ->grn ko'ápe
 ->grn ápe
@@ -1079,11 +1275,6 @@
 ->grn upeaja
 *** envés ; ^ envés 0
 ->grn kupe
-*** esa ; ^ esa 0
-->grn aipo
-->grn péva
-*** esas ; ^ esas 0
-->grn aipo
 *** a escondidas ; ^ escondidas 1
 ->grn kañyhápe
 ->grn ñemiháme
@@ -1110,51 +1301,6 @@
 ->grn atukupépe
 *** especialmente ; ^ especialmente 0
 ->grn tenonderã
-*** a esta ; ^ esta 1
-->grn kóape
-->grn kóvape
-*** como esta ; ^ esta 1
-->grn koichagua
-*** de esta ; ^ esta 1
-->grn kóagui
-->grn kóvagui
-*** en esta ; ^ esta 1
-->grn kóape
-->grn kóvape
-*** esta ; ^ esta 0
-->grn ko
-->grn kóva
-*** estas ; ^ estas 0
-->grn ko'ã
-*** como este ; ^ este 1
-->grn koichagua
-*** de este ; ^ este 1
-->grn kóagui
-->grn kóvagui
-*** en este ; ^ este 1
-->grn kóape
-->grn kóvape
-*** este ; ^ este 0
-->grn ko
-->grn kóva
-*** a esto ; ^ esto 1
-->grn kóape
-->grn kóvape
-*** como esto ; ^ esto 1
-->grn koichagua
-*** con esto ; ^ esto 1
-->grn kóape
-->grn kóvape
-*** de esto ; ^ esto 1
-->grn kóagui
-->grn kóvagui
-*** en esto ; ^ esto 1
-->grn kóape
-->grn kóvape
-*** esto ; ^ esto 0
-->grn kóva
-*** estos ; ^ estos 0
-->grn ko'ã
 *** está bien ; ^ está 0
 ->grn iporã
 *** no está ; ^ está 1

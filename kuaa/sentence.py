@@ -1002,12 +1002,12 @@ class Solution:
                     raw_indices.extend(raw1)
                 raw_indices.sort()
                 # If indices of this treetrans are within those of the last one, merge them
-                if raw_indices[-1] < last_indices[-1]:
-                    output_strings = '/'.join(tt.output_strings)
-                    self.ttrans_outputs[-1][1] = [ttt + ' ' + output_strings for ttt in self.ttrans_outputs[-1][1]]
-                else:
-                    self.ttrans_outputs.append([raw_indices, tt.output_strings])
-                    last_indices = raw_indices
+#                if raw_indices[-1] < last_indices[-1]:
+#                    output_strings = '/'.join(tt.output_strings)
+#                    self.ttrans_outputs[-1][1] = [ttt + ' ' + output_strings for ttt in self.ttrans_outputs[-1][1]]
+#                else:
+                self.ttrans_outputs.append([raw_indices, tt.output_strings])
+                last_indices = raw_indices
 #            self.ttrans_outputs = [((tt.snode_indices[0], tt.snode_indices[-1]), tt.output_strings)\
 #                                    for tt in self.treetranss if tt.output_strings]
         return self.ttrans_outputs

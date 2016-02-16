@@ -66,6 +66,7 @@ artdef/ms :: el [pos=n,n=0] ; // 0
 artdef/fs :: la [pos=n,n=0] ; // 0
 artdef/mp :: los [pos=n,n=1] ; // 0
 artdef/fp :: las [pos=n,n=1] ; // 0
+# con adjetivo entre el artículo y el sustantivo
 artdef/ms_adj :: el [pos=a,n=0] [pos=n,n=0] ; // 0
 artdef/fs_adj :: la [pos=a,n=0] [pos=n,n=0] ; // 0
 artdef/mp_adj :: los [pos=a,n=1] [pos=n,n=1] ; // 0

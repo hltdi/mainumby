@@ -2158,7 +2158,6 @@
 ->grn porundy_v[pos=adj] ; 0==0 grd:grd
 *** nuevo_a ; ^ nuevo_a 0 ; #185
 ->grn pyahu_v[pos=adj] ; 0==0 grd:grd ; #124
-->grn kyrỹi_v[pos=adj] ; 0==0 grd:grd ; #13
 *** nulo_a ; ^ nulo_a 0
 ->grn mba'evegua_v[pos=adj] ; 0==0 grd:grd
 *** numeroso_a ; ^ numeroso_a 0

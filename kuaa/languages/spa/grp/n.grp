@@ -12540,17 +12540,15 @@
 ->grn membykuimba'e_n rembireko ; 0==0 n:n,poses:poses
 *** nuera_n de la varón ; ^ nuera_n 0
 ->grn ta'y_n rembireko ; 0==0 n:n,poses:poses
-*** nueva_n[n=1] situaciones ; ^ nueva_n 0
+*** nueva_a[n=1] situaciones ; ^ nueva_a 0
 ->grn <hekopyahu_n ; 0==0 n:n,poses:poses
-*** nueva_n ciencia ; ^ nueva_n 0
+*** nueva_a ciencia ; ^ nueva_a 0
 ->grn kuaapy_n pyahu ; 0==0 n:n,poses:poses
-*** nuevo_n verdor ; ^ nuevo_n 0
+*** nuevo_a verdor ; ^ nuevo_a 0
 ->grn <hovypyahu_n ; 0==0 n:n,poses:poses
-*** nuevo_n[n=1] conocimientos ; ^ nuevo_n 0
+*** nuevo_a[n=1] conocimientos ; ^ nuevo_a 0
 ->grn arandu_n pyahu ; 0==0 n:n,poses:poses
-*** nuevo_n ; ^ nuevo_n 0
-->grn kumanda_n peky ; 0==0 n:n,poses:poses
-*** nuevo_n conocimiento ; ^ nuevo_n 0
+*** nuevo_a conocimiento ; ^ nuevo_a 0
 ->grn kuaapy_n pyahu ; 0==0 n:n,poses:poses
 *** nuez_n de la garganta ; ^ nuez_n 0
 ->grn ahy'o_n kandu ; 0==0 n:n,poses:poses
