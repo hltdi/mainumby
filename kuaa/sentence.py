@@ -554,6 +554,8 @@ class Sentence:
         # Create a GInst object and GNodes for each surviving group
         self.groups = [GInst(group, self, head_i, snodes, index) for index, (head_i, snodes, group) in enumerate(groups)]
         print("{} grupo(s) encontrado(s) para {}".format(len(self.groups), self))
+        for g in self.groups:
+            print("  {}".format(g))
         # Assign sentence-level indices to each GNode; store gnodes in list
         sent_index = 0
         for group in self.groups:
@@ -1132,41 +1134,33 @@ class Solution:
                 print("TreeTrans {} already processed".format(tt))
                 tt.display_all()
             else:
-                trans_index=0
-                trans_index2=0
-                built = True
-                # Figure the maximum number of translations for nodes that will not be merged
+                # Figure out the maximum number of translations of merge nodes and non-merge nodes
                 n_trans_nomerge = 1
                 n_trans_merge = 1
                 nomerge = [s for s, f in tt.sol_gnodes_feats if len(s) == 1]
                 if nomerge:
-                    n_trans_nomerge = max([len(tt.gnode_dict.get(s[0],[])) for s in nomerge])
+                    nomerge_trans = [tt.gnode_dict.get(s[0],[]) for s in nomerge]
+                    for nt in nomerge_trans:
+                        unique = []
+                        for ntt in nt:
+                            t = ntt[1:]
+                            if t not in unique:
+                                unique.append(t)
+                        n_trans_nomerge = max(len(unique), n_trans_nomerge)
                 merge = [s for s, f in tt.sol_gnodes_feats if len(s) > 1]
                 if merge:
                     n_trans_merge = max([max([len(tt.gnode_dict.get(ss,[0])) for ss in s]) for s in merge])
-#                print("Max # translations for {}: merge {}, no merge {}".format(tt, n_trans_merge, n_trans_nomerge))
+                print("TT {}: max merge {}, max no merge {}".format(tt, n_trans_merge, n_trans_nomerge))
                 for tm_i in range(n_trans_merge):
                     for tnm_i in range(n_trans_nomerge):
+                        print(" Build indices: {}, {}".format(tm_i, tnm_i))
                         if tt.top:
-                            built = tt.build(trans_index=tm_i, trans_index2=tnm_i)
-#                while built:
-#                    if verbosity:
-#                        print("Building {}".format(tt))
-#                    built = tt.build(trans_index=trans_index, trans_index2=trans_index2)
-#                    if not built:
-#                        print("No more translations for {}".format(tt))
-#                        break
-#                        if tt.top:
+                            tt.build(merge_index=tm_i, nomerge_index=tnm_i, verbosity=verbosity)
                             tt.generate_words()
                             tt.make_order_pairs()
                             tt.create_variables()
                             tt.create_constraints()
                             tt.realize(all_trans=all_trans, interactive=interactive)
-#                    if trans_index2 < n_trans_nomerge-1:
-#                        trans_index2 += 1
-#                    else:
-#                        trans_index += 1
-#                        trans_index2 = 0
                     if all_trans:
                         continue
                     if not interactive or not input('SEARCH FOR ANOTHER TRANSLATION FOR {}? [yes/NO] '.format(tt)):

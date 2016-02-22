@@ -5,8 +5,23 @@
 ## -- NP personal object [-r] a $n_prs
 ## -- passive [+r]
 ## -- relative clause NP que ver
-## antipassive (voz subsuntiva) left out for now because it's now clear how they would be matched
+## antipassive (voz subsuntiva) left out for now because it's not clear how it would be matched
 ## except for cases where there's an obvious idiomatic expression: hacer compras
+# sustantivo como complemento
+*** ver_v[-r] a $n_prs ; ^ ver_v 0
+->grn <hecha_v $n_prs[caso=pe] ; || 0, -1, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
+# pronombre como complemento
+*** ver_v[-r,po=3,no=0] ; ^ ver_v 0
+->grn <hecha_v[cat=a] ichupe ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
+->grn <hecha_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
+*** ver_v[-r,po=3,no=1] ; ^ ver_v 0
+->grn <hecha_v[cat=a] ichupekuéra ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
+# pasivo/relexivo
+*** ver_v[+r] ; ^ ver_v 0
+->grn jehecha_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
+# otro no pasivo
+*** ver_v[-r] ; ^ ver_v 0
+->grn <hecha_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no
 *** ver_v[-r] de repente ; ^ ver_v 0
 ->grn <hesaho_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 *** ver_v[-r] por casualidad ; ^ ver_v 0
@@ -23,16 +38,6 @@
 ->grn ñemosã_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 *** $n que ver_v[-r] ; ^ ver_v 2
 ->grn $n <hecha_v[+rel] ; || 0, -1, 1 ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no
-*** ver_v[-r] a $n_prs ; ^ ver_v 0
-->grn <hecha_v $n_prs[caso=pe] ; || 0, -1, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
-*** ver_v[-r,po=3,no=0] ; ^ ver_v 0
-->grn <hecha_v[cat=a] ichupe ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
-*** ver_v[-r,po=3,no=1] ; ^ ver_v 0
-->grn <hecha_v[cat=a] ichupekuéra ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
-*** ver_v[+r] ; ^ ver_v 0
-->grn jehecha_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
-*** ver_v[-r] ; ^ ver_v 0
-->grn <hecha_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no
 *** contar_v[-r] ; ^ contar_v 0 ; #207
 ->grn mombe'u_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel ; #607 ; ##61
 ->grn papa_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel ; #44 ; ##26
@@ -2064,7 +2069,6 @@
 ->grn mboapyteso'o_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 *** cargar_v[-r] de la cuenta ; ^ cargar_v 0
 ->grn mbojapypy_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
-*** cargar_v[-r] mucho ; ^ cargar_v 0
 *** cargar_v[-r] más ; ^ cargar_v 0
 ->grn mbopohyive_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 *** cargar_v[-r] ; ^ cargar_v 0
@@ -2076,7 +2080,6 @@
 *** carpir_v[-r] ; ^ carpir_v 0
 ->grn ka'api_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 *** casar_v[+r] ; ^ casar_v 0 ; #30
-->grn joaju_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel ; #50 ; ##2
 ->grn menda_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel ; #90 ; ##27
 *** casar_v[-r] ; ^ casar_v 0 ; #1239
 ->grn joaju_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel ; #50 ; ##2

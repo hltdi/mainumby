@@ -549,6 +549,23 @@ class TreeTrans:
         snode_indices.sort()
         self.snode_indices = snode_indices
         self.snodes = [self.sentence.nodes[i] for i in snode_indices]
+        # Count the maximum number of translations of merged nodes and nonmerged nodes
+#        self.max_n_merge = 1
+#        self.max_n_nomerge = 1
+#        for i in snode_indices:
+#            gnfi = solution.gnodes_feats[i]
+#            gnodesi = gnfi[0]
+#            gtrans = []
+#            for g in gnodesi:
+#                gtranss = gnode_dict.get(g, [])
+#                for gtt in gtranss:
+#                    if gtt[1:] not in gtrans:
+#                        gtrans.append(gtt[1:])
+#            if len(gnodesi) == 1:
+#                self.max_n_nomerge = max(len(gtrans), self.max_n_nomerge)
+#            else:
+#                self.max_n_merge = max(len(gtrans), self.max_n_merge)
+#            self.sol_gnodes_feats.append(gnfi)
         self.sol_gnodes_feats = [solution.gnodes_feats[i] for i in snode_indices]
         self.nodes = []
         # The GInst at the top of the tree
@@ -556,22 +573,7 @@ class TreeTrans:
         # Save this TreeTrans in the GInst
         ginst.treetrans = self
         self.index = index
-        # A list of triples: (tgroup, tgnodes, tnodes), where
-        # gnodes is (tgnode_inst, tnode_string, tnode_feats, agr_pairs, gnode_index)
-#        self.attribs = attribs
         self.group_attribs = group_attribs or []
-#        for tgroup, tgnodes, tnodes in attribs:
-#            for tgnode, tokens, feats, agrs, t_index in tgnodes:
-#                if tgnode.cat:
-#                    if tgnode in self.abs_gnode_dict:
-#                        self.abs_gnode_dict[tgnode].append((tgroup, tokens, feats, agrs, t_index))
-#                    else:
-#                        self.abs_gnode_dict[tgnode] = [(tgroup, tokens, feats, agrs, t_index)]
-#                elif tgnode in self.gnode_dict:
-#                    self.gnode_dict[tgnode].append((tgroup, tokens, feats, agrs, t_index))
-#                else:
-#                    self.gnode_dict[tgnode] = [(tgroup, tokens, feats, agrs, t_index)]
-#            self.group_attribs.append((tgroup, tnodes, tgroup.agr))
         # Root domain store for variables
         self.dstore = DStore(name="TT{}".format(self.index))
         # Order variables for each node, tree variables for groups
@@ -626,18 +628,18 @@ class TreeTrans:
 #    def initialize(self, verbosity=0):
 #        """Set up everything needed to run the constraints and generate the translation."""
 #        if verbosity:
-#            print("Initializing treetrans {}".format(self))
+#            print("Initializing treetrans {}."treetransformat(self))
 #        self.build(verbosity=verbosity)
 #        self.generate_words(verbosity=verbosity)
 #        self.make_order_pairs(verbosity=verbosity)
 #        self.create_variables(verbosity=verbosity)
 #        self.create_constraints(verbosity=verbosity)
 
-    def build(self, trans_index=0, trans_index2=0, verbosity=0):
+    def build(self, merge_index=0, nomerge_index=0, verbosity=0):
         """Unify translation features for merged nodes, map agr features from source to target,
         generate surface target forms from resulting roots and features."""
         if verbosity:
-            print('Building {} with trans indices {}/{}'.format(self, trans_index, trans_index2))
+            print('Building {} with trans indices {}/{}'.format(self, merge_index, nomerge_index))
         # Reinitialize mergers
 #        self.mergers = []
         # Dictionary mapping source node indices to initial target node indices
@@ -648,7 +650,7 @@ class TreeTrans:
         self.mergers = []
         for snode, (gnodes, features) in zip(self.snodes, self.sol_gnodes_feats):
             if verbosity > 1:
-                print(" build(): snode {}, trans_index {}, gnodes {}, features {}, tnode_index {}".format(snode, trans_index,
+                print(" build(): snode {}, merge_index {}, gnodes {}, features {}, tnode_index {}".format(snode, merge_index,
                                                                                                           gnodes, features.__repr__(), tnode_index))
             if not gnodes:
                 # snode is not covered by any group
@@ -679,8 +681,8 @@ class TreeTrans:
                         print(" gna: {}, gnc: {}".format(gna, gnc))
                     # There are two gnodes for this snode, one concrete, one abstract;
                     # gna and gnc are lists of tuples for different translations
-                    ct_index = trans_index
-                    if len(gnc) <= trans_index:
+                    ct_index = merge_index
+                    if len(gnc) <= merge_index:
                         if verbosity:
                             print("  Resetting concrete t_index")
                         ct_index = 0
@@ -690,7 +692,7 @@ class TreeTrans:
                     if verbosity and len(gna) > 1:
                         print("  Multiple translations {} for abstract node group".format(gna))
                     gnc1 = gnc[ct_index]
-                    gna1 = gna[trans_index2]
+                    gna1 = gna[nomerge_index]
                     if verbosity:
                         print("  Merging nodes: concrete {}, abstract {}".format(gnc1, gna1))
                     cache_key = ((gnc1[0], gnc1[-1]), (gna1[0], gna1[-1]))
@@ -749,8 +751,8 @@ class TreeTrans:
                         continue
                     else:
                         gnode_tuple_list = self.gnode_dict[gnode]
-                        at_index = trans_index2
-                        if len(gnode_tuple_list) <= trans_index2:
+                        at_index = nomerge_index
+                        if len(gnode_tuple_list) <= nomerge_index:
                             # Use 0 instead
                             at_index = 0
                         tgroup, token, targ_feats, agrs, t_index = gnode_tuple_list[at_index]
@@ -913,7 +915,7 @@ class TreeTrans:
                 for o in foll_outer:
                     for i in other_inner:
                         self.order_pairs.append([i, o])
-#        print('  Order pairs: {}'.format(self.order_pairs))
+        print('  Order pairs: {}'.format(self.order_pairs))
 
     def svar(self, name, lower, upper, lower_card=0, upper_card=MAX, ess=True):
         return Var(name, lower, upper, lower_card, upper_card,

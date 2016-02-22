@@ -112,17 +112,25 @@
 ->grn ijehegui
 *** los unos a los otros ; ^ unos 1
 ->grn ojuehe
-### DEMONSTRATIVOS
-## este, etc.
-# adjetivo
+#### DEMONSTRATIVOS
+### este, etc.
+## adjetivo
 *** este $n[n=0] ; ^ este 0
 ->grn ko $n ; || 0, 1
+*** este $a[n=0] $n[n=0] ; ^ este 0
+->grn ko $n $a ; || 0, 2, 1
 *** esta $n[n=0] ; ^ esta 0
 ->grn ko $n ; || 0, 1
+*** esta $a[n=0] $n[n=0] ; ^ esta 0
+->grn ko $n $a ; || 0, 2, 1
 *** estos $n[n=1] ; ^ estos 0
 ->grn ko'ã $n ; || 0, 1
+*** estos $a[n=1] $n[n=1] ; ^ estos 0
+->grn ko'ã $n $a ; || 0, 2, 1
 *** estas $n[n=1] ; ^ estas 0
 ->grn ko'ã $n ; || 0, 1
+*** estas $a[n=1] $n[n=1] ; ^ estas 0
+->grn ko'ã $n $a ; || 0, 2, 1
 # pronombre
 *** este ; ^ este 0
 ->grn kóva
@@ -142,22 +150,39 @@
 ->grn ko'ãva
 *** éstas ; ^ éstas 0
 ->grn ko'ãva
-## ese, etc.
-# adjetivo
+### ese, etc.
+## adjetivo
+# precede sustantivo
 *** ese $n[n=0] ; ^ ese 0
 ->grn upe $n ; || 0, 1
 ->grn pe $n ; || 0, 1
-->grn ako $n ; || 0, 1
 ->grn aipo $n ; || 0, 1
+# precede adjetivo + sustantivo
+*** ese $a[n=0] $n[n=0] ; ^ ese 0
+->grn upe $n $a ; || 0, 2, 1
+->grn pe $n $a ; || 0, 2, 1
+->grn aipo $n $a ; || 0, 2, 1
+# precede sustantivo
 *** esa $n[n=0] ; ^ esa 0
 ->grn upe $n ; || 0, 1
 ->grn pe $n ; || 0, 1
-->grn ako $n ; || 0, 1
 ->grn aipo $n ; || 0, 1
+# precede adjetivo + sustantivo
+*** esa $a[n=0] $n[n=0] ; ^ esa 0
+->grn upe $n $a ; || 0, 2, 1
+->grn pe $n $a ; || 0, 2, 1
+->grn aipo $n $a ; || 0, 2, 1
+# precede sustantivo
 *** esos $n[n=1]; ^ esos 0
 ->grn umi $n ; || 0, 1
+# precede adjetivo + sustantivo
+*** esos $a[n=1] $n[n=1]; ^ esos 0
+->grn umi $n $a ; || 0, 2, 1
+# precede sustantivo
 *** esas $n[n=1]; ^ esas 0
 ->grn umi $n ; || 0, 1
+*** esas $a[n=1] $n[n=1]; ^ esas 0
+->grn umi $n $a ; || 0, 2, 1
 # pronombre
 *** ese ; ^ ese 0
 ->grn péva
@@ -291,8 +316,6 @@
 # A
 *** a $n ; ^ a 0
 ->grn $n[caso=pe] ; || -1, 0
-*** a éste ; ^ éste 1
-->grn kóvape
 # EN
 *** en $n ; ^ en 0
 ->grn $n[caso=pe] ; || -1, 0

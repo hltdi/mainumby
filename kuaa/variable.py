@@ -275,11 +275,11 @@ class Var:
     def determined(self, dstore=None, constraint=None, verbosity=0):
         """Attempt to determine the variable, returning the value if this is possible,
         False if it's not."""
-        if verbosity:
+        if verbosity > 1:
             print("Attempting to determine {} in {}".format(self, dstore))
         val = self.get_value(dstore=dstore)
         if val != None:
-            if verbosity:
+            if verbosity > 1:
                 print("{} is already determined".format(self))
             return val
         def determined_help(value, dst, verb):
@@ -304,7 +304,7 @@ class Var:
         lower = self.get_lower(dstore=dstore)
         upper = self.get_upper(dstore=dstore)
         if lower == None or upper == None:
-            if verbosity:
+            if verbosity > 1:
                 print("  Failed to determine because upper or lower bound is None")
             return False
         # If upper and lower bounds are equal, determine at either
@@ -317,7 +317,7 @@ class Var:
             return determined_help(upper, dstore, verbosity)
         if len(lower) >= self.get_upper_card(dstore=dstore):
             return determined_help(lower, dstore, verbosity)
-        if verbosity:
+        if verbosity > 1:
             print("  Failed to determine, upper {}, lower {}".format(self.get_upper(dstore=dstore), self.get_lower(dstore=dstore)))
         return False
 

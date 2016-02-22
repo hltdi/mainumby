@@ -23,9 +23,12 @@ refl/1p :: nos [pos=v,p=1,n=1,voz=reflx,+r] ; // 0
 obj/1s :: me [pos=v,po=1,no=0] ; // 0
 obj/2s :: te [pos=v,po=2,no=0] ; // 0
 obj/1p :: nos [pos=v,po=1,no=1] ; // 0
+# 3p: mover pronombre después del verbo
+obj/3sd :: le [pos=v,po=3,no=0,+ao] ; // 0
 obj/3sm :: lo [pos=v,po=3,no=0] ; >< 0 1
-obj/3sf :: la [pos=v,po=3,no=0] ; >< 0 1
-obj/3sd :: le [pos=v,po=3,no=0] ; // 0 ; ++ 2 a, 3 él
+obj/3sf :: la [pos=v,po=3,no=0] ; // 0
+# obj/3sf :: la [pos=v,po=3,no=0] ; >< 0 1
+# obj/3sd :: le [pos=v,po=3,no=0] ; // 0 ; ++ 2 a, 3 él
 obj/3pm :: los [pos=v,po=3,no=1] ; >< 0 1
 obj/3pf :: las [pos=v,po=3,no=1] ; >< 0 1
 obj/3pd :: les [pos=v,po=3,no=1] ; >< 0 1
@@ -66,11 +69,13 @@ artdef/ms :: el [pos=n,n=0] ; // 0
 artdef/fs :: la [pos=n,n=0] ; // 0
 artdef/mp :: los [pos=n,n=1] ; // 0
 artdef/fp :: las [pos=n,n=1] ; // 0
-# con adjetivo entre el artículo y el sustantivo
+# con adjetivo o número entre el artículo y el sustantivo
 artdef/ms_adj :: el [pos=a,n=0] [pos=n,n=0] ; // 0
 artdef/fs_adj :: la [pos=a,n=0] [pos=n,n=0] ; // 0
 artdef/mp_adj :: los [pos=a,n=1] [pos=n,n=1] ; // 0
 artdef/fp_adj :: las [pos=a,n=1] [pos=n,n=1] ; // 0
+# con dos adjetivos antes del sustantivo
+#...
 
 ## intensificación (necesita concordancia grd:grd);
 ## en casos predicativos, estar o ser recibe el rasgo grd
