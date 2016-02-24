@@ -348,8 +348,7 @@
 ->grn $num $n rehe ; || 2, 0, 1
 ->grn $num $n rupi ; || 2, 0, 1
 *** por $n ; ^ por 0
-->grn $n rehe ; || 1, 0
-->grn $n rupi ; || 1, 0
+->grn $n rehe|rupi ; || 1, 0
 *** por él ; ^ por 0
 ->grn hesehápe
 *** por mí mismo ; ^ por 0
@@ -1256,9 +1255,7 @@
 *** en qué lugar ; ^ en 0
 ->grn mamo
 ->grn moõ
-*** en ; ^ en 0
-->grn pe
-<*** encuanto ; ^ encuanto 0
+*** encuanto ; ^ encuanto 0
 ->grn vove
 *** enfáticamente ; ^ enfáticamente 0
 ->grn voi

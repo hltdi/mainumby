@@ -116,6 +116,8 @@
 # -- Added ?! to end-of-sentence characters.
 # 2016.01.18
 # -- Fixed TreeTrans.build() call so that multiple translations work with groups involving merging.
+# 2016.02.23
+# -- Sentence copy() can skip some features for one or more tokens.
 
 import copy, re, random
 from .ui import *
@@ -357,12 +359,25 @@ class Sentence:
 
     ## Copying, for alternate syntactic representations
 
-    def copy(self):
+    def copy(self, skip=None):
         """Make a copy of the sentence, assumed to happen following analysis but before node creation.
-        For ambiguous morphosyntax. Return the copy so it can be used by MorphoSyn.apply()."""
+        For ambiguous morphosyntax. Return the copy so it can be used by MorphoSyn.apply().
+        skip is None or a list of triples: (position, token, feats). For each triple, the copy excludes the feats
+        in the analysis of token in position."""
         s = Sentence(raw=self.raw[:], tokens=self.tokens[:], toktypes=self.toktypes[:],
                      language=self.language, target=self.target,
                      analyses=copy.deepcopy(self.analyses))
+        if skip:
+            print("Skipping {} in copy of {}".format(skip, self))
+            for position, token, anal in skip:
+                tok_anal = s.analyses[position]
+                print("  Token {}, analyses: {}".format(tok_anal[0], tok_anal[1]))
+                res_anals = []
+                for a in tok_anal[1]:
+                    if a['features'] != anal:
+                        res_anals.append(a)
+                print("  Replacing anals with {}".format(res_anals))
+                tok_anal[1] = res_anals
         print("Copied {} as {}".format(self, s))
         self.altsyns.append(s)
         return s

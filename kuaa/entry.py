@@ -80,6 +80,10 @@
 #    to original or copy (depending on which interpretation is preferred)
 # 2015.10.26
 # -- Morphosyns can fail if others have succeeded (see **2formal in spa/syn/grn.ms)
+# 2016.2.23
+# -- Morphosyns have a further type of ambiguity, exemplified by "la casa": match copies
+#    sentence only if there is a set of features that fails to match for a word, and
+#    the matching features are deleted in the copy.
 
 import copy, itertools
 import yaml
@@ -95,7 +99,7 @@ ATTRIB_SEP = ';'
 WITHIN_ATTRIB_SEP = ','
 ## Regular expressions for reading groups from text files
 # non-empty form string followed by possibly empty FS string
-FORM_FEATS = re.compile("([$<'¿?¡!\-\w]+)\s*((?:\[.+\])?)$")
+FORM_FEATS = re.compile("([$<'¿?¡!|()\-\w]+)\s*((?:\[.+\])?)$")
 # !FS(#1-#2), representing a sequence of #1 to #2 negative FS matches
 NEG_FEATS = re.compile("\s*!(\[.+\])(\(\d-\d\))$")
 HEAD = re.compile("\s*\^\s*([<'¿?¡!\-\w]+)\s+(\d)\s*$")
@@ -288,7 +292,7 @@ class Group(Entry):
 
     @staticmethod
     def from_dict(d, language, head):
-        """Convert a dict (loaded from a yaml file) to a Group object."""
+        """Convert a dict to a Group object."""
         tokens = d['words']
         features = d.get('features')
         agr = d.get('agr')
@@ -548,6 +552,10 @@ class MorphoSyn(Entry):
         version. '**' means not preferred."""
         return self.name.startswith('**')
 
+    def is_feat_ambig(self):
+        """For ambiguous patterns, whether the ambiguity depends on an alternate set of features that fails to match the morphosyn."""
+        return '=' in self.name
+
     def expand(self, pattern):
         """
         Pattern is a string consisting of elements separated by MS_ATTRIB_SEP.
@@ -656,10 +664,34 @@ class MorphoSyn(Entry):
         s = sentence
         if matches:
             if ambig and self.is_ambig():
-                # Copy the sentence as an altsyn
-                copy = sentence.copy()
-                if self.is_not_preferred():
-                    s = copy
+                # Ambiguous patterns
+                print("{} matches ({}) with ambiguity".format(self, matches))
+                if self.is_feat_ambig():
+                    matchfail = False
+                    for m in matches:
+                        x, y, toks = m
+#                        print(" x {}, y {}, toks {}".format(x, y, toks))
+                        matched = []
+                        for t, a, aa in toks:
+                            if isinstance(a, list):
+                                for aaa in a:
+                                    if aaa is False:
+#                                        print("Some anal does not match ({})".format(a))
+                                        matchfail = True
+                                    else:
+                                        matched.append((x, t, aaa))
+                            x += 1
+                    if matchfail:
+                        print(" Feature ambiguity, exclude {} from copy".format(matched))
+                        # Copy the sentence as an altsyn
+                        copy = sentence.copy(skip=matched)
+                        if self.is_not_preferred():
+                            s = copy
+                else:
+                    # Copy the sentence as an altsyn
+                    copy = sentence.copy()
+                    if self.is_not_preferred():
+                        s = copy
             for match in matches:
                 start, end, elements = match
                 s.morphosyns.append((self, start, end))
@@ -707,11 +739,12 @@ class MorphoSyn(Entry):
                 # sentence.analyses consists of pairs of word tokens and a list of analysis dicts
                 match = self.match_item(stoken, sanals, pindex, verbosity=verbosity)
                 if match:
+                    print(" {} found match {} for token {} and anals {}".format(self, match, stoken, sanals))
                     result.append(match)
-#                    print("Match result {}".format(result))
                     # Is this the end of the pattern? If so, succeed.
                     if self.pattern_length() == pindex + 1:
                         print("MS {} tuvo éxito con resultado {}".format(self, result))
+#                        print("  Match result {}, stoken {}, sanals {}".format(result, stoken, sanals))
                         if mindex < 0:
                             mindex = sindex
                         results.append((mindex, sindex+1, result))
@@ -755,7 +788,7 @@ class MorphoSyn(Entry):
             for sanal in sanals:
                 anal_matches.append(self.match_anal(stoken, sanal, pforms, pfeats, verbosity=verbosity))
             if any(anal_matches):
-                return [stoken, anal_matches]
+                return [stoken, anal_matches, sanals]
         if verbosity:
             print("Match item failed")
         return False
@@ -768,7 +801,7 @@ class MorphoSyn(Entry):
             # Do any of the pattern items match the sentence word?
             if verbosity:
                 print(" Succeeded on token")
-            return [stoken, False]
+            return [stoken, False, sanals]
         # Do any of the pattern items match a root in any sentence item analysis?
         matched_anals = []
         for anal in sanals:
@@ -780,7 +813,7 @@ class MorphoSyn(Entry):
         if any(matched_anals):
             if verbosity:
                 print("Succeeded on root")
-            return [stoken, matched_anals]
+            return [stoken, matched_anals, sanals]
         return False
 
     def match_anal(self, stoken, sanal, pforms, pfeats, verbosity=0):
@@ -816,8 +849,10 @@ class MorphoSyn(Entry):
 #        if verbosity:
         print(" Enforcing constraints for match {}".format(match))
         start, end, elements = match
+        # Exclude the source features
         if self.agr:
             srci, trgi, feats = self.agr
+#            print(" Agr {} {} {}".format(srci, trgi, feats))
             src_elem = elements[srci]
             trg_elem = elements[trgi]
             if verbosity:
@@ -912,6 +947,7 @@ class MorphoSyn(Entry):
                         new_s_anals = [{'features': mfl, 'root': s_token} for mfl in m_feats_list]
                     for m_feats, s_anal in zip(m_feats_list, s_anals):
                         if not m_feats:
+                            print("Insert match: m_feats {}, s_anal {} fail".format(m_feats, s_anal))
                             # This anal failed to match pattern; filter it out
                             continue
                         else:

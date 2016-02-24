@@ -10,6 +10,20 @@ acabar_de :: acabar_v[tm=prs] de [pos=v,tm=inf,asp=[+ramo]] ; 0=>2 p,n ; // 0 1 
 ## derivación 1
 volativo :: querer_v [pos=v,tm=inf,asp=[+vol]] ; 0=>1 p,n,tm,asp ; // 0
 
+## artículos definitivos
+artdef/ms :: el [pos=n,n=0] ; // 0
+# ambiguo: la/los/las pueden ser pronombres
+*=artdef/fs :: la [pos=n,n=0] ; // 0
+*=artdef/mp :: los [pos=n,n=1] ; // 0
+*=artdef/fp :: las [pos=n,n=1] ; // 0
+# con adjetivo o número entre el artículo y el sustantivo
+artdef/ms_adj :: el [pos=a,n=0] [pos=n,n=0] ; // 0
+*=artdef/fs_adj :: la [pos=a,n=0] [pos=n,n=0] ; // 0
+*=artdef/mp_adj :: los [pos=a,n=1] [pos=n,n=1] ; // 0
+*=artdef/fp_adj :: las [pos=a,n=1] [pos=n,n=1] ; // 0
+# con dos adjetivos antes del sustantivo
+#...
+
 ## reflexivo
 refl/3 :: se [pos=v,p=3,voz=reflx,+r] ; // 0 
 refl/1s :: me [pos=v,p=1,n=0,voz=reflx,+r] ; // 0
@@ -41,6 +55,7 @@ suj/3sf :: ella [pos=v,p=3,n=0]
 suj/3pf :: ellas [pos=v,p=3,n=1]
 # 2 pers form sin ambigüedad
 2s_form :: usted [pos=v,p=3,n=0] ; 1-> [p=2]
+2p_form :: ustedes [pos=v,p=3,n=1] ; 1-> [p=2]
 # 2 pers form con ambigüedad, sólo si 3sm, 3pm, 3sf, 3pf no se aplicaron
 **2formal :: [pos=v,+fin,p=3] ; 0-> [p=2] ; FAILIF suj/3
 
@@ -63,19 +78,6 @@ pos/1p.s :: nuestro [pos=n,n=0,poses=[+ext,pp=1,np=1]] ; // 0
 pos/1p.p :: nuestros [pos=n,n=1,poses=[+ext,pp=1,np=1]] ; // 0
 pos/1p.s :: nuestra [pos=n,n=0,poses=[+ext,pp=1,np=1]] ; // 0
 pos/1p.p :: nuestras [pos=n,n=1,poses=[+ext,pp=1,np=1]] ; // 0
-
-## artículos definitivos
-artdef/ms :: el [pos=n,n=0] ; // 0
-artdef/fs :: la [pos=n,n=0] ; // 0
-artdef/mp :: los [pos=n,n=1] ; // 0
-artdef/fp :: las [pos=n,n=1] ; // 0
-# con adjetivo o número entre el artículo y el sustantivo
-artdef/ms_adj :: el [pos=a,n=0] [pos=n,n=0] ; // 0
-artdef/fs_adj :: la [pos=a,n=0] [pos=n,n=0] ; // 0
-artdef/mp_adj :: los [pos=a,n=1] [pos=n,n=1] ; // 0
-artdef/fp_adj :: las [pos=a,n=1] [pos=n,n=1] ; // 0
-# con dos adjetivos antes del sustantivo
-#...
 
 ## intensificación (necesita concordancia grd:grd);
 ## en casos predicativos, estar o ser recibe el rasgo grd

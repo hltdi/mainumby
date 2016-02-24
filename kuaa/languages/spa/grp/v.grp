@@ -12,10 +12,9 @@
 ->grn <hecha_v $n_prs[caso=pe] ; || 0, -1, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 # pronombre como complemento
 *** ver_v[-r,po=3,no=0] ; ^ ver_v 0
-->grn <hecha_v[cat=a] ichupe ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
-->grn <hecha_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
+->grn <hecha_v[cat=a] (chupe) ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 *** ver_v[-r,po=3,no=1] ; ^ ver_v 0
-->grn <hecha_v[cat=a] ichupekuéra ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
+->grn <hecha_v[cat=a] (chupekuéra) ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel
 # pasivo/relexivo
 *** ver_v[+r] ; ^ ver_v 0
 ->grn jehecha_v[cat=a] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel

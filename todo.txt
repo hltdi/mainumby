@@ -1,3 +1,9 @@
+2016.2.22
+— ways that translations can be shared (as opposed to completely different)
+—— one or more words is optional in one variant: V + (chupe)
+—— one or more words has multiple translations: N + rehe|rupi
+
+
 2015.8.13
 — need negative feature matching for Groups and maybe MorphoSyns
 — need a way to handle 2 person plural (3 person in Spanish) and maybe

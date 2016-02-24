@@ -43,7 +43,7 @@ from .cs import *
 from .entry import Entry, Group
 
 class SolSeg:
-    """Sentence solution segment, realization of a single Group."""
+    """Sentence solution segment, realization of a single Group. Displayed in GUI."""
 
     # colors to display segments in interface
     tt_colors = ['red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple']
@@ -68,18 +68,20 @@ class SolSeg:
         transhtml = '<table border=1>'
         for t in self.translation:
             if '|' in t:
+                print("| in {}".format(t))
                 t = t.replace('|', '<br/>')
+                print("Replaced: {}".format(t))
             if ' ' in t:
                 transhtml += '<tr>'
                 ts = t.split()
                 for tt in ts:
-                    if '/' in tt:
-                        transhtml += '<td><table>'
-                        for ttt in tt.split('/'):
-                            transhtml += '<tr><td>' + ttt + '</td></tr>'
-                        transhtml += '</table></td>'
-                    else:
-                        transhtml += '<td>' + tt + '</td>'
+#                    if '/' in tt:
+#                        transhtml += '<td><table>'
+#                        for ttt in tt.split('/'):
+#                            transhtml += '<tr><td>' + ttt + '</td></tr>'
+#                        transhtml += '</table></td>'
+#                    else:
+                    transhtml += '<td>' + tt + '</td>'
                 transhtml += '</tr>'
             else:
                 transhtml += '<tr><td>' + t + '</td></tr>'
