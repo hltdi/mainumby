@@ -11,16 +11,16 @@ acabar_de :: acabar_v[tm=prs] de [pos=v,tm=inf,asp=[+ramo]] ; 0=>2 p,n ; // 0 1 
 volativo :: querer_v [pos=v,tm=inf,asp=[+vol]] ; 0=>1 p,n,tm,asp ; // 0
 
 ## artículos definitivos
+# con adjetivo o número entre el artículo y el sustantivo
+artdef/ms_adj :: el [pos=a,n=0] [pos=n,n=0] ; // 0:2
+# ambiguo: la/los/las pueden ser también pronombres
+*=artdef/fs_adj :: la [pos=a,n=0] [pos=n,n=0] ; // 0:2
+*=artdef/mp_adj :: los [pos=a,n=1] [pos=n,n=1] ; // 0:2
+*=artdef/fp_adj :: las [pos=a,n=1] [pos=n,n=1] ; // 0:2
 artdef/ms :: el [pos=n,n=0] ; // 0
-# ambiguo: la/los/las pueden ser pronombres
 *=artdef/fs :: la [pos=n,n=0] ; // 0
 *=artdef/mp :: los [pos=n,n=1] ; // 0
 *=artdef/fp :: las [pos=n,n=1] ; // 0
-# con adjetivo o número entre el artículo y el sustantivo
-artdef/ms_adj :: el [pos=a,n=0] [pos=n,n=0] ; // 0
-*=artdef/fs_adj :: la [pos=a,n=0] [pos=n,n=0] ; // 0
-*=artdef/mp_adj :: los [pos=a,n=1] [pos=n,n=1] ; // 0
-*=artdef/fp_adj :: las [pos=a,n=1] [pos=n,n=1] ; // 0
 # con dos adjetivos antes del sustantivo
 #...
 
@@ -37,15 +37,15 @@ refl/1p :: nos [pos=v,p=1,n=1,voz=reflx,+r] ; // 0
 obj/1s :: me [pos=v,po=1,no=0] ; // 0
 obj/2s :: te [pos=v,po=2,no=0] ; // 0
 obj/1p :: nos [pos=v,po=1,no=1] ; // 0
-# 3p: mover pronombre después del verbo
-obj/3sd :: le [pos=v,po=3,no=0,+ao] ; // 0
-obj/3sm :: lo [pos=v,po=3,no=0] ; >< 0 1
+obj/3sd :: le [pos=v,po=3,no=0] ; // 0
+obj/3sm :: lo [pos=v,po=3,no=0] ; // 0
 obj/3sf :: la [pos=v,po=3,no=0] ; // 0
+obj/3pm :: los [pos=v,po=3,no=1] ; // 0
+obj/3pf :: las [pos=v,po=3,no=1] ; // 0
+obj/3pd :: les [pos=v,po=3,no=1] ; // 0
+# old versions that preserved and postposed the pronoun
 # obj/3sf :: la [pos=v,po=3,no=0] ; >< 0 1
 # obj/3sd :: le [pos=v,po=3,no=0] ; // 0 ; ++ 2 a, 3 él
-obj/3pm :: los [pos=v,po=3,no=1] ; >< 0 1
-obj/3pf :: las [pos=v,po=3,no=1] ; >< 0 1
-obj/3pd :: les [pos=v,po=3,no=1] ; >< 0 1
 
 ## ambigüedad de 2, 3 persona
 # 3 pers sin ambigüedad
@@ -56,7 +56,7 @@ suj/3pf :: ellas [pos=v,p=3,n=1]
 # 2 pers form sin ambigüedad
 2s_form :: usted [pos=v,p=3,n=0] ; 1-> [p=2]
 2p_form :: ustedes [pos=v,p=3,n=1] ; 1-> [p=2]
-# 2 pers form con ambigüedad, sólo si 3sm, 3pm, 3sf, 3pf no se aplicaron
+# 2 pers form con ambigüedad, sólo si 3sm, 3pm, 3sf, 3pf no se han aplicado
 **2formal :: [pos=v,+fin,p=3] ; 0-> [p=2] ; FAILIF suj/3
 
 ## negativo
@@ -72,6 +72,7 @@ pos/1s.s :: mi [pos=n,n=0,poses=[+ext,pp=1,np=0]] ; // 0
 pos/1s.p :: mis [pos=n,n=1,poses=[+ext,pp=1,np=0]] ; // 0
 pos/2s.s :: tu [pos=n,n=0,poses=[+ext,pp=2,np=0]] ; // 0
 pos/2s.p :: tus [pos=n,n=1,poses=[+ext,pp=2,np=0]] ; // 0
+# pueden ser también 2 persona
 pos/3s.s :: su [pos=n,n=0,poses=[-ext,pp=3]] ; // 0
 pos/3s.p :: sus [pos=n,n=1,poses=[-ext,pp=3]] ; // 0
 pos/1p.s :: nuestro [pos=n,n=0,poses=[+ext,pp=1,np=1]] ; // 0
@@ -87,11 +88,18 @@ ser_muy :: ser_v[grd=ete] muy ; // 1
 muy_adj :: muy [pos=a,grd=ete] ; // 0
 
 ## cláusulas relativas
+# ambiguo, e.g., dije a mi vecino que vendrá
 *rel_sj :: [pos=n] que [pos=v,rel=sjoj] ; // 1
+# cómo representar relativo objetivo con sujeto antes del verbo
+# el carro que mi vecino compró
 
 ## cláusulas adverbiales
-donde :: donde [pos=v,rel=obl] ; // 0
+a_donde_rel :: a donde [pos=v,rel=obl,pp=pe] ; // 0 1
+donde_rel :: [pos=n] donde [pos=v,rel=obl] ; // 1
+al_que_rel :: [pos=n] a el que [pos=v,rel=obl] ; // 0 1 2
+a_la_que_rel :: [pos=n] a la que [pos=v,rel=obl] ; // 0 1 2
+a_los_que_rel :: [pos=n] a los que [pos=v,rel=obl] ; // 0 1 2
+a_las_que_rel :: [pos=n] a las que [pos=v,rel=obl] ; // 0 1 2
+# otras preposiciones: en, con?, por?...
+#...
 
-### preposiciones
-#a/pp :: a [pos=n,caso=pe] ; // 0
-#en/pp :: en [pos=n,caso=pe] ; // 0

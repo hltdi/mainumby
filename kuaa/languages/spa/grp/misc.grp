@@ -115,8 +115,10 @@
 #### DEMONSTRATIVOS
 ### este, etc.
 ## adjetivo
+# precede sustantivo
 *** este $n[n=0] ; ^ este 0
 ->grn ko $n ; || 0, 1
+# precede adjetivo + sustantivo
 *** este $a[n=0] $n[n=0] ; ^ este 0
 ->grn ko $n $a ; || 0, 2, 1
 *** esta $n[n=0] ; ^ esta 0
@@ -133,23 +135,23 @@
 ->grn ko'ã $n $a ; || 0, 2, 1
 # pronombre
 *** este ; ^ este 0
-->grn kóva
+->grn kóva_n
 *** esta ; ^ esta 0
-->grn kóva
+->grn kóva_n
 *** esto; ^ esto 0
-->grn kóva
-*** éste; ^ éste 0
-->grn kóva
+->grn kóva_n
+*** éste ; ^ éste 0
+->grn kóva_n
 *** ésta; ^ ésta 0
-->grn kóva
+->grn kóva_n
 *** estos ; ^ estos 0
-->grn ko'ãva
+->grn ko'ãva_n
 *** estas ; ^ estas 0
-->grn ko'ãva
+->grn ko'ãva_n
 *** éstos ; ^ éstos 0
-->grn ko'ãva
+->grn ko'ãva_n
 *** éstas ; ^ éstas 0
-->grn ko'ãva
+->grn ko'ãva_n
 ### ese, etc.
 ## adjetivo
 # precede sustantivo
@@ -201,95 +203,80 @@
 ->grn upéva
 ->grn aipóva
 *** ésa ; ^ ésa 0
-->grn péva
-->grn upéva
-->grn aipóva
+->grn péva_n
+->grn upéva_n
+->grn aipóva_n
 *** eso ; ^ eso 0
-->grn péva
-->grn upéva
-->grn aipóva
+->grn péva_n
+->grn upéva_n
+->grn aipóva_n
 *** ésos ; ^ ésos 0
-->grn umíva
+->grn umíva_n
 *** ésas ; ^ ésas 0
-->grn umíva
+->grn umíva_n
 ## aquel, etc.
 # adjetivos
 *** aquel $n[n=0]; ^ aquel 0
-->grn ako $n ; || 0, 1
 ->grn amo $n ; || 0, 1
 ->grn ku $n ; || 0, 1
 ->grn upe $n ; || 0, 1
 ->grn aipo $n ; || 0, 1
+*** aquel $a[n=0] $n[n=0]; ^ aquel 0
+->grn amo $n $a ; || 0, 2, 1
+->grn ku $n $a ; || 0, 2, 1
+->grn upe $n $a ; || 0, 2, 1
+->grn aipo $n $a ; || 0, 2, 1
 *** aquella $n[n=0]; ^ aquella 0
-->grn ako $n ; || 0, 1
 ->grn amo $n ; || 0, 1
 ->grn ku $n ; || 0, 1
 ->grn upe $n ; || 0, 1
 ->grn aipo $n ; || 0, 1
+*** aquella $a[n=0] $n[n=0]; ^ aquella 0
+->grn amo $n $a ; || 0, 2, 1
+->grn ku $n $a ; || 0, 2, 1
+->grn upe $n $a ; || 0, 2, 1
+->grn aipo $n $a ; || 0, 2, 1
 *** aquellos $n[n=1]; ^ aquellos 0
 ->grn umi $n ; || 0, 1
 ->grn amo $n ; || 0, 1
+*** aquellos $a[n=1] $n[n=1]; ^ aquellos 0
+->grn umi $n $a ; || 0, 2, 1
+->grn amo $n $a ; || 0, 2, 1
 *** aquellas $n[n=1]; ^ aquellas 0
 ->grn umi $n ; || 0, 1
 ->grn amo $n ; || 0, 1
+*** aquellas $a[n=1] $n[n=1]; ^ aquellas 0
+->grn umi $n $a ; || 0, 2, 1
+->grn amo $n $a ; || 0, 2, 1
 # pronombres
 *** aquel ; ^ aquel 0
-->grn upéva
-->grn amóva
-->grn aipóva
+->grn upéva_n
+->grn amóva_n
+->grn aipóva_n
 *** aquél ; ^ aquél 0
-->grn upéva
-->grn amóva
-->grn aipóva
+->grn upéva_n
+->grn amóva_n
+->grn aipóva_n
 *** aquella ; ^ aquella 0
-->grn upéva
-->grn amóva
-->grn aipóva
+->grn upéva_n
+->grn amóva_n
+->grn aipóva_n
 *** aquélla ; ^ aquélla 0
-->grn upéva
-->grn amóva
-->grn aipóva
+->grn upéva_n
+->grn amóva_n
+->grn aipóva_n
 *** aquellos ; ^ aquellos 0
-->grn umíva
-->grn amóva
+->grn umíva_n
+->grn amóva_n
 *** aquéllos ; ^ aquéllos 0
-->grn umíva
-->grn amóva
+->grn umíva_n
+->grn amóva_n
 *** aquellas ; ^ aquellas 0
-->grn umíva
-->grn amóva
+->grn umíva_n
+->grn amóva_n
 *** aquéllas ; ^ aquéllas 0
-->grn umíva
-->grn amóva
-### Preposiciones + demostrativos
-*** a esta ; ^ esta 1
-->grn kóvape
-*** como esta ; ^ esta 1
-->grn koichagua
-*** de esta ; ^ esta 1
-->grn kóvagui
-*** en esta ; ^ esta 1
-->grn kóvape
-*** como este ; ^ este 1
-->grn koichagua
-*** de este ; ^ este 1
-->grn kóvagui
-*** en este ; ^ este 1
-->grn kóvape
-*** a esto ; ^ esto 1
-->grn kóvape
-*** como esto ; ^ esto 1
-->grn koichagua
-*** con esto ; ^ esto 1
-->grn kóvape
-*** de esto ; ^ esto 1
-->grn kóvagui
-*** en esto ; ^ esto 1
-->grn kóvape
-*** a aquella ; ^ aquella 1
-->grn amóape
-*** a aquel ; ^ aquel 1
-->grn amóape
+->grn umíva_n
+->grn amóva_n
 ## PALABRAS INTERROGATIVAS
 *** ¿ dónde ; ^ dónde 1
 ->grn moõpa

@@ -62,11 +62,15 @@ p.center
         margin-bottom: .5em;
         text-align: center;
 }
+span.cargando
+{
+        font-weight: bold;
+}
 </style>
 
 <script>
 function loading() {
-    document.getElementById("loading").innerHTML = "Cargando (podría tardarse)...";
+    document.getElementById("loading").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
     window.location.assign("doc");
 }
 </script>
@@ -105,9 +109,11 @@ Para cada oración el traductor Mbojereha busca frases en su base de
 datos que puede traducir al guaraní.
 </p>
 
+<hr/>
+
 <p class="center" id="loading">
-<input id="load" style="font-family: Verdana; font-size: 100%;"
-type=button name="Cargar" value="Cargar idiomas" onclick="loading()">
+<input id="load" style="font-family: Verdana; font-size: 100%; font-weight: bold"
+type=button name="Cargar" value="Iniciar sesión" onclick="loading()">
 </p>
 
 <!--

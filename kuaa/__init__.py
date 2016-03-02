@@ -64,11 +64,15 @@ def make_document(source, target, text):
     return d
 
 def quit():
-    """Quit the program, cleaning up in various ways."""
+    """Quit the session (and the program), cleaning up in various ways."""
     for language in Language.languages.values():
         # Store new cached analyses or generated forms for
         # each active language.
         language.quit()
+
+def init():
+    """Initialize a session."""
+    
 
 # Import views. This has to appear after the app is created.
 import kuaa.views

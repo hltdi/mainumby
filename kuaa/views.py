@@ -106,7 +106,7 @@ def sent():
     else:
         # Translate and segment the sentence
         segs = seg_trans(SENTENCE, SPA, GRN)
-    print("Found segs {}".format(segs))
+#    print("Found segs {}".format(segs))
     # Show segmented sentence
     return render_template('sent.html', sentence=segs)
 

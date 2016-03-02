@@ -47,6 +47,8 @@
 # -- Groups with a particular key are ordered by the group priority method.
 # 2016.01.10
 # -- Group files can have comments (# at beginning of line only).
+# 2016.02.29
+# -- Group files can have features that are part of all entries (except those with the feature attribute specified).
 
 from .entry import *
 from kuaa.morphology.morpho import Morphology, POS
@@ -66,7 +68,7 @@ BACKUP_RE = re.compile(r'\s*l.*?:\s*(.*)')
 # seg...: 
 SEG_RE = re.compile(r'\s*seg.*?:\s*(.*)')
 # Accent dictionary
-# accent:
+
 ACC_RE = re.compile(r'\s*accent:\s*(.*)')
 # Deaccent dictionary
 # deaccent:
@@ -299,7 +301,8 @@ class Language:
                     form, sem = line.strip().split()
                     self.cats[form] = sem.split(',')
         except IOError:
-            print("El archivo semántico {} no existe".format(file))
+            pass
+#            print("El archivo semántico {} no existe".format(file))
 
     def get_cats(self, form):
 #        print("Getting cats for {}".format(form))
@@ -313,7 +316,8 @@ class Language:
                 for line in f:
                     self.abbrevs.append(line.strip())
         except IOError:
-            print("El archivo de abreviaturas {} no existe".format(file))
+            pass
+#            print("El archivo de abreviaturas {} no existe".format(file))
 
     def read_segs(self):
         """Read in segmentations from seg file."""
@@ -1209,9 +1213,22 @@ class Language:
                 print("Leyendo grupos para {} de {}".format(self.name, gfile))
                 # Groups separated by GROUP_SEP string
                 groups = file.read().split(GROUP_SEP)
+                transadd = ''
+                sourceadd = ''
                 # Preamble precedes first instance of GROUP_SEP
                 preamble = groups[0]
                 # Handle preamble ...
+                for line in preamble.split("\n"):
+                    line = line.strip()
+                    if not line or line[0] == '#':
+                        continue
+                    if line[0] == '+':
+                        tp, x, addition = line.partition(' ')[2].partition(' ')
+                        if line[1] == 't':
+#                            print("Each group translation has {}: {}".format(tp, addition))
+                            transadd = tp, addition
+                        else:
+                            sourceadd = addition
                 for group_spec in groups[1:]:
                     group_trans = group_spec.split('\n')
                     n = 0
@@ -1239,6 +1256,12 @@ class Language:
                             t = t.partition(TRANS_START)[2].strip()
                             if t:
                                 tlang, x, tgroup = t.strip().partition(' ')
+                                if transadd:
+                                    tp, ad = transadd
+#                                    if tp in tgroup:
+#                                        print("  feature {} already in tgroup {}".format(tp, tgroup))
+                                    if tp not in tgroup:
+                                        tgroup += " " + ad
                                 if tlang == target_abbrev:
                                     translations.append(tgroup)
                         target_groups.extend(translations)
@@ -1454,7 +1477,7 @@ class Language:
         output = []
         if pos:
             if pos not in morf:
-                prin("POS {} not in morphology {}".format(pos, morf))
+                print("POS {} not in morphology {}".format(pos, morf))
                 return [root]
             posmorph = morf[pos]
 #            print("Generating root {} with features {}".format(root, features.__repr__()))

@@ -41,6 +41,7 @@ import itertools, copy
 from .cs import *
 # needed for a few static methods
 from .entry import Entry, Group
+from .utils import *
 
 class SolSeg:
     """Sentence solution segment, realization of a single Group. Displayed in GUI."""
@@ -49,7 +50,7 @@ class SolSeg:
     tt_colors = ['red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple']
 
     def __init__(self, solution, indices, translation, tokens, color=None):
-        self.solution = solution
+#        self.solution = solution
         self.indices = indices
         self.translation = translation
         self.tokens = tokens
@@ -60,31 +61,34 @@ class SolSeg:
 
     def __repr__(self):
         """Print name."""
-        return "<<{}>>".format(self.token_str)
+        return ">>{}<<".format(self.token_str)
 
     def set_html(self, index):
         "Set the HTML markup for this segment, given its position in the sentence."""
+#        print("Setting html for segment {} in positions {}".format(self, self.indices))
         self.color = 'Silver' if not self.translation else SolSeg.tt_colors[index]
         transhtml = '<table border=1>'
-        for t in self.translation:
+        for tindex, t in enumerate(self.translation):
+            if ' ' in t:
+                if '|' in t:
+                    # Combine each token with alternatives for other tokens
+                    tokcombs = []
+                t = t.replace(" ", "%%")
             if '|' in t:
                 print("| in {}".format(t))
-                t = t.replace('|', '<br/>')
-                print("Replaced: {}".format(t))
-            if ' ' in t:
+#                t = t.replace('|', '<br/>')
+                choices = []
+                for tt in t.split('|'):
+                    choices.append("<input type='radio' name={} id={} value={}>{}".format(self.token_str, tt, tt, tt))
+                t = "<br/>".join(choices)
+            if '%%' in t:
                 transhtml += '<tr>'
-                ts = t.split()
+                ts = t.split('%%')
                 for tt in ts:
-#                    if '/' in tt:
-#                        transhtml += '<td><table>'
-#                        for ttt in tt.split('/'):
-#                            transhtml += '<tr><td>' + ttt + '</td></tr>'
-#                        transhtml += '</table></td>'
-#                    else:
-                    transhtml += '<td>' + tt + '</td>'
+                    transhtml += "<td class='trans'>" + tt + '</td>'
                 transhtml += '</tr>'
             else:
-                transhtml += '<tr><td>' + t + '</td></tr>'
+                transhtml += "<tr><td class='trans'>" + t + '</td></tr>'
         transhtml = transhtml.replace('_', ' ')
         transhtml += '</table>'
         tokens = self.token_str
@@ -101,7 +105,7 @@ class SolSeg:
 class SNode:
     """Sentence token and its associated analyses and variables."""
 
-    def __init__(self, token, index, analyses, sentence, raw_indices):
+    def __init__(self, token, index, analyses, sentence, raw_indices): #, del_indices=None):
 #        print("Creating SNode with args {}, {}, {}, {}".format(token, index, analyses, sentence))
         # Raw form in sentence (possibly result of segmentation)
         self.token = token
@@ -109,6 +113,8 @@ class SNode:
         self.index = index
         # Positions in original sentence
         self.raw_indices = raw_indices
+#        # Positions of deleted tokens
+#        self.del_indices = del_indices or []
         # List of analyses
         if analyses and not isinstance(analyses, list):
             analyses = [analyses]
@@ -599,12 +605,10 @@ class TreeTrans:
         # Cache for node mergers
         self.cache = {}
         print("Created TreeTrans {}".format(self))
-#        print("Created TreeTrans {} with attribs".format(self))
-#        for a in attribs:
-#            print(" {}".format(a))
+#        print("  with group attribs {}".format(self.group_attribs))
 
     def __repr__(self):
-        return "[{}] ->".format(self.ginst)
+        return "[{}]->".format(self.ginst)
 
     def display(self, index):
         print("{}  {}".format(self, self.output_strings[index]))
@@ -637,11 +641,13 @@ class TreeTrans:
 #        self.create_variables(verbosity=verbosity)
 #        self.create_constraints(verbosity=verbosity)
 
-    def build(self, merge_index=0, nomerge_index=0, verbosity=0):
+    def build(self, #trans_index=0, verbosity=0):
+              merge_index=0, nomerge_index=0, verbosity=0):
         """Unify translation features for merged nodes, map agr features from source to target,
         generate surface target forms from resulting roots and features."""
         if verbosity:
             print('Building {} with trans indices {}/{}'.format(self, merge_index, nomerge_index))
+#        print('Building {} with trans indices {}'.format(self, trans_index))
         # Reinitialize mergers
 #        self.mergers = []
         # Dictionary mapping source node indices to initial target node indices
@@ -694,6 +700,7 @@ class TreeTrans:
                     if verbosity and len(gna) > 1:
                         print("  Multiple translations {} for abstract node group".format(gna))
                     gnc1 = gnc[ct_index]
+#                    gna1 = gna[trans_index]
                     gna1 = gna[nomerge_index]
                     if verbosity:
                         print("  Merging nodes: concrete {}, abstract {}".format(gnc1, gna1))
@@ -795,8 +802,7 @@ class TreeTrans:
         self.tree = tree
         # Add TNode elements
         tgnode_elements = []
-        for ginst_i, (tginst, tnodes, agr) in enumerate(self.group_attribs):
-#            print("  tginst {}".format(tginst))
+        for ginst_i, (tginst, tnodes, agr, tgnodes) in enumerate(self.group_attribs):
             if agr:
                 agreements[tginst] = agr
                 if verbosity:
@@ -809,6 +815,8 @@ class TreeTrans:
                     index = [(tginst, tnode.index)]
                     node_features.append((tnode.token, features, index))
                     group_nodes[index[0]] = (tnode.token, features)
+                    print("  tginst {}, tnodes {}, agr {}".format(tginst, tnodes, agr))
+                    print("    new group nodes, index {}: {}".format(index[0], (tnode.token, features)))
         self.node_features = node_features
         self.group_nodes = group_nodes
         self.agreements = agreements
@@ -917,7 +925,7 @@ class TreeTrans:
                 for o in foll_outer:
                     for i in other_inner:
                         self.order_pairs.append([i, o])
-        print('  Order pairs: {}'.format(self.order_pairs))
+#        print('  Order pairs: {}'.format(self.order_pairs))
 
     def svar(self, name, lower, upper, lower_card=0, upper_card=MAX, ess=True):
         return Var(name, lower, upper, lower_card, upper_card,

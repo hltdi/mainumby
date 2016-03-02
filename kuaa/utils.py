@@ -1,5 +1,5 @@
 #   
-#   Hiiktuu UI: initial attempt at a user interface for creating languages
+#   Mainumby
 #
 ########################################################################
 #
@@ -7,7 +7,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, HLTDI <gasser@cs.indiana.edu>
+#   Copyright (C) 2014, 2016 HLTDI <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -27,7 +27,6 @@
 # 2014.07.08
 # -- Created
 
-from __future__ import print_function
 from sys import getsizeof, stderr
 from itertools import chain
 from collections import deque
@@ -35,6 +34,18 @@ try:
     from reprlib import repr
 except ImportError:
     pass
+
+def allcombs(seqs):
+    """Returns a list of all sequences consisting of one element from each of seqs."""
+    if not seqs:
+        return []
+    res = [[x] for x in seqs[0]]
+    for item in seqs[1:]:
+        for i in range(len(res)-1, -1, -1):
+            rr = res[i]
+#            print(" {} | {} | {}".format(i, rr, [(rr + [itemitem]) for itemitem in item]))
+            res[i:i+1] = [(rr + [itemitem]) for itemitem in item]
+    return res
 
 ### Measure the size of an object (recursively)
 

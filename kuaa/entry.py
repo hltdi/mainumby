@@ -84,6 +84,9 @@
 # -- Morphosyns have a further type of ambiguity, exemplified by "la casa": match copies
 #    sentence only if there is a set of features that fails to match for a word, and
 #    the matching features are deleted in the copy.
+# 2016.3.1
+# -- Tokens that are deleted in Morphosyns can be assigned to nodes other than the next
+#    one, as in <la [adj] [n]>
 
 import copy, itertools
 import yaml
@@ -601,12 +604,16 @@ class MorphoSyn(Entry):
                         feat_pairs.append((f, f))
                 self.agr = int(srci), int(trgi), feat_pairs
                 continue
-            # Indices of pattern elements to be marked for deletion
+            # Indices of pattern elements to be marked for deletion (and optionally their "target" indices)
             match = MS_DELETE.match(attrib)
             if match:
                 del_string = match.groups()[0]
+#                print("{} matched delete: {} :: {}".format(self, attrib, del_string))
                 for d in del_string.split():
-                    self.del_indices.append(int(d))
+                    d1, x, d2 = d.partition(':')
+                    d1 = int(d1)
+                    d2 = int(d2) if d2 else -1
+                    self.del_indices.append((d1, d2))
                 continue
             match = MS_ADD.match(attrib)
             if match:
@@ -662,10 +669,11 @@ class MorphoSyn(Entry):
             print("Attempting to apply {} to {}".format(self, sentence))
         matches = self.match(sentence, verbosity=verbosity)
         s = sentence
+        copied = False
         if matches:
             if ambig and self.is_ambig():
                 # Ambiguous patterns
-                print("{} matches ({}) with ambiguity".format(self, matches))
+#                print("{} matches ({}) with ambiguity".format(self, matches))
                 if self.is_feat_ambig():
                     matchfail = False
                     for m in matches:
@@ -682,14 +690,16 @@ class MorphoSyn(Entry):
                                         matched.append((x, t, aaa))
                             x += 1
                     if matchfail:
-                        print(" Feature ambiguity, exclude {} from copy".format(matched))
+#                        print(" Feature ambiguity, exclude {} from copy".format(matched))
                         # Copy the sentence as an altsyn
                         copy = sentence.copy(skip=matched)
+                        copied = True
                         if self.is_not_preferred():
                             s = copy
                 else:
                     # Copy the sentence as an altsyn
                     copy = sentence.copy()
+                    copied = True
                     if self.is_not_preferred():
                         s = copy
             for match in matches:
@@ -739,11 +749,12 @@ class MorphoSyn(Entry):
                 # sentence.analyses consists of pairs of word tokens and a list of analysis dicts
                 match = self.match_item(stoken, sanals, pindex, verbosity=verbosity)
                 if match:
-                    print(" {} found match {} for token {} and anals {}".format(self, match, stoken, sanals))
+#                    print(" {} found match {} for token {} and anals {}".format(self, match, stoken, sanals))
                     result.append(match)
                     # Is this the end of the pattern? If so, succeed.
                     if self.pattern_length() == pindex + 1:
-                        print("MS {} tuvo éxito con resultado {}".format(self, result))
+                        print("MS {} tuvo éxito".format(self))
+#                        con resultado {}".format(self, result))
 #                        print("  Match result {}, stoken {}, sanals {}".format(result, stoken, sanals))
                         if mindex < 0:
                             mindex = sindex
@@ -844,10 +855,10 @@ class MorphoSyn(Entry):
     def enforce_constraints(self, match, verbosity=0):
         """If there is an agreement contraint, modify the match element features to reflect it.
         Works by mutating the features in match.
-        If there are deletion constraints, prefix * to the relevant tokens.
+        If there are deletion constraints, prefix ~ to the relevant tokens.
         """
-#        if verbosity:
-        print(" Enforcing constraints for match {}".format(match))
+        if verbosity:
+            print(" Enforcing constraints for match {}".format(match))
         start, end, elements = match
         # Exclude the source features
         if self.agr:
@@ -881,10 +892,13 @@ class MorphoSyn(Entry):
 #                    print("Feature {} replaced with copy".format(trg_feats.__repr__()))
 #                    trg_feats_list[tf_index] = trg_feats1
         if self.del_indices:
-            for i in self.del_indices:
-                if verbosity:
-                    print("Recording deletion for match element {}".format(elements[i]))
+            for i, j in self.del_indices:
+#                if verbosity:
                 elements[i][0] = '~' + elements[i][0]
+                if j != -1:
+#                    print("Recording target distance {}".format(j-i))
+                    elements[i][2][0]['target'] = j-i
+#                print("Recording deletion for match element {}, target: {}".format(elements[i], elements[j]))
         if self.add_items:
             print("Warning: Adding items in Morphosyn not yet implemented!")
 #            for i, item in self.add_items:
@@ -930,24 +944,27 @@ class MorphoSyn(Entry):
             sentence.tokens[sstart], sentence.tokens[send] = sentence.tokens[send], sentence.tokens[sstart]
         else:
             for s_elem in sentence.analyses[start:end]:
+#                print("INSERTING {}".format(s_elem))
                 s_token = s_elem[0]
                 if MorphoSyn.del_token(s_token):
                     # Skip this sentence element; don't increment m_index
+                    print("   Skipping deleted element {}".format(s_elem))
                     continue
                 m_elem = m_elements[m_index]
                 m_index += 1
-                # Replace the token (could have * now)
+                # Replace the token (could have ~ now)
                 s_elem[0] = m_elem[0]
                 # Replace the features if match element has any
                 m_feats_list = m_elem[1]
                 s_anals = s_elem[1]
+#                print("  Feature list: original {}, match {}".format(s_anals, m_feats_list))
                 new_s_anals = []
                 if m_feats_list:
                     if not s_anals:
                         new_s_anals = [{'features': mfl, 'root': s_token} for mfl in m_feats_list]
                     for m_feats, s_anal in zip(m_feats_list, s_anals):
                         if not m_feats:
-                            print("Insert match: m_feats {}, s_anal {} fail".format(m_feats, s_anal))
+#                            print("Insert match: m_feats {}, s_anal {} fail".format(m_feats, s_anal))
                             # This anal failed to match pattern; filter it out
                             continue
                         else:
@@ -957,6 +974,8 @@ class MorphoSyn(Entry):
                                 # has changed
                                 s_anal['features'] = m_feats
                             new_s_anals.append(s_anal)
+                else:
+                    new_s_anals = s_anals
                 s_elem[1] = new_s_anals
 
 class EntryError(Exception):
