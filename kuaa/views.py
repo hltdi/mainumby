@@ -26,12 +26,14 @@
 # Created 2015.06.12
 # 2015.07
 # -- Views for loading languages, entering document, sentence, and translation.
+# 2016.03.02
+# -- sent view can either get new sentence or record translation for sentence segment.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
 from kuaa import app, make_document, load, seg_trans, quit
 
 # Global variables for views; probably a better way to do this...
-SPA = GRN = DOC = SENT = None
+SPA = GRN = DOC = SENT = SEGS = None
 SINDEX = 0
 # SOLINDEX = 0
 
@@ -57,6 +59,13 @@ def get_sentence():
         return
     SENTENCE = DOC[SINDEX]
     SINDEX += 1
+
+def get_segmentation():
+    global SENTENCE
+    global SPA
+    global GRN
+    global SEGS
+    SEGS = seg_trans(SENTENCE, SPA, GRN)    
 
 # def get_solution():
 #    global SOLINDEX
@@ -90,25 +99,31 @@ def doc():
 # View for displaying parsed sentence and sentence translation
 @app.route('/sent', methods=['GET', 'POST'])
 def sent():
+    global SEGS
+    global SENTENCE
+    global DOC
     print("In sent...")
     form = request.form
     print("Form for sent: {}".format(form))
+    if 'reg' in form:
+        return render_template('sent.html', sentence=SEGS)
     if 'text' in form and not DOC:
         # Create a new document
         make_doc(form['text'])
         print("Created document {}".format(DOC))
-    # Get the next sentence in the document
+    # Get the next sentence in the document, assigning SENTENCE
     get_sentence()
     print("Current sentence {}".format(SENTENCE))
     if not SENTENCE:
         # No more sentences, return to doc.html for a new document
         return render_template('doc.html')
     else:
-        # Translate and segment the sentence
-        segs = seg_trans(SENTENCE, SPA, GRN)
+        # Translate and segment the sentence, assigning SEGS
+        get_segmentation()
+#        segs = seg_trans(SENTENCE, SPA, GRN)
 #    print("Found segs {}".format(segs))
     # Show segmented sentence
-    return render_template('sent.html', sentence=segs)
+    return render_template('sent.html', sentence=SEGS)
 
 @app.route('/fin', methods=['GET', 'POST'])
 def fin():

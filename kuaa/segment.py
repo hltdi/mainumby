@@ -36,6 +36,9 @@
 # 2016.02.01
 # -- Cache added to TreeTrans to save feature and node merger information during build, preventing
 #    repetition.
+# 2016.03.02
+# -- Lots of changes to how segments are displayed in GUI, especially including radio buttons for
+#    choices.
 
 import itertools, copy
 from .cs import *
@@ -65,30 +68,63 @@ class SolSeg:
 
     def set_html(self, index):
         "Set the HTML markup for this segment, given its position in the sentence."""
-#        print("Setting html for segment {} in positions {}".format(self, self.indices))
+        print("Setting html for segment {} in positions {}".format(self.token_str, self.indices))
         self.color = 'Silver' if not self.translation else SolSeg.tt_colors[index]
         transhtml = '<table border=1>'
+        mult_trans = len(self.translation) > 1
         for tindex, t in enumerate(self.translation):
+            transhtml += '<tr>'
             if ' ' in t:
-                if '|' in t:
-                    # Combine each token with alternatives for other tokens
-                    tokcombs = []
-                t = t.replace(" ", "%%")
-            if '|' in t:
-                print("| in {}".format(t))
-#                t = t.replace('|', '<br/>')
+                for tt in t.split():
+                    transhtml += "<td class='trans'>"
+                    if '|' in tt:
+                        choices = []
+                        for ttt in tt.split('|'):
+                            choices.append("<input type='radio' name={} id={} value={}>{}".format(self.token_str, ttt, ttt, ttt))
+                        choices = '<br/>'.join(choices)
+                        transhtml += choices
+                    else:
+                        transhtml += tt
+                    transhtml += '</td>'
+            elif '|' in t:
+                transhtml += "<td class='trans'>"
                 choices = []
                 for tt in t.split('|'):
                     choices.append("<input type='radio' name={} id={} value={}>{}".format(self.token_str, tt, tt, tt))
-                t = "<br/>".join(choices)
-            if '%%' in t:
-                transhtml += '<tr>'
-                ts = t.split('%%')
-                for tt in ts:
-                    transhtml += "<td class='trans'>" + tt + '</td>'
-                transhtml += '</tr>'
+                choices = '<br/>'.join(choices)
+                transhtml += choices
+                transhtml += '</td>'
             else:
-                transhtml += "<tr><td class='trans'>" + t + '</td></tr>'
+                transhtml += "<td class='trans'>"
+#                if mult_trans:
+                transhtml += "<input type='radio' name='{}' id='{}' value='{}'>{}".format(self.token_str, t, t, t)
+#                else:
+#                    transhtml += t
+                transhtml += "</td>"
+            transhtml += '</tr>'
+#            if ' ' in t:
+#                if '|' in t:
+#                    # Combine each token with alternatives for other tokens
+#                    tokcombs = allcombs([tt.split('|') for tt in t.split()])
+#                    transhtml += '<tr>'
+#                    for toks in tokcombs:
+#                        toks = ' '.join(toks)
+#                        
+#                t = t.replace(" ", "%%")
+#            if '|' in t:
+#                print("| in {}".format(t))
+#                choices = []
+#                for tt in t.split('|'):
+#                    choices.append("<input type='radio' name={} id={} value={}>{}".format(self.token_str, tt, tt, tt))
+#                t = "<br/>".join(choices)
+#            if '%%' in t:
+#                transhtml += '<tr>'
+#                ts = t.split('%%')
+#                for tt in ts:
+#                    transhtml += "<td class='trans'>" + tt + '</td>'
+#                transhtml += '</tr>'
+#            else:
+#                transhtml += "<tr><td class='trans'>" + t + '</td></tr>'
         transhtml = transhtml.replace('_', ' ')
         transhtml += '</table>'
         tokens = self.token_str
@@ -557,23 +593,6 @@ class TreeTrans:
         snode_indices.sort()
         self.snode_indices = snode_indices
         self.snodes = [self.sentence.nodes[i] for i in snode_indices]
-        # Count the maximum number of translations of merged nodes and nonmerged nodes
-#        self.max_n_merge = 1
-#        self.max_n_nomerge = 1
-#        for i in snode_indices:
-#            gnfi = solution.gnodes_feats[i]
-#            gnodesi = gnfi[0]
-#            gtrans = []
-#            for g in gnodesi:
-#                gtranss = gnode_dict.get(g, [])
-#                for gtt in gtranss:
-#                    if gtt[1:] not in gtrans:
-#                        gtrans.append(gtt[1:])
-#            if len(gnodesi) == 1:
-#                self.max_n_nomerge = max(len(gtrans), self.max_n_nomerge)
-#            else:
-#                self.max_n_merge = max(len(gtrans), self.max_n_merge)
-#            self.sol_gnodes_feats.append(gnfi)
         self.sol_gnodes_feats = [solution.gnodes_feats[i] for i in snode_indices]
         self.nodes = []
         # The GInst at the top of the tree

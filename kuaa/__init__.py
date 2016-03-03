@@ -30,6 +30,7 @@ from flask import Flask, url_for, render_template
 from .sentence import *
 from .learn import *
 from .morphology import *
+from .record import *
 from . import db
 
 ## Instantiate the Flask class to get the application
@@ -57,22 +58,26 @@ def seg_trans(sentence, source, target, verbosity=0):
         solution = sentence.solutions[0]
         solution.get_segs()
         return solution.get_seg_html()
+    else:
+        return sentence.get_html()
 
 def make_document(source, target, text):
     """Create an Mbojereha Document object with the text."""
     d = kuaa.Document(source, target, text, True)
     return d
 
-def quit():
+def quit(session=None):
     """Quit the session (and the program), cleaning up in various ways."""
     for language in Language.languages.values():
         # Store new cached analyses or generated forms for
         # each active language.
         language.quit()
+    if session:
+        session.quit()
 
 def init():
     """Initialize a session."""
-    
+    return Session()
 
 # Import views. This has to appear after the app is created.
 import kuaa.views

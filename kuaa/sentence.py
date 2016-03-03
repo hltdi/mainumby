@@ -972,6 +972,10 @@ class Sentence:
         self.complete_trans = trans
         return trans
 
+    def get_html(self):
+        """Create HTML for a sentence with no solution."""
+        return [(self.raw, "Silver", "<table border=1></table>")]
+        
     def verbatim(self, node):
         """Use the source token in the target complete translation."""
         # If token consists of only punctuation or digits, just return it
@@ -1060,7 +1064,7 @@ class Solution:
         for raw_indices, forms in tt:
             late = False
             start, end = raw_indices[0], raw_indices[-1]
-#            print("Segment {}->{}".format(start, end))
+            print("Segment {}->{}".format(start, end))
             if start > max_index+1:
                 # there's a gap between the farthest segment to the right and this one; make an untranslated segment
                 src_tokens = tokens[end_index+1:start]

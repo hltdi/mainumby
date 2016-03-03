@@ -125,7 +125,7 @@ MS_PATTERN_SEP = ' '
 FORMALT_SEP = '|'
 MS_ATTRIB_SEP = ';'
 # possibly empty form string followed by possibly empty FS string, for MorphoSyn pattern
-MS_FORM_FEATS = re.compile("\s*([$<'|\w]*)\s*((?:\[.+\])?)$")
+MS_FORM_FEATS = re.compile("\s*([$<'|\w¿¡?!]*)\s*((?:\[.+\])?)$")
 # negative features: ![] with only features catpured
 MS_NEG_FEATS = re.compile("\s*!(\[.+\])$")
 MS_AGR = re.compile("\s*(\d)\s*=>\s*(\d)\s*(.+)$")
@@ -868,8 +868,8 @@ class MorphoSyn(Entry):
             trg_elem = elements[trgi]
             if verbosity:
                 print("Enforcing agreement on features {} from {} to {}".format(feats, src_elem, trg_elem))
-            src_tok, src_feats_list = src_elem
-            trg_tok, trg_feats_list = trg_elem
+            src_tok, src_feats_list, x = src_elem
+            trg_tok, trg_feats_list, y = trg_elem
             for tf_index, trg_feats in enumerate(trg_feats_list):
                 if not trg_feats:
                     # target features could be False

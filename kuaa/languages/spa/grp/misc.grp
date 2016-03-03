@@ -328,6 +328,11 @@
 ->grn ãicha
 ->grn ãichagua
 # POR
+# IDIOMS WITH POR
+*** por mañana ; ^ por 0
+->grn pyharevekue ; || -1, 0
+*** por noche ; ^ por 0
+->grn pyharekue ; || -1, 0
 *** por $pro ; ^ por 0
 ->grn $pro[caso=re] ; || -1, 0
 ->grn $pro[caso=gui] ; || -1, 0
@@ -338,20 +343,6 @@
 ->grn $n rehe|rupi ; || 1, 0
 *** por él ; ^ por 0
 ->grn hesehápe
-*** por mí mismo ; ^ por 0
-->grn chejehe
-*** por mí misma ; ^ por 0
-->grn chejehe
-*** por vos mismo ; ^ por 0
-->grn ndejehe
-*** por vos misma ; ^ por 0
-->grn ndejehe
-*** por usted mismo ; ^ por 0
-->grn ndejehe
-*** por usted misma ; ^ por 0
-->grn ndejehe
-*** por sí mismo ; ^ mismo 2
-->grn ojehe
 # DENTRO (DE)
 *** dentro ; ^ dentro 0
 ->grn ipýpe
@@ -1715,13 +1706,13 @@
 ->grn rupi
 *** mediante que ; ^ mediante 0
 ->grn rupi
-*** en medio ; ^ medio 1
-->grn apytépe
 *** en medio de ; ^ medio 1
 ->grn apytépe
 ->grn mbytépe
 *** por medio de ; ^ medio 1
 ->grn rupi
+*** en medio ; ^ medio 1
+->grn apytépe
 *** en punto de mediodía ; ^ mediodía 3
 ->grn asajepyte
 *** menos ; ^ menos 0
@@ -1738,8 +1729,6 @@
 ->grn manterei
 *** meramente ; ^ meramente 0
 ->grn mante
-*** mi ; ^ mi 0
-->grn che
 *** mientras ; ^ mientras 0
 ->grn aja
 ->grn jave
@@ -1799,7 +1788,8 @@
 *** hace mucho ; ^ mucho 1
 ->grn kuriete
 *** mucho ; ^ mucho 0
-->grn soro
+->grn tuicha
+->grn heta
 *** no hace mucho ; ^ mucho 2
 ->grn kokueheve
 *** muchísimo ; ^ muchísimo 0
@@ -2051,8 +2041,6 @@
 ->grn ajeve
 ->grn ajevéramo
 ->grn hi'ãitégui
-->grn gui
-->grn rupi
 *** portento ; ^ portento 0
 ->grn mba'eguasu
 *** en pos de ; ^ pos 1

@@ -8,7 +8,7 @@
 ## antipassive (voz subsuntiva) left out for now because it's not clear how it would be matched
 ## except for cases where there's an obvious idiomatic expression: hacer compras
 # sustantivo como complemento
-+t == ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv
++t == ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
 *** ver_v[-r] a $n_prs ; ^ ver_v 0
 ->grn <hecha_v $n_prs[caso=pe] ; || 0, -1, 1
 # pronombre como complemento (omitido por morphosyn)
@@ -2036,6 +2036,8 @@
 *** cansar_v[-r] ; ^ cansar_v 0 ; #28
 ->grn mbyaju_v[cat=a] ; #1
 ->grn monguerái_v[cat=a] ; #1
+*** cansar_v[+r] ; ^ cansar_v 0
+->grn kane'õ_v[pos=v]
 *** cantar_v[-r] a dúo ; ^ cantar_v 0 ; #77
 ->grn mbojoivy_v[cat=a]
 *** cantar_v[-r] en voz alta ; ^ cantar_v 0 ; #77

@@ -3,9 +3,9 @@ perf :: haber_v [pos=v,tm=prc,asp=[+prf]] ; 0=>1 p,n,tm ; // 0
 prog :: estar_v [pos=v,tm=ger,asp=[+prg]] ; 0=>1 p,n,tm ; // 0
 pasivo :: ser_v [pos=v,tm=prc,voz=reflx,+r] ; 0=>1 p,n,tm ; // 0
 # voy a ..., iba a ...; ignore tense of ir?
-fut/ir :: ir_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 0 1 ; 2-> [tm=fut]
+fut/ir :: ir_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 0:2 1:2 ; 2-> [tm=fut]
 # acabar de ...
-acabar_de :: acabar_v[tm=prs] de [pos=v,tm=inf,asp=[+ramo]] ; 0=>2 p,n ; // 0 1 ; 2-> [tm=prs]
+acabar_de :: acabar_v[tm=prs] de [pos=v,tm=inf,asp=[+ramo]] ; 0=>2 p,n ; // 0:2 1:2 ; 2-> [tm=prs]
 
 ## derivación 1
 volativo :: querer_v [pos=v,tm=inf,asp=[+vol]] ; 0=>1 p,n,tm,asp ; // 0
@@ -102,4 +102,7 @@ a_los_que_rel :: [pos=n] a los que [pos=v,rel=obl] ; // 0 1 2
 a_las_que_rel :: [pos=n] a las que [pos=v,rel=obl] ; // 0 1 2
 # otras preposiciones: en, con?, por?...
 #...
+
+## preguntas
+pregunta :: ¿ [pos=v,+inter] ; // 0
 

@@ -93,18 +93,25 @@ td.mbojereha
 td.trans
 {
    text-align: left;
-   padding: 10px;
+   padding: 5px;
 }
 </style>
 
-{# Not currently used
 <script>
-function seg(text) {
+function OnRegistrar()
+{
+    document.Form1.action = "sent"
+    document.Form1.target = "_self";     // Same window
+    document.Form1.submit();             // Submit the page
+    return true;
+}
+{# Not currently used
+ function seg(text) {
     document.write(text)
     document.getElementById("segtrans").innerHTML = text;
 }
-</script>
 #}
+</script>
 
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
 
@@ -114,7 +121,7 @@ function seg(text) {
 
 <h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
 
-<form method=POST action='sent'>
+<form name="Form1" method=POST action='sent'>
 
 {% if sentence %}
 <p></p><p></p>
@@ -151,9 +158,12 @@ action='anal' name='anal' value='Próximo análisis'>
 
 <hr/>
 
+<h3>Tu traducción</h3>
+
 <TEXTAREA NAME="text" ROWS=2 COLS=75 style="font-family:Verdana"></TEXTAREA>
 <p>
-<input type=submit value='Tu traducción' name='tra' style="font-family: Verdana; font-size: 80%;">
+<input type=submit value='Registrar traducción' name='reg'
+action='sent' style="font-family: Verdana; font-size: 80%;">
 </p>
 
 </form>

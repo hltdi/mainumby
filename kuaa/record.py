@@ -32,6 +32,20 @@ import datetime
 def get_time():
     return datetime.datetime.utctime()
 
+class Session:
+    """A record of a single user's responses to a set of sentences."""
+
+    def __init__(self, user=None):
+        self.start = get_time()
+        self.user = user
+        self.end = None
+        self.running = True
+        self.sentences = []
+
+    def quit(self):
+        self.running = False
+        self.end = get_time()
+
 class SentRecord:
     """A record of a Sentence and a single user's response to it."""
 
@@ -49,7 +63,7 @@ class SolRecord:
     def __init__(self, solution, srecord):
         # a SentRecord object
         self.sentence = sentence
-        # a list of Segment objects
+        # a list of SolSeg objects
         self.segments = []
 
         
