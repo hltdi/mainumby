@@ -29,11 +29,15 @@
 
 import datetime
 
+ZERO_TIME = datetime.timedelta() 
+
 def get_time():
-    return datetime.datetime.utctime()
+    return datetime.datetime.utcnow()
 
 class Session:
     """A record of a single user's responses to a set of sentences."""
+
+    id = 0
 
     def __init__(self, user=None):
         self.start = get_time()
@@ -41,29 +45,84 @@ class Session:
         self.end = None
         self.running = True
         self.sentences = []
+        self.id = Session.id
+        Session.id += 1
+
+    def __repr__(self):
+        return "@{}".format(self.id)
+
+    def length(self):
+        """Length of the session as a time delta object."""
+        if self.running:
+            return ZERO_TIME
+        else:
+            return self.end - self.start
 
     def quit(self):
+        """Set the end time and stop running."""
         self.running = False
         self.end = get_time()
+
+    def record(self, sentence, seg):
+        """Record feedback about a segment's translation within a sentence."""
 
 class SentRecord:
     """A record of a Sentence and a single user's response to it."""
 
-    def __init__(self, sentence, user=None):
+    def __init__(self, sentence, session=None, user=None):
+        self.session = session
         self.raw = sentence.raw
         self.tokens = sentence.tokens
         self.time = get_time()
         self.user = user
-        # a list of SolRecord objects.
-        self.solutions = []
-
-class SolRecord:
-    """A record of a sentence segmentation into groups and their translations."""
-
-    def __init__(self, solution, srecord):
-        # a SentRecord object
-        self.sentence = sentence
-        # a list of SolSeg objects
+        # a list of SegRecord objects.
         self.segments = []
 
-        
+    def __repr__(self):
+        session = "{}".format(self.session) if self.session else ""
+        return "{}:{}".format(session, self.raw)
+
+class SegRecord:
+    """A record of a sentence segment and its translation by a user."""
+
+    def __init__(self, solseg, feedback, sentence=None, session=None):
+        # a SentRecord instance
+        self.sentence = sentence
+        self.session = session
+        self.indices = solseg.indices
+        self.translation = solseg.translation
+        self.tokens = solseg.token_str
+        self.feedback = feedback
+
+    def __repr__(self):
+        session =  "{}".format(self.session) if self.session else ""
+        return "{}:{}".format(session, self.tokens) 
+
+class Feedback:
+    """Feedback from a user about a segment and its translation."""
+
+    def __init__(self, accept=True, pos_index=-1, choice_index=-1, translation=None):
+        """
+        EITHER the user simply
+        -- accepts the system's translation (accept=True) OR
+        -- makes a selection from the alternatives offered by the system
+           (posindex and choice_index are non-negative) OR
+        -- provides an alternate translation (translation is not None).
+        No backpointer to the SegRecord that this refers to.
+        """
+        self.accept = accept
+        self.pos_index = pos_index
+        self.choice_index = choice_index
+        self.translation = translation
+        self.id = '@'
+        if accept:
+            self.id += "ACC"
+        else:
+            self.id += "REJ:"
+            if translation:
+                self.id += translation
+            else:
+                self.id += "{}={}".format(pos_index, choice_index)
+
+ACCEPT = Feedback()
+

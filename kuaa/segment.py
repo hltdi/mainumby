@@ -55,7 +55,10 @@ class SolSeg:
     def __init__(self, solution, indices, translation, tokens, color=None):
 #        self.solution = solution
         self.indices = indices
-        self.translation = translation
+        # Are there any alternatives among the translations?
+        self.any_choices = any(['|' in t for t in translation])
+        # For each translation alternative, separate words, each of which can have alternatives (separated by '|').
+        self.translation = [t.split() for t in translation]
         self.tokens = tokens
         self.token_str = ' '.join(tokens)
         self.color = color
@@ -74,57 +77,18 @@ class SolSeg:
         mult_trans = len(self.translation) > 1
         for tindex, t in enumerate(self.translation):
             transhtml += '<tr>'
-            if ' ' in t:
-                for tt in t.split():
-                    transhtml += "<td class='trans'>"
-                    if '|' in tt:
-                        choices = []
-                        for ttt in tt.split('|'):
-                            choices.append("<input type='radio' name={} id={} value={}>{}".format(self.token_str, ttt, ttt, ttt))
-                        choices = '<br/>'.join(choices)
-                        transhtml += choices
-                    else:
-                        transhtml += tt
-                    transhtml += '</td>'
-            elif '|' in t:
+            for tt in t:
                 transhtml += "<td class='trans'>"
-                choices = []
-                for tt in t.split('|'):
-                    choices.append("<input type='radio' name={} id={} value={}>{}".format(self.token_str, tt, tt, tt))
-                choices = '<br/>'.join(choices)
-                transhtml += choices
+                if '|' in tt:
+                    choices = []
+                    for ttt in tt.split('|'):
+                        choices.append("<input type='radio' name={} id={} value={}>{}".format(self.token_str, ttt, ttt, ttt))
+                    choices = '<br/>'.join(choices)
+                    transhtml += choices
+                else:
+                    transhtml += tt
                 transhtml += '</td>'
-            else:
-                transhtml += "<td class='trans'>"
-#                if mult_trans:
-                transhtml += "<input type='radio' name='{}' id='{}' value='{}'>{}".format(self.token_str, t, t, t)
-#                else:
-#                    transhtml += t
-                transhtml += "</td>"
             transhtml += '</tr>'
-#            if ' ' in t:
-#                if '|' in t:
-#                    # Combine each token with alternatives for other tokens
-#                    tokcombs = allcombs([tt.split('|') for tt in t.split()])
-#                    transhtml += '<tr>'
-#                    for toks in tokcombs:
-#                        toks = ' '.join(toks)
-#                        
-#                t = t.replace(" ", "%%")
-#            if '|' in t:
-#                print("| in {}".format(t))
-#                choices = []
-#                for tt in t.split('|'):
-#                    choices.append("<input type='radio' name={} id={} value={}>{}".format(self.token_str, tt, tt, tt))
-#                t = "<br/>".join(choices)
-#            if '%%' in t:
-#                transhtml += '<tr>'
-#                ts = t.split('%%')
-#                for tt in ts:
-#                    transhtml += "<td class='trans'>" + tt + '</td>'
-#                transhtml += '</tr>'
-#            else:
-#                transhtml += "<tr><td class='trans'>" + t + '</td></tr>'
         transhtml = transhtml.replace('_', ' ')
         transhtml += '</table>'
         tokens = self.token_str

@@ -28,12 +28,13 @@
 # -- Views for loading languages, entering document, sentence, and translation.
 # 2016.03.02
 # -- sent view can either get new sentence or record translation for sentence segment.
+# -- SESSION and SEGS globals added.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
 from kuaa import app, make_document, load, seg_trans, quit
 
 # Global variables for views; probably a better way to do this...
-SPA = GRN = DOC = SENT = SEGS = None
+SESSION = SPA = GRN = DOC = SENT = SEGS = None
 SINDEX = 0
 # SOLINDEX = 0
 
@@ -77,12 +78,12 @@ def get_segmentation():
 
 @app.route('/')
 def index():
-    print("In index...")
+#    print("In index...")
     return redirect(url_for('base'))
 
 @app.route('/base', methods=['GET', 'POST'])
 def base():
-    print("In base...")
+#    print("In base...")
     if request.method == 'POST' and 'Cargar' in request.form:
         return render_template('doc.html')
     return render_template('base.html')
@@ -90,19 +91,20 @@ def base():
 # View for document entry
 @app.route('/doc', methods=['GET', 'POST'])
 def doc():
-    print("In doc...")
+#    print("In doc...")
     # Load Spanish and Guarani if they're not loaded.
     if not SPA:
         load_languages()
     return render_template('doc.html')
 
-# View for displaying parsed sentence and sentence translation
+# View for displaying parsed sentence and sentence translation and
+# for recording translations selected/entered by user.
 @app.route('/sent', methods=['GET', 'POST'])
 def sent():
     global SEGS
     global SENTENCE
     global DOC
-    print("In sent...")
+#    print("In sent...")
     form = request.form
     print("Form for sent: {}".format(form))
     if 'reg' in form:
@@ -127,27 +129,11 @@ def sent():
 
 @app.route('/fin', methods=['GET', 'POST'])
 def fin():
-    print("In fin...")
-    quit()
+#    print("In fin...")
+    quit(SESSION)
     return render_template('fin.html')
 
-# View for displaying segment translation (not currently used)
-#@app.route('/tra', methods=['GET', 'POST'])
-#def tra():
-#    print("In tra...")
-#    form = request.form
-#    print("Form for tra: {}".format(form))
-#    if form.get('next') == 'tra':
-#        t = translate(SENTENCE, SPA, GRN)
-#        print("Translations {}".format(t))
-#        return render_template('tra.html', sentence=SENTENCE, translation=t)
-#    elif form.get('next') == 'enter':
-#        return render_template('tra.html', sentence=None, translation=None)
-#    elif form.get('next') == 'sent':
-#        return render_template('sent.html', sentence=None, translation=None)
-#    return render_template('tra.html', sentence=None, translation=None)
-
-# Not needed because this is in runserver.py and mainumby.py.
+# Not needed because this is in runserver.py.
 if __name__ == "__main__":
     kuaa.app.run(host='0.0.0.0')
 
