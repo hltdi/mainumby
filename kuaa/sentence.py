@@ -575,7 +575,7 @@ class Sentence:
             if key in matched_keys:
                 # Already matched one for this key, so don't bother checking.
                 if verbosity:
-                    print("Already matched group with key {}".format(key))
+                    print("Not considering {} because already matched group with key {}".format(group, key))
                 continue
             snodes = group.match_nodes(self.nodes, head_i, verbosity=verbosity)
             if not snodes:

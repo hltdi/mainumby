@@ -1,5 +1,5 @@
 #   
-#   Mbojereha Database.
+#   Mainumby Database.
 #   Based almost entirely on what's in Guampa.
 #   Uses the Object Relational Mapper implementation of SQLAlchemy.
 #
@@ -9,7 +9,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2015, HLTDI <gasser@cs.indiana.edu>
+#   Copyright (C) 2015, 2016 HLTDI <gasser@cs.indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -35,7 +35,7 @@ from sqlalchemy.orm import sessionmaker, relationship, backref
 from flask import _app_ctx_stack
 import datetime
 
-DATABASE = 'sqlite:///mbojereha.db'
+DATABASE = 'sqlite:///mainumby.db'
 
 Base = declarative_base()
 
@@ -80,39 +80,56 @@ class User(Base):
     def __repr__(self):
        return "<User({}, '{}', '{}')>".format(self.id, self.username, self.fullname)
 
-class Document(Base):
-    """A document uploaded by a user, eventually segmented into sentences."""
-    
-    __tablename__ = 'documents'
-
-    id = Column(Integer, primary_key=True)
-    title = Column(String)
-    userid = Column(Integer, ForeignKey('users.id'))
-
-    def __init__(self, title, userid):
-        self.title = title
-        self.userid = userid
-
-    def __repr__(self):
-       return "<Document({}, '{}')>".format(self.id, self.title)
+#class Document(Base):
+#    """A document uploaded by a user, eventually segmented into sentences."""
+#    
+#    __tablename__ = 'documents'
+#
+#    id = Column(Integer, primary_key=True)
+#    title = Column(String)
+#    userid = Column(Integer, ForeignKey('users.id'))
+#
+#    def __init__(self, title, userid):
+#        self.title = title
+#        self.userid = userid
+#
+#    def __repr__(self):
+#       return "<Document({}, '{}')>".format(self.id, self.title)
 
 class Sentence(Base):
-    """A sentence to be (or already) translated. Part of a Document."""
+    """A sentence to be (or already) translated."""
     
     __tablename__ = 'sentences'
 
     id = Column(Integer, primary_key=True)
     text = Column(String)
-    docid = Column(Integer, ForeignKey('documents.id'))
-    doc = relationship("Document", backref=backref("sentences", order_by=id))
+    userid = Column(Integer, ForeignKey('users.id'))
 
-    def __init__(self, text, docid):
+    def __init__(self, text, userid):
         self.text = text
-        self.docid = docid
+        self.userid = userid
 
     def __repr__(self):
         text = self.text[:25] + '...' if len(self.text) > 25 else self.text
         return "<Sentence({}, '{}')>".format(self.id, text)
+
+class Segment(Base):
+    """A segment of a sentence being translated."""
+    
+    __tablename__ = 'segments'
+
+    id = Column(Integer, primary_key=True)
+    text = Column(String)
+    sentenceid = Column(Integer, ForeignKey('sentences.id'))
+    sentence = relationship("Sentence", backref=backref("segments", order_by=id))
+
+    def __init__(self, text, sentenceid):
+        self.text = text
+        self.sentenceid = docid
+
+    def __repr__(self):
+        text = self.text[:25] + '...' if len(self.text) > 25 else self.text
+        return "<Segment({}, '{}')>".format(self.id, text)
 
 class Translation(Base):
     """A translation of a Sentence."""
@@ -124,7 +141,6 @@ class Translation(Base):
     sentenceid = Column(Integer, ForeignKey('sentences.id'))
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)
     userid = Column(Integer, ForeignKey('users.id'))
-    sentence = relationship("Sentence", backref=backref("translations", order_by=id))
 
     def __init__(self, text, userid, sentenceid):
         self.text = text

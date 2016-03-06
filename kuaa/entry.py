@@ -267,6 +267,10 @@ class Group(Entry):
         self.agr = agr or None
         # Count in TMs
         self.count = count
+        # Distance back from sentence node matching head to start in matching group
+        self.snode_start = 0
+        if self.head_index > 0 and not any([Group.is_cat(t) for t in self.tokens[:self.head_index]]):
+            self.snode_start = -self.head_index
 
     def __repr__(self):
         """Print name."""
@@ -306,24 +310,30 @@ class Group(Entry):
         return p
 
     def match_nodes(self, snodes, head_sindex, verbosity=0):
-        """Attempt to match the group tokens (and features) with snodes from a sentence,
+        """Attempt to match the group tokens (and features) with tokens from a sentence,
         returning the snode indices and root and unified features if any."""
         if verbosity > 1:
             print("Does {} match {}".format(self, snodes))
         match_snodes = []
         last_sindex = -1
         last_cat = False
+        # Start searching in sentence depending on where candidate head_sindex is
+        snindex = head_sindex + self.snode_start
+        if snindex < 0:
+            # Start of group is before beginning of sentence
+            return False
         for index, token in enumerate(self.tokens):
             match_snodes1 = []
             feats = self.features[index] if self.features else None
             if verbosity > 0:
                 print(" Attempting to match {} in {}".format(token, self))
             matched = False
-            for node in snodes:
+            for node in snodes[snindex:]:
                 snode_indices = node.raw_indices
                 snode_start, snode_end = snode_indices[0], snode_indices[-1]
                 if verbosity > 1:
-                    print("  Trying {}, token index {}, snode index {}, head index {}, last s index {}".format(node, index, snode_indices, head_sindex, last_sindex))
+                    fstring = "  Trying {}, token index {}, snode index {}, head index {}, last s index {}"
+                    print(fstring.format(node, index, snode_indices, head_sindex, last_sindex))
                 if index == self.head_index:
                     # This token is the head of the group
                     if node.index == head_sindex:
@@ -336,18 +346,21 @@ class Group(Entry):
                             return False
                         else:
                             # Check whether the token is in the right position with respect to others
-                            if index > 0 and not last_cat and last_sindex >=0 and snode_start - last_sindex != 1:
-                                if verbosity:
-                                    print(" Group head token {} in sentence position {} doesn't follow last token at {}".format(token, snode_indices, last_sindex))
-                                    print("{} failed to match in token {}".format(self, token))
-                                return False
+#                            if index > 0 and not last_cat and last_sindex >=0 and snode_start - last_sindex != 1:
+#                                if verbosity:
+#                                    fstring = " Group head token {} in sentence position {} doesn't follow last token at {}"
+#                                    print(fstring.format(token, snode_indices, last_sindex))
+#                                    print("{} failed to match in token {}".format(self, token))
+#                                return False
                             match_snodes1.append((node.index, node_match))
                             if verbosity:
-                                print(" Group token {} matched node {} in {}, node index {}, last_sindex {}".format(token, node, self, snode_indices, last_sindex))
+                                fstring = " Group token {} matched node {} in {}, node index {}, last_sindex {}"
+                                print(fstring.format(token, node, self, snode_indices, last_sindex))
                             last_sindex = snode_end
                             if verbosity > 1:
                                 print("  Head matched already".format(node))
                             matched = True
+                            snindex = node.index + 1
                             # Don't look further for an snode to match this token
                             break
                 else:
@@ -355,21 +368,24 @@ class Group(Entry):
                     if verbosity > 1:
                         print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
                     if node_match != False:
-                        if not Group.is_cat(token) and not last_cat and index > 0 and last_sindex >= 0 and snode_start - last_sindex != 1:
-                            if verbosity:
-                                print(" Group token {} in sentence position {} doesn't follow last token at {}".format(token, snode_indices, last_sindex))
-                            return False
+#                        if not Group.is_cat(token) and not last_cat and index > 0 and last_sindex >= 0 and snode_start - last_sindex != 1:
+#                            if verbosity:
+#                                fstring = " Group token {} in sentence position {} doesn't follow last token at {}"
+#                                print(fstring.format(token, snode_indices, last_sindex))
+#                            return False
                         match_snodes1.append((node.index, node_match))
                         if Group.is_cat(token):
                             last_cat = True
                         else:
                             last_cat = False
                         if verbosity:
-                            print(" Group token {} matched node {} in {}, node index {}, last_sindex {}".format(token, node, self, snode_indices, last_sindex))
+                            fstring = " Group token {} matched node {} in {}, node index {}, last_sindex {}"
+                            print(fstring.format(token, node, self, snode_indices, last_sindex))
                         last_sindex = snode_end
                         if verbosity > 1:
                             print("  Matched node {}".format(node))
                         matched = True
+                        snindex = node.index + 1
             if not matched:
                 if verbosity > 1:
                     print("  {} not matched; failed".format(token))

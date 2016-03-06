@@ -44,6 +44,7 @@ class Session:
         self.user = user
         self.end = None
         self.running = True
+        # List of SentRecord objects
         self.sentences = []
         self.id = Session.id
         Session.id += 1
@@ -101,17 +102,17 @@ class SegRecord:
 class Feedback:
     """Feedback from a user about a segment and its translation."""
 
-    def __init__(self, accept=True, pos_index=-1, choice_index=-1, translation=None):
+    def __init__(self, accept=True, pos_indices=(-1, -1), choice_index=-1, translation=None):
         """
         EITHER the user simply
         -- accepts the system's translation (accept=True) OR
         -- makes a selection from the alternatives offered by the system
-           (posindex and choice_index are non-negative) OR
+           (pos_indices and choice_index are non-negative) OR
         -- provides an alternate translation (translation is not None).
         No backpointer to the SegRecord that this refers to.
         """
         self.accept = accept
-        self.pos_index = pos_index
+        self.pos_indices = pos_indices
         self.choice_index = choice_index
         self.translation = translation
         self.id = '@'

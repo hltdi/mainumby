@@ -282,6 +282,10 @@
 ->grn moõpa
 *** ¿ adónde ; ^ adónde 1
 ->grn moõpa
+*** ¿ por qué; ^ qué 2
+->grn mba'érepa
+*** ¿ por qué no ; ^ qué 2
+->grn mba'éguitepa
 *** ¿ qué ; ^ qué 1
 ->grn mba'épa
 *** ¿ quién ; ^ quién 1
@@ -292,10 +296,6 @@
 ->grn araka'épa
 *** ¿ cuánto ; ^ cuánto 1
 ->grn mbovýpa
-*** ¿ por qué; ^ qué 2
-->grn mba'érepa
-*** ¿ por qué no ; ^ qué 2
-->grn mba'éguitepa
 ### PRE/POSPOSICIONES, ADVERBIOS DE LUGAR Y TIEMPO
 # DE (GENITIVO DE SUSTANTIVOS en n.grp)
 *** de $pro ; ^ de 0
@@ -328,21 +328,41 @@
 ->grn ãicha
 ->grn ãichagua
 # POR
-# IDIOMS WITH POR
+# FIXED PHRASES WITH POR
 *** por mañana ; ^ por 0
 ->grn pyharevekue ; || -1, 0
 *** por noche ; ^ por 0
 ->grn pyharekue ; || -1, 0
-*** por $pro ; ^ por 0
-->grn $pro[caso=re] ; || -1, 0
-->grn $pro[caso=gui] ; || -1, 0
+*** por debajo ; ^ debajo 1
+->grn guýre
+*** por abajo ; ^ abajo 1
+->grn oguývo
+*** por él ; ^ por 0
+->grn hesehápe
+*** por ella ; ^ por 0
+->grn hesehápe
+*** por eso ; ^ por 0
+->grn ajeve
+*** por esto ; ^ por 0
+->grn kóagui
+->grn kóvagui
+*** por lo cual ; ^ por 0
+->grn ajeve
+->grn ajevéramo
+*** por lo que ; ^ por 0
+->grn ajeve
+*** por sí ; ^ por 0
+->grn ojuehe
+*** por todas partes ; ^ por 0
+->grn opárupi
 *** por $num $n ; ^ por 0
 ->grn $num $n rehe ; || 2, 0, 1
 ->grn $num $n rupi ; || 2, 0, 1
 *** por $n ; ^ por 0
 ->grn $n rehe|rupi ; || 1, 0
-*** por él ; ^ por 0
-->grn hesehápe
+*** por $pro ; ^ por 0
+->grn $pro[caso=re] ; || -1, 0
+->grn $pro[caso=gui] ; || -1, 0
 # DENTRO (DE)
 *** dentro ; ^ dentro 0
 ->grn ipýpe
@@ -360,8 +380,6 @@
 ->grn guy
 *** debajo de él ; ^ debajo 0
 ->grn iguýpe
-*** por debajo ; ^ debajo 1
-->grn guýre
 *** debajo de ; ^ debajo 0
 ->grn guýpe
 # ENCIMA (DE)
@@ -426,8 +444,6 @@
 *** hacia abajo ; ^ abajo 1
 ->grn ñemby
 ->grn yvýgotyo
-*** por abajo ; ^ abajo 1
-->grn oguývo
 *** en absoluto ; ^ absoluto 1
 ->grn araka'eve
 *** abundantemente ; ^ abundantemente 0
@@ -2014,29 +2030,6 @@
 ->grn michĩmimi
 *** un poquito ; ^ poquito 1
 ->grn mbovymi
-*** por ella ; ^ por 0
-->grn hesehápe
-*** por eso ; ^ por 0
-->grn ajeve
-*** por esto ; ^ por 0
-->grn kóagui
-->grn kóvagui
-*** por lo cual ; ^ por 0
-->grn ajeve
-->grn ajevéramo
-*** por lo que ; ^ por 0
-->grn ajeve
-*** por qué ; ^ por 0
-->grn mba'égui
-->grn mba'éguipa
-->grn mba'éiko
-->grn mba'émo
-->grn mba'ére
-->grn mba'érepa
-*** por sí ; ^ por 0
-->grn ojuehe
-*** por todas partes ; ^ por 0
-->grn opárupi
 *** porque ; ^ porque 0
 ->grn ajeve
 ->grn ajevéramo

@@ -108,6 +108,8 @@ def sent():
     form = request.form
     print("Form for sent: {}".format(form))
     if 'reg' in form:
+        # Register feedback from user to current segment
+        print("Registering {}".format(form))
         return render_template('sent.html', sentence=SEGS)
     if 'text' in form and not DOC:
         # Create a new document

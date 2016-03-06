@@ -76,17 +76,21 @@ class SolSeg:
         transhtml = '<table border=1>'
         mult_trans = len(self.translation) > 1
         for tindex, t in enumerate(self.translation):
+            # A single translation of the source segment
             transhtml += '<tr>'
-            for tt in t:
+            for wordindex, tword in enumerate(t):
+                # A single word withint the translation
                 transhtml += "<td class='trans'>"
-                if '|' in tt:
+                if '|' in tword:
                     choices = []
-                    for ttt in tt.split('|'):
-                        choices.append("<input type='radio' name={} id={} value={}>{}".format(self.token_str, ttt, ttt, ttt))
+                    # Word has alternatives choices = []
+                    for tword_choice in tword.split('|'):
+                        choices.append("<input type='radio' name='{}:{}:{}' id={} value={}>{}".format(self.token_str, tindex, wordindex,
+                                                                                                      tword_choice, tword_choice, tword_choice))
                     choices = '<br/>'.join(choices)
                     transhtml += choices
                 else:
-                    transhtml += tt
+                    transhtml += tword
                 transhtml += '</td>'
             transhtml += '</tr>'
         transhtml = transhtml.replace('_', ' ')
