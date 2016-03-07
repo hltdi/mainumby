@@ -49,6 +49,8 @@
 # -- Group files can have comments (# at beginning of line only).
 # 2016.02.29
 # -- Group files can have features that are part of all entries (except those with the feature attribute specified).
+# 2016.03.06
+# -- Postprocessing dict for generation (e.g., ĝ -> g̃)
 
 from .entry import *
 from kuaa.morphology.morpho import Morphology, POS
@@ -101,6 +103,8 @@ EXPL_FEAT_RE = re.compile(r'\s*xf(.*):\s*(.*)\s*=\s*(.*)')
 # Preprocessing: replace characters in first list with last char
 # clean: â, ä = ã
 CLEAN_RE = re.compile(r'\s*cle.*?:\s*(.*)\s*=\s*(.*)')
+# postprocessing: ĝ = g̃
+POSTPROC_RE = re.compile(r'\s*postproc.*?:\s*(.*)\s*=\s*(.*)')
 
 ## Regex for checking for non-ascii characters
 ASCII_RE = re.compile(r'[a-zA-Z]')
@@ -169,6 +173,8 @@ class Language:
         self.pos = pos or []
         # Dictionary of preprocessing character conversions
         self.clean = {}
+        # Dictionary of postprocessing character conversions
+        self.postproc = {}
         # Dictionary of suffixes and suffix sequences and what to do with them
         self.suffixes = {}
         self.accent = None
@@ -530,6 +536,14 @@ class Language:
                     for d in dirty.split(','):
                         d = d.strip()
                         self.clean[d] = clean
+                    continue
+
+                m = POSTPROC_RE.match(line)
+                if m:
+                    dirty, clean = m.groups()
+                    for d in dirty.split(','):
+                        d = d.strip()
+                        self.postproc[d] = clean
                     continue
 
                 m = FEATS_RE.match(line)
@@ -1487,25 +1501,16 @@ class Language:
                 output.extend(posmorph.gen(root, update_feats=features, guess=guess, only_words=True))
         if output:
 #            o = [out[0] for out in output]
+            # if there is a postprocessing dict, apply it
+            if self.postproc:
+                for oi, outp in enumerate(output):
+                    for d, c in self.postproc.items():
+                        if d in outp:
+                            output[oi] = outp.replace(d, c)
             return output
         else:
             print("The root/feature combination {}:{} word can't be generated!".format(root, features.__repr__()))
             return [root]
-
-    #        if root not in self.genforms:
-#            return [root]
-#        if not features:
-#            features = FeatStruct({})
-#        gendict = self.genforms[root]
-#        # List of matching forms
-#        result = []
-#        for feat_list, form in gendict.items():
-#            if features.match_list(feat_list):
-#                result.append(form)
-#            print('Feat list {}, form {}'.format())
-#        if not result:
-#            print("No forms found for {}:{}".format(root, features))
-#        return result
 
 class LanguageError(Exception):
     '''Class for errors encountered when attempting to update the language.'''

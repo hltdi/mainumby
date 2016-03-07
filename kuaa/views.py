@@ -31,12 +31,16 @@
 # -- SESSION and SEGS globals added.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-from kuaa import app, make_document, load, seg_trans, quit
+from kuaa import app, make_document, load, seg_trans, quit, start
 
 # Global variables for views; probably a better way to do this...
 SESSION = SPA = GRN = DOC = SENT = SEGS = None
 SINDEX = 0
 # SOLINDEX = 0
+
+def init_session():
+    global SESSION
+    SESSION = start()
 
 def load_languages():
     """Load Spanish and Guarani data."""
@@ -92,6 +96,9 @@ def base():
 @app.route('/doc', methods=['GET', 'POST'])
 def doc():
 #    print("In doc...")
+    # Initialize Session if it's not already
+    if not SESSION:
+        init_session()
     # Load Spanish and Guarani if they're not loaded.
     if not SPA:
         load_languages()
@@ -110,6 +117,8 @@ def sent():
     if 'reg' in form:
         # Register feedback from user to current segment
         print("Registering {}".format(form))
+        if SESSION:
+            SESSION.record(SENTENCE, SEGS, form)
         return render_template('sent.html', sentence=SEGS)
     if 'text' in form and not DOC:
         # Create a new document

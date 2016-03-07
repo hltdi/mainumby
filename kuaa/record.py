@@ -64,8 +64,9 @@ class Session:
         self.running = False
         self.end = get_time()
 
-    def record(self, sentence, seg):
+    def record(self, sentence, seg, trans_dict):
         """Record feedback about a segment's translation within a sentence."""
+        print("{} recording translation in {} for {} in {}".format(self, trans_dict, seg, sentence))
 
 class SentRecord:
     """A record of a Sentence and a single user's response to it."""

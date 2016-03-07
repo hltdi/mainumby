@@ -1,9 +1,9 @@
 ########################################################################
 #
-#   This file is part of the Mbojereha project
+#   This file is part of the Mainumby project
 #
-#   Copyright (C) 2015
-#   The HLTDI L^3 Team <gasser@cs.indiana.edu>
+#   Copyright (C) 2015, 2016
+#   The HLTDI L^3 Team <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -183,10 +183,9 @@ class Morphology(dict):
         return self[pos].analyze(form, to_dict=to_dict, preproc=preproc, guess=guess, phon=phon, segment=segment,
                                  trace=trace, tracefeat=tracefeat)
 
-    def gen(self, form, features, pos, postproc=False, guess=False, phon=False, segment=False,
+    def gen(self, form, features, pos, guess=False, phon=False, segment=False,
             trace=False):
-        return self[pos].gen(form, features, postproc=postproc,
-                             guess=guess, phon=phon, segment=segment, trace=trace)
+        return self[pos].gen(form, features, guess=guess, phon=phon, segment=segment, trace=trace)
 
     def load_fst(self, label, generate=False, create_fst=True, save=False, verbose=False):
         """Load an FST that is not associated with a particular POS."""
@@ -300,8 +299,6 @@ class POS:
         ## Functions
         # Analysis to string
         self.anal2string = None
-        # Postprocess (roots might be treated specially)
-        self.postprocess = None
         # Dict of common and irregular analyzed words for analysis
         self.analyzed = {}
         # Reverse dict for analyzed words, used in generation (derived from self.analyzed)
@@ -591,7 +588,7 @@ class POS:
                 result.append((root, anal))
         return result
 
-    def gen(self, root, features=None, postproc=False, update_feats=None,
+    def gen(self, root, features=None, update_feats=None,
             guess=False, segment=False, fst=None, timeit=False, only_one=False, cache=True,
             # Return only word forms
             only_words=True,
@@ -616,10 +613,6 @@ class POS:
         fsset = FSSet.cast(upd_features)
         if fst:
             gens = fst.transduce(root, fsset, seg_units=self.language.seg_units, trace=trace, timeit=timeit)
-            if postproc:
-                # For languages with non-roman orthographies
-                for gen in gens:
-                    gen[0] = postproc(gen[0])
             if only_words:
                 gens = [g[0] for g in gens]
             if cache and gens:
@@ -676,13 +669,6 @@ class POS:
         if new_word:
             # only use the first generated word
             return new_word[0][0]
-
-    def postproc(self, analysis):
-        '''Postprocess analysis (mutating it) according postproc attribute in Morphology.'''
-        if self.postprocess:
-            return self.postprocess(analysis)
-        else:
-            return analysis
 
     def update_FS(self, fs, features, top=True):
         """Add or modify features (a FS, dict, or string) in fs."""

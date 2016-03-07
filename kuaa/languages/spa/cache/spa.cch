@@ -94,7 +94,7 @@ asociados || asociado:[g=m,n=1,pos=n];asociar:[g=m,n=1,pos=v,tm=prc]
 asombro || asombro:[g=m,n=0,pos=n];asombrar:[pos=v,p=1,n=0,tm=prs]
 aspiramos || aspirar:[pos=v,p=1,n=1,tm=prs];aspirar:[pos=v,p=1,n=1,tm=prt]
 asumimos || asumir:[pos=v,p=1,n=1,tm=prs];asumir:[pos=v,p=1,n=1,tm=prt]
-así || así:;asir:[pos=v,p=1,n=0,tm=prt];asir:[+VOS,pos=v,p=2,n=0,tm=ipv]
+así || así:
 ataque || ataque:[g=m,n=0,pos=n];atacar:[pos=v,p=3,n=0,tm=sbp];atacar:[pos=v,p=1,n=0,tm=sbp]
 ataques || ataque:[g=m,n=1,pos=n];atacar:[pos=v,p=2,n=0,tm=sbp]
 atractivo || atractivo:[g=m,n=0,pos=n];atractivo:[g=m,n=0,pos=a]

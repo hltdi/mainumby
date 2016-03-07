@@ -88,12 +88,12 @@ class SolSeg:
                     choices = []
                     # Word has alternatives choices = []
                     for tword_choice in tword.split('|'):
-                        choices.append("<input type='radio' name='{}:{}:{}' id={} value={}>{}".format(self.token_str, tindex, wordindex,
+                        choices.append('<input type="radio" name="{}:{}:{}" id={} value="{}">{}'.format(self.token_str, tindex, wordindex,
                                                                                                       tword_choice, tword_choice, tword_choice))
                     choices = '<br/>'.join(choices)
                     transhtml += choices
                 else:
-                    transhtml += tword
+                    transhtml += '<input type="radio" name="{}:{}:{}" id={} value="{}">{}'.format(self.token_str, tindex, wordindex, tword, tword, tword)
                 transhtml += '</td>'
             transhtml += '</tr>'
         transhtml = transhtml.replace('_', ' ')

@@ -24,6 +24,8 @@ clean: ù = ú
 clean: ỳ = ý
 clean: ’,`,´,°,‘ = '
 
+postproc: ĝ = g̃
+
 feats:
 
 ##### VERBOS; ÑE'ẼTEVAKUÉRA

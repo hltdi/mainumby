@@ -75,9 +75,9 @@ def quit(session=None):
     if session:
         session.quit()
 
-def init():
+def start():
     """Initialize a session."""
-    return Session()
+    return kuaa.Session()
 
 # Import views. This has to appear after the app is created.
 import kuaa.views
