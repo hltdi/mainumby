@@ -87,6 +87,9 @@
 # 2016.3.1
 # -- Tokens that are deleted in Morphosyns can be assigned to nodes other than the next
 #    one, as in <la [adj] [n]>
+# 2016.3.6
+# -- Groups can include tokens that are deleted in MorphoSyns, e.g., <por (la) noche>
+#    (with no indication in the group that they are deleted).
 
 import copy, itertools
 import yaml
@@ -322,7 +325,14 @@ class Group(Entry):
         if snindex < 0:
             # Start of group is before beginning of sentence
             return False
+        matcheddel = False
         for index, token in enumerate(self.tokens):
+            # Whether there's a sentence node gap between this token and the last one that matched
+            nodegap = False
+            # Whether this token is the group head
+            ishead = (index == self.head_index)
+#            if matcheddel:
+#                print("Matching token {} in {} following deleted match".format(token, self))
             match_snodes1 = []
             feats = self.features[index] if self.features else None
             if verbosity > 0:
@@ -331,10 +341,29 @@ class Group(Entry):
             for node in snodes[snindex:]:
                 snode_indices = node.raw_indices
                 snode_start, snode_end = snode_indices[0], snode_indices[-1]
+                leftdel = None
+                rightdel = None
+                if node.left_delete:
+                    leftdel = node.left_delete
+#                    print(" Trying to match {} in {} with left deleted stokens {}".format(token, self, leftdel))
+                    matcheddel = False
+                    for ld in leftdel:
+                        if token == ld:
+                            # Current group token matches left deleted sentence node token; advance to next group token
+#                            print("  {} matches, advancing to next group token".format(ld))
+                            matcheddel = True
+                            break
+                    if matcheddel:
+                        match_snodes1.append((node.index, None, token, False))
+                        # Matched left deleted token; stop searching through snodes for match
+                        break
+                if node.right_delete:
+                    rightdel = node.right_delete
+                    print(" Trying to match {} in {} with right deleted stokens {}".format(token, self, rightdel))
                 if verbosity > 1:
                     fstring = "  Trying {}, token index {}, snode index {}, head index {}, last s index {}"
                     print(fstring.format(node, index, snode_indices, head_sindex, last_sindex))
-                if index == self.head_index:
+                if ishead:
                     # This token is the head of the group
                     if node.index == head_sindex:
                         # This is the token corresponding to the group head
@@ -345,14 +374,14 @@ class Group(Entry):
                                 print("{} failed to match in token {}".format(self, token))
                             return False
                         else:
-                            # Check whether the token is in the right position with respect to others
+                            # If the last token was not a category, this has to follow immediately; if it doesn't fail
 #                            if index > 0 and not last_cat and last_sindex >=0 and snode_start - last_sindex != 1:
 #                                if verbosity:
 #                                    fstring = " Group head token {} in sentence position {} doesn't follow last token at {}"
 #                                    print(fstring.format(token, snode_indices, last_sindex))
 #                                    print("{} failed to match in token {}".format(self, token))
 #                                return False
-                            match_snodes1.append((node.index, node_match))
+                            match_snodes1.append((node.index, node_match, token, True))
                             if verbosity:
                                 fstring = " Group token {} matched node {} in {}, node index {}, last_sindex {}"
                                 print(fstring.format(token, node, self, snode_indices, last_sindex))
@@ -364,6 +393,7 @@ class Group(Entry):
                             # Don't look further for an snode to match this token
                             break
                 else:
+                    # Match a group token that's not the head
                     node_match = node.match(token, feats)
                     if verbosity > 1:
                         print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
@@ -373,7 +403,7 @@ class Group(Entry):
 #                                fstring = " Group token {} in sentence position {} doesn't follow last token at {}"
 #                                print(fstring.format(token, snode_indices, last_sindex))
 #                            return False
-                        match_snodes1.append((node.index, node_match))
+                        match_snodes1.append((node.index, node_match, token, True))
                         if Group.is_cat(token):
                             last_cat = True
                         else:
@@ -386,6 +416,12 @@ class Group(Entry):
                             print("  Matched node {}".format(node))
                         matched = True
                         snindex = node.index + 1
+                    else:
+                        nodegap = True
+            if matcheddel:
+                # Matched a left deleted element; move on to next group token
+                match_snodes.append(match_snodes1)
+                continue
             if not matched:
                 if verbosity > 1:
                     print("  {} not matched; failed".format(token))
@@ -964,7 +1000,7 @@ class MorphoSyn(Entry):
                 s_token = s_elem[0]
                 if MorphoSyn.del_token(s_token):
                     # Skip this sentence element; don't increment m_index
-                    print("   Skipping deleted element {}".format(s_elem))
+#                    print("   Skipping deleted element {}".format(s_elem))
                     continue
                 m_elem = m_elements[m_index]
                 m_index += 1

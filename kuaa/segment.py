@@ -39,6 +39,9 @@
 # 2016.03.02
 # -- Lots of changes to how segments are displayed in GUI, especially including radio buttons for
 #    choices.
+# 2016.03.06
+# -- GInsts create GNodes only for tokens that fail to get deleted by MorphoSyns. So there may be
+#    gaps in GNode indices.
 
 import itertools, copy
 from .cs import *
@@ -125,6 +128,16 @@ class SNode:
         self.analyses = analyses
         # Back pointer to sentence
         self.sentence = sentence
+        # Raw sentence tokens associated with this SNode
+        self.raw_tokens = [sentence.tokens[i] for i in self.raw_indices]
+        # Any deleted tokens to the left or right of the SNode token
+        self.left_delete = None
+        self.right_delete = None
+        token_headi = self.raw_tokens.index(self.token)
+        if token_headi != 0:
+            self.left_delete = self.raw_tokens[:token_headi]
+        if token_headi != len(self.raw_tokens) - 1:
+            self.right_delete = self.raw_tokens[token_head1:]
         # We'll need these for multiple matchings
         self.cats = self.get_cats()
         # Indices of candidate gnodes for this snode found during lexicalization
@@ -284,7 +297,22 @@ class GInst:
         self.head_index = head_index
 #        self.head_pos = group.pos
         # List of GNodes
-        self.nodes = [GNode(self, index, indices) for index, indices in enumerate(snode_indices)]
+        self.nodes = []
+        for index, sntups in enumerate(snode_indices):
+            # sntups is a list of snindex, match features, token, create? tuples
+            deleted = False
+            for snindex, match, token, create in sntups:
+                if not create:
+#                    print("token {} doesn't match its snode token".format(token))
+                    deleted = True
+                    break
+            if deleted:
+#                print("snode_index {} is a deleted node; make special GNode?".format(sntups))
+                # Increment index so indices correspond to raw group tokens
+                index += 1
+            else:
+                self.nodes.append(GNode(self, index, sntups))
+#        self.nodes = [GNode(self, index, indices) for index, indices in enumerate(snode_indices)]
         # Dict of variables specific to this group
         self.variables = {}
         # List of target language groups, gnodes, tnodes
@@ -296,6 +324,7 @@ class GInst:
         self.ncgnodes = self.ngnodes - self.nanodes
         # TreeTrans instance for this GInst; saved here so to prevent multiple TreeTrans translations
         self.treetrans = None
+#        print("Creating GInst {} with head i {} and snode indices {}".format(self, head_index, snode_indices))
 
     def __repr__(self):
         return '<<{}:{}>>'.format(self.group.name, self.group.id)
@@ -436,8 +465,10 @@ class GInst:
             features = tgroup.features
             # Go through source group nodes, finding alignments and agreement constraints
             # with target group nodes
-            for gn_index, gnode in enumerate(self.nodes):
-#                print("tgroup {}, gnode {}, gn_index {}".format(tgroup, gnode, gn_index))
+#            for gn_index, gnode in enumerate(self.nodes):
+            for gnode in self.nodes:
+                gn_index = gnode.index
+#                print(" tgroup {}, gnode {}, gn_index {}".format(tgroup, gnode, gn_index))
                 # Align gnodes with target tokens and features
                 targ_index = alignment[gn_index]
                 if targ_index < 0:
@@ -837,8 +868,8 @@ class TreeTrans:
 
     def generate_words(self, verbosity=0):
         """Do inter-group agreement constraints, and generate wordforms for each target node."""
-#        print('Generating words for {} with node features {}'.format(self, self.node_features))
         # Reinitialize nodes
+#        print("Generating words in {}, features {}".format(self, self.node_features))
         self.nodes = []
         for group, agr_constraints in self.agreements.items():
             for agr_constraint in agr_constraints:
@@ -852,12 +883,13 @@ class TreeTrans:
                 agr_feats1.mutual_agree(agr_feats2, feature_pairs)
         generator = self.sentence.target.generate
         for token, features, index in self.node_features:
-            if verbosity:
-                print("Token {}, features {}, index {}".format(token, features.__repr__(), index))
             root, pos = TreeTrans.get_root_POS(token)
+            if verbosity:
+                print("  Token {}, features {}, index {}".format(token, features.__repr__(), index))
             output = [token]
             if not pos:
                 # This word doesn't require generation, just return it in a list
+#                print("Generating {}: {}".format(index, output))
                 self.nodes.append((output, index))
             else:
 #                print("Generating {} : {} : {}".format(root, features.__repr__(), pos))

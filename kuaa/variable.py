@@ -1,5 +1,5 @@
 #   
-#   Mbojereha variables and domain stores: required for constraint satisfaction.
+#   Mainumby variables and domain stores: required for constraint satisfaction.
 #
 ########################################################################
 #

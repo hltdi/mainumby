@@ -499,8 +499,8 @@ class Sentence:
                     if pos:
                         anal['pos'] = pos
                 raw_indices = del_indices.get(tokindex, [])
-                if raw_indices:
-                    print("Adding del indices {} to SNode: {}:{}".format(raw_indices, token, index))
+#                if raw_indices:
+#                    print("Adding del indices {} to SNode: {}:{}".format(raw_indices, token, index))
                 raw_indices.append(tokindex)
 #                incorp_indices.append(tokindex)
                 self.nodes.append(SNode(token, index, anals, self, raw_indices))
@@ -587,6 +587,7 @@ class Sentence:
             if verbosity > 1:
                 print('Group {} matches snodes {}'.format(group, snodes))
             groups.append((head_i, snodes, group))
+#        print("Matched groups: {}".format(groups))
         # Create a GInst object and GNodes for each surviving group
         self.groups = [GInst(group, self, head_i, snodes, index) for index, (head_i, snodes, group) in enumerate(groups)]
         print("{} grupo(s) encontrado(s) para {}".format(len(self.groups), self))
@@ -1116,7 +1117,7 @@ class Solution:
             gnodes = [self.sentence.gnodes[index] for index in gn_indices]
             features = []
             for gnode in gnodes:
-#                print("gnode {}, snode_anal {}".format(gnode, gnode.snode_anal))
+#                print("{}: gnode {}, snode_anal {}".format(self, gnode, gnode.snode_anal))
                 snode_indices = gnode.snode_indices
                 snode_index = snode_indices.index(snode.index)
                 snode_anal = gnode.snode_anal[snode_index]
@@ -1150,7 +1151,7 @@ class Solution:
                 is_top = not any([(tree < other_tree) for other_tree in self.trees])
                 group_attribs = []
                 for tgroup, tgnodes, tnodes in ginst.translations:
-#                    print("TGROUP {}, TGNODES {}".format(tgroup, tgnodes))
+#                    print("TGROUP {}, TGNODES {}, TNODES {}".format(tgroup, tgnodes, tnodes))
                     for tgnode, tokens, feats, agrs, t_index in tgnodes:
                         if tgnode.cat:
                             if tgnode in abs_gnode_dict:
@@ -1176,20 +1177,9 @@ class Solution:
                 tt.display_all()
             elif tt.top:
                 # Figure out the maximum number of translations of merge nodes and non-merge nodes
-#                n_trans_nomerge = 1
                 # For non-merge nodes it's the number of translations of the group
                 n_trans_nomerge = len(tt.group_attribs)
                 n_trans_merge = 1
-#                nomerge = [s for s, f in tt.sol_gnodes_feats if len(s) == 1]
-#                if nomerge:
-#                    nomerge_trans = [tt.gnode_dict.get(s[0],[]) for s in nomerge]
-#                    for nt in nomerge_trans:
-#                        unique = []
-#                        for ntt in nt:
-#                            t = ntt[1:]
-#                            if t not in unique:
-#                                unique.append(t)
-#                        n_trans_nomerge = max(len(unique), n_trans_nomerge)
                 merge = [s for s, f in tt.sol_gnodes_feats if len(s) > 1]
                 if merge:
                     n_trans_merge = max([max([len(tt.gnode_dict.get(ss,[0])) for ss in s]) for s in merge])
@@ -1197,7 +1187,6 @@ class Solution:
                 for tm_i in range(n_trans_merge):
                     for tnm_i in range(n_trans_nomerge):
 #                        print(" Build indices: {}, {}".format(tm_i, tnm_i))
-#                        if tt.top:
                         tt.build(merge_index=tm_i, nomerge_index=tnm_i, verbosity=verbosity)
                         tt.generate_words()
                         tt.make_order_pairs()
