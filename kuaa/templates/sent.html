@@ -105,12 +105,10 @@ function OnRegistrar()
     document.Form1.submit();             // Submit the page
     return true;
 }
-{# Not currently used
- function seg(text) {
-    document.write(text)
-    document.getElementById("segtrans").innerHTML = text;
+function Segment(text, segment) {
+    document.getElementById('segtrans').innerHTML = text;
+    document.Form1.seg.value = segment;
 }
-#}
 </script>
 
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
@@ -130,9 +128,11 @@ function OnRegistrar()
 <p>Actual oración:
 <span class='sentence'>
 {% for seg in sentence %}
-{# Each segment responds to mouse clicks which replace the segtrans section with a table of translations #}
+{# Each segment responds to mouse clicks which replace the segtrans
+section with a table of translations and sets the value of the seg form variable #}
 <span onmouseover="this.style.cursor='pointer'" onmouseout="this.style.cursor='default'"
-onclick="document.getElementById('segtrans').innerHTML={{'%r'|format(seg[2])|e}}"><font color={{ seg[1] }}> {{ seg[0] }} </font></span>
+onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}});">
+<font color={{ seg[1] }}> {{ seg[0] }} </font></span>
 {% endfor %}
 </span>
 <p></p>
@@ -151,16 +151,13 @@ action='sent' name='sent' value='Próxima oración'>
   <tr><td class='mbojereha' id="segtrans"></td><td><p>  </p><p>  </p><p>  </p><p>  </p></td></tr>
 </table>
 
-<!--
-<input type=submit style="font-family: Verdana; font-size: 80%;"
-action='anal' name='anal' value='Próximo análisis'>
--->
-
 <hr/>
+
+<input type='hidden' name='seg' value=''>
 
 <h3>Tu traducción</h3>
 
-<TEXTAREA NAME="text" ROWS=2 COLS=75 style="font-family:Verdana"></TEXTAREA>
+<TEXTAREA NAME="tra" ROWS=2 COLS=75 style="font-family:Verdana"></TEXTAREA>
 <p>
 <input type=submit value='Registrar traducción' name='reg'
 action='sent' style="font-family: Verdana; font-size: 80%;">

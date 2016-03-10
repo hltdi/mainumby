@@ -127,6 +127,7 @@
 import copy, re, random
 from .ui import *
 from .segment import *
+from .record import SentRecord
 
 class Document(list):
     """A ist of of Sentences, split from a text string."""
@@ -149,11 +150,12 @@ class Document(list):
     # 0-2 pre-end characters (like ")"), 1 end character (.?!), 0-2 post-end characters (like ")")
     end_re = re.compile('[")\]}]{0,2}[.?!][.)"\]]{0,2}')
 
-    def __init__(self, language=None, target=None, text='', proc=True):
+    def __init__(self, language=None, target=None, text='', proc=True, session=None):
         self.set_id()
         self.language = language
         self.target = target
         self.text = text
+        self.session = session
         # Intermediate representations: list of word-like tokens and ints representing types
         self.tokens = []
         list.__init__(self)
@@ -250,7 +252,8 @@ class Document(list):
             tokindex += 1
         # Make Sentence objects for each list of tokens and types
         for sentence in sentences:
-            self.append(Sentence(language=self.language, tokens=sentence, target=self.target))
+            self.append(Sentence(language=self.language, tokens=sentence, target=self.target,
+                                 session=self.session))
 
 #            if Document.start_re(token) and tokindex < ntokens-1 and Document.is_sent_start(token[tokindex+1]):
 #                # Sentence beginning
@@ -270,6 +273,7 @@ class Sentence:
     def __init__(self, raw='', language=None, tokens=None, toktypes=None,
                  nodes=None, groups=None, target=None, init=False,
                  analyses=None,
+                 session=None,
                  verbosity=0):
         self.set_id()
         # A list of string tokens, created by a Document object including this sentence
@@ -327,6 +331,12 @@ class Sentence:
         self.trans_outputs = []
         # Complete translations
         self.complete_trans = []
+        # Session and associated SentRecord object; create if there is an active Session
+        self.session = session
+        if session and session.running:
+            self.record = self.make_record(session)
+        else:
+            self.record = None
         if verbosity:
             print("Created Sentence object {}".format(self))
         if init:
@@ -386,6 +396,10 @@ class Sentence:
 #        print("Copied {} as {}".format(self, s))
         self.altsyns.append(s)
         return s
+
+    def make_record(self, session):
+        """Create a SentRecord object to this sentence."""
+        return SentRecord(self, session=session)
 
     ## Initial processing
     
@@ -636,8 +650,9 @@ class Sentence:
             print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SOLUCIÓN POSIBLE".format(self))
             return
         print("Solving {}".format(self))
-#  with analyses {}".format(self, self.analyses))
-        print("Alt analyses: {}".format(self.altsyns))
+        if self.altsyns:
+            print("Alt analyses: {}".format(self.altsyns))
+        ds = None
         generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity,
                                           tracevar=tracevar)
         try:
@@ -662,6 +677,7 @@ class Sentence:
             if verbosity:
                 print('No more solutions')
         if not self.solutions:
+            print("Last DS: {}".format(ds))
             print("NINGUNAS SOLUCIONES encontradas para {}".format(self))
 #        elif translate and self.target:
 #            self.translate(all_trans=all_trans, verbosity=verbosity)
@@ -926,7 +942,7 @@ class Sentence:
         trees = [x[1][2] for x in trees]
         # Get the indices of the GNodes for each SNode
         solution = Solution(self, ginsts, s2gnodes, len(self.solutions),
-                            trees=trees, dstore=dstore)
+                            trees=trees, dstore=dstore, session=self.session)
         self.solutions.append(solution)
         return solution
 
@@ -1001,8 +1017,10 @@ class Solution:
     GNode in a selected group. Created when a complete variable assignment
     is found for a sentence."""
 
-    def __init__(self, sentence, ginsts, s2gnodes, index, trees=None, dstore=None):
+    def __init__(self, sentence, ginsts, s2gnodes, index, trees=None, dstore=None, session=None):
         self.sentence = sentence
+        # Source language
+        self.source = sentence.language
         # List of sets of gnode indices
         self.s2gnodes = s2gnodes
         self.ginsts = ginsts
@@ -1020,6 +1038,8 @@ class Solution:
         self.dstore = dstore
         # List of SolSegs, sentence segments with translations
         self.segments = []
+        # Current session (need for creating SegRecord objects)
+        self.session = session
         print("Created solution with dstore {} and ginsts {}".format(dstore, ginsts))
 
     def __repr__(self):
@@ -1065,11 +1085,11 @@ class Solution:
         for raw_indices, forms in tt:
             late = False
             start, end = raw_indices[0], raw_indices[-1]
-            print("Segment {}->{}".format(start, end))
+#            print("Segment {}->{}".format(start, end))
             if start > max_index+1:
                 # there's a gap between the farthest segment to the right and this one; make an untranslated segment
                 src_tokens = tokens[end_index+1:start]
-                seg = SolSeg(self, (end_index+1, start-1), [], src_tokens)
+                seg = SolSeg(self, (end_index+1, start-1), [], src_tokens, session=self.session)
                 self.segments.append(seg)
 #            src_tokens = tokens[start:end+1]
             if start < max_index:
@@ -1079,14 +1099,14 @@ class Solution:
             src_tokens = [(tokens[i] if i in raw_indices else '...') for i in range(start, end+1)]
             if late:
                 src_tokens[0] = "←" + src_tokens[0]
-            seg = SolSeg(self, raw_indices, forms, src_tokens)
+            seg = SolSeg(self, raw_indices, forms, src_tokens, session=self.session)
             self.segments.append(seg)
             max_index = max(max_index, end)
             end_index = end
         if max_index+1 < len(tokens):
             # Some word(s) at beginning not translated; use source forms with # prefix
             src_tokens = tokens[max_index+1:len(tokens)]
-            seg = SolSeg(self, (max_index+1, len(tokens)-1), [], src_tokens)
+            seg = SolSeg(self, (max_index+1, len(tokens)-1), [], src_tokens, session=self.session)
             self.segments.append(seg)
         self.seg_html()
 
@@ -1133,8 +1153,9 @@ class Solution:
         realize translation."""
         if verbosity:
             print("Making translations for {} with ginsts {}".format(self, self.ginsts))
-            for t in g.translations:
-                print("  {}".format(t))
+            for g in self.ginsts:
+                for t in g.translations:
+                    print("  {}".format(t))
         # Create TreeTrans instances here
         abs_gnode_dict = {}
         gnode_dict = {}

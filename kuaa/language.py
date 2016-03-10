@@ -223,6 +223,13 @@ class Language:
         """Print name."""
         return '<<{}>>'.format(self.name)
 
+    def is_punc(self, string):
+        """Does the string consist of only punctuation characters?"""
+        for char in string:
+            if char not in self.morphology.punctuation:
+                return False
+        return True
+
     @staticmethod
     def get_language_dir(abbrev):
         return os.path.join(LANGUAGE_DIR, abbrev)

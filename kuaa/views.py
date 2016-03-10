@@ -34,7 +34,7 @@ from flask import request, session, g, redirect, url_for, abort, render_template
 from kuaa import app, make_document, load, seg_trans, quit, start
 
 # Global variables for views; probably a better way to do this...
-SESSION = SPA = GRN = DOC = SENT = SEGS = None
+SESSION = SPA = GRN = DOC = SENT = SEGS = SEG_HTML = None
 SINDEX = 0
 # SOLINDEX = 0
 
@@ -50,7 +50,7 @@ def load_languages():
 def make_doc(text):
     """Create a Document object from the text."""
     global DOC
-    DOC = make_document(SPA, GRN, text)
+    DOC = make_document(SPA, GRN, text, session=SESSION)
 
 def get_sentence():
     global SINDEX
@@ -70,7 +70,8 @@ def get_segmentation():
     global SPA
     global GRN
     global SEGS
-    SEGS = seg_trans(SENTENCE, SPA, GRN)    
+    global SEG_HTML
+    SEGS, SEG_HTML = seg_trans(SENTENCE, SPA, GRN)    
 
 # def get_solution():
 #    global SOLINDEX
@@ -109,6 +110,7 @@ def doc():
 @app.route('/sent', methods=['GET', 'POST'])
 def sent():
     global SEGS
+    global SEG_HTML
     global SENTENCE
     global DOC
 #    print("In sent...")
@@ -119,7 +121,7 @@ def sent():
         print("Registering {}".format(form))
         if SESSION:
             SESSION.record(SENTENCE, SEGS, form)
-        return render_template('sent.html', sentence=SEGS)
+        return render_template('sent.html', sentence=SEG_HTML)
     if 'text' in form and not DOC:
         # Create a new document
         make_doc(form['text'])
@@ -136,7 +138,7 @@ def sent():
 #        segs = seg_trans(SENTENCE, SPA, GRN)
 #    print("Found segs {}".format(segs))
     # Show segmented sentence
-    return render_template('sent.html', sentence=SEGS)
+    return render_template('sent.html', sentence=SEG_HTML)
 
 @app.route('/fin', methods=['GET', 'POST'])
 def fin():

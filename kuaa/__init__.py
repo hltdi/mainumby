@@ -23,7 +23,7 @@
 #
 # =========================================================================
 
-__all__ = ['language', 'entry', 'ui', 'constraint', 'db', 'views', 'variable', 'sentence', 'cs', 'learn', 'utils']
+__all__ = ['language', 'entry', 'ui', 'constraint', 'db', 'views', 'variable', 'sentence', 'cs', 'learn', 'utils', 'record']
 
 from flask import Flask, url_for, render_template
 
@@ -49,7 +49,7 @@ def load(source='spa', target='grn'):
 #                   all_sols=all_sols, all_trans=all_trans, interactive=interactive, verbosity=verbosity)
 #    return sentence.complete_trans()[0]
 
-def seg_trans(sentence, source, target, verbosity=0):
+def seg_trans(sentence, source, target, session=None, verbosity=0):
     """Translate sentence and return marked-up sentence with segments colored.
     So far only uses first solution."""
     sentence.initialize(ambig=True, verbosity=verbosity)
@@ -57,13 +57,13 @@ def seg_trans(sentence, source, target, verbosity=0):
     if sentence.solutions:
         solution = sentence.solutions[0]
         solution.get_segs()
-        return solution.get_seg_html()
+        return solution.segments, solution.get_seg_html()
     else:
-        return sentence.get_html()
+        return [], sentence.get_html()
 
-def make_document(source, target, text):
+def make_document(source, target, text, session=None):
     """Create an Mbojereha Document object with the text."""
-    d = kuaa.Document(source, target, text, True)
+    d = kuaa.Document(source, target, text, True, session=session)
     return d
 
 def quit(session=None):

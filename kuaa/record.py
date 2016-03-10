@@ -64,9 +64,26 @@ class Session:
         self.running = False
         self.end = get_time()
 
-    def record(self, sentence, seg, trans_dict):
+    def record(self, sentence, segs, trans_dict):
         """Record feedback about a segment's translation within a sentence."""
-        print("{} recording translation in {} for {} in {}".format(self, trans_dict, seg, sentence))
+        sentrecord = sentence.record
+        print("{} recording translation for {} in {}".format(self, segs, sentrecord))
+        segment_key = trans_dict.get('seg')
+        # It might be capitalized
+        segment_key = lower(segment_key)
+        segrecord = sentrecord.segments.get(segment_key)
+        print("Segment to record: {}".format(segrecord))
+        filter_dict = {}
+        for key, value in trans_dict.items():
+            if key.isdigit():
+#                seg_key, x, segpart_key = key.partition(':')
+                print("  feedback key {}: value {}".format(key, value))
+                filter_dict[key] = value
+        if not filter_dict:
+            # No translation selected, get alternate translation submitted
+            print("Alternate translation: {}".format(trans_dict.get('tra')))
+        else:
+            print("Filter dict: {}".format(filter_dict))
 
 class SentRecord:
     """A record of a Sentence and a single user's response to it."""
@@ -77,8 +94,10 @@ class SentRecord:
         self.tokens = sentence.tokens
         self.time = get_time()
         self.user = user
-        # a list of SegRecord objects.
-        self.segments = []
+        # Add to parent Session
+        session.sentences.append(self)
+        # a dict of SegRecord objects, with token strings as keys
+        self.segments = {}
 
     def __repr__(self):
         session = "{}".format(self.session) if self.session else ""
@@ -87,13 +106,15 @@ class SentRecord:
 class SegRecord:
     """A record of a sentence segment and its translation by a user."""
 
-    def __init__(self, solseg, feedback, sentence=None, session=None):
+    def __init__(self, solseg, feedback=None, sentence=None, session=None):
         # a SentRecord instance
         self.sentence = sentence
         self.session = session
         self.indices = solseg.indices
         self.translation = solseg.translation
         self.tokens = solseg.token_str
+        # Add to parent SentRecord
+        self.sentence.segments[self.tokens] = self
         self.feedback = feedback
 
     def __repr__(self):

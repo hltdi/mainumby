@@ -41,9 +41,11 @@ __version__ = 1.0
 import kuaa
 
 ## Creación de oración simple y de documento.
-def eg_oracion(sentence, ambig=True, solve=False):
+def eg_oracion(sentence, ambig=True, solve=False, session=None):
+    if session is True:
+        session = kuaa.start()
     e, g = cargar_eg()
-    d = kuaa.Document(e, g, sentence, True)
+    d = kuaa.Document(e, g, sentence, True, session=session)
     s = d[0]
     s.initialize(ambig=ambig)
     if solve:
