@@ -117,7 +117,7 @@ class Solver:
                         # Score is just the index of the state in the list returned by distribute
                         val = score
                         score += 1
-                    print("next state {}, value {}".format(next_state, val))
+                    print("Next state {}, value {}".format(next_state, val))
                     # Add next state where it belongs in the queue
                     fringe.put((val, next_state))
             n += 1

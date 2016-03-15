@@ -230,6 +230,13 @@ class Language:
                 return False
         return True
 
+    def ortho_clean(self, string):
+        """Clean up orthographic variability."""
+        for c, d in self.clean.items():
+            if c in string:
+                string = string.replace(c, d)
+        return string
+
     @staticmethod
     def get_language_dir(abbrev):
         return os.path.join(LANGUAGE_DIR, abbrev)

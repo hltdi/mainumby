@@ -625,10 +625,6 @@
 *** medida_n de $n ; ^ medida_n 0
 ->grn $n <ha'ã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n <ha'ãha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
-*** medio_n de $n ; ^ medio_n 0
-->grn $n ku'a_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
-->grn $n mbyte_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
-->grn $n apyte_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 *** mesa_n de $n ; ^ mesa_n 0
 ->grn $n mesa_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n karuháva_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n

@@ -40,7 +40,11 @@ SINDEX = 0
 
 def init_session():
     global SESSION
-    SESSION = start()
+    global GRN
+    global SPA
+    if not SPA:
+        load_languages()
+    SESSION = start(SPA, GRN)
 
 def load_languages():
     """Load Spanish and Guarani data."""
@@ -101,8 +105,8 @@ def doc():
     if not SESSION:
         init_session()
     # Load Spanish and Guarani if they're not loaded.
-    if not SPA:
-        load_languages()
+#    if not SPA:
+#        load_languages()
     return render_template('doc.html')
 
 # View for displaying parsed sentence and sentence translation and
@@ -120,7 +124,7 @@ def sent():
         # Register feedback from user to current segment
         print("Registering {}".format(form))
         if SESSION:
-            SESSION.record(SENTENCE, SEGS, form)
+            SESSION.record(SENTENCE.record, form)
         return render_template('sent.html', sentence=SEG_HTML)
     if 'text' in form and not DOC:
         # Create a new document

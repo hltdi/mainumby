@@ -106,7 +106,7 @@ function OnRegistrar()
     return true;
 }
 function Segment(text, segment) {
-    document.getElementById('segtrans').innerHTML = text;
+    document.getElementById('segtra').innerHTML = text;
     document.Form1.seg.value = segment;
 }
 </script>
@@ -128,7 +128,7 @@ function Segment(text, segment) {
 <p>Actual oración:
 <span class='sentence'>
 {% for seg in sentence %}
-{# Each segment responds to mouse clicks which replace the segtrans
+{# Each segment responds to mouse clicks which replace the segtra
 section with a table of translations and sets the value of the seg form variable #}
 <span onmouseover="this.style.cursor='pointer'" onmouseout="this.style.cursor='default'"
 onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}});">
@@ -148,7 +148,7 @@ action='sent' name='sent' value='Próxima oración'>
 
 <table border=1>
   <tr><th>Mbojereha</th><th class='TM' color="silver">Mandu'a</th></tr>
-  <tr><td class='mbojereha' id="segtrans"></td><td><p>  </p><p>  </p><p>  </p><p>  </p></td></tr>
+  <tr><td class='mbojereha' id="segtra"></td><td><p>  </p><p>  </p><p>  </p><p>  </p></td></tr>
 </table>
 
 <hr/>
@@ -156,8 +156,21 @@ action='sent' name='sent' value='Próxima oración'>
 <input type='hidden' name='seg' value=''>
 
 <h3>Tu traducción</h3>
+<table>
+<tr>
+   <th>De esta frase</th>
+   <th>De la oración entera</th>
+</tr>
+<tr>
+  <td>
+    <TEXTAREA NAME="UTraSeg" ROWS=2 COLS=30 style="font-family:Verdana"></TEXTAREA>
+  </td>
+  <td>
+    <TEXTAREA NAME="UTraOra" ROWS=2 COLS=50 style="font-family:Verdana"></TEXTAREA>
+  </td>
+</tr>
+</table>
 
-<TEXTAREA NAME="tra" ROWS=2 COLS=75 style="font-family:Verdana"></TEXTAREA>
 <p>
 <input type=submit value='Registrar traducción' name='reg'
 action='sent' style="font-family: Verdana; font-size: 80%;">

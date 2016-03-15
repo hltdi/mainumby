@@ -723,6 +723,7 @@ amasar_v $v,$v_t
 amasijo_n $n
 amateur_n $n
 amatista_n $n
+amanecer_v $v,$v_i
 amañar_v $v
 amaño_n $n
 ambicionar_v $v
@@ -3840,7 +3841,8 @@ debacle_n $n
 debate_n $n
 debatir_v $v
 debe_n $n
-deber_n $n,$v
+deber_n $n
+deber_v $v,$v_i
 debilidad_n $n
 debilitar_v $v,$v_t,$v_p
 debut_n $n
@@ -4428,7 +4430,7 @@ desperdicio_n $n
 desperezar_v $v,$v_p
 desperfecto_n $n
 despertador_n $n
-despertar_n $n,$v
+despertar_v $v,$v_t,$v_i
 despeñadero_n $n
 despido_n $n
 despierto_a $a
@@ -9958,7 +9960,8 @@ parcial_a $a
 parcialidad_n $n
 pardo_a $a
 parear_v $v
-parecer_n $n,$v
+parecer_n $n
+parecer_v $v,$v_i,$v_t,$v_p
 parecido_n $n
 parecido_a $a
 pared_n $n
@@ -10308,7 +10311,8 @@ pesadilla_n $n
 pesado_n $n
 pesado_a $a
 pesadumbre_n $n
-pesar_n $n,$v
+pesar_n $n
+pesar_v $v,$v_t,$v_i
 pesca_n $n
 pescadilla_n $n
 pescado_n $n
@@ -11094,7 +11098,8 @@ quemadura_n $n
 quemar_v $v,$v_t,$v_p
 querella_n $n
 querencia_n $n
-querer_n $n,$v
+querer_n $n
+querer_v $v,$v_t
 querida_n $n
 querido_n $n
 querido_a $a
@@ -12289,7 +12294,8 @@ sentido_a $a
 sentimental_n $n
 sentimentalismo_n $n
 sentimiento_n $n
-sentir_n $n,$v
+sentir_n $n
+sentir_v $v,$v_t,$v_p
 separación_n $n
 separado_n $n,$n_prs
 separar_v $v,$v_t,$v_p
@@ -12303,7 +12309,8 @@ sepultar_v $v,$v_t,$v_p
 sepultura_n $n
 sequedad_n $n
 sequía_n $n
-ser_n $n,$v
+ser_n $n
+ser_v $v,$v_i
 serenar_v $v,$v_t,$v_p
 serenata_n $n
 serenidad_n $n
@@ -13830,7 +13837,7 @@ ventosear_v $v
 ventrílocuo_n $n,$n_prs
 ventura_n $n
 venturoso_a $a
-ver_n $n,$v
+ver_v $v,$v_t,$v_p
 vera_n $n
 veracidad_n $n
 veraneante_n $n
@@ -14008,7 +14015,8 @@ vividor_a $a
 vivienda_n $n
 viviente_a $a
 vivificar_v $v
-vivir_n $n,$v
+vivir_n $n
+vivir_v $v,$v_i,$v_t
 vivo_a $a
 viático_n $n
 viña_n $n

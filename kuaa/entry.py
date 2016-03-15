@@ -328,7 +328,7 @@ class Group(Entry):
         matcheddel = False
         for index, token in enumerate(self.tokens):
             # Whether there's a sentence node gap between this token and the last one that matched
-            nodegap = False
+            nodegap = 0
             # Whether this token is the group head
             ishead = (index == self.head_index)
 #            if matcheddel:
@@ -339,6 +339,8 @@ class Group(Entry):
                 print(" Attempting to match {} in {}".format(token, self))
             matched = False
             for node in snodes[snindex:]:
+                if nodegap > 2:
+                    break
                 snode_indices = node.raw_indices
                 snode_start, snode_end = snode_indices[0], snode_indices[-1]
                 leftdel = None
@@ -375,12 +377,13 @@ class Group(Entry):
                             return False
                         else:
                             # If the last token was not a category, this has to follow immediately; if it doesn't fail
-#                            if index > 0 and not last_cat and last_sindex >=0 and snode_start - last_sindex != 1:
-#                                if verbosity:
-#                                    fstring = " Group head token {} in sentence position {} doesn't follow last token at {}"
-#                                    print(fstring.format(token, snode_indices, last_sindex))
-#                                    print("{} failed to match in token {}".format(self, token))
-#                                return False
+                            if index > 0 and not last_cat and last_sindex >=0 and nodegap:
+#                                snode_start - last_sindex != 1:
+                                if verbosity:
+                                    fstring = " Group head token {} in sentence position {} doesn't follow last token at {}"
+                                    print(fstring.format(token, snode_indices, last_sindex))
+                                    print("{} failed to match in token {}".format(self, token))
+                                return False
                             match_snodes1.append((node.index, node_match, token, True))
                             if verbosity:
                                 fstring = " Group token {} matched node {} in {}, node index {}, last_sindex {}"
@@ -398,11 +401,12 @@ class Group(Entry):
                     if verbosity > 1:
                         print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
                     if node_match != False:
-#                        if not Group.is_cat(token) and not last_cat and index > 0 and last_sindex >= 0 and snode_start - last_sindex != 1:
-#                            if verbosity:
-#                                fstring = " Group token {} in sentence position {} doesn't follow last token at {}"
-#                                print(fstring.format(token, snode_indices, last_sindex))
-#                            return False
+                        if not Group.is_cat(token) and not last_cat and index > 0 and last_sindex >= 0 and nodegap:
+#                            snode_start - last_sindex != 1:
+                            if verbosity:
+                                fstring = " Group token {} in sentence position {} doesn't follow last token at {}"
+                                print(fstring.format(token, snode_indices, last_sindex))
+                            return False
                         match_snodes1.append((node.index, node_match, token, True))
                         if Group.is_cat(token):
                             last_cat = True
@@ -417,7 +421,7 @@ class Group(Entry):
                         matched = True
                         snindex = node.index + 1
                     else:
-                        nodegap = True
+                        nodegap += 1
             if matcheddel:
                 # Matched a left deleted element; move on to next group token
                 match_snodes.append(match_snodes1)
@@ -716,12 +720,14 @@ class MorphoSyn(Entry):
         2015.10.17: if ambig is True and this is an "ambiguous" MorphoSyn, copy the sentence
         before enforcing constraints.
         2015.10.20: constraints can be applied either to sentence or its copy (in altsyns list)
+        2016.03.11: returns True if it copies the sentence.
         """
         if verbosity:
             print("Attempting to apply {} to {}".format(self, sentence))
         matches = self.match(sentence, verbosity=verbosity)
         s = sentence
         copied = False
+        copy = None
         if matches:
             if ambig and self.is_ambig():
                 # Ambiguous patterns
@@ -762,8 +768,9 @@ class MorphoSyn(Entry):
                     print(" Match {}".format(match))
                 self.enforce_constraints(match, verbosity=verbosity)
                 self.insert_match(match, s, verbosity=verbosity)
-            return True
-        return False
+#            return True
+#        return False
+        return copied
 
     @staticmethod
     def del_token(token):

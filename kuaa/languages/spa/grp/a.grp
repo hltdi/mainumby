@@ -1964,8 +1964,8 @@
 ->grn popeno_v[pos=adj] ; 0==0 grd:grd
 *** mediano_a ; ^ mediano_a 0
 ->grn mbytegua_v[pos=adj] ; 0==0 grd:grd
-*** medio_a ; ^ medio_a 0
-->grn mbyte_v[pos=adj] ; 0==0 grd:grd
+##*** medio_a ; ^ medio_a 0
+##->grn mbyte_v[pos=adj] ; 0==0 grd:grd
 *** medular_a ; ^ medular_a 0
 ->grn apytere_v[pos=adj] ; 0==0 grd:grd
 *** mejor_a ; ^ mejor_a 0

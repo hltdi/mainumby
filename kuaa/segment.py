@@ -42,6 +42,8 @@
 # 2016.03.06
 # -- GInsts create GNodes only for tokens that fail to get deleted by MorphoSyns. So there may be
 #    gaps in GNode indices.
+# 2016.03.08
+# -- SolSeg.set_html() also creates a dict of choice alternatives.
 
 import itertools, copy
 from .cs import *
@@ -74,7 +76,6 @@ class SolSeg:
         else:
             self.record = None
         self.html = []
-        self.choices = {}
         print("Created {}".format(self))
 
     def __repr__(self):
@@ -88,12 +89,13 @@ class SolSeg:
 
     def set_html(self, index):
         """Set the HTML markup for this segment, given its position in the sentence,
-        and the dictionary of choices."""
+        and the dictionary of choices for the record of the SolSeg."""
 #        print("Setting html for segment {} in positions {}".format(self.token_str, self.indices))
         self.color = 'Silver' if not self.translation else SolSeg.tt_colors[index]
         transhtml = '<table border=1>'
         mult_trans = len(self.translation) > 1
         capitalized = False
+        choice_dict = self.record.choices if self.record else None
         for tindex, t in enumerate(self.translation):
             # A single translation of the source segment
             transhtml += '<tr>'
@@ -105,17 +107,24 @@ class SolSeg:
                 choices = []
                 transhtml += "<td class='trans'>"
                 if '|' in tword:
-                    html_choices = []
                     # Word has alternatives choices = []
-                    for tword_choice in tword.split('|'):
+                    html_choices = []
+                    tword_choices = tword.split('|')
+                    # The order could be arbitrary, so alphabetize
+                    tword_choices.sort()
+                    for tword_choice in tword_choices:
                         html_choices.append('<input type="radio" name="{}" id={} value="{}">{}'.format(choice_key, tword_choice, tword_choice, tword_choice))
-                        choices.append(tword_choice)
+                    choices.extend(tword_choices)
                     html_choices = '<br/>'.join(html_choices)
                     transhtml += html_choices
                 else:
                     choices.append(tword)
                     transhtml += '<input type="radio" name="{}" id={} value="{}">{}'.format(choice_key, tword, tword, tword)
-                self.choices[choice_key] = choices
+                if self.record:
+                    if choice_key in choice_dict:
+                        choice_dict[choice_key].extend(choices)
+                    else:
+                        choice_dict[choice_key] = choices
                 transhtml += '</td>'
             transhtml += '</tr>'
         transhtml = transhtml.replace('_', ' ')
@@ -213,8 +222,21 @@ class SNode:
             self.variables['features'] = EMPTY
         else:
             # GNodes associated with this SNode: 0, 1, or 2
+            tokens = {self.token}
+            for a in self.analyses:
+                root = a.get('root')
+                if root:
+                    tokens.add(root)
+                cats = a.get('cats')
+                if cats:
+                    tokens.update(cats)
+#            print(" Tokens for {}: {}".format(self, tokens))
+#            print("   GNode tokens: {}".format([g.token for g in self.sentence.gnodes]))
+            upper = {gn.sent_index for gn in self.sentence.gnodes if gn.token in tokens}
+#            print("   Upper: {}".format(upper))
             self.svar('gnodes', "w{}->gn".format(self.index), set(),
-                      set(range(self.sentence.ngnodes)),
+#                      set(range(self.sentence.ngnodes)),
+                      upper,
                       0, 2, ess=True)
             # Concrete GNodes associated with this SNode: must be 1
             self.svar('cgnodes', "w{}->cgn".format(self.index), set(),
@@ -271,7 +293,6 @@ class SNode:
             if Entry.is_set(grp_item):
                 grp_item = grp_item[1:]
             if self.cats and grp_item in self.cats:
-#                print("   Token {} is in cat {}".format(self.token, grp_item))
                 if not self.analyses or not grp_feats:
                     # Match; failure would be False
                     return None
@@ -282,13 +303,8 @@ class SNode:
                             # 2015.7.5: strict option added to force True feature in grp_features
                             # to be present in node_features, e.g., for Spanish reflexive
                             u_features = simple_unify(node_features, grp_feats, strict=True)
-#                            u_features = node_features.unify(grp_feats, strict=True)
-#                            print("Unifying {} and {}".format(node_features.__repr__(), grp_feats.__repr__()))
                             if u_features != 'fail':
                                 return analysis.get('root'), u_features
-#                        print("   Matching group features {} and sentence features {}".format(grp_feats, node_features))
-#                        if node_features and node_features.unify(grp_feats) != 'fail':
-#                            return True
                     # None succeeded
                     return False
         elif self.token == grp_item:
@@ -300,21 +316,15 @@ class SNode:
                 root = analysis.get('root', '')
                 node_features = analysis.get('features')
                 if root == grp_item:
-#                    if grp_feats:
-#                        print("Matching group item features {} against snode features {}".format(grp_feats.__repr__(), node_features.__repr__()))
                     if not grp_feats:
                         return root, node_features
                     elif not node_features:
                         # Fail because there must be an explicit match with group features
                         return False
-#                        return root, grp_feats
                     else:
                         # There must be an explicit match with group features, so strict=True
-#                        u_features = node_features.unify(grp_feats, strict=True)
                         u_features = simple_unify(node_features, grp_feats, strict=True)
-#                        print("   Unifying node features {} with group features {}".format(node_features.__repr__(), grp_feats.__repr__()))
                         if u_features != 'fail':
-#                            print(" Succeeded by unification")
                             return root, u_features
         return False
 
@@ -540,6 +550,7 @@ class GNode:
         self.head = index == ginst.group.head_index
         # Group word, etc. associated with this node
         gtoken = ginst.group.tokens[index]
+        self.gtoken = gtoken
         # If this is a set node, use the sentence token instead of the cat name
         if Entry.is_set(gtoken):
             self.token = self.sentence.nodes[snodes[0][0]].token
@@ -699,8 +710,8 @@ class TreeTrans:
               merge_index=0, nomerge_index=0, verbosity=0):
         """Unify translation features for merged nodes, map agr features from source to target,
         generate surface target forms from resulting roots and features."""
-        if verbosity:
-            print('Building {} with trans indices {}/{}'.format(self, merge_index, nomerge_index))
+#        if verbosity:
+        print('Building {} with trans indices {}/{}'.format(self, merge_index, nomerge_index))
 #        print('Building {} with trans indices {}'.format(self, trans_index))
         # Reinitialize mergers
 #        self.mergers = []
@@ -856,24 +867,28 @@ class TreeTrans:
         self.tree = tree
         # Add TNode elements
         tgnode_elements = []
-        for ginst_i, (tginst, tnodes, agr, tgnodes) in enumerate(self.group_attribs):
-            if agr:
-                agreements[tginst] = agr
-                if verbosity:
-                    print(" build(): tginst {} agr {}, agreements {}".format(tginst, agr, agreements))
-            if tnodes:
-                for tnode in tnodes:
-                    features = tnode.features or FeatStruct({})
-                    src_index = len(node_features)
-                    self.tree.append(src_index)
-                    index = [(tginst, tnode.index)]
-                    node_features.append((tnode.token, features, index))
-                    group_nodes[index[0]] = (tnode.token, features)
-                    print("  tginst {}, tnodes {}, agr {}".format(tginst, tnodes, agr))
-                    print("    new group nodes, index {}: {}".format(index[0], (tnode.token, features)))
+#        print(" Group nodes 1 {}".format(group_nodes))
+        tginst, tnodes, agr, tgnodes = self.group_attribs[nomerge_index]
+#        for ginst_i, (tginst, tnodes, agr, tgnodes) in enumerate(self.group_attribs):
+#        print("  tginst {}, tnodes {}, tgnodes {}".format(tginst, tnodes, tgnodes))
+        if agr:
+            agreements[tginst] = agr
+            if verbosity:
+                print(" build(): tginst {} agr {}, agreements {}".format(tginst, agr, agreements))
+        if tnodes:
+            for tnode in tnodes:
+                features = tnode.features or FeatStruct({})
+                src_index = len(node_features)
+                self.tree.append(src_index)
+                index = [(tginst, tnode.index)]
+                node_features.append((tnode.token, features, index))
+                group_nodes[index[0]] = (tnode.token, features)
+#                print("   tginst {}, tnode {}".format(tginst, tnode))
+#                print("     new group nodes, index {}: {}".format(index[0], (tnode.token, features)))
         self.node_features = node_features
         self.group_nodes = group_nodes
         self.agreements = agreements
+#        print(" Group nodes 2 {}".format(self.group_nodes))
         return True
 
     @staticmethod

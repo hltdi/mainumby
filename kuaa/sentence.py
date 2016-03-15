@@ -473,10 +473,14 @@ class Sentence:
             # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
             if verbosity:
                 print("Running Morphosyns for {} on {}".format(self.language, self))
-            for ms in self.language.ms:
+            for mi, ms in enumerate(self.language.ms):
                 # If ms applies and is "ambiguous", create a new copy of the sentence and add to altsyns
                 # (this happens in MorphoSyn)
-                ms.apply(self, ambig=ambig, verbosity=verbosity)
+                if ms.apply(self, ambig=ambig, verbosity=verbosity):
+                    scopy = self.altsyns[-1]
+                    print("{} copied sentence: {}".format(ms, scopy))
+                    for ms1 in self.language.ms[mi+1:]:
+                        ms1.apply(scopy, ambig=ambig, verbosity=verbosity)
 
     def nodify(self, incl_del=False, verbosity=0):
         """Create nodes for sentence.
@@ -853,7 +857,7 @@ class Sentence:
                     av = total / len(value)
                     varscore /= len(value)
                     varscore += av
-            print(" Varscore for {} with {} in {}: {}".format(variable, value, dstore, varscore))
+#            print(" Varscore for {} with {} in {}: {}".format(variable, value, dstore, varscore))
         # Tie breaker
         ran = random.random() / 100.0
         return varscore + ran
@@ -1133,12 +1137,14 @@ class Solution:
         if verbosity:
             print("Merging target nodes for {}".format(self))
         for snode, gn_indices in zip(self.sentence.nodes, self.s2gnodes):
+#            print("snode {}, gn_indices {}".format(snode, gn_indices))
             # gn_indices is either one or two ints indexing gnodes in self.gnodes
             gnodes = [self.sentence.gnodes[index] for index in gn_indices]
             features = []
             for gnode in gnodes:
-#                print("{}: gnode {}, snode_anal {}".format(self, gnode, gnode.snode_anal))
+#                print("  gnode {}, snode_anal {}, snode_indices {}".format(gnode, gnode.snode_anal, gnode.snode_indices))
                 snode_indices = gnode.snode_indices
+#                if snode.index in snode_indices:
                 snode_index = snode_indices.index(snode.index)
                 snode_anal = gnode.snode_anal[snode_index]
                 if snode_anal:
