@@ -223,6 +223,7 @@ class SNode:
         else:
             # GNodes associated with this SNode: 0, 1, or 2
             tokens = {self.token}
+#            print("Getting analyses for {}".format(self))
             for a in self.analyses:
                 root = a.get('root')
                 if root:
@@ -710,8 +711,8 @@ class TreeTrans:
               merge_index=0, nomerge_index=0, verbosity=0):
         """Unify translation features for merged nodes, map agr features from source to target,
         generate surface target forms from resulting roots and features."""
-#        if verbosity:
-        print('Building {} with trans indices {}/{}'.format(self, merge_index, nomerge_index))
+        if verbosity:
+            print('Building {} with trans indices {}/{}'.format(self, merge_index, nomerge_index))
 #        print('Building {} with trans indices {}'.format(self, trans_index))
         # Reinitialize mergers
 #        self.mergers = []

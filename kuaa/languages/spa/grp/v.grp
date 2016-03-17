@@ -1,3 +1,11 @@
+#### irregular Grn verbs
+## KATU
+*** poder_v[-r] $v ; ^ poder_v 0
+->grn katu_v[cat=che] $v ; 1==1 n:ns,p:ps,tm:tmp,asp:asp ; 0==0 neg:neg,rel:rel
+## OĨ
+*** haber_v[-r,p=3,n=0,-neg] ; ^ haber_v 0
+->grn ĩ_v[cat=a,po=3,no=0,-neg] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,pp:pp,inter:inter
+## NDAIPÓRI
 ## ver and odiar are examples of what happens with transitive and dative verbs
 ## -- basic; including 1,2 object [-r] ? (use feature match failure)
 ## -- 3s object [-r,po=3,no=0]
@@ -2622,8 +2630,6 @@
 ->grn mboyvyra_v[cat=a]
 *** plantar_v[-r] renuevo ; ^ plantar_v 0 ; #68
 ->grn mbohoky_v[cat=a]
-*** poder_v[-r] $v; ^ poder_v 0
-->grn katu_v[cat=che] $v ; 1==1 n:ns,p:ps,tm:tmp,asp:asp ; 0==0 neg:neg,rel:rel
 *** poner_v[-r] de cara al suelo ; ^ poner_v 0
 ->grn mbohovapy_v[cat=a]
 *** poner_v[+r] tenso ; ^ poner_v 0
@@ -14746,14 +14752,6 @@
 ->grn jesapymi_v[cat=a] (chupekuéra)
 *** gustar_v[-r] ; ^ gustar_v 0
 ->grn <ha'ã_v[cat=a]
-*** haber_v[-r] ; ^ haber_v 0
-->grn oĩ_v[cat=a]
-*** haber_v[-r] a $n_prs ; ^ haber_v 0
-->grn oĩ_v[cat=a] $n_prs[caso=pe] ; || 0, -1, 1
-*** haber_v[-r,po=3,no=0] ; ^ haber_v 0
-->grn oĩ_v[cat=a] (chupe)
-*** haber_v[-r,po=3,no=1] ; ^ haber_v 0
-->grn oĩ_v[cat=a] (chupekuéra)
 *** habitar_v[-r] ; ^ habitar_v 0
 ->grn iko_v[cat=a]
 *** habituar_v[+r] ; ^ habituar_v 0

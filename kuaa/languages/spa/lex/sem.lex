@@ -5684,6 +5684,7 @@ esos_n $pro,$n,$dem
 esas_a $a,$dem
 esas_n $pro,$n,$dem
 ésos $pro,$n,$dem
+ésas $pro,$n,$dem
 esencia_n $n
 esfera_n $n
 esforzado_a $a

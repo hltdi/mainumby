@@ -1496,6 +1496,8 @@
 ->grn yro_n ; 0==0 n:n,poses:poses
 *** agua_n sucia ; ^ agua_n 0
 ->grn y_n ky'a ; 0==0 n:n,poses:poses
+*** del agua_n ; ^ agua_n 1
+->grn ypegua
 *** agua_n de buena calidad ; ^ agua_n 0
 ->grn y_n porã ; 0==0 n:n,poses:poses
 *** agua_n brillante ; ^ agua_n 0
