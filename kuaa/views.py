@@ -147,6 +147,7 @@ def sent():
 @app.route('/fin', methods=['GET', 'POST'])
 def fin():
 #    print("In fin...")
+    SESSION.write_record()
     quit(SESSION)
     return render_template('fin.html')
 

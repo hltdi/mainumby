@@ -1,4 +1,6 @@
 #### PRONOMBRES PERSONALES
+*** yo solo ; ^ yo 0
+->grn cheño
 *** yo ; ^ yo 0
 ->grn che_n
 *** vos ; ^ vos 0
@@ -199,6 +201,14 @@
 *** allende ; ^ allende 0
 ->grn mboypýri
 #### ADVERBIOS DE TIEMPO
+*** en el acto ; ^ acto 2
+->grn ko'aĝaite
+*** ahora mismo ; ^ ahora 0
+->grn aĝaite
+->grn ko'aĝaite
+*** ahora ; ^ ahora 0
+->grn ko'áĝa
+->grn áĝa
 *** anoche ; ^ anoche 0
 ->grn angepyhare
 *** anteayer ; ^ anteayer 0
@@ -221,6 +231,8 @@
 ->grn ymaguare
 *** de más antes ; ^ antes 2
 ->grn ymave
+*** ayer ; ^ ayer 0
+->grn kuehe
 ## CONJ
 *** antes que ; ^ antes 0
 ->grn mboyve
@@ -514,6 +526,9 @@
 ->grn ondive
 *** con ello ; ^ ello 1
 ->grn heseve
+## %% 
+*** con que ; ^ con 0
+->grn ra'e
 *** conmigo ; ^ conmigo 0
 ->grn chendive
 *** consigo ; ^ consigo 0
@@ -614,7 +629,12 @@
 ->grn atukupépe
 ->grn tapykuépe
 ->grn kupépe
-### ENFRENTE (DE), ANTE
+*** tras ; ^ tras 0
+->grn hapykuéri
+### A TRAVÉS (DE)
+*** a través de $n ; ^ través 1
+->grn $n rupi ; || -1, 1, -1, 0
+### ENFRENTE (DE), ANTE, DELANTE (DE)
 *** enfrente de $n ; ^ enfrente 0
 ->grn $n rovái ; || 1, -1, 0
 *** ante todo ; ^ ante 0
@@ -624,6 +644,8 @@
 ->grn továi
 *** ante $n ; ^ ante 0
 ->grn $n rovái ; || 1, 0
+*** delante ; ^ delante 0
+->grn henondépe
 ### DENTRO (DE)
 *** dentro de $pro ; ^ dentro 0
 ->grn $pro[caso=pype] ; || -1, -1, 0
@@ -637,6 +659,8 @@
 ->grn $n mbytépe ; || -1, 1, -1, 0
 *** en medio ; ^ medio 1
 ->grn apytépe
+*** en el centro de $n ; ^ centro 2
+->grn $n apytépe ; || -1, -1, 1, -1, 0
 ### FUERA (DE)
 *** fuera de $n ; ^ fuera 0
 ->grn $n okápe ; || 1, -1, 0
@@ -656,6 +680,8 @@
 *** hacia abajo ; ^ abajo 1
 ->grn ñemby
 ->grn yvýgotyo
+*** bajo ; ^ bajo 0
+->grn guýpe
 ### ENCIMA (DE), ARRIBA (DE), SOBRE
 *** encima de $n ; ^ encima 0
 ->grn $n ári ; || 1, -1, 0
@@ -665,6 +691,8 @@
 ->grn $n ári ; || 1, -1, 0
 *** sobre $n ; ^ sobre 0
 ->grn $n ári ; || 1, 0
+*** además de $n ; ^ además 0
+->grn $n ári ; || 1, -1, 0
 *** por arriba ; ^ arriba 1
 ->grn áripi
 *** por sobre ; ^ sobre 1
@@ -674,6 +702,9 @@
 *** arriba ; ^ arriba 0
 ->grn ári
 ->grn yvate
+*** además ; ^ además 0
+->grn avei
+->grn hi'ári
 ### HACIA
 *** hacia $n ; ^ hacia 0
 ->grn $n gotyo ; || 1, 0
@@ -700,6 +731,9 @@
 ->grn $n[caso=peve] ; || -1, 0
 *** hasta ahora ; ^ ahora 1
 ->grn akói
+### DURANTE (otras posibilidades también??)
+*** durante $n ; ^ durante 0
+->grn $n aja; || 1, 0
 ### DESDE
 *** desde hace tiempo ; ^ tiempo 2
 ->grn aréma
@@ -725,6 +759,13 @@
 *** entre $n ; ^ entre 0
 ->grn $n apytépe ; || 1, 0
 ->grn $n mbytépe ; || 1, 0
+### CERCA (DE)
+*** cerca de $n ; ^ cerca 0
+->grn $n aĝui ; || 1, -1, 0
+*** cerca ; ^ cerca 0
+->grn aĝui
+*** muy cerca ; ^ cerca 1
+->grn aĝuiete
 ### PARA
 *** para $n ; ^ para 0
 ->grn $n guarã ; || 1, 0
@@ -735,18 +776,32 @@
 ->grn ajúri
 *** alrededor de $n ; ^ alrededor 0
 ->grn $n jerére ; || 1, -1, 0
+### SEGÚN
+*** según $n ; ^ según 0
+-> $n javeve ; || 1, 0
 #### ARTÍCULOS Y OTROS PRONOMBRES
 *** un ; ^ un 0
 ->grn peteĩ
 *** una ; ^ una 0
 ->grn peteĩ
 #### MODISMOS CON VERBOS
+*** me toca a mí ; ^ toca 1
+->grn cheha
+*** como debe ser ; ^ debe 1
+->grn hekópe
+*** cuentan que ; ^ cuentan 0
+->grn ndaje
 *** tome ; ^ tome 0
 ->grn kóina
 *** tomen ; ^ tomen 0
 ->grn kóina
 *** tomá ; ^ tomá 0
 ->grn kóina
+*** no me digas ; ^ digas 2
+->grn anichéne
+*** se dice ; ^ dice 1
+->grn jeko
+->grn ndaje
 #### OTROS ADVERBIOS
 *** en absoluto ; ^ absoluto 1
 ->grn araka'eve
@@ -754,242 +809,101 @@
 ->grn katuĩ
 *** acaso ; ^ acaso 0
 ->grn ikatu
-->grn sapy'arei
-*** por si acaso ; ^ acaso 2
-->grn teĩ
-*** si por acaso ; ^ acaso 2
-->grn sapy'arõ
-*** en el acto ; ^ acto 2
-->grn ko'aĝaite
 *** tan actual ; ^ actual 1
 ->grn akoiete
-*** en la actualidad ; ^ actualidad 2
-->grn akói
-*** en común acuerdo ; ^ acuerdo 2
-->grn oñoñe'ẽme
-*** acullá ; ^ acullá 0
-->grn mboypýri
 *** adelante ; ^ adelante 0
 ->grn tenondépe
-*** además ; ^ además 0
-->grn avei
-->grn hi'ári
-*** además de ; ^ además 0
-->grn ári
-*** ahora ; ^ ahora 0
-->grn ko'áĝa
-->grn áĝa
-*** ahora mismo ; ^ ahora 0
-->grn aĝaite
-->grn ko'aĝaite
-*** al despuntar el alba ; ^ alba 3
-->grn ko'ẽtĩsoro
 *** algo ; ^ algo 0
-->grn mba'émo
-->grn ra'ymi
+->grn mba'e
+->grn peteĩ mba'e
 *** alguien ; ^ alguien 0
 ->grn máva
-*** alguno ; ^ alguno 0
-->grn avave
-->grn máva
-->grn oimeraẽ
-->grn oimeraẽva
-*** sin alteraciones ; ^ alteraciones 1
-->grn py'aguapýpe
-*** por lo alto ; ^ alto 2
-->grn yvate
+->grn peteĩva
 *** amén ; ^ amén 0
 ->grn tovéna
 *** antaño ; ^ antaño 0
 ->grn ymaguare
-*** anterior ; ^ anterior 0
-->grn ange
-*** anteriormente ; ^ anteriormente 0
-->grn va'ekue
-*** con anticipación ; ^ anticipación 1
-->grn raẽ
-*** anverso ; ^ anverso 0
-->grn kupe
 *** aparentemente ; ^ aparentemente 0
 ->grn gua'u
 ->grn vaicha
 *** apenas ; ^ apenas 0
 ->grn haimete
 ->grn hasýpe
-->grn mante
 *** apropiadamente ; ^ apropiadamente 0
 ->grn hekópe
-*** asentimiento ; ^ asentimiento 0
-->grn he'ẽ
-->grn heẽ
 *** asiduamente ; ^ asiduamente 0
 ->grn manterei
-*** atrasado ; ^ atrasado 0
-->grn takykuépe
 *** atropelladamente ; ^ atropelladamente 0
 ->grn soro
-*** atrás ; ^ atrás 0
-->grn atukupépe
-->grn hapykuévo
-->grn kupépe
 *** aun ; ^ aun 0
 ->grn ko'ýte
 *** aunque ; ^ aunque 0
+->grn jepe
 ->grn jepémo
-*** aunque sea ; ^ aunque 0
-->grn jepe
-->grn jepéramo
-*** aunque ; ^ aunque 0
-->grn jepe
-*** auto ; ^ auto 0
-->grn ondive
-*** ayer ; ^ ayer 0
-->grn kuehe
 *** en ayunas ; ^ ayunas 1
 ->grn py'anandi
 *** aún ; ^ aún 0
 ->grn avei
 ->grn gueteri
-*** aún más ; ^ aún 0
-->grn ko'ýte
 *** aún no ; ^ aún 0
 ->grn gueteri
-*** ni aún así ; ^ aún 1
-->grn jáma
-*** bajo ; ^ bajo 0
-->grn guy
-*** bajo ; ^ bajo 0
-->grn guýpe
+*** todavía ; ^ todavía 0
+->grn gueteri
+->grn ne'ĩra
 *** cosa baladí ; ^ baladí 1
 ->grn mba'erei
 *** de balde ; ^ balde 1
 ->grn gua'u
 ->grn rei
 ->grn ñembojaru
-*** barato ; ^ barato 0
-->grn ndahepýi
 *** basta ; ^ basta 0
 ->grn ha'evéma
 ->grn iporãma
 *** bastante ; ^ bastante 0
 ->grn hetaporã
 ->grn iporãmante
-*** ya es bastante ; ^ bastante 2
-->grn iporãma
 *** más bien ; ^ bien 1
 ->grn uvei
-*** en la brevedad del tiempo ; ^ brevedad 2
-->grn mive
 *** en broma ; ^ broma 1
 ->grn gua'u
 ->grn ñembojaruhápe
-*** buenos días ; ^ buenos 0
-->grn mba'éichapa
 *** a caballo ; ^ caballo 1
 ->grn pýri
-*** de cabeza ; ^ cabeza 1
-->grn oakãvo
 *** cada ; ^ cada 0
-->grn mayma
 ->grn ñavo
-*** calentura ; ^ calentura 0
-->grn raku
 *** de mala calidad ; ^ calidad 2
 ->grn chalái
-*** caliente ; ^ caliente 0
-->grn raku
-*** en caliente ; ^ caliente 1
-->grn hakukuére
-*** muy caliente ; ^ caliente 1
-->grn hakueterei
-->grn hakuvo
 *** calladamente ; ^ calladamente 0
 ->grn kañyhápe
 ->grn kirirĩhápe
 ->grn ñemihápe
 *** a cambio de ; ^ cambio 1
 ->grn rekovia
-*** en el campo ; ^ campo 2
-->grn okápe
-*** relativo al campo ; ^ campo 2
-->grn ñumegua
-*** en cantidad considerable ; ^ cantidad 1
-->grn katuĩ
-*** más cantidad ; ^ cantidad 1
-->grn hetave
 *** cara a cara ; ^ cara 0
 ->grn jovái
-*** en su cara ; ^ cara 2
-->grn hovápe
-*** en su misma cara ; ^ cara 3
-->grn hovake
-*** de pocas carnes ; ^ carnes 2
-->grn piru
-*** caro ; ^ caro 0
-->grn repy
-*** de mal carácter ; ^ carácter 2
-->grn kanguero
-*** casi ; ^ casi 0
-->grn haimete
-->grn nunga
 *** casi casi ; ^ casi 0
 ->grn haimetete
 ->grn potaite
+*** casi ; ^ casi 0
+->grn haimete
+->grn nunga
 *** de categoría ; ^ categoría 1
 ->grn kate
-*** de poca categoría ; ^ categoría 2
-->grn chae
-*** a causa de ; ^ causa 1
-->grn rupi
-*** por causa de ; ^ causa 1
-->grn haguére
-*** en el centro de ; ^ centro 2
-->grn apytépe
-*** cerca ; ^ cerca 0
-->grn aĝui
-->grn haimete
-->grn ko'ápe
-*** cerca de ; ^ cerca 0
-->grn aĝui
-*** cerca de algo ; ^ cerca 0
-->grn ypýpe
-*** muy cerca ; ^ cerca 1
-->grn aĝuiete
-*** muy cerca de aquí ; ^ cerca 1
-->grn ko'apete
-*** por cercanía de algo ; ^ cercanía 1
-->grn ypýrupi
+*** a causa de $n ; ^ causa 1
+->grn $n rupi ; || -1, 1, -1, 0
+*** por causa de $n ; ^ causa 1
+->grn $n haguére ; || -1, 1, -1, 0
 *** cero ; ^ cero 0
 ->grn mba'eve
-*** cero total y sin decimales ; ^ cero 0
-->grn mba'evete
-*** cerquita ; ^ cerquita 0
-->grn aĝuiete
-->grn ko'apete
-*** cerquita de ; ^ cerquita 0
-->grn haimetete
 *** con certeza ; ^ certeza 1
 ->grn katuete
 *** sin cesar ; ^ cesar 1
 ->grn manterei
 ->grn meme
-*** chico ; ^ chico 0
-->grn ra'ymi
-*** muy chico ; ^ chico 1
-->grn michĩete
-*** chiquito ; ^ chiquito 0
-->grn michĩete
-->grn mimi
 *** ciertamente ; ^ ciertamente 0
 ->grn aje
 ->grn ajépa
 ->grn añete
-*** cierto ; ^ cierto 0
-->grn añete
-->grn he'ẽ
-->grn heẽ
-->grn hẽe
-->grn upéicha
 *** de cierto ; ^ cierto 1
 ->grn añete
 *** es cierto ? ; ^ cierto 1
@@ -1009,22 +923,16 @@
 ->grn mba'eveichagua
 *** esta clase ; ^ clase 1
 ->grn koichagua
-<*** uno de esta clase ; ^ clase 3
+*** uno de esta clase ; ^ clase 3
 ->grn koichagua
 *** de estas clases ; ^ clases 2
 ->grn ãichagua
 *** de todas clases ; ^ clases 2
 ->grn opaichagua
-*** cerca de su cocina ; ^ cocina 3
-->grn hataypýpe
-*** combinado ; ^ combinado 0
-->grn joyvy
 *** en compañía de ; ^ compañía 1
 ->grn ndive
 *** en la comunidad ; ^ comunidad 2
 ->grn tekohápe
-*** con que ; ^ con 0
-->grn ra'e
 *** concientemente ; ^ concientemente 0
 ->grn hekopete
 *** conjuntamente ; ^ conjuntamente 0
@@ -1040,30 +948,18 @@
 ->grn meme
 ->grn memete
 ->grn tapia
-*** contorno ; ^ contorno 0
-->grn jerére
 *** por estos contornos ; ^ contornos 2
 ->grn ko'árupi
 ->grn tekóvy
-*** contra ; ^ contra 0
-->grn rovái
 *** de contrabando ; ^ contrabando 1
 ->grn ka'ípe
 *** lo contrario ; ^ contrario 1
 ->grn ambue
 *** correctamente ; ^ correctamente 0
 ->grn hekopete
-*** a mí me corresponde ; ^ corresponde 3
-->grn cheha
-*** esta cosa ; ^ cosa 1
-->grn kóva
-*** sin cosas ; ^ cosas 1
-->grn mba'evete
 *** como de costumbre ; ^ costumbre 2
 ->grn akóinte
 ->grn jepevérõ
-->grn jepiguáicha
-*** como es costumbre ; ^ costumbre 2
 ->grn jepiguáicha
 *** es costumbre ; ^ costumbre 1
 ->grn jepi
@@ -1080,29 +976,16 @@
 *** cuando ; ^ cuando 0
 ->grn hápe
 ->grn jave
-*** cuando eso ; ^ cuando 0
-->grn upémarõ
-->grn upéramo
-->grn upérõ
+->grn ramo
 *** de cuando en cuando ; ^ cuando 1
 ->grn jepi
 ->grn sapy'apy'a
-*** cuando ; ^ cuando 0
-->grn jave
-->grn ramo
 *** por cuanto que ; ^ cuanto 1
 ->grn ajeve
 *** cuasi ; ^ cuasi 0
 ->grn haimete
-->grn haimetete
-*** de cuatro ; ^ cuatro 1
-->grn opóvo
-*** al cuello ; ^ cuello 1
-->grn ajúri
 *** por el cuello ; ^ cuello 2
 ->grn ajúri
-*** cuentan que ; ^ cuentan 0
-->grn ndaje
 *** con cuidado ; ^ cuidado 1
 ->grn aníkena
 *** tené cuidado ; ^ cuidado 1
@@ -1110,21 +993,8 @@
 *** en el curso de ; ^ curso 2
 ->grn aja
 ->grn jave
-*** de la parte de debajo ; ^ debajo 4
-->grn guy
-*** como debe ser ; ^ debe 1
-->grn hekópe
 *** debidamente ; ^ debidamente 0
 ->grn hekópe
-*** defectuoso ; ^ defectuoso 0
-->grn marã
-*** qué es en definitiva ; ^ definitiva 3
-->grn mba'etépa
-*** deja ; ^ deja 0
-->grn anína
-->grn tove
-*** delante ; ^ delante 0
-->grn henondépe
 *** delgado ; ^ delgado 0
 ->grn pererĩ
 *** demasiado ; ^ demasiado 0
@@ -1147,18 +1017,11 @@
 ->grn mbeguekatu
 *** despacito ; ^ despacito 0
 ->grn mbeguemi
-*** se dice ; ^ dice 1
-->grn jeko
-->grn ndaje
-*** dificilmente ; ^ dificilmente 0
-->grn asy
 *** con dificultad ; ^ dificultad 1
 ->grn hasýpe
 *** difícilmente ; ^ difícilmente 0
 ->grn asýpe
 ->grn hasýpe
-*** no me digas ; ^ digas 2
-->grn anichéne
 *** sin dinero ; ^ dinero 1
 ->grn apĩ
 ->grn sogue
@@ -1197,16 +1060,6 @@
 ->grn sapy'arei
 *** sin dueño ; ^ dueño 1
 ->grn jara'ỹ
-*** durante ; ^ durante 0
-->grn aja
-->grn jave
-->grn kue
-*** durante cierto tiempo ; ^ durante 0
-->grn hikóni
-*** durante ; ^ durante 0
-->grn aja
-->grn guare
-->grn jave
 *** cada día ; ^ día 1
 ->grn ko'ẽko'ẽre
 ->grn ko'ẽre
@@ -1794,25 +1647,6 @@
 *** del mismo modo ; ^ modo 2
 ->grn joja
 ->grn peteĩcha
-*** al momento de ; ^ momento 1
-->grn jave
-*** en el momento ; ^ momento 2
-->grn hakukuére
-*** en este momento ; ^ momento 2
-->grn áĝa
-*** en todo momento ; ^ momento 2
-->grn javeve
-*** en un momento ; ^ momento 2
-->grn sapy'ami
-*** hace un momento ; ^ momento 2
-->grn ange
-->grn angete
-*** momento ; ^ momento 0
-->grn sapy'aitépe
-*** un momento ; ^ momento 1
-->grn sapy'a
-->grn sapy'aitépe
-->grn sapy'ami
 *** del monte ; ^ monte 1
 ->grn ka'aguygua
 *** donde hay montón ; ^ montón 2
@@ -1860,8 +1694,6 @@
 *** mío ; ^ mío 0
 ->grn chemba'e
 *** mío propio ; ^ mío 0
-->grn chemba'etee
-*** verdaderamente mío ; ^ mío 1
 ->grn chemba'etee
 *** mútuamente ; ^ mútuamente 0
 ->grn ojuehe
@@ -2298,10 +2130,6 @@
 ->grn katuetei
 *** con toda seguridad ; ^ seguridad 2
 ->grn katuete
-*** según ; ^ según 0
-->grn ikatu
-*** según ; ^ según 0
-->grn háicha
 *** semejante ; ^ semejante 0
 ->grn hesegua
 *** estando sentado ; ^ sentado 1
@@ -2380,14 +2208,9 @@
 ->grn año
 *** en soledad ; ^ soledad 1
 ->grn año
-*** solitario ; ^ solitario 0
-->grn año
-->grn añónte
 *** solo ; ^ solo 0
 ->grn año
 ->grn añónte
-*** yo solo ; ^ solo 1
-->grn cheño
 *** sucesor de ; ^ sucesor 0
 ->grn rekovia
 *** como suele ; ^ suele 1
@@ -2477,12 +2300,12 @@
 ->grn voiete
 *** al terminar ; ^ terminar 1
 ->grn ipahápe
-*** a tiempo ; ^ tiempo 1
-->grn araitépe
-->grn ha'etépe
 *** al mismo tiempo ; ^ tiempo 2
 ->grn jave
 ->grn javeve
+*** a tiempo ; ^ tiempo 1
+->grn araitépe
+->grn ha'etépe
 *** en aquel tiempo ; ^ tiempo 2
 ->grn upémarõ
 ->grn upéramo
@@ -2491,106 +2314,69 @@
 ->grn sapy'aitépe
 *** en tiempo remoto ; ^ tiempo 1
 ->grn kuriete
+*** ya hace muchísimo tiempo ; ^ tiempo 3
+->grn aretereíma
+*** hace muchísimo tiempo que ; ^ tiempo 2
+->grn areterei
+*** hace ya mucho tiempo que ; ^ tiempo 3
+->grn aretéma
+*** hace ya mucho tiempo ; ^ tiempo 3
+->grn ymáma
+*** hace tiempo que ; ^ tiempo 1
+->grn yma
 *** hace mucho tiempo ; ^ tiempo 2
 ->grn ymaiterei
 ->grn ymaraka'e
-*** hace muchísimo tiempo que ; ^ tiempo 2
-->grn areterei
 *** hace tiempo ; ^ tiempo 1
 ->grn are
 ->grn yma
-*** hace tiempo que ; ^ tiempo 1
-->grn yma
-*** hace ya mucho tiempo ; ^ tiempo 3
-->grn ymáma
-*** hace ya mucho tiempo que ; ^ tiempo 3
-->grn aretéma
 *** justo a tiempo ; ^ tiempo 2
 ->grn ha'etépe
 *** tiempo atrás ; ^ tiempo 0
 ->grn yma
 *** todo el tiempo que ; ^ tiempo 2
 ->grn javeve
-*** ya hace muchísimo tiempo ; ^ tiempo 3
-->grn aretereíma
 *** sobre la tierra ; ^ tierra 2
 ->grn yvýpe
-*** me toca a mí ; ^ toca 1
-->grn cheha
-*** más todavía ; ^ todavía 1
-->grn ko'ýte
-*** todavía ; ^ todavía 0
-->grn gueteri
-->grn ne'ĩra
+*** todos sin excepción ; ^ todos 0
+->grn mayma
 *** todo ; ^ todo 0
 ->grn mayma
 ->grn ñavo
-*** de todos ; ^ todos 1
-->grn pavẽ
-*** todos ; ^ todos 0
-->grn mayma
-->grn oimeraẽ
-->grn oimeraẽva
-*** todos sin excepción ; ^ todos 0
-->grn mayma
 *** en torno a ; ^ torno 1
 ->grn rupi
 *** trabajosamente ; ^ trabajosamente 0
 ->grn hasýpe
 *** tranquilamente ; ^ tranquilamente 0
 ->grn py'aguapýpe
-*** en el transcurso de ; ^ transcurso 2
-->grn aja
-*** en el transcurso del día ; ^ transcurso 2
-->grn arakue
-*** tras ; ^ tras 0
-->grn hapykuéri
-*** a través de ; ^ través 1
-->grn rupi
-*** trinchera ; ^ trinchera 0
-->grn pypuku
 *** tristemente ; ^ tristemente 0
 ->grn asy
 ->grn asýpe
-*** ulterior ; ^ ulterior 0
-->grn mboypýri
 *** únicamente ; ^ unicamente 0
 ->grn mante
-*** universal ; ^ universal 0
-->grn pavẽ
-*** uno ; ^ uno 0
-->grn máva
+# %% Have this deleted and converted to recip feature in morphosyn?
 *** unos a otros ; ^ unos 0
+->grn ojoupe
+->grn ojuehe
+->grn ojupe
+*** uno a otro ; ^ uno 0
 ->grn ojoupe
 ->grn ojuehe
 ->grn ojupe
 *** unos con otros ; ^ unos 0
 ->grn oñondive
+*** uno ; ^ uno 0
+->grn máva
 *** unánimemente ; ^ unánimemente 0
 ->grn oñoñe'ẽme
-*** vale ; ^ vale 0
-->grn iporã
 *** cosa sin valor ; ^ valor 2
 ->grn mba'erei
 *** de poco valor ; ^ valor 2
 ->grn chu'i
-*** ningún valor ; ^ valor 1
-->grn mboyve
 *** en vano ; ^ vano 1
 ->grn rei
 *** no en vano ; ^ vano 2
 ->grn ndareíri
-*** a veces ; ^ veces 1
-->grn jepi
-->grn sapy'apy'a
-->grn sapy'ánte
-*** algunas veces ; ^ veces 1
-->grn jepi
-*** repetidas veces ; ^ veces 1
-->grn katuĩ
-->grn py'ỹi
-*** veloz ; ^ veloz 0
-->grn pya'e
 *** velozmente ; ^ velozmente 0
 ->grn hatã
 *** de veras ; ^ veras 1
@@ -2609,24 +2395,14 @@
 ->grn ajépa
 *** verdad ? ; ^ verdad 0
 ->grn ajépa
-*** había sido verdaderamente ; ^ verdaderamente 2
-->grn nipora'e
 *** verdaderamente ; ^ verdaderamente 0
 ->grn aje
 ->grn añetehápe
 ->grn ha'ete
-*** verdaderamente ? ; ^ verdaderamente 0
-->grn ajépa
-*** verdadero ; ^ verdadero 0
-->grn añetete
 *** a la vez ; ^ vez 2
 ->grn jave
 *** aquella vez ; ^ vez 1
 ->grn ako
-*** cada vez que ; ^ vez 1
-->grn jave
-*** de una vez ; ^ vez 2
-->grn mandivoi
 *** de vez en cuando ; ^ vez 1
 ->grn jepi
 ->grn mimi
@@ -2634,19 +2410,20 @@
 *** esta vez ; ^ vez 1
 ->grn ko'áĝa
 *** la vez pasada ; ^ vez 1
-->grn akokuehe
 ->grn kokuehe
 *** otra vez ; ^ vez 1
-->grn jevy
-->grn jevýma
+->grn jey
+->grn jeýma
 *** en vez de ; ^ vez 1
 ->grn rekovia
-*** vicioso ; ^ vicioso 0
-->grn marã
+*** a veces ; ^ veces 1
+->grn jepi
+->grn sapy'apy'a
+->grn sapy'ánte
+*** algunas veces ; ^ veces 1
+->grn jepi
 *** en vida ; ^ vida 1
 ->grn tekovépe
-*** tan vigente ; ^ vigente 1
-->grn akoiete
 *** violentamente ; ^ violentamente 0
 ->grn hatã
 ->grn mbaretépe
@@ -2657,23 +2434,9 @@
 *** en voz baja ; ^ voz 1
 ->grn guyguy
 *** de vuelta ; ^ vuelta 1
-->grn jevy
-->grn jevýma
+->grn jeýma
 ->grn jey
 *** ya ; ^ ya 0
 ->grn mandi
-->grn mandivoi
-->grn pya'evoi
-*** ya mismo ; ^ ya 0
-->grn mandi
-->grn mandivoi
-*** yuxtapuesto ; ^ yuxtapuesto 0
-->grn ojoykére
 *** en el ínterin ; ^ ínterin 2
 ->grn upeaja
-*** al último ; ^ último 1
-->grn ipahápe
-*** último ; ^ último 0
-->grn ipaha
-*** de época actual ; ^ época 1
-->grn ko'aĝagua

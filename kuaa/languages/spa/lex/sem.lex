@@ -13849,6 +13849,7 @@ verdad_n $n
 verdadera_n $n
 verdadero_n $n
 verdadero_a $a
+verdaderamente $adv
 verde_n $n
 verde_a $a
 verdear_v $v

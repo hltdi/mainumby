@@ -3729,6 +3729,8 @@
 *** campo_n ; ^ campo_n 0
 ->grn ñu_n ; 0==0 n:n,poses:poses
 ->grn okára_n ; 0==0 n:n,poses:poses
+*** en el campo_n ; ^ campo_n 2
+->grn okápe
 *** campo_n cerrado ; ^ campo_n 0
 ->grn ñuaĩ_n ; 0==0 n:n,poses:poses
 *** campo_n grande ; ^ campo_n 0
@@ -5896,8 +5898,6 @@
 ->grn <hekovepýi_n ; 0==0 n:n,poses:poses
 *** césped_n ; ^ césped_n 0
 ->grn kapi'ipe_n ; 0==0 n:n,poses:poses
-*** círculo_n en que uno se desenvuelve ; ^ círculo_n 0 ; #2
-->grn pa'ũjere_n ; 0==0 n:n,poses:poses
 *** círculo_n ; ^ círculo_n 0 ; #2
 ->grn jerekuévo_n ; 0==0 n:n,poses:poses
 ->grn ñama_n ; 0==0 n:n,poses:poses
@@ -6175,7 +6175,7 @@
 ->grn karuse_n ; 0==0 n:n,poses:poses
 *** deseo_n intenso de amar ; ^ deseo_n 0 ; #53
 ->grn ãngara'ã_n ; 0==0 n:n,poses:poses
-*** deseo_n[n=1] de ver algo o a alguien ; ^ deseo_n 0
+*** deseo_n[n=1] de ver ; ^ deseo_n 0
 ->grn techara'ã_n ; 0==0 n:n,poses:poses
 *** deseo_n de dormir ; ^ deseo_n 0 ; #53
 ->grn kese_n ; 0==0 n:n,poses:poses
@@ -16564,8 +16564,6 @@
 ->grn <henda_n ; 0==0 n:n,poses:poses ; #357
 ->grn ñemongora_n ; 0==0 n:n,poses:poses ; #1
 ->grn mamo_n gotyo ; 0==0 n:n,poses:poses
-*** situación_n ante el cual uno calla ; ^ situación_n 0 ; #6
-->grn jehesamboty_n ; 0==0 n:n,poses:poses
 *** situación_n adversa ; ^ situación_n 0 ; #6
 ->grn mbarakaja_n kupy ; 0==0 n:n,poses:poses
 *** situación_n ; ^ situación_n 0 ; #6
@@ -17416,6 +17414,13 @@
 *** tocado_n ; ^ tocado_n 0 ; #12
 ->grn akã_n ao ; 0==0 n:n,poses:poses
 ->grn tuka'ẽ_n ; 0==0 n:n,poses:poses ; #10
+*** todo_n[n=0] ; ^ todo_n 0
+->grn opa
+->grn mayma
+*** todo_n[n=1] ; ^ todo_n 0
+->grn opapave
+->grn mayma
+->grn oimeraẽva
 *** toldo_n ; ^ toldo_n 0
 ->grn tapỹi_n ; 0==0 n:n,poses:poses ; #19
 *** tolerancia_n ; ^ tolerancia_n 0 ; #1

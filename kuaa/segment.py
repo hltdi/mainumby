@@ -97,6 +97,7 @@ class SolSeg:
         capitalized = False
         choice_dict = self.record.choices if self.record else None
         for tindex, t in enumerate(self.translation):
+            print("Setting HTML for {}: {}".format(tindex, t))
             # A single translation of the source segment
             transhtml += '<tr>'
             for wordindex, tword in enumerate(t):
@@ -104,7 +105,8 @@ class SolSeg:
 #                choice_key = (self.token_str, "{}:{}".format(tindex, wordindex))
 #                choice_key = "{}:{}".format(tindex, wordindex)
                 choice_key = wordindex
-                choices = []
+                choices = set()
+#                choices = []
                 transhtml += "<td class='trans'>"
                 if '|' in tword:
                     # Word has alternatives choices = []
@@ -114,15 +116,18 @@ class SolSeg:
                     tword_choices.sort()
                     for tword_choice in tword_choices:
                         html_choices.append('<input type="radio" name="{}" id={} value="{}">{}'.format(choice_key, tword_choice, tword_choice, tword_choice))
-                    choices.extend(tword_choices)
+#                    choices.extend(tword_choices)
+                    choices.update(tword_choices)
                     html_choices = '<br/>'.join(html_choices)
                     transhtml += html_choices
                 else:
-                    choices.append(tword)
+#                    choices.append(tword)
+                    choices.add(tword)
                     transhtml += '<input type="radio" name="{}" id={} value="{}">{}'.format(choice_key, tword, tword, tword)
                 if self.record:
                     if choice_key in choice_dict:
-                        choice_dict[choice_key].extend(choices)
+#                        choice_dict[choice_key].extend(choices)
+                        choice_dict[choice_key].update(choices)
                     else:
                         choice_dict[choice_key] = choices
                 transhtml += '</td>'
@@ -170,6 +175,8 @@ class SNode:
         # List of analyses
         if analyses and not isinstance(analyses, list):
             analyses = [analyses]
+        if not analyses:
+            analyses = [{'root': token}]
         self.analyses = analyses
         # Back pointer to sentence
         self.sentence = sentence
@@ -191,6 +198,7 @@ class SNode:
         self.variables = {}
         ## Tokens in target language for this SNode
         self.translations = []
+#        print("Analysis for {}: {}".format(self, self.analyses))
 
     def __repr__(self):
         """Print name."""

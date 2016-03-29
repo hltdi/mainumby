@@ -110,6 +110,8 @@
 ->grn <hory_v[pos=v] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,neg:neg,grd:grd
 ->grn <hetia'e_v[pos=v] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,neg:neg,grd:grd
 ->grn vy'a_v[cat=a] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,grd:grd
+*** alguno_a ; ^ alguno_a 0
+->grn oimeraẽ
 *** alicaído_a ; ^ alicaído_a 0
 ->grn pepo'a_v[pos=adj] ; 0==0 grd:grd
 *** alimenticio_a ; ^ alimenticio_a 0
@@ -2797,10 +2799,6 @@
 ->grn añoite_v[pos=adj] ; 0==0 grd:grd ; #20
 ->grn ha'eño_v[pos=adj] ; 0==0 grd:grd ; #23
 ->grn ño_v[pos=adj] ; 0==0 grd:grd
-*** solo_a ; ^ solo_a 0 ; #144
-->grn ha'eño_v[pos=adj] ; 0==0 grd:grd ; #23
-->grn ae_v[pos=adj] ; 0==0 grd:grd ; #13
-->grn año_v[pos=adj] ; 0==0 grd:grd ; #21
 *** soltero_a ; ^ soltero_a 0 ; #2
 ->grn ha'eño_v[pos=adj] ; 0==0 grd:grd ; #23
 ->grn omenda'ỹva_v[pos=adj] ; 0==0 grd:grd
@@ -2932,6 +2930,9 @@
 ->grn mombopyre_v[pos=adj] ; 0==0 grd:grd
 *** absolutamente todos_a ; ^ todos_a 1
 ->grn enterovete_v[pos=adj] ; 0==0 grd:grd
+*** todo_a ; ^ todo_a 0
+->grn opa
+->grn mayma
 *** tonto_a ; ^ tonto_a 0
 ->grn výro_v[pos=adj] ; 0==0 grd:grd ; #14
 ->grn <hovatavy_v[pos=adj] ; 0==0 grd:grd ; #4
@@ -3238,6 +3239,8 @@
 ->grn <hasakuaa'ỹva_v[pos=adj] ; 0==0 grd:grd
 *** último_a ; ^ último_a 0
 ->grn paha_v[pos=adj] ; 0==0 grd:grd
+*** al último_a ; ^ último 1
+->grn ipahápe
 *** único_a ; ^ único_a 0 ; #27
 ->grn añoite_v[pos=adj] ; 0==0 grd:grd ; #20
 ->grn ha'eño_v[pos=adj] ; 0==0 grd:grd ; #23

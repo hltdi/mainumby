@@ -1,3 +1,5 @@
+#### Features common to almost all translations
++t == ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
 #### irregular Grn verbs
 ## KATU
 *** poder_v[-r] $v ; ^ poder_v 0
@@ -14,7 +16,6 @@
 ## -- passive [+r] (not implemented for other verbs)
 ## -- relative clause NP que ver (not implemented for any verbs)
 ## -- antipassive (voz subsuntiva) (not implemented for any verbs)
-+t == ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
 *** ver_v[-r] a $n_prs ; ^ ver_v 0
 ->grn <hecha_v[cat=a] $n_prs[caso=pe] ; || 0, -1, 1
 # pronombre de 3p como complemento (omitido por morphosyn)

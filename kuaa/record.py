@@ -82,9 +82,8 @@ class Session:
             print("Alternate sentence translation: {}".format(translation))
             sentrecord.record(translation)
         else:
-            segment_key = trans_dict.get('seg')
             # It might be capitalized
-            segment_key = segment_key.lower()
+            segment_key = trans_dict.get('seg').lower()
             segrecord = sentrecord.segments.get(segment_key)
             print("Segment to record: {}".format(segrecord))
 
@@ -102,10 +101,15 @@ class Session:
                         key = int(key)
                         tra_choices.append((key, value))
                 print(" Choices: {}".format(segrecord.choices))
-                for k, v in  tra_choices:
-                    print("  Chosen for {}: {}".format(k, v))
-                    print("  Alternatives: {}".format(segrecord.choices[k]))
+#                for k, v in  tra_choices:
+#                    print("  Chosen for {}: {}".format(k, v))
+#                    print("  Alternatives: {}".format(segrecord.choices[k]))
                 segrecord.record(choices=tra_choices)
+
+    def write_record(self):
+        print("Record for {}".format(self))
+        for sentence in self.sentences:
+            sentence.write()
 
 class SentRecord:
     """A record of a Sentence and a single user's response to it."""
@@ -133,6 +137,16 @@ class SentRecord:
         print("{} recording translation {}, feedback: {}".format(self, translation, feedback))
         self.feedback = feedback
 
+    def write(self):
+        print("Record for {}".format(self))
+        if self.feedback:
+            print("Feedback: {}".format(self.feedback))
+        # Can there be feedback for segments *and* for whole sentence?
+        for key, segment in self.segments.items():
+            if segment.feedback:
+                print("Tokens {}, segment {}".format(key, segment))
+                print("  Feedback: {}".format(segment.feedback))
+
 class SegRecord:
     """A record of a sentence segment and its translation by a user."""
 
@@ -156,34 +170,37 @@ class SegRecord:
     def record(self, choices=None, translation=None):
         print("{} recording translation {}, choices {}".format(self, translation, choices))
         if choices:
-            for key, choice in choices:
-                print("  Choice: {}, possible: {}".format(choice, self.choices[key]))
+            self.feedback = Feedback(choices=choices)
+            print(" Feedback: {}".format(self.feedback))
+        elif translation:
+            self.feedback = Feedback(translation=translation)
+            print(" Feedback: {}".format(self.feedback))
+        else:
+            print("Something wrong: NO FEEDBACK TO RECORD")
 
 class Feedback:
     """Feedback from a user about a segment or sentence and its translation."""
 
-    def __init__(self, accept=True, pos_index=-1, choice=None, translation=None):
+    def __init__(self, accept=True, choices=None, translation=None):
         """
         EITHER the user simply
         -- accepts the system's translation (accept=True) OR
-        -- makes a selection from the alternatives offered by the system
-           (pos_index is non-negative and choice is not None) OR
+        -- makes selection from the alternatives offered by the system
+           (choices is a list of pos_index, choice pairs) OR
         -- provides an alternate translation (translation is not None).
         No backpointer to the SegRecord or SentRecord that this refers to.
         """
         self.accept = accept
-        self.pos_index = pos_index
-        self.choice = choice
+        self.choices = choices
         self.translation = translation
         self.id = '@'
-        if accept:
-            self.id += "ACC"
+        if translation:
+            self.id += "REJ:{}".format(translation)
+        elif choices:
+            choice_string = ','.join(["{}={}".format(pos, c) for pos, c in choices])
+            self.id += "REJ:{}".format(choice_string)
         else:
-            self.id += "REJ:"
-            if translation:
-                self.id += translation
-            else:
-                self.id += "{}={}".format(pos_index, choice)
+            self.id += "ACC"
 
     def __repr__(self):
         return self.id
