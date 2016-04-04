@@ -75,9 +75,12 @@ def quit(session=None):
     if session:
         session.quit()
 
-def start(source, target, user=None):
-    """Initialize a session."""
-    return kuaa.Session(source=source, target=target, user=user)
+def start(source, target, user):
+    """Initialize a run. Create a session if there's a user."""
+    # Read in current users so that we can check for username overlap if a new account is created
+    User.read_all()
+    if user:
+        return kuaa.Session(source=source, target=target, user=user)
 
 # Import views. This has to appear after the app is created.
 import kuaa.views

@@ -66,27 +66,47 @@ span.cargando
 {
         font-weight: bold;
 }
-#button
+span.label
+{
+        font-weight: bold;
+}
+#text
+{
+        font-family: "Verdana";
+        font-size: 100%;
+        width: 30%
+}
+#submit
 {
         background-color: #00a;
         color: #fff;
         font-family: "Verdana";
         font-size: 100%;
-        align: center;
-        width: 20%
+        width: 30%
 }
-#button:hover
+#submit:hover
 {
         background-color: #00f;
 }
 </style>
 
 <script>
+function validate() {
+    if (document.Form1.username.value == '') {
+        alert('¡Tenés que introducir un nombre de usuario!y');
+        return false;
+    if (document.Form1.email.value == '') {
+        alert('¡Tenés que introducir tu correo!');
+        return false;
+    } else if (document.Form1.password.value != document.Form1.password2.value) {
+        alert("¡Contraseñas no coinciden!");
+        return false;
+    } else {
+        return true;
+    }
+}
 function loading() {
     document.getElementById("loading").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
-    window.location.assign("doc");
-}
-function login() {
     window.location.assign("doc");
 }
 </script>
@@ -99,53 +119,48 @@ function login() {
 
 <h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
 
-<h2>¡Bienvenida/o a Mainumby!<br/>¡Tereg̃uahẽ porãite Mainumby-me!
+<h2>Crear una cuenta
 </h2>
 
-<h3>¿Qu&eacute; es?
-</h3>
+<form name='Form1' onsubmit="return validate();" action="acct" method="post">
 
 <p>
-Mainumby es una aplicación que ayuda a traducir del
-castellano al guaraní.
-En su forma final, tendrá dos componentes: un traductor automático
-rudimentario (Mbojereha) y una memoria de traducción (Mandu'a).
-En la versión actual, sólo tiene el traductor.
+<span class='label'>Nombre de usuario</span><br/>
+<input type="text" name="username" id="text">
 </p>
-
-<h3>¿Cómo funciona?
-</h3>
 
 <p>
-En la versión actual de Mainumby, deb&eacute;s introducir o pegar las oraciones
-que quer&eacute;s traducir.
-(Finalmente va a ser posible subir documentos.)
-Para cada oración el traductor Mbojereha busca frases en su base de
-datos que sabe traducir al guaraní, y, en lo que pueda, analiza la
-oración como un conjunto de tales frases.
+<span class='label'>Contraseña</span><br/>
+<input type="password" name="password" id="text">
 </p>
 
-<hr/>
-
-<form action='login' method="post">
-
-<p class="center">
-<input type="submit" value="Iniciar sesión" id="button">
+<p>
+<span class='label'>Confirmá la contraseña</span><br/>
+<input type="password" name="password2" id="text">
 </p>
 
-<!--
-<p class="center" id="loading">
-<input id="button" style="font-family: Verdana; font-size: 100%; font-weight: bold"
-type=button name="Cargar" value="Iniciar sesión" onclick="loading()">
+<p>
+<span class='label'>Dirección de correo electrónico</span><br/>
+<input type="text" name="email" id="text">
 </p>
--->
+
+<p>
+<span class='label'>Nombre (opcional)</span><br/>
+<input type="text" name="firstname" id="text">
+</p>
+
+<p>
+<span class='label'>Apellidos (opcional)</span><br/>
+<input type="text" name="othernames" id="text">
+</p>
+
+<hr>
+
+<p>
+<input type="submit" value='Creá tu cuenta' name='create' action='create' id='submit'>
+</p>
 
 </form>
-<!--
-<button type="button"
-onclick="document.getElementById('loading').innerHTML = {{'%r'|format(['foo', 'bar'])}}">
-Try it</button>
--->
 
 </body>
 

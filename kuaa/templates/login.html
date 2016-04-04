@@ -62,22 +62,59 @@ p.center
         margin-bottom: .5em;
         text-align: center;
 }
+table
+{
+        margin-left: auto;
+        margin-right: auto;
+        width: 75%;
+        border: 2px solid black;
+
+}
 span.cargando
 {
         font-weight: bold;
 }
-#button
+span.label
+{
+        font-weight: bold;
+}
+td.text
+{
+        vertical-align: top;
+        text-align: center;
+        width: 50%;
+        border: 1px solid black;
+}
+#text
+{
+        font-family: "Verdana";
+        font-size: 100%;
+        width: 80%
+}
+#bluebutton
 {
         background-color: #00a;
         color: #fff;
         font-family: "Verdana";
         font-size: 100%;
         align: center;
-        width: 20%
+        width: 80%
+}
+#bluebutton:hover
+{
+        background-color: #00f;
+}
+#button
+{
+        color: #00f;
+        font-family: "Verdana";
+        font-size: 100%;
+        width: 80%;
+        align: center;
 }
 #button:hover
 {
-        background-color: #00f;
+        background-color: #ccf;
 }
 </style>
 
@@ -86,8 +123,19 @@ function loading() {
     document.getElementById("loading").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
     window.location.assign("doc");
 }
-function login() {
-    window.location.assign("doc");
+function validate() {
+    if (document.Form1.username.value == '') {
+        alert('¡Tenés que introducir tu nombre de usuario!');
+        return false;
+    } else if (document.Form1.password.value == '') {
+        alert('¡Tenés que introducir tu contraseña!');
+        return false;
+    } else {
+        return true;
+    }
+}
+function account() {
+    window.location.assign("reg");
 }
 </script>
 
@@ -99,53 +147,49 @@ function login() {
 
 <h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
 
-<h2>¡Bienvenida/o a Mainumby!<br/>¡Tereg̃uahẽ porãite Mainumby-me!
+<h2>Iniciar sesión
 </h2>
 
-<h3>¿Qu&eacute; es?
-</h3>
+
+<table>
+<tr>
+<td class="text">
+<form name="Form1" action="doc" onsubmit="return validate();" method="post">
 
 <p>
-Mainumby es una aplicación que ayuda a traducir del
-castellano al guaraní.
-En su forma final, tendrá dos componentes: un traductor automático
-rudimentario (Mbojereha) y una memoria de traducción (Mandu'a).
-En la versión actual, sólo tiene el traductor.
+<span class='label'>Nombre de usuario</span><br/>
+<input type="text" name="username" id="text">
 </p>
-
-<h3>¿Cómo funciona?
-</h3>
 
 <p>
-En la versión actual de Mainumby, deb&eacute;s introducir o pegar las oraciones
-que quer&eacute;s traducir.
-(Finalmente va a ser posible subir documentos.)
-Para cada oración el traductor Mbojereha busca frases en su base de
-datos que sabe traducir al guaraní, y, en lo que pueda, analiza la
-oración como un conjunto de tales frases.
+<span class='label'>Contraseña</span><br/>
+<input type="password" name="password" id="text">
 </p>
 
-<hr/>
-
-<form action='login' method="post">
-
-<p class="center">
-<input type="submit" value="Iniciar sesión" id="button">
-</p>
-
-<!--
-<p class="center" id="loading">
-<input id="button" style="font-family: Verdana; font-size: 100%; font-weight: bold"
-type=button name="Cargar" value="Iniciar sesión" onclick="loading()">
-</p>
--->
+<p>
+<input type="submit" value="Ingresar" name="logged" id="bluebutton">
+</p>  
 
 </form>
-<!--
-<button type="button"
-onclick="document.getElementById('loading').innerHTML = {{'%r'|format(['foo', 'bar'])}}">
-Try it</button>
--->
+
+<p>
+¿No tenés una cuenta?<br/>
+<button id="button" onclick="account()">Crear cuenta</button>
+</p>
+</td>  
+
+<td class="text">
+<p>  
+<button onclick="loading()" id="bluebutton">Ingresar sin identificarte</button><br/>
+</p>
+</td>  
+
+</tr>
+
+</table>
+
+<p class="center" id="loading">
+</p>
 
 </body>
 

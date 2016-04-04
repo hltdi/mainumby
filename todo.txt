@@ -1,11 +1,13 @@
-2016.3.27
+é
+
++2016.3.27
 — corregir (tr.)
 
-2016.3.22
+!2016.3.22
 — how to normalize Gn spelling (when users enter text)
   e.g., ñavõ / ñavo, g̃uahẽ / guahẽ
 
-2016.2.22
++2016.2.22
 — ways that translations can be shared (as opposed to completely different)
 —— one or more words is optional in one variant: V + (chupe)
 —— one or more words has multiple translations: N + rehe|rupi

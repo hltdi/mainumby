@@ -591,7 +591,6 @@
 ->grn $n <hesa'ỹijo_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 *** lista_n de $n ; ^ lista_n 0
 ->grn $n <hysýi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
-->grn $n <hysỹi_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 *** llegada_n de $n ; ^ llegada_n 0
 ->grn $n ñeĝuahẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n ĝuahẽ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
@@ -5365,7 +5364,6 @@
 ->grn ka'apytã_n ; 0==0 n:n,poses:poses
 *** cordillera_n ; ^ cordillera_n 0
 ->grn yvytyrusu_n ; 0==0 n:n,poses:poses
-->grn yvytyrysýi_n ; 0==0 n:n,poses:poses
 *** cordura_n ; ^ cordura_n 0
 ->grn akãguapy_n ; 0==0 n:n,poses:poses
 *** cordón_n umbilical ; ^ cordón_n 0 ; #14
@@ -9316,7 +9314,6 @@
 ->grn yvi_n ; 0==0 n:n,poses:poses
 *** hilera_n ; ^ hilera_n 0 ; #16
 ->grn <hysýi_n ; 0==0 n:n,poses:poses
-->grn <hysỹi_n ; 0==0 n:n,poses:poses
 *** hilera_n de una plantación ; ^ hilera_n 0 ; #16
 ->grn imondóvy_n ; 0==0 n:n,poses:poses
 ->grn mbohysýi_n temitỹ ; 0==0 n:n,poses:poses
@@ -10713,7 +10710,6 @@
 ->grn juruhe'ẽ_n ; 0==0 n:n,poses:poses ; #2
 *** lista_n ; ^ lista_n 0 ; #6
 ->grn <hysýi_n ; 0==0 n:n,poses:poses
-->grn <hysỹi_n ; 0==0 n:n,poses:poses
 *** lista_n de nombres ; ^ lista_n 0 ; #6
 ->grn <herasýi_n ; 0==0 n:n,poses:poses
 *** listado_n ; ^ listado_n 0
@@ -16423,7 +16419,6 @@
 *** serie_n ; ^ serie_n 0
 ->grn apesã_n ; 0==0 n:n,poses:poses ; #7
 ->grn <hysýi_n ; 0==0 n:n,poses:poses
-->grn <hysỹi_n ; 0==0 n:n,poses:poses
 *** seriedad_n ; ^ seriedad_n 0
 ->grn <hovasy_n ; 0==0 n:n,poses:poses
 *** sermón_n ; ^ sermón_n 0
@@ -16438,11 +16433,9 @@
 ->grn mbói_n yma ; 0==0 n:n,poses:poses
 *** serpiente_n ; ^ serpiente_n 0
 ->grn mbói_n ; 0==0 n:n,poses:poses
-->grn mymba_n syryry ; 0==0 n:n,poses:poses
 *** serranía_n ; ^ serranía_n 0
 ->grn yvytyrusu_n ; 0==0 n:n,poses:poses
 ->grn itaty_n ; 0==0 n:n,poses:poses
-->grn yvytyrysýi_n ; 0==0 n:n,poses:poses
 *** servicio_n mutuo ; ^ servicio_n 0
 ->grn joporu_n ; 0==0 n:n,poses:poses
 *** servicio_n ; ^ servicio_n 0
@@ -16456,7 +16449,7 @@
 ->grn akã_n apytu'ũ ; 0==0 n:n,poses:poses
 *** seta_n ; ^ seta_n 0
 ->grn urupe_n ; 0==0 n:n,poses:poses
-*** setiembre_n ; ^ setiembre_n 0
+*** septiembre_n ; ^ septiembre_n 0
 ->grn jasyporundy_n ; 0==0 n:n,poses:poses
 *** sexo_n femenino ; ^ sexo_n 0 ; #1
 ->grn <hako_n ; 0==0 n:n,poses:poses

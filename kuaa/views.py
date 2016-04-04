@@ -26,15 +26,17 @@
 # Created 2015.06.12
 # 2015.07
 # -- Views for loading languages, entering document, sentence, and translation.
-# 2016.03.02
+# 2016.03
 # -- sent view can either get new sentence or record translation for sentence segment.
-# -- SESSION and SEGS globals added.
+# -- SESSION, SEGS, SEG_HTML globals added.
+# 2016.04.03
+# -- USER added; SESSION created only if there is one.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
 from kuaa import app, make_document, load, seg_trans, quit, start
 
 # Global variables for views; probably a better way to do this...
-SESSION = SPA = GRN = DOC = SENT = SEGS = SEG_HTML = None
+SESSION = SPA = GRN = DOC = SENT = SEGS = SEG_HTML = USER = None
 SINDEX = 0
 # SOLINDEX = 0
 
@@ -44,7 +46,8 @@ def init_session():
     global SPA
     if not SPA:
         load_languages()
-    SESSION = start(SPA, GRN)
+    # Load users and create session if there's a user
+    SESSION = start(SPA, GRN, USER)
 
 def load_languages():
     """Load Spanish and Guarani data."""
@@ -77,18 +80,11 @@ def get_segmentation():
     global SEG_HTML
     SEGS, SEG_HTML = seg_trans(SENTENCE, SPA, GRN)    
 
-# def get_solution():
-#    global SOLINDEX
-#    if SOLINDEX >= len(SENTENCE.solutions):
-#        SOLINDEX = 0
-#        get_sentence()
-#        return
-#    solution = SENTENCE.solutions[0]
-
 @app.route('/')
 def index():
 #    print("In index...")
     return redirect(url_for('base'))
+#    return redirect(url_for('reg'))
 
 @app.route('/base', methods=['GET', 'POST'])
 def base():
@@ -97,12 +93,34 @@ def base():
         return render_template('doc.html')
     return render_template('base.html')
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    print("In login...")
+    form = request.form
+    print("Form for login: {}".format(form))
+#    return render_template('base.html')
+    if request.method == 'POST' and 'Cargar' in request.form:
+        return render_template('doc.html')
+    return render_template('login.html')
+
+@app.route('/reg', methods=['GET', 'POST'])
+def reg():
+    print("In reg...")
+    form = request.form
+    print("Form for reg: {}".format(form))
+    return render_template('reg.html')
+
+# Saying account was created
+@app.route('/acct', methods=['POST'])
+def acct():
+    return render_template('acct.html')
+
 # View for document entry
 @app.route('/doc', methods=['GET', 'POST'])
 def doc():
 #    print("In doc...")
-    # Initialize Session if it's not already
-    if not SESSION:
+    # Initialize Session if there's a User and no Session
+    if USER and not SESSION:
         init_session()
     # Load Spanish and Guarani if they're not loaded.
 #    if not SPA:
@@ -144,11 +162,12 @@ def sent():
     # Show segmented sentence
     return render_template('sent.html', sentence=SEG_HTML)
 
-@app.route('/fin', methods=['GET', 'POST'])
+@app.route('/fin', methods=['POST'])
 def fin():
 #    print("In fin...")
-    SESSION.write_record()
-    quit(SESSION)
+    if SESSION:
+        SESSION.write()
+        quit(SESSION)
     return render_template('fin.html')
 
 # Not needed because this is in runserver.py.

@@ -353,7 +353,8 @@ class Language:
                     if self.use in [GENERATION, TARGET]:
                         self.rev_segs[seg] = form
         except IOError:
-            print('El archivo de de segmentaciones {} no existe'.format(file))
+            pass
+#            print('El archivo de de segmentaciones {} no existe'.format(file))
 
     def write_cache(self, name=''):
         """Write a dictionary of cached entries to a cache file."""
@@ -1230,15 +1231,17 @@ class Language:
         with open(path, 'w', encoding='utf8') as file:
             yaml.dump(self.to_dict(), file)
 
-    def read_groups(self, files=None, target=None):
+    def read_groups(self, files=None, target=None, verbosity=0):
         """Read in groups from .grp files. If target is not None (must be a language), read in translation groups
         and cross-lingual features as well."""
         target_abbrev = target.abbrev if target else None
         source_groups = []
         target_groups = []
+        print("Leyendo grupos para {}".format(self.name))
         for gfile in self.get_group_files(files):
             with open(gfile, encoding='utf8') as file:
-                print("Leyendo grupos para {} de {}".format(self.name, gfile))
+                if verbosity:
+                    print("Leyendo grupos para {} de {}".format(self.name, gfile))
                 # Groups separated by GROUP_SEP string
                 groups = file.read().split(GROUP_SEP)
                 transadd = ''

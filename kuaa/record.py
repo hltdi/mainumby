@@ -28,8 +28,21 @@
 # -- Created.
 # 2016.03
 # -- Lots of additions and fixes.
+# 2016.04.02-3
+# -- Added users, with hashed passwords
 
-import datetime
+import datetime, sys, os
+from werkzeug.security import generate_password_hash, check_password_hash
+
+SESSIONS_DIR = os.path.join(os.path.dirname(__file__), 'sessions')
+
+SESSION_PRE = '⌨'
+TIME_PRE = '☽'
+SENTENCE_PRE = '✍'
+SEGMENT_PRE = '⧦'
+FEEDBACK_PRE = "⇐"
+USER_PRE = "☻"
+TIME_FORMAT = "%d.%m.%Y/%H:%M:%S:%f"
 
 ZERO_TIME = datetime.timedelta() 
 
@@ -55,7 +68,20 @@ class Session:
         Session.id += 1
 
     def __repr__(self):
-        return "@{}".format(self.id)
+        return "{} {}".format(SESSION_PRE, self.id)
+
+    @staticmethod
+    def time2str(time):
+        return time.strftime(TIME_FORMAT)
+
+    @staticmethod
+    def str2time(string):
+        return datetime.datetime.strptime(string, TIME_FORMAT)
+
+    def get_path(self):
+        userfilename = self.user.username + '.usr'
+#        month = "{}.{}".format(self.start.year, self.start.month)
+        return os.path.join(SESSIONS_DIR, userfilename)
 
     def length(self):
         """Length of the session as a time delta object."""
@@ -69,6 +95,9 @@ class Session:
 
     def quit(self):
         """Set the end time and stop running."""
+        # Save any new users (can there be more than 1?)
+        User.write_new()
+        User.new_users.clear()
         self.running = False
         self.end = get_time()
 
@@ -106,10 +135,13 @@ class Session:
 #                    print("  Alternatives: {}".format(segrecord.choices[k]))
                 segrecord.record(choices=tra_choices)
 
-    def write_record(self):
-        print("Record for {}".format(self))
+    def write(self, file=sys.stdout):
+        print("{}".format(self), file=file)
+        print("{} {}".format(TIME_PRE, Session.time2str(self.start)))
+        if not self.running:
+            print("{} {}".format(TIME_PRE, Session.time2str(self.end)))
         for sentence in self.sentences:
-            sentence.write()
+            sentence.write(file=file)
 
 class SentRecord:
     """A record of a Sentence and a single user's response to it."""
@@ -128,8 +160,8 @@ class SentRecord:
         self.feedback = None
 
     def __repr__(self):
-        session = "{}".format(self.session) if self.session else ""
-        return "{}:{}".format(session, self.raw)
+#        session = "{}".format(self.session) if self.session else ""
+        return "{} {}".format(SENTENCE_PRE, self.raw)
 
     def record(self, translation):
         """Record user's translation for the whole sentence."""
@@ -137,15 +169,14 @@ class SentRecord:
         print("{} recording translation {}, feedback: {}".format(self, translation, feedback))
         self.feedback = feedback
 
-    def write(self):
-        print("Record for {}".format(self))
+    def write(self, file=sys.stdout):
+        print("{}".format(self, file=file))
         if self.feedback:
-            print("Feedback: {}".format(self.feedback))
+            print("Sentence feedback: {}".format(self.feedback), file=file)
         # Can there be feedback for segments *and* for whole sentence?
         for key, segment in self.segments.items():
             if segment.feedback:
-                print("Tokens {}, segment {}".format(key, segment))
-                print("  Feedback: {}".format(segment.feedback))
+                segment.write(file=file)
 
 class SegRecord:
     """A record of a sentence segment and its translation by a user."""
@@ -164,19 +195,23 @@ class SegRecord:
         self.feedback = None
 
     def __repr__(self):
-        session =  "{}".format(self.session) if self.session else ""
-        return "{}:{}".format(session, self.tokens)
+#        session =  "{}".format(self.session) if self.session else ""
+        return "{} {}".format(SEGMENT_PRE, self.tokens)
 
     def record(self, choices=None, translation=None):
         print("{} recording translation {}, choices {}".format(self, translation, choices))
         if choices:
             self.feedback = Feedback(choices=choices)
-            print(" Feedback: {}".format(self.feedback))
+            print("{}".format(self.feedback))
         elif translation:
             self.feedback = Feedback(translation=translation)
-            print(" Feedback: {}".format(self.feedback))
+            print("{}".format(self.feedback))
         else:
             print("Something wrong: NO FEEDBACK TO RECORD")
+
+    def write(self, file=sys.stdout):
+        print("{}".format(self), file=file)
+        print("{}".format(self.feedback), file=file)
 
 class Feedback:
     """Feedback from a user about a segment or sentence and its translation."""
@@ -193,17 +228,80 @@ class Feedback:
         self.accept = accept
         self.choices = choices
         self.translation = translation
-        self.id = '@'
+#        self.id = '@'
+        self.id = ''
         if translation:
             self.id += "REJ:{}".format(translation)
         elif choices:
             choice_string = ','.join(["{}={}".format(pos, c) for pos, c in choices])
-            self.id += "REJ:{}".format(choice_string)
+            self.id += "ACC:{}".format(choice_string)
         else:
             self.id += "ACC"
 
     def __repr__(self):
-        return self.id
+        return "{} {}".format(FEEDBACK_PRE, self.id)
 
 ACCEPT = Feedback()
 
+class User:
+    """User of the system who is registered and whose feedback is saved."""
+
+    users = {}
+    new_users = {}
+
+    def __init__(self, username='', email='', password='', name='', level='', pw_hash='',
+                 new=False):
+        """name and level are optional. Other fields are required."""
+        self.username = username
+        self.email = email
+        # Guarani ability
+        self.level = level
+        self.name = name
+        if pw_hash:
+            self.pw_hash = pw_hash
+        else:
+            self.set_password(password)
+        if new:
+            User.new_users[self.username] = self
+
+    def __repr__(self):
+        return "{} {}".format(USER_PRE, self.username)
+
+    def set_password(self, password):
+        self.pw_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.pw_hash, password)
+
+    def add_user(self):
+        User.users[self.username] = self
+
+    @staticmethod
+    def get_user(username):
+       return User.users.get(username)
+
+    def write(self, file=sys.stdout):
+        print("{};{};{};{};{}".format(self.username, self.pw_hash, self.email, self.name, self.level), file=file)
+
+    @staticmethod
+    def get_users_path():
+        return os.path.join(SESSIONS_DIR, 'all.usr')
+
+    def get_path():
+        filename = "{}.usr".format(self.username)
+        return os.path.join(SESSIONS_DIR, filename)
+
+    @staticmethod
+    def read_all():
+        """Read in current users from all.usr, adding them to User.users."""
+        with open(User.get_users_path(), encoding='utf8') as file:
+            for line in file:
+                username, pw_hash, email, name, level = line.split(';')
+                user = User(username=username, pw_hash=pw_hash, email=email, name=name, level=level)
+                User.users[username] = user
+
+    @staticmethod
+    def write_new():
+        with open(User.get_users_path(), 'a', encoding='utf8') as file:
+            for username, user in User.new_users.items():
+                user.write(file=file)

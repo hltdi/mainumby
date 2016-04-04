@@ -8962,20 +8962,19 @@
 ->grn mboparagua_v[cat=a] (chupe)
 *** coronar_v[-r,po=3,no=1] ; ^ coronar_v 0
 ->grn mboparagua_v[cat=a] (chupekuéra)
+*** corregir_v[-r] ; ^ corregir_v 0
+->grn myatyrõ_v[cat=a]
+*** corregir_v[-r] a $n_prs ; ^ corregir_v 0
+->grn myatyrõ_v[cat=a] $n_prs[caso=pe] ; || 0, -1, 1
+*** corregir_v[-r,po=3,no=0] ; ^ corregir_v 0
+->grn myatyrõ_v[cat=a] (chupe)
+*** corregir_v[-r,po=3,no=1] ; ^ corregir_v 0
+->grn myatyrõ_v[cat=a] (chupekuéra)
 *** corregir_v[+r] ; ^ corregir_v 0
 ->grn ñembokaraiguasu_v[cat=a]
 *** correr_v[-r] ; ^ correr_v 0 ; #86
 ->grn syry_v[cat=a] ; #21 ; ##10
 ->grn ñani_v[cat=a] ; #138 ; ##9
-*** correr_v[-r] a $n_prs ; ^ correr_v 0
-->grn syry_v[cat=a] $n_prs[caso=pe] ; || 0, -1, 1
-->grn ñani_v[cat=a] $n_prs[caso=pe] ; || 0, -1, 1
-*** correr_v[-r,po=3,no=0] ; ^ correr_v 0
-->grn syry_v[cat=a] (chupe)
-->grn ñani_v[cat=a] (chupe)
-*** correr_v[-r,po=3,no=1] ; ^ correr_v 0
-->grn syry_v[cat=a] (chupekuéra)
-->grn ñani_v[cat=a] (chupekuéra)
 *** correr_v[+r] ; ^ correr_v 0
 ->grn ñeñani_v[cat=a]
 *** corromper_v[+r] ; ^ corromper_v 0
