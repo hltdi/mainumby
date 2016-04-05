@@ -33,12 +33,18 @@
 # -- USER added; SESSION created only if there is one.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-from kuaa import app, make_document, load, seg_trans, quit, start
+from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user
 
 # Global variables for views; probably a better way to do this...
 SESSION = SPA = GRN = DOC = SENT = SEGS = SEG_HTML = USER = None
 SINDEX = 0
+USERS_INITIALIZED = False
 # SOLINDEX = 0
+
+def initialize():
+    global USERS_INITIALIZED
+    init_users()
+    USERS_INITIALIZED = True
 
 def init_session():
     global SESSION
@@ -47,7 +53,8 @@ def init_session():
     if not SPA:
         load_languages()
     # Load users and create session if there's a user
-    SESSION = start(SPA, GRN, USER)
+    if USER and not SESSION:
+        SESSION = start(SPA, GRN, USER)    
 
 def load_languages():
     """Load Spanish and Guarani data."""
@@ -88,20 +95,43 @@ def index():
 
 @app.route('/base', methods=['GET', 'POST'])
 def base():
-#    print("In base...")
-    if request.method == 'POST' and 'Cargar' in request.form:
-        return render_template('doc.html')
+    print("In base...")
+#    if request.method == 'POST' and 'Cargar' in request.form:
+#        return render_template('doc.html')
     return render_template('base.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    global USER
     print("In login...")
     form = request.form
     print("Form for login: {}".format(form))
-#    return render_template('base.html')
-    if request.method == 'POST' and 'Cargar' in request.form:
-        return render_template('doc.html')
+    if not USERS_INITIALIZED:
+        initialize()
+    if request.method == 'POST' and 'login' in form:
+        # Try to find user with username username
+        username = form.get('username')
+        user = get_user(username)
+        if not user:
+            print("No such user as {}".format(username))
+            return render_template('login.html', error='user')
+        else:
+            print("Found user {}".format(user))
+            password = form.get('password')
+            if user.check_password(password):
+                USER = user
+                return render_template('logged.html', username=username)
+            else:
+                print("Password doesn't match")
+                return render_template('login.html', error='password')
     return render_template('login.html')
+
+@app.route('/logged', methods=['GET', 'POST'])
+def logged():
+    print("In logged...")
+    form = request.form
+    print("Form for logged: {}".format(form))
+    return render_template('logged.html')
 
 @app.route('/reg', methods=['GET', 'POST'])
 def reg():
@@ -118,9 +148,10 @@ def acct():
 # View for document entry
 @app.route('/doc', methods=['GET', 'POST'])
 def doc():
-#    print("In doc...")
+    print("In doc...")
+    print("SESSION {}, USER {}".format(SESSION, USER))
     # Initialize Session if there's a User and no Session
-    if USER and not SESSION:
+    if not SESSION:
         init_session()
     # Load Spanish and Guarani if they're not loaded.
 #    if not SPA:

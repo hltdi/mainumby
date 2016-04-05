@@ -261,6 +261,10 @@ class User:
             self.pw_hash = pw_hash
         else:
             self.set_password(password)
+        # Add to list of all users
+        User.users[self.username] = self
+        # If this is a new user, save it here so it can be written to all.usr at the end
+        # of the session.
         if new:
             User.new_users[self.username] = self
 
@@ -297,7 +301,8 @@ class User:
         with open(User.get_users_path(), encoding='utf8') as file:
             for line in file:
                 username, pw_hash, email, name, level = line.split(';')
-                user = User(username=username, pw_hash=pw_hash, email=email, name=name, level=level)
+                user = User(username=username, pw_hash=pw_hash, email=email, name=name, level=level,
+                            new=False)
                 User.users[username] = user
 
     @staticmethod
@@ -305,3 +310,7 @@ class User:
         with open(User.get_users_path(), 'a', encoding='utf8') as file:
             for username, user in User.new_users.items():
                 user.write(file=file)
+
+    @staticmethod
+    def get_user(username):
+        return User.users.get(username)

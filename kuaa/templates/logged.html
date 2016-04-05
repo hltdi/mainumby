@@ -17,7 +17,19 @@
 {
         background-color: #00f;
 }
+span.username
+{
+        background-color: #f00;
+        color: #fff;
+}
 </style>
+
+<script>
+function loading() {
+    document.getElementById("loading").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
+    window.location.assign("doc");
+}
+</script>
 
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
 
@@ -27,15 +39,18 @@
 
 <h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
 
-<p>¡Cuenta creada!</p>
-
-<form method=POST action='login'>
-
-<p class="center">
-<input type=submit id="continuebutton" action="continuar" name="continuar" value="Continuar">
+<p class='center'>
+Ingresaste como <span class="username">{{ username }}</span>.
 </p>
 
-</form>
+<hr>
+
+<p class="center">
+<button onclick="loading()" id="continuebutton">Continuar</button><br/>
+</p>
+
+<p class="center" id="loading">
+</p>
 
 </body>
 

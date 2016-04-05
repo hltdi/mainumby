@@ -41,14 +41,6 @@ def load(source='spa', target='grn'):
     """Load source and target languages for translation."""
     return kuaa.Language.load_trans(source, target)
 
-#def translate(sentence, source, target,
-#              all_sols=False, all_trans=True, interactive=False, verbosity=0):
-#    """Translate sentence from source to target language. Use only first solution but multiple translation options."""
-#    sentence.initialize(verbosity=verbosity)
-#    sentence.solve(translate=True,
-#                   all_sols=all_sols, all_trans=all_trans, interactive=interactive, verbosity=verbosity)
-#    return sentence.complete_trans()[0]
-
 def seg_trans(sentence, source, target, session=None, verbosity=0):
     """Translate sentence and return marked-up sentence with segments colored.
     So far only uses first solution."""
@@ -75,12 +67,21 @@ def quit(session=None):
     if session:
         session.quit()
 
+def init_users():
+    # Read in current users before login.
+    User.read_all()
+
 def start(source, target, user):
     """Initialize a run. Create a session if there's a user."""
     # Read in current users so that we can check for username overlap if a new account is created
     User.read_all()
     if user:
         return kuaa.Session(source=source, target=target, user=user)
+
+def get_user(username):
+    """Find the user with username username."""
+    print("Looking for user with username {}".format(username))
+    return User.get_user(username)
 
 # Import views. This has to appear after the app is created.
 import kuaa.views

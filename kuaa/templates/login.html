@@ -1,67 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
 
 <style type="text/css">
-body
-{
-	margin-left: 25pt;
-	margin-right: 20pt;
-	margin-top: 20pt;
-	margin-bottom: 20pt;
-	padding-left: 0;
-	padding-right: 0;
-	padding-top: 0;
-	padding-bottom: 0;
-	font-family: verdana, geneva, arial, sans-serif;
-	background-color: #FFF;
-}
-a:link { color: #009900; }
-span.fuzzy a:link { color: #66BB66; }
-a:visited { color: #006600; }
-span.fuzzy a:visited { color: #558855; }
-a:active { color: #000000; }
-a:hover { background-color: #009900; color: #FFFFFF; }
-span.fuzzy a:hover { background-color: #66FF66; color: #FFFFFF; }
-h1,h2,h3 { clear: left; }
-h1
-{
-	font-size: 140%;
-	margin-top: .25em;
-	margin-bottom: 0;
-        border-bottom: thin solid;
-	text-align: center;
-	font-weight: bold;
-	color: #C00;
-}
-h2
-{
-	font-size: 120%;
-	font-weight: bold;
-	margin-top: .75em;
-	margin-bottom: .35em;
-        text-align: center;
-        color: #00F;
-}
-h3
-{
- 	font-size: 110%;
-	font-weight: bold;
-	margin-top: .5em;
-	margin-bottom: .5em;
-}
-p
-{
-	margin-top: .5em;
-	margin-bottom: .5em;
-        clear: left;
-}
-p.center
-{
-        margin-top: .5em;
-        margin-bottom: .5em;
-        text-align: center;
-}
 table
 {
         margin-left: auto;
@@ -69,6 +11,10 @@ table
         width: 75%;
         border: 2px solid black;
 
+}
+p.error
+{
+        color: #f00;
 }
 span.cargando
 {
@@ -91,7 +37,7 @@ td.text
         font-size: 100%;
         width: 80%
 }
-#bluebutton
+#enterbutton
 {
         background-color: #00a;
         color: #fff;
@@ -100,11 +46,11 @@ td.text
         align: center;
         width: 80%
 }
-#bluebutton:hover
+#enterbutton:hover
 {
         background-color: #00f;
 }
-#button
+#acctbutton
 {
         color: #00f;
         font-family: "Verdana";
@@ -112,7 +58,7 @@ td.text
         width: 80%;
         align: center;
 }
-#button:hover
+#acctbutton:hover
 {
         background-color: #ccf;
 }
@@ -123,16 +69,8 @@ function loading() {
     document.getElementById("loading").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
     window.location.assign("doc");
 }
-function validate() {
-    if (document.Form1.username.value == '') {
-        alert('¡Tenés que introducir tu nombre de usuario!');
-        return false;
-    } else if (document.Form1.password.value == '') {
-        alert('¡Tenés que introducir tu contraseña!');
-        return false;
-    } else {
-        return true;
-    }
+function password() {
+    alert("Checking password");
 }
 function account() {
     window.location.assign("reg");
@@ -150,11 +88,22 @@ function account() {
 <h2>Iniciar sesión
 </h2>
 
+{% if error %}
+<p class="error">
+{% if error == "password" %}
+Error: ¡la contraseña que introdujiste no es correcta! Por favor
+introducí otra.
+{% elif error == "user" %}
+Error: ¡el nombre de usuario que introdujiste no es correcto! Por
+favor introducí or ingresá sin identificarte.
+{% endif %}
+</p>
+{% endif %}
 
 <table>
 <tr>
 <td class="text">
-<form name="Form1" action="doc" onsubmit="return validate();" method="post">
+<form name="Form1" action="login" method="post">
 
 <p>
 <span class='label'>Nombre de usuario</span><br/>
@@ -167,20 +116,20 @@ function account() {
 </p>
 
 <p>
-<input type="submit" value="Ingresar" name="logged" id="bluebutton">
-</p>  
+<input type="submit" name="login" id="enterbutton" value="Ingresar">
+</p>
 
 </form>
 
 <p>
 ¿No tenés una cuenta?<br/>
-<button id="button" onclick="account()">Crear cuenta</button>
+<button id="acctbutton" onclick="account()">Crear cuenta</button>
 </p>
 </td>  
 
 <td class="text">
 <p>  
-<button onclick="loading()" id="bluebutton">Ingresar sin identificarte</button><br/>
+<button onclick="loading()" id="enterbutton">Continuar sin identificarte</button><br/>
 </p>
 </td>  
 
