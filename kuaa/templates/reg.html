@@ -1,57 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
-<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
-
-<style type="text/css">
-span.cargando
-{
-        font-weight: bold;
-}
-span.label
-{
-        font-weight: bold;
-}
-#text
-{
-        font-family: "Verdana";
-        font-size: 100%;
-        width: 30%
-}
-#submit
-{
-        background-color: #00a;
-        color: #fff;
-        font-family: "Verdana";
-        font-size: 100%;
-        width: 30%
-}
-#submit:hover
-{
-        background-color: #00f;
-}
-</style>
-
-<script>
-function validate() {
-    if (document.Form1.username.value == '') {
-        alert("¡Tenés que introducir un nombre de usuario!");
-        return false;
-    } else if (document.Form1.email.value == '') {
-        alert("¡Tenés que introducir tu correo!");
-        return false;
-    } else if (document.Form1.password.value != document.Form1.password2.value) {
-        alert("¡Contraseñas no coinciden!");
-        return false;
-    } else {
-        return true;
-    }
-}
-function loading() {
-    document.getElementById("loading").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
-    window.location.assign("doc");
-}
-</script>
+<link rel="stylesheet" type=text/css href="{{url_for('static', filename='style.css')}}" />
 
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
 
@@ -64,42 +14,56 @@ function loading() {
 <h2>Crear una cuenta
 </h2>
 
-<form name="Form1" onsubmit="return validate();" action="acct" method="post">
+{% if error %}
+<p class="error">
+{% if error == "password" %}
+Error: ¡contraseñas no coinciden!
+{% elif error == "username" %}
+Error: ¡ten&eacute;s que introducir un nombre de usuario!
+{% elif error == "email" %}
+Error: ¡ten&eacute;s que introducir tu email!
+{% endif %}
+</p>
+{% endif %}
+
+<form name="Form1" action="reg" method="post">
 
 <p>
 <span class='label'>Nombre de usuario</span><br/>
-<input type="text" name="username" id="text">
+<input type="text" name="username" id="medtext">
 </p>
 
 <p>
 <span class='label'>Contraseña</span><br/>
-<input type="password" name="password" id="text">
+<input type="password" name="password" id="medtext">
 </p>
 
 <p>
 <span class='label'>Confirmá la contraseña</span><br/>
-<input type="password" name="password2" id="text">
+<input type="password" name="password2" id="medtext">
 </p>
 
 <p>
 <span class='label'>Dirección de correo electrónico</span><br/>
-<input type="text" name="email" id="text">
+<input type="text" name="email" id="medtext">
 </p>
 
 <p>
 <span class='label'>Nombre (opcional)</span><br/>
-<input type="text" name="firstname" id="text">
+<input type="text" name="name" id="medtext">
 </p>
 
 <p>
-<span class='label'>Apellidos (opcional)</span><br/>
-<input type="text" name="othernames" id="text">
+<span class='label'>Nivel de conocomiento del guaraní (opcional)</span><br/>
+  <input type="radio" name="level" value="1"> intermedio<br/>
+  <input type="radio" name="level" value="2"> excelente<br/>
+  <input type="radio" name="level" value="3"> nativo
 </p>
 
 <hr>
 
 <p>
-<input type="submit" value="Creá tu cuenta" name="create" id="submit">
+<input type="submit" value="Creá tu cuenta" name="create" id="medbutton">
 </p>
 
 </form>

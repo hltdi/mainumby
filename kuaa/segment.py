@@ -56,7 +56,7 @@ class SolSeg:
     """Sentence solution segment, realization of a single Group. Displayed in GUI."""
 
     # colors to display segments in interface
-    tt_colors = ['red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple']
+    tt_colors = ['blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green']
 
     def __init__(self, solution, indices, translation, tokens, color=None, session=None):
 #        self.solution = solution
@@ -90,49 +90,68 @@ class SolSeg:
     def set_html(self, index):
         """Set the HTML markup for this segment, given its position in the sentence,
         and the dictionary of choices for the record of the SolSeg."""
-#        print("Setting html for segment {} in positions {}".format(self.token_str, self.indices))
+#        print("Setting HTML segment {}: {}".format(self, self.translation))
+        # Combine translations where possible
+#        tlengths = [len(t) for t in self.translation]
+        
         self.color = 'Silver' if not self.translation else SolSeg.tt_colors[index]
-        transhtml = '<table border=1>'
+        transhtml = '<table>'
         mult_trans = len(self.translation) > 1
         capitalized = False
-        choice_dict = self.record.choices if self.record else None
+        choice_list = self.record.choices if self.record else None
         for tindex, t in enumerate(self.translation):
-            print("Setting HTML for {}: {}".format(tindex, t))
+#            print("{} setting HTML for {}: {}".format(self, tindex, t))
+            # Create all combinations of word sequences
+            t_expanded = []
+            for tt in t:
+                if '(' in tt:
+                    tt = ['', tt[1:-1]]
+                else:
+                    tt = tt.split('|')
+                t_expanded.append(tt)
+            tcombs = [' '.join(y) for y in allcombs(t_expanded)]
+            tcombs.sort()
+#            print("  Tcombs {}".format(tcombs))
             # A single translation of the source segment
             transhtml += '<tr>'
-            for wordindex, tword in enumerate(t):
-                # A single word within the translation
-#                choice_key = (self.token_str, "{}:{}".format(tindex, wordindex))
-#                choice_key = "{}:{}".format(tindex, wordindex)
-                choice_key = wordindex
-                choices = set()
-#                choices = []
-                transhtml += "<td class='trans'>"
-                if '|' in tword:
-                    # Word has alternatives choices = []
-                    html_choices = []
-                    tword_choices = tword.split('|')
-                    # The order could be arbitrary, so alphabetize
-                    tword_choices.sort()
-                    for tword_choice in tword_choices:
-                        html_choices.append('<input type="radio" name="{}" id={} value="{}">{}'.format(choice_key, tword_choice, tword_choice, tword_choice))
-#                    choices.extend(tword_choices)
-                    choices.update(tword_choices)
-                    html_choices = '<br/>'.join(html_choices)
-                    transhtml += html_choices
-                else:
-#                    choices.append(tword)
-                    choices.add(tword)
-                    transhtml += '<input type="radio" name="{}" id={} value="{}">{}'.format(choice_key, tword, tword, tword)
-                if self.record:
-                    if choice_key in choice_dict:
-#                        choice_dict[choice_key].extend(choices)
-                        choice_dict[choice_key].update(choices)
-                    else:
-                        choice_dict[choice_key] = choices
-                transhtml += '</td>'
+            transhtml += "<td class='trans'>"
+            html_choices = []
+            for tcindex, tchoice in enumerate(tcombs):
+                html_choices.append('<input type="radio" name="choice" id={} value="{}">{}'.format(tchoice, tchoice, tchoice))
+            transhtml += "<br/>".join(html_choices)
+            transhtml += "</td>"
+#            for wordindex, tword in enumerate(t):
+#                choice_key = wordindex
+#                choices = set()
+#                transhtml += "<td class='trans'>"
+#                if '|' in tword:
+#                    html_choices = []
+#                    tword_choices = tword.split('|')
+#                    tword_choices.sort()
+#                    for tword_choice in tword_choices:
+#                        html_choices.append('<input type="radio" name="choice{}" id={} value="{}">{}'.format(choice_key,
+#                                                                                                             tword_choice,
+#                                                                                                             tword_choice,
+#                                                                                                             tword_choice))
+#                    choices.update(tword_choices)
+#                    html_choices = '<br/>'.join(html_choices)
+#                    transhtml += html_choices
+#                else:
+#                    choices.add(tword)
+#                    transhtml += 'w
+            if self.record:
+                choice_list.append(tchoice)
+#                if choice_key in choice_dict:
+#                    choice_dict[choice_key].update(choices)
+#                else:
+#                    choice_dict[choice_key] = choices
+#                transhtml += '</td>'
+            # Add other translation button
             transhtml += '</tr>'
-        transhtml = transhtml.replace('_', ' ')
+        if self.translation:
+            transhtml += '<tr><td class="other">'
+            transhtml += '<input type="radio" name="choice" id="other" value="other" checked>otra traducción</td></tr>'
+            transhtml = transhtml.replace('_', ' ')
         transhtml += '</table>'
         tokens = self.token_str
         if index==0:
@@ -151,6 +170,8 @@ class SolSeg:
                 tokens = ' '.join(toks)
             else:
                 tokens = tokens.capitalize()
+#        print("  tokens {}".format(tokens))
+        print("transhtml for {}: {}".format(self, transhtml))
         self.html = (tokens, self.color, transhtml)
 
     @staticmethod

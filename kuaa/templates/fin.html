@@ -3,15 +3,6 @@
 <head>
 <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
 
-{# Not currently used
-<script>
-function seg(text) {
-    document.write(text)
-    document.getElementById("segtrans").innerHTML = text;
-}
-</script>
-#}
-
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
 
 </head>
@@ -20,11 +11,13 @@ function seg(text) {
 
 <h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
 
-<p>¡Gracias por usar Mainumby!</p>
+<p class="center">¡Gracias por usar Mainumby!</p>
 
 <form method=POST action='base'>
 
-<input type=submit style="font-family: Verdana; font-size: 80%;" action='reiniciar' name='reiniciar' value='Reiniciar'>
+<p class="center">
+<input type="submit" action="reiniciar" name="reiniciar" value="Reiniciar" id="button">
+</p>
 
 </form>
 

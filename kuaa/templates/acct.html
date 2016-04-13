@@ -3,20 +3,13 @@
 <head>
 <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
 
-<style type="text/css">
-#continuebutton
-{
-        background-color: #00a;
-        color: #fff;
-        font-family: "Verdana";
-        font-size: 100%;
-        width: 20%;
-        align: center;
+<script>
+function loading() {
+    document.getElementById("loading").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
+    window.location.assign("doc");
 }
-#continuebutton:hover
-{
-        background-color: #00f;
-}
+</script>
+
 </style>
 
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
@@ -27,15 +20,16 @@
 
 <h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
 
-<p>¡Cuenta creada!</p>
+<p class="center">¡Cuenta creada!</p>
 
-<form method=POST action='login'>
+<hr>
 
 <p class="center">
-<input type=submit id="continuebutton" action="continuar" name="continuar" value="Continuar">
+<button onclick="loading()" id="button">Continuar</button><br/>
 </p>
 
-</form>
+<p class="center" id="loading">
+</p>
 
 </body>
 

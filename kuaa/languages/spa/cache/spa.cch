@@ -1215,3 +1215,15 @@ tareas || tarea:[g=f,n=1,pos=n]
 cargué || cargar:[+fin,n=0,p=1,pos=v,tm=prt]
 oraciones || oración:[g=f,n=1,pos=n]
 cargamos || cargar:[+fin,n=1,p=1,pos=v,tm=prs];cargar:[+fin,n=1,p=1,pos=v,tm=prt]
+tus || tus:
+enemigos || enemigo:[g=m,n=1,pos=n]
+peleaste || pelear:[+fin,n=0,p=2,pos=v,tm=prt]
+te || te:
+amigo || amigo:[g=m,n=0,pos=n]
+viniste || venir:[+fin,n=0,p=2,pos=v,tm=prt]
+tu || tu:
+amiga || amiga:[g=f,n=0,pos=n]
+me || me:
+conocí || conocer:[+fin,n=0,p=1,pos=v,tm=prt]
+compraste || comprar:[+fin,n=0,p=2,pos=v,tm=prt]
+carro || carro:[g=m,n=0,pos=n]

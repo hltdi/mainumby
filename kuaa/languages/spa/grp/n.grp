@@ -448,7 +448,6 @@
 *** gente_n de $n ; ^ gente_n 0
 ->grn $n <hapicha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n yvypóra_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
-->grn $n lomitã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 *** gloria_n de $n ; ^ gloria_n 0
 ->grn $n jajái_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n <hesape_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
@@ -670,6 +669,8 @@
 *** niño_n de $n ; ^ niño_n 0
 ->grn $n mitã_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n mitã'i_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+*** nombre_n de $n ; ^ nombre_n 0
+->grn $n <hera_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 *** número_n de $n ; ^ número_n 0
 ->grn $n papaha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n papapy_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
@@ -1942,8 +1943,6 @@
 ->grn joayhuhára_n ; 0==0 n:n,poses:poses
 *** amigo_n íntimo ; ^ amigo_n 0 ; #76
 ->grn ãngairũ_n ; 0==0 n:n,poses:poses
-*** amigo_n[n=1] ; ^ amigo_n 0
-->grn lomitã_n ; 0==0 n:n,poses:poses
 *** amigo_n ; ^ amigo_n 0 ; #76
 ->grn irũ_n ; 0==0 n:n,poses:poses ; #338 ; ##38
 ->grn angirũ_n ; 0==0 n:n,poses:poses ; #53 ; ##3
@@ -3541,7 +3540,6 @@
 ->grn <hekaka_n ; 0==0 n:n,poses:poses
 *** caja_n ; ^ caja_n 0 ; #4
 ->grn <hyru_n ; 0==0 n:n,poses:poses ; #18 ; ##2
-->grn mba'eyru_n ; 0==0 n:n,poses:poses ; #7
 ->grn mba'yru_n ; 0==0 n:n,poses:poses ; #66
 *** caja_n sonora pequeña ; ^ caja_n 0 ; #4
 ->grn angu'a_n mirĩ ; 0==0 n:n,poses:poses
@@ -4042,8 +4040,7 @@
 *** carro_n tirado por bueyes ; ^ carro_n 0 ; #126
 ->grn karréta_n ; 0==0 n:n,poses:poses
 *** carro_n ; ^ carro_n 0 ; #126
-->grn mba'eyru_n ; 0==0 n:n,poses:poses ; #7
-->grn mbayru_n ; 0==0 n:n,poses:poses ; #12 ; ##1
+->grn mba'yru_n ; 0==0 n:n,poses:poses ; #12 ; ##1
 *** carro_n de cuatro ruedas ; ^ carro_n 0 ; #126
 ->grn kachape_n ; 0==0 n:n,poses:poses
 *** carta_n[n=1] ; ^ carta_n 0
@@ -8597,7 +8594,6 @@
 *** gente_n ; ^ gente_n 0 ; #216
 ->grn <hapicha_n ; 0==0 n:n,poses:poses ; #348 ; ##5
 ->grn yvypóra_n ; 0==0 n:n,poses:poses ; #167 ; ##5
-->grn lomitã_n ; 0==0 n:n,poses:poses ; #15
 *** gente_n de campo ; ^ gente_n 0 ; #216
 ->grn koygua_n ; 0==0 n:n,poses:poses
 ->grn okaygua_n ; 0==0 n:n,poses:poses

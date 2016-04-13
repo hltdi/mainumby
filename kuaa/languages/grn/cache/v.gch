@@ -14,3 +14,12 @@ pa:[cat=a,ns=1,ps=1,tmp=prt] || japákuri;ropa'akue;japa;japaraka'e;roparaka'e;j
 ha:[cat=a,ns=0,ps=3,tmp=prt] || oho'akue;ohoraka'e;ohókuri;oho
 pyta:[cat=a,ns=0,ps=3,tmp=prt] || opyta;opyta'akue;opytákuri;opytaraka'e
 <hasa:[cat=a,ns=0,ps=3,tmp=prt] || ohasaraka'e;ohasa'akue;ohasa;ohasákuri
+ñeñapĩ:[cat=a,ns=0,ps=2,tmp=prt] || reñeñapĩ;reñeñapĩkuri;reñeñapĩ'akue;reñeñapĩraka'e
+ñorairõ:[cat=a,ns=0,ps=2,tmp=prt] || reñorairõ;reñorairõkuri;reñorairõraka'e;reñorairõ'akue
+ñoha'ã:[cat=a,ns=0,ps=2,tmp=prt] || reñoha'ã'akue;reñoha'ãkuri;reñoha'ãraka'e;reñoha'ã
+ñemotĩcha'ĩ:[cat=a,ns=0,ps=2,tmp=prt] || reñemotĩcha'ĩkuri;reñemotĩcha'ĩ'akue;reñemotĩcha'ĩ;reñemotĩcha'ĩraka'e
+ju:[cat=a,ns=0,ps=2,tmp=prt] || rejúkuri;rejuraka'e;reju'akue;reju
+jekuaa:[cat=a,ns=0,ps=1,tmp=prt] || ajekuaa;ajekuaaraka'e;ajekuaákuri;ajekuaa'akue
+jokuaa:[cat=a,ns=0,ps=1,tmp=prt] || ajokuaa'akue;ajokuaa;ajokuaákuri;ajokuaaraka'e
+pyahu:[pos=adj] || pyahu
+jogua:[cat=a,+inter,ns=0,ps=2,tmp=prt] || rejoguáparaka'e;rejoguápa;rejoguápakuri;rejogua'akuépa

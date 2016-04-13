@@ -179,6 +179,10 @@
 ->grn upepeve
 *** hasta ahí ; ^ ahí 1
 ->grn upepeve
+*** por allá ; ^ allá 1
+->grn upérupi
+*** por allí ; ^ allí 1
+->grn upérupi
 *** allí ; ^ allí 0
 ->grn amo
 ->grn pépe
@@ -439,7 +443,11 @@
 ->grn araka'épa
 *** ¿ cuánto ; ^ cuánto 1
 ->grn mbovýpa
+*** ¿ cuánta ; ^ cuánta 1
+->grn mbovýpa
 *** ¿ cuántos ; ^ cuántos 1
+->grn mbovýpa
+*** ¿ cuántas ; ^ cuántas 1
 ->grn mbovýpa
 *** por qué ; ^ qué 1
 ->grn mba'ére
@@ -478,7 +486,11 @@
 ->grn araka'e
 *** cuánto ; ^ cuánto 0
 ->grn mbovy
+*** cuánta ; ^ cuánta 0
+->grn mbovy
 *** cuántos ; ^ cuántos 0
+->grn mbovy
+*** cuántas ; ^ cuántas 0
 ->grn mbovy
 *** cómo ; ^ cómo 0
 ->grn mba'éicha

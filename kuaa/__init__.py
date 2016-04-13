@@ -83,6 +83,10 @@ def get_user(username):
     print("Looking for user with username {}".format(username))
     return User.get_user(username)
 
+def create_user(dct):
+    """Create a user from the dict of form values from login.html."""
+    return User.dict2user(dct)
+
 # Import views. This has to appear after the app is created.
 import kuaa.views
 

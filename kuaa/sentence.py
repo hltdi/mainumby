@@ -356,6 +356,14 @@ class Sentence:
         else:
             return '|| {} sentence {} ||'.format(self.language, self.id)
 
+    def get_final_punc(self):
+        """Return sentence-final punctuation as a string or empty string if there is none."""
+        # Final token
+        fintok = self.nodes[-1].token
+        if self.language.is_punc(fintok):
+            return fintok
+        return ''
+
     def pretty(self):
         """Print sentence more or less as it originally appeared."""
         # Later combine ending punctuation with preceding word.
@@ -496,7 +504,14 @@ class Sentence:
                 if anals and 'target' in anals[0]:
                     target_index = tokindex + anals[0]['target']
                 else:
-                    target_index = tokindex + 1
+                    # Find the next element that's not deleted; that's the target
+                    dist = 1
+                    for tok, an in self.analyses[tokindex + 1:]:
+                        if not MorphoSyn.del_token(tok):
+                            break
+                        else:
+                            dist += 1
+                    target_index = tokindex + dist
                 if target_index in del_indices:
                     del_indices[target_index].append(tokindex)
                 else:
@@ -1069,15 +1084,8 @@ class Solution:
                     raw1 = node.raw_indices
                     raw_indices.extend(raw1)
                 raw_indices.sort()
-                # If indices of this treetrans are within those of the last one, merge them
-#                if raw_indices[-1] < last_indices[-1]:
-#                    output_strings = '/'.join(tt.output_strings)
-#                    self.ttrans_outputs[-1][1] = [ttt + ' ' + output_strings for ttt in self.ttrans_outputs[-1][1]]
-#                else:
                 self.ttrans_outputs.append([raw_indices, tt.output_strings])
                 last_indices = raw_indices
-#            self.ttrans_outputs = [((tt.snode_indices[0], tt.snode_indices[-1]), tt.output_strings)\
-#                                    for tt in self.treetranss if tt.output_strings]
         return self.ttrans_outputs
 
     def get_segs(self):

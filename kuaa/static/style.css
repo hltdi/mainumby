@@ -57,9 +57,87 @@ p.center
         margin-bottom: .5em;
         text-align: center;
 }
-span.cargando
+p.error
+{
+    color: #f00;
+    font-style: italic;
+}
+th.TM
+{
+   max-width: 35%;
+   color: silver;
+}
+td.mbojereha
+{
+   text-align: center;
+   padding: 20px;
+}
+td.text
+{
+        vertical-align: top;
+        text-align: center;
+        width: 50%;
+        border: 1px solid black;
+}
+span.label
 {
         font-weight: bold;
+}
+span.document
+{
+   font-size: 100%;
+   font-weight: bold;
+   color: #F00;
+   border: thin solid;
+}
+span.instruction
+{
+   font-size: 100%;
+   font-style: italic;
+}
+span.cargando
+{
+    font-size: 110%;
+    font-weight: bold;
+    font-style: italic;
+}
+span.username
+{
+        background-color: #f00;
+        color: #fff;
+}
+span.root
+{
+   font-weight: bold;
+   color: #900;
+   border: thin solid;
+}
+span.sentence
+{
+   font-size: 100%;
+   font-weight: bold;
+   border: thin solid;
+}
+span.choice
+{
+   font-size: 80%;
+}
+span.instruction
+{
+   font-size: 100%;
+   font-style: italic;
+}
+#text
+{
+        font-family: "Verdana";
+        font-size: 100%;
+        width: 80%
+}
+#medtext
+{
+        font-family: "Verdana";
+        font-size: 100%;
+        width: 30%
 }
 #button
 {
@@ -73,4 +151,41 @@ span.cargando
 #button:hover
 {
         background-color: #00f;
+}
+#medbutton
+{
+        background-color: #00a;
+        color: #fff;
+        font-family: "Verdana";
+        font-size: 100%;
+        width: 30%
+}
+#medbutton:hover
+{
+        background-color: #00f;
+}
+#widebutton
+{
+        background-color: #00a;
+        color: #fff;
+        font-family: "Verdana";
+        font-size: 100%;
+        align: center;
+        width: 80%
+}
+#widebutton:hover
+{
+        background-color: #00f;
+}
+#lightbluebutton
+{
+        color: #00f;
+        font-family: "Verdana";
+        font-size: 100%;
+        width: 80%;
+        align: center;
+}
+#lightbluebutton:hover
+{
+        background-color: #ccf;
 }

@@ -10,3 +10,9 @@ ha'e:[caso=ndi,n=1] || hendivekuéra
 <hysýi:[+ext,n=0,pp=3] || tysýi
 ñemba'apo:[n=1] || ñemba'apokuéra
 ñembo'e:[n=1] || ñembo'ekuéra
+irũ:[n=0,poses=[+ext,np=0,pp=2]] || ne_irũ
+angirũ:[n=0,poses=[+ext,np=0,pp=2]] || ne_angirũ
+irũ:[caso=pe,n=0,poses=[+ext,np=0,pp=2]] || ne_irũme
+angirũ:[caso=pe,n=0,poses=[+ext,np=0,pp=2]] || ne_angirũme
+mbayru:[n=0] || mbayru
+mba'eyru:[n=0] || mba'eyru

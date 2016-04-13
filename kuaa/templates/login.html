@@ -10,57 +10,6 @@ table
         margin-right: auto;
         width: 75%;
         border: 2px solid black;
-
-}
-p.error
-{
-        color: #f00;
-}
-span.cargando
-{
-        font-weight: bold;
-}
-span.label
-{
-        font-weight: bold;
-}
-td.text
-{
-        vertical-align: top;
-        text-align: center;
-        width: 50%;
-        border: 1px solid black;
-}
-#text
-{
-        font-family: "Verdana";
-        font-size: 100%;
-        width: 80%
-}
-#enterbutton
-{
-        background-color: #00a;
-        color: #fff;
-        font-family: "Verdana";
-        font-size: 100%;
-        align: center;
-        width: 80%
-}
-#enterbutton:hover
-{
-        background-color: #00f;
-}
-#acctbutton
-{
-        color: #00f;
-        font-family: "Verdana";
-        font-size: 100%;
-        width: 80%;
-        align: center;
-}
-#acctbutton:hover
-{
-        background-color: #ccf;
 }
 </style>
 
@@ -116,20 +65,20 @@ favor introducí or ingresá sin identificarte.
 </p>
 
 <p>
-<input type="submit" name="login" id="enterbutton" value="Ingresar">
+<input type="submit" name="login" id="widebutton" value="Ingresar">
 </p>
 
 </form>
 
 <p>
-¿No tenés una cuenta?<br/>
-<button id="acctbutton" onclick="account()">Crear cuenta</button>
+<span class="instruction">¿No tenés una cuenta?</span><br/>
+<button id="lightbluebutton" onclick="account()">Crear cuenta</button>
 </p>
 </td>  
 
 <td class="text">
 <p>  
-<button onclick="loading()" id="enterbutton">Continuar sin identificarte</button><br/>
+<button onclick="loading()" id="widebutton">Continuar sin identificarte</button><br/>
 </p>
 </td>  
 

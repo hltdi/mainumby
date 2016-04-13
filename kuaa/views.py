@@ -31,9 +31,13 @@
 # -- SESSION, SEGS, SEG_HTML globals added.
 # 2016.04.03
 # -- USER added; SESSION created only if there is one.
+# 2016.04.05
+# -- Login works.
+# 2016.04.10
+# -- Segment translation selections are added to sentence translation TextArea in sent.html.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user
+from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user
 
 # Global variables for views; probably a better way to do this...
 SESSION = SPA = GRN = DOC = SENT = SEGS = SEG_HTML = USER = None
@@ -80,9 +84,6 @@ def get_sentence():
     SINDEX += 1
 
 def get_segmentation():
-    global SENTENCE
-    global SPA
-    global GRN
     global SEGS
     global SEG_HTML
     SEGS, SEG_HTML = seg_trans(SENTENCE, SPA, GRN)    
@@ -95,17 +96,15 @@ def index():
 
 @app.route('/base', methods=['GET', 'POST'])
 def base():
-    print("In base...")
-#    if request.method == 'POST' and 'Cargar' in request.form:
-#        return render_template('doc.html')
+#    print("In base...")
     return render_template('base.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     global USER
-    print("In login...")
+#    print("In login...")
     form = request.form
-    print("Form for login: {}".format(form))
+#    print("Form for login: {}".format(form))
     if not USERS_INITIALIZED:
         initialize()
     if request.method == 'POST' and 'login' in form:
@@ -113,43 +112,57 @@ def login():
         username = form.get('username')
         user = get_user(username)
         if not user:
-            print("No such user as {}".format(username))
+#            print("No such user as {}".format(username))
             return render_template('login.html', error='user')
         else:
-            print("Found user {}".format(user))
+#            print("Found user {}".format(user))
             password = form.get('password')
             if user.check_password(password):
                 USER = user
                 return render_template('logged.html', username=username)
             else:
-                print("Password doesn't match")
+#                print("Password doesn't match")
                 return render_template('login.html', error='password')
     return render_template('login.html')
 
 @app.route('/logged', methods=['GET', 'POST'])
 def logged():
-    print("In logged...")
+#    print("In logged...")
     form = request.form
-    print("Form for logged: {}".format(form))
+#    print("Form for logged: {}".format(form))
     return render_template('logged.html')
 
 @app.route('/reg', methods=['GET', 'POST'])
 def reg():
-    print("In reg...")
+    global USER
+#    print("In reg...")
     form = request.form
-    print("Form for reg: {}".format(form))
+#    print("Form for reg: {}".format(form))
+    if request.method == 'POST' and 'username' in form:
+        if not form.get('username'):
+            return render_template('reg.html', error="username")
+        elif not form.get('email'):
+            return render_template('reg.html', error="email")
+        elif form.get('password') != form.get('password2'):
+            return render_template('reg.html', error="password")
+        else:
+            user = create_user(form)
+#        print("Created user {}".format(user))
+            USER = user
+            return render_template('acct.html', username=form.get('username'))
     return render_template('reg.html')
 
-# Saying account was created
+# Saying account was created about button to continue (loading languages).
 @app.route('/acct', methods=['POST'])
 def acct():
+#    print("In acct...")
     return render_template('acct.html')
 
 # View for document entry
 @app.route('/doc', methods=['GET', 'POST'])
 def doc():
-    print("In doc...")
-    print("SESSION {}, USER {}".format(SESSION, USER))
+#    print("In doc...")
+#    print("SESSION {}, USER {}".format(SESSION, USER))
     # Initialize Session if there's a User and no Session
     if not SESSION:
         init_session()
@@ -162,19 +175,19 @@ def doc():
 # for recording translations selected/entered by user.
 @app.route('/sent', methods=['GET', 'POST'])
 def sent():
-    global SEGS
-    global SEG_HTML
-    global SENTENCE
-    global DOC
 #    print("In sent...")
     form = request.form
     print("Form for sent: {}".format(form))
-    if 'reg' in form:
-        # Register feedback from user to current segment
-        print("Registering {}".format(form))
-        if SESSION:
-            SESSION.record(SENTENCE.record, form)
-        return render_template('sent.html', sentence=SEG_HTML)
+    if SEG_HTML:
+        print("SEG_HTML {}".format(SEG_HTML))
+#    if 'oreg' in form:
+#        # Register feedback from user to current segment
+#        print("Registering {}".format(form))
+#        if SESSION:
+#            SESSION.record(SENTENCE.record, form)
+#        return render_template('sent.html', sentence=SEG_HTML)
+    if 'oratra' in form:
+        print("Registering sentence translation {}".format(form.get('oratra')))
     if 'text' in form and not DOC:
         # Create a new document
         make_doc(form['text'])
@@ -185,24 +198,28 @@ def sent():
     if not SENTENCE:
         # No more sentences, return to doc.html for a new document
         return render_template('doc.html')
+#        return render_template('sent.html')
     else:
         # Translate and segment the sentence, assigning SEGS
         get_segmentation()
 #        segs = seg_trans(SENTENCE, SPA, GRN)
 #    print("Found segs {}".format(segs))
     # Show segmented sentence
-    return render_template('sent.html', sentence=SEG_HTML)
+    return render_template('sent.html', sentence=SEG_HTML, punc=SENTENCE.get_final_punc())
 
 @app.route('/fin', methods=['POST'])
 def fin():
 #    print("In fin...")
-    if SESSION:
-        SESSION.write()
-        quit(SESSION)
+    global SESSION
+    global DOC
+    global SENT
+    global SEGS
+    global SEG_HTML
+    global USER
+    quit(SESSION)
+    SESSION = DOC = SENT = SEGS = SEG_HTML = USER = None
     return render_template('fin.html')
 
 # Not needed because this is in runserver.py.
 if __name__ == "__main__":
     kuaa.app.run(host='0.0.0.0')
-
-

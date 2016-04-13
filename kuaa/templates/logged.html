@@ -3,27 +3,6 @@
 <head>
 <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
 
-<style type="text/css">
-#continuebutton
-{
-        background-color: #00a;
-        color: #fff;
-        font-family: "Verdana";
-        font-size: 100%;
-        width: 20%;
-        align: center;
-}
-#continuebutton:hover
-{
-        background-color: #00f;
-}
-span.username
-{
-        background-color: #f00;
-        color: #fff;
-}
-</style>
-
 <script>
 function loading() {
     document.getElementById("loading").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
@@ -46,7 +25,7 @@ Ingresaste como <span class="username">{{ username }}</span>.
 <hr>
 
 <p class="center">
-<button onclick="loading()" id="continuebutton">Continuar</button><br/>
+<button onclick="loading()" id="button">Continuar</button><br/>
 </p>
 
 <p class="center" id="loading">

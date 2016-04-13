@@ -3,21 +3,6 @@
 <head>
 <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
 
-<style type="text/css">
-span.document
-{
-   font-size: 100%;
-   font-weight: bold;
-   color: #F00
-   border: thin solid;
-}
-span.instruction
-{
-   font-size: 100%;
-   font-style: italic;
-}
-</style>
-
 <script>
 function OnEnviar()
 {
@@ -64,8 +49,10 @@ Introducí una o más oraciones para traducir.
 Verdana"></TEXTAREA>
 
 <p>
-<input type=submit value='Enviar' name='enviar' onclick="return OnEnviar();" style="font-family: Verdana; font-size: 100%;">
-<input type=submit value='Salir' name='salir' onclick="return OnSalir();" style="font-family: Verdana; font-size: 100%;">
+<input type=submit value="Enviar" name="enviar" onclick="return OnEnviar();" id="button">
+</p>
+<p>
+<input type=submit value="Salir de Mainumby" name="salir"sen onclick="return OnSalir();" id="button">
 </p>
 
 </form>

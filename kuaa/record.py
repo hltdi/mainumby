@@ -43,16 +43,20 @@ SEGMENT_PRE = '⧦'
 FEEDBACK_PRE = "⇐"
 USER_PRE = "☻"
 TIME_FORMAT = "%d.%m.%Y/%H:%M:%S:%f"
+# Time format without microseconds; used in Session ID
+SHORT_TIME_FORMAT = "%d.%m.%Y/%H:%M:%S"
 
-ZERO_TIME = datetime.timedelta() 
+ZERO_TIME = datetime.timedelta()
+TIME0 = datetime.datetime.utcnow()
 
 def get_time():
     return datetime.datetime.utcnow()
 
+def get_time_since0(time):
+    return time - TIME0
+
 class Session:
     """A record of a single user's responses to a set of sentences."""
-
-    id = 0
 
     def __init__(self, user=None, source=None, target=None):
         self.start = get_time()
@@ -64,8 +68,7 @@ class Session:
         self.running = True
         # List of SentRecord objects
         self.sentences = []
-        self.id = Session.id
-        Session.id += 1
+        self.make_id()
 
     def __repr__(self):
         return "{} {}".format(SESSION_PRE, self.id)
@@ -77,6 +80,9 @@ class Session:
     @staticmethod
     def str2time(string):
         return datetime.datetime.strptime(string, TIME_FORMAT)
+
+    def make_id(self):
+        self.id = "{}::{}".format(self.user.username, self.start.strftime(SHORT_TIME_FORMAT))
 
     def get_path(self):
         userfilename = self.user.username + '.usr'
@@ -90,8 +96,9 @@ class Session:
         else:
             return self.end - self.start
 
-    def user_input(self, string):
-        return self.target.ortho_clean(string)
+#    def user_input(self, string):
+#        """Clean up the user input."""
+#        return self.target.ortho_clean(string)
 
     def quit(self):
         """Set the end time and stop running."""
@@ -100,6 +107,11 @@ class Session:
         User.new_users.clear()
         self.running = False
         self.end = get_time()
+        self.save()
+
+    def record_translation(self, sentrecord, translation):
+        """Only record a verbatim translation of the sentence."""
+        sentrecord.translation = translation
 
     def record(self, sentrecord, trans_dict):
         """Record feedback about a segment's or entire sentence's translation."""
@@ -135,11 +147,16 @@ class Session:
 #                    print("  Alternatives: {}".format(segrecord.choices[k]))
                 segrecord.record(choices=tra_choices)
 
+    def save(self):
+        """Write the session feedback to the user's file."""
+        with open(self.get_path(), 'a', encoding='utf8') as file:
+            self.write(file=file)
+
     def write(self, file=sys.stdout):
         print("{}".format(self), file=file)
-        print("{} {}".format(TIME_PRE, Session.time2str(self.start)))
+        print("{} {}".format(TIME_PRE, Session.time2str(self.start)), file=file)
         if not self.running:
-            print("{} {}".format(TIME_PRE, Session.time2str(self.end)))
+            print("{} {}".format(TIME_PRE, Session.time2str(self.end)), file=file)
         for sentence in self.sentences:
             sentence.write(file=file)
 
@@ -158,6 +175,8 @@ class SentRecord:
         # a dict of SegRecord objects, with token strings as keys
         self.segments = {}
         self.feedback = None
+        # Verbatim translation of the sentence
+        self.translation = ''
 
     def __repr__(self):
 #        session = "{}".format(self.session) if self.session else ""
@@ -170,9 +189,9 @@ class SentRecord:
         self.feedback = feedback
 
     def write(self, file=sys.stdout):
-        print("{}".format(self, file=file))
+        print("{}".format(self), file=file)
         if self.feedback:
-            print("Sentence feedback: {}".format(self.feedback), file=file)
+            print("{}".format(self.feedback), file=file)
         # Can there be feedback for segments *and* for whole sentence?
         for key, segment in self.segments.items():
             if segment.feedback:
@@ -191,7 +210,7 @@ class SegRecord:
         # Add to parent SentRecord
         self.sentence.segments[self.tokens] = self
         # These get filled in during set_html() in SolSeg
-        self.choices = {}
+        self.choices = []
         self.feedback = None
 
     def __repr__(self):
@@ -231,10 +250,10 @@ class Feedback:
 #        self.id = '@'
         self.id = ''
         if translation:
-            self.id += "REJ:{}".format(translation)
+            self.id += "{}".format(translation)
         elif choices:
             choice_string = ','.join(["{}={}".format(pos, c) for pos, c in choices])
-            self.id += "ACC:{}".format(choice_string)
+            self.id += "{}".format(choice_string)
         else:
             self.id += "ACC"
 
@@ -249,7 +268,7 @@ class User:
     users = {}
     new_users = {}
 
-    def __init__(self, username='', email='', password='', name='', level='', pw_hash='',
+    def __init__(self, username='', email='', password='', name='', level=1, pw_hash='',
                  new=False):
         """name and level are optional. Other fields are required."""
         self.username = username
@@ -279,6 +298,18 @@ class User:
 
     def add_user(self):
         User.users[self.username] = self
+
+    @staticmethod
+    def dict2user(dct):
+        level = dct.get('level', 1)
+        if isinstance(level, str):
+            level = int(level)
+        return User(username=dct.get('username', ''),
+                    password=dct.get('password', ''),
+                    email=dct.get('email', ''),
+                    name=dct.get('name', ''),
+                    level=level,
+                    new=True)
 
     @staticmethod
     def get_user(username):
