@@ -23,20 +23,20 @@ function OnSalir()
 
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
 
+<script>
+function ShowHelp() {
+    var helpWin = window.open("", "Mainumby: Ayuda", "resizable=yes,scrollbars=yes,top=200,left=200,width=700,height=400");
+    helpWin.document.write('<html><head><link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/></head></html>' +
+"<body><p>Esto es la página de ayuda para Mainumby...</p></body></html>");
+}
+</script>
+
 </head>
 
 <body>
 
 <h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
 
-<!--
-<h2>¡Bienvenido/a a Mainumby! Tereg̃uahẽ porãite Mainumby-me!
-</h2>
--->
-
-<!--
-<h3>Uso</h3>
--->
 <p>
 <span class='instruction'>
 Introducí una o más oraciones para traducir.
@@ -45,17 +45,20 @@ Introducí una o más oraciones para traducir.
 
 <form name="Form1" method=POST>
 
-<TEXTAREA NAME="text" ROWS=15 COLS=75 style="font-family:
-Verdana"></TEXTAREA>
+<textarea name="text" id="text" ROWS=15 COLS=40></textarea>
 
 <p>
-<input type=submit value="Enviar" name="enviar" onclick="return OnEnviar();" id="button">
+<input type="submit" value="Enviar" name="enviar" onclick="return OnEnviar();" id="button">
 </p>
 <p>
-<input type=submit value="Salir de Mainumby" name="salir"sen onclick="return OnSalir();" id="button">
+<input type="submit" value="Salir de Mainumby" id="narrowlbbutton" name="salir" onclick="return OnSalir();">
 </p>
 
 </form>
+
+<p>
+<button id="help" onclick="ShowHelp();">Ayuda</button>
+</p>
 
 </body>
 

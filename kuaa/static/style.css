@@ -45,6 +45,13 @@ h3
 	margin-top: .5em;
 	margin-bottom: .5em;
 }
+h4
+{
+ 	font-size: 110%;
+	font-weight: bold;
+	margin-top: .5em;
+	margin-bottom: .5em;
+}
 p
 {
 	margin-top: .5em;
@@ -78,6 +85,18 @@ td.text
         text-align: center;
         width: 50%;
         border: 1px solid black;
+}
+#help
+{
+        background-color: #c00;
+        color: #fff;
+        font-family: "Verdana";
+        font-size: 100%;
+        width: 20%
+}
+#help:hover
+{
+        background-color: #f00;
 }
 span.label
 {
@@ -186,6 +205,18 @@ span.instruction
         align: center;
 }
 #lightbluebutton:hover
+{
+        background-color: #ccf;
+}
+#narrowlbbutton
+{
+        color: #00f;
+        font-family: "Verdana";
+        font-size: 100%;
+        width: 20%;
+        align: center;
+}
+#narrowlbbutton:hover
 {
         background-color: #ccf;
 }

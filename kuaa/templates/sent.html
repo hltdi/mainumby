@@ -36,12 +36,14 @@ td.other
 textarea#sentence
 {
    font-family: "Verdana";
+   font-size: 100%;
    width: 100%;
    height: 50px;
 }
 textarea#segment
 {
    font-family: "Verdana";
+   font-size: 100%;
    width: 100%;
    height: 25px;
 }
@@ -61,6 +63,12 @@ input.button:hover
 </style>
 
 <script>
+function ShowHelp() {
+    var helpWin = window.open("", "Mainumby: Ayuda", "resizable=yes,scrollbars=yes,top=200,left=200,width=700,height=400");
+    helpWin.document.write('<html><head><link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/></head><body>' +
+"<h4>Ayuda para crear traducciones en Mainumby</h4>" +
+"</body></html>");
+}
 function OnRegOra(punc) {
     var sentval = document.getElementById("sentence").value;
     var sentend = sentval.charAt(sentval.length-1);
@@ -114,6 +122,8 @@ function OnRegFrase() {
 function Segment(text, segment, color) {
     var fratra = document.Form1.fratra.value;
     var formatted = "<font color=" + color + ">" + text + "</font>";
+    // Clear error space.
+    document.getElementById("error").innerHTML = "";
     if (fratra.includes(segment)) {
         document.getElementById("error").innerHTML = "¡Ya seleccionaste una traducción para " + segment + "!";
         return false;        
@@ -124,6 +134,9 @@ function Segment(text, segment, color) {
 }
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+function limpiarGrn(string) {
+    // Clean up Guarani string, replacing characters if necessary.
 }
 </script>
 
@@ -202,6 +215,10 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 <input type="hidden" name="fratra" value="">
 
 </form>
+
+<p>
+<button id="help" onclick="ShowHelp();">Ayuda</button>
+</p>
 
 </body>
 
