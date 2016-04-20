@@ -3,6 +3,26 @@
 <head>
 <link rel="stylesheet" type=text/css href="{{url_for('static', filename='style.css')}}" />
 
+<script>
+function ShowHelp() {
+    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
+    helpWin.document.write('<html><head>' +
+'<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
+"<title>Mainumby: Ayuda</title></head><body>" +
+"<h4>Ayuda para crear una cuenta</h4>" +
+"<p>Sólo si ten&eacute;s una cuenta pod&eacute;s participar en el desarrollo de " +
+"Mainumby. Crear una cuenta es fácil; solamente es necesario introducir un nombre " +
+"de usuario, una contraseña, y tu dirección electrónica. " +
+"Opcionalmente pod&eacute;s tambi&eacute;n registrar tu nombre y " +
+"tu autoevalución de tu competencia en guaraní.</p>" +
+"<p>La información que prove&eacute;s queda protegida; " +
+"no la damos a nadie. " +
+"Como el sistema no recuerda las contraseñas, no se puede recuperar " +
+"tu contraseña si la olvidás. Por eso, guardala bien.</p>" +
+"</body></html>");
+}
+</script>
+
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
 
 </head>
@@ -11,7 +31,7 @@
 
 <h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
 
-<h2>Crear una cuenta
+<h2>Creación de una cuenta
 </h2>
 
 {% if error %}
@@ -63,7 +83,7 @@ Error: ¡ten&eacute;s que introducir tu email!
 <hr>
 
 <p>
-<input type="submit" value="Creá tu cuenta" name="create" id="medbutton">
+<input type="submit" value="Crear" name="create" id="button">
 </p>
 
 </form>

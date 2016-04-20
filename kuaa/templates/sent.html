@@ -12,13 +12,24 @@ table.trans
 th.trans
 {
     text-align: left;
+    font-style: italic;
+    padding: 3px;
     border: 1px solid black;
 }
 td.trans
 {
    text-align: left;
+   vertical-align: top;
    padding: 5px;
+   font-style: italic;
    border: 1px solid black;
+}
+td.segsent
+{
+   text-align: left;
+   vertical-align: top;
+   padding: 5px;
+   font-style: italic;
 }
 td.button
 {
@@ -40,12 +51,25 @@ textarea#sentence
    width: 100%;
    height: 50px;
 }
+textarea#document
+{
+   font-family: "Verdana";
+   font-size: 75%;
+   width: 350px;
+   height: 400px;
+   resize: none;
+   overflow-y: scroll;
+}
 textarea#segment
 {
    font-family: "Verdana";
    font-size: 100%;
-   width: 100%;
+   width: 250px;
    height: 25px;
+}
+span#doctrans
+{
+   color: #00a;
 }
 input.button
 {
@@ -64,18 +88,29 @@ input.button:hover
 
 <script>
 function ShowHelp() {
-    var helpWin = window.open("", "Mainumby: Ayuda", "resizable=yes,scrollbars=yes,top=200,left=200,width=700,height=400");
-    helpWin.document.write('<html><head><link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/></head><body>' +
-"<h4>Ayuda para crear traducciones en Mainumby</h4>" +
-"</body></html>");
+    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
+    helpWin.document.write('<html><head>' +
+'<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
+"<title>Mainumby: Ayuda</title></head><body>" +
+"<h4>Ayuda para seleccionar traducciones</h4>" +
+"<p>En la ventana 'Traducción de oraciones' " +
+"se presenta una oración y varias opciones para traducirla. " +
+"La oración se despliega dividida en frases, cadu una representada por un color. " +
+"Para ver las opciones que ofrece Mbojereha como traducciones de una frase, " +
+"hac&eacute; clic en esa frase. " +
+"Abajo se presentan las opciones a la izquierda en el espacio llamado " +
+"'Sugerencias'." +
+"</p></body></html>");
 }
-function OnRegOra(punc) {
+function OnRegOra(raw, punc) {
     var sentval = document.getElementById("sentence").value;
     var sentend = sentval.charAt(sentval.length-1);
     if ('.?!'.indexOf(sentend) == -1) {
         sentval += punc;
         document.getElementById("sentence").value += punc;
     }
+    // Add the sentence and its translation to the doc textarea
+    document.getElementById("document").value += raw + "\n"+ sentval + "\n"
     document.Form1.oratra.value = sentval;
 }
 function OnRegFrase() {
@@ -86,6 +121,7 @@ function OnRegFrase() {
     var choice = "";
     var fratra = document.Form1.fratra.value;
     if (segtrans != "") {
+        segtrans = limpiarGrn(segtrans);
         alert("Segtrans " + segtrans);
         document.Form1.fratra.value += "||" + segment + "=" + segtrans;
         if (segtrans == "0") {
@@ -137,6 +173,21 @@ function capitalize(string) {
 }
 function limpiarGrn(string) {
     // Clean up Guarani string, replacing characters if necessary.
+    string = string.replace(/[âä]/, "ã");
+    string = string.replace(/à/, "á");
+    string = string.replace(/[êë]/, "ẽ");
+    string = string.replace(/è/, "é");
+    string = string.replace(/[îï]/, "ĩ");
+    string = string.replace(/ì/, "í");
+    string = string.replace(/[ôö]/, "õ");
+    string = string.replace(/ò/, "ó");
+    string = string.replace(/[ûü]/, "ũ");
+    string = string.replace(/ù/, "ú");
+    string = string.replace(/[ŷÿ]/, "ỹ");
+    string = string.replace(/ỳ/, "ý");
+    string = string.replace(/[’`´°‘]/, "'");
+    string = string.replace(/ĝ/, "g̃");
+    return string;
 }
 </script>
 
@@ -147,6 +198,9 @@ function limpiarGrn(string) {
 <body>
 
 <h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
+
+<h2>Traducción de oraciones
+</h2>
 
 <p id="error" class="error">
 </p>
@@ -164,7 +218,7 @@ function limpiarGrn(string) {
 section with a table of translations and sets the value of the seg form variable #}
 <span onmouseover="this.style.cursor='pointer'" onmouseout="this.style.cursor='default'"
 onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|format(seg[1])|e}});">
-  <font color={{ seg[1] }}> {{ seg[0] }} </font></span>
+  <span style='color:{{ seg[1] }};'> {{ seg[0] }} </span></span>
 {% endfor %}
 </span>
 <p></p>
@@ -175,15 +229,19 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 
 <h3>Traducción</h3>
 
+<table>
+  <tr>
+<td class="segsent">
 <table class="trans">
 <tr>
-  <th class="trans" colspan="3">Frase</th>
+  <th class="trans">Frase</th>
+  <td class="trans">
+  <input type="button" class="button" name="freg" onclick="OnRegFrase();" value="Registrar traducción">
+  </td>
 </tr>
 <tr>
 <td class="trans">Sugerencias de Mbojereha</td>
 <td class="trans">Otra traducción</td>
-<td class="trans" rowspan="2"><input type="button" class="button" name="freg" onclick="OnRegFrase();" value="Registrar traducción de frase">
-</td>
 </tr>
 <tr>
 <td class="trans">
@@ -194,15 +252,31 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 </td>
 </tr>
 <tr>
-  <th class="trans" colspan="3">Oración entera</th>
+  <th class="trans">Oración entera</th>
+  <td class="button">
+    <input type="button" class="button" name="oreg"
+    onclick="OnRegOra({{'%r'|format(raw)|e}}, {{'%r'|format(punc)|e}});" value="Registrar traducción">
+    </td>
 </tr>  
 <tr>
-  <td colspan="2">
+  <td class="trans" colspan="2">
     <textarea name="UTraOra" id="sentence" value=""></textarea>
   </td>
-  <td class="button">
-    <input type="button" class="button" name="oreg" onclick="OnRegOra({{'%r'|format(punc)|e}});" value="Registrar traducción de oración">
+</tr>
+</table>
+</td>
+<td>
+  <table>
+  <tr>
+    <th class="trans">Documento</th>
+  </tr>
+  <tr>
+  <td class="trans" rowspan="4">
+  <textarea name="UTraDoc" id="document" value=""></textarea>
   </td>
+  </tr>
+  </table>    
+</td>
 </tr>
 </table>
 
@@ -215,6 +289,12 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 <input type="hidden" name="fratra" value="">
 
 </form>
+
+<!--
+<p>
+<button id="button" onclick="ShowDoc();">Mostrar documento</button>
+</p>
+-->
 
 <p>
 <button id="help" onclick="ShowHelp();">Ayuda</button>

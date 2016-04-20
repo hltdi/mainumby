@@ -159,6 +159,9 @@ class Document(list):
         # Intermediate representations: list of word-like tokens and ints representing types
         self.tokens = []
         list.__init__(self)
+        # A list of pairs of raw source-target sentences, the result of the user's interaction
+        # with the system.
+        self.output = []
         if proc:
             self.process()
 
@@ -661,16 +664,15 @@ class Sentence:
                 s.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
                          verbosity=verbosity, tracevar=tracevar)
     
-    def solve1(self, translate=True, all_sols=False,
-              all_trans=True, interactive=False,
+    def solve1(self, translate=True, all_sols=False, all_trans=True, interactive=False,
               verbosity=0, tracevar=None):
         """Generate solutions and translations (if translate is true)."""
         if not self.groups:
             print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SOLUCIÓN POSIBLE".format(self))
             return
         print("Solving {}".format(self))
-        if self.altsyns:
-            print("Alt analyses: {}".format(self.altsyns))
+#        if self.altsyns:
+#            print("Alt analyses: {}".format(self.altsyns))
         ds = None
         generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity,
                                           tracevar=tracevar)
@@ -698,8 +700,6 @@ class Sentence:
         if not self.solutions:
             print("Last DS: {}".format(ds))
             print("NINGUNAS SOLUCIONES encontradas para {}".format(self))
-#        elif translate and self.target:
-#            self.translate(all_trans=all_trans, verbosity=verbosity)
 
     def translate(self, sol_index=-1, all_trans=False, verbosity=0):
         """Translate the solution with sol_index or all solutions if index is negative."""

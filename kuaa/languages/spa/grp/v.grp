@@ -17608,11 +17608,11 @@
 *** olvidar_v[-r] ; ^ olvidar_v 0
 ->grn <hesarái_v[cat=che]
 *** olvidar_v[-r] a $n_prs ; ^ olvidar_v 0
-->grn <hesarái_v[cat=che] $n_prs[caso=pe] ; || 0, -1, 1
+->grn <hesarái_v[cat=che] $n_prs[caso=gui] ; || 0, -1, 1
 *** olvidar_v[-r,po=3,no=0] ; ^ olvidar_v 0
-->grn <hesarái_v[cat=che] (chupe)
+->grn <hesarái_v[cat=che] chugui
 *** olvidar_v[-r,po=3,no=1] ; ^ olvidar_v 0
-->grn <hesarái_v[cat=che] (chupekuéra)
+->grn <hesarái_v[cat=che] chuguikuéra
 *** omitir_v[+r] ; ^ omitir_v 0
 ->grn ñekirirĩ_v[cat=a]
 *** ondear_v[-r] ; ^ ondear_v 0

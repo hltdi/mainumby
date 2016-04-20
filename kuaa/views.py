@@ -202,10 +202,8 @@ def sent():
     else:
         # Translate and segment the sentence, assigning SEGS
         get_segmentation()
-#        segs = seg_trans(SENTENCE, SPA, GRN)
-#    print("Found segs {}".format(segs))
-    # Show segmented sentence
-    return render_template('sent.html', sentence=SEG_HTML, punc=SENTENCE.get_final_punc())
+    # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
+    return render_template('sent.html', sentence=SEG_HTML, raw=SENTENCE.raw, punc=SENTENCE.get_final_punc())
 
 @app.route('/fin', methods=['POST'])
 def fin():

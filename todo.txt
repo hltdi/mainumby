@@ -1,3 +1,7 @@
+2016.4.19
+-- Figure out how 'e behaves with objects?
+-- dónde, etc.
+
 2016.4.12
 — Salimos por la calle ayer -> <por…ayer> <calle> ??
 

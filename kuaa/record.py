@@ -160,6 +160,18 @@ class Session:
         for sentence in self.sentences:
             sentence.write(file=file)
 
+    def write_doc(self, file=sys.stdout, tm=False):
+        """Write the source and target translations in raw form to file."""
+        for sentence in self.sentences:
+            if tm:
+                print("<tu><tuv><seg>", file=file)
+            print("{}".format(sentence.raw), file=file)
+            if tm:
+                print("</seg></tuv><tuv><seg>", file=file)
+            print("{}".format(sentence.translation), file=file)
+            if tm:
+                print("</seg></tuv></tu>", file=file)
+
 class SentRecord:
     """A record of a Sentence and a single user's response to it."""
 

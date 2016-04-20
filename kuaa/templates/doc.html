@@ -23,11 +23,26 @@ function OnSalir()
 
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
 
+<script src="FileSaver.js">
+</script>
+
 <script>
 function ShowHelp() {
-    var helpWin = window.open("", "Mainumby: Ayuda", "resizable=yes,scrollbars=yes,top=200,left=200,width=700,height=400");
-    helpWin.document.write('<html><head><link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/></head></html>' +
-"<body><p>Esto es la página de ayuda para Mainumby...</p></body></html>");
+    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
+    helpWin.document.write('<html><head>' +
+'<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
+"<title>Mainumby: Ayuda</title></head><body>" +
+"<h4>Ayuda para introducir un documento</h4>" +
+"<p>En esta página introducís las oraciones " +
+"que quer&eacute;s traducir. Todavía no es posible " +
+"simplemente subir el documento de tu computadora " +
+"al sitio; eso se debería poder en una versión futura " +
+"de Mainumby. Por ahora deb&eacute;s introducir el texto " +
+"o copiarlo y pegarlo en el espacio proveído.</p>" +
+"<p>Fijate que Mainumby es muy estricto en cuanto a " +
+"la ortografía y la gramática castellana. " +
+"No tolera ningunos errores." +
+"</p></body></html>");
 }
 </script>
 
@@ -36,6 +51,9 @@ function ShowHelp() {
 <body>
 
 <h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
+
+<h2>Introducción de un documento
+</h2>
 
 <p>
 <span class='instruction'>
