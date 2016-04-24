@@ -114,7 +114,7 @@ class SolSeg:
 #            print("  Tcombs {}".format(tcombs))
             # A single translation of the source segment
             transhtml += '<tr>'
-            transhtml += "<td class='trans'>"
+            transhtml += "<td class='transchoice'>"
             html_choices = []
             for tcindex, tchoice in enumerate(tcombs):
                 html_choices.append('<input type="radio" name="choice" id={} value="{}">{}'.format(tchoice, tchoice, tchoice))

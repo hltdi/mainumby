@@ -21,7 +21,14 @@ td.trans
    text-align: left;
    vertical-align: top;
    padding: 5px;
-   font-style: italic;
+/*   font-style: italic; */
+   border: 1px solid black;
+}
+td.transchoice
+{
+   text-align: left;
+   vertical-align: top;
+   padding: 5px;
    border: 1px solid black;
 }
 td.segsent
@@ -29,7 +36,7 @@ td.segsent
    text-align: left;
    vertical-align: top;
    padding: 5px;
-   font-style: italic;
+/*   font-style: italic; */
 }
 td.button
 {
@@ -92,8 +99,8 @@ function ShowHelp() {
     helpWin.document.write('<html><head>' +
 '<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
 "<title>Mainumby: Ayuda</title></head><body>" +
-"<h4>Ayuda para seleccionar traducciones</h4>" +
-"<p>En la ventana 'Traducción de oraciones' " +
+"<h4 class='help'>Ayuda para seleccionar traducciones</h4>" +
+"<p class='help'>En la ventana 'Traducción de oraciones' " +
 "se presenta una oración y varias opciones para traducirla. " +
 "La oración se despliega dividida en frases, cadu una representada por un color. " +
 "Para ver las opciones que ofrece Mbojereha como traducciones de una frase, " +
@@ -244,7 +251,7 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 <td class="trans">Otra traducción</td>
 </tr>
 <tr>
-<td class="trans">
+<td class="transchoice">
 <p id="segtra"></p>
 </td>
 <td class="trans">

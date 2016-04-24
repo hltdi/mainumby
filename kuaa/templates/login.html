@@ -4,9 +4,10 @@
 <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
 
 <style type="text/css">
-table
+
+table.login
 {
-        width: 75%;
+        width: 100%;
         border: 2px solid black;
 }
 </style>
@@ -17,20 +18,27 @@ function ShowHelp() {
     helpWin.document.write('<html><head>' +
 '<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
 "<title>Mainumby: Ayuda</title></head><body>" +
-"<h4>Ayuda para ingresar a Mainumby</h4>" +
-"<p>Pod&eacute;s usar Mainumby como usuario registrado o como usuario no registrado.</p>" +
-"<p>Si sos un usuario registrado, tu interacción con la aplicación se " +
+"<h4 class='help'>Ayuda para ingresar a Mainumby</h4>" +
+"<p class='help'>Pod&eacute;s usar Mainumby como usuario registrado o como usuario no registrado.</p>" +
+"<p class='help'>Si sos un usuario registrado, tu interacción con la aplicación se " +
 "incorpora en la base de datos del sistema, y usando la información " +
 "que recibe de ti, la aplicación puede mejorar su desempeño " +
 "y aumentar su memoria de traducción. Aun sin registrarte, pod&eacute;s usar la aplicación, " +
 "pero nadie se aprovechará de tu conocimiento de las lenguas.</p>" +
-"<p>Si ya ten&eacute;s una cuenta, te pod&eacute;s registrar en esta página." +
+"<p class='help'>Si ya ten&eacute;s una cuenta, te pod&eacute;s registrar en esta página." +
 "Si no, hac&eacute; clic en el botón 'Crear cuenta'. " +
 "Si ten&eacute;s una cuenta y se te olvidó tu contraseña, desafortunadamente no " +
 "es posible recuperarla porque la aplicación no almacena las contraseñas. " +
 "En este caso, lo único que pod&eacute;s hacer " +
 "es crear otra cuenta.</p>" +
 "</body></html>");
+}
+function OnSalir()
+{
+    document.Form1.action = "fin"
+    document.Form1.target = "_self";     // Same window
+    document.Form1.submit();             // Submit the page
+    return true;
 }
 function loading() {
     document.getElementById("loading").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
@@ -47,10 +55,24 @@ function account() {
 
 <body>
 
-<h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
+<table class="center">
+  <tr>
+    <td class="title">
+    <img class='banner' src="{{url_for('static',
+      filename='banner_logo_short.png')}}" alt="" width="500px" height="90px" />
+    </td>
+    <td class="menu" style="width: 250px"><button class="menu"
+      onclick="loading()">CONTINUAR SIN IDENTIFICARTE</button></td>
+    <td class="menu" style="width: 125px"><input class="menu"
+      type="submit" value="SALIR" name="salir" onclick="return OnSalir();">
+    <td class="menu" style="width: 125px"><button class="menu"
+      onclick="ShowHelp();">AYUDA</button></td>
+  </tr>
 
+<tr>
+<td colspan="4" style="width:1000px">  
 <h2>Inicio de sesión
-</h2>
+  </h2>
 
 {% if error %}
 <p class="error">
@@ -64,19 +86,19 @@ favor introducí or ingresá sin identificarte.
 </p>
 {% endif %}
 
-<table>
+<table class="login">
 <tr>
-<td class="text">
+<td class="text" colspan="3">
 <form name="Form1" action="login" method="post">
 
 <p>
 <span class='label'>Nombre de usuario</span><br/>
-<input type="text" name="username" id="text">
+<input type="text" name="username" class="text">
 </p>
 
 <p>
 <span class='label'>Contraseña</span><br/>
-<input type="password" name="password" id="text">
+<input type="password" name="password" class="text">
 </p>
 
 <p>
@@ -87,13 +109,7 @@ favor introducí or ingresá sin identificarte.
 
 <p>
 <span class="instruction">¿No tenés una cuenta?</span><br/>
-<button id="lightbluebutton" onclick="account()">Crear cuenta</button>
-</p>
-</td>  
-
-<td class="text">
-<p>  
-<button onclick="loading()" id="widebutton">Continuar sin identificarte</button><br/>
+<button id="altbutton" onclick="account()">Crear cuenta</button>
 </p>
 </td>  
 
@@ -101,12 +117,16 @@ favor introducí or ingresá sin identificarte.
 
 </table>
 
-<p>
-<button id="help" onclick="ShowHelp();">Ayuda</button>
-</p>
+</td>
+</tr>
 
-<p id="loading">
-</p>
+<tr>
+  <td colspan="3">
+    <p id="loading">
+    </p>
+  </td>
+</tr>
+</table>  
 
 </body>
 

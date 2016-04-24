@@ -4,6 +4,23 @@
 <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
 
 <script>
+function ShowHelp() {
+    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
+    helpWin.document.write('<html><head>' +
+'<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
+"<title>Mainumby: Ayuda</title></head><body>" +
+"<h4 class='help'>Ayuda para introducir un documento</h4>" +
+"<p class='help'>En esta página introducís las oraciones " +
+"que quer&eacute;s traducir. Todavía no es posible " +
+"simplemente subir el documento de tu computadora " +
+"al sitio; eso se debería poder en una versión futura " +
+"de Mainumby. Por ahora deb&eacute;s introducir el texto " +
+"o copiarlo y pegarlo en el espacio proveído.</p>" +
+"<p class='help'>Fijate que Mainumby es muy estricto en cuanto a " +
+"la ortografía y la gramática castellana. " +
+"No tolera ningunos errores." +
+"</p></body></html>");
+}
 function OnEnviar()
 {
     document.Form1.action = "sent"
@@ -11,7 +28,6 @@ function OnEnviar()
     document.Form1.submit();             // Submit the page
     return true;
 }
-
 function OnSalir()
 {
     document.Form1.action = "fin"
@@ -26,31 +42,26 @@ function OnSalir()
 <script src="FileSaver.js">
 </script>
 
-<script>
-function ShowHelp() {
-    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
-    helpWin.document.write('<html><head>' +
-'<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
-"<title>Mainumby: Ayuda</title></head><body>" +
-"<h4>Ayuda para introducir un documento</h4>" +
-"<p>En esta página introducís las oraciones " +
-"que quer&eacute;s traducir. Todavía no es posible " +
-"simplemente subir el documento de tu computadora " +
-"al sitio; eso se debería poder en una versión futura " +
-"de Mainumby. Por ahora deb&eacute;s introducir el texto " +
-"o copiarlo y pegarlo en el espacio proveído.</p>" +
-"<p>Fijate que Mainumby es muy estricto en cuanto a " +
-"la ortografía y la gramática castellana. " +
-"No tolera ningunos errores." +
-"</p></body></html>");
-}
-</script>
-
 </head>
 
 <body>
 
-<h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
+<form name="Form1" method=POST>
+
+<table class="center">
+  <tr>
+    <td class="title">
+    <img class='banner' src="{{url_for('static',
+      filename='banner_logo_short.png')}}" alt="" width="500px" height="90px" />
+    </td>
+    <td class="menu" style="width: 250px"><input class="menu"
+      type="submit" value="SALIR" name="salir" onclick="return OnSalir();">
+    <td class="menu" style="width: 250px"><button class="menu"
+      onclick="ShowHelp();">AYUDA</button></td>
+  </tr>
+
+<tr>
+<td colspan="3" style="width:1000px">  
 
 <h2>Introducción de un documento
 </h2>
@@ -61,22 +72,28 @@ Introducí una o más oraciones para traducir.
 </span>
 </p>
 
-<form name="Form1" method=POST>
+  <textarea name="text" id="text" ROWS=20 COLS=100></textarea>
 
-<textarea name="text" id="text" ROWS=15 COLS=40></textarea>
+</td>
+</tr>
+</table>
 
+<!--
 <p>
 <input type="submit" value="Enviar" name="enviar" onclick="return OnEnviar();" id="button">
 </p>
 <p>
 <input type="submit" value="Salir de Mainumby" id="narrowlbbutton" name="salir" onclick="return OnSalir();">
 </p>
+-->
 
 </form>
 
+<!--
 <p>
 <button id="help" onclick="ShowHelp();">Ayuda</button>
 </p>
+-->
 
 </body>
 

@@ -1,13 +1,21 @@
+/*
+Colors:
+hummingbird cyan: #8DEDCD
+hummingbird yellow: #F5E754
+background brown: #4B2B17
+*/
+
 body
 {
-	margin-left: 25pt;
-	margin-right: 20pt;
+	margin-left: 0pt;
+	margin-right: 0pt;
 	margin-top: 20pt;
 	margin-bottom: 20pt;
 	padding-left: 0;
 	padding-right: 0;
 	padding-top: 0;
 	padding-bottom: 0;
+        font-size: 14px;
 	font-family: verdana, geneva, arial, sans-serif;
 	background-color: #FFF;
 }
@@ -21,25 +29,28 @@ span.fuzzy a:hover { background-color: #66FF66; color: #FFFFFF; }
 h1,h2,h3 { clear: left; }
 h1
 {
-	font-size: 140%;
+	font-size: 150%;
 	margin-top: .25em;
 	margin-bottom: 0;
-        border-bottom: thin solid;
-	text-align: center;
+        border: thin solid;
+	text-align: left;
 	font-weight: bold;
-	color: #C00;
+	color: #4B2B17;
+	background-color: #F5E754;
 }
 h2
 {
-	font-size: 120%;
+	font-size: 130%;
 	font-weight: bold;
 	margin-top: .75em;
 	margin-bottom: .35em;
-        text-align: center;
-        color: #00F;
+/*        text-align: center; */
+/*        color: #00F; */
+	background-color: #8DEDCD;
 }
 h3
 {
+	background-color: #F5E754;
  	font-size: 110%;
 	font-weight: bold;
 	margin-top: .5em;
@@ -69,6 +80,47 @@ p.error
     color: #f00;
     font-style: italic;
 }
+table.center
+{
+	table-layout: fixed;
+/*	background-color: #F5E754; */
+	margin-left: auto;
+	margin-right: auto;
+	border: 0;
+	padding: 0;
+	border-collapse: collapse;
+}
+/*
+table.center tr
+{
+	border-bottom: 6pt solid #003;
+}
+*/
+
+table.center td.title
+{
+/*	background-color: #F5E754; */
+}
+table.center tr td
+{
+/*	background-color: #F5E754; */
+	vertical-align: top;
+	padding: 0pt;
+}
+
+table.center td p,h1,h2,h3,h4,ul
+{
+	margin-top: 10pt;
+	margin-bottom: 10pt;
+	margin-left: 0pt;
+	margin-right: 0pt;
+	width: auto;
+}
+
+table.center tr td img.banner
+{
+    vertical-align: bottom;
+}
 th.TM
 {
    max-width: 35%;
@@ -83,7 +135,7 @@ td.text
 {
         vertical-align: top;
         text-align: center;
-        width: 50%;
+        width: 100%;
         border: 1px solid black;
 }
 #help
@@ -146,11 +198,12 @@ span.instruction
    font-size: 100%;
    font-style: italic;
 }
-#text
+input.text
 {
         font-family: "Verdana";
         font-size: 100%;
-        width: 80%
+        height: 20px;
+	width: 500px;
 }
 #medtext
 {
@@ -185,28 +238,29 @@ span.instruction
 }
 #widebutton
 {
-        background-color: #00a;
-        color: #fff;
+        background-color: #8DEDCD;
+        color: #4B2B17;
         font-family: "Verdana";
         font-size: 100%;
         align: center;
-        width: 80%
+        width: 250px;
 }
 #widebutton:hover
 {
-        background-color: #00f;
+        background-color: #8DFFEE;
 }
-#lightbluebutton
+#altbutton
 {
-        color: #00f;
+        color: #4B2B17;
+        background-color: #F5E754;
         font-family: "Verdana";
         font-size: 100%;
-        width: 80%;
+        width: 250px;
         align: center;
 }
-#lightbluebutton:hover
+#altbutton:hover
 {
-        background-color: #ccf;
+        background-color: #FFFF33;
 }
 #narrowlbbutton
 {
@@ -219,4 +273,75 @@ span.instruction
 #narrowlbbutton:hover
 {
         background-color: #ccf;
+}
+table.center tr td.menu
+{
+    height: 85px;
+    background-color: #4B2B17;
+    text-align: right;
+    vertical-align: bottom;
+    padding-bottom: 5px;
+    border: 0;
+}
+table.center tr td.menu a
+{
+    color: #8DEDCD;
+/*    font-weight: bold; */
+    font-size: 100%;
+    text-decoration: none;
+}
+table.center tr td.menu a:hover
+{
+    color: #F5E754;
+    background-color: #4B2B17;
+}
+input.menu
+{
+    background-color: #4B2B17;
+    color: #8DEDCD;
+    font-family: "Verdana";
+    font-size: 100%;
+/*    font-weight: bold; */
+    text-align: right;
+    padding-right: 4pt;
+    padding-bottom: 0;
+    border: 0;
+}
+input.menu:hover
+{
+    color: #F5E754;
+}
+ button.menu
+{
+    background-color: #4B2B17;
+    color: #8DEDCD;
+    font-family: "Verdana";
+/*    font-weight: bold; */
+    font-size: 100%;
+    text-align: right;
+    padding-right: 4pt;
+    padding-bottom: 0;
+    border: 0;
+}
+button.menu:hover
+{
+    color: #F5E754;
+}
+/* Help windows */
+h4.help
+{
+    font-size: 110%;
+    font-weight: bold;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+p.help
+{
+    margin-top: .5em;
+    margin-bottom: .5em;
+    margin-left: 2em;
+    margin-right: 2em;
+    clear: left;
 }

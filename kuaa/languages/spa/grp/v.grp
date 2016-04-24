@@ -4,11 +4,10 @@
 ## KATU
 *** poder_v[-r] $v ; ^ poder_v 0
 ->grn katu_v[cat=che] $v ; 1==1 n:ns,p:ps,tm:tmp,asp:asp ; 0==0 neg:neg,rel:rel
-## OĨ
+## OĨ, NDAIPÓRI?
 *** haber_v[-r,p=3,n=0,-neg] ; ^ haber_v 0
 ->grn ĩ_v[cat=a,po=3,no=0,-neg] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,pp:pp,inter:inter
-## NDAIPÓRI
-## ver and odiar are examples of what happens with transitive and dative verbs
+#### ver and odiar are examples of what happens with transitive and dative verbs
 ## -- basic; including 1,2 object [-r] ? (use feature match failure)
 ## -- 3s object [-r,po=3,no=0]
 ## -- 3p object [-r,po=3,no=1]
@@ -41,6 +40,45 @@
 *** odiar_v[-r] ; ^ odiar_v 0 ; #44
 ->grn py'aro_v[cat=a] ; #16 ; ##1
 ->grn royrõ_v[cat=a] ; #3
+#### Dative verbs like decir -> mombe'u / 'e
+## Noun object, with or without 3p pron in Spa
+*** decir_v[-r] a $n_prs ; ^ decir_v 0
+->grn mombe'u_v[cat=a] $n_prs[caso=pe] ; || 0, -1, 1
+->grn 'e_v[cat=a] $n_prs[caso=pe] ; || 0, -1, 1
+# 3p pron object
+*** decir_v[-r,po=3,no=0] ; ^ decir_v 0
+->grn mombe'u_v[cat=a] (chupe)
+->grn 'e_v[cat=a] (chupe)
+*** decir_v[-r,po=3,no=1] ; ^ decir_v 0
+->grn mombe'u_v[cat=a] (chupekuéra)
+->grn 'e_v[cat=a] (chupekuéra)
+## other pronouns (no object agreement on verb)
+# 1ps object
+*** decir_v[-r,po=1,no=0] ; ^ decir_v 0
+->grn mombe'u_v[cat=a] chéve ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+->grn 'e_v[cat=a] chéve ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+# 1pp object
+*** decir_v[-r,p=3,po=1,no=1] ; ^ decir_v 0
+->grn mombe'u_v[cat=a,ps=3] oréve ; 0==0 n:ns,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+->grn mombe'u_v[cat=a,ps=3] ñandéve ; 0==0 n:ns,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+->grn 'e_v[cat=a,ps=3] oréve ; 0==0 n:ns,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+->grn 'e_v[cat=a,ps=3] ñandéve ; 0==0 n:ns,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+*** decir_v[-r,p=2,po=1,no=1] ; ^ decir_v 0
+->grn mombe'u_v[cat=a,ps=2] oréve ; 0==0 n:ns,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+->grn 'e_v[cat=a,ps=2] oréve ; 0==0 n:ns,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+# 2ps object
+*** decir_v[-r,po=2,no=0] ; ^ decir_v 0
+->grn mombe'u_v[cat=a] ndéve ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+->grn 'e_v[cat=a] ndéve ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+# 2pp object
+*** decir_v[-r,po=2,no=1] ; ^ decir_v 0
+->grn mombe'u_v[cat=a] peẽme ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+->grn 'e_v[cat=a] peẽme ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+## no object
+*** decir_v[-r] ; ^ decir_v 0 ; #4879
+->grn mombe'u_v[cat=a] ; #607 ; ##151
+->grn 'e_v[cat=a] ; #3350 ; ##4175
+####
 *** casar_v[-r,po=3,no=0] ; ^ casar_v 0 ; #1239
 ->grn momenda_v[cat=a] (chupe) ; #9
 *** casar_v[-r] ; ^ casar_v 0 ; #1239
@@ -9346,18 +9384,6 @@
 ->grn mbopy'apeteĩ_v[cat=a] (chupe)
 *** decidir_v[-r,po=3,no=1] ; ^ decidir_v 0
 ->grn mbopy'apeteĩ_v[cat=a] (chupekuéra)
-*** decir_v[-r] ; ^ decir_v 0 ; #4879
-->grn mombe'u_v[cat=a] ; #607 ; ##151
-->grn 'e_v[cat=a] ; #3350 ; ##4175
-*** decir_v[-r] a $n_prs ; ^ decir_v 0
-->grn mombe'u_v[cat=a] $n_prs[caso=pe] ; || 0, -1, 1
-->grn 'e_v[cat=a] $n_prs[caso=pe] ; || 0, -1, 1
-*** decir_v[-r,po=3,no=0] ; ^ decir_v 0
-->grn mombe'u_v[cat=a] (chupe)
-->grn 'e_v[cat=a] (chupe)
-*** decir_v[-r,po=3,no=1] ; ^ decir_v 0
-->grn mombe'u_v[cat=a] (chupekuéra)
-->grn 'e_v[cat=a] (chupekuéra)
 *** declamar_v[-r] ; ^ declamar_v 0
 ->grn mosũ_v[cat=a]
 *** declarar_v[+r] ; ^ declarar_v 0

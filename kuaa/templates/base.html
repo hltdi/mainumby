@@ -3,26 +3,97 @@
 <head>
 <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
 
-<script>
-function loading() {
-    document.getElementById("loading").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
-    window.location.assign("doc");
+<title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
+
+<style type="text/css">
+table.center tr td.menu
+{
+    height: 85px;
+    background-color: #4B2B17;
+    text-align: right;
+    vertical-align: bottom;
+    padding-bottom: 5px;
+    border: 0;
 }
-function login() {
-    window.location.assign("doc");
+table.center tr td.menu a
+{
+    color: #8DEDCD;
+/*    font-weight: bold; */
+    font-size: 100%;
+    text-decoration: none;
+}
+table.center tr td.menu a:hover
+{
+    color: #F5E754;
+    background-color: #4B2B17;
+}
+input.menu
+{
+    background-color: #4B2B17;
+    color: #8DEDCD;
+    font-family: "Verdana";
+    font-size: 100%;
+/*    font-weight: bold; */
+    text-align: right;
+    padding-right: 4pt;
+    padding-bottom: 0;
+    border: 0;
+}
+input.menu:hover
+{
+    color: #F5E754;
+}
+ button.menu
+{
+    background-color: #4B2B17;
+    color: #8DEDCD;
+    font-family: "Verdana";
+/*    font-weight: bold; */
+    font-size: 100%;
+    text-align: right;
+    padding-right: 4pt;
+    padding-bottom: 0;
+    border: 0;
+}
+button.menu:hover
+{
+    color: #F5E754;
+}
+</style>
+
+<script>
+function ShowHelp() {
+    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
+    helpWin.document.write('<html><head>' +
+'<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
+"<title>Mainumby: Ayuda</title></head><body>" +
+"<h4 class='help'>Ayuda general para la aplicación</h4>" +
+"</body></html>");
 }
 </script>
-
-<title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
 
 </head>
 
 <body>
 
-<h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
+<form action='login' method="post">
 
-<h2>¡Bienvenida/o a Mainumby!<br/>¡Tereg̃uahẽ porãite Mainumby-me!
-</h2>
+<table class="center">
+  <tr>
+    <td class="title">
+    <img class='banner' src="{{url_for('static',
+      filename='banner_logo_short.png')}}" alt="" width="500" height="90" />
+    </td>
+    <td class="menu" style="width: 125px"><a href="http://guarani.soic.indiana.edu/mainumby.html">PROYECTO</a></td>
+    <td class="menu" style="width: 125px"><a href="http://guarani.soic.indiana.edu/mainumby.html">TEORÍA</a></td>
+    <td class="menu" style="width: 125px"><button class="menu" onclick="ShowHelp();">AYUDA</button></td>
+    <td class="menu" style="width: 125px"><input type="submit" value="INICIAR" class="menu"></td>
+
+</tr>
+<tr>
+<td colspan="5" style="width:1000px">  
+<h2>¡Bienvenida/o a Mainumby! ¡Tereg̃uahẽ porãite Mainumby-me!
+  </h2>
 
 <h3>¿Qu&eacute; es?
 </h3>
@@ -32,42 +103,37 @@ Mainumby es una aplicación que ayuda a traducir del
 castellano al guaraní.
 En su forma final, tendrá dos componentes: un traductor automático
 rudimentario (Mbojereha) y una memoria de traducción (Mandu'a).
-En la versión actual, sólo tiene el traductor.
+En la versión actual, consiste sólo del traductor.
 </p>
 
 <h3>¿Cómo funciona?
 </h3>
 
 <p>
+Mbojereha sabe, de una manera bastante básica, traducir frase del
+castellano al guaraní.
 En la versión actual de Mainumby, deb&eacute;s introducir o pegar las oraciones
 que quer&eacute;s traducir.
 (Finalmente va a ser posible subir documentos.)
-Para cada oración el traductor Mbojereha busca frases en su base de
+Para cada oración, el traductor Mbojereha busca frases en su base de
 datos que sabe traducir al guaraní, y, en lo que pueda, analiza la
 oración como un conjunto de tales frases.
 </p>
 
 <hr/>
 
-<form action='login' method="post">
-
+<!--
 <p class="center">
 <input type="submit" value="Iniciar sesión" id="button">
-</p>
+  </p>
+-->  
 
-<!--
-<p class="center" id="loading">
-<input id="button" style="font-family: Verdana; font-size: 100%; font-weight: bold"
-type=button name="Cargar" value="Iniciar sesión" onclick="loading()">
-</p>
--->
+</td>
+</tr>
 
-</form>
-<!--
-<button type="button"
-onclick="document.getElementById('loading').innerHTML = {{'%r'|format(['foo', 'bar'])}}">
-Try it</button>
--->
+</table>  
+
+  </form>
 
 </body>
 </html>
