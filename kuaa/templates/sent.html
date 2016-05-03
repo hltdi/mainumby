@@ -4,10 +4,25 @@
 <link rel="stylesheet" type=text/css href="{{url_for('static', filename='style.css')}}" />
 
 <style type="text/css">
+table.transmeta
+{
+    border: 0;
+    padding: 5px;
+    width: 985px;
+}
 table.trans
 {
     border: 2px solid black;
-    border-collapse: collapse;
+    border-spacing: 10px;
+/*    border-collapse: collapse; */
+    width: 525px;
+}
+table.transdoc
+{
+      border: 2px solid black;
+      border-spacing: 10px;
+      width: 40%;
+/*    border-collapse: collapse; */
 }
 th.trans
 {
@@ -16,20 +31,59 @@ th.trans
     padding: 3px;
     border: 1px solid black;
 }
+tr.trans
+{
+    padding: 5px;
+}
+tr.transtitle
+{
+    padding: 5px;
+    border: 1px solid black;
+}
+td.transtitle
+{
+   text-align: left;
+   vertical-align: top;
+   padding: 5px;
+   font-size: 105%;
+/*   font-style: italic; */
+/*   border: 1px solid black; */
+}
+th.transtitle
+{
+   text-align: left;
+   vertical-align: top;
+   padding: 5px;
+   font-size: 105%;
+}
 td.trans
 {
    text-align: left;
    vertical-align: top;
    padding: 5px;
 /*   font-style: italic; */
-   border: 1px solid black;
+   border-bottom: 1px solid black;
+}
+td.transbutton
+{
+   text-align: right;
+   vertical-align: top;
+   padding: 5px;
+/*   font-style: italic; */
+/*   border: 1px solid black; */
+}
+td.transtext
+{
+   text-align: left;
+   vertical-align: top;
+   padding: 5px;
 }
 td.transchoice
 {
    text-align: left;
    vertical-align: top;
    padding: 5px;
-   border: 1px solid black;
+/*   border: 1px solid black; */
 }
 td.segsent
 {
@@ -47,7 +101,7 @@ td.other
 {
    text-align: left;
    padding: 5px;
-   border: 1px solid black;
+/*   border: 1px solid black; */
    font-style: italic;
    font-size: 80%;
 }
@@ -55,15 +109,15 @@ textarea#sentence
 {
    font-family: "Verdana";
    font-size: 100%;
-   width: 100%;
+   width: 495px;
    height: 50px;
 }
 textarea#document
 {
    font-family: "Verdana";
-   font-size: 75%;
-   width: 350px;
-   height: 400px;
+   font-size: 85%;
+   width: 425px;
+   height: 300px;
    resize: none;
    overflow-y: scroll;
 }
@@ -71,8 +125,8 @@ textarea#segment
 {
    font-family: "Verdana";
    font-size: 100%;
-   width: 250px;
-   height: 25px;
+   width: 300px;
+   height: 20px;
 }
 span#doctrans
 {
@@ -129,7 +183,6 @@ function OnRegFrase() {
     var fratra = document.Form1.fratra.value;
     if (segtrans != "") {
         segtrans = limpiarGrn(segtrans);
-        alert("Segtrans " + segtrans);
         document.Form1.fratra.value += "||" + segment + "=" + segtrans;
         if (segtrans == "0") {
             // User wants no translation for this segment.
@@ -175,6 +228,13 @@ function Segment(text, segment, color) {
     document.Form1.seg.value = segment;
     document.getElementById("segment").value = '';
 }
+function OnSalir()
+{
+    document.Form1.action = "fin"
+    document.Form1.target = "_self";     // Same window
+    document.Form1.submit();             // Submit the page
+    return true;
+}
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -204,15 +264,31 @@ function limpiarGrn(string) {
 
 <body>
 
-<h1>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</h1>
+<form name="Form1" method=POST action='sent'>
+
+<table class="center">
+  <tr>
+    <td class="title">
+    <img class='banner' src="{{url_for('static',
+      filename='banner_logo_short.png')}}" alt="" width="500px" height="90px" />
+    </td>
+    <td class="menu" style="width: 200px">
+      <input type="submit" class="menu" action="sent" name="sent" value="PRÓXIMA ORACIÓN">
+    </td>
+    <td class="menu" style="width: 150px"><input class="menu"
+      type="submit" value="SALIR" name="salir" onclick="return OnSalir();"></td>
+    <td class="menu" style="width: 150px"><button class="menu"
+      onclick="ShowHelp();">AYUDA</button></td>
+  </tr>
+
+<tr>
+<td colspan="4" style="width:1000px">  
 
 <h2>Traducción de oraciones
 </h2>
 
 <p id="error" class="error">
 </p>
-
-<form name="Form1" method=POST action='sent'>
 
 {% if sentence %}
 <p></p><p></p>
@@ -230,55 +306,56 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 </span>
 <p></p>
 
-<hr/>
-
 {% endif %}
 
 <h3>Traducción</h3>
 
-<table>
-  <tr>
+<table class="transmeta">
+<tr class="trans">
 <td class="segsent">
 <table class="trans">
-<tr>
-  <th class="trans">Frase</th>
-  <td class="trans">
-  <input type="button" class="button" name="freg" onclick="OnRegFrase();" value="Registrar traducción">
+<tr class="transtitle">
+  <th class="transtitle">Frase</th>
+  <td class="transbutton">
+  <input type="button" id="button" name="freg" onclick="OnRegFrase();" value="Registrar traducción">
   </td>
 </tr>
-<tr>
+<tr class="transtitle">
 <td class="trans">Sugerencias de Mbojereha</td>
-<td class="trans">Otra traducción</td>
+<td class="trans">Introducir otra traducción</td>
 </tr>
 <tr>
 <td class="transchoice">
 <p id="segtra"></p>
 </td>
-<td class="trans">
+<td class="transtext">
     <textarea name="UTraSeg" id="segment"></textarea>
 </td>
 </tr>
-<tr>
-  <th class="trans">Oración entera</th>
-  <td class="button">
-    <input type="button" class="button" name="oreg"
+</table>
+<p></p>
+<table class="trans">
+<tr class="trans">
+  <th class="transtitle">Oración entera</th>
+  <td class="transbutton">
+    <input type="button" id="button" name="oreg"
     onclick="OnRegOra({{'%r'|format(raw)|e}}, {{'%r'|format(punc)|e}});" value="Registrar traducción">
     </td>
 </tr>  
-<tr>
-  <td class="trans" colspan="2">
+<tr class="trans">
+  <td class="transtext" colspan="2">
     <textarea name="UTraOra" id="sentence" value=""></textarea>
   </td>
 </tr>
 </table>
 </td>
-<td>
-  <table>
-  <tr>
-    <th class="trans">Documento</th>
+<td class="transtitle">
+  <table class="transdoc">
+  <tr class="trans">
+    <th class="transtitle">Documento</th>
   </tr>
-  <tr>
-  <td class="trans" rowspan="4">
+  <tr class="trans">
+  <td class="transtext" rowspan="4">
   <textarea name="UTraDoc" id="document" value=""></textarea>
   </td>
   </tr>
@@ -287,13 +364,13 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 </tr>
 </table>
 
-<p>
-<input type="submit" id="button" action="sent" name="sent" value="Próxima oración">
-</p>
-
 <input type="hidden" name="seg" value="">
 <input type="hidden" name="oratra" value="">
 <input type="hidden" name="fratra" value="">
+
+</td>
+</tr>
+</table>
 
 </form>
 
@@ -303,9 +380,11 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 </p>
 -->
 
+<!--
 <p>
 <button id="help" onclick="ShowHelp();">Ayuda</button>
 </p>
+-->
 
 </body>
 

@@ -152,7 +152,6 @@ def reg():
             return render_template('acct.html', username=form.get('username'))
     return render_template('reg.html')
 
-# Saying account was created about button to continue (loading languages).
 @app.route('/acct', methods=['POST'])
 def acct():
 #    print("In acct...")

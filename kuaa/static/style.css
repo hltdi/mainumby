@@ -44,9 +44,13 @@ h2
 	font-weight: bold;
 	margin-top: .75em;
 	margin-bottom: .35em;
-/*        text-align: center; */
-/*        color: #00F; */
 	background-color: #8DEDCD;
+}
+div.user
+{
+    font-size: 110%;
+    margin-top: .75em;
+    margin-bottom: .35em;
 }
 h3
 {
@@ -174,8 +178,10 @@ span.cargando
 }
 span.username
 {
-        background-color: #f00;
-        color: #fff;
+/*    background-color: #f00;
+    color: #fff;
+*/
+    font-style: italic;
 }
 span.root
 {
@@ -209,20 +215,20 @@ input.text
 {
         font-family: "Verdana";
         font-size: 100%;
-        width: 30%
+        width: 40%
 }
 #button
 {
-        background-color: #00a;
-        color: #fff;
+        background-color: #8DEDCD;
+        color: #4B2B17;
         font-family: "Verdana";
         font-size: 100%;
-        align: center;
-        width: 20%
+/*        align: center; */
+        width: 200px
 }
 #button:hover
 {
-        background-color: #00f;
+        background-color: #8DFFEE;
 }
 #medbutton
 {
@@ -295,6 +301,39 @@ table.center tr td.menu a:hover
     color: #F5E754;
     background-color: #4B2B17;
 }
+table.title
+{
+    margin-top: .75em;
+    margin-bottom: .25em;
+    border: 5px;
+    padding: 0;
+    width: 100%;
+}
+table.title tr
+{
+    border: 5px;
+}
+td.titleleft
+{
+    text-align: left;
+    padding-left: 5px;
+    border: 2px;
+    width: 70%;
+    color: #000;
+    background-color: #8DEDCD;
+    font-size: 130%;
+    font-weight: bold;
+}
+td.titleright
+{
+    text-align: right;
+    font-size: 110%;
+    padding-right: 5px;
+    border: 0;
+    width: 30%;
+    background-color: #000;
+    color: #8DEDCD;
+}
 input.menu
 {
     background-color: #4B2B17;
@@ -344,4 +383,14 @@ p.help
     margin-left: 2em;
     margin-right: 2em;
     clear: left;
+}
+textarea.doc
+{
+    font-family: "Verdana";
+    font-size: 100%;
+    width: 998px;
+    height: 300px;
+    margin: 0;
+    padding: 0;
+/*    border: 0; */
 }

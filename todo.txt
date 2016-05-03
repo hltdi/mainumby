@@ -1,3 +1,7 @@
+2016.4.24
+-- How to get verbs like "importa" to not show up as imperative?
+-- How to handle copying of untranslatable words (names, for example)?
+
 2016.4.19
 -- Figure out how 'e behaves with objects?
 -- dónde, etc.

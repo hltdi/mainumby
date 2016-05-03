@@ -55,16 +55,28 @@ function OnSalir()
       filename='banner_logo_short.png')}}" alt="" width="500px" height="90px" />
     </td>
     <td class="menu" style="width: 250px"><input class="menu"
-      type="submit" value="SALIR" name="salir" onclick="return OnSalir();">
+      type="submit" value="SALIR" name="salir" onclick="return OnSalir();"></td>
     <td class="menu" style="width: 250px"><button class="menu"
       onclick="ShowHelp();">AYUDA</button></td>
   </tr>
 
 <tr>
 <td colspan="3" style="width:1000px">  
-
-<h2>Introducción de un documento
-</h2>
+<table class="title">
+<tr>    
+<td class="titleleft">Introducción de un documento</td>
+<td class="titleright">
+Usuario:
+<span class="username">  
+{% if user %}
+{{ user }}
+{% else %}
+no identificado  
+{% endif %}
+</span>  
+</td>
+</tr>
+</table>
 
 <p>
 <span class='instruction'>
@@ -72,16 +84,17 @@ Introducí una o más oraciones para traducir.
 </span>
 </p>
 
-  <textarea name="text" id="text" ROWS=20 COLS=100></textarea>
+  <textarea name="text" class="doc"></textarea>
+
+<p>
+<input type="submit" value="Enviar" name="enviar" onclick="return OnEnviar();" id="button">
+</p>
 
 </td>
 </tr>
 </table>
 
 <!--
-<p>
-<input type="submit" value="Enviar" name="enviar" onclick="return OnEnviar();" id="button">
-</p>
 <p>
 <input type="submit" value="Salir de Mainumby" id="narrowlbbutton" name="salir" onclick="return OnSalir();">
 </p>

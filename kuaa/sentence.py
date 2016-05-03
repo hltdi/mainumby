@@ -123,6 +123,8 @@
 #    were collapsed, it's just the number of group translations.
 # 2016.03.01
 # -- Adjusted which segments are created and how segments are displayed when corresponding source tokens are discontinuous
+# 2016.05.03
+# -- Fixed bug that prevented the same group (actually group head) from applying to different words.
 
 import copy, re, random
 from .ui import *
@@ -597,7 +599,7 @@ class Sentence:
                             print("No translation for {}".format(group))
                             continue
                         candidates.append((node.index, k, group))
-#            print("Found candidates {}".format(candidates))
+#        print("Found candidates {}".format(candidates))
         # Now filter candidates to see if all words are present in the sentence
         # For each group, save a list of sentence token indices that correspond
         # to the group's words
@@ -608,7 +610,7 @@ class Sentence:
             # Matching snodes, along with root and unified features if any
             if verbosity > 1:
                 print("Matching group {}".format(group))
-            if key in matched_keys:
+            if (head_i, key) in matched_keys:
                 # Already matched one for this key, so don't bother checking.
                 if verbosity:
                     print("Not considering {} because already matched group with key {}".format(group, key))
@@ -619,7 +621,7 @@ class Sentence:
                 if verbosity > 1:
                     print("Failed to match")
                 continue
-            matched_keys.append(key)
+            matched_keys.append((head_i, key))
             if verbosity > 1:
                 print('Group {} matches snodes {}'.format(group, snodes))
             groups.append((head_i, snodes, group))
