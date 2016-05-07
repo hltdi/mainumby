@@ -61,22 +61,19 @@ function OnSalir()
   </tr>
 
 <tr>
-<td colspan="3" style="width:1000px">  
+<td colspan="3" style="width:1000px">
+{% if user %}
 <table class="title">
-<tr>    
+<tr>
 <td class="titleleft">Introducción de un documento</td>
 <td class="titleright">
-Usuario:
-<span class="username">  
-{% if user %}
-{{ user }}
-{% else %}
-no identificado  
-{% endif %}
-</span>  
+Usuario: <span class="username">{{ user.username }}</span>
 </td>
 </tr>
 </table>
+{% else %}
+<h2>Introducción de un documento</h2>
+{% endif %}
 
 <p>
 <span class='instruction'>

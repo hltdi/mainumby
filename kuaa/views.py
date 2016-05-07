@@ -168,7 +168,7 @@ def doc():
     # Load Spanish and Guarani if they're not loaded.
 #    if not SPA:
 #        load_languages()
-    return render_template('doc.html')
+    return render_template('doc.html', user=USER)
 
 # View for displaying parsed sentence and sentence translation and
 # for recording translations selected/entered by user.
@@ -196,13 +196,13 @@ def sent():
     print("Current sentence {}".format(SENTENCE))
     if not SENTENCE:
         # No more sentences, return to doc.html for a new document
-        return render_template('doc.html')
+        return render_template('doc.html', user=USER)
 #        return render_template('sent.html')
     else:
         # Translate and segment the sentence, assigning SEGS
         get_segmentation()
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
-    return render_template('sent.html', sentence=SEG_HTML, raw=SENTENCE.raw, punc=SENTENCE.get_final_punc())
+    return render_template('sent.html', sentence=SEG_HTML, raw=SENTENCE.raw, punc=SENTENCE.get_final_punc(), user=USER)
 
 @app.route('/fin', methods=['POST'])
 def fin():

@@ -63,6 +63,7 @@ td.trans
    padding: 5px;
 /*   font-style: italic; */
    border-bottom: 1px solid black;
+   font-size: 95%;
 }
 td.transbutton
 {
@@ -284,8 +285,18 @@ function limpiarGrn(string) {
 <tr>
 <td colspan="4" style="width:1000px">  
 
-<h2>Traducción de oraciones
-</h2>
+{% if user %}
+<table class="title">
+<tr>
+<td class="titleleft">Selección de traducciones</td>
+<td class="titleright">
+Usuario: <span class="username">{{ user.username }}</span>
+</td>
+</tr>
+</table>
+{% else %}
+<h2>Selección de traducciones</h2>
+{% endif %}
 
 <p id="error" class="error">
 </p>

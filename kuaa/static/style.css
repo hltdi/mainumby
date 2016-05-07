@@ -226,7 +226,7 @@ input.text
 /*        align: center; */
         width: 200px
 }
-#button:hover
+#button:hover, #button:active
 {
         background-color: #8DFFEE;
 }
@@ -305,19 +305,22 @@ table.title
 {
     margin-top: .75em;
     margin-bottom: .25em;
-    border: 5px;
-    padding: 0;
+    margin-right: 0px;
+    margin-left: 0px;
+    border: 0px;
+    padding: 0px;
     width: 100%;
+    border-spacing: 0;
 }
 table.title tr
 {
-    border: 5px;
+    border: 0px;
 }
 td.titleleft
 {
     text-align: left;
-    padding-left: 5px;
-    border: 2px;
+    padding: 0px;
+    border: 0px;
     width: 70%;
     color: #000;
     background-color: #8DEDCD;
@@ -326,10 +329,10 @@ td.titleleft
 }
 td.titleright
 {
-    text-align: right;
+    text-align: center;
     font-size: 110%;
-    padding-right: 5px;
-    border: 0;
+    padding: 0px;
+    border: 0px;
     width: 30%;
     background-color: #000;
     color: #8DEDCD;
@@ -346,11 +349,12 @@ input.menu
     padding-bottom: 0;
     border: 0;
 }
-input.menu:hover
+input.menu:hover, input.menu:active, input.menu:focus
 {
     color: #F5E754;
+    outline: none;
 }
- button.menu
+button.menu
 {
     background-color: #4B2B17;
     color: #8DEDCD;
@@ -362,9 +366,11 @@ input.menu:hover
     padding-bottom: 0;
     border: 0;
 }
-button.menu:hover
+button.menu:hover, button.menu:active, button.menu:focus
 {
     color: #F5E754;
+    border: 0;
+    outline: none;
 }
 /* Help windows */
 h4.help

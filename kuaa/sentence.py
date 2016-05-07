@@ -125,6 +125,8 @@
 # -- Adjusted which segments are created and how segments are displayed when corresponding source tokens are discontinuous
 # 2016.05.03
 # -- Fixed bug that prevented the same group (actually group head) from applying to different words.
+# 2016.05.05
+# -- Made the tokenizer more sophisticated (see RE in Document).
 
 import copy, re, random
 from .ui import *
@@ -143,14 +145,27 @@ class Document(list):
 
     ## regular expressions for matching tokens
     # adjoining punctuation (except .)
-    # before: ([{¡¿"*
-    # after: )]}!?":;*
-    # within: letters and digits, _-+#.'`@$%^&=|
-    puncsep_re = re.compile(r"([(\[{¡¿—\"*]*)([\w\-/+#.'`~@$%^&=\|<>]+)([)\]}!?\"*,:;]*)$")
-    start_re = re.compile('[—¿¡"(\[]+$')
+    # before: ([{¡¿"*'`«“‘-–—=
+    # after: )]}!?":;*'»”’-–—=
+    # within token: letters and digits, _-+.'@$^&=|/,~<>
+    # within word: letters and digits, _-.'`&=|/~
+    # beginning of token: letters and digits, -+#.@$~
+    # end of token: letters and digits, -+#.$%/º
+    # end of word: letters and digits, #./º
+    # only digits
+    number1_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$£€]?[\d]+[%¢]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
+    # digits with intermediate characters (.,=><), which must be followed by one or more digits
+    number_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$£€]?[\d]+[\d,.=><+\-±/×÷≤≥]*[\d]+[%¢]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
+    # separated punctuation, including some that might be separated by error
+    punc_re = re.compile(r"([\-–—&=.,:;\"+<>/?!]{1,3})")
+    # word of one character
+    word1_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)(\w)([)\]}!?\"\'»”’*\-–—,:;=]*)$")
+    # word of more than one character: one beginning character, one end character, 0 or more within characters
+    word_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)([\w#@~][\w\-/:;+.'`~&=\|]*[\w/º#.])([)\]}!?\"\'»”’*\-–—,:;=]*)$")
+    start_re = re.compile('[\-–—¿¡\'\"«“‘(\[]+$')
     poss_end_re = re.compile('[")\]}]{0,2}[?!][)"\]]{0,2}')
     # 0-2 pre-end characters (like ")"), 1 end character (.?!), 0-2 post-end characters (like ")")
-    end_re = re.compile('[")\]}]{0,2}[.?!][.)"\]]{0,2}')
+    end_re = re.compile('[\"\'”’»)\]}]{0,2}[.?!][.)»”’\'\"\]\-–—]{0,2}')
 
     def __init__(self, language=None, target=None, text='', proc=True, session=None):
         self.set_id()
@@ -186,22 +201,46 @@ class Document(list):
         # Separate at whitespace.
         tokens = self.text.split()
         for token in tokens:
-            # Segment off punctuation 1 characters
-            match = Document.puncsep_re.match(token)
-            if not match:
-                print("Something wrong: {} fails to be an acceptable token".format(token))
-                return
-            pre, word, suf = match.groups()
-            if pre:
-                self.tokens.append((pre, 0))
-            # Check to see if word ends in . and is not an abbreviation
-            if word.endswith('.'):
-                if word not in self.language.abbrevs:
-                    word = word[:-1]
-                    suf = '.' + suf
-            self.tokens.append((word, 1))
-            if suf:
-                self.tokens.append((suf, 2))
+            tok_subtype = 0
+            word_tok = False
+            number = False
+            punctuation = False
+            match = Document.punc_re.match(token)
+            if match:
+                tok_subtype = 1
+                pre = ''; suf = ''; word = match.groups()[0]
+            else:
+                match = Document.number1_re.match(token)
+                if match:
+                    tok_subtype = 2
+                else:
+                    match = Document.number_re.match(token)
+                    if match:
+                        tok_subtype = 2
+                    else:
+                        match = Document.word1_re.match(token)
+                        if match:
+                            word_tok = True
+                        else:
+                            match = Document.word_re.match(token)
+                            if match:
+                                word_tok = True
+                            else:
+                                print("Something wrong: {} fails to be an acceptable token".format(token))
+                                return
+                pre, word, suf = match.groups()
+                if pre:
+                    self.tokens.append((pre, 0, 0))
+                # Check to see if word ends in . and is not an abbreviation
+                if word_tok and word.endswith('.'):
+                    if word not in self.language.abbrevs:
+                        # Strip of all trailing .s
+                        word, x, y = word.partition('.')
+                        suf = x + y + suf
+#                print("pre {}, word {}, suf {}".format(pre, word, suf))
+                self.tokens.append((word, 1, tok_subtype))
+                if suf:
+                    self.tokens.append((suf, 2, 0))
 
     @staticmethod
     def is_sent_start(token):
@@ -212,7 +251,7 @@ class Document(list):
         # Does a new sentence begin at the start of tokens?
         if not tokens:
             return False
-        tok, typ = tokens[0]
+        tok, typ, subtyp = tokens[0]
         if typ == 1:
             if Document.is_sent_start(tok):
                 return True
@@ -231,29 +270,30 @@ class Document(list):
         token = ''
         toktype = 1
         while tokindex < ntokens:
-            token, toktype = self.tokens[tokindex]
+            token, toktype, toksubtype = self.tokens[tokindex]
+#            print("token {}, toktype {}".format(token, toktype, toksubtype))
             if toktype in (0, 1):
-                current_sentence.append((token, toktype))
+                current_sentence.append((token, toktype, toksubtype))
             # Check whether this is a sentence end
             elif Document.end_re.match(token):
                 if not current_sentence:
-                    print("Something wrong: sentence end with empty sentence: {}".format(self.tokens[:tokindex]))
+                    print("Something wrong: empty sentence: {}".format(self.tokens[:tokindex]))
                     return
                 else:
                     # End sentence
-                    current_sentence.append((token, toktype))
+                    current_sentence.append((token, toktype, toksubtype))
                     sentences.append(current_sentence)
                     current_sentence = []
             elif Document.poss_end_re.match(token):
                 if current_sentence and (tokindex == ntokens-1 or Document.start_next(self.tokens[tokindex:])):
                     # End sentence
-                    current_sentence.append((token, toktype))
+                    current_sentence.append((token, toktype, toksubtype))
                     sentences.append(current_sentence)
                     current_sentence = []
                 else:
-                    current_sentence.append((token, toktype))
+                    current_sentence.append((token, toktype, toksubtype))
             else:
-                current_sentence.append((token, toktype))
+                current_sentence.append((token, toktype, toksubtype))
             tokindex += 1
         # Make Sentence objects for each list of tokens and types
         for sentence in sentences:
@@ -275,7 +315,7 @@ class Sentence:
     # colors to display sentence segments in interface
     tt_colors = ['red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple']
 
-    def __init__(self, raw='', language=None, tokens=None, toktypes=None,
+    def __init__(self, raw='', language=None, tokens=None, toktypes=None, toksubtypes=None,
                  nodes=None, groups=None, target=None, init=False,
                  analyses=None,
                  session=None,
@@ -287,16 +327,30 @@ class Sentence:
             # if copying these will already be assigned
             self.tokens = tokens
             self.toktypes = toktypes
+            self.toksubtypes = toksubtypes
             self.raw = raw
         elif tokens:
             # tokens is a list of pairs passed from Document object
             self.tokens = [t[0] for t in tokens]
             self.toktypes = [t[1] for t in tokens]
-            self.raw = ' '.join(self.tokens)
+            self.toksubtypes = [t[2] for t in tokens]
+#            print("Joining tokens: {}".format(self.tokens))
+            self.raw = tokens[0][0]
+            lasttyp = 1
+            for tok, typ, subtyp in tokens[1:-1]:
+                if lasttyp == 0 or typ == 2:
+                    # Last token was a punc prefix or current token is a punc suffix
+                    self.raw += tok
+                else:
+                    self.raw += " " + tok
+                lasttyp = typ
+            self.raw += tokens[-1][0]
+#            self.raw = ' '.join(self.tokens)
         else:
             self.raw = raw
             self.tokens = None
             self.toktypes = None
+            self.toksubtypes = None
 #        # A string representing the raw sentence (if it hasn't been tokenized)
 #        self.raw = raw
         # Source language: a language object
@@ -392,7 +446,8 @@ class Sentence:
         For ambiguous morphosyntax. Return the copy so it can be used by MorphoSyn.apply().
         skip is None or a list of triples: (position, token, feats). For each triple, the copy excludes the feats
         in the analysis of token in position."""
-        s = Sentence(raw=self.raw[:], tokens=self.tokens[:], toktypes=self.toktypes[:],
+        s = Sentence(raw=self.raw[:],
+                     tokens=self.tokens[:], toktypes=self.toktypes[:], toksubtypes= self.toksubtypes[:],
                      language=self.language, target=self.target,
                      analyses=copy.deepcopy(self.analyses))
         if skip:
