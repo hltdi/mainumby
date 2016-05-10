@@ -493,7 +493,7 @@ class GInst:
         agr = self.get_agr()
         if agr:
             self.variables['agr'] = DetVar('g{}agr'.format(self.index), agr)
-        
+
     def set_translations(self, verbosity=0):
         """Find the translations of the group in the target language."""
         translations = self.group.get_translations()
@@ -548,7 +548,7 @@ class GInst:
                 # Align gnodes with target tokens and features
                 targ_index = alignment[gn_index]
                 if targ_index < 0:
-#                    print("No targ item for gnode {}".format(gnode))
+                    print("No targ item for gnode {}".format(gnode))
                     # This means there's no target language token for this GNode.
                     continue
                 agrs = None

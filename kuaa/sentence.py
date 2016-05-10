@@ -478,10 +478,11 @@ class Sentence:
             self.tokens[tok_index:tok_index+1] = segmentation
 
     def lowercase(self):
-        """Make capitalized tokens lowercase."""
-        for index, token in enumerate(self.tokens):
-            if token.istitle():
-                self.tokens[index] = token.lower()
+        """Make capitalized tokens lowercase. 2106.05.08: only do this for the first word."""
+        self.tokens[0] = self.tokens[0].lower()
+#        for index, token in enumerate(self.tokens):
+#            if token.istitle():
+#                self.tokens[index] = token.lower()
 
     def preprocess(self, verbosity=0):
         """Segment contractions, and lowercase all words. Must follow word tokenization.
@@ -607,6 +608,9 @@ class Sentence:
                 cats = self.language.get_cats(token)
                 if cats:
                     anals = [{'cats': cats}]
+                elif token.istitle():
+                    # If token is capitalized, it's a name.
+                    anals = [{'cats': ['$nm']}]
                 else:
                     anals = None
                 self.nodes.append(SNode(token, index, anals, self, [tokindex]))
@@ -624,10 +628,12 @@ class Sentence:
             print("Tokenization must precede lexicalization.")
             return
         candidates = []
-        for node in self.nodes:
+        for index, node in enumerate(self.nodes):
             # Get keys into lexicon for this node
-#            keys = {node.token}
             keys = [node.token]
+            if index == 0:
+                # For first word in sentence, try both capitalized an uncapitalized versions.
+                keys.append(node.token.capitalize())
             anals = node.analyses
             if anals:
                 if not isinstance(anals, list):
@@ -654,7 +660,6 @@ class Sentence:
                             print("No translation for {}".format(group))
                             continue
                         candidates.append((node.index, k, group))
-#        print("Found candidates {}".format(candidates))
         # Now filter candidates to see if all words are present in the sentence
         # For each group, save a list of sentence token indices that correspond
         # to the group's words

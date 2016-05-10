@@ -51,6 +51,8 @@
 # -- Group files can have features that are part of all entries (except those with the feature attribute specified).
 # 2016.03.06
 # -- Postprocessing dict for generation (e.g., ĝ -> g̃)
+# 2016.05.07
+# -- Added nm.grp to group files that are automatically loaded
 
 from .entry import *
 from kuaa.morphology.morpho import Morphology, POS
@@ -299,7 +301,7 @@ class Language:
         if not names:
             if self.morphology:
                 # POS abbreviations
-                names = ['misc'] + list(self.morphology.keys())
+                names = ['misc', 'nm'] + list(self.morphology.keys())
             else:
                 names = [self.abbrev]
         paths = [os.path.join(d, name + '.grp') for name in names]

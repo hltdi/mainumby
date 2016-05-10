@@ -259,6 +259,7 @@ class Group(Entry):
             
         name = name or Group.make_name(tokens)
         Entry.__init__(self, name, language, trans=trans)
+        self.capitalized = self.head.istitle()
         self.tokens = tokens
         # Either None or a list of feat-val dicts for tokens that require them
         # Convert dicts to FeatStruct objects
@@ -316,7 +317,7 @@ class Group(Entry):
         """Attempt to match the group tokens (and features) with tokens from a sentence,
         returning the snode indices and root and unified features if any."""
         if verbosity > 1:
-            print("Does {} match {}".format(self, snodes))
+            print("Does {} match {} with head index {}".format(self, snodes, head_sindex))
         match_snodes = []
         last_sindex = -1
         last_cat = False
@@ -369,7 +370,18 @@ class Group(Entry):
                     # This token is the head of the group
                     if node.index == head_sindex:
                         # This is the token corresponding to the group head
-                        node_match = node.match(token, feats)
+                        # If this is the sentence-initial node and token is capitalized, match with
+                        # node's head capitalized.
+                        if self.capitalized and head_sindex == 0:
+#                            print("Matching capitalized head")
+                            if verbosity > 1:
+                                print("Matching capitalized group head with sentence-initial word")
+                            node_match = node.match(token.lower(), feats)
+                            # Capitalize the node's token if this succeeds
+                            if node_match != False:
+                                node.token = node.token.capitalize()
+                        else:
+                            node_match = node.match(token, feats)
                         if node_match == False:
                             # This has to match, so fail now
                             if verbosity:

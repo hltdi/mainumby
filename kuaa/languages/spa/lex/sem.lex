@@ -1,6 +1,6 @@
-Venus_n $n
+Venus_n $n,$nm
 WC_n $n
-Pedro $n,$n_prs
+Pedro $n,$nm,$n_prs
 a $pp
 abadejo_n $n
 abajar_v $v
