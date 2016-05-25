@@ -90,6 +90,9 @@
 # 2016.3.6
 # -- Groups can include tokens that are deleted in MorphoSyns, e.g., <por (la) noche>
 #    (with no indication in the group that they are deleted).
+# 2016.5.25
+# -- In group matching, once a non-head group token is matched, it doesn't tolerate a gap
+#    before matching again.
 
 import copy, itertools
 import yaml
@@ -432,6 +435,9 @@ class Group(Entry):
                             print("  Matched node {}".format(node))
                         matched = True
                         snindex = node.index + 1
+                    elif match_snodes1:
+                        # There's already at least one snode matching token, so don't tolerate another gap
+                        break
                     else:
                         nodegap += 1
             if matcheddel:

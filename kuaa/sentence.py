@@ -681,6 +681,7 @@ class Sentence:
                 if verbosity > 1:
                     print("Failed to match")
                 continue
+            print("{} matched with snodes {}".format(group, snodes))
             matched_keys.append((head_i, key))
             if verbosity > 1:
                 print('Group {} matches snodes {}'.format(group, snodes))

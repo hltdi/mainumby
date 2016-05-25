@@ -177,16 +177,10 @@ def sent():
 #    print("In sent...")
     form = request.form
     print("Form for sent: {}".format(form))
-    if SEG_HTML:
-        print("SEG_HTML {}".format(SEG_HTML))
-#    if 'oreg' in form:
-#        # Register feedback from user to current segment
-#        print("Registering {}".format(form))
-#        if SESSION:
-#            SESSION.record(SENTENCE.record, form)
-#        return render_template('sent.html', sentence=SEG_HTML)
-    if 'oratra' in form:
-        print("Registering sentence translation {}".format(form.get('oratra')))
+#    if SEG_HTML:
+#        print("SEG_HTML {}".format(SEG_HTML))
+#    if 'oratra' in form:
+#        print("Registering sentence translation {}".format(form.get('oratra')))
     if 'text' in form and not DOC:
         # Create a new document
         make_doc(form['text'])

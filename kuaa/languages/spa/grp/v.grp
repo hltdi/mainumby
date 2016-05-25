@@ -8450,9 +8450,7 @@
 *** comprar_v[-r,po=3,no=1] ; ^ comprar_v 0
 ->grn jogua_v[cat=a] (chupekuéra)
 *** comprender_v[+r] ; ^ comprender_v 0
-->grn jokupyty_v[cat=a]
 ->grn jekopyty_v[cat=a] ; #3
-->grn jekupyty_v[cat=a]
 *** comprender_v[-r] ; ^ comprender_v 0
 ->grn kuaa_v[subcat=i]
 *** comprender_v[-r] a $n_prs ; ^ comprender_v 0
@@ -12938,9 +12936,7 @@
 ->grn mongy'a_v[cat=a] (chupekuéra)
 ->grn momarã_v[cat=a] (chupekuéra)
 *** entender_v[+r] ; ^ entender_v 0 ; #2
-->grn jokupyty_v[cat=a]
 ->grn jekopyty_v[cat=a] ; #3
-->grn jekupyty_v[cat=a]
 *** entender_v[-r] ; ^ entender_v 0 ; #146
 ->grn kuaa_v[subcat=i] ; #1445 ; ##73
 ->grn <hendu_v[cat=a] ; #670 ; ##24

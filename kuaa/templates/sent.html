@@ -146,6 +146,10 @@ input.button:hover
 {
    background-color: #00f;
 }
+input.filename
+{
+   width: 50pt;
+}
 </style>
 
 <script>
@@ -173,18 +177,18 @@ function OnRegOra(raw, punc) {
     }
     // Add the sentence and its translation to the doc textarea
     document.getElementById("document").value += raw + "\n"+ sentval + "\n"
-    document.Form1.oratra.value = sentval;
+    document.Form2.oratra.value = sentval;
 }
 function OnRegFrase() {
     var sentval = document.getElementById("sentence").value;
     var segtrans = document.getElementById("segment").value;
-    var segment = document.Form1.seg.value;
-    var radio = document.Form1.choice;
+    var segment = document.Form2.seg.value;
+    var radio = document.Form2.choice;
     var choice = "";
-    var fratra = document.Form1.fratra.value;
+    var fratra = document.Form2.fratra.value;
     if (segtrans != "") {
         segtrans = limpiarGrn(segtrans);
-        document.Form1.fratra.value += "||" + segment + "=" + segtrans;
+        document.Form2.fratra.value += "||" + segment + "=" + segtrans;
         if (segtrans == "0") {
             // User wants no translation for this segment.
             return true;
@@ -206,7 +210,7 @@ function OnRegFrase() {
             }
         }
         document.getElementById("segment").value = choice;
-        document.Form1.fratra.value += "||" + segment + "=" + choice;
+        document.Form2.fratra.value += "||" + segment + "=" + choice;
         if (sentval == "") {
             choice = capitalize(choice);
         } else {
@@ -217,7 +221,7 @@ function OnRegFrase() {
     return true;
 }
 function Segment(text, segment, color) {
-    var fratra = document.Form1.fratra.value;
+    var fratra = document.Form2.fratra.value;
     var formatted = "<font color=" + color + ">" + text + "</font>";
     // Clear error space.
     document.getElementById("error").innerHTML = "";
@@ -226,7 +230,7 @@ function Segment(text, segment, color) {
         return false;        
     }
     document.getElementById('segtra').innerHTML = formatted;
-    document.Form1.seg.value = segment;
+    document.Form2.seg.value = segment;
     document.getElementById("segment").value = '';
 }
 function OnSalir()
@@ -265,9 +269,9 @@ function limpiarGrn(string) {
 
 <body>
 
-<form name="Form1" method=POST action='sent'>
-
 <table class="center">
+<form name="Form1" method=POST>
+
   <tr>
     <td class="title">
     <img class='banner' src="{{url_for('static',
@@ -280,7 +284,8 @@ function limpiarGrn(string) {
       type="submit" value="SALIR" name="salir" onclick="return OnSalir();"></td>
     <td class="menu" style="width: 150px"><button class="menu"
       onclick="ShowHelp();">AYUDA</button></td>
-  </tr>
+    </tr>
+</form>
 
 <tr>
 <td colspan="4" style="width:1000px">  
@@ -320,6 +325,8 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 {% endif %}
 
 <h3>Traducción</h3>
+
+<form name="Form2" method=POST action='sent'>
 
 <table class="transmeta">
 <tr class="trans">
@@ -366,36 +373,36 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
     <th class="transtitle">Documento</th>
   </tr>
   <tr class="trans">
-  <td class="transtext" rowspan="4">
+  <td class="transtext">
   <textarea name="UTraDoc" id="document" value=""></textarea>
   </td>
+  </tr>
+  <input type="hidden" name="seg" value="">
+  <input type="hidden" name="oratra" value="">
+  <input type="hidden" name="fratra" value="">
+</form>
+
+  <tr class="trans">
+<form name="Form3" id="text-options">
+  <td>
+    <input type="submit" value="Guardar" id="narrowbutton"/>
+    <label>Nombre de archivo:<input type="text" class="filename" id="text-filename" placeholder="doc.txt"/></label>
+  </td>
+</form>  
   </tr>
   </table>    
 </td>
 </tr>
 </table>
-
-<input type="hidden" name="seg" value="">
-<input type="hidden" name="oratra" value="">
-<input type="hidden" name="fratra" value="">
-
 </td>
 </tr>
 </table>
 
 </form>
 
-<!--
-<p>
-<button id="button" onclick="ShowDoc();">Mostrar documento</button>
-</p>
--->
-
-<!--
-<p>
-<button id="help" onclick="ShowHelp();">Ayuda</button>
-</p>
--->
+<script async="" src="{{url_for('static', filename='FileSaver.js')}}"></script>
+<script async="" src="{{url_for('static', filename='Blob.js')}}"></script>
+<script async="" src="{{url_for('static', filename= 'SaveDoc.js')}}"></script>
 
 </body>
 

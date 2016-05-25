@@ -5,62 +5,6 @@
 
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
 
-<style type="text/css">
-table.center tr td.menu
-{
-    height: 85px;
-    background-color: #4B2B17;
-    text-align: right;
-    vertical-align: bottom;
-    padding-bottom: 5px;
-    border: 0;
-}
-table.center tr td.menu a
-{
-    color: #8DEDCD;
-/*    font-weight: bold; */
-    font-size: 100%;
-    text-decoration: none;
-}
-table.center tr td.menu a:hover
-{
-    color: #F5E754;
-    background-color: #4B2B17;
-}
-input.menu
-{
-    background-color: #4B2B17;
-    color: #8DEDCD;
-    font-family: "Verdana";
-    font-size: 100%;
-/*    font-weight: bold; */
-    text-align: right;
-    padding-right: 4pt;
-    padding-bottom: 0;
-    border: 0;
-}
-input.menu:hover
-{
-    color: #F5E754;
-}
- button.menu
-{
-    background-color: #4B2B17;
-    color: #8DEDCD;
-    font-family: "Verdana";
-/*    font-weight: bold; */
-    font-size: 100%;
-    text-align: right;
-    padding-right: 4pt;
-    padding-bottom: 0;
-    border: 0;
-}
-button.menu:hover
-{
-    color: #F5E754;
-}
-</style>
-
 <script>
 function ShowHelp() {
     var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
@@ -84,8 +28,8 @@ function ShowHelp() {
     <img class='banner' src="{{url_for('static',
       filename='banner_logo_short.png')}}" alt="" width="500" height="90" />
     </td>
-    <td class="menu" style="width: 125px"><a href="http://guarani.soic.indiana.edu/mainumby.html">PROYECTO</a></td>
-    <td class="menu" style="width: 125px"><a href="http://guarani.soic.indiana.edu/mainumby.html">TEORÍA</a></td>
+    <td class="menu" style="width: 125px"><a href="http://guarani.soic.indiana.edu/mainumby_proy.html">PROYECTO</a></td>
+    <td class="menu" style="width: 125px"><a href="http://guarani.soic.indiana.edu/mainumby_teo.html">TEORÍA</a></td>
     <td class="menu" style="width: 125px"><button class="menu" onclick="ShowHelp();">AYUDA</button></td>
     <td class="menu" style="width: 125px"><input type="submit" value="INICIAR" class="menu"></td>
 
@@ -99,34 +43,69 @@ function ShowHelp() {
 </h3>
 
 <p>
-Mainumby es una aplicación que ayuda a traducir del
+Mainumby es una aplicación experimental que ayuda a traducir del
 castellano al guaraní.
 En su forma final, tendrá dos componentes: un traductor automático
 rudimentario (Mbojereha) y una memoria de traducción (Mandu'a).
 En la versión actual, consiste sólo del traductor.
-</p>
+  </p>
+<p>
+Mainumby no ha sido diseñado para estudiantes del guaraní sino para
+  personas que manejan tanto el castellano como el guaraní.
+  Un usuario del sistema introduce un texto que quiere traducir, y
+  Mbojereha le propone traducciones para frases en el texto.
+  Entonces el usuario puede aceptar o rechazar las sugerencias del
+  sistema, introduciendo sus propias traducciones si quiere.
+  El sistema mantiene una memoria del texto y la traducción creada por
+  el usuario, y el usuario puede guardar este texto en cada momento
+  durante el proceso.
+  </p>
+  <p>
+  <a
+  href="http://guarani.soic.indiana.edu/mainumby_proy.html">Aprender más sobre el proyecto.</a>
+  </p>  
 
 <h3>¿Cómo funciona?
 </h3>
 
 <p>
-Mbojereha sabe, de una manera bastante básica, traducir frase del
-castellano al guaraní.
-En la versión actual de Mainumby, deb&eacute;s introducir o pegar las oraciones
-que quer&eacute;s traducir.
-(Finalmente va a ser posible subir documentos.)
-Para cada oración, el traductor Mbojereha busca frases en su base de
-datos que sabe traducir al guaraní, y, en lo que pueda, analiza la
-oración como un conjunto de tales frases.
+  El traductor Mbojereha tiene un diccionario bilingue de frases y
+  conocimiento básico de la gramática castellana, la
+  gramática guaraní, y las relaciones entre ellas.
+  Para cada oración castellana que introduce el usuario, primero
+  analiza las palabras, extrayendo las raices y las propiedades gramáticas.
+  Entonces busca frases en la oración analizada
+  que coinciden con frases en su diccionario.
+  Finalmente, para cada frase genera una traducción guaraní, usando
+  su conocimiento de la gramática y ortografía guaraní (por ejemplo,
+  de la concordancia nasal)
+  En la interfaz de Mainumby, se le muestran estos resultados al
+  usuario.
+  Cuando el usuario corrige la salida del sistema o reemplaza una
+  traducción de una diferente, Mbojereha aprende de esta
+  retroalimentación, mejorando su diccionario y talvez su conocimiento
+  gramatical.
+  Además Mainumy añade la traducción dada por el usuario a Mandu'a, su
+  memoria de traducción para que se use en sesiones futuras cuando
+  otro usuario traduzca una oración semejante.
 </p>
+<p>
+<a href="http://guarani.soic.indiana.edu/mainumby_teo.html">Aprender
+más sobre la teoría detrás de Mainumby.</a>
+</p>
+
+<!--
+<p>
+Para iniciar una sesión con Mainumby, hac&eacute; clic en el enlace
+"INICIAR" arriba.
+</p>
+-->
 
 <hr/>
 
-<!--
-<p class="center">
+<p>
 <input type="submit" value="Iniciar sesión" id="button">
-  </p>
--->  
+</p>
 
 </td>
 </tr>

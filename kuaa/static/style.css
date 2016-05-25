@@ -19,12 +19,12 @@ body
 	font-family: verdana, geneva, arial, sans-serif;
 	background-color: #FFF;
 }
-a:link { color: #009900; }
+a:link { background-color: #4B2B17; color: #8DEDCD; text-decoration: none}
 span.fuzzy a:link { color: #66BB66; }
-a:visited { color: #006600; }
+a:visited { color: #8DEDCD }
 span.fuzzy a:visited { color: #558855; }
 a:active { color: #000000; }
-a:hover { background-color: #009900; color: #FFFFFF; }
+a:hover { color: #F5E754; }
 span.fuzzy a:hover { background-color: #66FF66; color: #FFFFFF; }
 h1,h2,h3 { clear: left; }
 h1
@@ -165,11 +165,6 @@ span.document
    color: #F00;
    border: thin solid;
 }
-span.instruction
-{
-   font-size: 100%;
-   font-style: italic;
-}
 span.cargando
 {
     font-size: 110%;
@@ -251,7 +246,16 @@ input.text
         align: center;
         width: 250px;
 }
-#widebutton:hover
+#narrowbutton
+{
+        background-color: #8DEDCD;
+        color: #4B2B17;
+        font-family: "Verdana";
+        font-size: 100%;
+        align: center;
+        width: 100px;
+}
+#widebutton:hover, #narrowbutton:hover
 {
         background-color: #8DFFEE;
 }
