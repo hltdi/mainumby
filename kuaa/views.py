@@ -211,6 +211,14 @@ def fin():
     SESSION = DOC = SENT = SEGS = SEG_HTML = USER = None
     return render_template('fin.html')
 
+@app.route('/proyecto')
+def proyecto():
+    return render_template('proyecto.html')
+
+@app.route('/contacto')
+def contacto():
+    return render_template('contacto.html')
+
 # Not needed because this is in runserver.py.
 if __name__ == "__main__":
     kuaa.app.run(host='0.0.0.0')

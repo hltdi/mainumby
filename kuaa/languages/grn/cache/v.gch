@@ -28,3 +28,8 @@ aty:[cat=che,ns=0,ps=1,tmp=prt] || cheaty;cheaty'akue;cheatyraka'e;cheatýkuri
 ñembyaty:[cat=a,ns=0,ps=1,tmp=prt] || añembyaty;añembyatyraka'e;añembyatýkuri;añembyaty'akue
 'e:[cat=a,ns=1,ps=3,tmp=prs] || he'i
 mombe'u:[cat=a,ns=1,ps=3,tmp=prs] || omombe'u
+myengovia:[cat=a,+neg,ns=1,ps=1,tmp=prt] || nañamyengoviáikuri;noromyengoviáiraka'e;nañamyengoviái'akue;nañamyengoviáiraka'e;noromyengoviái'akue;noromyengoviáikuri;nañamyengoviái;noromyengoviái
+moambue:[cat=a,+neg,ns=1,ps=1,tmp=prt] || noromoambuéikuri;noromoambuéi;nañamoambuéikuri;nañamoambuéi;nañamoambuéi'akue;noromoambuéiraka'e;noromoambuéi'akue;nañamoambuéiraka'e
+myatyrõ:[cat=a,ns=0,ps=2,tmp=ipv] || emyatyrõ
+papa:[no=0,ns=0,po=1,ps=2,subcat=i,tmp=prt] || chepapa'akue;chepapákuri;chepaparaka'e;chepapa
+mombe'u:[cat=a,no=0,ns=0,po=1,ps=2,tmp=prt] || chemombe'uraka'e;chemombe'úkuri;chemombe'u'akue;chemombe'u

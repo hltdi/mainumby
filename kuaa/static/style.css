@@ -19,12 +19,12 @@ body
 	font-family: verdana, geneva, arial, sans-serif;
 	background-color: #FFF;
 }
-a:link { background-color: #4B2B17; color: #8DEDCD; text-decoration: none}
+a:link { color: #4B2B17; text-decoration: underline}
 span.fuzzy a:link { color: #66BB66; }
-a:visited { color: #8DEDCD }
+a:visited { color: #4B2B17 }
 span.fuzzy a:visited { color: #558855; }
 a:active { color: #000000; }
-a:hover { color: #F5E754; }
+a:hover { color: #338888; }
 span.fuzzy a:hover { background-color: #66FF66; color: #FFFFFF; }
 h1,h2,h3 { clear: left; }
 h1

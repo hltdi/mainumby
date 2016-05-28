@@ -181,6 +181,7 @@ class Document(list):
         self.output = []
         if proc:
             self.process()
+#        print("Created document with session {}".format(session))
 
     def set_id(self):
         self.id = Document.id
@@ -681,7 +682,7 @@ class Sentence:
                 if verbosity > 1:
                     print("Failed to match")
                 continue
-            print("{} matched with snodes {}".format(group, snodes))
+#            print("{} matched with snodes {}".format(group, snodes))
             matched_keys.append((head_i, key))
             if verbosity > 1:
                 print('Group {} matches snodes {}'.format(group, snodes))

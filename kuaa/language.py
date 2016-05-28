@@ -1497,7 +1497,7 @@ class Language:
 
     ### Generation of word forms
 
-    def generate(self, root, features, pos=None, guess=False, roman=True, verbosity=0):
+    def generate(self, root, features, pos=None, guess=False, roman=True, cache=True, verbosity=0):
         if verbosity:
             print("Generating {}:{}".format(root, features.__repr__()))
 #        if not features:
@@ -1514,7 +1514,7 @@ class Language:
                 return [root]
             posmorph = morf[pos]
 #            print("Generating root {} with features {}".format(root, features.__repr__()))
-            output = posmorph.gen(root, update_feats=features, guess=guess, only_words=True)
+            output = posmorph.gen(root, update_feats=features, guess=guess, only_words=True, cache=cache)
         else:
             for posmorph in list(morf.values()):
                 output.extend(posmorph.gen(root, update_feats=features, guess=guess, only_words=True))

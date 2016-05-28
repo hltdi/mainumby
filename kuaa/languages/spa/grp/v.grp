@@ -4,6 +4,8 @@
 ## KATU
 *** poder_v[-r] $v ; ^ poder_v 0
 ->grn katu_v[cat=che] $v ; 1==1 n:ns,p:ps,tm:tmp,asp:asp ; 0==0 neg:neg,rel:rel
+*** poder_v[+r] $v ; ^ poder_v 0
+->grn katu_v[cat=che] $v[+r] ; 1==1 n:ns,p:ps,tm:tmp,asp:asp ; 0==0 neg:neg,rel:rel
 ## OĨ, NDAIPÓRI?
 *** haber_v[-r,p=3,n=0,-neg] ; ^ haber_v 0
 ->grn ĩ_v[cat=a,po=3,no=0,-neg] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,pp:pp,inter:inter

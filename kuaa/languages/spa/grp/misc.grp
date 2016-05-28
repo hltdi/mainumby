@@ -263,22 +263,22 @@
 ### este, etc.
 ## adjetivo
 # precede sustantivo
-*** este $n[n=0] ; ^ este 0
+*** este $n[n=0] ; ^ este 0 ; -X-
 ->grn ko $n ; || 0, 1
 # precede adjetivo + sustantivo
-*** este $a[n=0] $n[n=0] ; ^ este 0
+*** este $a[n=0] $n[n=0] ; ^ este 0 ; -X-
 ->grn ko $n $a ; || 0, 2, 1
-*** esta $n[n=0] ; ^ esta 0
+*** esta $n[n=0] ; ^ esta 0 ; -X-
 ->grn ko $n ; || 0, 1
-*** esta $a[n=0] $n[n=0] ; ^ esta 0
+*** esta $a[n=0] $n[n=0] ; ^ esta 0 ; -X-
 ->grn ko $n $a ; || 0, 2, 1
-*** estos $n[n=1] ; ^ estos 0
+*** estos $n[n=1] ; ^ estos 0 ; -X-
 ->grn ko'ã $n ; || 0, 1
-*** estos $a[n=1] $n[n=1] ; ^ estos 0
+*** estos $a[n=1] $n[n=1] ; ^ estos 0 ; -X-
 ->grn ko'ã $n $a ; || 0, 2, 1
-*** estas $n[n=1] ; ^ estas 0
+*** estas $n[n=1] ; ^ estas 0 ; -X-
 ->grn ko'ã $n ; || 0, 1
-*** estas $a[n=1] $n[n=1] ; ^ estas 0
+*** estas $a[n=1] $n[n=1] ; ^ estas 0 ; -X-
 ->grn ko'ã $n $a ; || 0, 2, 1
 # pronombre
 *** este ; ^ este 0
@@ -302,35 +302,35 @@
 ### ese, etc.
 ## adjetivo
 # precede sustantivo
-*** ese $n[n=0] ; ^ ese 0
+*** ese $n[n=0] ; ^ ese 0 ; -X-
 ->grn upe $n ; || 0, 1
 ->grn pe $n ; || 0, 1
 ->grn aipo $n ; || 0, 1
 # precede adjetivo + sustantivo
-*** ese $a[n=0] $n[n=0] ; ^ ese 0
+*** ese $a[n=0] $n[n=0] ; ^ ese 0 ; -X-
 ->grn upe $n $a ; || 0, 2, 1
 ->grn pe $n $a ; || 0, 2, 1
 ->grn aipo $n $a ; || 0, 2, 1
 # precede sustantivo
-*** esa $n[n=0] ; ^ esa 0
+*** esa $n[n=0] ; ^ esa 0 ; -X-
 ->grn upe $n ; || 0, 1
 ->grn pe $n ; || 0, 1
 ->grn aipo $n ; || 0, 1
 # precede adjetivo + sustantivo
-*** esa $a[n=0] $n[n=0] ; ^ esa 0
+*** esa $a[n=0] $n[n=0] ; ^ esa 0 ; -X-
 ->grn upe $n $a ; || 0, 2, 1
 ->grn pe $n $a ; || 0, 2, 1
 ->grn aipo $n $a ; || 0, 2, 1
 # precede sustantivo
-*** esos $n[n=1]; ^ esos 0
+*** esos $n[n=1]; ^ esos 0 ; -X-
 ->grn umi $n ; || 0, 1
 # precede adjetivo + sustantivo
-*** esos $a[n=1] $n[n=1]; ^ esos 0
+*** esos $a[n=1] $n[n=1]; ^ esos 0 ; -X-
 ->grn umi $n $a ; || 0, 2, 1
 # precede sustantivo
-*** esas $n[n=1]; ^ esas 0
+*** esas $n[n=1]; ^ esas 0 ; -X-
 ->grn umi $n ; || 0, 1
-*** esas $a[n=1] $n[n=1]; ^ esas 0
+*** esas $a[n=1] $n[n=1]; ^ esas 0 ; -X-
 ->grn umi $n $a ; || 0, 2, 1
 # pronombre
 *** ese ; ^ ese 0
@@ -363,36 +363,36 @@
 ->grn umíva_n
 ## aquel, etc.
 # adjetivos
-*** aquel $n[n=0]; ^ aquel 0
+*** aquel $n[n=0]; ^ aquel 0 ; -X-
 ->grn amo $n ; || 0, 1
 ->grn ku $n ; || 0, 1
 ->grn upe $n ; || 0, 1
 ->grn aipo $n ; || 0, 1
-*** aquel $a[n=0] $n[n=0]; ^ aquel 0
+*** aquel $a[n=0] $n[n=0]; ^ aquel 0 ; -X-
 ->grn amo $n $a ; || 0, 2, 1
 ->grn ku $n $a ; || 0, 2, 1
 ->grn upe $n $a ; || 0, 2, 1
 ->grn aipo $n $a ; || 0, 2, 1
-*** aquella $n[n=0]; ^ aquella 0
+*** aquella $n[n=0]; ^ aquella 0 ; -X-
 ->grn amo $n ; || 0, 1
 ->grn ku $n ; || 0, 1
 ->grn upe $n ; || 0, 1
 ->grn aipo $n ; || 0, 1
-*** aquella $a[n=0] $n[n=0]; ^ aquella 0
+*** aquella $a[n=0] $n[n=0]; ^ aquella 0 ; -X-
 ->grn amo $n $a ; || 0, 2, 1
 ->grn ku $n $a ; || 0, 2, 1
 ->grn upe $n $a ; || 0, 2, 1
 ->grn aipo $n $a ; || 0, 2, 1
-*** aquellos $n[n=1]; ^ aquellos 0
+*** aquellos $n[n=1]; ^ aquellos 0 ; -X-
 ->grn umi $n ; || 0, 1
 ->grn amo $n ; || 0, 1
-*** aquellos $a[n=1] $n[n=1]; ^ aquellos 0
+*** aquellos $a[n=1] $n[n=1]; ^ aquellos 0 ; -X-
 ->grn umi $n $a ; || 0, 2, 1
 ->grn amo $n $a ; || 0, 2, 1
-*** aquellas $n[n=1]; ^ aquellas 0
+*** aquellas $n[n=1]; ^ aquellas 0 ; -X-
 ->grn umi $n ; || 0, 1
 ->grn amo $n ; || 0, 1
-*** aquellas $a[n=1] $n[n=1]; ^ aquellas 0
+*** aquellas $a[n=1] $n[n=1]; ^ aquellas 0 ; -X-
 ->grn umi $n $a ; || 0, 2, 1
 ->grn amo $n $a ; || 0, 2, 1
 # pronombres
@@ -517,21 +517,21 @@
 ->grn ma'erãpa
 #### PRE/POSPOSICIONES
 ### DE (GENITIVO DE SUSTANTIVOS en n.grp)
-*** de $pro ; ^ de 0
+*** de $pro ; ^ de 0 ; -X-
 ->grn $pro[caso=gui] ; || -1, 0
 ### A
-*** a $num $n ; ^ a 0
+*** a $num $n ; ^ a 0 ; -X-
 ->grn $num $n[caso=pe] ; || -1, 0, 1
 *** a $n ; ^ a 0
 ->grn $n[caso=pe] ; || -1, 0
-*** a $pro ; ^ a 0
+*** a $pro ; ^ a 0 ; -X-
 ->grn $pro[caso=pe] ; || -1, 0
 ### EN
-*** en $num $n ; ^ en 0
+*** en $num $n ; ^ en 0 ; -X-
 ->grn $num $n[caso=pe] ; || -1, 0, 1
 *** en $n ; ^ en 0
 ->grn $n[caso=pe] ; || -1, 0
-*** en $pro ; ^ en 0
+*** en $pro ; ^ en 0 ; -X-
 ->grn $pro[caso=pype] ; || -1, 0
 ### CON
 *** con uno mismo ; ^ mismo 2
@@ -545,7 +545,7 @@
 ->grn chendive
 *** consigo ; ^ consigo 0
 ->grn ondive
-*** con $num $n ; ^ con 0
+*** con $num $n ; ^ con 0 ; -X-
 ->grn $num $n ndive ; || 2, 0, 1
 *** con $n ; ^ con 0
 ->grn $n ndive ; || 1, 0
@@ -554,11 +554,11 @@
 ### COMO
 *** como si ; ^ como 0
 ->grn vaicha
-*** como $num $n ; ^ como 0
+*** como $num $n ; ^ como 0 ; -X-
 ->grn $num $n[caso=icha] ; || -1, 0, 1
 *** como $n ; ^ como 0
 ->grn $n[caso=icha] ; || -1, 0
-*** como $pro ; ^ como 0
+*** como $pro ; ^ como 0 ; -X-
 ->grn $pro[caso=icha] ; || -1, 0
 *** como éstas ; ^ éstas 1
 ->grn ãichagua
@@ -596,12 +596,12 @@
 ->grn opárupi
 *** por medio de $n ; ^ medio 1
 ->grn $n rupi ; || 1, -1, -1, 0
-*** por $num $n ; ^ por 0
+*** por $num $n ; ^ por 0 ; -X-
 ->grn $num $n rehe ; || 2, 0, 1
 ->grn $num $n rupi ; || 2, 0, 1
 *** por $n ; ^ por 0
 ->grn $n rehe|rupi ; || 1, 0
-*** por $pro ; ^ por 0
+*** por $pro ; ^ por 0 ; -X-
 ->grn $pro[caso=re] ; || -1, 0
 ->grn $pro[caso=gui] ; || -1, 0
 ### SIN
@@ -659,7 +659,7 @@
 *** delante ; ^ delante 0
 ->grn henondépe
 ### DENTRO (DE)
-*** dentro de $pro ; ^ dentro 0
+*** dentro de $pro ; ^ dentro 0 ; -X-
 ->grn $pro[caso=pype] ; || -1, -1, 0
 *** dentro de $n ; ^ dentro 0
 ->grn $n pype ; || 1, -1, 0
@@ -759,7 +759,7 @@
 ### CONTRA
 *** contra $n ; ^ contra 0
 ->grn $n rehe ; || 1, 0
-*** contra $pro ; ^ contra 0
+*** contra $pro ; ^ contra 0 ; -X-
 ->grn $pro[caso=re] ; || -1, 0
 ### ENTRE
 *** de entre sí ; ^ entre 1

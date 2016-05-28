@@ -123,6 +123,8 @@ ALIGNMENT = re.compile("\s*\|\|\s*(.+)$")
 COUNT = re.compile("\s*#\s*(\d+)$")
 # Count of translation to target group
 TRANS_COUNT = re.compile("\s*##\s*(\d+)$")
+# Group can have no gaps between elements: -X-
+NO_GAP = re.compile("\s*-X-\s*$")
 
 ## MorphoSyn regex
 # Separates elements of MorphoSyn pattern
@@ -238,7 +240,7 @@ class Group(Entry):
     other languages."""
 
     def __init__(self, tokens, head_index=-1, head='', language=None, name='',
-                 features=None, agr=None, trans=None, count=0):
+                 features=None, agr=None, trans=None, count=0, nogap=False):
         """Either head_index or head (a string) must be specified."""
         # tokens is a list of strings
         # name may be specified explicitly or not
@@ -274,6 +276,8 @@ class Group(Entry):
         self.agr = agr or None
         # Count in TMs
         self.count = count
+        # Whether there can be no gap between the tokens
+        self.nogap = nogap
         # Distance back from sentence node matching head to start in matching group
         self.snode_start = 0
         if self.head_index > 0 and not any([Group.is_cat(t) for t in self.tokens[:self.head_index]]):
@@ -344,6 +348,8 @@ class Group(Entry):
             matched = False
             for node in snodes[snindex:]:
                 if nodegap > 2:
+                    break
+                if self.nogap and nodegap > 0:
                     break
                 snode_indices = node.raw_indices
                 snode_start, snode_end = snode_indices[0], snode_indices[-1]
@@ -454,8 +460,7 @@ class Group(Entry):
         return match_snodes
 
     @staticmethod
-    def from_string(string, language, trans_strings=None, target=None, trans=False,
-                    n_src_tokens=1):
+    def from_string(string, language, trans_strings=None, target=None, trans=False, n_src_tokens=1):
         """Convert a group string and possibly a set of translation group strings
         to one or more groups."""
 #        print("Creating group from {} and trans strings {} [trans={}]".format(string, trans_strings, trans))
@@ -473,6 +478,7 @@ class Group(Entry):
         head = None
         features = None
         count = 0
+        nogap = False
         if '[' in string:
             hasfeats = True
             features = []
@@ -503,6 +509,9 @@ class Group(Entry):
                             feat_pairs.append((f.strip(), f.strip()))
                     within_agrs.append([int(i1), int(i2)] + feat_pairs)
                     continue
+                match = NO_GAP.match(attrib)
+                if match:
+                    nogap = True
                 elif trans:
                     match = TRANS_AGR.match(attrib)
                     if match:
@@ -577,7 +586,7 @@ class Group(Entry):
                     tattribs['count'] = tc
                 tgroups.append((tgroup, tattribs))
         g = Group(tokens, head_index=head_index, head=head, features=features, agr=within_agrs,
-                  name=Group.make_name(name_toks), count=count)
+                  nogap=nogap, name=Group.make_name(name_toks), count=count)
         if target and not trans:
             g.trans = tgroups
         language.add_group(g)

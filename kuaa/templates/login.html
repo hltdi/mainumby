@@ -22,9 +22,9 @@ function ShowHelp() {
 "<p class='help'>Pod&eacute;s usar Mainumby como usuario registrado o como usuario no registrado.</p>" +
 "<p class='help'>Si sos un usuario registrado, tu interacción con la aplicación se " +
 "incorpora en la base de datos del sistema, y usando la información " +
-"que recibe de ti, la aplicación puede mejorar su desempeño " +
+"que obtiene de ti, la aplicación puede mejorar su desempeño " +
 "y aumentar su memoria de traducción. Aun sin registrarte, pod&eacute;s usar la aplicación, " +
-"pero nadie se aprovechará de tu conocimiento de las lenguas.</p>" +
+"pero tu interacción con la aplicación no se registrará de manera que nadie se aprovechará de tu conocimiento de las lenguas.</p>" +
 "<p class='help'>Si ya ten&eacute;s una cuenta, te pod&eacute;s registrar en esta página. " +
 "Si no, hac&eacute; clic en el botón 'Crear cuenta'. " +
 "Si ten&eacute;s una cuenta y se te olvidó tu contraseña, desafortunadamente no " +
@@ -58,8 +58,11 @@ function account() {
 <table class="center">
   <tr>
     <td class="title">
+    <a href="base">
     <img class='banner' src="{{url_for('static',
-      filename='banner_logo_short.png')}}" alt="" width="500px" height="90px" />
+      filename='banner_logo_short.png')}}" alt="" width="500px"
+      height="90px" />
+    </a>
     </td>
     <td class="menu" style="width: 250px"><button class="menu"
       onclick="loading()">CONTINUAR SIN IDENTIFICARTE</button></td>

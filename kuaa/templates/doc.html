@@ -14,12 +14,12 @@ function ShowHelp() {
 "que quer&eacute;s traducir. Todavía no es posible " +
 "simplemente subir el documento de tu computadora " +
 "al sitio web; eso se podrá en una versión futura " +
-"de Mainumby. Por ahora deb&eacute;s introducir el texto " +
+"de Mainumby. Por ahora deb&eacute;s escribir el texto " +
 "o copiarlo y pegarlo en el espacio proveído.</p>" +
 "<p class='help'>Fijate que Mainumby es muy estricto en cuanto a " +
 "la ortografía y la gramática castellana. " +
-"No tolera ningunos errores. Por ejemplo, el verb <i>está</i> " +
-"debe tener el acento. Sin acento, la palabra se " +
+"No tolera ningunos errores. Por ejemplo, el verbo <i>está</i> " +
+"debe tener el tilde. Sin tilde, la palabra se " +
 "interpreta como pronombre o adjetivo." +
 "</p></body></html>");
 }
@@ -50,8 +50,11 @@ function OnSalir()
 <table class="center">
   <tr>
     <td class="title">
+    <a href="base">
     <img class='banner' src="{{url_for('static',
-      filename='banner_logo_short.png')}}" alt="" width="500px" height="90px" />
+      filename='banner_logo_short.png')}}" alt="" width="500px"
+      height="90px" />
+    </a>
     </td>
     <td class="menu" style="width: 250px"><input class="menu"
       type="submit" value="SALIR" name="salir" onclick="return OnSalir();"></td>
