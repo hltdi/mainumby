@@ -311,6 +311,7 @@ class SearchState:
     def run_constraints(self, constraints, verbosity=0, tracevar=[]):
         awaken = set()
         all_changed = set()
+        failed = set()
         for constraint in constraints:
             state, changed_vars = constraint.run(dstore=self.dstore, verbosity=verbosity, tracevar=tracevar)
             all_changed.update(changed_vars)
@@ -324,6 +325,7 @@ class SearchState:
             if state == Constraint.failed:
                 if verbosity:
                     print("FAILED {}".format(constraint))
+#                failed.add(constraint)
                 return Constraint.failed
 
             # Check whether any of the changed vars cannot possibly be determined; if so,
@@ -334,6 +336,7 @@ class SearchState:
                 except VarError:
                     if verbosity:
                         print("{} CAN'T BE DETERMINED, SO {} MUST FAIL".format(var, constraint))
+#                    failed.add(constraint)
                     return Constraint.failed
 
             for var in changed_vars:
@@ -345,6 +348,8 @@ class SearchState:
                 awaken.update(update_cons)
         if verbosity > 1:
             print('# changed vars {}'.format(len(all_changed)))
+        if verbosity and failed:
+            print("{} constraints failed".format(len(failed)))
 
         return awaken
 

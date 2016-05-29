@@ -219,6 +219,8 @@ class SNode:
         self.variables = {}
         ## Tokens in target language for this SNode
         self.translations = []
+        ## Groups found during candidate search
+        self.group_cands = []
 #        print("Analysis for {}: {}".format(self, self.analyses))
 
     def __repr__(self):
@@ -323,6 +325,10 @@ class SNode:
             if Entry.is_set(grp_item):
                 grp_item = grp_item[1:]
             if self.cats and grp_item in self.cats:
+                # The node's token must have a translation
+                if not self.group_cands:
+                    print("Node {} doesn't have a translation!".format(self))
+                    return False
                 if not self.analyses or not grp_feats:
                     # Match; failure would be False
                     return None

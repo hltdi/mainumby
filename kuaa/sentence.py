@@ -661,6 +661,7 @@ class Sentence:
                             print("No translation for {}".format(group))
                             continue
                         candidates.append((node.index, k, group))
+                        node.group_cands.append(group)
         # Now filter candidates to see if all words are present in the sentence
         # For each group, save a list of sentence token indices that correspond
         # to the group's words
@@ -818,18 +819,26 @@ class Sentence:
             ginst.create_variables()
         for gnode in self.gnodes:
             gnode.create_variables()
+#        self.svar('covered_snodes', set(), covered_snodes, 1, len(covered_snodes))
 
     def create_constraints(self, verbosity=0):
         if verbosity:
             print("Creating constraints for {}".format(self))
+
+        # Covered nodes are the union of the snodes associated with all of the groups that succeed.
+#        self.constraints.append(UnionSelection(self.variables['covered_snodes'],
+#                                               self.variables['groups'],
+#                                               [g.variables['gnodes_pos'] for g in self.groups]))
         # Relation among abstract, concrete, and all gnodes for each snode
+        # This should only happen for groups that succeed
+        # For each group that succeeds, for each of the snodes, the associated gnodes are the union of the cgnodes and agnodes
         for snode in self.nodes:
             if snode.gnodes:
                 # Only do this for covered snodes
                 self.constraints.extend(Union([snode.variables['gnodes'],
                                                snode.variables['cgnodes'],
                                                snode.variables['agnodes']]).constraints)
-        # Constraints involved groups with category (abstract) nodes
+        # Constraints involving groups with category (abstract) nodes
         for group in self.groups:
             if group.nanodes > 0:
                 # Only do this for groups with abstract nodes
@@ -882,6 +891,11 @@ class Sentence:
                                                       selvars=[g.variables['agnodes_pos'] for g in self.groups],
                                                       seqvars=[s.variables['agnodes'] for s in self.nodes],
                                                       mainvars=[g.variables['agnodes'] for g in self.groups]))
+        # Complex union selection by groups on positions of all category gnodes in each selected group
+#        self.constraints.append(ComplexUnionSelection(selvar=self.variables['groups'],
+#                                                      selvars=[g.variables['gnodes_pos'] for g in self.groups],
+#                                                      seqvars=[s.variables['gnodes'] for s in self.nodes],
+#                                                      mainvars=[g.variables['gnodes'] for g in self.groups]))
         # Agreement
 #        print("snode variables")
 #        for sn in self.nodes:

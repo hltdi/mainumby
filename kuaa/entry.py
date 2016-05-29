@@ -422,6 +422,8 @@ class Group(Entry):
                     if verbosity > 1:
                         print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
                     if node_match != False:
+#                        if Group.is_cat(token):
+#                            print("Node {} matched cat token {}".format(node, token))
                         if not Group.is_cat(token) and not last_cat and index > 0 and last_sindex >= 0 and nodegap:
 #                            snode_start - last_sindex != 1:
                             if verbosity:
