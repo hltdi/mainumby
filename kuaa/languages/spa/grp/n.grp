@@ -8018,6 +8018,18 @@
 ->grn apy_n ; 0==0 n:n,poses:poses ; #16 ; ##2
 *** fin_n de los días ; ^ fin_n 0 ; #189
 ->grn arapaha_n ; 0==0 n:n,poses:poses
+*** al fin ; ^ fin_n 1
+->grn ijapýpe
+*** al fin y al cabo ; ^ fin_n 1
+->grn ipahápe
+*** en fin ; ^ fin_n 1
+->grn hasypeve
+*** por fin ; ^ fin_n 1
+->grn hasypeve
+->grn hasýpe
+->grn teĩ
+*** sin fin ; ^ fin_n 1
+->grn apyre'ỹ
 *** final_n ; ^ final_n 0 ; #28
 ->grn <hu'ã_n ; 0==0 n:n,poses:poses ; #48 ; ##1
 ->grn paha_n ; 0==0 n:n,poses:poses ; #59 ; ##16
@@ -8112,6 +8124,10 @@
 ->grn <hesakua_n ; 0==0 n:n,poses:poses
 *** fondo_n de una cosa ; ^ fondo_n 0 ; #4
 ->grn guy_n ; 0==0 n:n,poses:poses ; #47
+*** en el fondo ; ^ fondo_n 2
+->grn huguápe
+*** en el fondo de $n ; ^ fondo_n 2
+->grn $n ruguápe ; || -1, -1, 1, -1, 0 ; 4==0 n:n,poses:poses
 *** fondo_n ; ^ fondo_n 0 ; #4
 ->grn <hugua_n ; 0==0 n:n,poses:poses ; #58 ; ##1
 ->grn guy_n ; 0==0 n:n,poses:poses ; #47
@@ -8833,7 +8849,7 @@
 ->grn arasa_n ; 0==0 n:n,poses:poses
 *** guerra_n ; ^ guerra_n 0
 ->grn ñorairõ_n ; 0==0 n:n,poses:poses
-->grn ñorairo_n guasu ; 0==0 n:n,poses:poses
+->grn ñorairõ_n guasu ; 0==0 n:n,poses:poses
 *** guerrero_n ; ^ guerrero_n 0 ; #15
 ->grn <hekomarã_n ; 0==0 n:n,poses:poses
 ->grn guariniha_n ; 0==0 n:n,poses:poses
@@ -17289,6 +17305,42 @@
 ->grn ára_n upeigua aĝui ; 0==0 n:n,poses:poses
 *** tiempo_n de gran crisis ; ^ tiempo_n 0
 ->grn poriahu_n jusu ; 0==0 n:n,poses:poses
+*** al mismo tiempo ; ^ tiempo_n 2
+->grn jave
+->grn javeve
+*** a tiempo ; ^ tiempo_n 1
+->grn araitépe
+->grn ha'etépe
+*** en aquel tiempo ; ^ tiempo_n 2
+->grn upémarõ
+->grn upéramo
+->grn upérõ
+*** en muy corto tiempo ; ^ tiempo_n 3
+->grn sapy'aitépe
+*** en tiempo remoto ; ^ tiempo_n 1
+->grn kuriete
+*** ya hace muchísimo tiempo ; ^ tiempo_n 3
+->grn aretereíma
+*** hace muchísimo tiempo que ; ^ tiempo_n 2
+->grn areterei
+*** hace ya mucho tiempo que ; ^ tiempo_n 3
+->grn aretéma
+*** hace ya mucho tiempo ; ^ tiempo_n 3
+->grn ymáma
+*** hace tiempo que ; ^ tiempo_n 1
+->grn yma
+*** hace mucho tiempo ; ^ tiempo_n 2
+->grn ymaiterei
+->grn ymaraka'e
+*** hace tiempo ; ^ tiempo_n 1
+->grn are
+->grn yma
+*** justo a tiempo ; ^ tiempo_n 2
+->grn ha'etépe
+*** tiempo atrás ; ^ tiempo_n 0
+->grn yma
+*** todo el tiempo que ; ^ tiempo_n 2
+->grn javeve
 *** tienda_n ; ^ tienda_n 0
 ->grn ñemuha_n ; 0==0 n:n,poses:poses
 *** tierra_n blanca ; ^ tierra_n 0 ; #1883
@@ -17325,6 +17377,8 @@
 ->grn yvy_n sa'yju ; 0==0 n:n,poses:poses ; #726 ; ##1005
 *** tierra_n estéril ; ^ tierra_n 0 ; #1883
 ->grn yvykane'õ_n ; 0==0 n:n,poses:poses
+*** sobre la tierra ; ^ tierra_n 2
+->grn yvýpe
 *** tierra_n ; ^ tierra_n 0 ; #1883
 ->grn yvy_n ; 0==0 n:n,poses:poses ; #726 ; ##1005
 ->grn <hetã_n ; 0==0 n:n,poses:poses ; #623 ; ##567
@@ -17452,6 +17506,8 @@
 *** tornado_n ; ^ tornado_n 0
 ->grn aravai_n ; 0==0 n:n,poses:poses
 ->grn yvytu_n hatã ; 0==0 n:n,poses:poses
+*** en torno a $n ; ^ torno_n 1
+->grn $n rupi ; || -1, 1, -1, 0 ; 3==0 n:n,poses:poses
 *** torno_n ; ^ torno_n 0
 ->grn jerenda_n ; 0==0 n:n,poses:poses
 *** toro_n ; ^ toro_n 0
@@ -17951,6 +18007,10 @@
 ->grn mba'yru_n ; 0==0 n:n,poses:poses ; #66
 *** valle_n ; ^ valle_n 0
 ->grn ñu_n ; 0==0 n:n,poses:poses
+*** cosa sin valor ; ^ valor_n 2
+->grn mba'erei
+*** de poco valor ; ^ valor_n 2
+->grn chu'i
 *** valor_n[n=1] ; ^ valor_n 0
 ->grn <hekome'ẽpyre_n ; 0==0 n:n,poses:poses
 *** valor_n ; ^ valor_n 0
@@ -18110,6 +18170,17 @@
 ->grn ñe'ẽtéva_n moingoepy ; 0==0 n:n,poses:poses
 *** verbo_n compuesto ; ^ verbo_n 0
 ->grn ñe'ẽtéva'eta_n ; 0==0 n:n,poses:poses
+*** a la verdad ; ^ verdad_n 2
+->grn añetehápe
+*** de verdad ; ^ verdad_n 1
+->grn ajeápy
+*** en verdad ; ^ verdad_n 1
+->grn añete
+->grn añetehápe
+*** es verdad ? ; ^ verdad_n 1
+->grn ajépa
+*** verdad ? ; ^ verdad_n 0
+->grn ajépa
 *** verdad_n ; ^ verdad_n 0 ; #237
 ->grn añete_n ; 0==0 n:n,poses:poses ; #219 ; ##101
 ->grn añetegua_n ; 0==0 n:n,poses:poses ; #30 ; ##68
@@ -18177,6 +18248,29 @@
 ->grn chakore_n ; 0==0 n:n,poses:poses
 *** veterinario_n ; ^ veterinario_n 0
 ->grn mymbakuaahára_n ; 0==0 n:n,poses:poses
+*** a la vez ; ^ vez_n 2
+->grn jave
+*** aquella vez ; ^ vez_n 1
+->grn ako
+*** de vez en cuando ; ^ vez_n 1
+->grn jepi
+->grn mimi
+->grn sapy'apy'a
+*** esta vez ; ^ vez_n 1
+->grn ko'áĝa
+*** la vez pasada ; ^ vez_n 1
+->grn kokuehe
+*** otra vez ; ^ vez_n 1
+->grn jey
+->grn jeýma
+*** en vez de ; ^ vez_n 1
+->grn rekovia
+*** a veces ; ^ veces 1
+->grn jepi
+->grn sapy'apy'a
+->grn sapy'ánte
+*** algunas veces ; ^ veces 1
+->grn jepi
 *** vez_n ; ^ vez_n 0
 ->grn jevy_n ; 0==0 n:n,poses:poses
 *** viaducto_n ; ^ viaducto_n 0
@@ -18235,13 +18329,15 @@
 ->grn <hekomarã_n ; 0==0 n:n,poses:poses
 *** vida_n muy sacrificada ; ^ vida_n 0 ; #444
 ->grn jehesy_n asy ; 0==0 n:n,poses:poses
-*** vida_n ; ^ vida_n 0 ; #444
-->grn <hekove_n ; 0==0 n:n,poses:poses ; #304 ; ##102
-->grn <heko_n ; 0==0 n:n,poses:poses ; #858 ; ##124
 *** vida_n buena y correcta ; ^ vida_n 0 ; #444
 ->grn <hekokatu_n ; 0==0 n:n,poses:poses
 *** vida_n irreprensible ; ^ vida_n 0 ; #444
 ->grn <hekopotĩete_n ; 0==0 n:n,poses:poses
+*** en vida ; ^ vida_n 1
+->grn tekovépe
+*** vida_n ; ^ vida_n 0 ; #444
+->grn <hekove_n ; 0==0 n:n,poses:poses ; #304 ; ##102
+->grn <heko_n ; 0==0 n:n,poses:poses ; #858 ; ##124
 *** vidente_n ; ^ vidente_n 0 ; #18
 ->grn ohecháva_n ; 0==0 n:n,poses:poses ; #9
 ->grn <hesapyso_n ; 0==0 n:n,poses:poses
@@ -18472,19 +18568,26 @@
 ->grn ñe'ẽmbegue_n ; 0==0 n:n,poses:poses
 *** voz_n del pueblo ; ^ voz_n 0 ; #362
 ->grn tavaygua_n ñe'ẽ ; 0==0 n:n,poses:poses
-*** voz_n ; ^ voz_n 0 ; #362
-->grn ahy'o_n ; 0==0 n:n,poses:poses ; #14 ; ##1
-->grn ñe'ẽ_n ; 0==0 n:n,poses:poses ; #1544 ; ##107
+*** en voz_n baja ; ^ voz_n 1
+->grn guyguy
+*** a dos voces ; ^ voces 2
+->grn joyvy
 *** voz_n de doble significado ; ^ voz_n 0 ; #362
 ->grn ñe'ẽhe'ikõi_n ; 0==0 n:n,poses:poses
 *** voz_n nasal ; ^ voz_n 0 ; #362
 ->grn forifõ_n ; 0==0 n:n,poses:poses
+*** voz_n ; ^ voz_n 0 ; #362
+->grn ahy'o_n ; 0==0 n:n,poses:poses ; #14 ; ##1
+->grn ñe'ẽ_n ; 0==0 n:n,poses:poses ; #1544 ; ##107
 *** vuelco_n ; ^ vuelco_n 0
 ->grn japaro_n ; 0==0 n:n,poses:poses
 *** vuelo_n ; ^ vuelo_n 0
 ->grn veve_n ; 0==0 n:n,poses:poses
 *** vuelta_n[n=1] dadas varias veces en el suelo ; ^ vuelta_n 0
 ->grn apajeréi_n ; 0==0 n:n,poses:poses
+*** de vuelta ; ^ vuelta_n 1
+->grn jeýma
+->grn jey
 *** vuelta_n ; ^ vuelta_n 0 ; #17
 ->grn jere_n ; 0==0 n:n,poses:poses ; #212 ; ##6
 ->grn jevy_n ; 0==0 n:n,poses:poses ; #878 ; ##2

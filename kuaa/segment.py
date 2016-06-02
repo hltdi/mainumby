@@ -44,6 +44,9 @@
 #    gaps in GNode indices.
 # 2016.03.08
 # -- SolSeg.set_html() also creates a dict of choice alternatives.
+# 2016.06.01
+# -- GNodes now carry sets of features rather than a single feature. This solves a problem with
+#    failure to match features in node merging in the case of an ambiguous analysis of the concrete node.
 
 import itertools, copy
 from .cs import *
@@ -56,7 +59,11 @@ class SolSeg:
     """Sentence solution segment, realization of a single Group. Displayed in GUI."""
 
     # colors to display segments in interface
-    tt_colors = ['blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green']
+    tt_colors = ['blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
+                 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
+                 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
+                 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
+                 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green']
 
     def __init__(self, solution, indices, translation, tokens, color=None, session=None):
 #        self.solution = solution
@@ -120,32 +127,8 @@ class SolSeg:
                 html_choices.append('<input type="radio" name="choice" id={} value="{}">{}'.format(tchoice, tchoice, tchoice))
             transhtml += "<br/>".join(html_choices)
             transhtml += "</td>"
-#            for wordindex, tword in enumerate(t):
-#                choice_key = wordindex
-#                choices = set()
-#                transhtml += "<td class='trans'>"
-#                if '|' in tword:
-#                    html_choices = []
-#                    tword_choices = tword.split('|')
-#                    tword_choices.sort()
-#                    for tword_choice in tword_choices:
-#                        html_choices.append('<input type="radio" name="choice{}" id={} value="{}">{}'.format(choice_key,
-#                                                                                                             tword_choice,
-#                                                                                                             tword_choice,
-#                                                                                                             tword_choice))
-#                    choices.update(tword_choices)
-#                    html_choices = '<br/>'.join(html_choices)
-#                    transhtml += html_choices
-#                else:
-#                    choices.add(tword)
-#                    transhtml += 'w
             if self.record:
                 choice_list.append(tchoice)
-#                if choice_key in choice_dict:
-#                    choice_dict[choice_key].update(choices)
-#                else:
-#                    choice_dict[choice_key] = choices
-#                transhtml += '</td>'
             # Add other translation button
             transhtml += '</tr>'
         if self.translation:
@@ -333,6 +316,7 @@ class SNode:
                     # Match; failure would be False
                     return None
                 else:
+                    results = []
                     for analysis in self.analyses:
                         node_features = analysis.get('features')
                         if node_features:
@@ -340,20 +324,28 @@ class SNode:
                             # to be present in node_features, e.g., for Spanish reflexive
                             u_features = simple_unify(node_features, grp_feats, strict=True)
                             if u_features != 'fail':
-                                return analysis.get('root'), u_features
+#                                if isinstance(u_features, FeatStruct):
+#                                    u_features = u_features.copy()
+                                results.append((analysis.get('root'), u_features))
+#                                return analysis.get('root'), u_features
                     # None succeeded
-                    return False
+                    if results:
+                        return results
+                    else:
+                        return False
         elif self.token == grp_item:
             # grp_item matches this node's token; features are irrelevant
             return None
         elif self.analyses:
+            results = []
             # Check each combination of root and analysis features
             for analysis in self.analyses:
                 root = analysis.get('root', '')
                 node_features = analysis.get('features')
                 if root == grp_item:
                     if not grp_feats:
-                        return root, node_features
+                        results.append((root, node_features))
+#                        return root, node_features
                     elif not node_features:
                         # Fail because there must be an explicit match with group features
                         return False
@@ -361,7 +353,12 @@ class SNode:
                         # There must be an explicit match with group features, so strict=True
                         u_features = simple_unify(node_features, grp_feats, strict=True)
                         if u_features != 'fail':
-                            return root, u_features
+#                            if isinstance(u_features, FeatStruct):
+#                                u_features = u_features.copy()
+                            results.append((root, u_features))
+#                            return root, u_features
+            if results:
+                return results
         return False
 
 class GInst:
@@ -369,6 +366,7 @@ class GInst:
     """Instantiation of a group; holds variables and GNode objects."""
 
     def __init__(self, group, sentence, head_index, snode_indices, index):
+#        print("Creating group inst with snode_indices {}".format(snode_indices))
         # The Group object that this "instantiates"
         self.group = group
         self.sentence = sentence
@@ -382,6 +380,7 @@ class GInst:
         self.nodes = []
         for index, sntups in enumerate(snode_indices):
             # sntups is a list of snindex, match features, token, create? tuples
+#            print(" SNTups {}".format(sntups))
             deleted = False
             for snindex, match, token, create in sntups:
                 if not create:
@@ -554,7 +553,7 @@ class GInst:
                 # Align gnodes with target tokens and features
                 targ_index = alignment[gn_index]
                 if targ_index < 0:
-                    print("No targ item for gnode {}".format(gnode))
+#                    print("No targ item for gnode {}".format(gnode))
                     # This means there's no target language token for this GNode.
                     continue
                 agrs = None
@@ -842,6 +841,7 @@ class TreeTrans:
                             # Use an (unfrozen) copy of target features
                             targ_feats = targ_feats.copy(True)
                             features.agree(targ_feats, agrs)
+#                            print("Making features {} agree with targ feats {} on {}".format(features, targ_feats.__repr__(), agrs))
                         node_index_map[snode.index] = tnode_index
                         node_features.append((token, targ_feats, t_indices))
                         for t_index in t_indices:
@@ -885,6 +885,7 @@ class TreeTrans:
                                 # Use an (unfrozen) copy of target features
                                 targ_feats = targ_feats.copy(True)
                                 features.agree(targ_feats, agrs)
+#                                print("Making features {} agree with targ feats {} on agrs {}".format(features, targ_feats.__repr__(), agrs))
                             node_index_map[snode.index] = tnode_index
                             node_features.append((token, targ_feats, t_indices))
                             for t_index in t_indices:

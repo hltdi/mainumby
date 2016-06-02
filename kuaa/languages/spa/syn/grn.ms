@@ -7,6 +7,11 @@ pasivo :: ser_v [pos=v,tm=prc,voz=reflx,+r] ; 0=>1 p,n,tm ; // 0
 fut/ir :: ir_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 0:2 1:2 ; 2-> [tm=fut]
 # acabar de ...
 acabar_de :: acabar_v[tm=prs] de [pos=v,tm=inf,asp=[+ramo]] ; 0=>2 p,n ; // 0:2 1:2 ; 2-> [tm=prs]
+# comenzar/empezar a ...
+comenzar_a :: comenzar_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 1 ; 2-> [tm=prs]
+empezar_a :: empezar_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 1 ; 2-> [tm=prs]
+# seguir + ger
+seguir_ger :: seguir_v [pos=v,tm=ger] ; 0=>1 p,n,tm
 
 ## derivación 1
 volativo :: querer_v [pos=v,tm=inf,asp=[+vol]] ; 0=>1 p,n,tm,asp ; // 0
@@ -58,12 +63,13 @@ suj/3pf :: ellas [pos=v,p=3,n=1]
 2s_form :: usted [pos=v,p=3,n=0] ; 1-> [p=2]
 2p_form :: ustedes [pos=v,p=3,n=1] ; 1-> [p=2]
 # 2 pers form con ambigüedad, sólo si 3sm, 3pm, 3sf, 3pf no se han aplicado
-**2formal :: [pos=v,+fin,p=3] ; 0-> [p=2] ; FAILIF suj/3
+#**2formal :: [pos=v,+fin,p=3] ; 0-> [p=2] ; FAILIF suj/3
 
 ## negativo
+que_neg_sbp :: que no [pos=v,tm=sbp,+neg] ; // 1
 # imperativo (debe aplicarse antes de la regla más general)
-neg_ipv :: no [pos=v,tm=sbp,+negipv] ; 1-> [tm=ipv] ; 0-> [+ipv]
-neg :: no [pos=v,+neg] ; // 0 ; FAILIF neg_
+neg_ipv :: no [pos=v,tm=sbp,+negipv] ; 1-> [tm=ipv] ; 0-> [+ipv] ; FAILIF que_neg_
+neg :: no [pos=v,+neg] ; // 0 ; FAILIF neg_ipv
 
 ## derivación 2
 pot :: poder_v [pos=v,tm=inf] ; 0=>1 p,n,tm
@@ -81,20 +87,25 @@ pos/1p.p :: nuestros [pos=n,n=1,poses=[+ext,pp=1,np=1]] ; // 0
 pos/1p.s :: nuestra [pos=n,n=0,poses=[+ext,pp=1,np=1]] ; // 0
 pos/1p.p :: nuestras [pos=n,n=1,poses=[+ext,pp=1,np=1]] ; // 0
 
-## intensificación (necesita concordancia grd:grd);
+## intensificación, comparación (necesita concordancia grd:grd);
 ## en casos predicativos, estar o ser recibe el rasgo grd
 ## en casos atributivos, es el adjetivo
 estar_muy :: estar_v[grd=ete] muy ; // 1
 ser_muy :: ser_v[grd=ete] muy ; // 1
 muy_adj :: muy [pos=a,grd=ete] ; // 0
+mas_adj1 :: más [pos=a,grd=ve] ; // 0
+mas_adj2 :: mas [pos=a,grd=ve] ; // 0
+demasiado :: demasiado [pos=a,grd=eterei] ; // 0
 
-## cláusulas relativas
+## cláusulas relativas y nominales
 # ambiguo, e.g., dije a mi vecino que vendrá
 *rel_sj :: [pos=n] que [pos=v,rel=sjoj] ; // 1
+lo_que :: lo que [pos=v,rel=sjoj] ; // 0 1
 # cómo representar relativo objetivo con sujeto antes del verbo
 # el carro que mi vecino compró
 
 ## cláusulas adverbiales
+al_inf :: a el [pos=v,tm=inf,pp=vove] ; // 0 1 ; 2-> [tm=prs]
 a_donde_rel :: a donde [pos=v,rel=obl,pp=pe] ; // 0 1
 donde_rel :: [pos=n] donde [pos=v,rel=obl] ; // 1
 al_que_rel :: [pos=n] a el que [pos=v,rel=obl] ; // 0 1 2

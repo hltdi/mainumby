@@ -1,9 +1,9 @@
 ########################################################################
 #
-#   This file is part of the ParaMorfo project.
+#   This file is part of the Mainumby project.
 #
-#   Copyright (C) 2014
-#   The HLTDI L^3 Team <gasser@cs.indiana.edu>
+#   Copyright (C) 2014, 2016
+#   The HLTDI L^3 Team <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,8 +18,11 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-#    Author: Michael Gasser <gasser@cs.indiana.edu>
+#    Author: Michael Gasser <gasser@indiana.edu>
 #
+# 2016.06.01
+# -- New functions for unification and agreement, extending those in FeatStruct.
+#    Needed for features of merged nodes.
 
 from .fs import *
 from .utils import *
@@ -80,6 +83,49 @@ class FSSet(set):
         else:
             # Get rid of all instances of TOP and unification failures
             return FSSet(*filter(lambda x: x != 'fail', result1))
+
+    @staticmethod
+    def unify_all(fssets):
+        """The FSSet resulting from successively unifying a list of FSSets."""
+        if not fssets:
+            return TOPFSS
+        elif len(fssets) == 1:
+            return fssets[0]
+        else:
+            res = fssets[0].unify(fssets[1])
+            if res == 'fail':
+                return 'fail'
+            else:
+                return FSSet.unify_all([res] + fssets[2:])
+
+    def agree(self, target, agrs, force=False):
+        """Similar to FeatStruct.agree(). Change values of agrs features in target to agree with some member(s) of FSSet.
+        Ignore features that don't agree (rather than failing) unless force is True."""
+        agr_pairs = agrs.items() if isinstance(agrs, dict) else agrs
+        for fs in list(self):
+            vals = []
+#            fail = False
+            for src_feat, targ_feat in agr_pairs:
+                if src_feat in fs:
+                    src_value = fs[src_feat]
+                    if targ_feat not in target:
+                        vals.append((targ_feat, src_value))
+                    else:
+                        targ_value = target[targ_feat]
+                        u = simple_unify(src_value, targ_value)
+                        if u == 'fail':
+                            if force:
+                                vals.append((targ_feat, src_value))
+                            else:
+                                # Ignore this feature
+                                continue
+                        else:
+                            vals.append((targ_feat, u))
+#            if fail:
+#                continue
+#            print("Changing {} in {}".format(vals, target.__repr__()))
+            for f, v in vals:
+                target[f] = v
 
     def inherit(self):
         """Inherit feature values for all members of set, returning new set."""

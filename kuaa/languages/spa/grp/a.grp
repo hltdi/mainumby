@@ -2370,6 +2370,8 @@
 ->grn kure_n rehegua
 *** porfiado_a ; ^ porfiado_a 0
 ->grn akãhatã_v[pos=adj] ; 0==0 grd:grd
+*** ser_v[p=3,n=0] posible_a que $v[tm=sbp] ; ^ posible_a 1
+->grn katu_v[cat=che] $v[tmp=prs] ; || 0, -1, -1, 1 ; 0==0 neg:neg,tm:tmp,asp:asp ; 3==1 neg:neg,n:ns,p:ps,asp:asp,po:po,no:no
 *** posible_a ; ^ posible_a 0
 ->grn ikatupáva_v[pos=adj] ; 0==0 grd:grd
 *** posterior_a ; ^ posterior_a 0
@@ -2884,6 +2886,7 @@
 ->grn aho'i_v[pos=adj] ; 0==0 grd:grd
 *** tarado_a ; ^ tarado_a 0
 ->grn meĝua_v[pos=adj] ; 0==0 grd:grd
+->grn tarova
 *** tardo_a ; ^ tardo_a 0
 ->grn ate'ỹ_v[pos=adj] ; 0==0 grd:grd
 *** tartamudo_a ; ^ tartamudo_a 0

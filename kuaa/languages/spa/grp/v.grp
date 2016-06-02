@@ -9,6 +9,19 @@
 ## OĨ, NDAIPÓRI?
 *** haber_v[-r,p=3,n=0,-neg] ; ^ haber_v 0
 ->grn ĩ_v[cat=a,po=3,no=0,-neg] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,pp:pp,inter:inter
+#### SOME IMPERSONAL VERBS
+*** escampar_v[-r,p=3,n=0] ; ^ escampar_v 0
+->grn pi_v[cat=a,ps=3] ; 0==0 tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,inter:inter
+*** llover_v[-r,p=3,n=0] ; ^ llover_v 0
+->grn ky_v[cat=a,ps=3] ; 0==0 tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,inter:inter
+*** lloviznar_v[-r,p=3,n=0] ; ^ lloviznar_v 0
+->grn hayviru'i_v[cat=a,ps=3] ; 0==0 tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,inter:inter
+#### AUXILIARIES
+### QUERER + subjunctive clause
+### SEGUIR
+# The verb has copied the tense and subject person/number in morphosyns. This has seguir mapped onto manterei.
+*** seguir_v[-r] $v ; ^ seguir_v 0
+->grn $v manterei ; || 1, 0 ; 1==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
 #### ver and odiar are examples of what happens with transitive and dative verbs
 ## -- basic; including 1,2 object [-r] ? (use feature match failure)
 ## -- 3s object [-r,po=3,no=0]
@@ -1313,7 +1326,7 @@
 ->grn mbokaigue_v[cat=a]
 *** dejar_v[-r] desnudo ; ^ dejar_v 0 ; #386
 ->grn mbo'opívo_v[cat=a]
-*** dejar_v[-r] a uno sin la vista de un ojo ; ^ dejar_v 0 ; #386
+*** dejar_v[-r] sin la vista de un ojo ; ^ dejar_v 0 ; #386
 ->grn mohesatũ_v[cat=a]
 ->grn myesatũ_v[cat=a]
 *** dejar_v[-r] el resto ; ^ dejar_v 0 ; #386
@@ -1324,10 +1337,6 @@
 ->grn mbopere_v[cat=a]
 *** dejar_v[+r] engañar ; ^ dejar_v 0 ; #20
 ->grn ñembotavyuka_v[cat=a]
-*** dejar_v[-r] de ser díscolos y malos ; ^ dejar_v 0 ; #386
-->grn ñembokaraiguasu_v[cat=a]
-*** dejar_v[-r] de vivir ; ^ dejar_v 0 ; #386
-->grn mano_v[cat=a]
 *** dejar_v[-r] huellas con el pie ; ^ dejar_v 0 ; #386
 ->grn mbopypore_v[cat=a]
 *** dejar_v[-r] atrás al adversario ; ^ dejar_v 0 ; #386
@@ -1338,14 +1347,12 @@
 ->grn mbohugua_v[cat=a]
 *** dejar_v[-r] calvo a alguien ; ^ dejar_v 0 ; #386
 ->grn moakãperõ_v[cat=a]
-*** dejar_v[-r] un poco de espacio o claridad ; ^ dejar_v 0 ; #386
+*** dejar_v[-r] un poco de espacio ; ^ dejar_v 0 ; #386
 ->grn mbojupi_v[cat=a]
 *** dejar_v[-r] amanecer ; ^ dejar_v 0 ; #386
 ->grn moko'ẽ_v[cat=a]
 *** dejar_v[-r] en libertad ; ^ dejar_v 0 ; #386
 ->grn mbopoi_v[cat=a]
-*** dejar_v[-r] para atrás a alguien en alguna competencia ; ^ dejar_v 0 ; #386
-->grn mbohevi_v[cat=a]
 *** dejar_v[-r] pelado ; ^ dejar_v 0 ; #386
 ->grn mopẽrõ_v[cat=a]
 *** demostrar_v[-r] profunda indignación ; ^ demostrar_v 0 ; #7
@@ -2580,7 +2587,7 @@
 ->grn mba'epuru_v[cat=a]
 *** pedir_v[-r] prestado ; ^ pedir_v 0
 ->grn mbokua_v[cat=a]
-->grn puru_v[subcat=i]
+->grn poru_v[subcat=i]
 *** pedir_v[-r] la bendición ; ^ pedir_v 0
 ->grn ñepomoĩ_v[cat=a]
 ->grn jepomoĩ_v[cat=a]
@@ -3240,7 +3247,7 @@
 *** recibir_v[-r] un tiro ; ^ recibir_v 0
 ->grn jejapi_v[cat=a]
 *** recibir_v[-r] en préstamo ; ^ recibir_v 0
-->grn mba'epuru_v[cat=a]
+->grn mba'eporu_v[cat=a]
 *** recibir_v[-r] varios empujones seguidos ; ^ recibir_v 0
 ->grn ñemyañamyaña_v[cat=a]
 *** recibir_v[-r] notificación ; ^ recibir_v 0
@@ -6282,13 +6289,13 @@
 ->grn ñemomba'e_v[cat=a] ; #20
 ->grn ñemoakate'ỹ_v[cat=a] ; #1
 *** aprovechar_v[-r] ; ^ aprovechar_v 0
-->grn puru_v[subcat=i]
+->grn poru_v[subcat=i]
 *** aprovechar_v[-r] a $n_prs ; ^ aprovechar_v 0
-->grn puru_v[subcat=i] $n_prs[caso=pe] ; || 0, -1, 1
+->grn poru_v[subcat=i] $n_prs[caso=pe] ; || 0, -1, 1
 *** aprovechar_v[-r,po=3,no=0] ; ^ aprovechar_v 0
-->grn puru_v[subcat=i] (chupe)
+->grn poru_v[subcat=i] (chupe)
 *** aprovechar_v[-r,po=3,no=1] ; ^ aprovechar_v 0
-->grn puru_v[subcat=i] (chupekuéra)
+->grn poru_v[subcat=i] (chupekuéra)
 *** aproximar_v[+r] ; ^ aproximar_v 0 ; #1
 ->grn ñemoaĝui_v[cat=a]
 ->grn ja_v[cat=a] ; #766 ; ##1
@@ -8882,12 +8889,6 @@
 ->grn mbohovái_v[cat=a] (chupekuéra)
 *** continuar_v[-r] ; ^ continuar_v 0
 ->grn mbojoapy_v[cat=a]
-*** continuar_v[-r] a $n_prs ; ^ continuar_v 0
-->grn mbojoapy_v[cat=a] $n_prs[caso=pe] ; || 0, -1, 1
-*** continuar_v[-r,po=3,no=0] ; ^ continuar_v 0
-->grn mbojoapy_v[cat=a] (chupe)
-*** continuar_v[-r,po=3,no=1] ; ^ continuar_v 0
-->grn mbojoapy_v[cat=a] (chupekuéra)
 *** contradecir_v[-r] ; ^ contradecir_v 0 ; #4
 ->grn mbohovái_v[cat=a] ; #108 ; ##1
 ->grn jatapy_v[cat=a] ; #16
@@ -11942,19 +11943,19 @@
 *** emplear_v[-r] ; ^ emplear_v 0 ; #7
 ->grn mohembiapo_v[cat=a]
 ->grn jokuái_v[cat=a] ; #18
-->grn puru_v[subcat=i] ; #149 ; ##2
+->grn poru_v[subcat=i] ; #149 ; ##2
 *** emplear_v[-r] a $n_prs ; ^ emplear_v 0
 ->grn mohembiapo_v[cat=a] $n_prs[caso=pe] ; || 0, -1, 1
 ->grn jokuái_v[cat=a] $n_prs[caso=pe] ; || 0, -1, 1
-->grn puru_v[subcat=i] $n_prs[caso=pe] ; || 0, -1, 1
+->grn poru_v[subcat=i] $n_prs[caso=pe] ; || 0, -1, 1
 *** emplear_v[-r,po=3,no=0] ; ^ emplear_v 0
 ->grn mohembiapo_v[cat=a] (chupe)
 ->grn jokuái_v[cat=a] (chupe)
-->grn puru_v[subcat=i] (chupe)
+->grn poru_v[subcat=i] (chupe)
 *** emplear_v[-r,po=3,no=1] ; ^ emplear_v 0
 ->grn mohembiapo_v[cat=a] (chupekuéra)
 ->grn jokuái_v[cat=a] (chupekuéra)
-->grn puru_v[subcat=i] (chupekuéra)
+->grn poru_v[subcat=i] (chupekuéra)
 *** emplumar_v[-r] ; ^ emplumar_v 0
 ->grn mbohague_v[cat=a]
 *** empobrecer_v[-r] ; ^ empobrecer_v 0 ; #11
@@ -13285,8 +13286,6 @@
 ->grn kái_v[cat=a] (chupe)
 *** escaldar_v[-r,po=3,no=1] ; ^ escaldar_v 0
 ->grn kái_v[cat=a] (chupekuéra)
-*** escampar_v[-r] ; ^ escampar_v 0
-->grn pi_v[cat=a]
 *** escapar_v[+r] ; ^ escapar_v 0 ; #4
 ->grn ñembogua_v[cat=a] ; #5
 ->grn piã_v[cat=a] ; #3
@@ -16483,14 +16482,9 @@
 *** llorar_v[-r] ; ^ llorar_v 0
 ->grn jahe'o_v[cat=a]
 ->grn <hasẽ_v[cat=che]
-->grn chiã_v[cat=che]
 *** lloriquear_v[-r] ; ^ lloriquear_v 0
 ->grn chi'õ_v[cat=che]
 ->grn chiã_v[cat=che]
-*** llover_v[-r] ; ^ llover_v 0
-->grn ky_v[cat=a]
-*** lloviznar_v[-r] ; ^ lloviznar_v 0
-->grn hayviru'i_v[cat=a]
 *** lograr_v[-r] ; ^ lograr_v 0
 ->grn <hupyty_v[cat=a]
 *** lubricar_v[-r] ; ^ lubricar_v 0
@@ -17547,19 +17541,19 @@
 *** ocupar_v[-r] ; ^ ocupar_v 0 ; #20
 ->grn momba'apo_v[cat=a] ; #11
 ->grn jokuái_v[cat=a] ; #18 ; ##1
-->grn puru_v[subcat=i] ; #149
+->grn poru_v[subcat=i] ; #149
 *** ocupar_v[-r] a $n_prs ; ^ ocupar_v 0
 ->grn momba'apo_v[cat=a] $n_prs[caso=pe] ; || 0, -1, 1
 ->grn jokuái_v[cat=a] $n_prs[caso=pe] ; || 0, -1, 1
-->grn puru_v[subcat=i] $n_prs[caso=pe] ; || 0, -1, 1
+->grn poru_v[subcat=i] $n_prs[caso=pe] ; || 0, -1, 1
 *** ocupar_v[-r,po=3,no=0] ; ^ ocupar_v 0
 ->grn momba'apo_v[cat=a] (chupe)
 ->grn jokuái_v[cat=a] (chupe)
-->grn puru_v[subcat=i] (chupe)
+->grn poru_v[subcat=i] (chupe)
 *** ocupar_v[-r,po=3,no=1] ; ^ ocupar_v 0
 ->grn momba'apo_v[cat=a] (chupekuéra)
 ->grn jokuái_v[cat=a] (chupekuéra)
-->grn puru_v[subcat=i] (chupekuéra)
+->grn poru_v[subcat=i] (chupekuéra)
 *** ocurrir_v[-r] ; ^ ocurrir_v 0
 ->grn jehu_v[cat=a]
 *** ofender_v[+r] ; ^ ofender_v 0 ; #1
@@ -18857,16 +18851,16 @@
 ->grn jeporuka_v[cat=a]
 *** prestar_v[-r] ; ^ prestar_v 0 ; #32
 ->grn poruka_v[subcat=i] ; #2 ; ##12
-->grn puru_v[subcat=i] ; #149 ; ##2
+->grn poru_v[subcat=i] ; #149 ; ##2
 *** prestar_v[-r] a $n_prs ; ^ prestar_v 0
 ->grn poruka_v[subcat=i] $n_prs[caso=pe] ; || 0, -1, 1
-->grn puru_v[subcat=i] $n_prs[caso=pe] ; || 0, -1, 1
+->grn poru_v[subcat=i] $n_prs[caso=pe] ; || 0, -1, 1
 *** prestar_v[-r,po=3,no=0] ; ^ prestar_v 0
 ->grn poruka_v[subcat=i] (chupe)
-->grn puru_v[subcat=i] (chupe)
+->grn poru_v[subcat=i] (chupe)
 *** prestar_v[-r,po=3,no=1] ; ^ prestar_v 0
 ->grn poruka_v[subcat=i] (chupekuéra)
-->grn puru_v[subcat=i] (chupekuéra)
+->grn poru_v[subcat=i] (chupekuéra)
 *** presumir_v[-r] ; ^ presumir_v 0
 ->grn malisia_v[cat=a]
 *** pretender_v[-r] ; ^ pretender_v 0
@@ -23071,13 +23065,13 @@
 *** usar_v[+r] ; ^ usar_v 0
 ->grn jeporu_v[cat=a]
 *** usar_v[-r] ; ^ usar_v 0
-->grn puru_v[subcat=i]
+->grn poru_v[subcat=i]
 *** usar_v[-r] a $n_prs ; ^ usar_v 0
-->grn puru_v[subcat=i] $n_prs[caso=pe] ; || 0, -1, 1
+->grn poru_v[subcat=i] $n_prs[caso=pe] ; || 0, -1, 1
 *** usar_v[-r,po=3,no=0] ; ^ usar_v 0
-->grn puru_v[subcat=i] (chupe)
+->grn poru_v[subcat=i] (chupe)
 *** usar_v[-r,po=3,no=1] ; ^ usar_v 0
-->grn puru_v[subcat=i] (chupekuéra)
+->grn poru_v[subcat=i] (chupekuéra)
 *** usurpar_v[-r] ; ^ usurpar_v 0
 ->grn ñemomba'e_v[cat=a] ; #20
 ->grn pe'a_v[subcat=i] ; #182
@@ -23097,13 +23091,13 @@
 *** utilizar_v[+r] ; ^ utilizar_v 0
 ->grn jeporu_v[cat=a]
 *** utilizar_v[-r] ; ^ utilizar_v 0
-->grn puru_v[subcat=i]
+->grn poru_v[subcat=i]
 *** utilizar_v[-r] a $n_prs ; ^ utilizar_v 0
-->grn puru_v[subcat=i] $n_prs[caso=pe] ; || 0, -1, 1
+->grn poru_v[subcat=i] $n_prs[caso=pe] ; || 0, -1, 1
 *** utilizar_v[-r,po=3,no=0] ; ^ utilizar_v 0
-->grn puru_v[subcat=i] (chupe)
+->grn poru_v[subcat=i] (chupe)
 *** utilizar_v[-r,po=3,no=1] ; ^ utilizar_v 0
-->grn puru_v[subcat=i] (chupekuéra)
+->grn poru_v[subcat=i] (chupekuéra)
 *** vaciar_v[+r] ; ^ vaciar_v 0
 ->grn ñemonandi_v[cat=a]
 *** vaciar_v[-r] ; ^ vaciar_v 0

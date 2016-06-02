@@ -154,18 +154,20 @@ class Document(list):
     # end of word: letters and digits, #./º
     # only digits
     number1_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$£€]?[\d]+[%¢]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
-    # digits with intermediate characters (.,=><), which must be followed by one or more digits
-    number_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$£€]?[\d]+[\d,.=><+\-±/×÷≤≥]*[\d]+[%¢]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
+    # digits with intermediate characters (.,=></), which must be followed by one or more digits
+    number_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$£€]?[\d]+[\d,.=></+\-±/×÷≤≥]*[\d]+[%¢]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
     # separated punctuation, including some that might be separated by error
-    punc_re = re.compile(r"([\-–—&=.,:;\"+<>/?!]{1,3})")
+    punc_re = re.compile(r"([\-–—&=.,:;\"+<>/?!]{1,3})$")
     # word of one character
-    word1_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)(\w)([)\]}!?\"\'»”’*\-–—,:;=]*)$")
-    # word of more than one character: one beginning character, one end character, 0 or more within characters
-    word_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)([\w#@~][\w\-/:;+.'`~&=\|]*[\w/º#.])([)\]}!?\"\'»”’*\-–—,:;=]*)$")
+    word1_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)(\w)([)\]}\"\'»”’*\-–—,:;=]*[?|.]?)$")
+    # word of more than one character: one beginning character, one end character, 0 or more within characters;
+    # followed by possible punctuation and a possible footnote
+    word_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)([\w#@~][\w\-/:;+.'`~&=\|]*[\w/º#.])([)\]}\"\'»”’*\-–—,:;=]*[.?!]?\d*)$")
+    period_re = re.compile("([\w.\-/:;+.'`~&=\|]+\.)([\d]*)$")
     start_re = re.compile('[\-–—¿¡\'\"«“‘(\[]+$')
     poss_end_re = re.compile('[")\]}]{0,2}[?!][)"\]]{0,2}')
-    # 0-2 pre-end characters (like ")"), 1 end character (.?!), 0-2 post-end characters (like ")")
-    end_re = re.compile('[\"\'”’»)\]}]{0,2}[.?!][.)»”’\'\"\]\-–—]{0,2}')
+    # 0-2 pre-end characters (like ")"), 1 end character (.?!), 0-3 post-end characters (like ")" or footnote digits)
+    end_re = re.compile('[\"\'”’»)\]}]{0,2}[.?!][.)»”’\'\"\]\-–—\d]{0,3}')
 
     def __init__(self, language=None, target=None, text='', proc=True, session=None):
         self.set_id()
@@ -190,16 +192,20 @@ class Document(list):
     def __repr__(self):
         return "||| text {} |||".format(self.id)
 
-    def process(self):
+    def process(self, verbosity=0):
         """Use tokenize and split to generate tokenized sentences."""
-        self.tokenize()
+        self.tokenize(verbosity=verbosity)
+        if verbosity:
+            print("Found tokens {}".format(self.tokens))
         self.split()
 
-    def tokenize(self):
+    def tokenize(self, verbosity=0):
         """Split the text into word tokens, separating off punctuation except for
         abbreviations and numerals. Later use a language-specific tokenizer."""
         # Later split at \n to get paragraphs.
         # Separate at whitespace.
+        if verbosity:
+            print("Tokenizing text {}".format(self.text))
         tokens = self.text.split()
         for token in tokens:
             tok_subtype = 0
@@ -232,13 +238,19 @@ class Document(list):
                 pre, word, suf = match.groups()
                 if pre:
                     self.tokens.append((pre, 0, 0))
-                # Check to see if word ends in . and is not an abbreviation
-                if word_tok and word.endswith('.'):
-                    if word not in self.language.abbrevs:
-                        # Strip of all trailing .s
-                        word, x, y = word.partition('.')
-                        suf = x + y + suf
-#                print("pre {}, word {}, suf {}".format(pre, word, suf))
+                # Check to see if word ends in . (and opposition footnote digits) and is not an abbreviation
+                if word_tok:
+                    period_match = Document.period_re.match(word)
+                    if period_match:
+                        word1, suf1 = period_match.groups()
+                        if word1 not in self.language.abbrevs:
+                            word = word1[:-1]
+                            suf = '.' + suf1 + suf
+#                if word_tok and word.endswith('.'):
+#                    if word not in self.language.abbrevs:
+#                        # Strip of all trailing .s
+#                        word, x, y = word.partition('.')
+#                        suf = x + y + suf
                 self.tokens.append((word, 1, tok_subtype))
                 if suf:
                     self.tokens.append((suf, 2, 0))
@@ -666,8 +678,8 @@ class Sentence:
         # For each group, save a list of sentence token indices that correspond
         # to the group's words
 #        print("{} candidatos para grupos encontrados".format(len(candidates)))
-        groups = []
         matched_keys = []
+        group_index = 0
         for head_i, key, group in candidates:
             # Matching snodes, along with root and unified features if any
             if verbosity > 1:
@@ -683,14 +695,12 @@ class Sentence:
                 if verbosity > 1:
                     print("Failed to match")
                 continue
-#            print("{} matched with snodes {}".format(group, snodes))
             matched_keys.append((head_i, key))
-            if verbosity > 1:
-                print('Group {} matches snodes {}'.format(group, snodes))
-            groups.append((head_i, snodes, group))
-#        print("Matched groups: {}".format(groups))
-        # Create a GInst object and GNodes for each surviving group
-        self.groups = [GInst(group, self, head_i, snodes, index) for index, (head_i, snodes, group) in enumerate(groups)]
+#            if verbosity > 1:
+#            print('Group {} matches snodes {}'.format(group, snodes))
+            # Create a GInst object and GNodes for each surviving group
+            self.groups.append(GInst(group, self, head_i, snodes, group_index))
+            group_index += 1
         print("{} grupo(s) encontrado(s) para {}".format(len(self.groups), self))
         for g in self.groups:
             print("  {}".format(g))
@@ -707,6 +717,7 @@ class Sentence:
         covered = {}
         for gnode in self.gnodes:
             si = gnode.snode_indices
+#            print("Checking covered indices for gnode {}: {}".format(gnode, si))
             for i in si:
                 if i not in covered:
                     covered[i] = []
@@ -931,14 +942,17 @@ class Sentence:
                 # sn->gn variables are good to the extent they point to gnodes in large groups
                 # and have lower indices (because preferred interpretations are earlier)
                 if value:
+#                    print("  sn->gn var {} value {} for {}".format(variable, value, dstore))
                     total = 0
                     for gni in value:
                         total += gni
                         gn = self.gnodes[gni]
                         varscore -= gn.ginst.ngnodes
+#                        print("  sn->gn var {} decremented {} because of {} for {}".format(variable, gn.ginst.ngnodes, gn.ginst, dstore))
                     av = total / len(value)
                     varscore /= len(value)
                     varscore += av
+#                    print("  sn->gn var {} added {} to score for {}".format(variable, av, dstore))
             elif typ == 'groups':
                 # groups variable is good if it's big and has lower indices
                 if value:
@@ -950,6 +964,7 @@ class Sentence:
                     av = total / len(value)
                     varscore /= len(value)
                     varscore += av
+#                print("  groups var {} added {} to score for {}".format(variable, av, dstore))
 #            print(" Varscore for {} with {} in {}: {}".format(variable, value, dstore, varscore))
         # Tie breaker
         ran = random.random() / 100.0
@@ -1228,16 +1243,20 @@ class Solution:
             gnodes = [self.sentence.gnodes[index] for index in gn_indices]
             features = []
             for gnode in gnodes:
-#                print("  gnode {}, snode_anal {}, snode_indices {}".format(gnode, gnode.snode_anal, gnode.snode_indices))
                 snode_indices = gnode.snode_indices
 #                if snode.index in snode_indices:
                 snode_index = snode_indices.index(snode.index)
                 snode_anal = gnode.snode_anal[snode_index]
-                if snode_anal:
-#                    print("snode_anal {}".format(snode_anal))
-                    features.append(snode_anal[1])
+#                print("Merge nodes for gnode {}: snode_anal {}".format(gnode, snode_anal))
+                # It could be a list of anals, only None if there aren't any.
+                if snode_anal and snode_anal[0]:
+#                    print("Appending snode_anals for gnode {}: {}".format(gnode, [a[1] for a in snode_anal]))
+                    features.append([a[1] for a in snode_anal])
             # Could this fail??
-            features = FeatStruct.unify_all(features)
+#            print("Unification result for {}: snode {}, gn_indices {} features {}".format(self, snode, gn_indices, features))
+            features = FSSet.unify_all([FSSet(feats) for feats in features])
+#                        FeatStruct.unify_all(features)
+#            print("  {}".format(features))
             self.gnodes_feats.append((gnodes, features))
 
     def make_translations(self, verbosity=0, display=True, all_trans=False, interactive=False):

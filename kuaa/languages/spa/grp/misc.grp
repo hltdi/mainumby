@@ -721,41 +721,6 @@
 *** hacia $n ; ^ hacia 0
 ->grn $n gotyo ; || 1, 0
 # + lots of "hacia X" expressions
-### ANTES (DE)
-*** antes de $n ; ^ antes 0
-->grn $n mboyve ; ^ 1, -1, 0
-*** antes ; ^ antes 0
-->grn mboyve
-->grn yma
-->grn ymaguare
-### DESPUÉS (DE)
-*** después de $n ; ^ después 0
-->grn $n rire ; || 1, -1, 0
-->grn $n rapykuépe ; || 1, -1, 0
-*** después ; ^ después 0
-->grn rire
-->grn upe rire
-# conjunction: fix this later
-*** después de que ; ^ después 0
-->grn rire
-### HASTA
-*** hasta $n ; ^ hasta 0
-->grn $n[caso=peve] ; || -1, 0
-*** hasta ahora ; ^ ahora 1
-->grn akói
-### DURANTE (otras posibilidades también??)
-*** durante $n ; ^ durante 0
-->grn $n aja; || 1, 0
-### DESDE
-*** desde hace tiempo ; ^ tiempo 2
-->grn aréma
-->grn ymaguare
-*** desde $n ; ^ desde 0
-->grn $n[caso=gui] ; || -1, 0
-->grn $n[caso=guive] ; || -1, 0
-# conjunction (fix later)
-*** desde que ; ^ desde 0
-->grn guive
 ### CONTRA
 *** contra $n ; ^ contra 0
 ->grn $n rehe ; || 1, 0
@@ -790,7 +755,94 @@
 ->grn $n jerére ; || 1, -1, 0
 ### SEGÚN
 *** según $n ; ^ según 0
--> $n javeve ; || 1, 0
+->grn $n javeve ; || 1, 0
+#### TIEMPO (PREPOSICIONES Y CONJUNCCIONES)
+### CUANDO (BASTANTE AMBIGUO, -rire, -ramo, -jave...)
+# futuro
+*** cuando $v[tm=sbp] ; ^ cuando 0
+->grn $v[tmp=prs,pp=rire] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+->grn $v[tmp=prs,pp=ramo] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+->grn $v[tmp=prs,pp=jave] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+# otros casos
+*** cuando $v ; ^ cuando 0
+->grn $v[pp=rire] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
+->grn $v[pp=ramo] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
+->grn $v[pp=jave] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
+### ANTES (DE) (MBOYVE)
+*** antes de $n ; ^ antes 0
+->grn $n mboyve ; ^ 1, -1, 0
+## antes clauses
+# infinitive
+*** antes de $v[tm=inf] ; ^ antes 0
+->grn $v[tmp=prs] mboyve ; || 1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+# future "antes" clause (subjunctive)
+*** antes de que $v[tm=sbp] ; ^ antes 0
+->grn $v[tmp=prs] mboyve ; || 1, -1, -1, 0 ; 3==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+# other "antes" clauses
+*** antes de que $v ; ^ antes 0
+->grn $v mboyve ; || 1, -1, -1, 0 ; 3==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
+*** antes ; ^ antes 0
+->grn mboyve
+->grn yma
+->grn ymaguare
+### DESPUÉS (DE) (-RIRE)
+*** después de $n ; ^ después 0
+->grn $n rire ; || 1, -1, 0
+->grn $n rapykuépe ; || 1, -1, 0
+# future "después" clause (subjunctive)
+*** después de que $v[tm=sbp] ; ^ después 0
+->grn $v[tmp=prs,pp=rire] ; || -1, -1, -1, 0 ; 3==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+# "después" clauses in other tenses
+*** después de que $v ; ^ después 0
+->grn $v[pp=rire] ; || -1, -1, -1, 0 ; 3==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
+*** después ; ^ después 0
+->grn rire
+->grn upe rire
+### HASTA (-PEVE)
+# future "hasta" clauses
+*** hasta que $v[tm=sbp] ; ^ hasta 0
+->grn $v[tmp=prs,pp=peve] ; || -1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+# other "hasta" clauses
+*** hasta que $v ; ^ hasta 0
+->grn $v[pp=peve] ; || -1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
+*** hasta $n ; ^ hasta 0
+->grn $n[caso=peve] ; || -1, 0
+*** hasta ahora ; ^ ahora 1
+->grn akói
+### DESDE (GUIVE)
+*** desde que $v ; ^ desde 0
+->grn $v guive ; || 1, -1, 0 ; 2==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** desde hace tiempo ; ^ tiempo 2
+->grn aréma
+->grn ymaguare
+*** desde $n ; ^ desde 0
+->grn $n[caso=gui] ; || -1, 0
+->grn $n[caso=guive] ; || -1, 0
+### DURANTE (otras posibilidades también??)
+*** durante $n ; ^ durante 0
+->grn $n aja; || 1, 0
+### MIENTRAS (-JAVE)
+# allow for both "mientras v" and "mientras que v"
+*** mientras $v[tm=sbp] ; ^ mientras 0
+->grn $v[pp=jave,tmp=prs] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** mientras $v ; ^ mientras 0
+->grn $v[pp=jave] ; || -1, 0 ; 1==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** mientras qui $v[tm=sbp] ; ^ mientras 0
+->grn $v[pp=jave,tmp=prs] ; || -1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** mientras que $v ; ^ mientras 0
+->grn $v[pp=jave] ; || -1, -1, 0 ; 2==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** mientras tanto ; ^ mientras 0
+->grn upekuévo
+# Later: mientras más = cuanto más
+### A MEDIDA QUE (-'AJA) [THIS COULD GO IN n.grp]
+*** a medida que $v[tm=sbp] ; ^ medida_n 1
+->grn $v[pp=jave,tmp=prs] ; || -1, -1, -1, 0 ; 3==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** a medida que $v ; ^ medida_n 1
+->grn $v[pp=aja] ; || -1, -1, -1, 0 ; 3==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+#### OTRAS CLÁUSULAS ADVERBIALES
+### SI
+### AUNQUE
+### PORQUE / COMO
 #### ARTÍCULOS Y OTROS PRONOMBRES
 *** un ; ^ un 0
 ->grn peteĩ
@@ -985,10 +1037,6 @@
 *** cualquiera ; ^ cualquiera 0
 ->grn oimeraẽ
 ->grn oimeraẽva
-*** cuando ; ^ cuando 0
-->grn hápe
-->grn jave
-->grn ramo
 *** de cuando en cuando ; ^ cuando 1
 ->grn jepi
 ->grn sapy'apy'a
@@ -1007,11 +1055,6 @@
 ->grn jave
 *** debidamente ; ^ debidamente 0
 ->grn hekópe
-*** delgado ; ^ delgado 0
-->grn pererĩ
-*** demasiado ; ^ demasiado 0
-->grn eterei
-->grn soro
 *** desacertadamente ; ^ desacertadamente 0
 ->grn hendape'ỹ
 *** descompuesto ; ^ descompuesto 0
@@ -1151,17 +1194,15 @@
 ->grn voi
 *** enseguida ; ^ enseguida 0
 ->grn mandi
-->grn mandivoi
-->grn potaite
-*** enseguida ; ^ enseguida 0
 ->grn aĝaite
 ->grn ko'aĝaite
-->grn pya'evoi
-->grn tapia
 ->grn voi
-->grn áĝa
-*** ya enseguida ; ^ enseguida 1
+*** en seguida ; ^ seguida 1
 ->grn mandi
+->grn aĝaite
+->grn ko'aĝaite
+->grn voi
+*** ya enseguida ; ^ enseguida 1
 ->grn mandivoi
 *** de poco entendimiento ; ^ entendimiento 2
 ->grn mamymba
@@ -1189,24 +1230,6 @@
 ->grn kañyhápe
 ->grn ñemiháme
 ->grn ñemihápe
-*** ese ; ^ ese 0
-->grn aipo
-->grn ako
-->grn ku
-->grn pe
-->grn péva
-->grn upe
-*** eso ; ^ eso 0
-->grn aipo
-->grn péva
-*** para eso ; ^ eso 1
-->grn upearã
-->grn upevarã
-*** esos ; ^ esos 0
-->grn aipo
-->grn umi
-*** espalda ; ^ espalda 0
-->grn kupe
 *** a espaldas ; ^ espaldas 1
 ->grn atukupépe
 *** especialmente ; ^ especialmente 0
@@ -1253,22 +1276,6 @@
 ->grn tyre'ỹ
 *** feamente ; ^ feamente 0
 ->grn vaípe
-*** feo ; ^ feo 0
-->grn vai
-*** ficticio ; ^ ficticio 0
-->grn gua'u
-*** al fin ; ^ fin 1
-->grn ijapýpe
-*** al fin y al cabo ; ^ fin 1
-->grn ipahápe
-*** en fin ; ^ fin 1
-->grn hasypeve
-*** por fin ; ^ fin 1
-->grn hasypeve
-->grn hasýpe
-->grn teĩ
-*** sin fin ; ^ fin 1
-->grn apyre'ỹ
 *** al final ; ^ final 1
 ->grn ipahápe
 *** finalmente ; ^ finalmente 0
@@ -1280,10 +1287,6 @@
 ->grn gua'u
 *** fingiendo ; ^ fingiendo 0
 ->grn gua'u
-*** en el fondo ; ^ fondo 2
-->grn huguápe
-*** en el fondo de ; ^ fondo 2
-->grn ruguápe
 *** en forma espontánea ; ^ forma 1
 ->grn ijehegui
 *** en forma ruidosa ; ^ forma 1
@@ -1630,12 +1633,6 @@
 ->grn manterei
 *** meramente ; ^ meramente 0
 ->grn mante
-*** mientras ; ^ mientras 0
-->grn aja
-->grn jave
-->grn javeve
-*** mientras tanto ; ^ mientras 0
-->grn upeaja
 *** lo mismo ; ^ mismo 1
 ->grn peteĩcha
 *** con moderación ; ^ moderación 1
@@ -1678,8 +1675,6 @@
 ->grn eterei
 *** multiplicando ; ^ multiplicando 0
 ->grn katuĩ
-*** muy ; ^ muy 0
-->grn asy
 *** mucho más ; ^ más 1
 ->grn hetave
 *** más ; ^ más 0
@@ -2180,8 +2175,6 @@
 ->grn asajepyte
 *** plena siesta ; ^ siesta 1
 ->grn asajetini
-*** siesta muy caliente y silenciosa ; ^ siesta 0
-->grn asajetini
 *** con sigilo ; ^ sigilo 1
 ->grn kirirĩhápe
 *** con silencio ; ^ silencio 1
@@ -2287,8 +2280,6 @@
 ->grn kóicha
 ->grn péicha
 ->grn ãicha
-*** tarado ; ^ tarado 0
-->grn tarova
 *** con tardanza ; ^ tardanza 1
 ->grn hasýpe
 *** de tarde ; ^ tarde 1
@@ -2305,58 +2296,18 @@
 ->grn aĝamive
 *** a la tardecita ; ^ tardecita 2
 ->grn ka'aruete
-*** tardiamente ; ^ tardiamente 0
+*** tardíamente ; ^ tardíamente 0
 ->grn are
 *** temprano ; ^ temprano 0
 ->grn voi
 ->grn voiete
 *** al terminar ; ^ terminar 1
 ->grn ipahápe
-*** al mismo tiempo ; ^ tiempo 2
-->grn jave
-->grn javeve
-*** a tiempo ; ^ tiempo 1
-->grn araitépe
-->grn ha'etépe
-*** en aquel tiempo ; ^ tiempo 2
-->grn upémarõ
-->grn upéramo
-->grn upérõ
-*** en muy corto tiempo ; ^ tiempo 3
-->grn sapy'aitépe
-*** en tiempo remoto ; ^ tiempo 1
-->grn kuriete
-*** ya hace muchísimo tiempo ; ^ tiempo 3
-->grn aretereíma
-*** hace muchísimo tiempo que ; ^ tiempo 2
-->grn areterei
-*** hace ya mucho tiempo que ; ^ tiempo 3
-->grn aretéma
-*** hace ya mucho tiempo ; ^ tiempo 3
-->grn ymáma
-*** hace tiempo que ; ^ tiempo 1
-->grn yma
-*** hace mucho tiempo ; ^ tiempo 2
-->grn ymaiterei
-->grn ymaraka'e
-*** hace tiempo ; ^ tiempo 1
-->grn are
-->grn yma
-*** justo a tiempo ; ^ tiempo 2
-->grn ha'etépe
-*** tiempo atrás ; ^ tiempo 0
-->grn yma
-*** todo el tiempo que ; ^ tiempo 2
-->grn javeve
-*** sobre la tierra ; ^ tierra 2
-->grn yvýpe
 *** todos sin excepción ; ^ todos 0
 ->grn mayma
 *** todo ; ^ todo 0
 ->grn mayma
 ->grn ñavo
-*** en torno a ; ^ torno 1
-->grn rupi
 *** trabajosamente ; ^ trabajosamente 0
 ->grn hasýpe
 *** tranquilamente ; ^ tranquilamente 0
@@ -2381,10 +2332,6 @@
 ->grn máva
 *** unánimemente ; ^ unánimemente 0
 ->grn oñoñe'ẽme
-*** cosa sin valor ; ^ valor 2
-->grn mba'erei
-*** de poco valor ; ^ valor 2
-->grn chu'i
 *** en vano ; ^ vano 1
 ->grn rei
 *** no en vano ; ^ vano 2
@@ -2396,58 +2343,15 @@
 ->grn añetehápe
 *** de veras ? ; ^ veras 1
 ->grn ajépa
-*** a la verdad ; ^ verdad 2
-->grn añetehápe
-*** de verdad ; ^ verdad 1
-->grn ajeápy
-*** en verdad ; ^ verdad 1
-->grn añete
-->grn añetehápe
-*** es verdad ? ; ^ verdad 1
-->grn ajépa
-*** verdad ? ; ^ verdad 0
-->grn ajépa
 *** verdaderamente ; ^ verdaderamente 0
 ->grn aje
 ->grn añetehápe
 ->grn ha'ete
-*** a la vez ; ^ vez 2
-->grn jave
-*** aquella vez ; ^ vez 1
-->grn ako
-*** de vez en cuando ; ^ vez 1
-->grn jepi
-->grn mimi
-->grn sapy'apy'a
-*** esta vez ; ^ vez 1
-->grn ko'áĝa
-*** la vez pasada ; ^ vez 1
-->grn kokuehe
-*** otra vez ; ^ vez 1
-->grn jey
-->grn jeýma
-*** en vez de ; ^ vez 1
-->grn rekovia
-*** a veces ; ^ veces 1
-->grn jepi
-->grn sapy'apy'a
-->grn sapy'ánte
-*** algunas veces ; ^ veces 1
-->grn jepi
-*** en vida ; ^ vida 1
-->grn tekovépe
 *** violentamente ; ^ violentamente 0
 ->grn hatã
 ->grn mbaretépe
-*** a dos voces ; ^ voces 2
-->grn joyvy
 *** voluntariamente ; ^ voluntariamente 0
 ->grn volu
-*** en voz baja ; ^ voz 1
-->grn guyguy
-*** de vuelta ; ^ vuelta 1
-->grn jeýma
-->grn jey
 *** ya ; ^ ya 0
 ->grn mandi
 *** en el ínterin ; ^ ínterin 2

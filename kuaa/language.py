@@ -1513,7 +1513,7 @@ class Language:
                 print("POS {} not in morphology {}".format(pos, morf))
                 return [root]
             posmorph = morf[pos]
-#            print("Generating root {} with features {}".format(root, features.__repr__()))
+#            print("Generating root {} with POS {} and features {}".format(root, pos, features.__repr__()))
             output = posmorph.gen(root, update_feats=features, guess=guess, only_words=True, cache=cache)
         else:
             for posmorph in list(morf.values()):

@@ -829,7 +829,8 @@ class MorphoSyn(Entry):
                     failed = False
                     for ms, start, end in sentence.morphosyns:
                         if ms.name.startswith(self.failif) and start <= sindex <= end:
-                            print("{} fails because {} has already succeeded".format(self, ms))
+                            if verbosity:
+                                print("{} fails because {} has already succeeded".format(self, ms))
                             failed = True
                             break
                     if failed:
@@ -989,8 +990,8 @@ class MorphoSyn(Entry):
 #                print("Recording deletion for match element {}, target: {}".format(elements[i], elements[j]))
         if self.add_items:
             print("Warning: Adding items in Morphosyn not yet implemented!")
-#            for i, item in self.add_items:
-#                print("Adding item {} in position {}".format(item, i))
+            for i, item in self.add_items:
+                print("Adding item {} in position {}".format(item, i))
         if self.swap_indices:
             i1, i2 = self.swap_indices
             elements[i1], elements[i2] = elements[i2], elements[i1]
