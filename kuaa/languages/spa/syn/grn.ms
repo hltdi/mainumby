@@ -66,9 +66,11 @@ suj/3pf :: ellas [pos=v,p=3,n=1]
 #**2formal :: [pos=v,+fin,p=3] ; 0-> [p=2] ; FAILIF suj/3
 
 ## negativo
-que_neg_sbp :: que no [pos=v,tm=sbp,+neg] ; // 1
-# imperativo (debe aplicarse antes de la regla más general)
-neg_ipv :: no [pos=v,tm=sbp,+negipv] ; 1-> [tm=ipv] ; 0-> [+ipv] ; FAILIF que_neg_
+# imperativo (hay otros casos?)
+neg_ipv :: ¡ no [pos=v,tm=sbp,+negipv] ; // 0 ; 2-> [tm=ipv,p=2] ; 1-> [+ipv]
+# que_neg_sbp :: que no [pos=v,tm=sbp,+neg] ; // 1
+# # imperativo (debe aplicarse antes de la regla más general)
+# neg_ipv :: no [pos=v,tm=sbp,+negipv] ; 1-> [tm=ipv] ; 0-> [+ipv] ; FAILIF que_neg_
 neg :: no [pos=v,+neg] ; // 0 ; FAILIF neg_ipv
 
 ## derivación 2

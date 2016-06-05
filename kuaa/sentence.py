@@ -162,7 +162,7 @@ class Document(list):
     word1_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)(\w)([)\]}\"\'»”’*\-–—,:;=]*[?|.]?)$")
     # word of more than one character: one beginning character, one end character, 0 or more within characters;
     # followed by possible punctuation and a possible footnote
-    word_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)([\w#@~][\w\-/:;+.'`~&=\|]*[\w/º#.])([)\]}\"\'»”’*\-–—,:;=]*[.?!]?\d*)$")
+    word_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)([\w#@~][\w\-/:;+.'`~&=\|]*[\w/º#.])([)\]}\"\'»”’*\-–—,:;=]*[.?!]?[\"\'»”’]?\d*)$")
     period_re = re.compile("([\w.\-/:;+.'`~&=\|]+\.)([\d]*)$")
     start_re = re.compile('[\-–—¿¡\'\"«“‘(\[]+$')
     poss_end_re = re.compile('[")\]}]{0,2}[?!][)"\]]{0,2}')
@@ -492,6 +492,9 @@ class Sentence:
 
     def lowercase(self):
         """Make capitalized tokens lowercase. 2106.05.08: only do this for the first word."""
+        # There may be initial punctuation.
+        if self.language.is_punc(self.tokens[0]):
+            self.tokens[1] = self.tokens[1].lower()
         self.tokens[0] = self.tokens[0].lower()
 #        for index, token in enumerate(self.tokens):
 #            if token.istitle():

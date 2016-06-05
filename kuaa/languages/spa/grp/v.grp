@@ -18,6 +18,8 @@
 ->grn hayviru'i_v[cat=a,ps=3] ; 0==0 tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,inter:inter
 #### AUXILIARIES
 ### QUERER + subjunctive clause
+*** querer_v[-r] que $v[tm=sbp] ; ^ querer_v 0
+->grn pota_v[subcat=i] $v[tmp=prs] ; || 0, -1, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,inter:inter ; 2==1 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,pp:pp
 ### SEGUIR
 # The verb has copied the tense and subject person/number in morphosyns. This has seguir mapped onto manterei.
 *** seguir_v[-r] $v ; ^ seguir_v 0
@@ -4374,6 +4376,10 @@
 *** acordar_v[+r] ; ^ acordar_v 0 ; #72
 ->grn mandu'a_v[cat=che]
 ->grn ñemomandu'a_v[cat=a] ; #2
+*** acordar_v[+r] de $n_prs; ^ acordar_v 0
+->grn mandu'a_v[cat=che] $n_prs rehe ; || 0, 2, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+*** acordar_v[+r] de $pro; ^ acordar_v 0
+->grn mandu'a_v[cat=che] $pro[caso=re] ; || 0, -1, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
 *** acorralar_v[+r] ; ^ acorralar_v 0
 ->grn ñemongora_v[cat=a]
 *** acorralar_v[-r] ; ^ acorralar_v 0 ; #1
@@ -19820,11 +19826,19 @@
 *** recordar_v[-r] ; ^ recordar_v 0
 ->grn mandu'a_v[cat=che]
 *** recordar_v[-r] a $n_prs ; ^ recordar_v 0
-->grn mandu'a_v[cat=che] $n_prs[caso=pe] ; || 0, -1, 1
+->grn mandu'a_v[cat=che] $n_prs rehe ; || 0, 2, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
 *** recordar_v[-r,po=3,no=0] ; ^ recordar_v 0
-->grn mandu'a_v[cat=che] (chupe)
+->grn mandu'a_v[cat=che] (hese) ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
 *** recordar_v[-r,po=3,no=1] ; ^ recordar_v 0
-->grn mandu'a_v[cat=che] (chupekuéra)
+->grn mandu'a_v[cat=che] (hesekuéra) ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+*** recordar_v[-r,po=1,no=0] ; ^ recordar_v 0
+->grn mandu'a_v[cat=che] cherehe ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+*** recordar_v[-r,po=2,no=0] ; ^ recordar_v 0
+->grn mandu'a_v[cat=che] nderehe ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+*** recordar_v[-r,po=1,no=1] ; ^ recordar_v 0
+->grn mandu'a_v[cat=che] ñanderehe|orerehe ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+*** recordar_v[-r,po=2,no=1] ; ^ recordar_v 0
+->grn mandu'a_v[cat=che] penderehe ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
 *** recorrer_v[-r] ; ^ recorrer_v 0
 ->grn <hasa_v[cat=a]
 *** recorrer_v[-r] a $n_prs ; ^ recorrer_v 0

@@ -3,13 +3,20 @@
 ->grn cheño
 *** yo ; ^ yo 0
 ->grn che_n
+*** mí ; ^ mí 0
+->grn che_n
 *** vos ; ^ vos 0
+->grn nde_n
+*** ti ; ^ ti 0
 ->grn nde_n
 *** usted ; ^ usted 0
 ->grn nde_n
 *** ustedes ; ^ ustedes 0
 ->grn pende_n[n=1]
 *** nosotros ; ^ nosotros 0
+->grn ore_n[n=1]
+->grn ñande_n[n=1]
+*** nosotras ; ^ nosotras 0
 ->grn ore_n[n=1]
 ->grn ñande_n[n=1]
 *** él ; ^ él 0
