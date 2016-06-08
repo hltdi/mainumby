@@ -38,13 +38,12 @@ tr.trans
 tr.transtitle
 {
     padding: 5px;
-    border: 1px solid black;
 }
 td.transtitle
 {
    text-align: left;
    vertical-align: top;
-   padding: 5px;
+   padding: 0px;
    font-size: 105%;
 /*   font-style: italic; */
 /*   border: 1px solid black; */
@@ -53,7 +52,7 @@ th.transtitle
 {
    text-align: left;
    vertical-align: top;
-   padding: 5px;
+   padding: 0px;
    font-size: 105%;
 }
 td.trans
@@ -63,7 +62,7 @@ td.trans
    padding: 5px;
 /*   font-style: italic; */
    border-bottom: 1px solid black;
-   font-size: 95%;
+   font-size: 100%;
 }
 td.transbutton
 {
@@ -186,6 +185,7 @@ function OnRegFrase() {
     var radio = document.Form2.choice;
     var choice = "";
     var fratra = document.Form2.fratra.value;
+    document.getElementById("segtra2").innerHTML = "Traducción seleccionada";
     if (segtrans != "") {
         segtrans = limpiarGrn(segtrans);
         document.Form2.fratra.value += "||" + segment + "=" + segtrans;
@@ -230,6 +230,7 @@ function Segment(text, segment, color) {
         return false;        
     }
     document.getElementById('segtra').innerHTML = formatted;
+    document.getElementById('segtra2').innerHTML = "Introducir otra traducción";
     document.Form2.seg.value = segment;
     document.getElementById("segment").value = '';
 }
@@ -342,16 +343,20 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
   </td>
 </tr>
 <tr class="transtitle">
-<td class="trans">Sugerencias de Mbojereha</td>
-<td class="trans">Introducir otra traducción</td>
+  <td class="trans" colspan='2'>Sugerencias de Mbojereha</td>
 </tr>
-<tr>
-<td class="transchoice">
-<p id="segtra"></p>
-</td>
-<td class="transtext">
+<tr class="trans">
+  <td class="transchoice" colspan='2'>
+    <p id="segtra"></p>
+  </td>
+</tr>
+<tr class="transtitle">
+<td class="trans" colspan='2'><span id="segtra2">Introducir otra traducción</span></td>
+</tr>
+<tr class="trans">
+  <td class="transtext" colspan='2'>
     <textarea name="UTraSeg" id="segment"></textarea>
-</td>
+  </td>
 </tr>
 </table>
 <p></p>

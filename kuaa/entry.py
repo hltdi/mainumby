@@ -335,6 +335,7 @@ class Group(Entry):
             return False
         matcheddel = False
         for index, token in enumerate(self.tokens):
+#            print ("  Matching token {}: {}".format(index, token))
             # Whether there's a sentence node gap between this token and the last one that matched
             nodegap = 0
             # Whether this token is the group head
@@ -357,12 +358,12 @@ class Group(Entry):
                 rightdel = None
                 if node.left_delete:
                     leftdel = node.left_delete
-#                    print(" Trying to match {} in {} with left deleted stokens {}".format(token, self, leftdel))
+#                    print("    Trying to match {} in {} with left deleted stokens {}".format(token, self, leftdel))
                     matcheddel = False
                     for ld in leftdel:
                         if token == ld:
                             # Current group token matches left deleted sentence node token; advance to next group token
-#                            print("  {} matches, advancing to next group token".format(ld))
+#                            print("    {} matches, advancing to next group token".format(ld))
                             matcheddel = True
                             break
                     if matcheddel:
@@ -371,56 +372,57 @@ class Group(Entry):
                         break
                 if node.right_delete:
                     rightdel = node.right_delete
-                    print(" Trying to match {} in {} with right deleted stokens {}".format(token, self, rightdel))
+                    print("    Trying to match {} in {} with right deleted stokens {}".format(token, self, rightdel))
                 if verbosity > 1:
-                    fstring = "  Trying {}, token index {}, snode index {}, head index {}, last s index {}"
+                    fstring = "   Trying {}, token index {}, snode index {}, head index {}, last s index {}"
                     print(fstring.format(node, index, snode_indices, head_sindex, last_sindex))
                 if ishead:
-                    # This token is the head of the group
-                    if node.index == head_sindex:
-                        # This is the token corresponding to the group head
-                        # If this is the sentence-initial node and token is capitalized, match with
-                        # node's head capitalized.
-                        if self.capitalized and head_sindex == 0:
-#                            print("Matching capitalized head")
-                            if verbosity > 1:
-                                print("Matching capitalized group head with sentence-initial word")
-                            node_match = node.match(token.lower(), feats)
-                            # Capitalize the node's token if this succeeds
-                            if node_match != False:
-                                node.token = node.token.capitalize()
-                        else:
-                            node_match = node.match(token, feats)
-                        if node_match == False:
-                            # This has to match, so fail now
+                    print("   Matching head, node index {}, head sindex {}".format(node.index, head_sindex))
+                    if node.index != head_sindex:
+                        # Is there any way this could not fail??
+                        return False
+                    # This is the token corresponding to the group head
+                    # If this is the sentence-initial node and token is capitalized, match with
+                    # node's head capitalized.
+                    if self.capitalized and head_sindex == 0:
+                        if verbosity > 1:
+                            print("Matching capitalized group head with sentence-initial word")
+                        node_match = node.match(token.lower(), feats)
+                        # Capitalize the node's token if this succeeds
+                        if node_match != False:
+                            node.token = node.token.capitalize()
+                    else:
+                        node_match = node.match(token, feats)
+                    if node_match == False:
+                        # This has to match, so fail now
+                        if verbosity:
+                            print("{} failed to match in token {}".format(self, token))
+                        return False
+                    else:
+                        print("  matched head {}".format(token))
+                        # If the last token was not a category, this has to follow immediately; if it doesn't fail
+                        if index > 0 and not last_cat and last_sindex >=0 and nodegap:
                             if verbosity:
+                                fstring = " Group head token {} in sentence position {} doesn't follow last token at {}"
+                                print(fstring.format(token, snode_indices, last_sindex))
                                 print("{} failed to match in token {}".format(self, token))
                             return False
-                        else:
-                            # If the last token was not a category, this has to follow immediately; if it doesn't fail
-                            if index > 0 and not last_cat and last_sindex >=0 and nodegap:
-#                                snode_start - last_sindex != 1:
-                                if verbosity:
-                                    fstring = " Group head token {} in sentence position {} doesn't follow last token at {}"
-                                    print(fstring.format(token, snode_indices, last_sindex))
-                                    print("{} failed to match in token {}".format(self, token))
-                                return False
-                            match_snodes1.append((node.index, node_match, token, True))
-                            if verbosity:
-                                fstring = " Group token {} matched node {} in {}, node index {}, last_sindex {}"
-                                print(fstring.format(token, node, self, snode_indices, last_sindex))
-                            last_sindex = snode_end
-                            if verbosity > 1:
-                                print("  Head matched already".format(node))
-                            matched = True
-                            snindex = node.index + 1
-                            # Don't look further for an snode to match this token
-                            break
+                        match_snodes1.append((node.index, node_match, token, True))
+                        if verbosity:
+                            fstring = " Group token {} matched node {} in {}, node index {}, last_sindex {}"
+                            print(fstring.format(token, node, self, snode_indices, last_sindex))
+                        last_sindex = snode_end
+                        if verbosity > 1:
+                            print("  Head matched already".format(node))
+                        matched = True
+                        snindex = node.index + 1
+                        # Don't look further for an snode to match this token
+                        break
                 else:
                     # Match a group token that's not the head
                     node_match = node.match(token, feats)
-                    if verbosity > 1:
-                        print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
+#                    if verbosity > 1:
+                    print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
                     if node_match != False:
 #                        if Group.is_cat(token):
 #                            print("Node {} matched cat token {}".format(node, token))
@@ -450,6 +452,7 @@ class Group(Entry):
                         nodegap += 1
             if matcheddel:
                 # Matched a left deleted element; move on to next group token
+                print("  Matched left del; move on to next group token; {}".format(match_snodes1))
                 match_snodes.append(match_snodes1)
                 continue
             if not matched:

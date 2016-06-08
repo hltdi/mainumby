@@ -998,7 +998,7 @@ class Language:
                     else:
                         self.suffixes[current_suffix] = current_attribs
 
-    def strip_suffixes(self, word, guess=False, segment=False, verbose=False, pretty=False):
+    def strip_suffixes(self, word, guess=False, segment=False, incl_suf=True, verbose=False, pretty=False):
         '''Check to see if the word can be directly segmented into a stem and one or more suffixes.'''
         if self.suffixes:
             result = []
@@ -1027,9 +1027,13 @@ class Language:
                                         a.append((sufcat, suffixes))
                                         result.append([root, self.morphology[anal].fullname, a])
                                     else:
-                                        result.append([root + '+' + suffixes, self.morphology[anal].fullname, a])
+                                        if incl_suf:
+                                            root = root + '+' + suffixes
+                                        result.append([root, self.morphology[anal].fullname, a])
                                 else:
-                                    result.append([root + '+' + suffixes, a])
+                                    if incl_suf:
+                                        root = root + '+' + suffixes
+                                    result.append([root, a])
                     else:
                         if pretty:
                             gram = self.morphology[anal].fs2pretty(gram)
@@ -1043,6 +1047,8 @@ class Language:
                   pretty=False,
                   # Whether to return empty analyses / all analyses
                   unanal=False, get_all=True,
+                  # Whether to include stripped suffixes (e.g., abrir+lo)
+                  incl_suf = False,
                   to_dict=False, preproc=False, postproc=False,
                   # Whether to cache new entries
                   cache=True,
@@ -1074,8 +1080,9 @@ class Language:
             return analyses
         form = word
         # Try stripping off suffixes
-        suff_anal = self.strip_suffixes(form, pretty=pretty)
+        suff_anal = self.strip_suffixes(form, incl_suf=incl_suf, pretty=pretty)
         if suff_anal:
+            print("Suff anal {}".format(suff_anal))
             analyses.extend(suff_anal)
             if cache and not pretty:
                 to_cache.extend(suff_anal)

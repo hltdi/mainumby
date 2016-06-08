@@ -1,5 +1,7 @@
 """
-This file is part of L3Morpho.
+This file is part of the L3Morpho and Mainumby projects.
+    Copyright (C) 2014, 2015, 2016
+    by the HLTDI L^3 Team <gasser@indiana.edu>
 
     L3Morpho is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,7 +16,7 @@ This file is part of L3Morpho.
     You should have received a copy of the GNU General Public License
     along with L3Morpho.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------
-Author: Michael Gasser <gasser@cs.indiana.edu>
+Author: Michael Gasser <gasser@indiana.edu>
 
 Strip off affixes, returning stem and affixes.
 

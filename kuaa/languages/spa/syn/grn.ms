@@ -119,4 +119,3 @@ a_las_que_rel :: [pos=n] a las que [pos=v,rel=obl] ; // 0 1 2
 
 ## preguntas
 pregunta :: ¿ [pos=v,+inter] ; // 0
-

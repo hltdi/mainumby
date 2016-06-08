@@ -432,29 +432,29 @@
 ->grn umíva_n
 ->grn amóva_n
 ## PALABRAS INTERROGATIVAS
-*** ¿ dónde ; ^ dónde 1
+*** ¿ dónde ; ^ dónde 1 ; -X-
 ->grn moõpa
-*** ¿ adónde ; ^ adónde 1
+*** ¿ adónde ; ^ adónde 1 ; -X-
 ->grn moõpa
-*** ¿ por qué; ^ qué 2
+*** ¿ por qué; ^ qué 2 ; -X-
 ->grn mba'érepa
-*** ¿ por qué no ; ^ qué 2
+*** ¿ por qué no ; ^ qué 2 ; -X-
 ->grn mba'éguitepa
-*** ¿ qué ; ^ qué 1
+*** ¿ qué ; ^ qué 1 ; -X-
 ->grn mba'épa
-*** ¿ quién ; ^ quién 1
+*** ¿ quién ; ^ quién 1 ; -X-
 ->grn mávapa
-*** ¿ cómo ; ^ cómo 1
+*** ¿ cómo ; ^ cómo 1 ; -X-
 ->grn mba'éichapa
-*** ¿ cuándo ; ^ cuándo 1
+*** ¿ cuándo ; ^ cuándo 1 ; -X-
 ->grn araka'épa
-*** ¿ cuánto ; ^ cuánto 1
+*** ¿ cuánto ; ^ cuánto 1 ; -X-
 ->grn mbovýpa
-*** ¿ cuánta ; ^ cuánta 1
+*** ¿ cuánta ; ^ cuánta 1 ; -X-
 ->grn mbovýpa
-*** ¿ cuántos ; ^ cuántos 1
+*** ¿ cuántos ; ^ cuántos 1 ; -X-
 ->grn mbovýpa
-*** ¿ cuántas ; ^ cuántas 1
+*** ¿ cuántas ; ^ cuántas 1 ; -X-
 ->grn mbovýpa
 *** por qué ; ^ qué 1
 ->grn mba'ére
@@ -477,15 +477,15 @@
 ->grn mba'éiko
 *** qué será ; ^ qué 0
 ->grn mba'éiko
-*** ¿ qué tal ; ^ qué 1
+*** ¿ qué tal ; ^ qué 1 ; -X-
 ->grn mba'éichapa
 *** adónde ; ^ adónde 0
 ->grn moõ
-*** ¿ qué clase es ; ^ clase 2
+*** ¿ qué clase es ; ^ clase 2 ; -X-
 ->grn mba'eichaguápa
 *** cuál ; ^ cuál 0
 ->grn máva
-*** ¿ cuál ; ^ cuál? 1
+*** ¿ cuál ; ^ cuál? 1 ; -X-
 ->grn mávapa
 *** cuán ; ^ cuán 0
 ->grn mba'éicha
@@ -502,15 +502,15 @@
 *** cómo ; ^ cómo 0
 ->grn mba'éicha
 ->grn mba'éiko
-*** ¿ cómo es exactamente? ; ^ cómo 1
+*** ¿ cómo es exactamente? ; ^ cómo 1 ; -X-
 ->grn mba'eichaitépa
-*** ¿ cómo es ; ^ cómo 1
+*** ¿ cómo es ; ^ cómo 1 ; -X-
 ->grn mba'éichapa
-*** ¿ cómo estás ; ^ cómo 1
+*** ¿ cómo estás ; ^ cómo 1 ; -X-
 ->grn mba'eteko
-*** ¿ cual es la razón ? ; ^ razón 4
+*** ¿ cual es la razón ? ; ^ razón 4 ; -X-
 ->grn mba'érepa
-*** ¿ por qué razón ? ; ^ razón 3
+*** ¿ por qué razón ? ; ^ razón 3 ; -X-
 ->grn mba'éguipa
 *** de qué procedencia ? ; ^ procedencia 2
 ->grn moõgui
