@@ -1,5 +1,5 @@
 #   
-#   Learning Mainumby groups
+#   Mainumby: bilingual corpora and patterns to search for in corpora.
 #
 ########################################################################
 #
@@ -7,7 +7,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, HLTDI <gasser@cs.indiana.edu>
+#   Copyright (C) 2014, HLTDI <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -500,10 +500,9 @@ class Corpus(list):
                     return False
                 exp_unamb = sum([pos_grams[f] for f in pcount.keys()])
                 if verbose:
-                    print('Count of unamb feats for {}: {}; expected freq of amb feats {}, expected freq of unamb feats {}'.format(r,
-                                                                                                                                   psum, outfreq, exp_unamb))
+                    fstring = 'Count of unamb feats for {}: {}; expected freq of amb feats {}, expected freq of unamb feats {}'
+                    print(fstring.format(r, psum, outfreq, exp_unamb))
                 exp = (psum * outfreq) / exp_unamb
-#(1.0 - outfreq)
                 if verbose:
                     print('Expected count of ambiguous {} analyses with root {}: {}'.format(p, r, exp))
                 exp = round((featfreq * exp) / outfreq)
@@ -608,8 +607,7 @@ class Pattern(list):
     A further possibility, only for word forms, is a pair (tuple) with 'not' or '~'
     as the first element, meaning the word must *not* be a member of the set that
     is the second element of the pair.
-    Abbreviated formats are possible; these are expanded during initialization;
-    see complete().
+    Abbreviated formats are possible; these are expanded during initialization; see complete().
     """
 
     def __init__(self, lst):

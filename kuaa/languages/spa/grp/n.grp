@@ -44,7 +44,6 @@
 ->grn $n <hekoha_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 *** amigo_n de $n ; ^ amigo_n 0
 ->grn $n irũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
-->grn $n angirũ_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 *** amor_n de $n ; ^ amor_n 0
 ->grn $n <hayhu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n <hembiayhu_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n

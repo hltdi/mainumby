@@ -1,13 +1,13 @@
 #   
-#   Mbojereha languages: dictionaries of lexical/grammatical entries
+#   Mainumby: languages: dictionaries of lexical/grammatical entries
 #
 ########################################################################
 #
-#   This file is part of the Mbojereha project
+#   This file is part of the Mainumby project within the PLoGS metaproject
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015, 2016 HLTDI <gasser@indiana.edu>
+#   Copyright (C) 2014, 2015, 2016 HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -213,11 +213,12 @@ class Language:
         if use in (ANALYSIS,):
             self.read_groups(files=groupnames)
 
-    def quit(self):
-        """Do stuff when the program exits."""
-        if self.use in (ANALYSIS, SOURCE):
+    def quit(self, cache=True):
+        """Do stuff when the program exits. Only cache analyses and generation if there is a current
+        session/user."""
+        if cache and self.use in (ANALYSIS, SOURCE):
             self.write_cache()
-        if self.use in (GENERATION, TARGET):
+        if cache and self.use in (GENERATION, TARGET):
             for pos in self.morphology.values():
                 pos.quit()
 

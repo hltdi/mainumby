@@ -2,11 +2,11 @@
 #
 ########################################################################
 #
-#   This file is part of the HLTDI L^3 project
+#   This file is part of the Mainumby project within the PLoGS metaproject
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2015, 2016, HLTDI <gasser@indiana.edu>
+#   Copyright (C) 2015, 2016, HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -62,8 +62,8 @@ def quit(session=None):
     """Quit the session (and the program), cleaning up in various ways."""
     for language in Language.languages.values():
         # Store new cached analyses or generated forms for
-        # each active language.
-        language.quit()
+        # each active language, but only if there is a current session/user.
+        language.quit(cache=session)
     if session:
         session.quit()
 

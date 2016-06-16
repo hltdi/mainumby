@@ -3,11 +3,11 @@
 #
 ########################################################################
 #
-#   This file is part of the HLTDI L^3 project
+#   This file is part of the Mainumby project within the PLoGS metaproject
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2016 HLTDI <gasser@indiana.edu>
+#   Copyright (C) 2016 PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -101,7 +101,7 @@ class Session:
 #        return self.target.ortho_clean(string)
 
     def quit(self):
-        """Set the end time and stop running."""
+        """Save new users, set the end time, save the session, and stop running."""
         # Save any new users (can there be more than 1?)
         User.write_new()
         User.new_users.clear()
@@ -210,7 +210,7 @@ class SentRecord:
                 segment.write(file=file)
 
 class SegRecord:
-    """A record of a sentence segment and its translation by a user."""
+    """A record of a sentence solution segment and its translation by a user."""
 
     def __init__(self, solseg, sentence=None, session=None):
         # a SentRecord instance
@@ -219,6 +219,7 @@ class SegRecord:
         self.indices = solseg.indices
         self.translation = solseg.translation
         self.tokens = solseg.token_str
+        self.gname = solseg.gname
         # Add to parent SentRecord
         self.sentence.segments[self.tokens] = self
         # These get filled in during set_html() in SolSeg
@@ -242,6 +243,7 @@ class SegRecord:
 
     def write(self, file=sys.stdout):
         print("{}".format(self), file=file)
+        print("{}".format(self.gname), file=file)
         print("{}".format(self.feedback), file=file)
 
 class Feedback:
@@ -277,7 +279,9 @@ ACCEPT = Feedback()
 class User:
     """User of the system who is registered and whose feedback is saved."""
 
+    # Dictionary of users, with usernames as keys.
     users = {}
+    # Dictionary of users created during the most recent session, with usernames as keys.
     new_users = {}
 
     def __init__(self, username='', email='', password='', name='', level=1, pw_hash='',
@@ -292,7 +296,7 @@ class User:
             self.pw_hash = pw_hash
         else:
             self.set_password(password)
-        # Add to list of all users
+        # Add to dict of all users
         User.users[self.username] = self
         # If this is a new user, save it here so it can be written to all.usr at the end
         # of the session.
@@ -350,6 +354,7 @@ class User:
 
     @staticmethod
     def write_new():
+        """Enter all new users (normally at most one) in the users file."""
         with open(User.get_users_path(), 'a', encoding='utf8') as file:
             for username, user in User.new_users.items():
                 user.write(file=file)

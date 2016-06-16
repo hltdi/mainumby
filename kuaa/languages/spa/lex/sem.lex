@@ -743,9 +743,9 @@ americano_n $n
 ametralladora_n $n
 ametrallar_v $v
 amianto_n $n
-amiga_n $n
-amigo_n $n
-amigote_n $n
+amiga_n $n,$n_prs
+amigo_n $n,$n_prs
+amigote_n $n,$n_prs
 amiguete_n $n
 amiguismo_n $n
 amilanar_v $v,$v_t

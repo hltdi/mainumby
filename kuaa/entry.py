@@ -377,7 +377,7 @@ class Group(Entry):
                     fstring = "   Trying {}, token index {}, snode index {}, head index {}, last s index {}"
                     print(fstring.format(node, index, snode_indices, head_sindex, last_sindex))
                 if ishead:
-                    print("   Matching head, node index {}, head sindex {}".format(node.index, head_sindex))
+#                    print("   Matching head, node index {}, head sindex {}".format(node.index, head_sindex))
                     if node.index != head_sindex:
                         # Is there any way this could not fail??
                         return False
@@ -399,7 +399,7 @@ class Group(Entry):
                             print("{} failed to match in token {}".format(self, token))
                         return False
                     else:
-                        print("  matched head {}".format(token))
+#                        print("  matched head {}".format(token))
                         # If the last token was not a category, this has to follow immediately; if it doesn't fail
                         if index > 0 and not last_cat and last_sindex >=0 and nodegap:
                             if verbosity:
@@ -421,8 +421,8 @@ class Group(Entry):
                 else:
                     # Match a group token that's not the head
                     node_match = node.match(token, feats)
-#                    if verbosity > 1:
-                    print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
+                    if verbosity > 1:
+                        print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
                     if node_match != False:
 #                        if Group.is_cat(token):
 #                            print("Node {} matched cat token {}".format(node, token))

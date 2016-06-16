@@ -128,7 +128,7 @@
 # 2016.05.05
 # -- Made the tokenizer more sophisticated (see RE in Document).
 
-import copy, re, random
+import copy, re, random, itertools
 from .ui import *
 from .segment import *
 from .record import SentRecord
@@ -1084,7 +1084,7 @@ class Sentence:
             tt = solution.get_ttrans_outputs()
             tt_complete = []
             end_index = -1
-            for indices, forms in tt:
+            for indices, forms, x, y in tt:
                 start, end = indices[0], indices[-1]
                 if start > end_index+1:
                     # Some word(s) not translated; use source forms with # prefix
@@ -1155,7 +1155,7 @@ class Solution:
         self.segments = []
         # Current session (need for creating SegRecord objects)
         self.session = session
-        print("Created solution with dstore {} and ginsts {}".format(dstore, ginsts))
+        print("Solución creada con dstore {} y ginsts {}".format(dstore, ginsts))
 
     def __repr__(self):
         return "|< {} >|({})".format(self.sentence.raw, self.index)
@@ -1166,7 +1166,8 @@ class Solution:
             g.display(word_width=word_width, s2gnodes=self.s2gnodes)
 
     def get_ttrans_outputs(self):
-        """Return a list of (snode_indices, translation_strings) for the solution's tree translations."""
+        """Return a list of (snode_indices, translation_strings, source group name, source merger groups) for the solution's
+        tree translations."""
         if not self.ttrans_outputs:
             self.ttrans_outputs = []
             last_indices = [-1]
@@ -1180,7 +1181,7 @@ class Solution:
                     raw1 = node.raw_indices
                     raw_indices.extend(raw1)
                 raw_indices.sort()
-                self.ttrans_outputs.append([raw_indices, tt.output_strings])
+                self.ttrans_outputs.append([raw_indices, tt.output_strings, tt.ginst.group.name, tt.get_merger_groups()])
                 last_indices = raw_indices
         return self.ttrans_outputs
 
@@ -1190,14 +1191,15 @@ class Solution:
         end_index = -1
         max_index = -1
         tokens = self.sentence.tokens
-        for raw_indices, forms in tt:
+        for raw_indices, forms, gname, merger_groups in tt:
             late = False
             start, end = raw_indices[0], raw_indices[-1]
 #            print("Segment {}->{}".format(start, end))
             if start > max_index+1:
                 # there's a gap between the farthest segment to the right and this one; make an untranslated segment
                 src_tokens = tokens[end_index+1:start]
-                seg = SolSeg(self, (end_index+1, start-1), [], src_tokens, session=self.session)
+                seg = SolSeg(self, (end_index+1, start-1), [], src_tokens, session=self.session, gname=gname,
+                             merger_groups=merger_groups)
                 self.segments.append(seg)
 #            src_tokens = tokens[start:end+1]
             if start < max_index:
@@ -1207,7 +1209,8 @@ class Solution:
             src_tokens = [(tokens[i] if i in raw_indices else '...') for i in range(start, end+1)]
             if late:
                 src_tokens[0] = "←" + src_tokens[0]
-            seg = SolSeg(self, raw_indices, forms, src_tokens, session=self.session)
+            seg = SolSeg(self, raw_indices, forms, src_tokens, session=self.session, gname=gname,
+                         merger_groups=merger_groups)
             self.segments.append(seg)
             max_index = max(max_index, end)
             end_index = end
@@ -1238,8 +1241,8 @@ class Solution:
 
     def merge_nodes(self, verbosity=0):
         """Merge the source features of cat and inst GNodes associated with each SNode."""
-        if verbosity:
-            print("Merging target nodes for {}".format(self))
+#        if verbosity:
+#            print("Merging target nodes for {}".format(self))
         for snode, gn_indices in zip(self.sentence.nodes, self.s2gnodes):
 #            print("snode {}, gn_indices {}".format(snode, gn_indices))
             # gn_indices is either one or two ints indexing gnodes in self.gnodes
@@ -1272,6 +1275,7 @@ class Solution:
                     print("  {}".format(t))
         # Create TreeTrans instances here
         abs_gnode_dict = {}
+        # A single gnode_dict for all treetranss
         gnode_dict = {}
         treetranss = []
         ttindex = 0
@@ -1285,10 +1289,12 @@ class Solution:
                 # Figure the various features for the next TreeTrans instance.
                 is_top = not any([(tree < other_tree) for other_tree in self.trees])
                 group_attribs = []
+                any_anode = False
                 for tgroup, tgnodes, tnodes in ginst.translations:
 #                    print("TGROUP {}, TGNODES {}, TNODES {}".format(tgroup, tgnodes, tnodes))
                     for tgnode, tokens, feats, agrs, t_index in tgnodes:
                         if tgnode.cat:
+                            any_anode = True
                             if tgnode in abs_gnode_dict:
                                 abs_gnode_dict[tgnode].append((tgroup, tokens, feats, agrs, t_index))
                             else:
@@ -1301,33 +1307,66 @@ class Solution:
 
                 treetrans = TreeTrans(self, tree=tree.copy(),
                                       ginst=ginst, # attribs=ginst.translations,
-                                      gnode_dict=gnode_dict, abs_gnode_dict=abs_gnode_dict, group_attribs=group_attribs,
+                                      gnode_dict=gnode_dict, abs_gnode_dict=abs_gnode_dict,
+                                      group_attribs=group_attribs,
+                                      any_anode=any_anode,
                                       index=ttindex, top=is_top)
                 treetranss.append(treetrans)
                 ttindex += 1
         self.treetranss = treetranss
+
+        # Add subTTs to TTs (actually only have to do this for top TTs)
+        for index, tt1 in enumerate(treetranss[:-1]):
+            tree1 = tt1.tree
+            for tt2 in treetranss[index:]:
+                tree2 = tt2.tree
+                if tree1 < tree2:
+                    tt2.subTTs.append(tt1)
+                elif tree2 < tree1:
+                    tt1.subTTs.append(tt2)
+
+        # Build TTs
         for tt in treetranss:
             if tt.outputs:
                 print("TreeTrans {} already processed".format(tt))
                 tt.display_all()
             elif tt.top:
+                # A list of pairs, one for each merger node
+#                gnodes = [n for n, s in tt.sol_gnodes_feats if len(n) > 1]
+#                print("MERGER GNODES for {}".format(tt))
+#                for gn in gnodes:
+#                    print(" {}".format(gn))
+#                gnode_trans = [(tt.gnode_dict.get(n[0]), tt.gnode_dict.get(n[1])) for n in gnodes]
+#                print("MERGE TRANSLATIONS for {}".format(tt))
+#                for gt in gnode_trans:
+#                    print(" {}".format(gt))
+                # Translation groups for this tree (top level)
+                tt.all_tgroups.append(tt.tgroups)
+                for stt in tt.subTTs:
+                    tt.all_tgroups.append(stt.tgroups)
+                # Find all combinations of the target groups involved in this TT (at any level)
+                tgroup_combs = list(itertools.product(*tt.all_tgroups))
+                if verbosity:
+                    print(" TT group combs")
+                    for tgc in tgroup_combs:
+                        print("  {}".format(tgc))
                 # Figure out the maximum number of translations of merge nodes and non-merge nodes
                 # For non-merge nodes it's the number of translations of the group
-                n_trans_nomerge = len(tt.group_attribs)
-                n_trans_merge = 1
-                merge = [s for s, f in tt.sol_gnodes_feats if len(s) > 1]
-                if merge:
-                    n_trans_merge = max([max([len(tt.gnode_dict.get(ss,[0])) for ss in s]) for s in merge])
-#                print("TT {}: max merge {}, max no merge {}".format(tt, n_trans_merge, n_trans_nomerge))
-                for tm_i in range(n_trans_merge):
-                    for tnm_i in range(n_trans_nomerge):
-#                        print(" Build indices: {}, {}".format(tm_i, tnm_i))
-                        tt.build(merge_index=tm_i, nomerge_index=tnm_i, verbosity=verbosity)
-                        tt.generate_words()
-                        tt.make_order_pairs()
-                        tt.create_variables()
-                        tt.create_constraints()
-                        tt.realize(all_trans=all_trans, interactive=interactive)
+#                n_trans_nomerge = len(tt.group_attribs)
+#                n_trans_merge = 1
+#                merge = [s for s, f in tt.sol_gnodes_feats if len(s) > 1]
+#                if merge:
+#                    n_trans_merge = max([max([len(tt.gnode_dict.get(ss,[0])) for ss in s]) for s in merge])
+                for tgroup_comb in tgroup_combs:
+#                for tm_i in range(n_trans_merge):
+#                    for tnm_i in range(n_trans_nomerge):
+                    tt.build(tg_comb=tgroup_comb, verbosity=verbosity)
+                             #tgroup_combs.pop(), merge_index=tm_i, nomerge_index=tnm_i, verbosity=verbosity)
+                    tt.generate_words()
+                    tt.make_order_pairs(verbosity=verbosity)
+                    tt.create_variables()
+                    tt.create_constraints()
+                    tt.realize(all_trans=all_trans, interactive=interactive)
                     if all_trans:
                         continue
                     if not interactive or not input('SEARCH FOR ANOTHER TRANSLATION FOR {}? [yes/NO] '.format(tt)):
