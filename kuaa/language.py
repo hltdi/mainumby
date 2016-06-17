@@ -55,6 +55,7 @@
 # -- Added nm.grp to group files that are automatically loaded
 
 from .entry import *
+from .utils import firsttrue
 from kuaa.morphology.morpho import Morphology, POS
 from kuaa.morphology.semiring import FSSet, TOP
 
@@ -240,11 +241,19 @@ class Language:
                 string = string.replace(c, d)
         return string
 
+    ### Getting and setting
+    def get_group(self, name):
+        """Name if not None is a string representing the group's 'name'."""
+        key = Group.get_key(name)
+        cands = self.groups.get(key)
+        return firsttrue(lambda c: c.name == name, cands)
+
+    ### Directories and files
+    
     @staticmethod
     def get_language_dir(abbrev):
         return os.path.join(LANGUAGE_DIR, abbrev)
 
-    ### Methods copied from morphology/language
     def get_dir(self):
         """Where data for this language is kept."""
         return os.path.join(LANGUAGE_DIR, self.abbrev)
@@ -258,13 +267,6 @@ class Language:
 
     def get_lex_dir(self):
         return os.path.join(self.get_dir(), 'lex')
-
-    def set_anal_cached(self):
-        self.cached = {}
-        self.read_cache()
-        # New analyses since language loaded,
-        # each entry a wordform and list of (root, FS) analyses
-        self.new_anals = {}
 
     def get_cache_dir(self):
         """Directory with cached analyses."""
@@ -312,6 +314,13 @@ class Language:
         """Pathname for file containing segmentable forms, e.g., del, they're."""
         d = self.get_lex_dir()
         return os.path.join(d, 'seg.lex')
+
+    def set_anal_cached(self):
+        self.cached = {}
+        self.read_cache()
+        # New analyses since language loaded,
+        # each entry a wordform and list of (root, FS) analyses
+        self.new_anals = {}
 
     def add_new_anal(self, word, anals):
         self.new_anals[word] = anals

@@ -69,6 +69,7 @@ class Session:
         # List of SentRecord objects
         self.sentences = []
         self.make_id()
+        print("Creando sesión {}".format(self))
 
     def __repr__(self):
         return "{} {}".format(SESSION_PRE, self.id)
@@ -220,6 +221,7 @@ class SegRecord:
         self.translation = solseg.translation
         self.tokens = solseg.token_str
         self.gname = solseg.gname
+        self.merger_gnames = solseg.merger_gnames
         # Add to parent SentRecord
         self.sentence.segments[self.tokens] = self
         # These get filled in during set_html() in SolSeg
@@ -244,6 +246,7 @@ class SegRecord:
     def write(self, file=sys.stdout):
         print("{}".format(self), file=file)
         print("{}".format(self.gname), file=file)
+        print("{}".format(self.merger_gnames), file=file)
         print("{}".format(self.feedback), file=file)
 
 class Feedback:

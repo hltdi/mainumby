@@ -31,7 +31,7 @@ from .sentence import *
 from .learn import *
 from .morphology import *
 from .record import *
-from . import db
+# from . import db
 
 ## Instantiate the Flask class to get the application
 app = Flask(__name__)
@@ -73,8 +73,13 @@ def init_users():
 
 def start(source, target, user):
     """Initialize a run. Create a session if there's a user."""
-    # Read in current users so that we can check for username overlap if a new account is created
+#    print("Starting {}, {}, {}".format(source, target, user))
+    # Read in current users so that we can find the current user and
+    # check for username overlap if a new account is created
     User.read_all()
+    if isinstance(user, str):
+        # Get the user from their username
+        user = User.users.get(user)
     if user:
         return kuaa.Session(source=source, target=target, user=user)
 

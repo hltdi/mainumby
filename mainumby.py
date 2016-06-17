@@ -41,12 +41,8 @@ __version__ = 1.0
 import kuaa
 
 ## Creación de oración simple y de documento.
-def eg_oracion(sentence, ambig=True, solve=False, session=True, user=None,
-               segment=False):
+def eg_oracion(sentence, ambig=True, solve=False, user=None, segment=False):
     e, g = cargar_eg()
-    if isinstance(user, str):
-        # Get the user from their username
-        user = usuario(user)
     session = kuaa.start(e, g, user)
     d = kuaa.Document(e, g, sentence, True, session=session)
     s = d[0]
@@ -64,7 +60,7 @@ def eg_doc(text, proc=True):
     return d
 
 def usuario(username):
-    return kuaa.User.users.get('username')
+    return kuaa.User.users.get(username)
 
 ## Cargar castellano y guaraní. Devuelve las 2 lenguas.
 def cargar_eg():

@@ -127,6 +127,9 @@
 # -- Fixed bug that prevented the same group (actually group head) from applying to different words.
 # 2016.05.05
 # -- Made the tokenizer more sophisticated (see RE in Document).
+# 2016.06.15
+# -- Fixed Solution.make_translations(), finally, so that it correctly calls build() on each top-level TreeTrans for each
+#    combination of top-level and subgroup translation.
 
 import copy, re, random, itertools
 from .ui import *
@@ -1345,7 +1348,8 @@ class Solution:
                 for stt in tt.subTTs:
                     tt.all_tgroups.append(stt.tgroups)
                 # Find all combinations of the target groups involved in this TT (at any level)
-                tgroup_combs = list(itertools.product(*tt.all_tgroups))
+                tgroup_combs = allcombs(tt.all_tgroups)
+#                list(itertools.product(*tt.all_tgroups))
                 if verbosity:
                     print(" TT group combs")
                     for tgc in tgroup_combs:

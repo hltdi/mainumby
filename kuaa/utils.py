@@ -36,7 +36,8 @@ except ImportError:
     pass
 
 def allcombs(seqs):
-    """Returns a list of all sequences consisting of one element from each of seqs."""
+    """Returns a list of all sequences consisting of one element from each of seqs.
+    This could also be done with itertools.product."""
     if not seqs:
         return []
     res = [[x] for x in seqs[0]]
@@ -46,6 +47,13 @@ def allcombs(seqs):
 #            print(" {} | {} | {}".format(i, rr, [(rr + [itemitem]) for itemitem in item]))
             res[i:i+1] = [(rr + [itemitem]) for itemitem in item]
     return res
+
+def firsttrue(predicate, seq):
+    """First element of sequence for which predicate is True. None otherwise."""
+    for x in seq:
+        px = predicate(x)
+        if  px:
+            return x
 
 ### Measure the size of an object (recursively)
 

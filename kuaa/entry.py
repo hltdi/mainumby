@@ -292,6 +292,11 @@ class Group(Entry):
         """Each token is either a string or a (string, feat_dict) pair. In name, they're separated by '.'."""
         return '.'.join(tokens)
 
+    @staticmethod
+    def get_key(name):
+        """Get a group's key into Language.groups from its name or print name."""
+        return name.split('.')[0].split('[')[0]
+
     def priority(self):
         """Returns a value that is used in sorting the groups associated with a particular key.
         Groups with more tokens and more features have priority."""

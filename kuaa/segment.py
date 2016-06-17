@@ -47,6 +47,11 @@
 # 2016.06.01
 # -- GNodes now carry sets of features rather than a single feature. This solves a problem with
 #    failure to match features in node merging in the case of an ambiguous analysis of the concrete node.
+# 2016.06.15
+# -- Finally fixed build() so it correctly applies to each combination of group translation for top-level
+#    and subtree groups.
+# 2016.06.16
+# -- OK, I still wasn't quite finished.
 
 import itertools, copy
 from .cs import *
@@ -399,6 +404,8 @@ class GInst:
             else:
                 self.nodes.append(GNode(self, index, sntups))
 #        self.nodes = [GNode(self, index, indices) for index, indices in enumerate(snode_indices)]
+        # The GNode that is the head of this GInst
+        self.head = self.nodes[group.head_index]
         # Dict of variables specific to this group
         self.variables = {}
         # List of target language groups, gnodes, tnodes
@@ -777,8 +784,8 @@ class TreeTrans:
         tgroups is a list of target groups, one for each target node."""
         if verbosity:
             print('BUILDING {} with tgroups {}'.format(self, tg_comb))
-        # Dictionary mapping source node indices to initial target node indices
         tnode_index = 0
+        # Dictionary mapping source node indices to initial target node indices
         node_index_map, agreements, group_nodes = {}, {}, {}
         node_features = []
         # reinitialize mergers
@@ -820,11 +827,13 @@ class TreeTrans:
                         print("   gna: {}".format(gna))
                         print("   gnc: {}".format(gnc))
                     # Translation (target) group for this instance of build() and this node
-                    tgroup1 = tg_comb[tnode_index]
-                    gnc1 = list(itertools.filterfalse(lambda x: x[0] != tgroup1, gnc))[0]
-                    if verbosity > 1:
-                        print("   TGROUP: {}, concrete gnode tuple: {}".format(tgroup1, gnc1))
-                    gna1 = list(itertools.filterfalse(lambda x: x[0] not in tg_comb, gna))[0]
+#                    tgroup1 = tg_comb[tnode_index]
+                    gnc1 = firsttrue(lambda x: x[0] in tg_comb, gnc)
+#                    list(itertools.filterfalse(lambda x: x[0] != tgroup1, gnc))[0]
+                    if verbosity:
+                        print("   concrete gnode tuple: {}".format(gnc1))
+                    gna1 = firsttrue(lambda x: x[0] in tg_comb, gna)
+#                    list(itertools.filterfalse(lambda x: x[0] not in tg_comb, gna))[0]
                     if verbosity:
                         print("   abstract gnode tuple: {}".format(gna1))
                     # There are two gnodes for this snode, one concrete, one abstract;
@@ -884,14 +893,20 @@ class TreeTrans:
                     if gnode not in self.gnode_dict:
                         if verbosity > 1:
                             print("   not in gnode dict, skipping")
+                        # But if this is the head of the TreeTrans's group, we need to increment the tnode_index
+#                        if gnode == self.ginst.head:
+#                            if verbosity:
+#                                print("   gnode is head of TT group")
+                            tnode_index += 1
                         continue
                     else:
                         # Translation (target) group for this instance of build() and this node
-                        tgroup1 = tg_comb[tnode_index]
+#                        tgroup1 = tg_comb[tnode_index]
                         gnode_tuple_list = self.gnode_dict[gnode]
-                        gnode_tuple = list(itertools.filterfalse(lambda x: x[0] != tgroup1, gnode_tuple_list))[0]
+                        gnode_tuple = firsttrue(lambda x: x[0] in tg_comb, gnode_tuple_list)
+#                        gnode_tuple = list(itertools.filterfalse(lambda x: x[0] != tgroup1, gnode_tuple_list))[0]
                         if verbosity > 1:
-                            print("   TGROUP: {}, gnode_tuple: {}".format(tgroup1, gnode_tuple))
+                            print("   gnode_tuple: {}".format(gnode_tuple))
                         tgroup, token, targ_feats, agrs, t_index = gnode_tuple
                         cache_key = tgroup, t_index
                         if cache_key in self.cache:
