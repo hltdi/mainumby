@@ -752,7 +752,7 @@ class Sentence:
         if not self.groups:
             print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SOLUCIÓN POSIBLE".format(self))
             return
-        print("Solving {}".format(self))
+        print("Resolviendo {}".format(self))
 #        if self.altsyns:
 #            print("Alt analyses: {}".format(self.altsyns))
         ds = None

@@ -10879,8 +10879,6 @@
 ->grn <hemimono'õ_n ; 0==0 n:n,poses:poses
 *** lugar_n ; ^ lugar_n 0 ; #617
 ->grn <henda_n ; 0==0 n:n,poses:poses ; #357 ; ##72
-->grn a_n ; 0==0 n:n,poses:poses ; #468 ; ##21
-->grn mamo_n gotyo ; 0==0 n:n,poses:poses
 *** lugar_n retirado ; ^ lugar_n 0 ; #617
 ->grn <hugua_n ; 0==0 n:n,poses:poses
 *** lujo_n ; ^ lujo_n 0 ; #2

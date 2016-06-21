@@ -18,7 +18,7 @@ feats:
 ## SUSTANTIVOS
   pos: n sustantivo
 
-  n (num) = s | p
+  n (num) = 0 | 1
   g (gen) = m | f
 #  xf: g = gen
   xf: n = num
@@ -30,7 +30,7 @@ feats:
 ## ADJETIVOS
   pos: a adjetivo
 
-  n (num) = s | p
+  n (num) = 0 | 1
   g (gen) = m | f
   xf: g = gen
   xf: n = num
@@ -72,7 +72,7 @@ feats:
              *2 = False | True;
              *p (plur) = False | True
 
-  tm (tmp/asp/mod) = prs | fut | prt | sbp | sbi | ipf | cnd | ipv | ger | inf | prc
+  tm (tmp/asp/mod) = prs | prt | fut | sbp | ipf | sbi | cnd | ipv | ger | inf | prc
 
   VOS = *True | False
   AL = *True | *False

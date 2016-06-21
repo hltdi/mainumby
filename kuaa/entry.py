@@ -675,6 +675,8 @@ class MorphoSyn(Entry):
         self.swap_indices = []
         self.failif = None
         self.featmod = []
+        # Pattern indices of items that must not match
+        self.neg_matches = []
         # Wordform token (no features) near left end of pattern (for left-to-right direction)
         self.head_index = -1
         # Expand attributes
@@ -738,7 +740,9 @@ class MorphoSyn(Entry):
             negmatch = MS_NEG_FEATS.match(item)
             if negmatch:
                 negfeats = negmatch.groups()[0]
-                print("Found negative match {}".format(negfeats))
+                self.neg_matches.append(index)
+                negfeats = FeatStruct(negfeats)
+                p.append(([], negfeats))
             else:
                 forms, feats = MS_FORM_FEATS.match(item).groups()
                 if feats:
@@ -821,7 +825,7 @@ class MorphoSyn(Entry):
         """
         results = []
         if verbosity:
-            print("{} matching {}".format(self, sentence))
+            print("Matching MS {} against {}".format(self, sentence))
         if self.direction:
             # Left-to-right; index of item within the pattern
             pindex = 0
@@ -846,7 +850,10 @@ class MorphoSyn(Entry):
                 # sentence.analyses consists of pairs of word tokens and a list of analysis dicts
                 match = self.match_item(stoken, sanals, pindex, verbosity=verbosity)
                 if match:
-#                    print(" {} found match {} for token {} and anals {}".format(self, match, stoken, sanals))
+                    # If there are no anals but True, replace [True] with []
+                    if match[1] == [True]:
+                        match[1] = []
+                    print(" {} found match {} for token {}".format(self, match, stoken))
                     result.append(match)
                     # Is this the end of the pattern? If so, succeed.
                     if self.pattern_length() == pindex + 1:
@@ -856,6 +863,7 @@ class MorphoSyn(Entry):
                         if mindex < 0:
                             mindex = sindex
                         results.append((mindex, sindex+1, result))
+#                        print("Results for {}: {}".format(self, results))
                         mindex = -1
                         pindex = 0
                         result = []
@@ -879,8 +887,11 @@ class MorphoSyn(Entry):
     def match_item(self, stoken, sanals, pindex, verbosity=0):
         """Match a sentence item against a pattern item."""
         pforms, pfeats = self.pattern[pindex]
+        isneg = pindex in self.neg_matches
         if verbosity:
             print("  Matching {}:{} against {}:{}".format(stoken, sanals, pforms, pfeats.__repr__()))
+            if isneg:
+                print("  Negative match: {}, {}, {}, {}".format(stoken, sanals, pforms, pfeats))
         # No FS to match
         if not pfeats:
             return self.match_token(stoken, sanals, pforms, verbosity=verbosity)
@@ -888,27 +899,28 @@ class MorphoSyn(Entry):
             if not sanals:
                 # No morphological analyses for sentence item; fail
                 if verbosity:
-                    print("No Feats, match item failed")
+                    print("   No feats, match item failed")
                 return False
             # pattern FS must match features in one or more anals; record the results in
             # last corresponding to the list of anals in sentence
             anal_matches = []
             for sanal in sanals:
-                anal_matches.append(self.match_anal(stoken, sanal, pforms, pfeats, verbosity=verbosity))
+                anal_matches.append(self.match_anal(stoken, sanal, pforms, pfeats, neg=isneg,
+                                                    verbosity=verbosity))
             if any(anal_matches):
                 return [stoken, anal_matches, sanals]
         if verbosity:
-            print("Match item failed")
+            print("   Match item failed")
         return False
 
     def match_token(self, stoken, sanals, pforms, verbosity=0):
         """Match the word or roots in a sentence against the set of forms in a pattern item."""
         if verbosity:
-            print("Matching sentence token {} and analyses {} against pattern forms {}".format(stoken, sanals, pforms))
+            print("  Matching sentence token {} and analyses {} against pattern forms {}".format(stoken, sanals, pforms))
         if any([stoken == f for f in pforms]):
             # Do any of the pattern items match the sentence word?
             if verbosity:
-                print(" Succeeded on token")
+                print("   Succeeded on token")
             return [stoken, False, sanals]
         # Do any of the pattern items match a root in any sentence item analysis?
         matched_anals = []
@@ -920,11 +932,11 @@ class MorphoSyn(Entry):
                 matched_anals.append(False)
         if any(matched_anals):
             if verbosity:
-                print("Succeeded on root")
+                print("   Succeeded on root")
             return [stoken, matched_anals, sanals]
         return False
 
-    def match_anal(self, stoken, sanal, pforms, pfeats, verbosity=0):
+    def match_anal(self, stoken, sanal, pforms, pfeats, neg=False, verbosity=0):
         """Match the sentence analysis against pforms and pfeats in a pattern.
         sanal is either a dict or a pair (root, features)."""
         if isinstance(sanal, dict):
@@ -933,20 +945,25 @@ class MorphoSyn(Entry):
         else:
             sroot, sfeats = sanal
         if verbosity:
-            s = "Attempting to match pattern forms {} and feats {} against sentence item root {} and feats {}"
+            s = "  Attempting to match pattern forms {} and feats {} against sentence item root {} and feats {}"
             print(s.format(pforms, pfeats.__repr__(), sroot, sfeats.__repr__()))
         if not pforms or any([sroot == f for f in pforms]):
             if verbosity:
-                print(" Root matched")
+                print("   Root matched")
             # root matches
             u = simple_unify(sfeats, pfeats)
             if u != 'fail':
+                if not neg:
+                    if verbosity:
+                        print("   Feats matched")
+                    # result could be frozen if nothing changed; we need an unfrozen FS for later changes
+                    return u.unfreeze()
+            elif neg:
                 if verbosity:
-                    print(" Feats matched")
-                # result could be frozen if nothing changed; we need an unfrozen FS for later changes
-                return u.unfreeze()
+                    print("   Neg feats match succeeded")
+                return True
         if verbosity:
-            print(" Failed")
+            print("   Failed")
         return False
 
     def enforce_constraints(self, match, verbosity=0):

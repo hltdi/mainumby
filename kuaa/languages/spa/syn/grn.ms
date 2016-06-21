@@ -17,16 +17,27 @@ seguir_ger :: seguir_v [pos=v,tm=ger] ; 0=>1 p,n,tm
 volativo :: querer_v [pos=v,tm=inf,asp=[+vol]] ; 0=>1 p,n,tm,asp ; // 0
 
 ## artículos definitivos
+# antes adjetivos sin substantivo
+artdef/adj_fs :: la [pos=a,n=0,rel=sjoj] ![pos=n] ; // 0
+artdef/adj_ms :: el [pos=a,n=0,rel=sjoj] ![pos=n] ; // 0
+artdef/adj_fp :: las [pos=a,n=1,rel=sjoj] ![pos=n] ; // 0
+artdef/adj_mp :: los [pos=a,n=1,rel=sjoj] ![pos=n] ; // 0
 # con adjetivo o número entre el artículo y el sustantivo
 artdef/ms_adj :: el [pos=a,n=0] [pos=n,n=0] ; // 0:2
-# ambiguo: la/los/las pueden ser también pronombres
-*=artdef/fs_adj :: la [pos=a,n=0] [pos=n,n=0] ; // 0:2
-*=artdef/mp_adj :: los [pos=a,n=1] [pos=n,n=1] ; // 0:2
-*=artdef/fp_adj :: las [pos=a,n=1] [pos=n,n=1] ; // 0:2
+# ambiguo??
+#*=artdef/fs_adj :: la [pos=a,n=0] [pos=n,n=0] ; // 0:2
+#*=artdef/mp_adj :: los [pos=a,n=1] [pos=n,n=1] ; // 0:2
+#*=artdef/fp_adj :: las [pos=a,n=1] [pos=n,n=1] ; // 0:2
+artdef/fs_adj :: la [pos=a,n=0] [pos=n,n=0] ; // 0:2
+artdef/mp_adj :: los [pos=a,n=1] [pos=n,n=1] ; // 0:2
+artdef/fp_adj :: las [pos=a,n=1] [pos=n,n=1] ; // 0:2
 artdef/ms :: el [pos=n,n=0] ; // 0
-*=artdef/fs :: la [pos=n,n=0] ; // 0
-*=artdef/mp :: los [pos=n,n=1] ; // 0
-*=artdef/fp :: las [pos=n,n=1] ; // 0
+#*=artdef/fs :: la [pos=n,n=0] ; // 0
+#*=artdef/mp :: los [pos=n,n=1] ; // 0
+#*=artdef/fp :: las [pos=n,n=1] ; // 0
+artdef/fs :: la [pos=n,n=0] ; // 0
+artdef/mp :: los [pos=n,n=1] ; // 0
+artdef/fp :: las [pos=n,n=1] ; // 0
 # con dos adjetivos antes del sustantivo
 #...
 

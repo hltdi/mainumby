@@ -140,37 +140,24 @@ class Language:
     grammar = re.compile('\s*gram.*:\s+(\w+)\s+(.+)')
     POS = re.compile('\s*pos:\s+(\w+)')
 
-    def __init__(self,
-                 name, abbrev,
-                 use=ANALYSIS,
-#                 source=True, target=False,
-#                 words=None, lexemes=None, grams=None, classes=None,
+    def __init__(self, name, abbrev, use=ANALYSIS,
                  groups=None, groupnames=None,
-#                 genforms=None,
                  # Added from morphology/language
                  pos=None, cache=True):
         """Initialize dictionaries and names."""
         self.name = name
         self.abbrev = abbrev
-#        self.words = words or {}
-#        self.forms = forms or {}
         self.groups = groups or {}
         # Explicit groups to load instead of default
         self.groupnames = groupnames
         self.ms = []
         self.use = use
-#        self.source = source
-#        self.target = target
         # Dict of groups with names as keys
         self.groupnames = {}
-#        # Record possibilities for dependency labels, feature values, order constraints
-#        self.possible = {}
         # Record whether language has changed since last loaded
         self.changed = False
         # For generation (target) language, a dictionary of morphologically generated words:
         # {lexeme: {(feat, val): {(feat, val): wordform,...}, ...}, ...}
-#        if not source:
-#        self.genforms = genforms or {}
         Language.languages[abbrev] = self
         ## 2015.5.15 Copied from morphology/language
         self.pos = pos or []
@@ -184,7 +171,6 @@ class Language:
         self.deaccent = None
         # Dictionary of prefixes and prefix sequences and what to do with them
         self.prefixes = {}
- #       self.words = []
         self.punc = None
         self.seg_units = None
         # dict of POS: fst lists
@@ -195,7 +181,6 @@ class Language:
         # Whether morphological data is loaded
         self.anal_loaded = False
         self.gen_loaded = False
-        # Do this later
         self.load_morpho(use in (GENERATION, TARGET), False, False, False)
         # Categories (and other semantic features) of words and roots
         self.cats = {}
@@ -1130,6 +1115,9 @@ class Language:
         if cache and not pretty:
             # Cache new analyses
             self.add_new_anal(word, to_cache)
+
+        # Sort the analyses by feature-value ranking
+        self.morphology.sort_analyses(analyses)
 
         return self.dictify_analyses(analyses)
 

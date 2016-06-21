@@ -1,9 +1,9 @@
 ########################################################################
 #
-#   This file is part of the Mainumby project
+#   This file is part of the Mainumby project within the PLoGS meta-project
 #
 #   Copyright (C) 2015, 2016
-#   The HLTDI L^3 Team <gasser@indiana.edu>
+#   L^3, HLTDI <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -226,6 +226,22 @@ class Morphology(dict):
                                          weighting=UNIFICATION_SR,
                                          seg_units=self.seg_units,
                                          create_weights=True)
+
+    def sort_analyses(self, analyses):
+        """Each analysis is a root, fs pair. Sort by the list of values for each feature that has such a list."""
+        for morph in self.values():
+            feat_list = morph.feat_list
+            for feat, values in feat_list:
+                self.sort_analyses1(analyses, feat, values)
+
+    def sort_analyses1(self, analyses, feat, values):
+        def anal_index(analysis):
+            root, anal = analysis
+            value = anal.get(feat)
+            if value:
+                return values.index(value)
+            return 100
+        analyses.sort(key=lambda a: anal_index(a))
 
 ##    def load_phon_fst(self, save=True, verbose=True):
 ##        """Load the phon FST if there is one."""
