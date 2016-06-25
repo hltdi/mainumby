@@ -377,7 +377,7 @@ class Group(Entry):
                         break
                 if node.right_delete:
                     rightdel = node.right_delete
-                    print("    Trying to match {} in {} with right deleted stokens {}".format(token, self, rightdel))
+#                    print("    Trying to match {} in {} with right deleted stokens {}".format(token, self, rightdel))
                 if verbosity > 1:
                     fstring = "   Trying {}, token index {}, snode index {}, head index {}, last s index {}"
                     print(fstring.format(node, index, snode_indices, head_sindex, last_sindex))
@@ -457,7 +457,8 @@ class Group(Entry):
                         nodegap += 1
             if matcheddel:
                 # Matched a left deleted element; move on to next group token
-                print("  Matched left del; move on to next group token; {}".format(match_snodes1))
+                if verbosity:
+                    print("  Matched left del; move on to next group token; {}".format(match_snodes1))
                 match_snodes.append(match_snodes1)
                 continue
             if not matched:
@@ -853,7 +854,7 @@ class MorphoSyn(Entry):
                     # If there are no anals but True, replace [True] with []
                     if match[1] == [True]:
                         match[1] = []
-                    print(" {} found match {} for token {}".format(self, match, stoken))
+#                    print(" {} found match {} for token {}".format(self, match, stoken))
                     result.append(match)
                     # Is this the end of the pattern? If so, succeed.
                     if self.pattern_length() == pindex + 1:
@@ -981,9 +982,10 @@ class MorphoSyn(Entry):
             src_elem = elements[srci]
             trg_elem = elements[trgi]
             if verbosity:
-                print("Enforcing agreement on features {} from {} to {}".format(feats, src_elem, trg_elem))
+                print("  Enforcing agreement on features {} from {} to {}".format(feats, src_elem, trg_elem))
             src_tok, src_feats_list, x = src_elem
             trg_tok, trg_feats_list, y = trg_elem
+#            print("  Target features list: {}".format(trg_feats_list))
             for tf_index, trg_feats in enumerate(trg_feats_list):
                 if not trg_feats:
                     # target features could be False
@@ -1000,7 +1002,9 @@ class MorphoSyn(Entry):
 #                        changed = True
 #            a = src_feats.agree(trg_feats, feats, force=True)
                         if verbosity:
-                            print("Result of agreement: {}".format(trg_feats.__repr__()))
+                            print("    Result of agreement: {}".format(trg_feats.__repr__()))
+                        # Only do this for the first set of src_feats that succeeds
+                        break
                 # Replace original feats with copy
 #                if changed:
 #                    print("Feature {} replaced with copy".format(trg_feats.__repr__()))

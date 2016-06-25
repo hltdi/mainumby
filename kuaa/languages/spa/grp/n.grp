@@ -13983,6 +13983,8 @@
 ->grn jurupuku_n ; 0==0 n:n,poses:poses
 *** picor_n ; ^ picor_n 0
 ->grn joha_n ; 0==0 n:n,poses:poses
+*** estar_v de pie_n ; ^ pie_n 2
+->grn ñembo'y_v[cat=a] ; || 0, -1, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,grd:grd,rel:rel
 *** pie_n contrahecho ; ^ pie_n 0
 ->grn pyvã_n ; 0==0 n:n,poses:poses
 *** pie_n de monte ; ^ pie_n 0

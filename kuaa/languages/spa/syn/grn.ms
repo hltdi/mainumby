@@ -1,3 +1,7 @@
+### estar + adj sin sustantivo siguiente; introduce rasgo nuevo: ±perm
+estar_adj :: estar_v [pos=a,-perm] ![pos=n] ; 0=>1 p,n,tm ; // 0 ; 1-> [pos=v]
+ser_adj :: ser_v [pos=a,+perm] ![pos=n] ; 0=>1 p,n,tm ; // 0 ; 1-> [pos=v]
+
 ## auxiliares
 perf :: haber_v[tm=prs] [pos=v,tm=prc,asp=[+prf]] ; 0=>1 p,n ; // 0 ; 1-> [tm=prs]
 pcp :: haber_v[tm=ipf] [pos=v,tm=prc] ; 0=>1 p,n ; // 0 ; 1-> [tm=pcp]
@@ -21,7 +25,7 @@ volativo :: querer_v [pos=v,tm=inf,asp=[+vol]] ; 0=>1 p,n,tm,asp ; // 0
 artdef/adj_fs :: la [pos=a,n=0,rel=sjoj] ![pos=n] ; // 0
 artdef/adj_ms :: el [pos=a,n=0,rel=sjoj] ![pos=n] ; // 0
 artdef/adj_fp :: las [pos=a,n=1,rel=sjoj] ![pos=n] ; // 0
-artdef/adj_mp :: los [pos=a,n=1,rel=sjoj] ![pos=n] ; // 0
+artdef/adj_mp :: los [pos=a,n=1,rel=sjoj] ![pos=n] ; // 0 ; 1-> [pos=v]
 # con adjetivo o número entre el artículo y el sustantivo
 artdef/ms_adj :: el [pos=a,n=0] [pos=n,n=0] ; // 0:2
 # ambiguo??
@@ -46,9 +50,6 @@ refl/3 :: se [pos=v,p=3,voz=reflx,+r] ; // 0
 refl/1s :: me [pos=v,p=1,n=0,voz=reflx,+r] ; // 0
 refl/2s :: te [pos=v,p=2,n=0,voz=reflx,+r] ; // 0
 refl/1p :: nos [pos=v,p=1,n=1,voz=reflx,+r] ; // 0
-
-### ser + adj with no noun following
-#ser_adj :: ser_v [pos=a] ![pos=n] ; 0=>1 p,n,tm ; // 0 ; 1-> [pos=v]
 
 ## otros pronombres clíticos
 obj/1s :: me [pos=v,po=1,no=0] ; // 0

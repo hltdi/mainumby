@@ -64,6 +64,10 @@ feats:
   ab: prc = part
   ab: AL = AmLat
 
+  # Prefer 3rd person over 1st and 2nd
+  p = 3 | 1 | 2
+  n = 0 | 1
+
   xf: sj = sujeto
   xf: tm = tiempo/aspecto/modo
 #  xf~: VOS = voseo

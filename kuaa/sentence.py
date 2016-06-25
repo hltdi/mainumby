@@ -945,21 +945,24 @@ class Sentence:
             variable, value = var_value
             typ = Sentence.get_var_type(variable)
             if typ == 'sn->gn':
+#                print("Checking gn variable {}".format(var_value))
                 # sn->gn variables are good to the extent they point to gnodes in large groups
                 # and have lower indices (because preferred interpretations are earlier)
                 if value:
 #                    print("  sn->gn var {} value {} for {}".format(variable, value, dstore))
-                    total = 0
+#                    total = 0
                     for gni in value:
-                        total += gni
+#                        total += gni
                         gn = self.gnodes[gni]
                         varscore -= gn.ginst.ngnodes
-#                        print("  sn->gn var {} decremented {} because of {} for {}".format(variable, gn.ginst.ngnodes, gn.ginst, dstore))
-                    av = total / len(value)
+#                        print("  sn->gn var {} decremented {} because of {} nodes".format(variable, gn.ginst.ngnodes, gn.ginst))
+#                    av = total / len(value)
+#                    av = 1.0 / len(value)
+#                    print("  av {}, varscore {}".format(av, varscore))
                     varscore /= len(value)
-                    varscore += av
-#                    print("  sn->gn var {} added {} to score for {}".format(variable, av, dstore))
+#                    varscore += av
             elif typ == 'groups':
+#                print("Checking groups variable {}".format(var_value))
                 # groups variable is good if it's big and has lower indices
                 if value:
                     total = 0
