@@ -150,7 +150,8 @@ class Solver:
         prefer smaller upper domains and random order."""
         selected = func(variables, dstore) if func else None
         if not selected:
-            print("Var sel function failed")
+            if verbosity:
+                print("Var sel function failed")
             variable = sorted(variables, key=lambda v: len(v.get_upper(dstore=dstore)))[0]
             undecided = variable.get_undecided(dstore=dstore)
             # Split undecided into two non-empty subsets

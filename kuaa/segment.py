@@ -311,64 +311,87 @@ class SNode:
         if verbosity:
             print('   SNode {} with features {} trying to match item {} with features {}'.format(self, self.analyses, grp_item, grp_feats.__repr__()))
         # If item is a category, don't bother looking at token
-        if Entry.is_cat(grp_item):
-            if verbosity:
-                print('    Cat item, looking in {}'.format(self.cats))
-            # Check whether this group item is really a set item (starting with '$$'); if so, drop the first '$' before matching
-            if Entry.is_set(grp_item):
+        is_cat = Entry.is_cat(grp_item)
+        if not self.analyses:
+            # The node has no associated roots, cats, or features.
+            if self.token == grp_item:
+                if verbosity:
+                    print("    Non-cat token matches node token")
+                # Exact match between group and node tokens. SUCCEED with no features
+                return None
+            else:
+                # All other cases fail because root or cat matches require node features
+                return False
+        else:
+#            if verbosity:
+#                print('    Cat item, looking in {}'.format(self.cats))
+            # Check whether a group item is really a set item (starting with '$$'); if so, drop the first '$' before matching
+            if is_cat and Entry.is_set(grp_item):
                 grp_item = grp_item[1:]
-            if self.cats and grp_item in self.cats:
-                # The node's token must have a translation
-                if not self.group_cands:
-                    print("Node {} doesn't have a translation!".format(self))
-                    return False
-                if not self.analyses or not grp_feats:
-                    # Match; failure would be False
+            # If group token is not cat and there are no group features, check for perfect match
+            if not is_cat and not grp_feats:
+                if self.token == grp_item:
                     return None
-                else:
-                    results = []
-                    for analysis in self.analyses:
-                        node_features = analysis.get('features')
-                        if node_features:
-                            # 2015.7.5: strict option added to force True feature in grp_features
-                            # to be present in node_features, e.g., for Spanish reflexive
-                            u_features = simple_unify(node_features, grp_feats, strict=True)
-                            if u_features != 'fail':
-#                                if isinstance(u_features, FeatStruct):
-#                                    u_features = u_features.copy()
-                                results.append((analysis.get('root'), u_features))
-#                                return analysis.get('root'), u_features
-                    # None succeeded
-                    if results:
-                        return results
-                    else:
-                        return False
-        elif self.token == grp_item:
-            # grp_item matches this node's token; features are irrelevant
-            return None
-        elif self.analyses:
+            # Go through analyses, checking cat, root, and features (if any group features)
             results = []
-            # Check each combination of root and analysis features
             for analysis in self.analyses:
-                root = analysis.get('root', '')
                 node_features = analysis.get('features')
-                if root == grp_item:
-                    if not grp_feats:
-                        results.append((root, node_features))
-#                        return root, node_features
-                    elif not node_features:
-                        # Fail because there must be an explicit match with group features
-                        return False
-                    else:
-                        # There must be an explicit match with group features, so strict=True
+                node_cats = analysis.get('cats', [])
+                node_root = analysis.get('root', '')
+                # Match group token
+                if is_cat:
+                    if grp_item not in node_cats:
+                        continue
+                else:
+                    # Not a category, has to match the root
+                    if grp_item != node_root:
+                        continue
+                # Match features if there are any
+                if node_features:
+                    if grp_feats:
+                        # 2015.7.5: strict option added to force True feature in grp_features
+                        # to be present in node_features, e.g., for Spanish reflexive
                         u_features = simple_unify(node_features, grp_feats, strict=True)
                         if u_features != 'fail':
-#                            if isinstance(u_features, FeatStruct):
-#                                u_features = u_features.copy()
-                            results.append((root, u_features))
-#                            return root, u_features
+                            # SUCCEED: matched token and features
+                            results.append((node_root, u_features))
+                    else:
+                        # SUCCEED: matched token and no group features to match
+                        results.append((node_root, node_features))
+                else:
+                    # SUCCEED: group has features but node doesn't
+                    results.append((grp_item, grp_feat))
             if results:
+                if verbosity:
+                    print("  Returning match results: {}".format(results))
                 return results
+#            else:
+#                return False
+#        elif self.analyses:
+#            results = []
+#            # Check each combination of root and analysis features
+#            for analysis in self.analyses:
+#                root = analysis.get('root', '')
+#                node_features = analysis.get('features')
+#                if root == grp_item:
+#                    if not grp_feats:
+#                        results.append((root, node_features))
+#                        return root, node_features
+#                    elif not node_features:
+#                        # Fail because there must be an explicit match with group features
+#                        return False
+#                    else:
+#                        # There must be an explicit match with group features, so strict=True
+#                        u_features = simple_unify(node_features, grp_feats, strict=True)
+#                        if u_features != 'fail':
+##                            if isinstance(u_features, FeatStruct):
+##                                u_features = u_features.copy()
+#                            results.append((root, u_features))
+#                            return root, u_features
+#            if results:
+#                if verbosity:
+#                    print("  Returning match results: {}".format(results))
+#                return results
         return False
 
 class GInst:
@@ -376,7 +399,7 @@ class GInst:
     """Instantiation of a group; holds variables and GNode objects."""
 
     def __init__(self, group, sentence, head_index, snode_indices, index):
-#        print("Creating group inst with snode_indices {}".format(snode_indices))
+        print("Creating group inst for {} with snode_indices {}".format(group, snode_indices))
         # The Group object that this "instantiates"
         self.group = group
         self.sentence = sentence

@@ -121,6 +121,7 @@ lo_que :: lo que [pos=v,rel=sjoj] ; // 0 1
 ## cláusulas adverbiales
 al_inf :: a el [pos=v,tm=inf,pp=vove] ; // 0 1 ; 2-> [tm=prs]
 a_donde_rel :: a donde [pos=v,rel=obl,pp=pe] ; // 0 1
+por_donde_rel :: por donde [pos=v,rel=obl,pp=rupi] ; // 0 1
 donde_rel :: [pos=n] donde [pos=v,rel=obl] ; // 1
 al_que_rel :: [pos=n] a el que [pos=v,rel=obl] ; // 0 1 2
 a_la_que_rel :: [pos=n] a la que [pos=v,rel=obl] ; // 0 1 2

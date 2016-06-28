@@ -391,17 +391,17 @@ class Group(Entry):
                     # node's head capitalized.
                     if self.capitalized and head_sindex == 0:
                         if verbosity > 1:
-                            print("Matching capitalized group head with sentence-initial word")
-                        node_match = node.match(token.lower(), feats)
+                            print("    Matching capitalized group head with sentence-initial word")
+                        node_match = node.match(token.lower(), feats, verbosity=verbosity)
                         # Capitalize the node's token if this succeeds
                         if node_match != False:
                             node.token = node.token.capitalize()
                     else:
-                        node_match = node.match(token, feats)
+                        node_match = node.match(token, feats, verbosity=verbosity)
                     if node_match == False:
                         # This has to match, so fail now
                         if verbosity:
-                            print("{} failed to match in token {}".format(self, token))
+                            print("   {} failed to match in token {}".format(self, token))
                         return False
                     else:
 #                        print("  matched head {}".format(token))
@@ -425,7 +425,7 @@ class Group(Entry):
                         break
                 else:
                     # Match a group token that's not the head
-                    node_match = node.match(token, feats)
+                    node_match = node.match(token, feats, verbosity=verbosity)
                     if verbosity > 1:
                         print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
                     if node_match != False:
@@ -467,7 +467,8 @@ class Group(Entry):
                 return False
             else:
                 match_snodes.append(match_snodes1)
-#        print("Group {}, s_indices {}".format(self, match_snodes))
+        if verbosity:
+            print("Group {}, s_indices {}".format(self, match_snodes))
         return match_snodes
 
     @staticmethod

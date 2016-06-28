@@ -87,6 +87,7 @@ class FSSet(set):
     @staticmethod
     def unify_all(fssets):
         """The FSSet resulting from successively unifying a list of FSSets."""
+#        print("Semiring unifying all FSSets: {}".format(fssets))
         if not fssets:
             return TOPFSS
         elif len(fssets) == 1:

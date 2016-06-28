@@ -11641,8 +11641,6 @@
 ->grn jasy_n ; 0==0 n:n,poses:poses
 *** mesa_n ; ^ mesa_n 0 ; #87
 ->grn mesa_n ; 0==0 n:n,poses:poses ; #22
-->grn karuháva_n ; 0==0 n:n,poses:poses
-->grn karuha_n ; 0==0 n:n,poses:poses ; #3 ; ##1
 *** mesura_n ; ^ mesura_n 0
 ->grn akãguapy_n ; 0==0 n:n,poses:poses
 *** meta_n ; ^ meta_n 0 ; #2

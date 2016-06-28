@@ -767,9 +767,12 @@ class Sentence:
                 if verbosity:
                     print('FOUND ANALYSIS', solution)
                 if translate and self.target:
-                    solution.translate(verbosity=verbosity, all_trans=all_trans, interactive=interactive)
+                    # True if this succeeds
+                    translated = solution.translate(verbosity=verbosity, all_trans=all_trans, interactive=interactive)
+                    if not translated:
+                        print("Translation failed; trying next solution!")
+                        continue
                 else:
-#                if not translate:
                     # Display the parse
                     self.display(show_all_sols=False)
                 if all_sols:
@@ -1236,7 +1239,9 @@ class Solution:
 
     def translate(self, verbosity=0, all_trans=False, interactive=False):
         """Do everything you need to create the translation."""
-        self.merge_nodes(verbosity=verbosity)
+        merged = self.merge_nodes(verbosity=verbosity)
+        if not merged:
+            return False
         for ginst in self.ginsts:
             if ginst.translations:
                 if verbosity:
@@ -1244,11 +1249,13 @@ class Solution:
             else:
                 ginst.set_translations(verbosity=verbosity)
         self.make_translations(verbosity=verbosity, all_trans=all_trans, interactive=interactive)
+        return True
 
     def merge_nodes(self, verbosity=0):
-        """Merge the source features of cat and inst GNodes associated with each SNode."""
-#        if verbosity:
-#            print("Merging target nodes for {}".format(self))
+        """Merge the source features of cat and inst GNodes associated with each SNode.
+        Return False if unification fails."""
+        if verbosity:
+            print("Merging target nodes for {}".format(self))
         for snode, gn_indices in zip(self.sentence.nodes, self.s2gnodes):
 #            print("snode {}, gn_indices {}".format(snode, gn_indices))
             # gn_indices is either one or two ints indexing gnodes in self.gnodes
@@ -1256,20 +1263,21 @@ class Solution:
             features = []
             for gnode in gnodes:
                 snode_indices = gnode.snode_indices
-#                if snode.index in snode_indices:
                 snode_index = snode_indices.index(snode.index)
                 snode_anal = gnode.snode_anal[snode_index]
-#                print("Merge nodes for gnode {}: snode_anal {}".format(gnode, snode_anal))
+                print("  Merge nodes for gnode {}: snode_anal {}".format(gnode, snode_anal))
                 # It could be a list of anals, only None if there aren't any.
                 if snode_anal and snode_anal[0]:
 #                    print("Appending snode_anals for gnode {}: {}".format(gnode, [a[1] for a in snode_anal]))
                     features.append([a[1] for a in snode_anal])
-            # Could this fail??
-#            print("Unification result for {}: snode {}, gn_indices {} features {}".format(self, snode, gn_indices, features))
-            features = FSSet.unify_all([FSSet(feats) for feats in features])
-#                        FeatStruct.unify_all(features)
-#            print("  {}".format(features))
-            self.gnodes_feats.append((gnodes, features))
+            # Could this fail?? YES, currently it can
+#            print("  Unification result for {}: snode {}, gn_indices {} features {}".format(self, snode, gn_indices, features))
+            feats_unified = FSSet.unify_all([FSSet(feats) for feats in features])
+            if not feats_unified:
+                print("SOMETHING WRONG: unification failed for {}!".format(features))
+                return False
+            self.gnodes_feats.append((gnodes, feats_unified))
+        return True
 
     def make_translations(self, verbosity=0, display=True, all_trans=False, interactive=False):
         """Create a TreeTrans object for each GInst and tree. build() each top TreeTrans and
