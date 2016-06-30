@@ -130,6 +130,9 @@
 # 2016.06.15
 # -- Fixed Solution.make_translations(), finally, so that it correctly calls build() on each top-level TreeTrans for each
 #    combination of top-level and subgroup translation.
+# 2016.06.30
+# -- New constraint (and constraint type) added to Sentence, enforcing dependency by higher-level group with a cat node
+#    and lower-level group that has a lexical node that merges with the cat node.
 
 import copy, re, random, itertools
 from .ui import *
@@ -733,6 +736,36 @@ class Sentence:
             snode.gnodes = gnodes
             if gnodes:
                 self.covered_indices.append(snode.index)
+        self.get_group_dependencies()
+
+    def get_group_dependencies(self):
+        """After GInsts and GNodes are created, check to see which GInsts with cat nodes depend on
+        other GInsts."""
+        dependencies = {}
+        for gnode1 in self.gnodes:
+            if not gnode1.cat:
+                continue
+            # gnode1 is a cat node, so it has to have another gnode to merge with
+            ginst1 = gnode1.ginst
+            anal1 = gnode1.snode_anal
+            sindices1 = gnode1.snode_indices
+            for gnode2 in self.gnodes:
+                if gnode2 == gnode1 or gnode2.cat:
+                    continue
+                anal2 = gnode2.snode_anal
+                sindices2 = gnode2.snode_indices
+                if any([(s2 in sindices1) for s2 in sindices2]) and \
+                  any([(a2 in anal1) for a2 in anal2]):
+                  # gnode1 and gnode2 have the same snode index, root, and features
+                    ginst2 = gnode2.ginst
+                    if ginst1 in dependencies:
+                        dependencies[ginst1].append(ginst2)
+                    else:
+                        dependencies[ginst1] = [ginst2]
+        # Convert the dependencies dict to a list of pairs, one for each ginst
+        for ginst in self.groups:
+            if ginst in dependencies:
+                ginst.dependencies = {g.index for g in dependencies[ginst]}
 
     ## Solving: parsing and translation
 
@@ -849,12 +882,18 @@ class Sentence:
 #        self.constraints.append(UnionSelection(self.variables['covered_snodes'],
 #                                               self.variables['groups'],
 #                                               [g.variables['gnodes_pos'] for g in self.groups]))
+
+        # Dependencies among GInst
+        gdeps = [g.variables['deps'] for g in self.groups]
+        self.constraints.append(DependencySelection(selvar=self.variables['groups'], depvars=gdeps))
+        # ...
         # Relation among abstract, concrete, and all gnodes for each snode
         # This should only happen for groups that succeed
         # For each group that succeeds, for each of the snodes, the associated gnodes are the union of the cgnodes and agnodes
         for snode in self.nodes:
             if snode.gnodes:
                 # Only do this for covered snodes
+                # The value of 'gnodes' is the union of the value of 'cgnodes' and 'agnodes' for this snode
                 self.constraints.extend(Union([snode.variables['gnodes'],
                                                snode.variables['cgnodes'],
                                                snode.variables['agnodes']]).constraints)
@@ -862,44 +901,43 @@ class Sentence:
         for group in self.groups:
             if group.nanodes > 0:
                 # Only do this for groups with abstract nodes
-                # For each group, the set of snodes is the union of the concrete and abstract nodes
+                # For each group, the set of snodes ('gnodes_pos') is the union of the concrete and abstract nodes
+                # ('agnodes_pos', 'cgnodes_pos')
                 self.constraints.extend(Union([group.variables['gnodes_pos'],
                                                group.variables['agnodes_pos'],
                                                group.variables['cgnodes_pos']]).constraints)
         # The set of category (abstract) nodes used is the union of the category nodes of the groups used
+        # ('agnodes' for each group)
         self.constraints.append(UnionSelection(self.variables['catgnodes'],
                                                self.variables['groups'],
                                                [g.variables['agnodes'] for g in self.groups]))
-        # All snodes must have distinct category nodes
+        # All snodes must have distinct category nodes ('agnodes' for each snode)
         self.constraints.extend(Disjoint([sn.variables['agnodes'] for sn in self.nodes]).constraints)
         # All position constraints for snodes
+        # 'gnode_pos' specifies pairs of snode positional constraints; applied over 'snodes' for each gnode
         self.constraints.append(PrecedenceSelection(self.variables['gnode_pos'],
                                                     [gn.variables['snodes'] for gn in self.gnodes]))
-        # Position constraint pairs are the group position pairs for all groups used
+        # Gnode position constraint pairs ('gnode_pos') are the gnode position pairs ('g*pos') for all groups used
         self.constraints.append(UnionSelection(self.variables['gnode_pos'],
                                                self.variables['groups'],
                                                [DetVar("g{}pos".format(g.index), g.pos_pairs()) for g in self.groups]))
         # Union selection on gnodes for each snode:
-        #  the union of the snode indices associated with the gnodes of an snode is the snode's index
+        #  the union of the snode indices ('snodes') associated with the gnodes of an snode is the snode's index
+        #  ('sn*').
         gn2s = [gn.variables['snodes'] for gn in self.gnodes]
         s2gn = [s.variables['gnodes'] for s in self.nodes]
         for snode in self.nodes:
             if snode.gnodes:
                 # Only for covered snodes
                 self.constraints.append(UnionSelection(DetVar("sn{}".format(snode.index), {snode.index}),
-                                                       snode.variables['gnodes'],
-                                                       gn2s))
+                                                       snode.variables['gnodes'], gn2s))
         # Union of all gnodes used for snodes is all gnodes used
-        self.constraints.append(UnionSelection(self.variables['gnodes'],
-                                               self.variables['snodes'],
-                                               s2gn))
+        self.constraints.append(UnionSelection(self.variables['gnodes'], self.variables['snodes'], s2gn))
         # Union of all gnodes for groups used is all gnodes used
-        self.constraints.append(UnionSelection(self.variables['gnodes'],
-                                               self.variables['groups'],
+        self.constraints.append(UnionSelection(self.variables['gnodes'], self.variables['groups'],
                                                [g.variables['gnodes'] for g in self.groups]))
         # Union of all snodes for gnodes used is all snodes
-        self.constraints.append(UnionSelection(self.variables['snodes'],
-                                               self.variables['gnodes'],
+        self.constraints.append(UnionSelection(self.variables['snodes'], self.variables['gnodes'],
                                                [gn.variables['snodes'] for gn in self.gnodes]))
         # Complex union selection by groups on positions of all concrete gnodes in each selected group
         self.constraints.append(ComplexUnionSelection(selvar=self.variables['groups'],
@@ -916,11 +954,12 @@ class Sentence:
 #                                                      selvars=[g.variables['gnodes_pos'] for g in self.groups],
 #                                                      seqvars=[s.variables['gnodes'] for s in self.nodes],
 #                                                      mainvars=[g.variables['gnodes'] for g in self.groups]))
-        # Agreement
+        ## Agreement
 #        print("snode variables")
 #        for sn in self.nodes:
 #            print(' {} variables: {}'.format(sn, sn.variables))
         if any([g.variables.get('agr') for g in self.groups]):
+            # If any groups have an 'agr' variable...
             self.constraints.append(ComplexAgrSelection(selvar=self.variables['groups'],
                                                         seqvars=[gn.variables['snodes'] for gn in self.gnodes],
                                                         featvars=[sn.variables['features'] for sn in self.nodes],
@@ -1029,6 +1068,8 @@ class Sentence:
         groups = self.variables['groups'].get_value(dstore=dstore)
         ginsts = [self.groups[g] for g in groups]
         s2gnodes = []
+        # For each snode, find which gnodes are associated with it in this dstore. This becomes the value of
+        # the s2gnodes field in the solution created.
         for node in self.nodes:
 #            print("Creating solution for {}, gnodes {}".format(node, node.variables['gnodes'].get_value(dstore=dstore)))
             gnodes = list(node.variables['gnodes'].get_value(dstore=dstore))

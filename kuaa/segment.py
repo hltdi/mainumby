@@ -440,6 +440,8 @@ class GInst:
         self.ncgnodes = self.ngnodes - self.nanodes
         # TreeTrans instance for this GInst; saved here so to prevent multiple TreeTrans translations
         self.treetrans = None
+        # Indices of GInsts that this GINst depends on; set in Sentence.lexicalize()
+        self.dependencies = None
 #        print("Creating GInst {} with head i {} and snode indices {}".format(self, head_index, snode_indices))
 
     def __repr__(self):
@@ -503,6 +505,10 @@ class GInst:
         nsnodes = len(self.sentence.nodes)
         cand_snodes = self.sentence.covered_indices
 #        print("Creating variables for {}, # abs nodes {}".format(self, self.nanodes))
+        if self.dependencies:
+            self.variables['deps'] = DetVar('deps{}'.format(self.index), self.dependencies)
+        else:
+            self.variables['deps'] = EMPTY
         # GNode indices for this GInst (determined)
         self.variables['gnodes'] = DetVar('g{}->gnodes'.format(self.index), {gn.sent_index for gn in self.nodes})
         # Abstract GNode indices for GInst (determined)

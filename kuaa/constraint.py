@@ -59,6 +59,12 @@
 # -- Fixed a bug in UnionSelection: the constraint was allowed to change a sequence
 #    variable in an impossible way, by making the upper bound smaller than the
 #    lower cardinality; now this causes failure.
+# 2016.06.30
+# -- New constraint type: DependencySelection. Two main parameters, one a typical
+#    selection variable, the other a list of determined set variables, one for
+#    each item being selected from. The dependency variable for each element
+#    gives the indices of other elements that must be selected for that element
+#    to be selected. Needed for dependencies between groups in Mbojereha.
 
 from .variable import *
 # This is imported in another branch too...
@@ -1022,102 +1028,6 @@ class UnionSelection(Selection):
             print('  Variables {} changed'.format(changed))
         return state, changed
 
-class ComplexConstraint(Constraint):
-    """Each value of selection variable (potentially) selects a simple constraint."""
-
-    def __init__(self, selvar=None, selvars=None, othervars=None,
-                 problem=None, weight=1, record=True):
-        Constraint.__init__(self, [selvar] + selvars + othervars, problem=problem, weight=weight,
-                            record=record)
-        self.selvar = selvar
-        self.selvars = selvars
-        self.constraints = []
-
-    def fails(self, dstore=None):
-        """Fail if any of the UnionSelection constraints over the selvars and mainvars indexed by the
-        lower bound of selvar fail."""
-        for index in self.selvar.get_lower(dstore=dstore):
-            constraint = self.constraints[index]
-            if constraint and constraint.fails(dstore=dstore):
-                return True
-        return False
-
-    def is_entailed(self, dstore=None):
-        """Is entailed if all of the constraints indexed by the upper bound of selvar are entailed."""
-        selvar_upper = self.selvar.get_upper(dstore=dstore)
-        for index in selvar_upper:
-            constraint = self.constraints[index]
-            if constraint and not constraint.is_entailed(dstore=dstore):
-                return False
-        # Remove non-indexed selection variables from essential variable list
-        # if they're there.
-        for index, selvar in enumerate(self.selvars):
-            if index not in selvar_upper:
-                if selvar in dstore.ess_undet:
-#                    print("Removing {} from DStore essential variables".format(selvar))
-                    dstore.ess_undet.remove(selvar)
-        return True
-
-    def infer(self, dstore=None, verbosity=0, tracevar=[]):
-        """Run infer() on all constraints indexed in the lower bound of selvar,
-        and remove indices from the upper bound of selvar if the indexed constraint
-        fails."""
-        selvar = self.selvar
-        selupper = selvar.get_upper(dstore=dstore)
-        sellower = selvar.get_lower(dstore=dstore)
-        for index, constraint in enumerate(self.constraints):
-            if not constraint:
-                continue
-            if index in sellower:
-                state, changed = constraint.infer(dstore=dstore)
-                # If any variable changed as a result this, return it
-                if changed:
-                    return state, changed
-            elif index in selupper:
-                # A constraint indexed by a value in the upper bound of selvar failed
-                if constraint.fails(dstore=dstore):
-                    # Try to remove this index from the upper bound of selvar
-                    if selvar.discard_upper(index, dstore=dstore,
-                                            constraint=(verbosity>1 or selvar in tracevar) and self):
-                        return Constraint.sleeping, {selvar}
-
-        return Constraint.sleeping, set()
-
-class ComplexUnionSelection(ComplexConstraint):
-    """Each value of selection variable (potentially) selects a union selection constraint, with each of the
-    selection variables (selvars) as the selection variable for one of these."""
-
-    def __init__(self, selvar=None, mainvars=None, seqvars=None, selvars=None,
-                 problem=None, weight=1, record=True):
-        ComplexConstraint.__init__(self, selvar, selvars, seqvars + mainvars,
-                                   problem=problem, weight=weight, record=record)
-        self.seqvars = seqvars
-        self.mainvars = mainvars
-        self.name = '{} = U{} [{}] [[{}]]'.format(Selection.format_seq(mainvars),
-                                                  Selection.format_seq(seqvars),
-                                                  Selection.format_seq(selvars),
-                                                  selvar)
-        for sel, main in zip(selvars, mainvars):
-            if not sel.get_upper():
-                self.constraints.append(None)
-            else:
-                # Don't record this constraint in its variables
-                self.constraints.append(UnionSelection(main, sel, seqvars,
-                                                       record=False, weight=1, maxset=None))
-
-class ComplexSetConvexity(ComplexConstraint):
-    """Each value of selection variable (potentially) selects a set convexity constraint over one of
-    the seqvars."""
-
-    def __init__(self, selvar=None, convexvars=None, problem=None, weight=1, record=True):
-        ComplexConstraint.__init__(self, selvar, selvars=convexvars, othervars=[],
-                                   problem=problem, weight=weight, record=record)
-        self.convexvars = convexvars
-        self.name = '{} <> [{}]'.format(Selection.format_seq(self.convexvars), self.selvar)
-        for cv in convexvars:
-            # Don't record this constraint in the variables
-            self.constraints.append(SetConvexity(cv, weight=weight, record=False))
-
 class IntersectionSelection(Selection):
     '''All variables are set vars. Select the intersection of the selected sets.'''
 
@@ -1267,17 +1177,17 @@ class IntersectionSelection(Selection):
 
 class AgrSelection(Constraint):
     """Selection variable is a determined set of tuples of 3 or more elements:
-    (index1, inde2, (feat1, feat2), ...)
+    (index1, index2, (feat1, feat2), ...)
     where (feat1, feat2) means feat1 for the element with index1 must agree with
-    the feat2 for the element with index2 (indices in index space 1).
+    feat2 for the element with index2 (indices in index space 1).
     Each of the sequence variables maps indices in the selection variable (index space 1)
-    onto another set of indices (index space 2 gnode->snode in Ñe'ẽasa).
+    onto another set of indices (index space 2 'snode' variable for each gnode in Mbojereha).
     Each of the feature variables is a list of features objects or dicts associated
     with an element in index space 2.
     """
 
-    def __init__(self, featvars=None, selvar=None, seqvars=None, problem=None, weight=1,
-                 record=True):
+    def __init__(self, featvars=None, selvar=None, seqvars=None,
+                 problem=None, weight=1, record=True):
         Constraint.__init__(self, featvars + [selvar] + seqvars, problem=problem,
                             weight=weight, record=record)
         self.featvars = featvars
@@ -1401,33 +1311,10 @@ class AgrSelection(Constraint):
                             return state, changed
         return state, changed
 
-class ComplexAgrSelection(ComplexConstraint):
-    """Generalize AgrSelection to multiple values for the selection variables (selvars), which are selected by
-    a meta-selection variable (selvar). Works similarly to ComplexUnionSelection."""
-
-    def __init__(self, selvar=None, featvars=None, selvars=None, seqvars=None,
-                 problem=None, weight=1, record=True):
-        ComplexConstraint.__init__(self, selvar, selvars, seqvars + featvars,
-                                   problem=problem, weight=weight, record=record)
-        self.featvars = featvars
-        self.selvars = selvars
-        self.seqvars = seqvars
-        self.name = '[{}] = <{}> [{}] [[{}]]'.format(featvars, seqvars,
-                                                     ';;'.join([AgrSelection.selvar_string(v.get_value()) for v in selvars]),
-                                                     selvar)
-        for sel in selvars:
-            # Each of the selvars is a determined set variable containing a set of triple+ constraints.
-            if not sel.get_upper():
-                # No constraint necessary for this selvar position
-                self.constraints.append(None)
-            else:
-                # Create an AgrSelection constraint for this agr selection variable
-                self.constraints.append(AgrSelection(featvars, sel, seqvars, record=False, weight=1))
-
 class PrecedenceSelection(Constraint):
     """
     PrecedenceSelection is different enough from UnionSelection and IntersectionSelection
-    in that it doesn't inherit from the Selection class.
+    to not inherit from the Selection class.
     
     posvars: set vars consisting of int positions (determined for analysis, not for generation)
     selvar: a set var consisting of pairs of indices within posvars, each
@@ -1550,11 +1437,214 @@ class PrecedenceSelection(Constraint):
                         return state, changed
         return state, changed
 
+class DependencySelection(Constraint):
+    """
+    Like PrecedenceSelection, DependencySelection has only two variables so does not inherit
+    from Selection.
+    
+    depvars: list of determined set vars
+       for each position in depvars i, representing an element (for example, a GInst in Mbojereha),
+       the set var consists of the positions in depvars for other elements that must be selected for
+       if element i is to be selected for
+    selvar: a set var consisting of positions (indices) in the depvars list, representing elements,
+       for example, groups in Mbojereha
+    """
+
+    def __init__(self, selvar=None, depvars=None,
+                 problem=None, weight=1, maxset=None, record=True):
+        Constraint.__init__(self, [selvar] + depvars,
+                            problem=problem, weight=weight, record=record)
+        self.selvar = selvar
+        self.depvars = depvars
+        self.name = '--> {} [{}]'.format(Selection.format_seq(self.depvars), self.selvar)
+
+    def is_entailed(self, dstore=None):
+        """Entailed if the selvar is determined (the depvars already are) or if
+        for all i in selvar.lower, either there are no depvars[i] or all depvars[i] are in selvar.lower.
+        """
+        if self.selvar.determined(dstore=dstore, constraint=self) is not False:
+            return True
+        sellower = self.selvar.get_lower(dstore=dstore)
+        if not sellower:
+            return False
+        for seli in sellower:
+            depvar = self.depvars[seli]
+            depsi = depvar.get_value(dstore)
+            if depsi and not depsi < sellower:
+                return False
+        return True
+
+    def fails(self, dstore=None):
+        """Fail if for any i in selvar.lower, none of depvars[i] is in selvar.upper."""
+        sellower = self.selvar.get_lower(dstore=dstore)
+        selupper = self.selvar.get_upper(dstore=dstore)
+        for seli in sellower:
+            depvar = self.depvars[seli]
+            depsi = depvar.get_value(dstore)
+            if depsi and not depsi & selupper:
+                return True
+        return False
+
+    def infer(self, dstore=None, verbosity=0, tracevar=[]):
+        changed = set()
+        state = Constraint.sleeping
+        sellower = self.selvar.get_lower(dstore=dstore)
+        selupper = self.selvar.get_upper(dstore=dstore)
+
+        for seli in selupper:
+            # For all elements that CAN be selected
+            # See if NONE of its dependents can be selected
+            depvar = self.depvars[seli]
+            depsi = depvar.get_value(dstore)
+            if depsi and not depsi & selupper:
+                # If so, discard seli from selvar.upper
+                if self.selvar.discard_upper(seli, dstore=dstore,
+                                             constraint=(verbosity>1 or self.selvar in tracevar) and self):
+                    changed.add(self.selvar)
+                    return state, changed
+
+        for seli in sellower:
+            # For all elements that MUST be selected
+            # See if only one dependent is possible and not already in self.lower
+            depvar = self.depvars[seli]
+            depsi = depvar.get_value(dstore)
+            if depsi:
+                poss_depsi = depsi & selupper
+                if len(poss_depsi) == 1:
+                    if not poss_depsi < sellower:
+                        # If so, this element must be selected (strengthen_lower for it)
+                        if self.selvar.strengthen_lower(poss_depsi, dstore=dstore,
+                                                        constraint=(verbosity>1 or self.selvar in tracevar) and self):
+                            changed.add(self.selvar)
+                            return state, changed
+
+        return state, changed
+
+### Complex selection constraints
+
+class ComplexConstraint(Constraint):
+    """Each value of selection variable (potentially) selects a simple constraint."""
+
+    def __init__(self, selvar=None, selvars=None, othervars=None,
+                 problem=None, weight=1, record=True):
+        Constraint.__init__(self, [selvar] + selvars + othervars, problem=problem, weight=weight,
+                            record=record)
+        self.selvar = selvar
+        self.selvars = selvars
+        self.constraints = []
+
+    def fails(self, dstore=None):
+        """Fail if any of the UnionSelection constraints over the selvars and mainvars indexed by the
+        lower bound of selvar fail."""
+        for index in self.selvar.get_lower(dstore=dstore):
+            constraint = self.constraints[index]
+            if constraint and constraint.fails(dstore=dstore):
+                return True
+        return False
+
+    def is_entailed(self, dstore=None):
+        """Is entailed if all of the constraints indexed by the upper bound of selvar are entailed."""
+        selvar_upper = self.selvar.get_upper(dstore=dstore)
+        for index in selvar_upper:
+            constraint = self.constraints[index]
+            if constraint and not constraint.is_entailed(dstore=dstore):
+                return False
+        # Remove non-indexed selection variables from essential variable list
+        # if they're there.
+        for index, selvar in enumerate(self.selvars):
+            if index not in selvar_upper:
+                if selvar in dstore.ess_undet:
+#                    print("Removing {} from DStore essential variables".format(selvar))
+                    dstore.ess_undet.remove(selvar)
+        return True
+
+    def infer(self, dstore=None, verbosity=0, tracevar=[]):
+        """Run infer() on all constraints indexed in the lower bound of selvar,
+        and remove indices from the upper bound of selvar if the indexed constraint
+        fails."""
+        selvar = self.selvar
+        selupper = selvar.get_upper(dstore=dstore)
+        sellower = selvar.get_lower(dstore=dstore)
+        for index, constraint in enumerate(self.constraints):
+            if not constraint:
+                continue
+            if index in sellower:
+                state, changed = constraint.infer(dstore=dstore)
+                # If any variable changed as a result this, return it
+                if changed:
+                    return state, changed
+            elif index in selupper:
+                # A constraint indexed by a value in the upper bound of selvar failed
+                if constraint.fails(dstore=dstore):
+                    # Try to remove this index from the upper bound of selvar
+                    if selvar.discard_upper(index, dstore=dstore,
+                                            constraint=(verbosity>1 or selvar in tracevar) and self):
+                        return Constraint.sleeping, {selvar}
+
+        return Constraint.sleeping, set()
+
+class ComplexUnionSelection(ComplexConstraint):
+    """Each value of selection variable (potentially) selects a union selection constraint, with each of the
+    selection variables (selvars) as the selection variable for one of these."""
+
+    def __init__(self, selvar=None, mainvars=None, seqvars=None, selvars=None,
+                 problem=None, weight=1, record=True):
+        ComplexConstraint.__init__(self, selvar, selvars, seqvars + mainvars,
+                                   problem=problem, weight=weight, record=record)
+        self.seqvars = seqvars
+        self.mainvars = mainvars
+        self.name = '{} = U{} [{}] [[{}]]'.format(Selection.format_seq(mainvars),
+                                                  Selection.format_seq(seqvars),
+                                                  Selection.format_seq(selvars),
+                                                  selvar)
+        for sel, main in zip(selvars, mainvars):
+            if not sel.get_upper():
+                self.constraints.append(None)
+            else:
+                # Don't record this constraint in its variables
+                self.constraints.append(UnionSelection(main, sel, seqvars,
+                                                       record=False, weight=1, maxset=None))
+
+class ComplexSetConvexity(ComplexConstraint):
+    """Each value of selection variable (potentially) selects a set convexity constraint over one of
+    the seqvars."""
+
+    def __init__(self, selvar=None, convexvars=None, problem=None, weight=1, record=True):
+        ComplexConstraint.__init__(self, selvar, selvars=convexvars, othervars=[],
+                                   problem=problem, weight=weight, record=record)
+        self.convexvars = convexvars
+        self.name = '{} <> [{}]'.format(Selection.format_seq(self.convexvars), self.selvar)
+        for cv in convexvars:
+            # Don't record this constraint in the variables
+            self.constraints.append(SetConvexity(cv, weight=weight, record=False))
+
+class ComplexAgrSelection(ComplexConstraint):
+    """Generalize AgrSelection to multiple values for the selection variables (selvars), which are selected by
+    a meta-selection variable (selvar). Works similarly to ComplexUnionSelection."""
+
+    def __init__(self, selvar=None, featvars=None, selvars=None, seqvars=None,
+                 problem=None, weight=1, record=True):
+        ComplexConstraint.__init__(self, selvar, selvars, seqvars + featvars,
+                                   problem=problem, weight=weight, record=record)
+        self.featvars = featvars
+        self.selvars = selvars
+        self.seqvars = seqvars
+        self.name = '[{}] = <{}> [{}] [[{}]]'.format(featvars, seqvars,
+                                                     ';;'.join([AgrSelection.selvar_string(v.get_value()) for v in selvars]),
+                                                     selvar)
+        for sel in selvars:
+            # Each of the selvars is a determined set variable containing a set of triple+ constraints.
+            if not sel.get_upper():
+                # No constraint necessary for this selvar position
+                self.constraints.append(None)
+            else:
+                # Create an AgrSelection constraint for this agr selection variable
+                self.constraints.append(AgrSelection(featvars, sel, seqvars, record=False, weight=1))
+
 ### Constraints derived from other Constraints
         
 class DerivedConstraint:
-    """Abstract class for
-    constraints that are equivalent to a conjunction of primitive or derived constraints."""
+    """Abstract class for constraints that are equivalent to a conjunction of primitive or derived constraints."""
 
     def __init__(self, variables, problem=None, weight=1, record=True):
         self.variables = variables
