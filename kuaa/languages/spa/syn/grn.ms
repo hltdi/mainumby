@@ -113,7 +113,7 @@ demasiado :: demasiado [pos=a,grd=eterei] ; // 0
 
 ## cláusulas relativas y nominales
 # ambiguo, e.g., dije a mi vecino que vendrá
-*rel_sj :: [pos=n] que [pos=v,rel=sjoj] ; // 1
+# *rel_sj :: [pos=n] que [pos=v,rel=sjoj] ; // 1
 lo_que :: lo que [pos=v,rel=sjoj] ; // 0 1
 # cómo representar relativo objetivo con sujeto antes del verbo
 # el carro que mi vecino compró

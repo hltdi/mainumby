@@ -7,7 +7,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015 HLTDI <gasser@cs.indiana.edu>
+#   Copyright (C) 2014, 2015, 2016 PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -270,6 +270,9 @@ class Var:
         if dstore:
             dstore.undetermined.remove(self)
             if self.essential:
+                if self not in dstore.ess_undet:
+                    print("Variable {} not in undetermined essentials: {}".format(self, dstore.ess_undet))
+                    return
                 dstore.ess_undet.remove(self)
 
     def determined(self, dstore=None, constraint=None, verbosity=0):

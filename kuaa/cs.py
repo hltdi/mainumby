@@ -43,7 +43,7 @@ from .constraint import *
 import queue, random
 
 class Solver:
-    """A solver for a constraint satisfaction problem, actually a state in the search space."""
+    """A solver for a constraint satisfaction problem."""
 
     id = 0
 
@@ -53,8 +53,7 @@ class Solver:
     distributable = 3
     skipped = 4
 
-    def __init__(self, constraints, dstore, name='',
-                 evaluator=None, varselect=None,
+    def __init__(self, constraints, dstore, name='', evaluator=None, varselect=None,
                  description='', verbosity=0):
         self.constraints = constraints
         # Used in solver's printname
@@ -62,7 +61,7 @@ class Solver:
         # Solver (state) that generated this one
         # A function that assigns values to states
         self.evaluator = evaluator
-        # A function that selects a variable and splits its values, given a list of variables and a dstore
+        # A function that selects a variable and splits its values, given a list of undetermined variables and a dstore
         self.varselect = varselect
         self.verbosity=verbosity
         self.id = Solver.id
@@ -76,8 +75,7 @@ class Solver:
         return "Solver{}".format(self.name)
 
     def generator(self, cutoff=50, initial=None,
-                  test_verbosity=False, expand_verbosity=False,
-                  tracevar=None):
+                  test_verbosity=False, expand_verbosity=False, tracevar=None):
         '''A generator for solutions. Uses best-first search.'''
         tracevar = tracevar or []
         fringe = queue.PriorityQueue()
@@ -100,6 +98,7 @@ class Solver:
             if n >= cutoff:
                 print('STOPPING AT CUTOFF')
             priority, state = fringe.get()
+            print("{} GETTING and running state {} and score {} from fringe".format(self, state, priority))
             # Goal test for this state
             state.run(verbosity=test_verbosity, tracevar=tracevar)
             if state.status == SearchState.succeeded:
@@ -110,28 +109,31 @@ class Solver:
             if state.status == SearchState.distributable:
                 score = random.random() / 100.0
                 for attribs, next_state in self.distribute(state=state, verbosity=expand_verbosity):
-                    # If there's no evaluator function, just the order of states returned by distribute
                     if self.evaluator:
                         val = next_state.get_value(evaluator=self.evaluator, var_value=attribs)
                     else:
-                        # Score is just the index of the state in the list returned by distribute
+                        # If there's no evaluator function, just the order of states returned by distribute.
                         val = score
                         score += 1
-                    print("Next state {}, value {}".format(next_state, val))
+                    if expand_verbosity:
+                        print(" Próximo estado {}, nivel {}, valor {}".format(next_state, n, val))
                     # Add next state where it belongs in the queue
+                    print("  {} PUTTING new state {} and score {} on fringe of length {}".format(self, next_state, val, fringe.qsize()))
                     fringe.put((val, next_state))
+#                    for v, s in list(fringe):
+#                        print("  state {}, score {}".format(s, v))
             n += 1
         if test_verbosity or expand_verbosity:
             print()
             print('>>>> HALTED AT SEARCH STATE', n, '<<<<')
 
-    def select_variable(self, variables, dstore=None, func=None, verbosity=0):
-        """One possibility for selecting variables to branch on:
-        prefer smaller upper domains so the variable can be determined soon."""
-        if func:
-            return func(variables, dstore)
-        else:
-            return sorted(variables, key=lambda v: len(v.get_upper(dstore=dstore)))[0]
+#    def select_variable(self, variables, dstore=None, func=None, verbosity=0):
+#        """One possibility for selecting variables to branch on:
+#        prefer smaller upper domains so the variable can be determined soon."""
+#        if func:
+#            return func(variables, dstore)
+#        else:
+#            return sorted(variables, key=lambda v: len(v.get_upper(dstore=dstore)))[0]
 
     def split_var_values(self, variable, dstore=None, verbosity=0):
         """For a selected variable, select a value by calling the value selection function,
@@ -145,7 +147,7 @@ class Solver:
         return {elem}, undecided - {elem}
 
     def select_var_values(self, variables, dstore=None, func=None, verbosity=0):
-        """Select a variable to branch on and split its undecided values, ordering
+        """Select a undetermined variable to branch on and split its undecided values, ordering
         them by how promising they are. If no func is provided, use the default:
         prefer smaller upper domains and random order."""
         selected = func(variables, dstore) if func else None
@@ -177,6 +179,7 @@ class Solver:
 
     def make_constraints(self, variable, subset1=None, subset2=None, dstore=None, verbosity=0):
         """Return a pair of constraints for the selected variable."""
+        # There should always be subsets, but for some reason if there isn't...
         if not subset1:
             subset1, subset2 = self.split_var_values(variable, verbosity=verbosity)
 #        print("Make constraints: subset1 {}, subset2 {}".format(subset1, subset2))
@@ -195,19 +198,22 @@ class Solver:
             return Superset(variable, v1, record=False), Subset(variable, v2, record=False)
 
     def distribute(self, state=None, verbosity=0):
-        """Creates and returns two new states by cloning the dstore with the distributor."""
+        """
+        Creates and returns two new states, along with associated essential variables and their values,
+        by cloning the dstore with the distributor.
+        """
 #        if self.status != SearchState.distributable:
 #            return []
         state = state or self.init_state
         undet = state.dstore.ess_undet
+#        if verbosity:
+        ndet = len(undet)
+        print("DISTRIBUYENDO desde estado {}, # variables no determinados: {}".format(state, ndet))
         if verbosity:
-            ndet = len(undet)
-            print('DISTRIBUTION')
-            print('Distributing from state {}, undetermined vars {}'.format(state, ndet))
             for v in list(undet)[:5]:
-                v.pprint(dstore=state.dstore)
+                v.pprint(dstore=state.dstore, spaces=2)
             if ndet > 5:
-                print('...')
+                print('  ...')
         # Select a variable and two disjoint basic constraints on it
 #        var = self.select_variable(undet, dstore=state.dstore, func=self.varselect,
 #                                   verbosity=verbosity)
@@ -228,29 +234,27 @@ class Solver:
         new_dstore2 = state.dstore.clone(constraint2, name=state.name+'b')
 #        # Selected variable is determined in dstore2; try to determine it in dstore1
 #        var.determined(dstore=new_dstore1, verbosity=2)
-        # Create a new Solver for each dstore, preserving the accumulateod penalty
-        state1 = SearchState(constraints=constraints, dstore=new_dstore1,
-                             name=state.name+'a', depth=state.depth+1,
-                             parent=state,
-                             verbosity=verbosity)
-        state2 = SearchState(constraints=constraints, dstore=new_dstore2,
-                             name=state.name+'b', depth=state.depth+1,
-                             parent=state,
-                             verbosity=verbosity)
+        # Create a new SearchState for each dstore, increasing the depth
+        state1 = SearchState(constraints=constraints, dstore=new_dstore1, solver=self,
+                             name=state.name+'a', depth=state.depth+1, parent=state, verbosity=verbosity)
+        state2 = SearchState(constraints=constraints, dstore=new_dstore2, solver=self,
+                             name=state.name+'b', depth=state.depth+1, parent=state, verbosity=verbosity)
         state.children.extend([state1, state2])
-#        print("state 1: {}, values {}; state 2: {}, values {}".format(state1, values1, state2, values2))
+#        print("*** var: {}, state 1: {}, value {}; state 2: {}, values {}".format(var, state1, values1, state2, values2))
         return [((var, values1), state1), ((var, values2), state2)]
 
 class SearchState:
+    """A single state in the search space, created either when the Solver is initialized
+    or during distribution."""
 
+    # Class variables representing different outcomes for running a SearchState
     running = 0
     succeeded = 1
     failed = 2
     distributable = 3
     skipped = 4
 
-    def __init__(self, solver=None, name='', dstore=None,
-                 constraints=None, parent=None,
+    def __init__(self, solver=None, name='', dstore=None, constraints=None, parent=None,
                  depth=0, verbosity=0):
         self.solver = solver                                  
         self.name = name

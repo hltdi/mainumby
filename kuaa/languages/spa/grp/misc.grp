@@ -238,9 +238,6 @@
 ->grn ymave
 *** ayer ; ^ ayer 0
 ->grn kuehe
-## CONJ
-*** antes que ; ^ antes 0
-->grn mboyve
 *** antiguamente ; ^ antiguamente 0
 ->grn ymave
 *** más antiguo ; ^ antiguo 1
@@ -264,15 +261,43 @@
 ->grn aje'íma
 *** hace más rato ; ^ rato 2
 ->grn aje'ive
+*** largo rato ; ^ rato 1
+->grn kuri
+*** dentro de un rato más largo ; ^ rato 3
+->grn kurive
 *** hasta ahora ; ^ ahora 1
 ->grn akói
 *** como de costumbre; ^ costumbre 2
 ->grn akói
 *** hasta hoy ; ^ hoy 1
 ->grn akói
+*** hoy mismo ; ^ hoy 0
+->grn angete
 *** hoy ; ^ hoy 0
 ->grn ange
 ->grn ko'áĝa
+*** el mediodía ; ^ mediodía 1
+->grn asaje
+*** en punto de mediodía ; ^ mediodía 3
+->grn asajepyte
+*** durante la siesta ; ^ siesta 2
+->grn asajekue
+*** en la siesta ; ^ siesta 2
+->grn asajekue
+*** hora de siesta ; ^ siesta 2
+->grn asajepyte
+*** plena siesta ; ^ siesta 1
+->grn asajetini
+*** como siempre ; ^ siempre 1
+->grn akóinte
+->grn jepiguáicha
+*** siempre ; ^ siempre 0
+->grn akói
+->grn jepi
+->grn mante
+->grn manterei
+->grn meme
+->grn tapia
 *** hace poco ; ^ poco 1
 ->grn angete
 ->grn kokueheve
@@ -290,6 +315,8 @@
 ->grn aĝamive
 *** a la tardecita ; ^ tardecita 2
 ->grn ka'aruete
+*** más largo tiempo ; ^ tiempo 2
+->grn areve
 *** largo tiempo ; ^ tiempo 1
 ->grn are
 *** mañana mismo ; ^ mañana 0
@@ -331,6 +358,46 @@
 ->grn ko'ẽko'ẽre
 ->grn ko'ẽre
 ->grn ko'ẽreíre
+*** nunca ; ^ nunca 0
+->grn araka'eve
+->grn marãve
+->grn mba'evéicharõ
+->grn márõ
+*** nunca más por favor ; ^ nunca 0
+->grn anivéna
+*** a menudo ; ^ menudo 1
+->grn katuĩ
+->grn meme
+->grn py'ỹi
+->grn tapia
+*** muy a menudo ; ^ menudo 2
+->grn manterei
+*** hasta entonces ; ^ entonces 1
+->grn upepeve
+*** desde entonces ; ^ entonces 1
+->grn upeguive
+*** simultáneamente ; ^ simultáneamente 0
+->grn ha'etépe
+->grn upejave
+*** de repente ; ^ repente 1
+->grn sapy'a
+*** repentinamente ; ^ repentinamente 0
+->grn sapy'a
+*** súbitamente ; ^ súbitamente 0
+->grn sapy'a
+->grn sapy'aitépe
+->grn sapy'ante
+->grn soro
+*** de súbito ; ^ súbito 1
+->grn sapy'a
+*** de vez en cuando ; ^ vez 1
+->grn sapy'apy'a
+*** a veces ; ^ veces 1
+->grn sapy'apy'a
+*** de cuando en cuando ; ^ cuando 1
+->grn sapy'apy'a
+*** temprano
+->grn voi
 #### ADVERBIOS DE MANERA
 *** así ; ^ así 0
 ->grn kóicha
@@ -391,12 +458,6 @@
 ->grn rei
 *** de balde ; ^ balde 1
 ->grn rei
-*** de repente ; ^ repente 1
-->grn sapy'a
-*** repentinamente ; ^ repentinamente 0
-->grn sapy'a
-*** temprano
-->grn voi
 *** de cualquier modo ; ^ modo 2
 ->grn oimeháicha
 *** de todos modos ; ^ modos 2
@@ -413,6 +474,9 @@
 ->grn opóvo
 *** de bruces ; ^ bruces 1
 ->grn ovapývo
+*** aparentemente ; ^ aparentemente 0
+->grn gua'u
+->grn vaicha
 #### DEMONSTRATIVOS
 ### este, etc.
 ## adjetivo
@@ -676,6 +740,8 @@
 ### A
 *** a $num $n ; ^ a 0 ; -X-
 ->grn $num $n[caso=pe] ; || -1, 0, 1
+*** a $n que $v ; ^ a 0
+->grn $n $v[pp=pe,rel=sjoj] ; || -1, 0, -1, 1 ; 1==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** a $n ; ^ a 0
 ->grn $n[caso=pe] ; || -1, 0
 *** a $pro ; ^ a 0 ; -X-
@@ -955,7 +1021,9 @@
 ->grn $v[pp=rire] ; || -1, -1, -1, 0 ; 3==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
 *** después ; ^ después 0
 ->grn rire
-->grn upe rire
+->grn uperire
+*** posteriormente ; ^ posteriormente 0
+->grn uperire
 ### HASTA (-PEVE)
 # future "hasta" clauses
 *** hasta que $v[tm=sbp] ; ^ hasta 0
@@ -991,6 +1059,7 @@
 ->grn $v[pp=jave] ; || -1, -1, 0 ; 2==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 *** mientras tanto ; ^ mientras 0
 ->grn upekuévo
+->grn upe'aja
 # Later: mientras más = cuanto más
 ### A MEDIDA QUE (-'AJA) [THIS COULD GO IN n.grp]
 *** a medida que $v[tm=sbp] ; ^ medida_n 1
@@ -1037,7 +1106,7 @@
 *** de cualquier lugar ; ^ lugar 2
 ->grn oimehágui
 *** de cualquier lado ; ^ lado 2
-->grn oimehǵuivo
+->grn oimeháguivo
 *** hacia cualquier lado ; ^ lado 2
 ->grn oimehákotyvo
 *** por cualquier lugar ; ^ lugar 2
@@ -1117,9 +1186,6 @@
 ->grn tovéna
 *** antaño ; ^ antaño 0
 ->grn ymaguare
-*** aparentemente ; ^ aparentemente 0
-->grn gua'u
-->grn vaicha
 *** apenas ; ^ apenas 0
 ->grn haimete
 ->grn hasýpe
@@ -1484,6 +1550,7 @@
 ->grn mante
 ->grn manterei
 ->grn meme
+->grn jepivéramo
 *** hacia ; ^ hacia 0
 ->grn gotyo
 *** no hagas ; ^ hagas 1
@@ -1677,20 +1744,11 @@
 ->grn rupi
 *** mediante que ; ^ mediante 0
 ->grn rupi
-*** en punto de mediodía ; ^ mediodía 3
-->grn asajepyte
 *** menos ; ^ menos 0
 ->grn mbovyve
 ->grn michĩve
 *** por lo menos ; ^ menos 2
 ->grn jepe
-*** a menudo ; ^ menudo 1
-->grn katuĩ
-->grn meme
-->grn py'ỹi
-->grn tapia
-*** muy a menudo ; ^ menudo 2
-->grn manterei
 *** meramente ; ^ meramente 0
 ->grn mante
 *** lo mismo ; ^ mismo 1
@@ -1785,14 +1843,6 @@
 ->grn jevy
 *** de nuevo ; ^ nuevo 1
 ->grn jevy
-*** nunca ; ^ nunca 0
-->grn araka'eve
-->grn marãve
-->grn mba'evéicharamo
-->grn máramo
-->grn márõ
-*** nunca más por favor ; ^ nunca 0
-->grn anivéna
 *** sin objeto ; ^ objeto 1
 ->grn marãve
 *** no obstante ; ^ obstante 1
@@ -2050,9 +2100,7 @@
 ->grn añete
 ->grn añetehápe
 ->grn ha'ete
-*** recien ; ^ recien 0
-->grn angete
-*** recientemente ; ^ recientemente 0
+*** reciéntemente ; ^ reciéntemente 0
 ->grn aje'i
 ->grn angete
 *** recién ; ^ recién 0
@@ -2133,26 +2181,6 @@
 *** si ; ^ si 0
 ->grn tove
 ->grn tovéna
-*** como siempre ; ^ siempre 1
-->grn akóinte
-->grn jepiguáicha
-*** siempre ; ^ siempre 0
-->grn akói
-->grn jepi
-->grn katuĩ
-->grn mante
-->grn manterei
-->grn meme
-->grn tapia
-->grn tapiaite
-*** durante la siesta ; ^ siesta 2
-->grn asajekue
-*** en la siesta ; ^ siesta 2
-->grn asajekue
-*** hora de siesta ; ^ siesta 2
-->grn asajepyte
-*** plena siesta ; ^ siesta 1
-->grn asajetini
 *** con sigilo ; ^ sigilo 1
 ->grn kirirĩhápe
 *** con silencio ; ^ silencio 1
@@ -2165,8 +2193,6 @@
 ->grn kirirĩhápe
 *** simulando ; ^ simulando 0
 ->grn gua'u
-*** simultáneamente ; ^ simultáneamente 0
-->grn ha'etépe
 *** con sinceridad ; ^ sinceridad 1
 ->grn aje
 ->grn ajépa
@@ -2178,8 +2204,6 @@
 ->grn mamo
 ->grn oimehápe
 *** en el sol ; ^ sol 2
-->grn kuarahýpe
-*** lugar donde hay sol ; ^ sol 3
 ->grn kuarahýpe
 *** solamente ; ^ solamente 0
 ->grn año
@@ -2226,13 +2250,6 @@
 ->grn año
 ->grn mandi
 ->grn mante
-*** súbitamente ; ^ súbitamente 0
-->grn sapy'a
-->grn sapy'aitépe
-->grn sapy'ante
-->grn soro
-*** de súbito ; ^ súbito 1
-->grn sapy'a
 *** tal ; ^ tal 0
 ->grn aipo
 ->grn peichagua

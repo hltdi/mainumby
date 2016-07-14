@@ -401,7 +401,7 @@ class Sentence:
         # Solver to find solutions
         self.solver = Solver(self.constraints, self.dstore,
                              evaluator=self.state_eval,
-                             varselect=self.get_w2gn_vars,
+                             varselect=self.select_varval,
                              description='group selection', verbosity=verbosity)
         # Solutions found during parsing
         self.solutions = []
@@ -675,6 +675,7 @@ class Sentence:
             # Look up candidate groups in lexicon
             for k in keys:
                 if k in self.language.groups:
+                    # All the groups with key k
                     for group in self.language.groups[k]:
 #                        print("Checking group {} for {}".format(group, node))
                         # Reject group if it doesn't have a translation in the target language
@@ -693,11 +694,11 @@ class Sentence:
             # Matching snodes, along with root and unified features if any
             if verbosity > 1:
                 print("Matching group {}".format(group))
-            if (head_i, key) in matched_keys:
-                # Already matched one for this key, so don't bother checking.
-                if verbosity:
-                    print("Not considering {} because already matched group with key {}".format(group, key))
-                continue
+#            if (head_i, key) in matched_keys:
+#                # Already matched one for this key, so don't bother checking.
+#                if verbosity:
+#                    print("Not considering {} because already matched group with key {}".format(group, key))
+#                continue
             snodes = group.match_nodes(self.nodes, head_i, verbosity=verbosity)
             if not snodes:
                 # This group is out
@@ -737,6 +738,32 @@ class Sentence:
             if gnodes:
                 self.covered_indices.append(snode.index)
         self.get_group_dependencies()
+        self.get_group_sindices()
+        self.get_group_conflicts()
+
+    def get_group_sindices(self):
+        """Set the possible snode indices for each GInst, grouping them according to whether
+        they're lexical or category nodes."""
+        for gnode in self.gnodes:
+            ginst = gnode.ginst
+            si = gnode.snode_indices
+            if gnode.cat:
+                ginst.sindices[1].extend(si)
+            else:
+                ginst.sindices[0].extend(si)
+
+    def get_group_conflicts(self):
+        """Find group conflicts, lists of GInst indices, only one of which can be part of a solution."""
+        s2g = {}
+        for ginst in self.groups:
+            slexi = ginst.sindices[0]
+            gi = ginst.index
+            for si in slexi:
+                if si in s2g:
+                    s2g[si].append(gi)
+                else:
+                    s2g[si] = [gi]
+        self.group_conflicts = [g for g in s2g.values() if len(g) > 1]
 
     def get_group_dependencies(self):
         """After GInsts and GNodes are created, check to see which GInsts with cat nodes depend on
@@ -872,44 +899,70 @@ class Sentence:
             ginst.create_variables()
         for gnode in self.gnodes:
             gnode.create_variables()
-#        self.svar('covered_snodes', set(), covered_snodes, 1, len(covered_snodes))
+        self.svar('covered_snodes', set(), covered_snodes, 1, len(covered_snodes), ess=True)
 
     def create_constraints(self, verbosity=0):
         if verbosity:
             print("Creating constraints for {}".format(self))
 
-        # Covered nodes are the union of the snodes associated with all of the groups that succeed.
-#        self.constraints.append(UnionSelection(self.variables['covered_snodes'],
-#                                               self.variables['groups'],
-#                                               [g.variables['gnodes_pos'] for g in self.groups]))
+        groupvar = self.variables['groups']
 
-        # Dependencies among GInst
+        # Covered nodes are the union of the snodes associated with all of the groups that succeed.
+        self.constraints.append(UnionSelection(self.variables['covered_snodes'],
+                                               groupvar,
+                                               [g.variables['gnodes_pos'] for g in self.groups]))
+
+        # Dependencies among GInsts
         gdeps = [g.variables['deps'] for g in self.groups]
-        self.constraints.append(DependencySelection(selvar=self.variables['groups'], depvars=gdeps))
+        self.constraints.append(DependencySelection(selvar=groupvar, depvars=gdeps))
         # ...
         # Relation among abstract, concrete, and all gnodes for each snode
-        # This should only happen for groups that succeed
-        # For each group that succeeds, for each of the snodes, the associated gnodes are the union of the cgnodes and agnodes
-        for snode in self.nodes:
-            if snode.gnodes:
-                # Only do this for covered snodes
-                # The value of 'gnodes' is the union of the value of 'cgnodes' and 'agnodes' for this snode
-                self.constraints.extend(Union([snode.variables['gnodes'],
-                                               snode.variables['cgnodes'],
-                                               snode.variables['agnodes']]).constraints)
+        # For each of the covered snodes, the associated gnodes are the union of the cgnodes and agnodes
+        snodes_union_sel = [DetVar("nU2", {2*pos, 2*pos+1}) for pos in range(len(self.nodes))]
+#        print("SNodes union selection: {}".format(snodes_union_sel))
+        node_apos_cpos_vars = []
+        for node in self.nodes:
+            node_apos_cpos_vars.extend([node.variables['cgnodes'], node.variables['agnodes']])
+#        print("SNode APos CPos var list: {}".format(node_apos_cpos_vars))
+        snode_ac_union_constraint = ComplexUnionSelection(selvar=self.variables['covered_snodes'],
+                                                          selvars=snodes_union_sel,
+                                                          seqvars=node_apos_cpos_vars,
+                                                          mainvars=[node.variables['gnodes'] for node in self.nodes])
+#        print("SN_AC_U constraint: {}".format(snode_ac_union_constraint))
+        self.constraints.append(snode_ac_union_constraint)
+#        for snode in self.nodes:
+#            if snode.gnodes:
+#                # Only do this for covered snodes
+#                # The value of 'gnodes' is the union of the value of 'cgnodes' and 'agnodes' for this snode
+#                self.constraints.extend(Union([snode.variables['gnodes'],
+#                                               snode.variables['cgnodes'],
+#                                               snode.variables['agnodes']]).constraints)
         # Constraints involving groups with category (abstract) nodes
+        # For each group that succeeds, the set of snodes ('gnodes_pos') is the union of the concrete and abstract nodes
+        group_union_sel= [DetVar("gU2", {2*pos, 2*pos+1}) for pos in range(len(self.groups))]
+#        print("Group union selection: {}".format(group_union_sel))
+        apos_cpos_vars = []
         for group in self.groups:
-            if group.nanodes > 0:
-                # Only do this for groups with abstract nodes
-                # For each group, the set of snodes ('gnodes_pos') is the union of the concrete and abstract nodes
-                # ('agnodes_pos', 'cgnodes_pos')
-                self.constraints.extend(Union([group.variables['gnodes_pos'],
-                                               group.variables['agnodes_pos'],
-                                               group.variables['cgnodes_pos']]).constraints)
+            apos_cpos_vars.extend([group.variables['agnodes_pos'], group.variables['cgnodes_pos']])
+#        print ("APos CPos var list: {}".format(apos_cpos_vars))
+        group_ac_union_constraint = ComplexUnionSelection(selvar=groupvar,
+                                                          selvars=group_union_sel,
+                                                          seqvars=apos_cpos_vars,
+                                                          mainvars=[group.variables['gnodes_pos'] for group in self.groups])
+#        print("G_AC_U constraint: {}".format(group_ac_union_constraint))
+        self.constraints.append(group_ac_union_constraint)
+#        for group in self.groups:
+#            if group.nanodes > 0:
+#                # Only do this for groups with abstract nodes
+#                # For each group, the set of snodes ('gnodes_pos') is the union of the concrete and abstract nodes
+#                # ('agnodes_pos', 'cgnodes_pos')
+#                self.constraints.extend(Union([group.variables['gnodes_pos'],
+#                                               group.variables['agnodes_pos'],
+#                                               group.variables['cgnodes_pos']]).constraints)
         # The set of category (abstract) nodes used is the union of the category nodes of the groups used
         # ('agnodes' for each group)
         self.constraints.append(UnionSelection(self.variables['catgnodes'],
-                                               self.variables['groups'],
+                                               groupvar,
                                                [g.variables['agnodes'] for g in self.groups]))
         # All snodes must have distinct category nodes ('agnodes' for each snode)
         self.constraints.extend(Disjoint([sn.variables['agnodes'] for sn in self.nodes]).constraints)
@@ -919,38 +972,47 @@ class Sentence:
                                                     [gn.variables['snodes'] for gn in self.gnodes]))
         # Gnode position constraint pairs ('gnode_pos') are the gnode position pairs ('g*pos') for all groups used
         self.constraints.append(UnionSelection(self.variables['gnode_pos'],
-                                               self.variables['groups'],
+                                               groupvar,
                                                [DetVar("g{}pos".format(g.index), g.pos_pairs()) for g in self.groups]))
         # Union selection on gnodes for each snode:
         #  the union of the snode indices ('snodes') associated with the gnodes of an snode is the snode's index
-        #  ('sn*').
+        #  ('sn*'). But this should only hold for covered snodes, so it's a complex selection constraint.
         gn2s = [gn.variables['snodes'] for gn in self.gnodes]
         s2gn = [s.variables['gnodes'] for s in self.nodes]
-        for snode in self.nodes:
-            if snode.gnodes:
-                # Only for covered snodes
-                self.constraints.append(UnionSelection(DetVar("sn{}".format(snode.index), {snode.index}),
-                                                       snode.variables['gnodes'], gn2s))
-        # Union of all gnodes used for snodes is all gnodes used
+        snode_mainvars = [DetVar("sn{}".format(snode.index), {snode.index}) for snode in self.nodes]
+        snode_gnode_union_constraint = ComplexUnionSelection(selvar=self.variables['covered_snodes'],
+                                                             selvars=s2gn,
+                                                             seqvars=gn2s,
+                                                             mainvars=snode_mainvars)
+#        print("SN_GN_U constraint: {}".format(snode_gnode_union_constraint))
+        self.constraints.append(snode_gnode_union_constraint)
+#        for snode in self.nodes:
+#            if snode.gnodes:
+#                # Only for covered snodes
+#                self.constraints.append(UnionSelection(mainvar=DetVar("sn{}".format(snode.index), {snode.index}),
+#                                                       selvar=snode.variables['gnodes'],
+#                                                       seqvars=gn2s))
+        # Union of all gnodes used snodes is all gnodes used
         self.constraints.append(UnionSelection(self.variables['gnodes'], self.variables['snodes'], s2gn))
         # Union of all gnodes for groups used is all gnodes used
-        self.constraints.append(UnionSelection(self.variables['gnodes'], self.variables['groups'],
+        self.constraints.append(UnionSelection(self.variables['gnodes'],
+                                               groupvar,
                                                [g.variables['gnodes'] for g in self.groups]))
-        # Union of all snodes for gnodes used is all snodes
-        self.constraints.append(UnionSelection(self.variables['snodes'], self.variables['gnodes'],
+        # Union of all covered snodes for gnodes used is all snodes
+        self.constraints.append(UnionSelection(self.variables['covered_snodes'], self.variables['gnodes'],
                                                [gn.variables['snodes'] for gn in self.gnodes]))
         # Complex union selection by groups on positions of all concrete gnodes in each selected group
-        self.constraints.append(ComplexUnionSelection(selvar=self.variables['groups'],
+        self.constraints.append(ComplexUnionSelection(selvar=groupvar,
                                                       selvars=[g.variables['cgnodes_pos'] for g in self.groups],
                                                       seqvars=[s.variables['cgnodes'] for s in self.nodes],
                                                       mainvars=[g.variables['cgnodes'] for g in self.groups]))
         # Complex union selection by groups on positions of all category gnodes in each selected group
-        self.constraints.append(ComplexUnionSelection(selvar=self.variables['groups'],
+        self.constraints.append(ComplexUnionSelection(selvar=groupvar,
                                                       selvars=[g.variables['agnodes_pos'] for g in self.groups],
                                                       seqvars=[s.variables['agnodes'] for s in self.nodes],
                                                       mainvars=[g.variables['agnodes'] for g in self.groups]))
         # Complex union selection by groups on positions of all category gnodes in each selected group
-#        self.constraints.append(ComplexUnionSelection(selvar=self.variables['groups'],
+#        self.constraints.append(ComplexUnionSelection(selvar=groupvar,
 #                                                      selvars=[g.variables['gnodes_pos'] for g in self.groups],
 #                                                      seqvars=[s.variables['gnodes'] for s in self.nodes],
 #                                                      mainvars=[g.variables['gnodes'] for g in self.groups]))
@@ -960,7 +1022,7 @@ class Sentence:
 #            print(' {} variables: {}'.format(sn, sn.variables))
         if any([g.variables.get('agr') for g in self.groups]):
             # If any groups have an 'agr' variable...
-            self.constraints.append(ComplexAgrSelection(selvar=self.variables['groups'],
+            self.constraints.append(ComplexAgrSelection(selvar=groupvar,
                                                         seqvars=[gn.variables['snodes'] for gn in self.gnodes],
                                                         featvars=[sn.variables['features'] for sn in self.nodes],
                                                         selvars=[g.variables.get('agr', EMPTY) for g in self.groups]))
@@ -973,54 +1035,92 @@ class Sentence:
             return
         else:
             for mgi in group_dict[group_i][1]:
+                if mgi == group_i:
+                    print("Error in making tree, group_dict: {}".format(group_dict))
+                    return
                 tree.update(group_dict[mgi][0])
                 Sentence.make_tree(group_dict, mgi, tree)
 
-    # Methods to help constrain search
+    ## Methods to constrain search
+
+#    def group_snode_state_eval(self, dstore):
+#        varscore = 0
+#        undet = dstore.ess_undet
+#        groups = self.variables['groups']
+#        covered = self.variables['covered_snodes']
+#        if covered in undet:
+#            cu = covered.get_upper(dstore)
+#            print("  Covered upper: {}".format(cu))
+#            varscore -= len(cu)
+#        if groups in undet:
+#            gu = groups.get_upper(dstore)
+#            print("  Groups upper: {}".format(gu))
+#            gnodes = 0
+#            for g in gu:
+#                group = self.groups[g]
+#                gnodes += group.ngnodes
+#            gnodes /= len(gu)
+#            varscore -= gnodes
+#        return varscore
+
     def state_eval(self, dstore, var_value, group_size_wt=2):
-        """Assign a score to the domain store based on how much the selected variable's value leads to large groups
-        and how low the indices are (since preferred analyses have lower indices).
-        Changed 2015.09.24, adding second constraint and eliminating number of undetermined esssential variables."""
+        """Assign a score to the domain store based on how many snodes are covered and how large groups are.
+        Changed 2015.09.24, adding second constraint and eliminating number of undetermined esssential variables.
+        Changed 2016.07.13 to using groups and snodes to figure score, independent of the variable selected,
+        only sn->gn variables if one is selected.
+        """
         # No point in checking dstore since it's the same across states at time of evaluation
         varscore = 0
+        undet = dstore.ess_undet
+        groups = self.variables['groups']
+        covered = self.variables['covered_snodes']
+        if covered in undet:
+            cu = covered.get_upper(dstore)
+            cl = covered.get_lower(dstore)
+            varscore -= len(cl)
+            varscore -= (len(cu) - len(cl)) / 2.0
+        else:
+            # covered variable is determined
+            varscore -= len(covered.get_value(dstore))
+        if groups in undet:
+            gu = groups.get_upper(dstore)
+            gl = groups.get_lower(dstore)
+            gnodes = 0
+            if gl:
+                for g in gl:
+                    group = self.groups[g]
+                    gnodes += group.ngnodes
+                gnodes /= len(gl)
+                varscore -= gnodes
+        else:
+            # groups variable is determined
+            gval = groups.get_value(dstore)
+            if gval:
+                gnodes = 0
+                for g in gval:
+                    group = self.groups[g]
+                    gnodes += group.ngnodes
+                gnodes /= len(gval)
+                varscore -= gnodes
         if var_value:
             variable, value = var_value
             typ = Sentence.get_var_type(variable)
             if typ == 'sn->gn':
-#                print("Checking gn variable {}".format(var_value))
                 # sn->gn variables are good to the extent they point to gnodes in large groups
                 # and have lower indices (because preferred interpretations are earlier)
                 if value:
-#                    print("  sn->gn var {} value {} for {}".format(variable, value, dstore))
-#                    total = 0
                     for gni in value:
-#                        total += gni
                         gn = self.gnodes[gni]
                         varscore -= gn.ginst.ngnodes
-#                        print("  sn->gn var {} decremented {} because of {} nodes".format(variable, gn.ginst.ngnodes, gn.ginst))
-#                    av = total / len(value)
-#                    av = 1.0 / len(value)
-#                    print("  av {}, varscore {}".format(av, varscore))
                     varscore /= len(value)
-#                    varscore += av
+            elif typ == 'covered_snodes':
+                pass
             elif typ == 'groups':
-#                print("Checking groups variable {}".format(var_value))
-                # groups variable is good if it's big and has lower indices
-                if value:
-                    total = 0
-                    for gi in value:
-                        total += gi
-                        group = self.groups[gi]
-                        varscore += group.ngnodes
-                    av = total / len(value)
-                    varscore /= len(value)
-                    varscore += av
-#                print("  groups var {} added {} to score for {}".format(variable, av, dstore))
-#            print(" Varscore for {} with {} in {}: {}".format(variable, value, dstore, varscore))
+                pass
         # Tie breaker
-        ran = random.random() / 100.0
-        return varscore + ran
-    #undet_count + group_size_wt*varscore + ran # - multiword_groups + len(group_upper_indices)
+        varscore += random.random() / 100.0
+#        print("Evaluating dstore {}; undet: {}, var/value {}, score {}".format(dstore, undet, var_value, varscore))
+        return varscore
 
     @staticmethod
     def get_var_type(variable):
@@ -1029,19 +1129,103 @@ class Sentence:
             return 'groups'
         if '->gn' in name:
             return 'sn->gn'
+        if 'covered' in name:
+            return 'covered_snodes'
         return None
 
-    def get_w2gn_vars(self, undecvars, dstore):
+    def select_varval(self, undecvars, dstore):
+        """Given a list of undecided essential variables and dstore, select
+        a variable and two complementary values to distribute on."""
+#        conflicts = self.get_group_varval(undecvars, dstore)
+#        print("Group undet conflicts: {}".format(conflicts))
+#        return self.get_s2g_varval(undecvars, dstore)
+        # Use the 'groups' variable if there are group conflicts
+        group_varval = self.get_group_varval(undecvars, dstore)
+        if group_varval:
+            return group_varval
+        else:
+            # Otherwwise use the 'covered_snodes' variable if it's undetermined
+            snode_varval = self.get_snodes_varval(undecvars, dstore)
+            if snode_varval:
+                return snode_varval
+        # Otherwise choose an snode->gnode variable
+        return self.get_s2g_varval(undecvars, dstore)
+
+    def get_snodes_varval(self, undecvars, dstore):
+        """Pick a undecided value for the 'covered_nodes' variable and its complement
+        among undecided values. Prefer 'shared' snodes, those with potentially a lexical
+        and a category gnode."""
+        covered = self.variables['covered_snodes']
+        covered.pprint(dstore=dstore, spaces=2)
+        cundec = covered.get_undecided(dstore)
+        if not cundec:
+            return
+        print("  Selecting from undecided snodes: {}".format(cundec))
+        for sn in cundec:
+            snode = self.nodes[sn]
+            s2g = snode.variables['gnodes']
+            s2gup = s2g.get_upper(dstore)
+            gnodes = [self.gnodes[gn] for gn in s2gup]
+            print("  Gnodes for {}: {}".format(sn, gnodes))
+            if any([gn.cat for gn in gnodes]):
+                # This possibly covered snode may be a shared node
+                val = {sn}
+                print("  SELECTED snode {} with possible gnodes {}".format(sn, gnodes))
+                return covered, val, cundec - val
+        # No possible shared snodes found, just use the last one found
+        val = {sn}
+        print("  SELECTED random snode {}".format(sn))
+        return covered, val, cundec - val
+            
+#        val = {list(cundec)[0]}
+#        return covered, val, cundec - val
+
+    def get_group_varval(self, undecvars, dstore):
+        groups = self.variables['groups']
+#        gupper = groups.get_upper(dstore)
+        gundec = groups.get_undecided(dstore)
+        if not gundec or not self.group_conflicts:
+            return
+        conflicts = []
+        biggest = (0, 0)
+        for conflict in self.group_conflicts:
+            conflict1 = [g for g in conflict if g in gundec]
+            if len(conflict1) > 1:
+                conflicts.append(conflict1)
+        if conflicts:
+            for conflict in conflicts:
+                for conflict1 in conflict:
+                    group = self.groups[conflict1]
+                    gn = group.ngnodes
+                    if gn > biggest[1]:
+                        biggest = (conflict1, gn)
+            val = {biggest[0]}
+            return groups, val, gundec - val
+        return
+
+#        else:
+#            for g in gundec:
+#                group = self.groups[g]
+#                gn = group.ngnodes
+#                if gn > biggest[1]:
+#                    biggest = (g, gn)
+
+    def get_s2g_varval(self, undecvars, dstore):
         """Given a set of undecided variables in a domain store, find a snode->gnode variable
         that has at last one value that is part of a group with more than one node and
         at least one other value that is part of a group with only one node. Use this
         to select variable and values in search (distribution).
         """
 #        group_var = self.variables['groups']
-#        print("Values for group var {}, {}".format(group_var.get_upper(dstore), group_var.get_lower(dstore)))
+#        snode_var = self.variables['covered_snodes']
+#        gn_pos = self.variables.get('gnode_pos')
+#        print("  Getting variable/values for dist")
+#        group_var.pprint(dstore=dstore, spaces=4)
+#        snode_var.pprint(dstore=dstore, spaces=4)
+#        gn_pos.pprint(dstore=dstore, spaces=4)
+#        print("  Undecided for covered: {}".format(snode_var.get_undecided(dstore=dstore)))
         variables = [node.variables.get('gnodes') for node in self.nodes]
         # Variable whose possible values are tuples of gnodes for individual groups
-        gn_pos = self.variables.get('gnode_pos')
         if gn_pos:
             gn_pairs = gn_pos.get_upper(dstore=dstore)
             for var in variables:
@@ -1066,16 +1250,21 @@ class Sentence:
         dstore = dstore or self.dstore
         # Get the indices of the selected groups
         groups = self.variables['groups'].get_value(dstore=dstore)
+        covered_snodes = self.variables['covered_snodes'].get_value(dstore=dstore)
         ginsts = [self.groups[g] for g in groups]
         s2gnodes = []
         # For each snode, find which gnodes are associated with it in this dstore. This becomes the value of
         # the s2gnodes field in the solution created.
         for node in self.nodes:
 #            print("Creating solution for {}, gnodes {}".format(node, node.variables['gnodes'].get_value(dstore=dstore)))
-            gnodes = list(node.variables['gnodes'].get_value(dstore=dstore))
+            if node.index in covered_snodes:
+                gnodes = list(node.variables['gnodes'].get_value(dstore=dstore))
+            else:
+                gnodes = []
             s2gnodes.append(gnodes)
         # Create trees for each group
         tree_attribs = {}
+#        print("NEW SOLUTION: groups: {}, covered nodes: {}, s2gnodes: {}".format(groups, covered_snodes, s2gnodes))
         for snindex, sg in enumerate(s2gnodes):
             for gn in sg:
                 gnode = self.gnodes[gn]
@@ -1098,8 +1287,8 @@ class Sentence:
             # First store the group's own tree as a set of sn indices
             sn.append(set(sn[0]))
             # Next check for mergers
+#            print("Making tree for {}, {}, {}".format(tree_attribs, gindex, sn[2]))
             Sentence.make_tree(tree_attribs, gindex, sn[2])
-#        print("Tree attribs {}".format(tree_attribs))
         # Convert the dict to a list and sort by group indices
         trees = list(tree_attribs.items())
         trees.sort(key=lambda x: x[0])
@@ -1205,7 +1394,7 @@ class Solution:
         self.segments = []
         # Current session (need for creating SegRecord objects)
         self.session = session
-        print("Solución creada con dstore {} y ginsts {}".format(dstore, ginsts))
+        print("SOLUCIÓN CREADA con dstore {} y ginsts {}".format(dstore, ginsts))
 
     def __repr__(self):
         return "|< {} >|({})".format(self.sentence.raw, self.index)
@@ -1306,7 +1495,7 @@ class Solution:
                 snode_indices = gnode.snode_indices
                 snode_index = snode_indices.index(snode.index)
                 snode_anal = gnode.snode_anal[snode_index]
-                print("  Merge nodes for gnode {}: snode_anal {}".format(gnode, snode_anal))
+#                print("  Merge nodes for gnode {}: snode_anal {}".format(gnode, snode_anal))
                 # It could be a list of anals, only None if there aren't any.
                 if snode_anal and snode_anal[0]:
 #                    print("Appending snode_anals for gnode {}: {}".format(gnode, [a[1] for a in snode_anal]))

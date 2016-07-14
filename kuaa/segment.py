@@ -246,18 +246,16 @@ class SNode:
             self.variables['features'] = EMPTY
         else:
             # GNodes associated with this SNode: 0, 1, or 2
-            tokens = {self.token}
-#            print("Getting analyses for {}".format(self))
-            for a in self.analyses:
-                root = a.get('root')
-                if root:
-                    tokens.add(root)
-                cats = a.get('cats')
-                if cats:
-                    tokens.update(cats)
-#            print(" Tokens for {}: {}".format(self, tokens))
-#            print("   GNode tokens: {}".format([g.token for g in self.sentence.gnodes]))
-            upper = {gn.sent_index for gn in self.sentence.gnodes if gn.token in tokens}
+#            tokens = {self.token}
+#            for a in self.analyses:
+#                root = a.get('root')
+#                if root:
+#                    tokens.add(root)
+#                cats = a.get('cats')
+#                if cats:
+#                    tokens.update(cats)
+            upper = set(self.gnodes)
+#            upper = {gn.sent_index for gn in self.sentence.gnodes if gn.token in tokens}
 #            print("   Upper: {}".format(upper))
             self.svar('gnodes', "w{}->gn".format(self.index), set(),
 #                      set(range(self.sentence.ngnodes)),
@@ -323,14 +321,14 @@ class SNode:
                 # All other cases fail because root or cat matches require node features
                 return False
         else:
-#            if verbosity:
-#                print('    Cat item, looking in {}'.format(self.cats))
             # Check whether a group item is really a set item (starting with '$$'); if so, drop the first '$' before matching
             if is_cat and Entry.is_set(grp_item):
                 grp_item = grp_item[1:]
             # If group token is not cat and there are no group features, check for perfect match
             if not is_cat and not grp_feats:
                 if self.token == grp_item:
+                    if verbosity:
+                        print("    Matches trivially")
                     return None
             # Go through analyses, checking cat, root, and features (if any group features)
             results = []
@@ -365,33 +363,6 @@ class SNode:
                 if verbosity:
                     print("  Returning match results: {}".format(results))
                 return results
-#            else:
-#                return False
-#        elif self.analyses:
-#            results = []
-#            # Check each combination of root and analysis features
-#            for analysis in self.analyses:
-#                root = analysis.get('root', '')
-#                node_features = analysis.get('features')
-#                if root == grp_item:
-#                    if not grp_feats:
-#                        results.append((root, node_features))
-#                        return root, node_features
-#                    elif not node_features:
-#                        # Fail because there must be an explicit match with group features
-#                        return False
-#                    else:
-#                        # There must be an explicit match with group features, so strict=True
-#                        u_features = simple_unify(node_features, grp_feats, strict=True)
-#                        if u_features != 'fail':
-##                            if isinstance(u_features, FeatStruct):
-##                                u_features = u_features.copy()
-#                            results.append((root, u_features))
-#                            return root, u_features
-#            if results:
-#                if verbosity:
-#                    print("  Returning match results: {}".format(results))
-#                return results
         return False
 
 class GInst:
@@ -442,6 +413,8 @@ class GInst:
         self.treetrans = None
         # Indices of GInsts that this GINst depends on; set in Sentence.lexicalize()
         self.dependencies = None
+        # Possible snode indices for lexical and category nodes.
+        self.sindices = [[], []]
 #        print("Creating GInst {} with head i {} and snode indices {}".format(self, head_index, snode_indices))
 
     def __repr__(self):
@@ -503,7 +476,8 @@ class GInst:
     def create_variables(self, verbosity=0):
         ngroups = len(self.sentence.groups)
         nsnodes = len(self.sentence.nodes)
-        cand_snodes = self.sentence.covered_indices
+        cand_snodes = self.sindices[0] + self.sindices[1]
+#            self.sentence.covered_indices
 #        print("Creating variables for {}, # abs nodes {}".format(self, self.nanodes))
         if self.dependencies:
             self.variables['deps'] = DetVar('deps{}'.format(self.index), self.dependencies)
@@ -840,7 +814,7 @@ class TreeTrans:
                 if verbosity:
                     if len(gnodes) > 1:
                         print("  multiple gnodes: {}".format(gnodes))
-                if gnodes[0] in self.abs_gnode_dict:
+                if gnodes[0] in self.abs_gnode_dict and len(gnodes) > 1:
 #                    if verbosity:
 #                        print("   {}: gnodes {} contain an abs gnode dict in first position".format(self, gnodes))
                     gna = self.abs_gnode_dict[gnodes[0]]

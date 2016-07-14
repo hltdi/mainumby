@@ -1534,8 +1534,7 @@ class ComplexConstraint(Constraint):
         self.constraints = []
 
     def fails(self, dstore=None):
-        """Fail if any of the UnionSelection constraints over the selvars and mainvars indexed by the
-        lower bound of selvar fail."""
+        """Fail if any of the constraints indexed by the lower bound of selvar fail."""
         for index in self.selvar.get_lower(dstore=dstore):
             constraint = self.constraints[index]
             if constraint and constraint.fails(dstore=dstore):

@@ -1065,6 +1065,8 @@
 ->grn mbo'ehára_n $a ; || 1, 0 ; 1==0 n:n,poses:poses
 *** casa_n ; ^ casa_n 0 ; #1293
 ->grn <hóga_n ; 0==0 n:n,poses:poses ; #430 ; ##583
+*** casa_n que $v ; ^ casa_n 0
+->grn <hóga_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** Venus_n ; ^ Venus_n 0
 ->grn mbyja_n ko'ẽ ; 0==0 n:n,poses:poses
 *** WC_n ; ^ WC_n 0

@@ -1,11 +1,28 @@
-2016
+2016 summer
+— implement Union constraints as ComplexUnionSelection
+  selvar: $groups
+  selvars: [${0, 1}, ${2, 3}, …] len=ngroups
+  mainvars: [$gnodes_pos0, $gnodes_pos1, …] len=ngroups
+  seqvars: [$agnodes_pos0, $cgnodes_pos0, $agnodes_pos1, $cgnodes_pos1, …] len=2*ngroups
+— distinguishing RCs from NCs
+N que (N) V
+Le mandé al maestro que venga.
+Le digo [a la maestra] [que viene].
+Se lo digo a [la maestra [que viene]].
+… how about RC entries for nouns
+la casa que el maestro compró
+la casa que compré
+la casa que se compró
+<casa que V> => <<hóga V
+la mujer que vio a mi vecino
+<mujer que V>
+
 — noun clauses with que:
-- saber, creer, recordar, olvidar, intuir, deducir, opinar, descubrir, entender, oir, sentir, ver, querer, mandar, ordenar, pedir, afirmar, negar, revelar, contar, referir, avisar, aconsejar, temer
+- saber, creer, *recordar, olvidar, intuir, deducir, opinar, descubrir, entender, oir, sentir, ver, querer, *mandar, *ordenar, *pedir, afirmar, *negar, *revelar, *contar, referir, *avisar, *aconsejar, temer
 - decir
 — noun clauses with si:
 - ignorar, saber, querer saber, averiguar, investigar, inquirir, preguntar
 
-2016
 — tan ADJ, tanto N
 — donde 
 2016.4.24

@@ -401,7 +401,7 @@ class Group(Entry):
                     if node_match == False:
                         # This has to match, so fail now
                         if verbosity:
-                            print("   {} failed to match in token {}".format(self, token))
+                            print("   {} failed to match in head token {}".format(self, token))
                         return False
                     else:
 #                        print("  matched head {}".format(token))
@@ -410,7 +410,7 @@ class Group(Entry):
                             if verbosity:
                                 fstring = " Group head token {} in sentence position {} doesn't follow last token at {}"
                                 print(fstring.format(token, snode_indices, last_sindex))
-                                print("{} failed to match in token {}".format(self, token))
+                                print("   {} failed to match in token {}".format(self, token))
                             return False
                         match_snodes1.append((node.index, node_match, token, True))
                         if verbosity:
