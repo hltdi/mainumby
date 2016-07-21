@@ -336,8 +336,7 @@ class Sentence:
 
     def __init__(self, raw='', language=None, tokens=None, toktypes=None, toksubtypes=None,
                  nodes=None, groups=None, target=None, init=False,
-                 analyses=None,
-                 session=None,
+                 analyses=None, session=None, parent=None,
                  verbosity=0):
         self.set_id()
         # A list of string tokens, created by a Document object including this sentence
@@ -398,6 +397,8 @@ class Sentence:
         self.altsyns = []
         # MorphoSyns applied to sentence along with their start and end
         self.morphosyns = []
+        # For Sentence copies, parent is the source of the copy
+        self.parent = parent
         # Solver to find solutions
         self.solver = Solver(self.constraints, self.dstore,
                              evaluator=self.state_eval,
@@ -467,7 +468,7 @@ class Sentence:
         in the analysis of token in position."""
         s = Sentence(raw=self.raw[:],
                      tokens=self.tokens[:], toktypes=self.toktypes[:], toksubtypes= self.toksubtypes[:],
-                     language=self.language, target=self.target,
+                     language=self.language, target=self.target, parent=self,
                      analyses=copy.deepcopy(self.analyses))
         if skip:
 #            print("Skipping {} in copy of {}".format(skip, self))
@@ -570,6 +571,7 @@ class Sentence:
                 if ms.apply(self, ambig=ambig, verbosity=verbosity):
                     scopy = self.altsyns[-1]
                     print("{} copied sentence: {}".format(ms, scopy))
+                    # Attempt to apply succeeding morphosyns to copy if there is one
                     for ms1 in self.language.ms[mi+1:]:
                         ms1.apply(scopy, ambig=ambig, verbosity=verbosity)
 
@@ -611,7 +613,10 @@ class Sentence:
                     if cats:
                         anal['cats'] = cats
                     features = anal['features']
-                    pos = features.get('pos') if features else ''
+                    if features and isinstance(features, FeatStruct):
+                        pos = features.get('pos')
+                    else:
+                        pos = ''
                     if pos:
                         anal['pos'] = pos
                 raw_indices = del_indices.get(tokindex, [])
@@ -691,6 +696,14 @@ class Sentence:
         matched_keys = []
         group_index = 0
         for head_i, key, group in candidates:
+            # Check whether there is already a match for this position, key, and group length
+            # LATER HAVE A BETTER WAY OF CHOOSING A MATCH
+            matched_key = (head_i, key, len(group.tokens))
+            if matched_key in matched_keys:
+                # Reject this match because there's already a comparable one
+                if verbosity:
+                    print("{} rejected because {} already found".format(group, matched_key))
+                continue
             # Matching snodes, along with root and unified features if any
             if verbosity > 1:
                 print("Matching group {}".format(group))
@@ -705,7 +718,7 @@ class Sentence:
                 if verbosity > 1:
                     print("Failed to match")
                 continue
-            matched_keys.append((head_i, key))
+            matched_keys.append(matched_key)
 #            if verbosity > 1:
 #            print('Group {} matches snodes {}'.format(group, snodes))
             # Create a GInst object and GNodes for each surviving group
@@ -1151,30 +1164,35 @@ class Sentence:
         # Otherwise choose an snode->gnode variable
         return self.get_s2g_varval(undecvars, dstore)
 
-    def get_snodes_varval(self, undecvars, dstore):
+    def get_snodes_varval(self, undecvars, dstore, verbosity=0):
         """Pick a undecided value for the 'covered_nodes' variable and its complement
         among undecided values. Prefer 'shared' snodes, those with potentially a lexical
         and a category gnode."""
         covered = self.variables['covered_snodes']
-        covered.pprint(dstore=dstore, spaces=2)
+        if verbosity:
+            covered.pprint(dstore=dstore, spaces=2)
         cundec = covered.get_undecided(dstore)
         if not cundec:
             return
-        print("  Selecting from undecided snodes: {}".format(cundec))
+        if verbosity:
+            print("  Selecting from undecided snodes: {}".format(cundec))
         for sn in cundec:
             snode = self.nodes[sn]
             s2g = snode.variables['gnodes']
             s2gup = s2g.get_upper(dstore)
             gnodes = [self.gnodes[gn] for gn in s2gup]
-            print("  Gnodes for {}: {}".format(sn, gnodes))
+            if verbosity:
+                print("  Gnodes for {}: {}".format(sn, gnodes))
             if any([gn.cat for gn in gnodes]):
                 # This possibly covered snode may be a shared node
                 val = {sn}
-                print("  SELECTED snode {} with possible gnodes {}".format(sn, gnodes))
+                if verbosity:
+                    print("  SELECTED snode {} with possible gnodes {}".format(sn, gnodes))
                 return covered, val, cundec - val
         # No possible shared snodes found, just use the last one found
         val = {sn}
-        print("  SELECTED random snode {}".format(sn))
+        if verbosity:
+            print("  SELECTED random snode {}".format(sn))
         return covered, val, cundec - val
             
 #        val = {list(cundec)[0]}
@@ -1182,7 +1200,6 @@ class Sentence:
 
     def get_group_varval(self, undecvars, dstore):
         groups = self.variables['groups']
-#        gupper = groups.get_upper(dstore)
         gundec = groups.get_undecided(dstore)
         if not gundec or not self.group_conflicts:
             return
@@ -1203,26 +1220,12 @@ class Sentence:
             return groups, val, gundec - val
         return
 
-#        else:
-#            for g in gundec:
-#                group = self.groups[g]
-#                gn = group.ngnodes
-#                if gn > biggest[1]:
-#                    biggest = (g, gn)
-
     def get_s2g_varval(self, undecvars, dstore):
         """Given a set of undecided variables in a domain store, find a snode->gnode variable
         that has at last one value that is part of a group with more than one node and
         at least one other value that is part of a group with only one node. Use this
         to select variable and values in search (distribution).
         """
-#        group_var = self.variables['groups']
-#        snode_var = self.variables['covered_snodes']
-#        gn_pos = self.variables.get('gnode_pos')
-#        print("  Getting variable/values for dist")
-#        group_var.pprint(dstore=dstore, spaces=4)
-#        snode_var.pprint(dstore=dstore, spaces=4)
-#        gn_pos.pprint(dstore=dstore, spaces=4)
 #        print("  Undecided for covered: {}".format(snode_var.get_undecided(dstore=dstore)))
         variables = [node.variables.get('gnodes') for node in self.nodes]
         # Variable whose possible values are tuples of gnodes for individual groups
@@ -1495,13 +1498,16 @@ class Solution:
                 snode_indices = gnode.snode_indices
                 snode_index = snode_indices.index(snode.index)
                 snode_anal = gnode.snode_anal[snode_index]
-#                print("  Merge nodes for gnode {}: snode_anal {}".format(gnode, snode_anal))
+                if verbosity:
+                    print("  Merge nodes for gnode {}: snode_anal {}".format(gnode, snode_anal))
                 # It could be a list of anals, only None if there aren't any.
-                if snode_anal and snode_anal[0]:
-#                    print("Appending snode_anals for gnode {}: {}".format(gnode, [a[1] for a in snode_anal]))
+                if snode_anal and snode_anal[0] and snode_anal[0][1]:
+                    if verbosity:
+                        print("  Appending snode_anals for gnode {}: {}".format(gnode, [a[1] for a in snode_anal]))
                     features.append([a[1] for a in snode_anal])
             # Could this fail?? YES, currently it can
-#            print("  Unification result for {}: snode {}, gn_indices {} features {}".format(self, snode, gn_indices, features))
+            if verbosity:
+                print("  Unification result for {}: snode {}, gn_indices {} features {}".format(self, snode, gn_indices, features))
             feats_unified = FSSet.unify_all([FSSet(feats) for feats in features])
             if not feats_unified:
                 print("SOMETHING WRONG: unification failed for {}!".format(features))

@@ -98,7 +98,8 @@ class Solver:
             if n >= cutoff:
                 print('STOPPING AT CUTOFF')
             priority, state = fringe.get()
-            print("{} GETTING and running state {} and score {} from fringe".format(self, state, priority))
+            if expand_verbosity:
+                print("{} GETTING and running state {} and score {} from fringe".format(self, state, priority))
             # Goal test for this state
             state.run(verbosity=test_verbosity, tracevar=tracevar)
             if state.status == SearchState.succeeded:
@@ -118,7 +119,8 @@ class Solver:
                     if expand_verbosity:
                         print(" Próximo estado {}, nivel {}, valor {}".format(next_state, n, val))
                     # Add next state where it belongs in the queue
-                    print("  {} PUTTING new state {} and score {} on fringe of length {}".format(self, next_state, val, fringe.qsize()))
+                    if expand_verbosity:
+                        print("  {} PUTTING new state {} and score {} on fringe of length {}".format(self, next_state, val, fringe.qsize()))
                     fringe.put((val, next_state))
 #                    for v, s in list(fringe):
 #                        print("  state {}, score {}".format(s, v))

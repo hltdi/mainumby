@@ -742,6 +742,8 @@
 ->grn $num $n[caso=pe] ; || -1, 0, 1
 *** a $n que $v ; ^ a 0
 ->grn $n $v[pp=pe,rel=sjoj] ; || -1, 0, -1, 1 ; 1==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
+*** a $n donde $v ; ^ a 0
+->grn $n $v[pp=pe,rel=obl] ; || -1, 0, -1, 1 ; 1==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** a $n ; ^ a 0
 ->grn $n[caso=pe] ; || -1, 0
 *** a $pro ; ^ a 0 ; -X-
@@ -814,6 +816,10 @@
 ->grn ojuehe
 *** por medio de $n ; ^ medio 1
 ->grn $n rupi ; || 1, -1, -1, 0
+*** por $n que $v ; ^ a 0
+->grn $n $v[pp=rupi,rel=sjoj] ; || -1, 0, -1, 1 ; 1==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
+*** por $n donde $v ; ^ a 0
+->grn $n $v[pp=rupi,rel=obl] ; || -1, 0, -1, 1 ; 1==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** por $num $n ; ^ por 0 ; -X-
 ->grn $num $n rehe ; || 2, 0, 1
 ->grn $num $n rupi ; || 2, 0, 1

@@ -366,6 +366,7 @@ class Group(Entry):
 #                    print("    Trying to match {} in {} with left deleted stokens {}".format(token, self, leftdel))
                     matcheddel = False
                     for ld in leftdel:
+#                        print(" Checking ld {}".format(ld))
                         if token == ld:
                             # Current group token matches left deleted sentence node token; advance to next group token
 #                            print("    {} matches, advancing to next group token".format(ld))
@@ -805,14 +806,69 @@ class MorphoSyn(Entry):
                         s = copy
             for match in matches:
                 start, end, elements = match
-                s.morphosyns.append((self, start, end))
+                # %%
+                # All of the crap between %% and %% is to create sentence copies if some analysis doesn't match this MS
+                # but not if enough copies have already been created for a given word to handle the different possibilities
+                anal_fail = -1
+                anal_fail_index = -1
+                anal_succeed = 0
+                for eindex, elem in enumerate(elements):
+                    word, feats_list, dicts = elem
+                    if isinstance(feats_list, list):
+                        for index, (fl, d) in enumerate(zip(feats_list, dicts)):
+                            if not fl:
+                                if verbosity:
+                                    print("Match fails for {} for word {}, analysis {}".format(self, word, d))
+                                anal_fail = index
+                                anal_fail_index = eindex
+                            else:
+                                anal_succeed = index
+                if anal_fail > -1:
+                    # At least one of the analyses for some word is not compatible with this morphosyn, so create an altsyn
+                    # See if other morphosyns have matched this section with ambiguity for the same word
+                    all_ms = sentence.morphosyns[:]
+                    if sentence.parent:
+                        all_ms.extend(sentence.parent.morphosyns)
+                        for asyn in sentence.parent.altsyns:
+                            if asyn != sentence:
+                                all_ms.extend(asyn.morphosyns)
+                    else:
+                        for asyn in sentence.altsyns:
+                            all_ms.extend(asyn.morphosyns)
+                    if verbosity:
+                        print("Previous and current morphosyns: {}".format(all_ms))
+                    # Count how many previous matches there are for this section and this word
+                    matching_previous_ms = 0
+                    for ms in all_ms:
+                        m1, s1, e1, f1 = ms
+                        if s1 == start and e1 == end and f1 == anal_fail_index:
+                            matching_previous_ms += 1
+                    if verbosity:
+                        print("{} matching previous MS for word {}".format(matching_previous_ms, anal_fail_index))
+                    # See if the number is one less than the number of analyses for the ambiguous word
+                    n_fail_analyses = len(sentence.analyses[anal_fail_index])
+                    if verbosity:
+                        print("# analyses for word {}: {}".format(anal_fail_index, n_fail_analyses))
+                    if matching_previous_ms == n_fail_analyses - 1:
+                        # Don't make another copy
+                        if verbosity:
+                            print("Already matched enough MSs for word {}, no new copy necessary".format(anal_fail_index))
+                    else:
+                        # Make a copy to keep trying for further MSs
+                        if verbosity:
+                            print("Analysis {} fails, so sentence copied by {}".format(anal_fail, self))
+                        copy = sentence.copy()
+                        copied = True
+                        if anal_fail < anal_succeed:
+                            # The analysis that fails has priority, so make the one that implements the morphosyn the altsyn
+                            s = copy
+                # %%
+                s.morphosyns.append((self, start, end, anal_fail_index))
                 # Change either the sentence or the latest altsyn copy
                 if verbosity:
                     print(" Match {}".format(match))
-                self.enforce_constraints(match, verbosity=verbosity)
-                self.insert_match(match, s, verbosity=verbosity)
-#            return True
-#        return False
+                self.enforce_constraints(start, end, elements, verbosity=verbosity)
+                self.insert_match(start, end, elements, s, verbosity=verbosity)
         return copied
 
     @staticmethod
@@ -841,7 +897,7 @@ class MorphoSyn(Entry):
                 # MorphoSyns have already succeeded for the sentence
                 if self.failif:
                     failed = False
-                    for ms, start, end in sentence.morphosyns:
+                    for ms, start, end, fail_word in sentence.morphosyns:
                         if ms.name.startswith(self.failif) and start <= sindex <= end:
                             if verbosity:
                                 print("{} fails because {} has already succeeded".format(self, ms))
@@ -953,6 +1009,7 @@ class MorphoSyn(Entry):
             if verbosity:
                 print("   Root matched")
             # root matches
+#            print("{} unifying {}/{} and {}/{}".format(self, sroot, sfeats.__repr__(), pforms, pfeats.__repr__()))
             u = simple_unify(sfeats, pfeats)
             if u != 'fail':
                 if not neg:
@@ -968,14 +1025,13 @@ class MorphoSyn(Entry):
             print("   Failed")
         return False
 
-    def enforce_constraints(self, match, verbosity=0):
-        """If there is an agreement contraint, modify the match element features to reflect it.
+    def enforce_constraints(self, start, end, elements, verbosity=0):
+        """If there is an agreement constraint, modify the match element features to reflect it.
         Works by mutating the features in match.
         If there are deletion constraints, prefix ~ to the relevant tokens.
         """
         if verbosity:
-            print(" Enforcing constraints for match {}".format(match))
-        start, end, elements = match
+            print(" Enforcing constraints for match {}/{} {}".format(start, end, elements))
         # Exclude the source features
         if self.agr:
             srci, trgi, feats = self.agr
@@ -1044,13 +1100,12 @@ class MorphoSyn(Entry):
 #                    feats_list[index] = feats1
 #                    print("Feature {} after update".format(feats.__repr__()))
 
-    def insert_match(self, match, sentence, verbosity=0):
+    def insert_match(self, start, end, m_elements, sentence, verbosity=0):
         """Replace matched portion of sentence with elements in match.
         Works by mutating sentence elements (tokens and analyses).
         """
         if verbosity:
-            print(" Inserting match {}".format(match))
-        start, end, m_elements = match
+            print(" Inserting match {}/{} {}".format(start, end, m_elements))
         # start and end are indices within the sentence; some may have been
         # ignored within the pattern during matching
         m_index = 0
@@ -1063,7 +1118,7 @@ class MorphoSyn(Entry):
             sentence.tokens[sstart], sentence.tokens[send] = sentence.tokens[send], sentence.tokens[sstart]
         else:
             for s_elem in sentence.analyses[start:end]:
-#                print("INSERTING {}".format(s_elem))
+#                print("{} INSERTING {}".format(self, s_elem))
                 s_token = s_elem[0]
                 if MorphoSyn.del_token(s_token):
                     # Skip this sentence element; don't increment m_index
@@ -1083,10 +1138,11 @@ class MorphoSyn(Entry):
                         new_s_anals = [{'features': mfl, 'root': s_token} for mfl in m_feats_list]
                     for m_feats, s_anal in zip(m_feats_list, s_anals):
                         if not m_feats:
-#                            print("Insert match: m_feats {}, s_anal {} fail".format(m_feats, s_anal))
+#                            print("Insert match fails: m_feats {}, s_anal {}".format(m_feats, s_anal))
                             # This anal failed to match pattern; filter it out
                             continue
                         else:
+#                            print("Insert match succeeds: m_feats {}, s_anal {}".format(m_feats, s_anal))
                             s_feats = s_anal['features']
                             if s_feats != m_feats:
                                 # Replace sentence features with match features if something

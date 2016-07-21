@@ -358,7 +358,7 @@ class SNode:
                         results.append((node_root, node_features))
                 else:
                     # SUCCEED: group has features but node doesn't
-                    results.append((grp_item, grp_feat))
+                    results.append((grp_item, grp_feats))
             if results:
                 if verbosity:
                     print("  Returning match results: {}".format(results))
@@ -370,7 +370,7 @@ class GInst:
     """Instantiation of a group; holds variables and GNode objects."""
 
     def __init__(self, group, sentence, head_index, snode_indices, index):
-        print("Creating group inst for {} with snode_indices {}".format(group, snode_indices))
+#        print("Creating group inst for {} with snode_indices {}".format(group, snode_indices))
         # The Group object that this "instantiates"
         self.group = group
         self.sentence = sentence

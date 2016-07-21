@@ -380,7 +380,7 @@ class Language:
         cache = self.get_cache_file(name=name)
         try:
             with open(cache, encoding='utf8') as f:
-#                print("Leyendo archivo almacenado")
+                print("Leyendo archivo almacenado")
                 for line in f:
                     split_line = line.strip().split(" || ")
                     word, analyses = split_line
@@ -1244,7 +1244,7 @@ class Language:
         target_abbrev = target.abbrev if target else None
         source_groups = []
         target_groups = []
-        print("Leyendo grupos para {}".format(self.name))
+        print("Leyendo grupos léxicos para {}".format(self.name))
         for gfile in self.get_group_files(files):
             with open(gfile, encoding='utf8') as file:
                 if verbosity:
@@ -1317,7 +1317,7 @@ class Language:
         path = self.get_ms_file(target.abbrev)
         try:
             with open(path, encoding='utf8') as f:
-                print("Leyendo morphosyns para {}".format(path))
+                print("Leyendo transformaciones morfosintácticas para {}".format(target))
                 lines = f.read().split('\n')[::-1]
                 # the order of MorphoSyns matterns
                 while lines:
