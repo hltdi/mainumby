@@ -1536,6 +1536,14 @@ class Language:
             print("The root/feature combination {}:{} word can't be generated!".format(root, features.__repr__()))
             return [root]
 
+    def gen_multroots(self, roots, features, pos=None, guess=False, roman=True, cache=True, verbosity=0):
+        """For multiple roots and the same features, return the list of possible outputs."""
+        features = FeatStruct(features)
+        output = []
+        for root in roots:
+            outputs.extend(self.generate(root, features, pos=pos, guess=guess, roman=roman, cache=cache, verbosity=verbosity))
+        return output
+
 class LanguageError(Exception):
     '''Class for errors encountered when attempting to update the language.'''
 

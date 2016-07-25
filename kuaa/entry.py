@@ -111,7 +111,7 @@ WITHIN_ATTRIB_SEP = ','
 FORM_FEATS = re.compile("([$<'¿?¡!|()\-\w]+)\s*((?:\[.+\])?)$")
 # !FS(#1-#2), representing a sequence of #1 to #2 negative FS matches
 NEG_FEATS = re.compile("\s*!(\[.+\])(\(\d-\d\))$")
-HEAD = re.compile("\s*\^\s*([<'¿?¡!\-\w]+)\s+(\d)\s*$")
+HEAD = re.compile("\s*\^\s*([<'¿?¡!|\-\w]+)\s+(\d)\s*$")
 # Within agreement spec
 # 1=3 n,p
 WITHIN_AGR = re.compile("\s*(\d)\s*=\s*(\d)\s*(.+)$")
@@ -280,7 +280,9 @@ class Group(Entry):
         self.nogap = nogap
         # Distance back from sentence node matching head to start in matching group
         self.snode_start = 0
-        if self.head_index > 0 and not any([Group.is_cat(t) for t in self.tokens[:self.head_index]]):
+        if self.head_index > 0:
+            # What was this for? Why does it matter whether any nodes before the head are cats?
+#             and not any([Group.is_cat(t) for t in self.tokens[:self.head_index]]):
             self.snode_start = -self.head_index
 
     def __repr__(self):
@@ -340,7 +342,6 @@ class Group(Entry):
             return False
         matcheddel = False
         for index, token in enumerate(self.tokens):
-#            print ("  Matching token {}: {}".format(index, token))
             # Whether there's a sentence node gap between this token and the last one that matched
             nodegap = 0
             # Whether this token is the group head
@@ -353,6 +354,7 @@ class Group(Entry):
                 print(" Attempting to match {} in {}".format(token, self))
             matched = False
             for node in snodes[snindex:]:
+#                print("  Trying snode {}".format(node))
                 if nodegap > 2:
                     break
                 if self.nogap and nodegap > 0:

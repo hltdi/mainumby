@@ -1057,6 +1057,7 @@
 *** ángulo_n de $n ; ^ ángulo_n 0
 ->grn $n <hakamby_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n akãmby_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
+### examples to try here: profesor, casa
 *** profesor_n de $n ; ^ profesor_n 0
 ->grn $n mbo'ehára_n[+ext,pp=3] ; || 1, -1, 0 ; 0==1 n:n
 *** casa_n de $n ; ^ casa_n 0
@@ -1067,8 +1068,10 @@
 ->grn <hóga_n ; 0==0 n:n,poses:poses ; #430 ; ##583
 *** casa_n que $v ; ^ casa_n 0
 ->grn <hóga_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-*** casa_n a $art que $v ; ^ casa_n 0
+*** casa_n $pp $art que $v ; ^ casa_n 0
 ->grn <hóga_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
+*** casa_n $pp cual_n $v ; ^ casa_n 0
+->grn <hóga_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** Venus_n ; ^ Venus_n 0
 ->grn mbyja_n ko'ẽ ; 0==0 n:n,poses:poses
 *** WC_n ; ^ WC_n 0
@@ -18943,3 +18946,4 @@
 ->grn <haĝe_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 *** tener_v[-r] miedo_n ; ^ miedo_n 1
 ->grn kyhyje_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+###

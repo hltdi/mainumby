@@ -3017,7 +3017,7 @@ comodidad_n $n
 compactar_v $v
 compacto_n $n
 compadecer_v $v,$v_t
-compadre_n $n
+compadre_n $n,$n_prs
 compaginar_v $v
 comparación_n $n
 comparar_v $v,$v_t
@@ -3660,7 +3660,8 @@ cuadruplicar_v $v
 cuajada_n $n
 cuajado_n $n
 cuajar_v $v,$v_i
-cual $pro
+cual_n $pro,$n
+cuales_n $pro,$n
 cualidad_n $n
 cualificar_v $v
 cualquiera_n $n
@@ -8157,8 +8158,7 @@ largo_n $n
 largo_a $a
 laringe_n $n
 larva_n $n
-las_a $art
-las $pro_3oj
+las $art,$pro_3oj
 lascivia_n $n
 lasitud_n $n
 lastimadura_n $n
@@ -8440,8 +8440,7 @@ longitud_n $n
 lonja_n $n
 lord_n $n
 loro_n $n
-los_a $art
-los $pro_3oj
+los $art,$pro_3oj
 losa_n $n
 lote_n $n
 lotería_n $n

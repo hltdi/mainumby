@@ -15954,6 +15954,10 @@
 ->grn ha_v[cat=a] ; #3121 ; ##182
 ->grn <hasa_v[cat=a] ; #437 ; ##8
 ->grn jei_v[cat=a] ; #61 ; ##5
+# ambiguous ir/ser
+*** ir|ser_v[-r,+fin] ; ^ ir|ser_v 0
+->grn ha_v[cat=a]
+->grn ime_v[cat=a]
 *** irrigar_v[-r,+fin] ; ^ irrigar_v 0
 ->grn mohe'õ_v[cat=a]
 *** irritar_v[+r,+fin] ; ^ irritar_v 0 ; #4

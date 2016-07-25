@@ -133,6 +133,9 @@
 # 2016.06.30
 # -- New constraint (and constraint type) added to Sentence, enforcing dependency by higher-level group with a cat node
 #    and lower-level group that has a lexical node that merges with the cat node.
+# 2016.07.25
+# -- Another new constraint (and constraint type) added to Sentence, enforcing imcompatibility of groups with "merger loops".
+#    Example: la casa en la cual dormimos -> <casa PP ART cual V> | <en N>
 
 import copy, re, random, itertools
 from .ui import *
@@ -399,6 +402,8 @@ class Sentence:
         self.morphosyns = []
         # For Sentence copies, parent is the source of the copy
         self.parent = parent
+        # Pairs of group instances that are incompatible because of merger loops.
+        self.incompat_groups = []
         # Solver to find solutions
         self.solver = Solver(self.constraints, self.dstore,
                              evaluator=self.state_eval,
@@ -753,6 +758,7 @@ class Sentence:
         self.get_group_dependencies()
         self.get_group_sindices()
         self.get_group_conflicts()
+        self.get_incompat_groups()
 
     def get_group_sindices(self):
         """Set the possible snode indices for each GInst, grouping them according to whether
@@ -764,6 +770,16 @@ class Sentence:
                 ginst.sindices[1].extend(si)
             else:
                 ginst.sindices[0].extend(si)
+
+    def get_incompat_groups(self):
+        """Find pairs of groups that are incompatible because of a "merger loop": one SNode with an associated
+        cat GNode in group A and lex node in group B and another SNode with the reverse."""
+        for i1, ginst1 in enumerate(self.groups[:-1]):
+            lex_sn1, cat_sn1 = ginst1.sindices
+            for ginst2 in self.groups[i1:]:
+                lex_sn2, cat_sn2 = ginst2.sindices
+                if any([ls1 in cat_sn2 for ls1 in lex_sn1]) and any([ls2 in cat_sn1 for ls2 in lex_sn2]):
+                    self.incompat_groups.append((ginst1, ginst2))
 
     def get_group_conflicts(self):
         """Find group conflicts, lists of GInst indices, only one of which can be part of a solution."""
@@ -928,7 +944,9 @@ class Sentence:
         # Dependencies among GInsts
         gdeps = [g.variables['deps'] for g in self.groups]
         self.constraints.append(DependencySelection(selvar=groupvar, depvars=gdeps))
-        # ...
+        # If there are inconsistent groups, create a NAND constraint for each pair
+        for g1, g2 in self.incompat_groups:
+            self.constraints.append(NAND(groupvar, g1.index, g2.index))
         # Relation among abstract, concrete, and all gnodes for each snode
         # For each of the covered snodes, the associated gnodes are the union of the cgnodes and agnodes
         snodes_union_sel = [DetVar("nU2", {2*pos, 2*pos+1}) for pos in range(len(self.nodes))]
@@ -1041,18 +1059,25 @@ class Sentence:
                                                         selvars=[g.variables.get('agr', EMPTY) for g in self.groups]))
 
     @staticmethod
-    def make_tree(group_dict, group_i, tree):
-        """Make a tree (a set of snode indices) for the group with index group_i
+    def update_tree(group_dict, group_i, tree, depth=0):
+        """Update a tree (a set of snode indices) for the group with index group_i
         by searching for merged groups and their trees in group_dict."""
+#        print("Making tree: {}, {}, {}, {}".format(group_dict, group_i, tree, depth))
+        if depth > 3:
+            print("Infinite loop!")
+            return
         if not group_dict[group_i][1]:
+            # Nothing to merge for this group
             return
         else:
             for mgi in group_dict[group_i][1]:
+                # Group indices for merger. Add the snode indices for each
+                # merged group to the tree (set).
+                tree.update(group_dict[mgi][0])
                 if mgi == group_i:
                     print("Error in making tree, group_dict: {}".format(group_dict))
                     return
-                tree.update(group_dict[mgi][0])
-                Sentence.make_tree(group_dict, mgi, tree)
+                Sentence.update_tree(group_dict, mgi, tree, depth=depth+1)
 
     ## Methods to constrain search
 
@@ -1229,6 +1254,7 @@ class Sentence:
 #        print("  Undecided for covered: {}".format(snode_var.get_undecided(dstore=dstore)))
         variables = [node.variables.get('gnodes') for node in self.nodes]
         # Variable whose possible values are tuples of gnodes for individual groups
+        gn_pos = self.variables['gnode_pos']
         if gn_pos:
             gn_pairs = gn_pos.get_upper(dstore=dstore)
             for var in variables:
@@ -1265,6 +1291,9 @@ class Sentence:
             else:
                 gnodes = []
             s2gnodes.append(gnodes)
+        print("groups {}".format(groups))
+        print("covered nodes {}".format(covered_snodes))
+        print("s2gnodes {}".format(s2gnodes))
         # Create trees for each group
         tree_attribs = {}
 #        print("NEW SOLUTION: groups: {}, covered nodes: {}, s2gnodes: {}".format(groups, covered_snodes, s2gnodes))
@@ -1287,11 +1316,12 @@ class Sentence:
                     tree_attribs[group1][1].append(group0)
 #        print("Tree attribs {}".format(tree_attribs))
         for gindex, sn in tree_attribs.items():
-            # First store the group's own tree as a set of sn indices
+            # First store the group's own tree as a set of sn indices and
+            # the third element of sn
             sn.append(set(sn[0]))
             # Next check for mergers
-#            print("Making tree for {}, {}, {}".format(tree_attribs, gindex, sn[2]))
-            Sentence.make_tree(tree_attribs, gindex, sn[2])
+#            print("Updating tree for {}, {}, {}".format(tree_attribs, gindex, sn[2]))
+            Sentence.update_tree(tree_attribs, gindex, sn[2])
         # Convert the dict to a list and sort by group indices
         trees = list(tree_attribs.items())
         trees.sort(key=lambda x: x[0])
@@ -1541,7 +1571,6 @@ class Solution:
                 group_attribs = []
                 any_anode = False
                 for tgroup, tgnodes, tnodes in ginst.translations:
-#                    print("TGROUP {}, TGNODES {}, TNODES {}".format(tgroup, tgnodes, tnodes))
                     for tgnode, tokens, feats, agrs, t_index in tgnodes:
                         if tgnode.cat:
                             any_anode = True

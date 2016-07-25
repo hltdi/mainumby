@@ -1078,8 +1078,8 @@
 ### PORQUE / COMO
 #### OTRAS EXPRESIONES DE LUGAR
 ### DONDE: relative clauses handled by morphosyn
-*** donde $v ; ^ donde 0
-->grn $v[rel=obl] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** $n donde $v ; ^ donde 1
+->grn $n $v[rel=obl] ; || 0, -1, 1 ; 2==1 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 *** dondequiera ; ^ dondequiera 0
 ->grn oimehápe
 ->grn opárupi

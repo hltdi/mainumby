@@ -65,6 +65,11 @@
 #    each item being selected from. The dependency variable for each element
 #    gives the indices of other elements that must be selected for that element
 #    to be selected. Needed for dependencies between groups in Mbojereha.
+# 2016.07.25
+# -- New constraint type: NAND. Single group variable and two ints (converted to
+#    determined integer variables that are actually never used). Group may contain
+#    neither, either, but not both ints. Needed from imcompatibilities between
+#    groups in Mbojereha.
 
 from .variable import *
 # This is imported in another branch too...
@@ -675,6 +680,74 @@ class Order(Constraint):
                                constraint=(verbosity>1 or vb in tracevar) and self):
                     changed.add(v)
                     return state, changed
+        return state, changed
+
+class NAND(Constraint):
+    """
+    The main (set) variable includes neither elem1 or elem2, either elem1 or elem2, but not both elem1 and elem2.
+    elem1 and elem2 are ints. This behaves like NAND (alternative denial) with respect to elem1 and elem2, though
+    mainvar can contain other values.
+    """
+
+    def __init__(self, mainvar=None, elem1=None, elem2=None,
+                 problem=None, weight=1, maxset=None, record=True):
+        self.v1 = DetIVar('nand_v1', elem1)
+        self.v2 = DetIVar('nand_v2', elem2)
+        Constraint.__init__(self, [mainvar, self.v1, self.v2],
+                            problem=problem, weight=weight, record=record)
+        self.mainvar = mainvar
+        self.elem1 = elem1
+        self.elem2 = elem2
+        self.name = '{} = {}|{}'.format(self.mainvar, self.elem1, self.elem2)
+
+    def is_entailed(self, dstore=None):
+        """Entailed if
+        (1) neither elem1 nor elem2 is in mainvar's upper bound
+        (2) elem1 is in mainvar's lower bound and elem2 is not in mainvar's upper bound
+        (3) elem2 is in mainvar's lower bound and elem1 is not in mainvar's upper bound
+        (4) mainvar is determined.
+        """
+        if self.mainvar.determined(dstore=dstore, constraint=self) is not False:
+            return True
+        mainup = self.mainvar.get_upper(dstore=dstore)
+        elem1 = self.elem1
+        elem2 = self.elem2
+        if elem1 not in mainup and elem2 not in mainup:
+            return True
+        mainlow = self.mainvar.get_lower(dstore=dstore)
+        if elem1 in mainlow and elem2 not in mainup:
+            return True
+        if elem2 in mainlow and elem1 not in mainup:
+            return True
+        return False
+
+    def fails(self, dstore=None):
+        """Fail if both elem1 and elem2 are in mainvar lower bound."""
+        mainlow = self.mainvar.get_lower(dstore=dstore)
+        if self.elem1 in mainlow and self.elem2 in mainlow:
+            return True
+        return False
+
+    def infer(self, dstore=None, verbosity=0, tracevar=[]):
+        """If one or the other of elem1 and elem2 is in mainvar's lower bound,
+        the other must not be in mainvar's upper bound."""
+        changed = set()
+        state = Constraint.sleeping
+        mainlow = self.mainvar.get_lower(dstore=dstore)
+        mainup = self.mainvar.get_upper(dstore=dstore)
+        elem1 = self.elem1
+        elem2 = self.elem2
+        if elem1 in mainlow:
+            if self.mainvar.discard_upper(elem2, dstore=dstore,
+                                         constraint=(verbosity>1 or self.mainvar in tracevar) and self):
+                changed.add(self.mainvar)
+                return state, changed
+        if elem2 in mainlow:
+            if self.mainvar.discard_upper(elem1, dstore=dstore,
+                                         constraint=(verbosity>1 or self.mainvar in tracevar) and self):
+                changed.add(self.mainvar)
+                return state, changed
+
         return state, changed
 
 # Selection constraint propagators
