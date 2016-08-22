@@ -730,7 +730,7 @@ class NAND(Constraint):
 
     def infer(self, dstore=None, verbosity=0, tracevar=[]):
         """If one or the other of elem1 and elem2 is in mainvar's lower bound,
-        the other must not be in mainvar's upper bound."""
+        the other must not be in mainvar's upper bound. The constraint is then entailed."""
         changed = set()
         state = Constraint.sleeping
         mainlow = self.mainvar.get_lower(dstore=dstore)
@@ -741,11 +741,13 @@ class NAND(Constraint):
             if self.mainvar.discard_upper(elem2, dstore=dstore,
                                          constraint=(verbosity>1 or self.mainvar in tracevar) and self):
                 changed.add(self.mainvar)
+                state = Constraint.entailed
                 return state, changed
         if elem2 in mainlow:
             if self.mainvar.discard_upper(elem1, dstore=dstore,
                                          constraint=(verbosity>1 or self.mainvar in tracevar) and self):
                 changed.add(self.mainvar)
+                state = Constraint.entailed
                 return state, changed
 
         return state, changed
@@ -1611,6 +1613,7 @@ class ComplexConstraint(Constraint):
         for index in self.selvar.get_lower(dstore=dstore):
             constraint = self.constraints[index]
             if constraint and constraint.fails(dstore=dstore):
+                print("-->>CC failed: {}, {}, {}".format(index, self.selvar.get_lower(dstore=dstore), constraint))
                 return True
         return False
 

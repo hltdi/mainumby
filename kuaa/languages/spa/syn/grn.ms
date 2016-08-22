@@ -86,17 +86,14 @@ mas_adj1 :: más [pos=a,grd=ve] ; // 0
 mas_adj2 :: mas [pos=a,grd=ve] ; // 0
 demasiado :: demasiado [pos=a,grd=eterei] ; // 0
 
-## cláusulas relativas y nominales
+## algunas cláusulas relativas, nominales, y adverbiales
+lo_que :: lo que [pos=v,rel=sjoj] ; // 0 1
+al_inf :: a el [pos=v,tm=inf,pp=vove] ; // 0 1 ; 2-> [tm=prs]
 # ambiguo, e.g., dije a mi vecino que vendrá
 # *rel_sj :: [pos=n] que [pos=v,rel=sjoj] ; // 1
-lo_que :: lo que [pos=v,rel=sjoj] ; // 0 1
-# cómo representar relativo objetivo con sujeto antes del verbo
-# el carro que mi vecino compró
-
-## algunas cláusulas adverbiales y relativas
-al_inf :: a el [pos=v,tm=inf,pp=vove] ; // 0 1 ; 2-> [tm=prs]
-a_donde_rel :: a donde [pos=v,rel=obl,pp=pe] ; // 0 1
-por_donde_rel :: por donde [pos=v,rel=obl,pp=rupi] ; // 0 1
+## all the following now handled in misc.grp or n.grp
+#a_donde_rel :: a donde [pos=v,rel=obl,pp=pe] ; // 0 1
+#por_donde_rel :: por donde [pos=v,rel=obl,pp=rupi] ; // 0 1
 # donde_rel :: [pos=n] donde [pos=v,rel=obl] ; // 1
 #al_que_rel :: [pos=n] a el que [pos=v,rel=obl] ; // 1 2 3
 #a_la_que_rel :: [pos=n] a la que [pos=v,rel=obl] ; //  1 2 3

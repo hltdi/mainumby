@@ -98,10 +98,11 @@ class Solver:
             if n >= cutoff:
                 print('STOPPING AT CUTOFF')
             priority, state = fringe.get()
-            if expand_verbosity:
-                print("{} GETTING and running state {} and score {} from fringe".format(self, state, priority))
+#            if expand_verbosity:
+            print("{} GETTING and running state {} and score {} from fringe".format(self, state, priority))
             # Goal test for this state
             state.run(verbosity=test_verbosity, tracevar=tracevar)
+            print("State status: {}".format(state.status))
             if state.status == SearchState.succeeded:
                 # Return this state
 #                print("state {} succeeded".format(state))
@@ -119,8 +120,8 @@ class Solver:
                     if expand_verbosity:
                         print(" Próximo estado {}, nivel {}, valor {}".format(next_state, n, val))
                     # Add next state where it belongs in the queue
-                    if expand_verbosity:
-                        print("  {} PUTTING new state {} and score {} on fringe of length {}".format(self, next_state, val, fringe.qsize()))
+#                    if expand_verbosity:
+                    print("  {} PUTTING new state {} and score {} on fringe of length {}".format(self, next_state, val, fringe.qsize()))
                     fringe.put((val, next_state))
 #                    for v, s in list(fringe):
 #                        print("  state {}, score {}".format(s, v))
@@ -330,8 +331,8 @@ class SearchState:
                     awaken.remove(constraint)
 
             if state == Constraint.failed:
-                if verbosity:
-                    print("FAILED {}".format(constraint))
+#                if verbosity:
+                print("FAILED {}".format(constraint))
 #                failed.add(constraint)
                 return Constraint.failed
 

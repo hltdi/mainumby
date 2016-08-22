@@ -1157,7 +1157,7 @@ class Sentence:
                 pass
         # Tie breaker
         varscore += random.random() / 100.0
-#        print("Evaluating dstore {}; undet: {}, var/value {}, score {}".format(dstore, undet, var_value, varscore))
+        print("Evaluating dstore {}; undet: {}, var/value {}, score {}".format(dstore, undet, var_value, varscore))
         return varscore
 
     @staticmethod

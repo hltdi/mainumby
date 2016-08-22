@@ -647,10 +647,20 @@
 ->grn moõpa
 *** ¿ adónde ; ^ adónde 1 ; -X-
 ->grn moõpa
+*** ¿ de dónde es ; ^ dónde 2
+->grn moõgua
+*** ¿ de dónde proviene ; ^ dónde 2
+->grn moõgui
+*** ¿ por dónde? ; ^ dónde? 2
+->grn moõrupi
 *** ¿ por qué; ^ qué 2 ; -X-
 ->grn mba'érepa
 *** ¿ por qué no ; ^ qué 2 ; -X-
 ->grn mba'éguitepa
+*** ¿ en qué cosa ; ^ en 1
+->grn mba'épepa
+*** ¿ en qué forma ; ^ en 1
+->grn mba'éichapa
 *** ¿ qué ; ^ qué 1 ; -X-
 ->grn mba'épa
 *** ¿ quién ; ^ quién 1 ; -X-
@@ -748,6 +758,9 @@
 ->grn $n[caso=pe] ; || -1, 0
 *** a $pro ; ^ a 0 ; -X-
 ->grn $pro[caso=pe] ; || -1, 0
+# needed only so that a can merge with $pp node
+*** a ; ^ a 0
+->grn peve
 ### EN
 *** en $num $n ; ^ en 0 ; -X-
 ->grn $num $n[caso=pe] ; || -1, 0, 1
@@ -755,6 +768,9 @@
 ->grn $n[caso=pe] ; || -1, 0
 *** en $pro ; ^ en 0 ; -X-
 ->grn $pro[caso=pype] ; || -1, 0
+# needed so that en can merge with $pp node
+*** en ; ^ en 0
+->grn pype
 ### CON
 *** con uno mismo ; ^ mismo 2
 ->grn ondive
@@ -773,6 +789,9 @@
 ->grn $n ndive ; || 1, 0
 *** con $pro ; ^ con 0
 ->grn $pro[caso=ndi] ; || -1, 0
+# needed so that con can merge with $pp node
+*** con ; ^ con 0
+->grn ndive
 ### COMO
 *** como si ; ^ como 0
 ->grn vaicha
@@ -828,6 +847,9 @@
 *** por $pro ; ^ por 0 ; -X-
 ->grn $pro[caso=re] ; || -1, 0
 ->grn $pro[caso=gui] ; || -1, 0
+# needed so that por can merge with deleted $pp node
+*** por ; ^ por 0
+->grn rupi
 ### SIN
 *** sin ella ; ^ sin 0
 ->grn hese'ỹ
@@ -945,6 +967,9 @@
 ### HACIA
 *** hacia $n ; ^ hacia 0
 ->grn $n gotyo ; || 1, 0
+# needed so that hacia can merge with deleted $pp nodes
+*** hacia ; ^ hacia 0
+->grn gotyo
 # + lots of "hacia X" expressions
 ### CONTRA
 *** contra $n ; ^ contra 0
@@ -1001,7 +1026,7 @@
 ### ANTES (DE) (MBOYVE)
 *** antes de $n ; ^ antes 0
 ->grn $n mboyve ; ^ 1, -1, 0
-## antes clauses
+## cláusulas con antes
 # infinitive
 *** antes de $v[tm=inf] ; ^ antes 0
 ->grn $v[tmp=prs] mboyve ; || 1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
@@ -1019,6 +1044,7 @@
 *** después de $n ; ^ después 0
 ->grn $n rire ; || 1, -1, 0
 ->grn $n rapykuépe ; || 1, -1, 0
+## cláusulas con después
 # future "después" clause (subjunctive)
 *** después de que $v[tm=sbp] ; ^ después 0
 ->grn $v[tmp=prs,pp=rire] ; || -1, -1, -1, 0 ; 3==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
@@ -1031,25 +1057,27 @@
 *** posteriormente ; ^ posteriormente 0
 ->grn uperire
 ### HASTA (-PEVE)
+*** hasta $n ; ^ hasta 0
+->grn $n[caso=peve] ; || -1, 0
+*** hasta ahora ; ^ ahora 1
+->grn akói
+## cláusulas con hasta
 # future "hasta" clauses
 *** hasta que $v[tm=sbp] ; ^ hasta 0
 ->grn $v[tmp=prs,pp=peve] ; || -1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 # other "hasta" clauses
 *** hasta que $v ; ^ hasta 0
 ->grn $v[pp=peve] ; || -1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
-*** hasta $n ; ^ hasta 0
-->grn $n[caso=peve] ; || -1, 0
-*** hasta ahora ; ^ ahora 1
-->grn akói
 ### DESDE (GUIVE)
-*** desde que $v ; ^ desde 0
-->grn $v guive ; || 1, -1, 0 ; 2==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 *** desde hace tiempo ; ^ tiempo 2
 ->grn aréma
 ->grn ymaguare
 *** desde $n ; ^ desde 0
 ->grn $n[caso=gui] ; || -1, 0
 ->grn $n[caso=guive] ; || -1, 0
+## cláusulas con desde
+*** desde que $v ; ^ desde 0
+->grn $v guive ; || 1, -1, 0 ; 2==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 ### DURANTE (otras posibilidades también??)
 *** durante $n ; ^ durante 0
 ->grn $n aja; || 1, 0
@@ -1059,7 +1087,7 @@
 ->grn $v[pp=jave,tmp=prs] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 *** mientras $v ; ^ mientras 0
 ->grn $v[pp=jave] ; || -1, 0 ; 1==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
-*** mientras qui $v[tm=sbp] ; ^ mientras 0
+*** mientras que $v[tm=sbp] ; ^ mientras 0
 ->grn $v[pp=jave,tmp=prs] ; || -1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 *** mientras que $v ; ^ mientras 0
 ->grn $v[pp=jave] ; || -1, -1, 0 ; 2==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
@@ -1171,7 +1199,17 @@
 *** se dice ; ^ dice 1
 ->grn jeko
 ->grn ndaje
-#### OTROS ADVERBIOS
+*** está bien ; ^ está 0
+->grn iporã
+*** no está ; ^ está 1
+->grn noĩri
+*** no hay ; ^ hay 1
+->grn noĩri
+*** he aquí ; ^ he 0
+->grn kóina
+*** no hagas ; ^ hagas 1
+->grn anína
+#### MISCELLANY
 *** en absoluto ; ^ absoluto 1
 ->grn araka'eve
 *** abundantemente ; ^ abundantemente 0
@@ -1203,9 +1241,9 @@
 ->grn soro
 *** aun ; ^ aun 0
 ->grn ko'ýte
-*** aunque ; ^ aunque 0
-->grn jepe
-->grn jepémo
+*** aunque $v ; ^ aunque 0
+->grn $v jepe ; || 1, 0
+->grn $v jepémo ; || 1, 0
 *** en ayunas ; ^ ayunas 1
 ->grn py'anandi
 *** aún ; ^ aún 0
@@ -1238,7 +1276,7 @@
 *** calladamente ; ^ calladamente 0
 ->grn kañyhápe
 ->grn kirirĩhápe
-->grn ñemihápe
+->grn ñemiháme
 *** a cambio de ; ^ cambio 1
 ->grn rekovia
 *** cara a cara ; ^ cara 0
@@ -1285,14 +1323,12 @@
 ->grn mba'eveichagua
 *** esta clase ; ^ clase 1
 ->grn koichagua
-*** uno de esta clase ; ^ clase 3
-->grn koichagua
 *** de estas clases ; ^ clases 2
 ->grn ãichagua
 *** de todas clases ; ^ clases 2
 ->grn opaichagua
-*** en compañía de ; ^ compañía 1
-->grn ndive
+*** en compañía de $n ; ^ compañía 1
+->grn $n ndive ; || -1, 1, -1, 0
 *** en la comunidad ; ^ comunidad 2
 ->grn tekohápe
 *** concientemente ; ^ concientemente 0
@@ -1337,8 +1373,6 @@
 ->grn haimete
 *** por el cuello ; ^ cuello 2
 ->grn ajúri
-*** con cuidado ; ^ cuidado 1
-->grn aníkena
 *** tené cuidado ; ^ cuidado 1
 ->grn aníkena
 *** en el curso de ; ^ curso 2
@@ -1350,8 +1384,6 @@
 ->grn hendape'ỹ
 *** descompuesto ; ^ descompuesto 0
 ->grn marã
-*** deseo ; ^ deseo 0
-->grn hi'ãitégui
 *** para desgracia ; ^ desgracia 1
 ->grn añarã
 *** desnudo ; ^ desnudo 0
@@ -1387,39 +1419,16 @@
 ->grn sapy'arei
 *** sin dueño ; ^ dueño 1
 ->grn jara'ỹ
-*** a dónde ; ^ dónde 1
-->grn hápe
-*** de dónde es? ; ^ dónde 1
-->grn moõgua
-*** de dónde proviene ; ^ dónde 1
-->grn moõgui
-*** dónde es ; ^ dónde 0
-->grn mamópa
-->grn moõpa
-*** en dónde ; ^ dónde 1
-->grn moõ
-*** dónde? ; ^ dónde? 0
-->grn mamópa
-->grn moõ
-->grn moõpa
-*** por dónde? ; ^ dónde? 1
-->grn moõrupi
 *** en dúo ; ^ dúo 1
 ->grn joyvy
 *** de la misma edad ; ^ edad 3
 ->grn javegua
 *** efectivamente ; ^ efectivamente 0
 ->grn añete
-*** el que ejecutará la acción ; ^ ejecutará 2
-->grn arã
 *** por ejemplo ; ^ ejemplo 1
 ->grn techapyrã
 *** sin embargo ; ^ embargo 1
 ->grn uvei
-*** en qué cosa ; ^ en 0
-->grn mba'épepa
-*** en qué forma ; ^ en 0
-->grn mba'éichapa
 *** encuanto ; ^ encuanto 0
 ->grn vove
 *** enfáticamente ; ^ enfáticamente 0
@@ -1441,15 +1450,10 @@
 *** a escondidas ; ^ escondidas 1
 ->grn kañyhápe
 ->grn ñemiháme
-->grn ñemihápe
 *** a espaldas ; ^ espaldas 1
 ->grn atukupépe
 *** especialmente ; ^ especialmente 0
 ->grn tenonderã
-*** está bien ; ^ está 0
-->grn iporã
-*** no está ; ^ está 1
-->grn noĩri
 *** con el estómago vacío ; ^ estómago 2
 ->grn py'anandi
 *** en el estómago ; ^ estómago 2
@@ -1472,6 +1476,8 @@
 ->grn mante
 *** exclusivamente por él ; ^ exclusivamente 0
 ->grn hesehápe
+*** exclusivamente por ella ; ^ exclusivamente 0
+->grn hesehápe
 *** extraordinariamente ; ^ extraordinariamente 0
 ->grn eterei
 *** extremamente ; ^ extremamente 0
@@ -1492,7 +1498,6 @@
 ->grn ijapýpe
 ->grn ipahápe
 ->grn ko'ýte
-->grn pahápe
 *** fingidamente ; ^ fingidamente 0
 ->grn gua'u
 *** fingiendo ; ^ fingiendo 0
@@ -1525,9 +1530,7 @@
 ->grn sapy'a
 *** furtivamente ; ^ furtivamente 0
 ->grn kañyhápe
-->grn ñemihápe
-*** fácil ; ^ fácil 0
-->grn ndahasýi
+->grn ñemiháme
 *** de mala gana ; ^ gana 2
 ->grn hasýpe
 *** a gatas ; ^ gatas 1
@@ -1540,16 +1543,12 @@
 ->grn yrei
 *** todo graciento ; ^ graciento 1
 ->grn kyrapa
-*** grandeza ; ^ grandeza 0
-->grn mba'eguasu
 *** gratis ; ^ gratis 0
 ->grn mbovyve
 *** gratuito ; ^ gratuito 0
 ->grn mba'erei
 *** con gusto ; ^ gusto 1
 ->grn néi
-*** como ha ; ^ ha 1
-->grn haguéicha
 *** no ha de ser ; ^ ha 1
 ->grn anichéne
 *** habitualmente ; ^ habitualmente 0
@@ -1557,19 +1556,6 @@
 ->grn manterei
 ->grn meme
 ->grn jepivéramo
-*** hacia ; ^ hacia 0
-->grn gotyo
-*** no hagas ; ^ hagas 1
-->grn anína
-*** como han ; ^ han 1
-->grn haguéicha
-*** hasta ; ^ hasta 0
-->grn meve
-->grn peve
-*** no hay ; ^ hay 1
-->grn noĩri
-*** he aquí ; ^ he 0
-->grn kóina
 *** de hecho ; ^ hecho 1
 ->grn añete
 ->grn añetehápe
@@ -1586,7 +1572,7 @@
 ->grn pirevai
 *** a hurtadillas ; ^ hurtadillas 1
 ->grn kañyhápe
-->grn ñemihápe
+->grn ñemiháme
 *** exactamente igual a esto ; ^ igual 1
 ->grn koichaite
 *** igual ; ^ igual 0
@@ -1594,6 +1580,8 @@
 *** igual a esto ; ^ igual 0
 ->grn koichagua
 *** igual a él ; ^ igual 0
+->grn hesegua
+*** igual a ella ; ^ igual 0
 ->grn hesegua
 *** sin igual ; ^ igual 1
 ->grn ijojaha'ỹva
@@ -1857,7 +1845,7 @@
 ->grn añetete
 *** ocultamente ; ^ ocultamente 0
 ->grn kañyhápe
-->grn ñemihápe
+->grn ñemiháme
 *** ojala que no ; ^ ojala 0
 ->grn anichéne
 *** ojalá ; ^ ojalá 0
@@ -2140,10 +2128,10 @@
 *** secretamente ; ^ secretamente 0
 ->grn guyguy
 ->grn kañyhápe
-->grn ñemihápe
+->grn ñemiháme
 *** en secreto ; ^ secreto 1
 ->grn kañyhápe
-->grn ñemihápe
+->grn ñemiháme
 *** muy seguidamente ; ^ seguidamente 1
 ->grn py'ỹi
 *** seguidamente ; ^ seguidamente 0
