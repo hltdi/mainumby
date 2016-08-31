@@ -131,6 +131,9 @@ class Language:
     """Dictionaries of words, lexemes, grammatical features, and
     lexical classes."""
 
+    class_char = '$'
+    pattern_char = '/'
+
     languages = {}
     
     # Regular expressions for affix files
@@ -139,6 +142,9 @@ class Language:
     suffix = re.compile('\s*suf.*:\s+(\S+)(\s.+)?')   # a single space separates the suffix from the segmented form
     grammar = re.compile('\s*gram.*:\s+(\w+)\s+(.+)')
     POS = re.compile('\s*pos:\s+(\w+)')
+    # Regular expressions for identifying token types
+    # optional ,|. + at least one digit + optional [,.digit]s; note: allows expression to end with . or ,
+    numeral = re.compile("[,.]?\d+[\d.,]*$")
 
     def __init__(self, name, abbrev, use=ANALYSIS,
                  groups=None, groupnames=None,
@@ -182,9 +188,14 @@ class Language:
         self.anal_loaded = False
         self.gen_loaded = False
         self.load_morpho(use in (GENERATION, TARGET), False, False, False)
-        # Categories (and other semantic features) of words and roots
+        # Categories (and other semantic features) of words and roots; word->cats dict
         self.cats = {}
         self.read_cats()
+        # Classes used in identifying numerals, etc.; class->words dict
+        self.classes = {}
+        # Patterns consisting of explicit tokens, classes, and patterns; used in identifying numerals, etc.
+        self.patterns = {}
+        self.pattern_list = []
         # List of abbreviations (needed for tokenization)
         self.abbrevs = []
         self.read_abbrevs()
@@ -198,6 +209,110 @@ class Language:
         # Load groups now if not to be used for translation
         if use in (ANALYSIS,):
             self.read_groups(files=groupnames)
+
+    @staticmethod
+    def is_dig_numeral(string):
+        if Language.numeral.match(string):
+            return True
+        return False
+
+    @staticmethod
+    def is_currency(string):
+        if string[0] in "$£€¥₲":
+            if Language.is_numeral(string[1:]):
+                return True
+        return False
+
+    @staticmethod
+    def is_class(string):
+        return string and string[0] == Language.class_char
+
+    @staticmethod
+    def is_pattern(string):
+        return string and string[0] == Language.pattern_char
+
+    def match_pattern_item(self, item, word):
+        """Item may be a set of alternatives, a class, or a word."""
+        if isinstance(item, set):
+            return self.match_set(item, word)
+        elif Language.is_class(item):
+            return self.match_class(item, word)
+        else:
+            return item == word
+
+    def match_set(self, items, word):
+        return any([self.match_pattern_item(i, word) for i in items])
+
+    def match_class(self, cls, word):
+        """Does word match class (either a string beginning with class_char or a list of class elements)?"""
+        if isinstance(cls, str):
+            cls = self.classes.get(cls)
+        for item in cls:
+            if Language.is_class(item):
+                if self.match_class(item, word):
+                    return True
+            elif item == word:
+                return True
+        return False
+
+    def match_pattern(self, pattern, words):
+        """Determine if pattern (a string beginning with pattern_char or a pattern list), matches beginning of list of words.
+        If so, return the index of the word following the match."""
+#        print("Matching pattern {} with words {}".format(pattern, words))
+        if isinstance(words, str):
+            words = words.split()
+        if isinstance(pattern, str):
+            pattern = self.patterns.get(pattern)
+        if not pattern:
+            return False
+        if isinstance(pattern, set):
+            if self.match_set(pattern, words[0]):
+                return 1
+            else:
+                return False
+        match_words = words
+        word_position = 0
+        pattern_position = 0
+        matched = []
+        while word_position < len(words) and pattern_position < len(pattern):
+            match_words = words[word_position:]
+            pattern_item = pattern[pattern_position]
+            if Language.is_pattern(pattern_item):
+                mp = self.match_pattern(pattern_item, words[word_position:])
+                if mp:
+                    new_matched, new_pos = mp
+                    # pattern within pattern matches
+                    pattern_position += 1
+                    matched.extend(new_matched)
+                    word_position += new_pos
+                else:
+                    return False
+            else:
+                mpi = self.match_pattern_item(pattern_item, match_words[0])
+                if mpi:
+                    word_position += 1
+                    pattern_position += 1
+                    matched.append(match_words[0])
+                else:
+                    return False
+        return matched, word_position + 1
+
+    def get_num_patterns(self):
+        return [p for p in self.pattern_list if '/num' in p[0]]
+
+    def is_numeral(self, words):
+        """Determines whether the list of words begins with a numeral, either in the form of digits or words.
+        If it does, the index of the next word in the list is returned."""
+        if isinstance(words, str):
+            words = words.split()
+        if Language.is_dig_numeral(words[0]):
+            return [words[0]], 1
+        else:
+            for name, pattern in self.get_num_patterns():
+                pat_match = self.match_pattern(pattern, words)
+                if pat_match:
+                    return pat_match
+        return False
 
     def quit(self, cache=True):
         """Do stuff when the program exits. Only cache analyses and generation if there is a current
@@ -1334,7 +1449,21 @@ class Language:
     @staticmethod
     def from_dict(d, reverse=True, use=ANALYSIS):
         """Convert a dict (loaded from a yaml file) to a Language object."""
+#        for k, v in d.items():
+#            print("{}: {}".format(k, v))
         l = Language(d.get('name'), d.get('abbrev'), use=use)
+        # Create classes and patterns
+        if 'classes' in d:
+            for k, v in d.get('classes'):
+                l.classes[k] = v.split()
+        if 'patterns' in d:
+            for k, v in d.get('patterns'):
+                tokens = v.split()
+                l.patterns[k] = tokens
+                l.pattern_list.append((k, tokens))
+        # Create sorted pattern list
+#        l.pattern_list = list(l.patterns.items())
+#        l.pattern_list.sort(key=lambda x: len(x[1]), reverse=True)
 #        l.possible = d.get('possible')
 #        groups = d.get('groups')
 #        if groups:

@@ -856,13 +856,17 @@ class Sentence:
                 if verbosity:
                     print('FOUND ANALYSIS', solution)
                 if translate and self.target:
-                    # True if this succeeds
+                    # Translating
                     translated = solution.translate(verbosity=verbosity, all_trans=all_trans, interactive=interactive)
                     if not translated:
                         print("Translation failed; trying next solution!")
                         continue
+                    else:
+                        # Store the translation solution
+                        self.solutions.append(solution)
                 else:
-                    # Display the parse
+                    # Parsing; store the solution and display the parse
+                    self.solutions.append(solution)
                     self.display(show_all_sols=False)
                 if all_sols:
                     continue
@@ -1157,7 +1161,7 @@ class Sentence:
                 pass
         # Tie breaker
         varscore += random.random() / 100.0
-        print("Evaluating dstore {}; undet: {}, var/value {}, score {}".format(dstore, undet, var_value, varscore))
+#        print("Evaluating dstore {}; undet: {}, var/value {}, score {}".format(dstore, undet, var_value, varscore))
         return varscore
 
     @staticmethod
@@ -1291,9 +1295,10 @@ class Sentence:
             else:
                 gnodes = []
             s2gnodes.append(gnodes)
-        print("groups {}".format(groups))
-        print("covered nodes {}".format(covered_snodes))
-        print("s2gnodes {}".format(s2gnodes))
+        if verbosity:
+            print("{} groups: {}".format(self, groups))
+            print("{} covered nodes: {}".format(self, covered_snodes))
+            print("{} s2gnodes: {}".format(self, s2gnodes))
         # Create trees for each group
         tree_attribs = {}
 #        print("NEW SOLUTION: groups: {}, covered nodes: {}, s2gnodes: {}".format(groups, covered_snodes, s2gnodes))
@@ -1330,7 +1335,7 @@ class Sentence:
         # Get the indices of the GNodes for each SNode
         solution = Solution(self, ginsts, s2gnodes, len(self.solutions),
                             trees=trees, dstore=dstore, session=self.session)
-        self.solutions.append(solution)
+#        self.solutions.append(solution)
         return solution
 
     ### Various ways of displaying translation outputs.

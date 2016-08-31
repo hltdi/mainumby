@@ -58,13 +58,13 @@ allá
 allí
 ahí
 mío
-mío
+mía
 míos
 mías
 tuyo
 tuya
 tuyos
-tuyos
+tuyas
 suyo
 suya
 suyos

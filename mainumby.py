@@ -36,7 +36,7 @@
 # 2015.12.07
 # -- Changed name of repository and folder to Mainumby
 
-__version__ = 1.0
+__version__ = 0.9
 
 import kuaa
 

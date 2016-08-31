@@ -212,6 +212,13 @@
 *** allende ; ^ allende 0
 ->grn mboypýri
 #### ADVERBIOS DE TIEMPO
+*** de pronto ; ^ pronto 1
+->grn sapy'a
+*** muy pronto ; ^ pronto 1
+->grn aĝaite
+*** pronto ; ^ pronto 0
+->grn pya'evoi
+->grn voi
 *** en el acto ; ^ acto 2
 ->grn ko'aĝaite
 *** ahora mismo ; ^ ahora 0
@@ -385,8 +392,6 @@
 ->grn sapy'a
 *** súbitamente ; ^ súbitamente 0
 ->grn sapy'a
-->grn sapy'aitépe
-->grn sapy'ante
 ->grn soro
 *** de súbito ; ^ súbito 1
 ->grn sapy'a
@@ -1101,9 +1106,31 @@
 *** a medida que $v ; ^ medida_n 1
 ->grn $v[pp=aja] ; || -1, -1, -1, 0 ; 3==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 #### OTRAS CLÁUSULAS ADVERBIALES O NOMINALES
-### SI
+### SI, CONDICIONAL
+*** si $v[tm=prs] ; ^ si 0
+->grn $v[pp=ramo] ; || -1, 0
+*** si $v[tm=prt] ; ^ si 0
+->grn $v[pp=ramo] ; || -1, 0
+*** si $v[tm=fut] ; ^ si 0
+->grn $v[pp=ramo] ; || -1, 0
+*** si $v[tm=sbp] ; ^ si 0
+->grn $v[pp=ramo,tmp=prs] rire ; || 1, 0
+*** si $v[tm=sbi] ; ^ si 0
+->grn $v[pp=ramo,tmp=prt] rire ; || 1, 0
 ### AUNQUE
+*** aunque $v[tm=prs] ; ^ aunque 0
+->grn jepénte $v[tmp=prs] ; || 0, 1
+*** aunque $v[tm=prt] ; ^ aunque 0
+->grn jepénte $v[tmp=prt] ; || 0, 1
+*** aunque $v[tm=fut] ; ^ aunque 0
+->grn jepénte $v[tmp=fut] ; || 0, 1
+*** aunque $v[tm=sbp] ; ^ aunque 0
+->grn $v[tmp=prs,pp=ramo] jepe ;
 ### PORQUE / COMO
+*** porque ; ^ porque 0
+->grn ajeve
+->grn ajevéramo
+->grn hi'ãitégui
 #### OTRAS EXPRESIONES DE LUGAR
 ### DONDE: relative clauses handled by morphosyn
 *** $n donde $v ; ^ donde 1
@@ -1181,7 +1208,40 @@
 ->grn peteĩ
 *** una ; ^ una 0
 ->grn peteĩ
+*** ninguno ; ^ ninguno 0
+->grn avave
+->grn nipeteĩ
+*** nada ; ^ nada 0
+->grn mba'eve
+*** nada en absoluto ; ^ nada 0
+->grn mba'evete
+*** para nada ; ^ nada 1
+->grn marãve
+*** sin nada ; ^ nada 1
+->grn sogue
+*** nadie ; ^ nadie 0
+->grn avave
+*** la mía ; ^ mía 1
+->grn chemba'e
+*** lo mío ; ^ mío 1
+->grn chemba'e
+*** el mío ; ^ mío 1
+->grn chemba'e
+*** mía ; ^ mía 0
+->grn chemba'e
+*** mío ; ^ mío 0
+->grn chemba'e
+*** mío propio ; ^ mío 0
+->grn chemba'etee
+*** mía propia ; ^ mía 0
+->grn chemba'etee
 #### MODISMOS CON VERBOS
+*** no sea que ; ^ no 0
+->grn anítei
+*** no será ; ^ no 0
+->grn anichéne
+*** no sirve ; ^ sirve 1
+->grn marãve
 *** me toca a mí ; ^ toca 1
 ->grn cheha
 *** como debe ser ; ^ debe 1
@@ -1221,11 +1281,9 @@
 *** adelante ; ^ adelante 0
 ->grn tenondépe
 *** algo ; ^ algo 0
-->grn mba'e
 ->grn peteĩ mba'e
 *** alguien ; ^ alguien 0
 ->grn máva
-->grn peteĩva
 *** amén ; ^ amén 0
 ->grn tovéna
 *** antaño ; ^ antaño 0
@@ -1241,9 +1299,6 @@
 ->grn soro
 *** aun ; ^ aun 0
 ->grn ko'ýte
-*** aunque $v ; ^ aunque 0
-->grn $v jepe ; || 1, 0
-->grn $v jepémo ; || 1, 0
 *** en ayunas ; ^ ayunas 1
 ->grn py'anandi
 *** aún ; ^ aún 0
@@ -1787,31 +1842,8 @@
 ->grn mandivoi
 *** un poco más ; ^ más 2
 ->grn mive
-*** la mía ; ^ mía 1
-->grn chemba'e
-*** mía ; ^ mía 0
-->grn chemba'e
-*** lo mío ; ^ mío 1
-->grn chemba'e
-*** mío ; ^ mío 0
-->grn chemba'e
-*** mío propio ; ^ mío 0
-->grn chemba'etee
 *** mútuamente ; ^ mútuamente 0
 ->grn ojuehe
-*** nada ; ^ nada 0
-->grn mba'eve
-*** nada en absoluto ; ^ nada 0
-->grn mba'evete
-*** para nada ; ^ nada 1
-->grn marãve
-*** sin nada ; ^ nada 1
-->grn sogue
-*** nadie ; ^ nadie 0
-->grn avave
-*** ninguno ; ^ ninguno 0
-->grn avave
-->grn nipeteĩ
 *** no[+ipv] ; ^ no 0
 ->grn ani
 *** no ; ^ no 0
@@ -1823,11 +1855,7 @@
 ->grn anivéna
 *** no más por favor ; ^ no 0
 ->grn aníkena
-*** no sea que ; ^ no 0
-->grn anítei
-*** no será ; ^ no 0
-->grn anichéne
-*** ¡ no ! ; ^ no! 1
+*** ¡ no ! ; ^ no 1
 ->grn anítei
 *** normalmente ; ^ normalmente 0
 ->grn hekópe
@@ -1938,10 +1966,6 @@
 ->grn michĩmimi
 *** un poquito ; ^ poquito 1
 ->grn mbovymi
-*** porque ; ^ porque 0
-->grn ajeve
-->grn ajevéramo
-->grn hi'ãitégui
 *** portento ; ^ portento 0
 ->grn mba'eguasu
 *** en pos de ; ^ pos 1
@@ -1991,18 +2015,11 @@
 *** probablemente ; ^ probablemente 0
 ->grn ikatúne
 ->grn vaicha
-<*** prodigio ; ^ prodigio 0
+*** prodigio ; ^ prodigio 0
 ->grn mba'eguasu
 *** prohibitivo ; ^ prohibitivo 0
 ->grn ndaikatúi
 ->grn ndikatúi
-*** de pronto ; ^ pronto 1
-->grn sapy'a
-*** muy pronto ; ^ pronto 1
-->grn aĝaite
-*** pronto ; ^ pronto 0
-->grn pya'evoi
-->grn voi
 *** propiamente ; ^ propiamente 0
 ->grn añetehápe
 *** de proporciones menudas ; ^ proporciones 1
@@ -2169,31 +2186,20 @@
 ->grn añetehápe
 *** con seriedad ; ^ seriedad 1
 ->grn aje
-->grn ajépa
 *** en serio ; ^ serio 1
 ->grn añetehápe
-*** si ; ^ si 0
-->grn tove
-->grn tovéna
 *** con sigilo ; ^ sigilo 1
 ->grn kirirĩhápe
 *** con silencio ; ^ silencio 1
 ->grn kirirĩme
 *** en silencio ; ^ silencio 1
 ->grn kirirĩhápe
-*** silencio ; ^ silencio 0
-->grn mba'evete
 *** silenciosamente ; ^ silenciosamente 0
 ->grn kirirĩhápe
 *** simulando ; ^ simulando 0
 ->grn gua'u
-*** con sinceridad ; ^ sinceridad 1
-->grn aje
-->grn ajépa
 *** ni siquiera ; ^ siquiera 1
 ->grn jáma
-*** no sirve ; ^ sirve 1
-->grn marãve
 *** en cualquier sitio ; ^ sitio 2
 ->grn mamo
 ->grn oimehápe
@@ -2203,8 +2209,6 @@
 ->grn año
 ->grn añónte
 ->grn mante
-->grn manterei
-->grn tapia
 *** a solas ; ^ solas 1
 ->grn año
 *** en soledad ; ^ soledad 1
@@ -2229,13 +2233,10 @@
 ->grn eterei
 *** en sustitución de ; ^ sustitución 1
 ->grn rekovia
-*** no sé qué ; ^ sé 1
-->grn mba'émo
 *** claro que sí ; ^ sí 2
 ->grn katuete
 *** sí ; ^ sí 0
 ->grn heẽ
-->grn katu
 ->grn néi
 ->grn upéicha
 *** sólidamente ; ^ sólidamente 0

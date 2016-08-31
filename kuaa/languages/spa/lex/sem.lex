@@ -4595,6 +4595,8 @@ dictadura_n $n
 dictamen_n $n
 dictar_v $v
 didáctica_n $n
+diecisiete_a $a,$num
+diecisiete_n $n,$num
 diente_n $n
 diesel_n $n
 diestro_n $n,$n_prs
