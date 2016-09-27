@@ -502,6 +502,25 @@ class Sentence:
         if segmentation:
             self.tokens[tok_index:tok_index+1] = segmentation
 
+    def join_lex(self, verbosity=0):
+        """Combine tokens into units for numerals (and other things?)."""
+        tokens = []
+        tok_position = 0
+        num_found = False
+        while tok_position < len(self.tokens):
+            num = self.language.find_numeral(self.tokens[tok_position:])
+            if num:
+                num_tokens, is_dig = num
+                num_found = True
+                prefix = "%ND_" if is_dig else "%N_"
+                tokens.append(prefix + '_'.join(num_tokens))
+                tok_position += len(num_tokens)
+            else:
+                tokens.append(self.tokens[tok_position])
+                tok_position += 1
+        if num_found:
+            self.tokens = tokens
+
     def lowercase(self):
         """Make capitalized tokens lowercase. 2106.05.08: only do this for the first word."""
         # There may be initial punctuation.
@@ -513,9 +532,10 @@ class Sentence:
 #                self.tokens[index] = token.lower()
 
     def preprocess(self, verbosity=0):
-        """Segment contractions, and lowercase all words. Must follow word tokenization.
+        """Segment contractions, join numerals, and lowercase all words. Must follow word tokenization.
         Segmentation can add to the number of tokens in the sentence."""
         self.lowercase()
+        self.join_lex()
         for index, token in zip(range(len(self.tokens)-1, -1, -1), self.tokens[-1::-1]):
 #            print('index {}, token {}'.format(index, token))
             self.segment(token, index)
@@ -675,25 +695,35 @@ class Sentence:
                     root = a.get('root')
                     if root not in keys:
                         keys.append(root)
-#                    keys.add(root)
+                    if '|' in root:
+                        # An ambiguous root (ir|ser)
+                        psuf = ''
+                        r = root
+                        if '_' in root:
+                            r, psuf = root.split('_')
+                            psuf = '_' + psuf
+                        for rr in r.split('|'):
+                            keys.append(rr + psuf)
+#                        print("Root {} contains an alternative".format(root))
+#                        print(" Keys now {}".format(keys))
+
                     pos = a.get('pos')
                     if pos and '_' not in root:
                         k = root + '_' + pos
                         if k not in keys:
                             keys.append(k)
-#                        keys.add(root + '_' +pos)
             # Look up candidate groups in lexicon
             for k in keys:
                 if k in self.language.groups:
                     # All the groups with key k
                     for group in self.language.groups[k]:
-#                        print("Checking group {} for {}".format(group, node))
                         # Reject group if it doesn't have a translation in the target language
                         if self.target and not group.get_translations():
                             print("No translation for {}".format(group))
                             continue
                         candidates.append((node.index, k, group))
                         node.group_cands.append(group)
+#            print("Group cands for {}: {}".format(node, node.group_cands))
         # Now filter candidates to see if all words are present in the sentence
         # For each group, save a list of sentence token indices that correspond
         # to the group's words
@@ -719,6 +749,7 @@ class Sentence:
 #                continue
             snodes = group.match_nodes(self.nodes, head_i, verbosity=verbosity)
             if not snodes:
+#                print("Group {} failed to match".format(group))
                 # This group is out
                 if verbosity > 1:
                     print("Failed to match")
@@ -1472,15 +1503,18 @@ class Solution:
             late = False
             start, end = raw_indices[0], raw_indices[-1]
 #            print("Segment {}->{}".format(start, end))
+#            print("Raw indices: {}, forms {}, gname {}, merger_groups {}".format(raw_indices, forms, gname, merger_groups))
             if start > max_index+1:
                 # there's a gap between the farthest segment to the right and this one; make an untranslated segment
                 src_tokens = tokens[end_index+1:start]
+#                print("Creating untranslated segment for {} in positions {}...{}".format(src_tokens, end_index+1, start-1))
                 seg = SolSeg(self, (end_index+1, start-1), [], src_tokens, session=self.session, gname=gname,
                              merger_groups=merger_groups)
                 self.segments.append(seg)
 #            src_tokens = tokens[start:end+1]
             if start < max_index:
-#                print("Segment {} / {} actually appears earlier".format(raw_indices, forms))
+#                print("At least part of segment {} / {} actually appears earlier".format(raw_indices, forms))
+#                print("  start: {}, max_index {}".format(start, max_index))
                 late = True
             # There may be gaps in the source tokens for a group; fill these with ...
             src_tokens = [(tokens[i] if i in raw_indices else '...') for i in range(start, end+1)]
@@ -1494,6 +1528,7 @@ class Solution:
         if max_index+1 < len(tokens):
             # Some word(s) at beginning not translated; use source forms with # prefix
             src_tokens = tokens[max_index+1:len(tokens)]
+#            print("SolSeg for untranslated segment: {}".format(src_tokens))
             seg = SolSeg(self, (max_index+1, len(tokens)-1), [], src_tokens, session=self.session)
             self.segments.append(seg)
         self.seg_html()
@@ -1571,12 +1606,15 @@ class Solution:
                 print("Not recreating treetrans for {}".format(ginst))
                 treetranss.append(ginst.treetrans)
             else:
+#                print("Making translations for tree {} and ginst {}".format(tree, ginst))
                 # Figure the various features for the next TreeTrans instance.
                 is_top = not any([(tree < other_tree) for other_tree in self.trees])
                 group_attribs = []
                 any_anode = False
                 for tgroup, tgnodes, tnodes in ginst.translations:
                     for tgnode, tokens, feats, agrs, t_index in tgnodes:
+#                        if tgnode.special:
+#                            print("  Tgnode {} in tgroup {} is special".format(tgnode, tgroup))
                         if tgnode.cat:
                             any_anode = True
                             if tgnode in abs_gnode_dict:
@@ -1597,6 +1635,7 @@ class Solution:
                                       index=ttindex, top=is_top)
                 treetranss.append(treetrans)
                 ttindex += 1
+#        print("Gnode dict: {}".format(gnode_dict))
         self.treetranss = treetranss
 
         # Add subTTs to TTs (actually only have to do this for top TTs)

@@ -1709,10 +1709,8 @@
 *** ligado_a ; ^ ligado_a 0
 ->grn apytĩmbyre_v
 *** ligero_a ; ^ ligero_a 0 ; #16
-->grn vevúi_v ; #4
 ->grn akuã_v ; #1
-->grn pojava_v ; #2
-->grn atã_v ; #6
+->grn pya'e
 *** limpio_a ; ^ limpio_a 0
 ->grn potĩ_v
 *** limítrofe_a ; ^ limítrofe_a 0
@@ -2060,6 +2058,8 @@
 *** obtuso_a ; ^ obtuso_a 0
 ->grn arandu'ỹ_v
 ->grn hãimbe'ỹ_v
+*** obvio_a ; ^ obvio_a 0
+->grn añetete
 *** ochenta_a ; ^ ochenta_a 0
 ->grn poapypa_v
 *** ocho_a ; ^ ocho_a 0
@@ -2631,6 +2631,9 @@
 ->grn poteĩsa_v
 *** selecto_a ; ^ selecto_a 0
 ->grn poravopyre_v
+*** semejante_a ; ^ semejante_a 0
+->grn hesegua
+->grn joguaha
 *** sencillo_a ; ^ sencillo_a 0 ; #5
 ->grn jejapo'ỹ_v
 ->grn jegua'ỹ_v
@@ -2666,9 +2669,9 @@
 *** silvestre_a ; ^ silvestre_a 0 ; #11
 ->grn saite_v
 ->grn saraki_v ; #11
-*** similar_a ; ^ similar_a 0 ; #2
-->grn joguaha_v ; #13
-->grn joguaháva_v
+*** similar_a ; ^ similar_a 0
+->grn hesegua
+->grn joguaha
 *** simple_a ; ^ simple_a 0 ; #3
 ->grn ño_v
 ->grn año_v ; #21
@@ -3085,10 +3088,6 @@
 *** viviente_a ; ^ viviente_a 0
 ->grn oikovéva_v
 *** vivo_a ; ^ vivo_a 0 ; #118
-->grn <hetia'e_v ; #25
-->grn saraki_v ; #11
-->grn kyre'ỹ_v ; #66
-->grn katupyry_v ; #252
 ->grn oikovéva_v ; #4
 *** volatil_a ; ^ volatil_a 0
 ->grn ovevéva_v

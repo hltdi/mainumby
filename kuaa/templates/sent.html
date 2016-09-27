@@ -125,7 +125,7 @@ textarea#segment
 {
    font-family: "Verdana";
    font-size: 100%;
-   width: 300px;
+   width: 495px;
    height: 20px;
 }
 span#doctrans
@@ -160,12 +160,13 @@ function ShowHelp() {
 "<h4 class='help'>Ayuda para seleccionar traducciones</h4>" +
 "<p class='help'>En la ventana 'Traducción de oraciones' " +
 "se presenta una oración y varias opciones para traducirla. " +
-"La oración se despliega dividida en frases, cadu una representada por un color. " +
+"La oración se despliega dividida en frases, cada una representada por un color. " +
 "Para ver las opciones que ofrece Mbojereha como traducciones de una frase, " +
 "hac&eacute; clic en esa frase. " +
 "Abajo se presentan las opciones a la izquierda en el espacio llamado " +
 "'Sugerencias'." +
 "</p></body></html>");
+    document.Form1.ayuda.value = true;
 }
 function OnRegOra(raw, punc) {
     var sentval = document.getElementById("sentence").value;
@@ -284,10 +285,13 @@ function limpiarGrn(string) {
     <td class="menu" style="width: 200px">
       <input type="submit" class="menu" action="sent" name="sent" value="PRÓXIMA ORACIÓN">
     </td>
-    <td class="menu" style="width: 150px"><input class="menu"
-      type="submit" value="SALIR" name="salir" onclick="return OnSalir();"></td>
-    <td class="menu" style="width: 150px"><button class="menu"
-      onclick="ShowHelp();">AYUDA</button></td>
+    <td class="menu" style="width: 150px">
+      <input class="menu" type="submit" value="SALIR" name="salir" onclick="return OnSalir();">
+    </td>
+    <td class="menu" style="width: 150px">
+      <button class="menu" onclick="ShowHelp();">AYUDA</button>
+    </td>
+    <input type="hidden" name="ayuda" value="">
     </tr>
 </form>
 
@@ -390,15 +394,15 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
   <input type="hidden" name="fratra" value="">
 </form>
 
-  <tr class="trans">
+<tr class="trans">
 <form name="Form3" id="text-options">
   <td>
     <input type="submit" value="Guardar" id="narrowbutton"/>
     <label>Nombre de archivo:<input type="text" class="filename" id="text-filename" placeholder="doc.txt"/></label>
   </td>
 </form>  
-  </tr>
-  </table>    
+</tr>
+</table>    
 </td>
 </tr>
 </table>
@@ -410,7 +414,7 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 
 <script async="" src="{{url_for('static', filename='FileSaver.js')}}"></script>
 <script async="" src="{{url_for('static', filename='Blob.js')}}"></script>
-<script async="" src="{{url_for('static', filename= 'SaveDoc.js')}}"></script>
+<script async="" src="{{url_for('static', filename='SaveDoc.js')}}"></script>
 
 </body>
 

@@ -92,7 +92,6 @@ def get_segmentation():
 def index():
 #    print("In index...")
     return redirect(url_for('base'))
-#    return redirect(url_for('reg'))
 
 @app.route('/base', methods=['GET', 'POST'])
 def base():
@@ -102,9 +101,8 @@ def base():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     global USER
-#    print("In login...")
     form = request.form
-#    print("Form for login: {}".format(form))
+    print("Form for login: {}".format(form))
     if not USERS_INITIALIZED:
         initialize()
     if request.method == 'POST' and 'login' in form:
@@ -127,7 +125,6 @@ def login():
 
 @app.route('/logged', methods=['GET', 'POST'])
 def logged():
-#    print("In logged...")
     form = request.form
 #    print("Form for logged: {}".format(form))
     return render_template('logged.html')
@@ -135,7 +132,6 @@ def logged():
 @app.route('/reg', methods=['GET', 'POST'])
 def reg():
     global USER
-#    print("In reg...")
     form = request.form
 #    print("Form for reg: {}".format(form))
     if request.method == 'POST' and 'username' in form:
@@ -160,7 +156,8 @@ def acct():
 # View for document entry
 @app.route('/doc', methods=['GET', 'POST'])
 def doc():
-#    print("In doc...")
+    form = request.form
+    print("Form for doc: {}".format(form))
 #    print("SESSION {}, USER {}".format(SESSION, USER))
     # Initialize Session if there's a User and no Session
     if not SESSION:
@@ -174,13 +171,17 @@ def doc():
 # for recording translations selected/entered by user.
 @app.route('/sent', methods=['GET', 'POST'])
 def sent():
-#    print("In sent...")
     form = request.form
     print("Form for sent: {}".format(form))
 #    if SEG_HTML:
 #        print("SEG_HTML {}".format(SEG_HTML))
 #    if 'oratra' in form:
 #        print("Registering sentence translation {}".format(form.get('oratra')))
+    if 'ayuda' in form and form['ayuda'] == 'true':
+        # Opened help window. Keep everything else as is.
+        raw = SENTENCE.raw if SENTENCE else None
+        punc = SENTENCE.get_final_punc() if SENTENCE else None
+        return render_template('sent.html', sentence=SEG_HTML, raw=raw, punc=punc, user=USER)
     if 'text' in form and not DOC:
         # Create a new document
         make_doc(form['text'])
@@ -191,7 +192,6 @@ def sent():
     if not SENTENCE:
         # No more sentences, return to doc.html for a new document
         return render_template('doc.html', user=USER)
-#        return render_template('sent.html')
     else:
         # Translate and segment the sentence, assigning SEGS
         get_segmentation()

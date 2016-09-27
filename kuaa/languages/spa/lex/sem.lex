@@ -1590,7 +1590,7 @@ añadidura_n $n
 añadir_v $v,$v_t
 añejar_v $v
 añico_n $n
-año_n $n
+año_n $n,$dur
 añoranza_n $n
 añorar_v $v,$v_t
 aún $adv
@@ -4902,12 +4902,12 @@ dádiva_n $n
 dálmata_n $n
 débil_n $n
 débil_a $a
-década_n $n
+década_n $n,$dur
 décima_n $n
 décimo_a $a
 déficit_n $n
 déspota_n $n
-día_n $n
+día_n $n,$dur
 dígito_n $n
 díptico_n $n
 díscolo_a $a
@@ -7213,7 +7213,7 @@ honra_n $n
 honradez_n $n
 honrado_a $a
 honrar_v $v,$v_t,$v_p
-hora_n $n
+hora_n $n,$dur
 horadar_v $v,$v_t
 horario_n $n
 horca_n $n
@@ -9015,7 +9015,7 @@ mil_n $n,$num
 mil_a $a,$num
 milagro_n $n
 milano_n $n
-milenio_n $n
+milenio_n $n,$dur
 milicia_n $n
 miliciano_n $n
 miligramo_n $n
@@ -9057,7 +9057,7 @@ minusvalorar_v $v
 minusvalía_n $n
 minusválido_n $n
 minuta_n $n
-minuto_n $n
+minuto_n $n,$dur
 minúscula_n $n
 miope_n $n
 miope_a $a
@@ -12236,7 +12236,7 @@ seguidor_n $n,$n_prs
 seguimiento_n $n
 seguir_v $v,$v_t,$v_p
 segunda_n $n
-segundo_n $n
+segundo_n $n,$dur
 segundo_a $a
 seguridad_n $n
 seguro_n $n
@@ -12253,7 +12253,7 @@ sellado_n $n
 sellar_v $v
 sello_n $n
 selva_n $n
-semana_n $n
+semana_n $n,$dur
 semanario_n $n
 semblante_n $n
 sembrar_v $v,$v_t
@@ -12262,7 +12262,7 @@ semejar_v $v,$v_p
 semen_n $n
 semental_n $n
 sementera_n $n
-semestre_n $n
+semestre_n $n,$dur
 semifinal_n $n
 semilla_n $n
 semillero_n $n
@@ -12382,7 +12382,7 @@ siete_n $n,$num
 siete_a $a,$num
 sigilo_n $n
 sigla_n $n
-siglo_n $n
+siglo_n $n,$dur
 signar_v $v
 signatario_n $n
 significación_n $n

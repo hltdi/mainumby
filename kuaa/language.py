@@ -196,6 +196,8 @@ class Language:
         # Patterns consisting of explicit tokens, classes, and patterns; used in identifying numerals, etc.
         self.patterns = {}
         self.pattern_list = []
+        # Direct translation patterns
+        self.translations = {}
         # List of abbreviations (needed for tokenization)
         self.abbrevs = []
         self.read_abbrevs()
@@ -219,7 +221,7 @@ class Language:
     @staticmethod
     def is_currency(string):
         if string[0] in "$£€¥₲":
-            if Language.is_numeral(string[1:]):
+            if Language.is_dig_numeral(string[1:]):
                 return True
         return False
 
@@ -267,7 +269,7 @@ class Language:
             return False
         if isinstance(pattern, set):
             if self.match_set(pattern, words[0]):
-                return 1
+                return words[0]
             else:
                 return False
         match_words = words
@@ -295,23 +297,24 @@ class Language:
                     matched.append(match_words[0])
                 else:
                     return False
-        return matched, word_position + 1
+        return matched
 
     def get_num_patterns(self):
         return [p for p in self.pattern_list if '/num' in p[0]]
 
-    def is_numeral(self, words):
+    def find_numeral(self, words):
         """Determines whether the list of words begins with a numeral, either in the form of digits or words.
-        If it does, the index of the next word in the list is returned."""
+        If it does, it returns the list of numeral tokens and whether the numeral is digits."""
         if isinstance(words, str):
             words = words.split()
         if Language.is_dig_numeral(words[0]):
-            return [words[0]], 1
+            return [words[0]], True
         else:
             for name, pattern in self.get_num_patterns():
                 pat_match = self.match_pattern(pattern, words)
                 if pat_match:
-                    return pat_match
+#                    print("Find numeral: {}".format(pat_match))
+                    return pat_match, False
         return False
 
     def quit(self, cache=True):
@@ -1452,6 +1455,10 @@ class Language:
 #        for k, v in d.items():
 #            print("{}: {}".format(k, v))
         l = Language(d.get('name'), d.get('abbrev'), use=use)
+        translations = d.get('translations')
+        if translations:
+            for s, t in translations.items():
+                l.translations[s] = t
         # Create classes and patterns
         if 'classes' in d:
             for k, v in d.get('classes'):
@@ -1551,6 +1558,15 @@ class Language:
                     print("That language doesn't seem to exist.")
                     return
         return languages
+
+    def translate_special(self, form):
+        """Translate a special form, for example, a numeral."""
+        if not form:
+            return form
+        form1 = form[1:]
+        if form1 in self.translations:
+            return '%' + self.translations[form1]
+        return form
 
     ### Basic setters. Create entries (dicts) for item. For debugging purposes, include name
     ### in entry.

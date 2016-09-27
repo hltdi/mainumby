@@ -4371,6 +4371,8 @@
 ->grn yvapu_n ; 0==0 n:n,poses:poses
 *** cerezo_n común ; ^ cerezo_n 0
 ->grn yvaro_n mirĩ ; 0==0 n:n,poses:poses
+*** cero_n ; ^ cero_n 0
+->grn mba'eve
 *** cerradura_n de la puerta ; ^ cerradura_n 0
 ->grn okẽkua_n ; 0==0 n:n,poses:poses
 *** cerradura_n ; ^ cerradura_n 0

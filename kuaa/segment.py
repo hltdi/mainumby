@@ -53,7 +53,7 @@
 # 2016.06.16
 # -- OK, I still wasn't quite finished.
 
-import itertools, copy
+import itertools, copy, re
 from .cs import *
 # needed for a few static methods
 from .entry import Entry, Group
@@ -70,17 +70,34 @@ class SolSeg:
                  'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
                  'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green']
 
+    special_re = re.compile("%[A-Z]+_")
+
     def __init__(self, solution, indices, translation, tokens, color=None,
-                 session=None, gname=None, merger_groups=None):
+                 spec_indices=None, session=None, gname=None, merger_groups=None):
 #        self.solution = solution
         self.source = solution.source
         self.indices = indices
+#        if not spec_indices:
+#            toks = solution.sentence.tokens
+#            print("Toks {}, indices {}".format(toks, indices))
+#            spec_indices = range(len(toks))[indices[0]:indices[0]+indices[1]]
+#        self.spec_indices = spec_indices
+#        print("Spec indices for {}".format(spec_indices))
         # Are there any alternatives among the translations?
         self.any_choices = any(['|' in t for t in translation])
         # For each translation alternative, separate words, each of which can have alternatives (separated by '|').
         self.translation = [t.split() for t in translation]
         self.tokens = tokens
         self.token_str = ' '.join(tokens)
+        self.raw_token_str = self.token_str[:]
+        # If there are special tokens in the source language, fix them here.
+        self.special = False
+        if '%' in self.token_str:
+            self.token_str = SolSeg.remove_spec_pre(self.token_str).replace('_', ' ')
+            self.special = True
+            if not translation:
+                # Set the translation for the special segment
+                self.translation = [[self.source.translate_special(tokens[0])]]
         self.color = color
         # Name of the group instantiated in this segment
         self.gname = gname
@@ -99,6 +116,13 @@ class SolSeg:
         """Print name."""
         return ">>{}<<".format(self.token_str)
 
+    @staticmethod
+    def remove_spec_pre(string):
+        """Remove special prefixes, for example, '%ND_'."""
+        if '%' in string:
+            string = ''.join(SolSeg.special_re.split(string))
+        return string
+    
     def make_record(self, session=None, sentence=None):
         """Create the SegRecord object for this SolSeg."""
         if sentence:
@@ -106,18 +130,22 @@ class SolSeg:
 
     def set_html(self, index):
         """Set the HTML markup for this segment, given its position in the sentence,
-        and the dictionary of choices for the record of the SolSeg."""
+        and the dictionary of choices for the record of the SolSeg.
+        Do postprocessing on phrases joined by '_' or special tokens (numerals).
+        """
 #        print("Setting HTML segment {}: {}".format(self, self.translation))
         # Combine translations where possible
 #        tlengths = [len(t) for t in self.translation]
-        
+
+        if self.special:
+            print("Setting HTML for special segment {}".format(self.raw_token_str))
         self.color = 'Silver' if not self.translation else SolSeg.tt_colors[index]
         transhtml = '<table>'
         mult_trans = len(self.translation) > 1
         capitalized = False
         choice_list = self.record.choices if self.record else None
         for tindex, t in enumerate(self.translation):
-#            print("{} setting HTML for {}: {}".format(self, tindex, t))
+            print("{} setting HTML for {}: {}".format(self, tindex, t))
             # Create all combinations of word sequences
             t_expanded = []
             for tt in t:
@@ -144,6 +172,8 @@ class SolSeg:
         if self.translation:
             transhtml += '<tr><td class="other">'
             transhtml += '<input type="radio" name="choice" id="other" value="other" checked>otra traducción</td></tr>'
+            # Remove special prefixes
+            transhtml = SolSeg.remove_spec_pre(transhtml)
             transhtml = transhtml.replace('_', ' ')
         transhtml += '</table>'
         tokens = self.token_str
@@ -310,6 +340,13 @@ class SNode:
             print('   SNode {} with features {} trying to match item {} with features {}'.format(self, self.analyses, grp_item, grp_feats.__repr__()))
         # If item is a category, don't bother looking at token
         is_cat = Entry.is_cat(grp_item)
+        is_spec = Entry.is_special(grp_item)
+        if is_spec and Entry.is_special(self.token):
+#            print("Special entry {} for {}".format(grp_item, self.token))
+            token_type = self.token.split('_')[0]
+            if token_type.startswith(grp_item):
+                # Special group item matches node token (grp_item could be shorter than token_type)
+                return None
         if not self.analyses:
             # The node has no associated roots, cats, or features.
             if self.token == grp_item:
@@ -336,13 +373,26 @@ class SNode:
                 node_features = analysis.get('features')
                 node_cats = analysis.get('cats', [])
                 node_root = analysis.get('root', '')
+                node_roots = None
+                if '_' in node_root:
+                    node_roots = []
+                    # An ambiguous root in analysis
+                    r, p = node_root.split('_')
+                    for rr in r.split('|'):
+                        node_roots.append(rr + '_' + p)
                 # Match group token
                 if is_cat:
                     if grp_item not in node_cats:
                         continue
                 else:
                     # Not a category, has to match the root
-                    if grp_item != node_root:
+                    if node_roots:
+                        m = firsttrue(lambda x: x == grp_item, node_roots)
+                        if m:
+                            node_root = m
+                        else:
+                            continue
+                    elif grp_item != node_root:
                         continue
                 # Match features if there are any
                 if node_features:
@@ -530,7 +580,7 @@ class GInst:
         for tgroup, s2t_dict in translations:
             nttokens = len(tgroup.tokens)
             if verbosity > 1:
-                print(" set_translations(): tgroup {}', s2t_dict {}".format(tgroup, s2t_dict))
+                print(" set_translations(): tgroup {}, s2t_dict {}".format(tgroup, s2t_dict))
             # If there's no explicit alignment, it's the obvious default
             if 'align' in s2t_dict:
                 alignment = s2t_dict.get('align')
@@ -542,7 +592,7 @@ class GInst:
             if isinstance(tgroup, str):
                 # First find the target Group object
                 tgroup = self.target.groupnames[tgroup]
-#            print("Alignment: {}".format(alignment))
+#            print("TGroup: {}, alignment {}".format(tgroup, alignment))
             # Make any TNodes (for target words not corresponding to any source words)
             tnodes = []
             if nttokens > ntokens:
@@ -582,6 +632,7 @@ class GInst:
                 token = tokens[targ_index]
                 feats = features[targ_index] if features else None
                 gnodes.append((gnode, token, feats, agrs, targ_index))
+#            print("Gnodes: {}".format(gnodes))
             self.translations.append((tgroup, gnodes, tnodes))
 
 class GNode:
@@ -611,6 +662,8 @@ class GNode:
 #        print("Getting POS for GNode: {}, {}".format(self.token, self.pos))
         # Whether the associated token is abstract (a category)
         self.cat = Entry.is_cat(self.token)
+        # Whether the associated token is special (for example, a numeral).
+        self.special = Entry.is_special(self.token)
         # Features associated with this group node
         groupfeats = ginst.group.features
         if groupfeats:
@@ -676,6 +729,7 @@ class TreeTrans:
                  index=0, top=False, verbosity=0):
         # The solution generating this translation
         self.solution = solution
+        self.source = solution.source
         self.sentence = solution.sentence
         # Dict keeping information about each gnode; this dict is shared across different TreeTrans instances
         self.abs_gnode_dict = abs_gnode_dict
@@ -784,7 +838,7 @@ class TreeTrans:
     def build(self, tg_comb=None, verbosity=0):
         """Unify translation features for merged nodes, map agr features from source to target,
         generate surface target forms from resulting roots and features.
-        tgroups is a list of target groups, one for each target node."""
+        tg_comb is a combination of target groups."""
         if verbosity:
             print('BUILDING {} with tgroups {}'.format(self, tg_comb))
         tnode_index = 0
@@ -805,6 +859,24 @@ class TreeTrans:
                 # snode is not covered by any group
                 node_index_map[snode.index] = tnode_index
                 node_features.append((snode.token, None, []))
+                tnode_index += 1
+            elif len(gnodes) == 1 and gnodes[0].special:
+                gnode = gnodes[0]
+                # This is where a special node gets translated; by default, source language form is used.
+                spec_token = snode.token
+                spec_trans = self.source.translate_special(spec_token)
+                print("Translating {} as {}".format(spec_token, spec_trans))
+                gnode_tuple_list = self.gnode_dict[gnode]
+                gnode_tuple = firsttrue(lambda x: x[0] in tg_comb, gnode_tuple_list)
+#               gnode_tuple = list(itertools.filterfalse(lambda x: x[0] != tgroup1, gnode_tuple_list))[0]
+                if verbosity > 1:
+                    print("   gnode_tuple: {}".format(gnode_tuple))
+                tgroup, token, targ_feats, agrs, t_index = gnode_tuple
+                node_index_map[snode.index] = tnode_index
+                # Constrain the position of this node in the tgroup
+                if len(tgroup.tokens) > 1:
+                    t_indices = [(tgroup, t_index)]
+                node_features.append((spec_trans, None, t_indices))
                 tnode_index += 1
             else:
                 cache_key = None
@@ -918,8 +990,8 @@ class TreeTrans:
                                 print("   single node already in cache: {}".format(self.cache[cache_key]))
                             node_index_map[snode.index] = tn_i
                             node_features.append((tok, t_feats, t_i))
-                            for t_index in t_i:
-                                group_nodes[t_index] = (tok, t_feats)
+                            for t_ind in t_i:
+                                group_nodes[t_ind] = (tok, t_feats)
                         else:
                             if len(tgroup.tokens) > 1:
                                 t_indices.append((tgroup, t_index))
@@ -932,8 +1004,8 @@ class TreeTrans:
                                 features.agree(targ_feats, agrs)
                             node_index_map[snode.index] = tnode_index
                             node_features.append((token, targ_feats, t_indices))
-                            for t_index in t_indices:
-                                group_nodes[t_index] = (token, targ_feats)
+                            for t_ind in t_indices:
+                                group_nodes[t_ind] = (token, targ_feats)
                             self.cache[cache_key] = (token, tnode_index, t_indices, None, targ_feats)
                             
                 tnode_index += 1
@@ -965,6 +1037,8 @@ class TreeTrans:
     @staticmethod
     def get_root_POS(token):
         """Token may be something like guata_, guata_v, or guata_v_t."""
+        if Entry.is_special(token):
+            return token, None
         root, x, pos = token.partition("_")
         return root, pos
 
@@ -1037,6 +1111,7 @@ class TreeTrans:
                 if tgroup not in tgroup_dict:
                     tgroup_dict[tgroup] = []
                 tgroup_dict[tgroup].append((index, tg_index))
+#        print("tgroup_dict {}".format(tgroup_dict))
         for pairs in tgroup_dict.values():
             for pairpair in itertools.combinations(pairs, 2):
                 pairpair = list(pairpair)

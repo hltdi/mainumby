@@ -104,11 +104,12 @@ from kuaa.morphology.fs import *
 LEXEME_CHAR = '_'
 CAT_CHAR = '$'
 SET_CHAR = '$$'
+SPEC_CHAR = '%'
 ATTRIB_SEP = ';'
 WITHIN_ATTRIB_SEP = ','
 ## Regular expressions for reading groups from text files
 # non-empty form string followed by possibly empty FS string
-FORM_FEATS = re.compile("([$<'¿?¡!|()\-\w]+)\s*((?:\[.+\])?)$")
+FORM_FEATS = re.compile("([$%<'¿?¡!|()\-\w]+)\s*((?:\[.+\])?)$")
 # !FS(#1-#2), representing a sequence of #1 to #2 negative FS matches
 NEG_FEATS = re.compile("\s*!(\[.+\])(\(\d-\d\))$")
 HEAD = re.compile("\s*\^\s*([<'¿?¡!|\-\w]+)\s+(\d)\s*$")
@@ -170,6 +171,11 @@ class Entry:
     def is_cat(name):
         """Is this the name of a category?"""
         return CAT_CHAR in name
+
+    @staticmethod
+    def is_special(name):
+        """Is this a symbol for a special category, like numerals?"""
+        return name and name[0] == SPEC_CHAR 
 
     @staticmethod
     def is_set(name):
@@ -624,7 +630,8 @@ class Group(Entry):
     @staticmethod
     def sort_trans(translations):
         """Sort translations by their translation frequency. translations is a list of pairs: group, feature dict."""
-        translations.sort(key=lambda x: x[1].get('count', 0), reverse=True)
+        if len(translations) > 1:
+            translations.sort(key=lambda x: x[1].get('count', 0), reverse=True)
 
 class MorphoSyn(Entry):
     """Within-language patterns that modify morphology and can delete words on the basis of the occurrence of other words or features."""

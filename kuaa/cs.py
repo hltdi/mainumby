@@ -99,7 +99,7 @@ class Solver:
                 print('STOPPING AT CUTOFF')
             priority, state = fringe.get()
 #            if expand_verbosity:
-            print("{} GETTING and running state {} and score {} from fringe".format(self, state, priority))
+#            print("{} GETTING and running state {} and score {} from fringe".format(self, state, priority))
             # Goal test for this state
             state.run(verbosity=test_verbosity, tracevar=tracevar)
 #            print("State status: {}".format(state.status))

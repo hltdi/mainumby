@@ -212,6 +212,32 @@
 *** allende ; ^ allende 0
 ->grn mboypýri
 #### ADVERBIOS DE TIEMPO
+# con hace
+*** hace unos días ; ^ días 2
+->grn kokuehe
+->grn kokueheve
+*** hace poco ; ^ poco 1
+->grn angete
+->grn kokueheve
+*** hace mucho ; ^ mucho 1
+->grn kuriete
+->grn ymaite
+*** no hace mucho ; ^ mucho 2
+->grn kokueheve
+*** hace un rato ; ^ rato 2
+->grn aje'i
+*** hace rato ; ^ rato 1
+->grn aje'i
+*** ya hace un rato ; ^ rato 3
+->grn aje'íma
+*** hace mucho rato ; ^ rato 2
+->grn aje'íma
+*** hace más rato ; ^ rato 2
+->grn aje'ive
+*** hace %N $dur ; ^ hace 0
+->grn %N $dur rasami ; || 2, 0, 1
+->grn ojapóma %n $dur ; || 0, 1, 2
+# otros
 *** de pronto ; ^ pronto 1
 ->grn sapy'a
 *** muy pronto ; ^ pronto 1
@@ -258,16 +284,6 @@
 ->grn aipóramo
 ->grn upéicharamo
 ->grn upérõ
-*** hace un rato ; ^ rato 2
-->grn aje'i
-*** hace rato ; ^ rato 1
-->grn aje'i
-*** ya hace un rato ; ^ rato 3
-->grn aje'íma
-*** hace mucho rato ; ^ rato 2
-->grn aje'íma
-*** hace más rato ; ^ rato 2
-->grn aje'ive
 *** largo rato ; ^ rato 1
 ->grn kuri
 *** dentro de un rato más largo ; ^ rato 3
@@ -305,9 +321,6 @@
 ->grn manterei
 ->grn meme
 ->grn tapia
-*** hace poco ; ^ poco 1
-->grn angete
-->grn kokueheve
 *** de tarde ; ^ tarde 1
 ->grn ka'aru
 *** demasiado tarde ; ^ tarde 1
@@ -357,9 +370,6 @@
 *** este día ; ^ día 1
 ->grn ko'áĝa
 *** días pasados ; ^ días 0
-->grn kokueheve
-*** hace unos días ; ^ días 2
-->grn kokuehe
 ->grn kokueheve
 *** todos los días ; ^ días 2
 ->grn ko'ẽko'ẽre
@@ -482,6 +492,46 @@
 *** aparentemente ; ^ aparentemente 0
 ->grn gua'u
 ->grn vaicha
+#### PRONOMBRES POSESIVAS
+*** lo mío ; ^ mío 1
+->grn chemba'e
+*** mío_n ; ^ mío_n 0
+->grn chemba'e_n
+*** lo tuyo ; ^ tuyo 1
+->grn nemba'e
+*** tuyo_n ; ^ tuyo_n 0
+->grn nemba'e_n
+*** lo suyo ; ^ suyo 1
+->grn imba'e
+->grn penemba'e
+*** suyo_n ; ^ suyo_n 0
+->grn imba'e_n
+->grn penemba'e_n
+*** lo nuestro ; ^ nuestro 1
+->grn ñanemba'e
+->grn oremba'e
+*** el nuestro ; ^ nuestro 1
+->grn ñanemba'e
+->grn oremba'e
+*** la nuestra ; ^ nuestra 1
+->grn ñanemba'e
+->grn oremba'e
+*** los nuestros ; ^ nuestros 1
+->grn ñanemba'ekuéra
+->grn oremba'ekuéra
+*** las nuestras ; ^ nuestras 1
+->grn ñanemba'ekuéra
+->grn oremba'ekuéra
+*** lo vuestro ; ^ vuestro 1
+->grn penemba'e
+*** el vuestro ; ^ vuestro 1
+->grn penemba'e
+*** la vuestra ; ^ vuestra 1
+->grn penemba'e
+*** los vuestros ; ^ vuestros 1
+->grn penemba'ekuéra
+*** las vuestras ; ^ vuestras 1
+->grn penemba'ekuéra
 #### DEMONSTRATIVOS
 ### este, etc.
 ## adjetivo
@@ -584,7 +634,7 @@
 ->grn umíva_n
 *** ésas ; ^ ésas 0
 ->grn umíva_n
-## aquel, etc.
+## aquel,v etc.
 # adjetivos
 *** aquel $n[n=0]; ^ aquel 0 ; -X-
 ->grn amo $n ; || 0, 1
@@ -1005,7 +1055,7 @@
 ->grn mombyry
 ### PARA
 *** para $n ; ^ para 0
-->grn $n guarã ; || 1, 0
+->grn $n haĝua ; || 1, 0
 *** para sí mismo ; ^ para 0
 ->grn ojuehe
 ### ALREDEDOR (DE)
@@ -1074,12 +1124,22 @@
 *** hasta que $v ; ^ hasta 0
 ->grn $v[pp=peve] ; || -1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
 ### DESDE (GUIVE)
-*** desde hace tiempo ; ^ tiempo 2
+*** desde hace tiempo ; ^ desde 0
 ->grn aréma
 ->grn ymaguare
+*** desde hace mucho ; ^ desde 0
+->grn yma guive
+*** desde hace un rato ; ^ desde 0
+->grn aje'i guive
+*** desde hace poco ; ^ desde 0
+->grn kokuehe guive
 *** desde $n ; ^ desde 0
 ->grn $n[caso=gui] ; || -1, 0
 ->grn $n[caso=guive] ; || -1, 0
+*** desde %ND ; ^ desde 0
+->grn %ND guive ; || 1, 0
+*** desde hace %N $dur ; ^ desde 0
+->grn ojapóma %N $dur ; || 0, -1, 1, 2
 ## cláusulas con desde
 *** desde que $v ; ^ desde 0
 ->grn $v guive ; || 1, -1, 0 ; 2==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
@@ -1100,6 +1160,9 @@
 ->grn upekuévo
 ->grn upe'aja
 # Later: mientras más = cuanto más
+### PARA QUE
+*** para que $v[tm=sbp] ; ^ para 0
+->grn $v[tmp=prs] guarã ; || 1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 ### A MEDIDA QUE (-'AJA) [THIS COULD GO IN n.grp]
 *** a medida que $v[tm=sbp] ; ^ medida_n 1
 ->grn $v[pp=jave,tmp=prs] ; || -1, -1, -1, 0 ; 3==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
@@ -1108,16 +1171,16 @@
 #### OTRAS CLÁUSULAS ADVERBIALES O NOMINALES
 ### SI, CONDICIONAL
 *** si $v[tm=prs] ; ^ si 0
-->grn $v[pp=ramo] ; || -1, 0
+->grn $v[pp=ramo] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 *** si $v[tm=prt] ; ^ si 0
-->grn $v[pp=ramo] ; || -1, 0
+->grn $v[pp=ramo] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 *** si $v[tm=fut] ; ^ si 0
-->grn $v[pp=ramo] ; || -1, 0
+->grn $v[pp=ramo] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 *** si $v[tm=sbp] ; ^ si 0
-->grn $v[pp=ramo,tmp=prs] rire ; || 1, 0
+->grn $v[pp=ramo,tmp=prs] rire ; || 1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 *** si $v[tm=sbi] ; ^ si 0
-->grn $v[pp=ramo,tmp=prt] rire ; || 1, 0
-### AUNQUE
+->grn $v[pp=ramo,tmp=prt] rire ; || 1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+### AUNQUE, A PESAR DE
 *** aunque $v[tm=prs] ; ^ aunque 0
 ->grn jepénte $v[tmp=prs] ; || 0, 1
 *** aunque $v[tm=prt] ; ^ aunque 0
@@ -1126,13 +1189,19 @@
 ->grn jepénte $v[tmp=fut] ; || 0, 1
 *** aunque $v[tm=sbp] ; ^ aunque 0
 ->grn $v[tmp=prs,pp=ramo] jepe ;
+*** a pesar de ello ; ^ pesar 1
+->grn jepevénte
+*** a pesar de $n ; ^ pesar 1
+->grn $n jepe ; || -1, 1, -1, 0
+*** a pesar de que $v ; ^ pesar 1
+->grn $v jepe ; || -1, 1, -1, 0 ; 4==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ### PORQUE / COMO
 *** porque ; ^ porque 0
 ->grn ajeve
 ->grn ajevéramo
 ->grn hi'ãitégui
 #### OTRAS EXPRESIONES DE LUGAR
-### DONDE: relative clauses handled by morphosyn
+### DONDE: relative clauses handled by noun groups (a few by morphosyn)
 *** $n donde $v ; ^ donde 1
 ->grn $n $v[rel=obl] ; || 0, -1, 1 ; 2==1 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 *** dondequiera ; ^ dondequiera 0
@@ -1204,10 +1273,6 @@
 *** hacia este lugar ; ^ lugar 2
 ->grn ápeo
 #### ARTÍCULOS Y OTROS PRONOMBRES
-*** un ; ^ un 0
-->grn peteĩ
-*** una ; ^ una 0
-->grn peteĩ
 *** ninguno ; ^ ninguno 0
 ->grn avave
 ->grn nipeteĩ
@@ -1236,6 +1301,18 @@
 *** mía propia ; ^ mía 0
 ->grn chemba'etee
 #### MODISMOS CON VERBOS
+*** no puede ser ; ^ puede 1
+->grn anichéne
+*** no ha de ser ; ^ ha 1
+->grn anichéne
+*** falta poquísimo ; ^ falta 0
+->grn haimetete
+*** quien sabe ; ^ quien 0
+->grn anichéne
+*** como sea ; ^ sea 1
+->grn oimeháicha
+*** tené cuidado ; ^ cuidado 1
+->grn aníkena
 *** no sea que ; ^ no 0
 ->grn anítei
 *** no será ; ^ no 0
@@ -1270,6 +1347,9 @@
 *** no hagas ; ^ hagas 1
 ->grn anína
 #### MISCELLANY
+*** mucho ; ^ mucho 0
+->grn tuicha
+->grn heta
 *** en absoluto ; ^ absoluto 1
 ->grn araka'eve
 *** abundantemente ; ^ abundantemente 0
@@ -1348,8 +1428,6 @@
 ->grn $n rupi ; || -1, 1, -1, 0
 *** por causa de $n ; ^ causa 1
 ->grn $n haguére ; || -1, 1, -1, 0
-*** cero ; ^ cero 0
-->grn mba'eve
 *** con certeza ; ^ certeza 1
 ->grn katuete
 *** sin cesar ; ^ cesar 1
@@ -1357,7 +1435,6 @@
 ->grn meme
 *** ciertamente ; ^ ciertamente 0
 ->grn aje
-->grn ajépa
 ->grn añete
 *** de cierto ; ^ cierto 1
 ->grn añete
@@ -1365,8 +1442,6 @@
 ->grn ajépa
 *** a las claras ; ^ claras 2
 ->grn hesápe
-*** claro ; ^ claro 0
-->grn hesakã
 *** de cualquier clase ; ^ clase 2
 ->grn oimehaichagua
 *** de esta clase ; ^ clase 2
@@ -1428,8 +1503,6 @@
 ->grn haimete
 *** por el cuello ; ^ cuello 2
 ->grn ajúri
-*** tené cuidado ; ^ cuidado 1
-->grn aníkena
 *** en el curso de ; ^ curso 2
 ->grn aja
 ->grn jave
@@ -1468,8 +1541,6 @@
 *** dolorosamente ; ^ dolorosamente 0
 ->grn asy
 ->grn asýpe
-*** doroso ; ^ doroso 0
-->grn kupe
 *** por las dudas ; ^ dudas 2
 ->grn sapy'arei
 *** sin dueño ; ^ dueño 1
@@ -1484,8 +1555,8 @@
 ->grn techapyrã
 *** sin embargo ; ^ embargo 1
 ->grn uvei
-*** encuanto ; ^ encuanto 0
-->grn vove
+*** en cuanto a $n ; ^ cuanto 1
+->grn $n vove ; || -1, 1, -1, 0 ; 3==0 n:n,poses:poses
 *** enfáticamente ; ^ enfáticamente 0
 ->grn voi
 *** de poco entendimiento ; ^ entendimiento 2
@@ -1541,8 +1612,6 @@
 ->grn ijapýpe
 *** no factible ; ^ factible 1
 ->grn ndaikatúi
-*** falta poquísimo ; ^ falta 0
-->grn haimetete
 *** sin familia ; ^ familia 1
 ->grn tyre'ỹ
 *** feamente ; ^ feamente 0
@@ -1592,8 +1661,6 @@
 ->grn opóvo
 *** gateando ; ^ gateando 0
 ->grn opóvo
-*** general ; ^ general 0
-->grn pavẽ
 *** sin gracia ; ^ gracia 1
 ->grn yrei
 *** todo graciento ; ^ graciento 1
@@ -1604,8 +1671,6 @@
 ->grn mba'erei
 *** con gusto ; ^ gusto 1
 ->grn néi
-*** no ha de ser ; ^ ha 1
-->grn anichéne
 *** habitualmente ; ^ habitualmente 0
 ->grn mante
 ->grn manterei
@@ -1640,8 +1705,8 @@
 ->grn hesegua
 *** sin igual ; ^ igual 1
 ->grn ijojaha'ỹva
-*** igual a ; ^ igual 0
-->grn háicha
+*** igual a $n ; ^ igual 0
+->grn $n háicha ; || 1, -1, 0 ; 2==0 n:n,poses:poses
 *** igualmente ; ^ igualmente 0
 ->grn avei
 ->grn joja
@@ -1656,7 +1721,6 @@
 ->grn avei
 *** incluso ; ^ incluso 0
 ->grn avei
-*** incluso ; ^ incluso 0
 ->grn jepe
 *** indebidamente ; ^ indebidamente 0
 ->grn hekope'ỹ
@@ -1707,8 +1771,6 @@
 ->grn mandivoi
 *** a la izquierda ; ^ izquierda 2
 ->grn asúpe
-*** con la izquierda ; ^ izquierda 2
-->grn asúpe
 *** en la izquierda ; ^ izquierda 2
 ->grn asúpe
 *** jamás ; ^ jamás 0
@@ -1742,10 +1804,9 @@
 ->grn pya'eve
 *** de carácter limpio ; ^ limpio 2
 ->grn joheipyre
-*** lindando ; ^ lindando 0
+*** lindante ; ^ lindante 0
 ->grn yképe
 *** lo es ; ^ lo 0
-->grn he'ẽ
 ->grn heẽ
 ->grn upéicha
 *** luego ; ^ luego 0
@@ -1761,8 +1822,6 @@
 ->grn añarã
 *** sin mal ; ^ mal 1
 ->grn marãe'ỹ
-*** malo ; ^ malo 0
-->grn vai
 *** sin mancha ; ^ mancha 1
 ->grn joheipyre
 ->grn marã'ỹ
@@ -1789,10 +1848,8 @@
 ->grn ijyképe
 *** muy pronto de mañana ; ^ mañana 3
 ->grn ko'ẽroite
-*** mediante ; ^ mediante 0
-->grn rupi
-*** mediante que ; ^ mediante 0
-->grn rupi
+*** mediante $n ; ^ mediante 0
+->grn $n rupi ; || 0, 1 ; 1==0 n:n,poses:poses
 *** menos ; ^ menos 0
 ->grn mbovyve
 ->grn michĩve
@@ -1814,13 +1871,6 @@
 ->grn py'aguapýpe
 *** muchas cosas ; ^ muchas 0
 ->grn hetamba'e
-*** hace mucho ; ^ mucho 1
-->grn kuriete
-*** mucho ; ^ mucho 0
-->grn tuicha
-->grn heta
-*** no hace mucho ; ^ mucho 2
-->grn kokueheve
 *** muchísimo ; ^ muchísimo 0
 ->grn eterei
 *** multiplicando ; ^ multiplicando 0
@@ -1859,8 +1909,6 @@
 ->grn anítei
 *** normalmente ; ^ normalmente 0
 ->grn hekópe
-*** novedad ; ^ novedad 0
-->grn mba'eguasu
 *** nuevamente ; ^ nuevamente 0
 ->grn jevy
 *** de nuevo ; ^ nuevo 1
@@ -1869,12 +1917,10 @@
 ->grn marãve
 *** no obstante ; ^ obstante 1
 ->grn ko'ýte
-*** obvio ; ^ obvio 0
-->grn añetete
 *** ocultamente ; ^ ocultamente 0
 ->grn kañyhápe
 ->grn ñemiháme
-*** ojala que no ; ^ ojala 0
+*** ojalá que no ; ^ ojalá 0
 ->grn anichéne
 *** ojalá ; ^ ojalá 0
 ->grn tamo
@@ -1884,8 +1930,6 @@
 ->grn hekópe
 *** a la par de algo ; ^ par 2
 ->grn ijyképe
-*** para que ; ^ para 0
-->grn haĝua
 *** parado ; ^ parado 0
 ->grn ñembo'yhápe
 *** en qué paraje ; ^ paraje 2
@@ -1898,46 +1942,26 @@
 ->grn javeve
 *** sin su participación ; ^ participación 2
 ->grn hese'ỹ
-*** parón ; ^ parón 0
-->grn kupe
 *** en el pasado ; ^ pasado 2
 ->grn akue
-*** más alejado en el pasado ; ^ pasado 4
-->grn ymave
 *** pasar sin pagar ; ^ pasar 0
 ->grn ka'ípe
-*** a cuatro patas ; ^ patas 2
-->grn opóvo
 *** paulatinamente ; ^ paulatinamente 0
 ->grn mbeguekatu
-*** pedazo ; ^ pedazo 0
-->grn ra'ymi
 *** a duras penas ; ^ penas 2
 ->grn hasypeve
 ->grn hasýpe
 *** penosamente ; ^ penosamente 0
 ->grn asy
-*** pequeñito ; ^ pequeñito 0
-->grn michĩete
-*** muy pequeño ; ^ pequeño 1
-->grn michĩete
-*** pequeño ; ^ pequeño 0
-->grn ra'ymi
 *** permanentemente ; ^ permanentemente 0
 ->grn mante
 ->grn manterei
 *** pero ; ^ pero 0
 ->grn jepeve
-->grn jepevénte
+->grn katu
 ->grn uvei
 *** perteneciente a ; ^ perteneciente 0
 ->grn pegua
-*** a pesar de ello ; ^ pesar 1
-->grn jepevénte
-*** a pesar de ; ^ pesar 1
-->grn jepe
-*** a pesar de que ; ^ pesar 1
-->grn jepe
 *** de a pie ; ^ pie 2
 ->grn yvýrupi
 *** de pie ; ^ pie 1
@@ -1947,7 +1971,9 @@
 *** muy poco ; ^ poco 1
 ->grn mbovymi
 *** poco ; ^ poco 0
-->grn ra'ymi
+->grn mbovy
+->grn michĩ
+->grn sa'i
 *** poco a poco ; ^ poco 0
 ->grn mbegue
 ->grn mbeguekatu
@@ -1958,12 +1984,8 @@
 ->grn ra'ymi
 *** unos pocos ; ^ pocos 1
 ->grn mbovymi
-*** hasta más no poder ; ^ poder 3
-->grn katui
 *** poquito ; ^ poquito 0
 ->grn mimi
-*** poquito a poco ; ^ poquito 0
-->grn michĩmimi
 *** un poquito ; ^ poquito 1
 ->grn mbovymi
 *** portento ; ^ portento 0
@@ -1972,16 +1994,12 @@
 ->grn hapykuéri
 *** posiblemente ; ^ posiblemente 0
 ->grn ikatu
-*** posteridad ; ^ posteridad 0
-->grn kurive
 *** a la postre ; ^ postre 2
 ->grn ko'ýte
 *** practicamente ; ^ practicamente 0
 ->grn añetehápe
 *** cosa sin precio ; ^ precio 2
 ->grn mba'erei
-*** no tiene precio ; ^ precio 2
-->grn mbovyve
 *** precisamente ; ^ precisamente 0
 ->grn katuete
 ->grn katuetei
@@ -2015,68 +2033,47 @@
 *** probablemente ; ^ probablemente 0
 ->grn ikatúne
 ->grn vaicha
-*** prodigio ; ^ prodigio 0
-->grn mba'eguasu
-*** prohibitivo ; ^ prohibitivo 0
-->grn ndaikatúi
-->grn ndikatúi
 *** propiamente ; ^ propiamente 0
 ->grn añetehápe
 *** de proporciones menudas ; ^ proporciones 1
 ->grn chu'i
-*** proveniente de ; ^ proveniente 0
-->grn gui
-->grn pegua
+*** proveniente de $n ; ^ proveniente 0
+->grn $n pegua ; || 1, -1, 0
 *** proximidad ; ^ proximidad 0
 ->grn ypýpe
 *** muy próximo ; ^ próximo 1
 ->grn aĝuiete
 *** próximo ; ^ próximo 0
 ->grn aĝui
-*** pseudo- ; ^ pseudo- 0
-->grn gua'u
+*** pseudo- $n; ^ pseudo- 0
+->grn $n gua'u ; || 1, 0
 *** del pueblo ; ^ pueblo 1
 ->grn távagui
 *** lo del pueblo ; ^ pueblo 2
 ->grn tavaygua
-*** no puede ; ^ puede 1
-->grn ndaikatúi
-->grn ndikatúi
-*** no puede ser ; ^ puede 1
-->grn anichéne
-*** no se puede ; ^ puede 2
-->grn ndaikatúi
-->grn ndikatúi
 *** pues ; ^ pues 0
 ->grn ajeve
 ->grn katu
 ->grn mandi
-*** puesto que ; ^ puesto 0
-->grn gui
-*** pulsar ; ^ pulsar 0
-->grn hovái
+*** puesto que $v ; ^ puesto 0
+->grn $v[pp=gui] ; || -1, -1, 0 ; 2==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** en la punta de ; ^ punta 2
 ->grn ijapýpe
 *** a punto ; ^ punto 1
 ->grn potaite
-*** a punto de amanece ; ^ punto 1
-->grn ko'ẽmbota
 *** al punto ; ^ punto 1
-->grn ha'etépe
-*** puntual ; ^ puntual 0
 ->grn ha'etépe
 *** puntualmente ; ^ puntualmente 0
 ->grn ha'etépe
-*** pués ; ^ pués 0
+*** pues ; ^ pues 0
 ->grn voi
+->grn katu
 *** muy quedamente ; ^ quedamente 1
 ->grn mbeguemi
 *** muy quedo ; ^ quedo 1
 ->grn mbeguemi
 *** a quien ; ^ quien 1
 ->grn mávape
-*** quien sabe ; ^ quien 0
-->grn anichéne
 *** quienquiera ; ^ quienquiera 0
 ->grn oimeraẽ
 ->grn oimeraẽva
@@ -2086,9 +2083,7 @@
 *** quizás ; ^ quizás 0
 ->grn nipo
 ->grn oiméne
-*** quédamente ; ^ quédamente 0
-->grn guyguy
-*** rapidamente ; ^ rapidamente 0
+*** rápidamente ; ^ rápidamente 0
 ->grn vevépe
 ->grn voi
 *** sin rastro ; ^ rastro 1
@@ -2111,7 +2106,7 @@
 ->grn añete
 ->grn añetehápe
 ->grn ha'ete
-*** reciéntemente ; ^ reciéntemente 0
+*** recientemente ; ^ recientemente 0
 ->grn aje'i
 ->grn angete
 *** recién ; ^ recién 0
@@ -2136,12 +2131,10 @@
 ->grn oguývo
 *** ruidosamente ; ^ ruidosamente 0
 ->grn ayvúpe
-*** rumbo a ; ^ rumbo 0
-->grn gotyo
+*** rumbo a $n ; ^ rumbo 0
+->grn $n gotyo ; || 2, -1, 0 ; 2==0 n:n,poses:poses
 *** de escasa salud ; ^ salud 2
 ->grn morombi
-*** como sea ; ^ sea 1
-->grn oimeháicha
 *** secretamente ; ^ secretamente 0
 ->grn guyguy
 ->grn kañyhápe
@@ -2158,28 +2151,18 @@
 ->grn mante
 ->grn manterei
 ->grn tapia
-*** segunda ; ^ segunda 0
-->grn mokõiha
 *** segundo ; ^ segundo 0
 ->grn mokõiha
 *** seguramente ; ^ seguramente 0
 ->grn aje
-->grn ajépa
 ->grn ikatu
 ->grn katuetei
 *** con seguridad ; ^ seguridad 1
 ->grn aje
-->grn ajépa
 *** con seguridad lo más riguroso ; ^ seguridad 1
 ->grn katuetei
 *** con toda seguridad ; ^ seguridad 2
 ->grn katuete
-*** semejante ; ^ semejante 0
-->grn hesegua
-*** estando sentado ; ^ sentado 1
-->grn guapyhápe
-*** sentado ; ^ sentado 0
-->grn guapyhápe
 *** sin seres ; ^ seres 1
 ->grn mba'evete
 *** seriamente ; ^ seriamente 0
@@ -2205,17 +2188,10 @@
 ->grn oimehápe
 *** en el sol ; ^ sol 2
 ->grn kuarahýpe
-*** solamente ; ^ solamente 0
-->grn año
-->grn añónte
-->grn mante
 *** a solas ; ^ solas 1
 ->grn año
 *** en soledad ; ^ soledad 1
 ->grn año
-*** solo ; ^ solo 0
-->grn año
-->grn añónte
 *** sucesor de ; ^ sucesor 0
 ->grn rekovia
 *** como suele ; ^ suele 1
@@ -2244,6 +2220,13 @@
 *** sólo ; ^ sólo 0
 ->grn año
 ->grn mandi
+->grn mante
+*** solo ; ^ solo 0
+->grn año
+->grn añónte
+*** solamente ; ^ solamente 0
+->grn año
+->grn añónte
 ->grn mante
 *** tal ; ^ tal 0
 ->grn aipo
