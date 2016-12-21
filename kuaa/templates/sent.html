@@ -152,6 +152,9 @@ input.filename
 </style>
 
 <script>
+function EmptyDoc() {
+   document.getElementById("document").value = "";
+}
 function ShowHelp() {
     var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
     helpWin.document.write('<html><head>' +
@@ -199,6 +202,7 @@ function OnRegFrase() {
         } else {
             segtrans = " " + segtrans;
         }
+        document.getElementById("error").innerHTML = "";
         document.getElementById("sentence").value += segtrans;
     } else {
         for (var i = 0; i < radio.length; i++) {
@@ -210,6 +214,7 @@ function OnRegFrase() {
                 }
             }
         }
+        document.getElementById("error").innerHTML = "";
         document.getElementById("segment").value = choice;
         document.Form2.fratra.value += "||" + segment + "=" + choice;
         if (sentval == "") {
@@ -394,14 +399,19 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
   <input type="hidden" name="fratra" value="">
 </form>
 
-<tr class="trans">
 <form name="Form3" id="text-options">
+<tr class="trans">
   <td>
     <input type="submit" value="Guardar" id="narrowbutton"/>
-    <label>Nombre de archivo:<input type="text" class="filename" id="text-filename" placeholder="doc.txt"/></label>
+    <label>Nombre de archivo:<input type="text" class="filename" id="text-filename" placeholder="doc.txt" size="50"/></label>
   </td>
-</form>  
 </tr>
+<tr class="trans">
+  <td>
+    <input type="button" id="narrowbutton" onclick="EmptyDoc();" value="Desechar"/>
+  </td>
+</tr>
+</form>  
 </table>    
 </td>
 </tr>
@@ -409,8 +419,6 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 </td>
 </tr>
 </table>
-
-</form>
 
 <script async="" src="{{url_for('static', filename='FileSaver.js')}}"></script>
 <script async="" src="{{url_for('static', filename='Blob.js')}}"></script>

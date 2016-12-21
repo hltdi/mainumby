@@ -1,3 +1,12 @@
+2016-7 winter
+small
+-- translation of unos/unas
+-- translating "la casa que no pude comprar"
+   -> casa que pude[+neg] comprar[ps=1,pn=0,tm=prt]
+   -> 
+big
+-- start making code more readable and documenting everything
+
 2016 summer
 — implement Union constraints as ComplexUnionSelection
   selvar: $groups

@@ -2925,8 +2925,10 @@
 *** universal_a ; ^ universal_a 0
 ->grn pavẽ_v
 ->grn oparupigua_v
-*** uno_a ; ^ uno_a 0
+*** uno_a[n=0] ; ^ uno_a 0
 ->grn peteĩ
+*** uno_a[n=1] ; ^ uno_a 0
+->grn oimeraẽ
 *** unánime_a ; ^ unánime_a 0
 ->grn pavẽ_v
 *** urbano_a ; ^ urbano_a 0

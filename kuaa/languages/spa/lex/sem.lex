@@ -10520,6 +10520,7 @@ poco_a $a
 poda_n $n
 podar_v $v
 poder_n $n,$v
+poder_v $v,$v_i
 poderoso_n $n
 poderoso_a $a
 poderío_n $n

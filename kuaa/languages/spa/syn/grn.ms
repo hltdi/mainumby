@@ -61,7 +61,8 @@ neg_ipv :: ¡ no [pos=v,tm=sbp,+negipv] ; // 0 ; 2-> [tm=ipv,p=2] ; 1-> [+ipv]
 neg :: no [pos=v,+neg] ; // 0 ; FAILIF neg_ipv
 
 ## derivación 2
-pot :: poder_v [pos=v,tm=inf] ; 0=>1 p,n,tm
+# PODER + V[inf]: copy person, number, and TAM from PODER to V; make PODER 3s; make V +fin
+pot :: poder_v [pos=v,tm=inf] ; 0=>1 p,n ; 1-> [+fin,tm=prs] ; 0-> [p=3]
 
 ## posesivo
 pos/1s.s :: mi [pos=n,n=0,poses=[+ext,pp=1,np=0]] ; // 0
@@ -123,3 +124,6 @@ artdef/fp :: las [pos=n,n=1] ; // 0
 
 ## preguntas
 pregunta :: ¿ [pos=v,+inter] ; // 0
+
+## infinitivos (deben ser finitos para coincidir con propiedades en grupos de verbos (v.grp))
+infin :: [pos=v,tm=inf] ; 0-> [+fin]

@@ -2,8 +2,8 @@
 +t == ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
 #### irregular Grn verbs
 ## KATU
-*** poder_v[-r,+fin] $v ; ^ poder_v 0
-->grn katu_v[cat=che] $v ; 1==1 n:ns,p:ps,tm:tmp,asp:asp ; 0==0 neg:neg,rel:rel
+*** poder_v[-r,+fin] ; ^ poder_v 0
+->grn katu_v[cat=che] ; 0==0 neg:neg,rel:rel
 *** poder_v[+r,+fin] $v ; ^ poder_v 0
 ->grn katu_v[cat=che] $v[+r] ; 1==1 n:ns,p:ps,tm:tmp,asp:asp ; 0==0 neg:neg,rel:rel
 ## OĨ, NDAIPÓRI?

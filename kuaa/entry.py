@@ -891,8 +891,8 @@ class MorphoSyn(Entry):
         sentence word.
         """
         results = []
-        if verbosity:
-            print("Matching MS {} against {}".format(self, sentence))
+#        if verbosity:
+#            print("Matching MS {} against {}".format(self, sentence))
         if self.direction:
             # Left-to-right; index of item within the pattern
             pindex = 0
@@ -955,7 +955,7 @@ class MorphoSyn(Entry):
         """Match a sentence item against a pattern item."""
         pforms, pfeats = self.pattern[pindex]
         isneg = pindex in self.neg_matches
-        if verbosity:
+        if verbosity > 1:
             print("  Matching {}:{} against {}:{}".format(stoken, sanals, pforms, pfeats.__repr__()))
             if isneg:
                 print("  Negative match: {}, {}, {}, {}".format(stoken, sanals, pforms, pfeats))
@@ -965,7 +965,7 @@ class MorphoSyn(Entry):
         else:
             if not sanals:
                 # No morphological analyses for sentence item; fail
-                if verbosity:
+                if verbosity > 1:
                     print("   No feats, match item failed")
                 return False
             # pattern FS must match features in one or more anals; record the results in
@@ -976,17 +976,17 @@ class MorphoSyn(Entry):
                                                     verbosity=verbosity))
             if any(anal_matches):
                 return [stoken, anal_matches, sanals]
-        if verbosity:
+        if verbosity > 1:
             print("   Match item failed")
         return False
 
     def match_token(self, stoken, sanals, pforms, verbosity=0):
         """Match the word or roots in a sentence against the set of forms in a pattern item."""
-        if verbosity:
+        if verbosity > 1:
             print("  Matching sentence token {} and analyses {} against pattern forms {}".format(stoken, sanals, pforms))
         if any([stoken == f for f in pforms]):
             # Do any of the pattern items match the sentence word?
-            if verbosity:
+            if verbosity > 1:
                 print("   Succeeded on token")
             return [stoken, False, sanals]
         # Do any of the pattern items match a root in any sentence item analysis?
@@ -998,7 +998,7 @@ class MorphoSyn(Entry):
             else:
                 matched_anals.append(False)
         if any(matched_anals):
-            if verbosity:
+            if verbosity > 1:
                 print("   Succeeded on root")
             return [stoken, matched_anals, sanals]
         return False
@@ -1015,22 +1015,22 @@ class MorphoSyn(Entry):
             s = "  Attempting to match pattern forms {} and feats {} against sentence item root {} and feats {}"
             print(s.format(pforms, pfeats.__repr__(), sroot, sfeats.__repr__()))
         if not pforms or any([sroot == f for f in pforms]):
-            if verbosity:
+            if verbosity > 1:
                 print("   Root matched")
             # root matches
 #            print("{} unifying {}/{} and {}/{}".format(self, sroot, sfeats.__repr__(), pforms, pfeats.__repr__()))
             u = simple_unify(sfeats, pfeats)
             if u != 'fail':
                 if not neg:
-                    if verbosity:
+                    if verbosity > 1:
                         print("   Feats matched")
                     # result could be frozen if nothing changed; we need an unfrozen FS for later changes
                     return u.unfreeze()
             elif neg:
-                if verbosity:
+                if verbosity > 1:
                     print("   Neg feats match succeeded")
                 return True
-        if verbosity:
+        if verbosity > 1:
             print("   Failed")
         return False
 
@@ -1062,6 +1062,9 @@ class MorphoSyn(Entry):
 #                changed = False
                 for src_feats in src_feats_list:
                     if src_feats:
+                        if verbosity:
+                            print("    Agreeing: {} ({}), {}, ({})".format(src_feats.__repr__(), src_feats.frozen(),
+                                                                           trg_feats.__repr__(), trg_feats.frozen()))
                         # source features could be False
                         # Force target to agree with source on feature pairs
                         src_feats.agree(trg_feats, feats, force=True)
@@ -1096,11 +1099,16 @@ class MorphoSyn(Entry):
             for fm_index, fm_feats in self.featmod:
                 elem = elements[fm_index]
                 feats_list = elem[1]
+                if verbosity:
+                    print("    Modifying features: {}, {}, {}".format(fm_index, fm_feats.__repr__(), feats_list))
                 if not feats_list:
                     elem[1] = [fm_feats.copy()]
                 else:
                     for index, feats in enumerate(feats_list):
                         if isinstance(feats, FeatStruct):
+                            if feats.frozen():
+                                feats = feats.unfreeze()
+                                feats_list[index] = feats
 #                    print("Updating feat {} with fm_feats {}".format(feats.__repr__(), fm_feats.__repr__()))
 #                    feats1 = feats.copy()
 #                    print("Feature {} replaced with copy".format(feats.__repr__()))

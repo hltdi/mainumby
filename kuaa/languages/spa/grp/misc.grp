@@ -840,10 +840,11 @@
 ->grn ondive
 *** con $num $n ; ^ con 0 ; -X-
 ->grn $num $n ndive ; || 2, 0, 1
-*** con $n ; ^ con 0
-->grn $n ndive ; || 1, 0
+# has to take priority over <con $n>
 *** con $pro ; ^ con 0
 ->grn $pro[caso=ndi] ; || -1, 0
+*** con $n ; ^ con 0
+->grn $n ndive ; || 1, 0
 # needed so that con can merge with $pp node
 *** con ; ^ con 0
 ->grn ndive

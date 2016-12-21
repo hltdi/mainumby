@@ -693,17 +693,18 @@ class Sentence:
                     anals = [anals]
                 for a in anals:
                     root = a.get('root')
-                    if root not in keys:
-                        keys.append(root)
-                    if '|' in root:
-                        # An ambiguous root (ir|ser)
-                        psuf = ''
-                        r = root
-                        if '_' in root:
-                            r, psuf = root.split('_')
-                            psuf = '_' + psuf
-                        for rr in r.split('|'):
-                            keys.append(rr + psuf)
+                    if root:
+                        if root not in keys:
+                            keys.append(root)
+                        if '|' in root:
+                            # An ambiguous root (ir|ser)
+                            psuf = ''
+                            r = root
+                            if '_' in root:
+                                r, psuf = root.split('_')
+                                psuf = '_' + psuf
+                            for rr in r.split('|'):
+                                keys.append(rr + psuf)
 #                        print("Root {} contains an alternative".format(root))
 #                        print(" Keys now {}".format(keys))
 
