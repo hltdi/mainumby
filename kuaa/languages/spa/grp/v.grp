@@ -6,9 +6,11 @@
 ->grn katu_v[cat=che] ; 0==0 neg:neg,rel:rel
 *** poder_v[+r,+fin] $v ; ^ poder_v 0
 ->grn katu_v[cat=che] $v[+r] ; 1==1 n:ns,p:ps,tm:tmp,asp:asp ; 0==0 neg:neg,rel:rel
-## OĨ, NDAIPÓRI?
+## OĨ, NDAIPÓRI
 *** haber_v[-r,p=3,n=0,-neg] ; ^ haber_v 0
-->grn ĩ_v[cat=a,po=3,no=0,-neg] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,pp:pp,inter:inter
+->grn ĩ_v[cat=a,po=3,no=0,-neg] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,pp:pp,inter:inter
+*** haber_v[-r,p=3,n=0,+neg] ; ^ haber_v 0
+->grn pori_v[cat=che,+neg] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,pp:pp,inter:inter
 #### SOME IMPERSONAL VERBS
 *** escampar_v[-r,p=3,n=0] ; ^ escampar_v 0
 ->grn pi_v[cat=a,ps=3] ; 0==0 tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,inter:inter
@@ -1716,7 +1718,7 @@
 *** envejecer_v[-r,+fin] al hombre ; ^ envejecer_v 0
 ->grn mbotuja_v[cat=a]
 *** enviar_v[-r,+fin] algo por correo ; ^ enviar_v 0 ; #585
-->grn rahauka_v[subcat=gue] ; #2 ; ##1
+->grn rahauka_v[cat=a] ; #2 ; ##1
 *** enviar_v[-r,+fin] para comunicar ; ^ enviar_v 0 ; #585
 ->grn mombe'uka_v[cat=a]
 ->grn kuaauka_v[cat=a]
@@ -1725,7 +1727,7 @@
 *** enviar_v[-r,+fin] recado ; ^ enviar_v 0 ; #585
 ->grn moñe'ẽmondo_v[cat=a]
 *** enviar_v[-r,+fin] para allá ; ^ enviar_v 0 ; #585
-->grn rahauka_v[subcat=gue] ; #2 ; ##1
+->grn rahauka_v[cat=a] ; #2 ; ##1
 *** enviar_v[-r,+fin] a uno ; ^ enviar_v 0 ; #585
 ->grn jokuái_v[cat=a]
 *** envolver_v[-r,+fin] lazo ; ^ envolver_v 0
@@ -13202,19 +13204,19 @@
 *** enviar_v[-r,+fin] ; ^ enviar_v 0 ; #585
 ->grn mondo_v[cat=a] ; #60 ; ##253
 ->grn mbou_v[cat=a] ; #31 ; ##59
-->grn rahauka_v[subcat=gue] ; #2 ; ##1
+->grn rahauka_v[cat=a] ; #2 ; ##1
 *** enviar_v[-r,+fin] a $n ; ^ enviar_v 0
 ->grn mondo_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 ->grn mbou_v[cat=a] $n[caso=pe] ; || 0, -1, 1
-->grn rahauka_v[subcat=gue] $n[caso=pe] ; || 0, -1, 1
+->grn rahauka_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 *** enviar_v[-r,po=3,no=0] ; ^ enviar_v 0
 ->grn mondo_v[cat=a] (chupe)
 ->grn mbou_v[cat=a] (chupe)
-->grn rahauka_v[subcat=gue] (chupe)
+->grn rahauka_v[cat=a] (chupe)
 *** enviar_v[-r,po=3,no=1] ; ^ enviar_v 0
 ->grn mondo_v[cat=a] (chupekuéra)
 ->grn mbou_v[cat=a] (chupekuéra)
-->grn rahauka_v[subcat=gue] (chupekuéra)
+->grn rahauka_v[cat=a] (chupekuéra)
 *** enviar_v[+r,+fin] ; ^ enviar_v 0 ; #5
 ->grn ñembou_v[cat=a] ; #2
 ->grn ñemondo_v[cat=a] ; #6
@@ -16682,16 +16684,16 @@
 ->grn mbojoaju_v[cat=a] (chupekuéra)
 *** mandar_v[-r,+fin] ; ^ mandar_v 0 ; #380
 ->grn mondo_v[cat=a] ; #60 ; ##17
-->grn rahauka_v[subcat=gue] ; #2
+->grn rahauka_v[cat=a] ; #2
 *** mandar_v[-r,+fin] a $n ; ^ mandar_v 0
 ->grn mondo_v[cat=a] $n[caso=pe] ; || 0, -1, 1
-->grn rahauka_v[subcat=gue] $n[caso=pe] ; || 0, -1, 1
+->grn rahauka_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 *** mandar_v[-r,po=3,no=0] ; ^ mandar_v 0
 ->grn mondo_v[cat=a] (chupe)
-->grn rahauka_v[subcat=gue] (chupe)
+->grn rahauka_v[cat=a] (chupe)
 *** mandar_v[-r,po=3,no=1] ; ^ mandar_v 0
 ->grn mondo_v[cat=a] (chupekuéra)
-->grn rahauka_v[subcat=gue] (chupekuéra)
+->grn rahauka_v[cat=a] (chupekuéra)
 *** mandar_v[+r,+fin] ; ^ mandar_v 0
 ->grn ñemondo_v[cat=a]
 *** manear_v[+r,+fin] ; ^ manear_v 0

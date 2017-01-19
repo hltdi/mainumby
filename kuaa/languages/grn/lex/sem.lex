@@ -1552,6 +1552,7 @@ poravopyre_ $a
 pore_ $n
 pore'ỹ_ $a
 poreno_ $v,$v_i,$n
+pori_ $v,$v_i
 poriahu_ $a
 poriahuvereko_ $v,$v_t
 poroapo_ $v,$v_t

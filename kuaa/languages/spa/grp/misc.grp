@@ -212,6 +212,9 @@
 *** allende ; ^ allende 0
 ->grn mboypýri
 #### ADVERBIOS DE TIEMPO
+# con por
+*** por mucho tiempo ; ^ tiempo 2
+->grn heta
 # con hace
 *** hace unos días ; ^ días 2
 ->grn kokuehe
@@ -735,17 +738,16 @@
 *** por qué ; ^ qué 1
 ->grn mba'ére
 ## VERIFY THE FOLLOWING
+*** qué ; ^ qué 0
+->grn mba'épa
 *** de quién ; ^ quién 1
 ->grn avágui
 *** quién ; ^ quién 0
 ->grn máva
 *** quién sabe ; ^ quién 0
 ->grn nipo
-*** qué ; ^ qué 0
-->grn mba'éicha
 *** qué cosa ; ^ qué 0
 ->grn mba'éiko
-*** qué cosa ; ^ qué 0
 ->grn mba'étepa
 *** qué es ; ^ qué 0
 ->grn mba'éiko
@@ -1348,8 +1350,8 @@
 *** no hagas ; ^ hagas 1
 ->grn anína
 #### MISCELLANY
+## Adverbial mucho
 *** mucho ; ^ mucho 0
-->grn tuicha
 ->grn heta
 *** en absoluto ; ^ absoluto 1
 ->grn araka'eve
@@ -1879,7 +1881,6 @@
 *** mucho más ; ^ más 1
 ->grn hetave
 *** más ; ^ más 0
-->grn hetave
 ->grn mive
 *** más allá ; ^ más 0
 ->grn mboypýri

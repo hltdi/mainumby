@@ -70,6 +70,8 @@ class SolSeg:
                  'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
                  'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green']
 
+    tt_notrans_color = "Gray"
+
     special_re = re.compile("%[A-Z]+_")
 
     def __init__(self, solution, indices, translation, tokens, color=None,
@@ -128,7 +130,7 @@ class SolSeg:
         if sentence:
             return SegRecord(self, sentence=sentence.record, session=session)
 
-    def set_html(self, index):
+    def set_html(self, index, verbosity=0):
         """Set the HTML markup for this segment, given its position in the sentence,
         and the dictionary of choices for the record of the SolSeg.
         Do postprocessing on phrases joined by '_' or special tokens (numerals).
@@ -139,11 +141,13 @@ class SolSeg:
 
         if self.special:
             print("Setting HTML for special segment {}".format(self.raw_token_str))
-        self.color = 'Silver' if not self.translation else SolSeg.tt_colors[index]
+        self.color = SolSeg.tt_notrans_color if not self.translation else SolSeg.tt_colors[index]
         transhtml = '<table>'
-        mult_trans = len(self.translation) > 1
         capitalized = False
         choice_list = self.record.choices if self.record else None
+        # Final source segment output
+        tokens = self.token_str
+#        print("  tokens {}".format(tokens))
         for tindex, t in enumerate(self.translation):
             print("{} setting HTML for {}: {}".format(self, tindex, t))
             # Create all combinations of word sequences
@@ -167,16 +171,30 @@ class SolSeg:
             transhtml += "</td>"
             if self.record:
                 choice_list.append(tchoice)
-            # Add other translation button
             transhtml += '</tr>'
         if self.translation:
+            # Add other translation button
+            # Button to translate as source language
+            transhtml += '<tr><td class="source">'
+            transhtml += '<input type="radio" name="choice" id={} value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
             transhtml += '<tr><td class="other">'
-            transhtml += '<input type="radio" name="choice" id="other" value="other" checked>otra traducción</td></tr>'
+            transhtml += '<input type="radio" name="choice" id="other" value="other" checked>otra traducción (introducir abajo)</td></tr>'
+            # Remove special prefixes
+            transhtml = SolSeg.remove_spec_pre(transhtml)
+            transhtml = transhtml.replace('_', ' ')
+        else:
+            # No translations suggested: buttons for 'your translation' and 'translate as source'
+            # Button to translate as source language
+            transhtml += '<tr><td class="source">'
+            transhtml += '<input type="radio" name="choice" id={} value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
+            # Add other translation button
+            transhtml += '<tr><td class="other">'
+            transhtml += '<input type="radio" name="choice" id="other" value="other" checked>otra traducción (introducir abajo)</td></tr>'
             # Remove special prefixes
             transhtml = SolSeg.remove_spec_pre(transhtml)
             transhtml = transhtml.replace('_', ' ')
         transhtml += '</table>'
-        tokens = self.token_str
+        # Capitalize tokens if in first place        
         if index==0:
             capitalized = False
             if ' ' in tokens:
@@ -193,8 +211,6 @@ class SolSeg:
                 tokens = ' '.join(toks)
             else:
                 tokens = tokens.capitalize()
-#        print("  tokens {}".format(tokens))
-#        print("transhtml for {}: {}".format(self, transhtml))
         self.html = (tokens, self.color, transhtml)
 
     @staticmethod

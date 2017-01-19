@@ -161,13 +161,33 @@ function ShowHelp() {
 '<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
 "<title>Mainumby: Ayuda</title></head><body>" +
 "<h4 class='help'>Ayuda para seleccionar traducciones</h4>" +
-"<p class='help'>En la ventana 'Traducción de oraciones' " +
+"<p class='help'>En la ventana 'Selección de oraciones' " +
 "se presenta una oración y varias opciones para traducirla. " +
-"La oración se despliega dividida en frases, cada una representada por un color. " +
+"Debajo de 'Actual oración', se despliega " +
+"la oración dividida en frases, cada una representada por un color. " +
+"(Palabras que Mbojereha no sabe traducir aparecen en gris.) " +
 "Para ver las opciones que ofrece Mbojereha como traducciones de una frase, " +
 "hac&eacute; clic en esa frase. " +
 "Abajo se presentan las opciones a la izquierda en el espacio llamado " +
-"'Sugerencias'." +
+"'Sugerencias'. " +
+"</p><p class='help'>" +
+"En este espacio pod&eacute;s seleccionar una de las opciones, " +
+"haciendo clic en la casilla correspondiente. " +
+"Las opciones incluyen la palabra o frase castellana sin cambio " +
+"y además la posibilidad de introducir 'otra traducción' " +
+"(seleccionada por defecto). " +
+"Si has seleccionado 'otra traducción', deb&eacute;s escribir " +
+"tu traducción en el espacio abajo: 'Introducir otra traducción'. " +
+"Una vez que est&eacute;s satisfecho con tu selección (o una " +
+"de las presentadas u otra que introdujiste) " +
+"hac&eacute; clic en 'Registrar traducción' a la derecha de " +
+"'Frase'. " +
+"Enseguida aparece la frase que seleccionaste en en el espacio " +
+"para la 'Oración entera' abajo. " +
+"</p><p class='help'>" +
+"Fijate que el programa no tiene conocimiento del orden correcto de " +
+"las traducciones de las frases, lo que puede diferir del orden " +
+"castellano. " +
 "</p></body></html>");
     document.Form1.ayuda.value = true;
 }

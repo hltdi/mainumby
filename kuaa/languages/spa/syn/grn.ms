@@ -3,22 +3,22 @@ estar_adj :: estar_v [pos=a,-perm] ![pos=n] ; 0=>1 p,n,tm ; // 0 ; 1-> [pos=v]
 ser_adj :: ser_v [pos=a,+perm] ![pos=n] ; 0=>1 p,n,tm ; // 0 ; 1-> [pos=v]
 
 ## auxiliares
-perf :: haber_v[tm=prs] [pos=v,tm=prc,asp=[+prf]] ; 0=>1 p,n ; // 0 ; 1-> [tm=prs]
-pcp :: haber_v[tm=ipf] [pos=v,tm=prc] ; 0=>1 p,n ; // 0 ; 1-> [tm=pcp]
+perf :: haber_v[tm=prs] [pos=v,tm=prc,asp=[+prf]] ; 0=>1 p,n ; // 0 ; 1-> [tm=prs,+fin]
+pcp :: haber_v[tm=ipf] [pos=v,tm=prc] ; 0=>1 p,n ; // 0 ; 1-> [tm=pcp,+fin]
 prog :: estar_v [pos=v,tm=ger,asp=[+prg]] ; 0=>1 p,n,tm ; // 0
 pasivo :: ser_v [pos=v,tm=prc,voz=reflx,+r] ; 0=>1 p,n,tm ; // 0
 # voy a ..., iba a ...; ignore tense of ir?
-fut/ir :: ir_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 0:2 1:2 ; 2-> [tm=fut]
+fut/ir :: ir_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 0:2 1:2 ; 2-> [tm=fut,+fin]
 # acabar de ...
-acabar_de :: acabar_v[tm=prs] de [pos=v,tm=inf,asp=[+ramo]] ; 0=>2 p,n ; // 0:2 1:2 ; 2-> [tm=prs]
+acabar_de :: acabar_v[tm=prs] de [pos=v,tm=inf,asp=[+ramo]] ; 0=>2 p,n ; // 0:2 1:2 ; 2-> [tm=prs,+fin]
 # comenzar/empezar a ...
-comenzar_a :: comenzar_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 1 ; 2-> [tm=prs]
-empezar_a :: empezar_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 1 ; 2-> [tm=prs]
+comenzar_a :: comenzar_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 1 ; 2-> [tm=prs,+fin]
+empezar_a :: empezar_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 1 ; 2-> [tm=prs,+fin]
 # seguir + ger
 seguir_ger :: seguir_v [pos=v,tm=ger] ; 0=>1 p,n,tm
 
 ## derivación 1
-volativo :: querer_v [pos=v,tm=inf,asp=[+vol]] ; 0=>1 p,n,tm,asp ; // 0
+volativo :: querer_v [pos=v,tm=inf,asp=[+vol]] ; 0=>1 p,n,tm,asp ; 1-> [+fin] ; // 0
 
 ## reflexivo
 refl/3 :: se [pos=v,p=3,voz=reflx,+r] ; // 0 
@@ -62,7 +62,7 @@ neg :: no [pos=v,+neg] ; // 0 ; FAILIF neg_ipv
 
 ## derivación 2
 # PODER + V[inf]: copy person, number, and TAM from PODER to V; make PODER 3s; make V +fin
-pot :: poder_v [pos=v,tm=inf] ; 0=>1 p,n ; 1-> [+fin,tm=prs] ; 0-> [p=3]
+pot :: poder_v [pos=v,tm=inf] ; 0=>1 p,n,po,no ; 1-> [+fin,tm=prs] ; 0-> [p=3]
 
 ## posesivo
 pos/1s.s :: mi [pos=n,n=0,poses=[+ext,pp=1,np=0]] ; // 0
