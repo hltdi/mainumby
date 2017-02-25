@@ -7,7 +7,8 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015, 2016 HLTDI <gasser@indiana.edu>
+#   Copyright (C) 2014, 2015, 2016, 2017 HLTDI and PLoGS
+#     <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -143,7 +144,9 @@ from .segment import *
 from .record import SentRecord
 
 class Document(list):
-    """A ist of of Sentences, split from a text string."""
+    """A list of of Sentences, split from a text string. If biling is True, this is a bilingual document,
+    used for training; for all (or some?) source language sentences, there is a corresponding target
+    language sentence."""
 
     id = 0
 
@@ -162,24 +165,26 @@ class Document(list):
     # end of token: letters and digits, -+#.$%/º
     # end of word: letters and digits, #./º
     # only digits
-    number1_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$£€]?[\d]+[%¢]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
+    number1_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$£€]?[\d]+[%¢°º]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
     # digits with intermediate characters (.,=></), which must be followed by one or more digits
-    number_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$£€]?[\d]+[\d,.=></+\-±/×÷≤≥]*[\d]+[%¢]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
+    number_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$£€]?[\d]+[\d,.=></+\-±/×÷≤≥]*[\d]+[%¢°º]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
     # separated punctuation, including some that might be separated by error
     punc_re = re.compile(r"([\-–—&=.,:;\"+<>/?!]{1,3})$")
     # word of one character
     word1_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)(\w)([)\]}\"\'»”’*\-–—,:;=]*[?|.]?)$")
     # word of more than one character: one beginning character, one end character, 0 or more within characters;
     # followed by possible punctuation and a possible footnote
-    word_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)([\w#@~][\w\-/:;+.'`~&=\|]*[\w/º#.])([)\]}\"\'»”’*\-–—,:;=]*[.?!]?[\"\'»”’]?\d*)$")
-    period_re = re.compile("([\w.\-/:;+.'`~&=\|]+\.)([\d]*)$")
+    word_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)([\w#@~’][\w\-/:;+.'`’~&=\|]*[\w’/º#.])([)\]}\"\'»”’*\-–—,:;=]*[.?!]?[\"\'»”’]?\d*)$")
+    period_re = re.compile("([\w.\-/:;+.'`’~&=\|]+\.)([\d]*)$")
     start_re = re.compile('[\-–—¿¡\'\"«“‘(\[]+$')
     poss_end_re = re.compile('[")\]}]{0,2}[?!][)"\]]{0,2}')
     # 0-2 pre-end characters (like ")"), 1 end character (.?!), 0-3 post-end characters (like ")" or footnote digits)
     end_re = re.compile('[\"\'”’»)\]}]{0,2}[.?!][.)»”’\'\"\]\-–—\d]{0,3}')
 
-    def __init__(self, language=None, target=None, text='', proc=True, session=None):
-        self.set_id()
+    def __init__(self, language=None, target=None, text='', target_text='',
+                 proc=True, session=None, biling=False,
+                 reinitid=False, docid=''):
+        self.set_id(reinitid=reinitid, docid=docid)
         self.language = language
         self.target = target
         self.text = text
@@ -187,6 +192,11 @@ class Document(list):
         # Intermediate representations: list of word-like tokens and ints representing types
         self.tokens = []
         list.__init__(self)
+        # Texts in two languages
+        self.biling = biling
+        self.target_text = target_text
+        self.target_tokens = []
+        self.target_sentences = []
         # A list of pairs of raw source-target sentences, the result of the user's interaction
         # with the system.
         self.output = []
@@ -194,29 +204,52 @@ class Document(list):
             self.process()
 #        print("Created document with session {}".format(session))
 
-    def set_id(self):
-        self.id = Document.id
-        Document.id += 1
+    def set_id(self, reinitid=False, docid=''):
+        if docid:
+            self.id = docid
+        else:
+            if reinitid:
+                Sentence.id = 0
+            self.id = Document.id
+            Document.id += 1
 
     def __repr__(self):
-        return "||| text {} |||".format(self.id)
+        return "[D[ {} ]D]".format(self.id)
+
+    def align(self, otherdoc):
+        """otherdoc is a Document instance, presumably in another language. If the lengths of self
+        and otherdoc match, align them, sentence by sentence, returning a list of pairs of sentences."""
+        if len(self) == len(otherdoc):
+            aligned = []
+            for s1, s2 in zip(self, otherdoc):
+                aligned.append((s1, s2))
+            return aligned
 
     def process(self, verbosity=0):
         """Use tokenize and split to generate tokenized sentences."""
         self.tokenize(verbosity=verbosity)
+        if self.biling:
+            self.tokenize(target=True, verbosity=verbosity)
         if verbosity:
             print("Found tokens {}".format(self.tokens))
         self.split()
+        if self.biling:
+            self.split(target=True)
 
-    def tokenize(self, verbosity=0):
+    def tokenize(self, target=False, verbosity=0):
         """Split the text into word tokens, separating off punctuation except for
-        abbreviations and numerals. Later use a language-specific tokenizer."""
+        abbreviations and numerals. Later use a language-specific tokenizer.
+        If target is True, tokenize target-text."""
         # Later split at \n to get paragraphs.
         # Separate at whitespace.
+        text = self.target_text if target else self.text
+        tokens = self.target_tokens if target else self.tokens
+        language = self.target if target else self.language
         if verbosity:
-            print("Tokenizing text {}".format(self.text))
-        tokens = self.text.split()
-        for token in tokens:
+            print("Tokenizing text {}".format(text))
+        text_tokens = text.split()
+#        print("Tokenizing text, {} tokens".format(len(text_tokens)))
+        for token in text_tokens:
             tok_subtype = 0
             word_tok = False
             number = False
@@ -246,7 +279,7 @@ class Document(list):
                                 return
                 pre, word, suf = match.groups()
                 if pre:
-                    self.tokens.append((pre, 0, 0))
+                    tokens.append((pre, 0, 0))
                 # Check to see if word ends in . (and opposition footnote digits) and is not an abbreviation
                 if word_tok:
                     period_match = Document.period_re.match(word)
@@ -260,9 +293,9 @@ class Document(list):
 #                        # Strip of all trailing .s
 #                        word, x, y = word.partition('.')
 #                        suf = x + y + suf
-                self.tokens.append((word, 1, tok_subtype))
+                tokens.append((word, 1, tok_subtype))
                 if suf:
-                    self.tokens.append((suf, 2, 0))
+                    tokens.append((suf, 2, 0))
 
     @staticmethod
     def is_sent_start(token):
@@ -283,23 +316,28 @@ class Document(list):
                 return True
         return False
             
-    def split(self):
-        """Split tokenized text into sentences. Later use a language-specific splitter."""
+    def split(self, target=False):
+        """Split tokenized text into sentences. Later use a language-specific splitter.
+        If target is true, split target_text."""
+        tokens = self.target_tokens if target else self.tokens
+        sentence_list = self.target_sentences if target else self
+        language = self.target if target else self.language
+        target_language = None if target else self.target
         current_sentence = []
         sentences = []
-        ntokens = len(self.tokens)
+        ntokens = len(tokens)
         tokindex = 0
         token = ''
         toktype = 1
         while tokindex < ntokens:
-            token, toktype, toksubtype = self.tokens[tokindex]
+            token, toktype, toksubtype = tokens[tokindex]
 #            print("token {}, toktype {}".format(token, toktype, toksubtype))
             if toktype in (0, 1):
                 current_sentence.append((token, toktype, toksubtype))
             # Check whether this is a sentence end
             elif Document.end_re.match(token):
                 if not current_sentence:
-                    print("Something wrong: empty sentence: {}".format(self.tokens[:tokindex]))
+                    print("Something wrong: empty sentence: {}".format(tokens[:tokindex]))
                     return
                 else:
                     # End sentence
@@ -307,7 +345,7 @@ class Document(list):
                     sentences.append(current_sentence)
                     current_sentence = []
             elif Document.poss_end_re.match(token):
-                if current_sentence and (tokindex == ntokens-1 or Document.start_next(self.tokens[tokindex:])):
+                if current_sentence and (tokindex == ntokens-1 or Document.start_next(tokens[tokindex:])):
                     # End sentence
                     current_sentence.append((token, toktype, toksubtype))
                     sentences.append(current_sentence)
@@ -319,12 +357,40 @@ class Document(list):
             tokindex += 1
         # Make Sentence objects for each list of tokens and types
         for sentence in sentences:
-            self.append(Sentence(language=self.language, tokens=sentence, target=self.target,
-                                 session=self.session))
+            sentence_list.append(Sentence(language=language, tokens=sentence, target=target_language,
+                                          session=self.session))
 
 #            if Document.start_re(token) and tokindex < ntokens-1 and Document.is_sent_start(token[tokindex+1]):
 #                # Sentence beginning
 #                if current_sentence:
+
+#class BiDoc(list):
+#    """A bilingual document consisting of pairs of corresponding Sentence instances in two languages."""
+#
+#    id = 0
+#
+#    def __init__(self, doc1=None, doc2=None, docid=''):
+#        self.set_id(docid=docid)
+#        if doc1 and doc2:
+#            if doc1.session != doc2.session:
+#                print("Bidoc doc sessions much match!")
+#            aligned = doc1.align(doc2)
+#            if aligned:
+#                for pair in aligned:
+#                    self.append(pair)
+#                self.language1 = doc1.language
+#                self.language2 = doc2.language
+#                self.session = doc1.session
+#
+#    def set_id(self, docid=''):
+#        if id:
+#            self.id = docid
+#        else:
+#            self.id = BiDoc.id
+#            BiDoc.id += 1
+#
+#    def __repr__(self):
+#        return "[B[ {} ]B]".format(self.id)
 
 class Sentence:
     """A sentence is a list of words (or other lexical tokens) that gets
@@ -434,11 +500,11 @@ class Sentence:
     def __repr__(self):
         """Print name."""
         if self.tokens:
-            return '|| ({}) {} ||'.format(self.id, ' '.join(self.tokens))
+            return '[S[ ({}) {} ]S]'.format(self.id, ' '.join(self.tokens))
         elif self.raw:
-            return '|| ({}) {} ||'.format(self.id, self.raw)
+            return '[S[ ({}) {} ]S]'.format(self.id, self.raw)
         else:
-            return '|| {} sentence {} ||'.format(self.language, self.id)
+            return '[S[ {} {} ]S]'.format(self.language, self.id)
 
     def get_final_punc(self):
         """Return sentence-final punctuation as a string or empty string if there is none."""

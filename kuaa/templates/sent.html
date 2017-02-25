@@ -160,7 +160,7 @@ function ShowHelp() {
     helpWin.document.write('<html><head>' +
 '<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
 "<title>Mainumby: Ayuda</title></head><body>" +
-"<h4 class='help'>Ayuda para seleccionar traducciones</h4>" +
+"<h4 class='help'>Ayuda para seleccionar y registrar traducciones</h4>" +
 "<p class='help'>En la ventana 'Selección de oraciones' " +
 "se presenta una oración y varias opciones para traducirla. " +
 "Debajo de 'Actual oración', se despliega " +
@@ -188,6 +188,24 @@ function ShowHelp() {
 "Fijate que el programa no tiene conocimiento del orden correcto de " +
 "las traducciones de las frases, lo que puede diferir del orden " +
 "castellano. " +
+"Pod&eacute;s controlar el orden de las frases guaraníes en la " +
+"traducción al seleccionar las frases castellanos para traducir " +
+"en el orden preferido. " +
+"</p><p class='help'>" +
+"Despu&eacute;s de que hayas traducido las frases en la oración " +
+"castellana, deberías ver una traducción de la oración entera " +
+"en el espacio llamado 'Oración entera'. " +
+"Si aún no estás satisfecho con la traducción, " +
+"pod&eacute;s editarla en este espacio. " +
+"Una vez que est&eacute;s satisfecho con la traducción, " +
+"hac&eacute; clic en 'Registrar traducción' a la derecha de " +
+"'Oración entera'. " +
+"Enseguida aparece la traducción al final " +
+"del espacio llamado 'Documento', +
+"donde se agrega cada nueva traducción " +
+"una vez que la hayas registrado. " +
+"</p><p class='help'>" +
+"Para instrucciones más detalladas incluso ejemplos, " +
 "</p></body></html>");
     document.Form1.ayuda.value = true;
 }
@@ -326,14 +344,14 @@ function limpiarGrn(string) {
 {% if user %}
 <table class="title">
 <tr>
-<td class="titleleft">Selección de traducciones</td>
+<td class="titleleft">Selección y registro de traducciones</td>
 <td class="titleright">
 Usuario: <span class="username">{{ user.username }}</span>
 </td>
 </tr>
 </table>
 {% else %}
-<h2>Selección de traducciones</h2>
+<h2>Selección y registro de traducciones</h2>
 {% endif %}
 
 <p id="error" class="error">

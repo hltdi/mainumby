@@ -1,4 +1,4 @@
 name: guarani
 abbrev: grn
-source: False
+source: True
 target: True

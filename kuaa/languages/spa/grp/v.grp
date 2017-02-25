@@ -6800,13 +6800,17 @@
 ->grn mondýi_v[cat=a] (chupekuéra)
 ->grn mongyhyje_v[cat=a] (chupekuéra)
 *** atacar_v[-r,+fin] ; ^ atacar_v 0
-->grn ñorairõ_v[cat=a]
+->grn ndyry_v[cat=a]
+->grn jeity_v[cat=a]
 *** atacar_v[-r,+fin] a $n ; ^ atacar_v 0
-->grn ñorairõ_v[cat=a] $n[caso=pe] ; || 0, -1, 1
+->grn ndyry_v[cat=a] $n[caso=pe] ; || 0, -1, 1
+->grn jeity_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 *** atacar_v[-r,po=3,no=0] ; ^ atacar_v 0
-->grn ñorairõ_v[cat=a] (chupe)
+->grn ndyry_v[cat=a] (chupe)
+->grn jeity_v[cat=a] (chupe)
 *** atacar_v[-r,po=3,no=1] ; ^ atacar_v 0
-->grn ñorairõ_v[cat=a] (chupekuéra)
+->grn ndyry_v[cat=a] (chupekuéra)
+->grn jeity_v[cat=a] (chupekuéra)
 *** atafagar_v[-r,+fin] ; ^ atafagar_v 0
 ->grn mbopy'aropu_v[cat=a]
 *** atajar_v[+r,+fin] ; ^ atajar_v 0
@@ -8338,7 +8342,7 @@
 *** combar_v[-r,+fin] ; ^ combar_v 0
 ->grn mokarẽ_v[cat=a]
 *** combatir_v[-r,+fin] ; ^ combatir_v 0
-->grn ñorairõ_v[cat=a]
+->grn ndyry_v[cat=a]
 *** combinar_v[+r,+fin] ; ^ combinar_v 0
 ->grn jehe'a_v[cat=a]
 *** combinar_v[-r,+fin] ; ^ combinar_v 0
@@ -20990,15 +20994,11 @@
 ->grn puka_v[cat=a]
 *** reír_v[-r,+fin] ; ^ reír_v 0 ; #128
 ->grn puka_v[cat=a] ; #99 ; ##4
-->grn puka_v[cat=a] ; #99 ; ##4
 *** reír_v[-r,+fin] a $n ; ^ reír_v 0
-->grn puka_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 ->grn puka_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 *** reír_v[-r,po=3,no=0] ; ^ reír_v 0
 ->grn puka_v[cat=a] (chupe)
-->grn puka_v[cat=a] (chupe)
 *** reír_v[-r,po=3,no=1] ; ^ reír_v 0
-->grn puka_v[cat=a] (chupekuéra)
 ->grn puka_v[cat=a] (chupekuéra)
 *** reñir_v[-r,+fin] ; ^ reñir_v 0
 ->grn ñorairõ_v[cat=a]

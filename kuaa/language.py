@@ -1234,6 +1234,10 @@ class Language:
             # Cache new analyses
             self.add_new_anal(word, to_cache)
 
+        if not analyses:
+#            print("No analyses for {}".format(word))
+            return [{'root': word, 'features': ''}]
+
         # Sort the analyses by feature-value ranking
         self.morphology.sort_analyses(analyses)
 
@@ -1539,6 +1543,28 @@ class Language:
             srclang.read_groups(files=groups, target=targlang)
             srclang.read_ms(target=targlang)
         return srclang, targlang
+        
+    @staticmethod
+    def load_lang(lang, groups=None):
+        """Load a language, given as an abbreviation, for parsing only.
+        Read in groups for language. If the language is already loaded, don't load it."""
+        srclang = Language.languages.get(lang)
+        loaded = False
+        if srclang and srclang.use == ANALYSIS:
+            loaded = True
+        else:
+            try:
+                srcpath = os.path.join(Language.get_language_dir(lang), lang + '.lg')
+                srclang = Language.read(srcpath, use=ANALYSIS)
+                print("Lengua {} cargada".format(srclang))
+            except IOError:
+                print("Language doesn't exist.")
+                return
+        # Load groups for source language now
+        if not loaded:
+            srclang.read_groups(files=groups)
+#            srclang.read_ms(target=targlang)
+        return srclang
         
     @staticmethod
     def load(*abbrevs):

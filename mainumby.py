@@ -60,6 +60,36 @@ def eg_doc(text, proc=True):
     d = kuaa.Document(e, g, text, proc=proc)
     return d
 
+def eg_arch_doc(ruta, proc=True, reinit=False, user=None, session=None,
+                ruta_meta=None):
+    """Crear un documento del contenido de un archivo."""
+    e, g = cargar_eg()
+    session = session or kuaa.start(e, g, user)
+    arch = open(ruta, encoding='utf8')
+    texto = arch.read()
+    if ruta_meta:
+        arch_meta = open(ruta_meta, encoding='utf8')
+        texto_meta = arch_meta.read()
+        d = kuaa.Document(e, g, texto, proc=proc, reinitid=reinit, session=session,
+                          biling=True, target_text=texto_meta)
+    else:
+        d = kuaa.Document(e, g, texto, proc=proc, reinitid=reinit, session=session)
+    return d
+
+def arch_doc(lengua, ruta, session=None, user=None, proc=False):
+    l = cargar(lengua)
+    session = session or kuaa.start(l, None, user)
+    arch = open(ruta, encoding='utf8')
+    texto = arch.read()
+    d = kuaa.Document(l, None, texto, proc=proc, session=session)
+    return d
+
+#def eg_bidoc(ruta1, ruta2, proc=True, reinit=False, user=None, docid=''):
+#    doc1 = eg_arch_doc(ruta1, user=user)
+#    doc2 = eg_arch_doc(ruta2, session=doc1.session, reinit=True)
+#    bidoc = kuaa.BiDoc(doc1, doc2, docid=docid)
+#    return bidoc
+
 def usuario(username):
     return kuaa.User.users.get(username)
 
@@ -67,6 +97,11 @@ def usuario(username):
 def cargar_eg():
     spa, grn = kuaa.Language.load_trans('spa', 'grn')
     return spa, grn
+
+## Cargar una lengua, solo para análisis.
+def cargar(lang='spa'):
+    spa = kuaa.Language.load_lang(lang)
+    return spa
 
 if __name__ == "__main__":
     print("Tereg̃uahẽ porãite Mainumby-me, versión {}\n".format(__version__))

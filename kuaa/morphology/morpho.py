@@ -2,8 +2,7 @@
 #
 #   This file is part of the Mainumby project within the PLoGS meta-project
 #
-#   Copyright (C) 2015, 2016
-#   L^3, HLTDI <gasser@indiana.edu>
+#   Copyright (C) 2015, 2016, 2017  HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -228,10 +227,14 @@ class Morphology(dict):
                                          create_weights=True)
 
     def sort_analyses(self, analyses):
-        """Each analysis is a root, fs pair. Sort by the list of values for each feature that has such a list."""
+        """Each analysis is a root, fs pair. Sort by the list of values for each feature that has such a list.
+        SEVERAL THINGS DON'T WORK HERE. FIRST ANALYSES SHOULD BE SORTED BY THE *SUM* OF THE SCORES FOR EACH
+        FEATURE. SECOND, EMBEDDED FEATURE VALUES DON'T WORK YET."""
         for morph in self.values():
             feat_list = morph.feat_list
             for feat, values in feat_list:
+                if isinstance (values, list):
+                    continue
                 self.sort_analyses1(analyses, feat, values)
 
     def sort_analyses1(self, analyses, feat, values):

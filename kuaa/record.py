@@ -7,7 +7,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2016 PLoGS <gasser@indiana.edu>
+#   Copyright (C) 2016, 2017 PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
