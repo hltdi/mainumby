@@ -40,6 +40,11 @@ __version__ = 0.9
 
 import kuaa
 
+def ley_bidoc():
+    d = eg_arch_doc("../LingData/EsGn/Corp/FromCarlos/ley4251_es8.txt",
+                    ruta_meta="../LingData/EsGn/Corp/FromCarlos/ley4251_gn8.txt")
+    return d
+
 ## Creación de oración simple y de documento.
 def eg_oracion(sentence, ambig=True, solve=False, user=None, segment=False,
                verbosity=0):
@@ -63,7 +68,7 @@ def eg_doc(text, proc=True):
 def eg_arch_doc(ruta, proc=True, reinit=False, user=None, session=None,
                 ruta_meta=None):
     """Crear un documento del contenido de un archivo."""
-    e, g = cargar_eg()
+    e, g = cargar_eg(train=ruta_meta)
     session = session or kuaa.start(e, g, user)
     arch = open(ruta, encoding='utf8')
     texto = arch.read()
@@ -77,6 +82,7 @@ def eg_arch_doc(ruta, proc=True, reinit=False, user=None, session=None,
     return d
 
 def arch_doc(lengua, ruta, session=None, user=None, proc=False):
+    """Crear un documento del contenido de un archivo, solo para análisis."""
     l = cargar(lengua)
     session = session or kuaa.start(l, None, user)
     arch = open(ruta, encoding='utf8')
@@ -94,8 +100,8 @@ def usuario(username):
     return kuaa.User.users.get(username)
 
 ## Cargar castellano y guaraní. Devuelve las 2 lenguas.
-def cargar_eg():
-    spa, grn = kuaa.Language.load_trans('spa', 'grn')
+def cargar_eg(train=False):
+    spa, grn = kuaa.Language.load_trans('spa', 'grn', train=train)
     return spa, grn
 
 ## Cargar una lengua, solo para análisis.

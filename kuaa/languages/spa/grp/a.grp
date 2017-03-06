@@ -1864,8 +1864,6 @@
 ->grn popeno_v
 *** mediano_a ; ^ mediano_a 0
 ->grn mbytegua_v
-##*** medio_a ; ^ medio_a 0
-##->grn mbyte_v
 *** medular_a ; ^ medular_a 0
 ->grn apytere_v
 *** mejor_a ; ^ mejor_a 0

@@ -465,6 +465,9 @@ class GInst:
                 self.nodes.append(GNode(self, index, sntups))
 #        self.nodes = [GNode(self, index, indices) for index, indices in enumerate(snode_indices)]
         # The GNode that is the head of this GInst
+        i = group.head_index
+        if i > len(self.nodes) - 1:
+            print("Problem instantiating {} for {}; head index {}".format(group, self.nodes, i))
         self.head = self.nodes[group.head_index]
         # Dict of variables specific to this group
         self.variables = {}

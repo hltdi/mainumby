@@ -216,14 +216,14 @@ class Document(list):
     def __repr__(self):
         return "[D[ {} ]D]".format(self.id)
 
-    def align(self, otherdoc):
-        """otherdoc is a Document instance, presumably in another language. If the lengths of self
-        and otherdoc match, align them, sentence by sentence, returning a list of pairs of sentences."""
-        if len(self) == len(otherdoc):
-            aligned = []
-            for s1, s2 in zip(self, otherdoc):
-                aligned.append((s1, s2))
-            return aligned
+#    def align(self, otherdoc):
+#        """otherdoc is a Document instance, presumably in another language. If the lengths of self
+#        and otherdoc match, align them, sentence by sentence, returning a list of pairs of sentences."""
+#        if len(self) == len(otherdoc):
+#            aligned = []
+#            for s1, s2 in zip(self, otherdoc):
+#                aligned.append((s1, s2))
+#            return aligned
 
     def process(self, verbosity=0):
         """Use tokenize and split to generate tokenized sentences."""
@@ -359,6 +359,14 @@ class Document(list):
         for sentence in sentences:
             sentence_list.append(Sentence(language=language, tokens=sentence, target=target_language,
                                           session=self.session))
+
+    def initialize(self):
+        """Initialize all the sentences in the document. If biling, initialize in both languges."""
+        for sentence in self:
+            sentence.initialize(terse=True)
+        if self.biling:
+            for sentence in self.target_sentences:
+                sentence.initialize(terse=True)
 
 #            if Document.start_re(token) and tokindex < ntokens-1 and Document.is_sent_start(token[tokindex+1]):
 #                # Sentence beginning
@@ -606,17 +614,17 @@ class Sentence:
 #            print('index {}, token {}'.format(index, token))
             self.segment(token, index)
 
-    def initialize(self, ambig=True, verbosity=0):
+    def initialize(self, ambig=True, verbosity=0, terse=False):
         """Things to do before running constraint satisfaction."""
         if verbosity:
             print("Initializing {}".format(self))
-        self.tokenize(verbosity=verbosity, ambig=ambig)
+        self.tokenize(verbosity=verbosity, ambig=ambig, terse=terse)
         # Tokenization could result in altsyns
         self.nodify(verbosity=verbosity)
-        self.lexicalize(verbosity=verbosity)
+        self.lexicalize(verbosity=verbosity, terse=terse)
         for s in self.altsyns:
             s.nodify(verbosity=verbosity)
-            s.lexicalize(verbosity=verbosity)
+            s.lexicalize(verbosity=verbosity, terse=terse)
         anygroups=False
         for s in [self] + self.altsyns:
             if not s.groups:
@@ -625,12 +633,13 @@ class Sentence:
             s.create_constraints(verbosity=verbosity)
             anygroups=True
         if not anygroups:
-            print("Ningunos grupos encontrados para {}".format(self))
+            if not terse:
+                print("Ningunos grupos encontrados para {}".format(self))
             return False
         else:
             return True
 
-    def tokenize(self, ambig=True, verbosity=0):
+    def tokenize(self, ambig=True, verbosity=0, terse=False):
         """Segment the sentence string into tokens, analyze them morphologically,
         and create a SNode object for each.
         2015.06.07: Save the analyzed tokens as well as nodes.
@@ -659,12 +668,13 @@ class Sentence:
             for mi, ms in enumerate(self.language.ms):
                 # If ms applies and is "ambiguous", create a new copy of the sentence and add to altsyns
                 # (this happens in MorphoSyn)
-                if ms.apply(self, ambig=ambig, verbosity=verbosity):
+                if ms.apply(self, ambig=ambig, verbosity=verbosity, terse=terse):
                     scopy = self.altsyns[-1]
-                    print("{} copied sentence: {}".format(ms, scopy))
+                    if verbosity and not terse:
+                        print("{} copied sentence: {}".format(ms, scopy))
                     # Attempt to apply succeeding morphosyns to copy if there is one
                     for ms1 in self.language.ms[mi+1:]:
-                        ms1.apply(scopy, ambig=ambig, verbosity=verbosity)
+                        ms1.apply(scopy, ambig=ambig, verbosity=verbosity, terse=terse)
 
     def nodify(self, incl_del=False, verbosity=0):
         """Create nodes for sentence.
@@ -738,10 +748,10 @@ class Sentence:
     def split(self):
         """Split the raw sentence into words, separating off punctuation."""
 
-    def lexicalize(self, verbosity=0):
+    def lexicalize(self, verbosity=0, terse=False):
         """Find and instantiate all groups that are compatible with the tokens in the sentence."""
         if verbosity:
-            print("Lexicalizing {}".format(self))
+            print("Lexicalizing {}, terse={}".format(self, terse))
         if not self.nodes:
             print("Tokenization must precede lexicalization.")
             return
@@ -827,9 +837,10 @@ class Sentence:
             # Create a GInst object and GNodes for each surviving group
             self.groups.append(GInst(group, self, head_i, snodes, group_index))
             group_index += 1
-        print("{} grupo(s) encontrado(s) para {}".format(len(self.groups), self))
-        for g in self.groups:
-            print("  {}".format(g))
+        if not terse:
+            print("{} grupo(s) encontrado(s) para {}".format(len(self.groups), self))
+            for g in self.groups:
+                print("  {}".format(g))
         # Assign sentence-level indices to each GNode; store gnodes in list
         sent_index = 0
         for group in self.groups:

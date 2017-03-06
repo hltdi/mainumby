@@ -59,14 +59,14 @@ feats:
   ab: opt = opt
   ab: smp = simp
   ab: intrans = intr
-  ab: cau#%         ma1 = False | True;
+  ab: caus = caus
+#%         ma1 = False | True;
 #%         ma2 = False | True;
 #%         maramo = False | True;
 #% 	jepi = False | True;
 #% 	meme = False | True;
 #% 	rae = False | True
 #%         ypy = False | True
-s = caus
   ab: reflx = refl
   ab: recip = recp
   ab: intrans_caus = intr_caus

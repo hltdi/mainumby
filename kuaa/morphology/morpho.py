@@ -230,20 +230,28 @@ class Morphology(dict):
         """Each analysis is a root, fs pair. Sort by the list of values for each feature that has such a list.
         SEVERAL THINGS DON'T WORK HERE. FIRST ANALYSES SHOULD BE SORTED BY THE *SUM* OF THE SCORES FOR EACH
         FEATURE. SECOND, EMBEDDED FEATURE VALUES DON'T WORK YET."""
-        for morph in self.values():
+        for pos, morph in self.items():
             feat_list = morph.feat_list
             for feat, values in feat_list:
-                if isinstance (values, list):
+                # Features associated with the POS FST
+                if isinstance (values, (list, FeatStruct)):
                     continue
-                self.sort_analyses1(analyses, feat, values)
+                self.sort_analyses1(analyses, pos, feat, values)
 
-    def sort_analyses1(self, analyses, feat, values):
+    def sort_analyses1(self, analyses, pos, feat, values):
         def anal_index(analysis):
             root, anal = analysis
-            value = anal.get(feat)
-            if value:
-                return values.index(value)
-            return 100
+            anal_pos = anal.get('pos', 'v')
+            if anal_pos != pos:
+                return 100
+            else:
+                value = anal.get(feat)
+                if value:
+                    if value not in values:
+                        print("{} not in {}".format(value, values))
+                        return 100
+                    return values.index(value)
+                return 100
         analyses.sort(key=lambda a: anal_index(a))
 
 ##    def load_phon_fst(self, save=True, verbose=True):

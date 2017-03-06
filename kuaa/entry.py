@@ -768,7 +768,7 @@ class MorphoSyn(Entry):
     def pattern_length(self):
         return len(self.pattern)
 
-    def apply(self, sentence, ambig=False, verbosity=0):
+    def apply(self, sentence, ambig=False, verbosity=0, terse=False):
         """Apply the MorphoSyn pattern to the sentence if there is at least one match on some portion.
         2015.10.17: if ambig is True and this is an "ambiguous" MorphoSyn, copy the sentence
         before enforcing constraints.
@@ -777,7 +777,7 @@ class MorphoSyn(Entry):
         """
         if verbosity:
             print("Attempting to apply {} to {}".format(self, sentence))
-        matches = self.match(sentence, verbosity=verbosity)
+        matches = self.match(sentence, verbosity=verbosity, terse=terse)
         s = sentence
         copied = False
         copy = None
@@ -884,15 +884,15 @@ class MorphoSyn(Entry):
     def del_token(token):
         return token[0] == '~'
 
-    def match(self, sentence, verbosity=0):
+    def match(self, sentence, verbosity=0, terse=False):
         """
         Match sentence, a list of pairs of words and their analyses, against the MorphoSyn's pattern.
         Match records the index of a matching analysis within the list of analyses for a given
         sentence word.
         """
         results = []
-#        if verbosity:
-#            print("Matching MS {} against {}".format(self, sentence))
+        if verbosity:
+            print("Matching MS {} against {}, terse={}".format(self, sentence, terse))
         if self.direction:
             # Left-to-right; index of item within the pattern
             pindex = 0
@@ -924,7 +924,8 @@ class MorphoSyn(Entry):
                     result.append(match)
                     # Is this the end of the pattern? If so, succeed.
                     if self.pattern_length() == pindex + 1:
-                        print("MS {} tuvo éxito".format(self))
+                        if not terse:
+                            print("MS {} tuvo éxito".format(self))
 #                        con resultado {}".format(self, result))
 #                        print("  Match result {}, stoken {}, sanals {}".format(result, stoken, sanals))
                         if mindex < 0:

@@ -1195,7 +1195,8 @@ class Language:
         # Try stripping off suffixes
         suff_anal = self.strip_suffixes(form, incl_suf=incl_suf, pretty=pretty)
         if suff_anal:
-            print("Suff anal {}".format(suff_anal))
+            if verbosity:
+                print("Suff anal {}".format(suff_anal))
             analyses.extend(suff_anal)
             if cache and not pretty:
                 to_cache.extend(suff_anal)
@@ -1518,22 +1519,25 @@ class Language:
             return Language.from_dict(dct, use=use)
 
     @staticmethod
-    def load_trans(source, target, groups=None):
+    def load_trans(source, target, groups=None, train=False):
         """Load a source and a target language, given as abbreviations.
         Read in groups for source language, including target language translations at the end.
+        If train is True, load the analysis rather than generation FSTs for the target language.
         If the languages are already loaded, don't load them."""
         srclang = Language.languages.get(source)
         targlang = Language.languages.get(target)
         loaded = False
-        if srclang and targlang and srclang.use == SOURCE and targlang.use == TARGET:
+        srcuse = SOURCE
+        targuse = ANALYSIS if train else TARGET
+        if srclang and targlang and srclang.use == srcuse and targlang.use == targuse:
             loaded = True
         else:
             try:
                 srcpath = os.path.join(Language.get_language_dir(source), source + '.lg')
-                srclang = Language.read(srcpath, use=SOURCE)
+                srclang = Language.read(srcpath, use=srcuse)
                 print("Lengua fuente {} cargada".format(srclang))
                 targpath = os.path.join(Language.get_language_dir(target), target + '.lg')
-                targlang = Language.read(targpath, use=TARGET)
+                targlang = Language.read(targpath, use=targuse)
                 print("Lengua destino {} cargada".format(targlang))
             except IOError:
                 print("One of these languages doesn't exist.")
