@@ -1,7 +1,7 @@
 guarani.soic.indiana.edu
 
 mainumby:
-/var/www/mainumby
+/var/www/mainumby/mainumby
 
 restarting apache:
 sudo /etc/init.d/apache2 restart

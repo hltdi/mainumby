@@ -7,7 +7,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015, 2016 HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyright (C) 2014, 2015, 2016, 2017; HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -121,6 +121,8 @@ GENERATION = 1
 # translation
 SOURCE = 2
 TARGET = 3
+# training target; both analysis and generation
+TRAIN = 4
 
 ## Strings used in groups file
 GROUP_SEP = '***'
@@ -146,8 +148,7 @@ class Language:
     # optional ,|. + at least one digit + optional [,.digit]s; note: allows expression to end with . or ,
     numeral = re.compile("[,.]?\d+[\d.,]*$")
 
-    def __init__(self, name, abbrev, use=ANALYSIS,
-                 groups=None, groupnames=None,
+    def __init__(self, name, abbrev, use=ANALYSIS, groups=None, groupnames=None,
                  # Added from morphology/language
                  pos=None, cache=True):
         """Initialize dictionaries and names."""
@@ -156,6 +157,8 @@ class Language:
         self.groups = groups or {}
         # Explicit groups to load instead of default
         self.groupnames = groupnames
+        # Candidate groups from training; added 2017.3.6
+        self.cand_groups = {}
         self.ms = []
         self.use = use
         # Dict of groups with names as keys
@@ -187,7 +190,9 @@ class Language:
         # Whether morphological data is loaded
         self.anal_loaded = False
         self.gen_loaded = False
-        self.load_morpho(use in (GENERATION, TARGET), False, False, False)
+        self.load_morpho(generate=use in (GENERATION, TARGET, TRAIN),
+                         analyze=use in (ANALYSIS, SOURCE, TRAIN),
+                         segment=False, guess=False, verbose=False)
         # Categories (and other semantic features) of words and roots; word->cats dict
         self.cats = {}
         self.read_cats()
@@ -257,10 +262,11 @@ class Language:
                 return True
         return False
 
-    def match_pattern(self, pattern, words):
+    def match_pattern(self, pattern, words, verbose=False):
         """Determine if pattern (a string beginning with pattern_char or a pattern list), matches beginning of list of words.
         If so, return the index of the word following the match."""
-#        print("Matching pattern {} with words {}".format(pattern, words))
+        if verbose:
+            print("Matching pattern {} with words {}".format(pattern, words))
         if isinstance(words, str):
             words = words.split()
         if isinstance(pattern, str):
@@ -269,7 +275,7 @@ class Language:
             return False
         if isinstance(pattern, set):
             if self.match_set(pattern, words[0]):
-                return words[0]
+                return words[0], 1
             else:
                 return False
         match_words = words
@@ -277,6 +283,8 @@ class Language:
         pattern_position = 0
         matched = []
         while word_position < len(words) and pattern_position < len(pattern):
+            if verbose:
+                print("  word position {}, pattern position {}".format(word_position, pattern_position))
             match_words = words[word_position:]
             pattern_item = pattern[pattern_position]
             if Language.is_pattern(pattern_item):
@@ -297,7 +305,7 @@ class Language:
                     matched.append(match_words[0])
                 else:
                     return False
-        return matched
+        return matched, word_position
 
     def get_num_patterns(self):
         return [p for p in self.pattern_list if '/num' in p[0]]
@@ -314,7 +322,8 @@ class Language:
                 pat_match = self.match_pattern(pattern, words)
                 if pat_match:
 #                    print("Find numeral: {}".format(pat_match))
-                    return pat_match, False
+                    numwords = pat_match[0]
+                    return numwords, False
         return False
 
     def quit(self, cache=True):
@@ -960,8 +969,8 @@ class Language:
                 res.append(value)
         return tuple(res)
 
-    def load_morpho(self, generate=False, segment=False, guess=True, verbose=False):
-        """Load words and FSTs for morphological analysis and generation."""
+    def load_morpho(self, generate=False, analyze=True, segment=False, guess=True, verbose=False):
+        """Load words and FSTs for morphological analysis and/or generation."""
         if verbose:
             print('Loading morphological data for {} {}'.format(self.name, "(gen)" if generate else "(anal)"))
         # Load pre-analyzed words
@@ -976,12 +985,14 @@ class Language:
 #                posmorph.make_generated()
                 posmorph.read_gen_cache()
             # Load FST
-            posmorph.load_fst(generate=generate, guess=guess, segment=segment,
-                              verbose=verbose)
+            if generate:
+                posmorph.load_fst(generate=True, guess=guess, segment=segment, verbose=verbose)
+            if analyze:
+                posmorph.load_fst(generate=False, guess=guess, segment=segment, verbose=verbose)
             # Do others later
         if generate:
             self.gen_loaded = True
-        else:
+        if analyze:
             self.anal_loaded = True
 
         return True
@@ -1165,10 +1176,10 @@ class Language:
                   to_dict=False, preproc=False, postproc=False,
                   # Whether to cache new entries
                   cache=True,
-                  no_anal=None,
-                  string=False, print_out=False,
+                  no_anal=None, string=False, print_out=False, only_anal=False,
                   rank=True, report_freq=True, nbest=100,
-                  only_anal=False,
+                  # Whether to normalize orthography before analysis
+                  clean=True,
                   verbosity=0):
         '''Analyze a single word, trying all existing POSs, both lexical and guesser FSTs.'''
         # Before anything else, check to see if the word is in the list of words that
@@ -1176,9 +1187,11 @@ class Language:
         if no_anal != None and word in no_anal:
             return None
         # Next clean up using character conversion dict
-        for d, c in self.clean.items():
-            if d in word:
-                word = word.replace(d, c)
+        if clean:
+            # This may already have taken place in Sentence.
+            for d, c in self.clean.items():
+                if d in word:
+                    word = word.replace(d, c)
         analyses = []
         to_cache = [] if cache else None
         # See if the word is cached (before preprocessing/romanization)
@@ -1202,6 +1215,7 @@ class Language:
                 to_cache.extend(suff_anal)
 
         if not analyses or get_all:
+            # Nothing worked so far or getting everything...
             if not only_guess:
                 for pos, POS in self.morphology.items():
                     #... or already analyzed within a particular POS
@@ -1528,7 +1542,7 @@ class Language:
         targlang = Language.languages.get(target)
         loaded = False
         srcuse = SOURCE
-        targuse = ANALYSIS if train else TARGET
+        targuse = TRAIN if train else TARGET
         if srclang and targlang and srclang.use == srcuse and targlang.use == targuse:
             loaded = True
         else:

@@ -23,13 +23,31 @@
 #
 # =========================================================================
 
-__all__ = ['language', 'entry', 'ui', 'constraint', 'db', 'views', 'variable', 'sentence', 'cs', 'learn', 'utils', 'record']
+__all__ = ['language', 'entry', 'ui', 'constraint', 'db', 'views', 'variable', 'sentence', 'cs', 'utils', 'record', 'train']
+#  not needed for now: 'learn'
 
 from flask import Flask, url_for, render_template
 
-from .sentence import *
-from .learn import *
+## train imports sentence
+from .train import *
+
+## sentence imports ui, segment, record
+### segment imports cs, utils, entry.Entry, entry.Group, record.SegRecord
+### ui imports language (ui not needed for current version)
+#### language imports entry, some functions from utils, morphology.morpho, morphology.semiring
+#### language also calls function in morphology.strip
+##### entry imports morphology.fs
+
+#from .sentence import *
+#from .learn import *
+
+## morphology a package; imports morphology.morpho
+### which imports morphology.fst
+#### which imports morphology.semiring
+##### which imports morphology.fs, morphology.utils
+###### fs imports morphology.logic, morphology.internals
 from .morphology import *
+
 from .record import *
 # from . import db
 

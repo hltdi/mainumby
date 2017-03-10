@@ -7,7 +7,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015, 2016 HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyright (C) 2014, 2015, 2016, 2017; HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -390,9 +390,13 @@ class SNode:
                 node_cats = analysis.get('cats', [])
                 node_root = analysis.get('root', '')
                 node_roots = None
-                if '_' in node_root:
+                if '_' in node_root and not SolSeg.special_re.match(node_root):
+                    # Numbers and other special tokens also contain '_'
                     node_roots = []
                     # An ambiguous root in analysis
+                    node_root_split = node_root.split('_')
+#                    if len(node_root_split) != 2:
+#                        print("Something wrong with node root {}".format(node_root))
                     r, p = node_root.split('_')
                     for rr in r.split('|'):
                         node_roots.append(rr + '_' + p)
@@ -478,7 +482,7 @@ class GInst:
         self.nanodes = len([n for n in self.nodes if n.cat])
         # Number of concrete nodes
         self.ncgnodes = self.ngnodes - self.nanodes
-        # TreeTrans instance for this GInst; saved here so to prevent multiple TreeTrans translations
+        # TreeTrans instance for this GInst; saved here to prevent multiple TreeTrans translations
         self.treetrans = None
         # Indices of GInsts that this GINst depends on; set in Sentence.lexicalize()
         self.dependencies = None

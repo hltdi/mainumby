@@ -130,11 +130,10 @@ feats:
         intrans (intran) |
         caus (caus) |
         reflx (refl) |
-        recip (recip)
-
-#%         intrans_caus (intran_caus) |
-#%         reflx_caus (refl_caus) |
-#%         recip_caus (recip_caus)
+        recip (recip) |
+        intrans_caus (intran_caus) |
+        reflx_caus (refl_caus) |
+        recip_caus (recip_caus)
 #        intrans_caus_reflx (intransitivo causativo reflexivo) |
 #        intrans_caus_recip (intransitivo causativo recíproco)
 
@@ -256,7 +255,7 @@ feats:
         ngau = False | True;
         nipo = False | True
 
-  caso = *None|pe|peve|gui|guive|re|vo|icha|ichagua|guy|guype|gua|pegua|ygua|ndi|pype|ypype|ari|vove
+  caso = *None|pe|peve|gui|guive|re|vo|icha|ichagua|guy|guype|gua|pegua|ygua|ndi|pype|ypype|ari|vove|rendape
 
   grd = *None | ve | ive | ete | eterei | rasa | etereirasa
  

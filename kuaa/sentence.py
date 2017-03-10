@@ -7,8 +7,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015, 2016, 2017 HLTDI and PLoGS
-#     <gasser@indiana.edu>
+#   Copyleft 2014, 2015, 2016, 2017 HLTDI and PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -137,6 +136,8 @@
 # 2016.07.25
 # -- Another new constraint (and constraint type) added to Sentence, enforcing imcompatibility of groups with "merger loops".
 #    Example: la casa en la cual dormimos -> <casa PP ART cual V> | <en N>
+# 2017.03
+# -- Lots of changes to make documents bilingual for training.
 
 import copy, re, random, itertools
 from .ui import *
@@ -200,6 +201,10 @@ class Document(list):
         # A list of pairs of raw source-target sentences, the result of the user's interaction
         # with the system.
         self.output = []
+        # Whether the document has been tokenized and split into sentences.
+        self.processed = False
+        # Whether sentences in the document have been initialized
+        self.initialized = False
         if proc:
             self.process()
 #        print("Created document with session {}".format(session))
@@ -214,18 +219,9 @@ class Document(list):
             Document.id += 1
 
     def __repr__(self):
-        return "[D[ {} ]D]".format(self.id)
+        return "D[ {} ]D".format(self.id)
 
-#    def align(self, otherdoc):
-#        """otherdoc is a Document instance, presumably in another language. If the lengths of self
-#        and otherdoc match, align them, sentence by sentence, returning a list of pairs of sentences."""
-#        if len(self) == len(otherdoc):
-#            aligned = []
-#            for s1, s2 in zip(self, otherdoc):
-#                aligned.append((s1, s2))
-#            return aligned
-
-    def process(self, verbosity=0):
+    def process(self, reinit=True, verbosity=0):
         """Use tokenize and split to generate tokenized sentences."""
         self.tokenize(verbosity=verbosity)
         if self.biling:
@@ -234,7 +230,10 @@ class Document(list):
             print("Found tokens {}".format(self.tokens))
         self.split()
         if self.biling:
+            if reinit:
+                Sentence.id = 0
             self.split(target=True)
+        self.processed = True
 
     def tokenize(self, target=False, verbosity=0):
         """Split the text into word tokens, separating off punctuation except for
@@ -331,7 +330,7 @@ class Document(list):
         toktype = 1
         while tokindex < ntokens:
             token, toktype, toksubtype = tokens[tokindex]
-#            print("token {}, toktype {}".format(token, toktype, toksubtype))
+#            print("token {}, toktype {}, toksubtype {}".format(token, toktype, toksubtype))
             if toktype in (0, 1):
                 current_sentence.append((token, toktype, toksubtype))
             # Check whether this is a sentence end
@@ -339,6 +338,10 @@ class Document(list):
                 if not current_sentence:
                     print("Something wrong: empty sentence: {}".format(tokens[:tokindex]))
                     return
+                elif len(current_sentence) == 1 and current_sentence[0][2] == 2:
+                    # Sentence consists only of a numeral following by this end-of-sentence punctuation; continue current sentence.
+#                    print("Current sentence consists only of a numeral {}; treat as sentence start".format(current_sentence[0]))
+                    current_sentence.append((token, toktype, toksubtype))
                 else:
                     # End sentence
                     current_sentence.append((token, toktype, toksubtype))
@@ -363,42 +366,18 @@ class Document(list):
     def initialize(self):
         """Initialize all the sentences in the document. If biling, initialize in both languges."""
         for sentence in self:
+            print("Iniciando oración fuente {}".format(sentence))
             sentence.initialize(terse=True)
         if self.biling:
             for sentence in self.target_sentences:
+                print("Iniciando oración meta {}".format(sentence))
                 sentence.initialize(terse=True)
+        self.initialized = True
 
-#            if Document.start_re(token) and tokindex < ntokens-1 and Document.is_sent_start(token[tokindex+1]):
-#                # Sentence beginning
-#                if current_sentence:
-
-#class BiDoc(list):
-#    """A bilingual document consisting of pairs of corresponding Sentence instances in two languages."""
-#
-#    id = 0
-#
-#    def __init__(self, doc1=None, doc2=None, docid=''):
-#        self.set_id(docid=docid)
-#        if doc1 and doc2:
-#            if doc1.session != doc2.session:
-#                print("Bidoc doc sessions much match!")
-#            aligned = doc1.align(doc2)
-#            if aligned:
-#                for pair in aligned:
-#                    self.append(pair)
-#                self.language1 = doc1.language
-#                self.language2 = doc2.language
-#                self.session = doc1.session
-#
-#    def set_id(self, docid=''):
-#        if id:
-#            self.id = docid
-#        else:
-#            self.id = BiDoc.id
-#            BiDoc.id += 1
-#
-#    def __repr__(self):
-#        return "[B[ {} ]B]".format(self.id)
+    def get_sentence_pair(self, index):
+        """Return a source/target sentence pair, given their index."""
+        if self.biling:
+            return self[index], self.target_sentences[index]
 
 class Sentence:
     """A sentence is a list of words (or other lexical tokens) that gets
@@ -408,6 +387,7 @@ class Sentence:
 
     id = 0
     word_width = 10
+    name_chars = 25
     # colors to display sentence segments in interface
     tt_colors = ['red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple']
 
@@ -446,6 +426,8 @@ class Sentence:
             self.tokens = None
             self.toktypes = None
             self.toksubtypes = None
+        # List of booleans, same length as self.tokens specifying whether the raw token was upper case
+        self.isupper = []
 #        # A string representing the raw sentence (if it hasn't been tokenized)
 #        self.raw = raw
         # Source language: a language object
@@ -508,11 +490,14 @@ class Sentence:
     def __repr__(self):
         """Print name."""
         if self.tokens:
-            return '[S[ ({}) {} ]S]'.format(self.id, ' '.join(self.tokens))
+            short_name = ' '.join(self.tokens)
+            if len(short_name) > Sentence.name_chars:
+                short_name = short_name[:Sentence.name_chars] + '...'
+            return 'S[ ({}) {} ]S'.format(self.id, short_name)
         elif self.raw:
-            return '[S[ ({}) {} ]S]'.format(self.id, self.raw)
+            return 'S[ ({}) {} ]S'.format(self.id, self.raw)
         else:
-            return '[S[ {} {} ]S]'.format(self.language, self.id)
+            return 'S[ {} {} ]S'.format(self.language, self.id)
 
     def get_final_punc(self):
         """Return sentence-final punctuation as a string or empty string if there is none."""
@@ -576,6 +561,17 @@ class Sentence:
         if segmentation:
             self.tokens[tok_index:tok_index+1] = segmentation
 
+    def clean(self):
+        """Apply the language-specific clean-up function to normalize orthography and punctuation."""
+        for index, token in enumerate(self.tokens):
+            changed = False
+            for d, c in self.language.clean.items():
+                if d in token:
+                    token = token.replace(d, c)
+                    changed = True
+            if changed:
+                self.tokens[index] = token
+
     def join_lex(self, verbosity=0):
         """Combine tokens into units for numerals (and other things?)."""
         tokens = []
@@ -584,6 +580,7 @@ class Sentence:
         while tok_position < len(self.tokens):
             num = self.language.find_numeral(self.tokens[tok_position:])
             if num:
+#                print("NUM {}".format(num))
                 num_tokens, is_dig = num
                 num_found = True
                 prefix = "%ND_" if is_dig else "%N_"
@@ -596,23 +593,32 @@ class Sentence:
             self.tokens = tokens
 
     def lowercase(self):
-        """Make capitalized tokens lowercase. 2106.05.08: only do this for the first word."""
-        # There may be initial punctuation.
-        if self.language.is_punc(self.tokens[0]):
-            self.tokens[1] = self.tokens[1].lower()
-        self.tokens[0] = self.tokens[0].lower()
-#        for index, token in enumerate(self.tokens):
-#            if token.istitle():
-#                self.tokens[index] = token.lower()
+        """Make capitalized tokens lowercase.
+        2016.05.08: only do this for the first word.
+        2017.03.19: do it for all words but keep a record of raw capitalization in self.isupper.
+        """
+        for index, token in enumerate(self.tokens):
+            # Capitalized and uppercase words not distinguished
+            if token[0].isupper():
+                self.tokens[index] = token.lower()
+                self.isupper.append(True)
+            else:
+                self.isupper.append(False)
+#        # There may be initial punctuation.
+#        if self.language.is_punc(self.tokens[0]):
+#            self.tokens[1] = self.tokens[1].lower()
+#        self.tokens[0] = self.tokens[0].lower()
 
     def preprocess(self, verbosity=0):
-        """Segment contractions, join numerals, and lowercase all words. Must follow word tokenization.
+        """Segment contractions, join numerals, lowercase first word, normalize orthography and punctuation.
+        Must follow word tokenization.
         Segmentation can add to the number of tokens in the sentence."""
         self.lowercase()
         self.join_lex()
         for index, token in zip(range(len(self.tokens)-1, -1, -1), self.tokens[-1::-1]):
 #            print('index {}, token {}'.format(index, token))
             self.segment(token, index)
+        self.clean()
 
     def initialize(self, ambig=True, verbosity=0, terse=False):
         """Things to do before running constraint satisfaction."""
@@ -661,7 +667,8 @@ class Sentence:
             # Lowercase capitalized words and segment contractions, possibly adding new tokens.
             self.preprocess()
             # Do morphological analysis (added 2015.06.07)
-            self.analyses = [[token, self.language.anal_word(token)] for token in self.tokens]
+            # 2017.03.09: cleaning done in preprocess() so don't do it here.
+            self.analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
             # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
             if verbosity:
                 print("Running Morphosyns for {} on {}".format(self.language, self))
@@ -936,7 +943,7 @@ class Sentence:
 
     def solve(self, translate=True, all_sols=False, all_trans=True, interactive=False,
               verbosity=0, tracevar=None):
-        """Generate solutions (for all analyses if all_sols is True) and translations (if translate is True)."""
+        """Generate solutions, for all analyses if all_sols is True and translations (if translate is True)."""
         self.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
                     verbosity=verbosity, tracevar=tracevar)
         if all_sols:

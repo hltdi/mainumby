@@ -45,9 +45,9 @@ gram: vos_ipv_1p3p [p=2,n=0,tm=ipv,-r,po=3,no=1,pi=1,ni=1]
 gram: vos_ipv_33s [p=2,n=0,tm=ipv,-r,po=3,no=0,pi=3]
 gram: vos_ipv_33p [p=2,n=0,tm=ipv,-r,po=3,no=1,pi=3]
 ## imperative/subjunctive: usted
-gram: usted_ipv [p=3,n=0,tm=ipv]
+gram: usted_ipv [p=3,n=0,tm=sbp,+ipv]
 # reflexive
-gram: usted_ipv_refl [p=3,n=0,tm=ipv,+r]
+gram: usted_ipv_refl [p=3,n=0,tm=sbp,+ipv,+r]
 # first person pronouns
 gram: usted_ipv_1s [p=3,n=0,tm=sbp,+ipv,-r,po=1,no=0]
 gram: usted_ipv_1p [p=3,n=0,tm=sbp,+ipv,-r,po=1,no=1]

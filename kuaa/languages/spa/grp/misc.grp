@@ -1462,7 +1462,7 @@
 ->grn opaichagua
 *** en compañía de $n ; ^ compañía 1
 ->grn $n ndive ; || -1, 1, -1, 0
-*** en la comunidad ; ^ comunidad 2
+*** en la comunidad ; ^ comunidad 1
 ->grn tekohápe
 *** concientemente ; ^ concientemente 0
 ->grn hekopete
