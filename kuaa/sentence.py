@@ -228,6 +228,8 @@ class Document(list):
             self.tokenize(target=True, verbosity=verbosity)
         if verbosity:
             print("Found tokens {}".format(self.tokens))
+        if reinit:
+            Sentence.id = 0
         self.split()
         if self.biling:
             if reinit:
@@ -363,15 +365,34 @@ class Document(list):
             sentence_list.append(Sentence(language=language, tokens=sentence, target=target_language,
                                           session=self.session))
 
-    def initialize(self):
+    def initialize(self, verbose=False):
         """Initialize all the sentences in the document. If biling, initialize in both languges."""
+        print("Iniciando oraciones en documento")
+        print("  Oraciones fuente ...", end='')
+        count = 0
         for sentence in self:
-            print("Iniciando oración fuente {}".format(sentence))
+            count += 1
+            if verbose:
+                print("Iniciando oración fuente {}".format(sentence))
+            elif count % 10 == 0:
+                print("{}...".format(count), end='')
             sentence.initialize(terse=True)
+        if not verbose:
+            print()
+            print("  Inició {} oraciones".format(count))
         if self.biling:
+            print("  Oraciones meta ...", end='')
+            count = 0
             for sentence in self.target_sentences:
-                print("Iniciando oración meta {}".format(sentence))
+                count += 1
+                if verbose:
+                    print("Iniciando oración meta {}".format(sentence))
+                elif count % 10 == 0:
+                    print("{}...".format(count), end='')
                 sentence.initialize(terse=True)
+            if not verbose:
+                print()
+                print("  Inició {} oraciones".format(count))
         self.initialized = True
 
     def get_sentence_pair(self, index):
@@ -514,14 +535,24 @@ class Sentence:
 
     def display(self, show_all_sols=True, show_trans=True, word_width=0):
         """Show the sentence and one or more solutions in terminal."""
-        s = "   "
-        word_width = word_width or Sentence.word_width
+        s = "    "
+        gap = word_width + 2
+#        if word_width == 1:
+#            gap = 3
+#        else:
+#            gap = word_width
         for node in self.nodes:
-            s += "{}".format(node.token).center(word_width)
+            token = node.token
+            if word_width == 1:
+                token = token[0]
+            elif len(token) >= word_width-1:
+                token = token[:word_width-1] + '.'
+            s += "{}".format(token).center(gap)
         print(s)
         solutions = self.solutions if show_all_sols else self.solutions[:1]
         for solution in solutions:
-            solution.display(word_width=word_width)
+            print("SOLUTION {}".format(solution.index))
+            solution.display(word_width=gap)
 
     ## Copying, for alternate syntactic representations
 
@@ -942,17 +973,17 @@ class Sentence:
     ## Solving: parsing and translation
 
     def solve(self, translate=True, all_sols=False, all_trans=True, interactive=False,
-              verbosity=0, tracevar=None):
+              max_sols=0, verbosity=0, tracevar=None):
         """Generate solutions, for all analyses if all_sols is True and translations (if translate is True)."""
         self.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
-                    verbosity=verbosity, tracevar=tracevar)
-        if all_sols:
+                    max_sols=max_sols, verbosity=verbosity, tracevar=tracevar)
+        if all_sols and (not max_sols or len(self.solutions) < max_sols):
             for s in self.altsyns:
                 s.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
-                         verbosity=verbosity, tracevar=tracevar)
+                         max_sols=max_sols, verbosity=verbosity, tracevar=tracevar)
     
     def solve1(self, translate=True, all_sols=False, all_trans=True, interactive=False,
-              verbosity=0, tracevar=None):
+               max_sols=0, verbosity=0, tracevar=None):
         """Generate solutions and translations (if translate is true)."""
         if not self.groups:
             print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SOLUCIÓN POSIBLE".format(self))
@@ -984,6 +1015,8 @@ class Sentence:
                     # Parsing; store the solution and display the parse
                     self.solutions.append(solution)
                     self.display(show_all_sols=False)
+                if max_sols and len(self.solutions) >= max_sols:
+                    proceed = False
                 if all_sols:
                     continue
                 if not interactive or not input('SEARCH FOR ANOTHER ANALYSIS? [yes/NO] '):
@@ -1051,7 +1084,7 @@ class Sentence:
         self.svar('covered_snodes', set(), covered_snodes, 1, len(covered_snodes), ess=True)
 
     def create_constraints(self, verbosity=0):
-        if verbosity:
+        if verbosity > 1:
             print("Creating constraints for {}".format(self))
 
         groupvar = self.variables['groups']
@@ -1399,8 +1432,10 @@ class Sentence:
         dstore = dstore or self.dstore
         # Get the indices of the selected groups
         groups = self.variables['groups'].get_value(dstore=dstore)
+        groupindices = list(groups)
+        groupindices.sort()
         covered_snodes = self.variables['covered_snodes'].get_value(dstore=dstore)
-        ginsts = [self.groups[g] for g in groups]
+        ginsts = [self.groups[g] for g in groupindices]
         s2gnodes = []
         # For each snode, find which gnodes are associated with it in this dstore. This becomes the value of
         # the s2gnodes field in the solution created.
@@ -1412,17 +1447,20 @@ class Sentence:
                 gnodes = []
             s2gnodes.append(gnodes)
         if verbosity:
-            print("{} groups: {}".format(self, groups))
-            print("{} covered nodes: {}".format(self, covered_snodes))
-            print("{} s2gnodes: {}".format(self, s2gnodes))
+            print("groups for {}: {}".format(self, groups))
+            print("ginsts for {}: {}".format(self, ginsts))
+            print("covered nodes for {}: {}".format(self, covered_snodes))
+#        print("{} s2gnodes: {}".format(self, s2gnodes))
         # Create trees for each group
         tree_attribs = {}
 #        print("NEW SOLUTION: groups: {}, covered nodes: {}, s2gnodes: {}".format(groups, covered_snodes, s2gnodes))
         for snindex, sg in enumerate(s2gnodes):
+#            print(" snode {}, snindex {}".format(self.nodes[snindex], snindex))
             for gn in sg:
                 gnode = self.gnodes[gn]
 #                print("  Creating solution for {}: {}".format(snindex, gnode))
                 gn_group = gnode.ginst.index
+#                print("  gn group {}, {}".format(gnode.ginst, gn_group))
                 if gn_group not in tree_attribs:
                     tree_attribs[gn_group] = [[], []]
                 tree_attribs[gn_group][0].append(snindex)
@@ -1442,7 +1480,9 @@ class Sentence:
             sn.append(set(sn[0]))
             # Next check for mergers
 #            print("Updating tree for {}, {}, {}".format(tree_attribs, gindex, sn[2]))
+#            print(" Gindex {}, sn2 {}".format(gindex, sn[2]))
             Sentence.update_tree(tree_attribs, gindex, sn[2])
+#        print("Tree_attribs {}".format(tree_attribs))
         # Convert the dict to a list and sort by group indices
         trees = list(tree_attribs.items())
         trees.sort(key=lambda x: x[0])
@@ -1645,28 +1685,60 @@ class Solution:
         if verbosity:
             print("Merging target nodes for {}".format(self))
         for snode, gn_indices in zip(self.sentence.nodes, self.s2gnodes):
-#            print("snode {}, gn_indices {}".format(snode, gn_indices))
+            feats_unified = None
             # gn_indices is either one or two ints indexing gnodes in self.gnodes
             gnodes = [self.sentence.gnodes[index] for index in gn_indices]
-            features = []
-            for gnode in gnodes:
+            if not gnodes:
+                self.gnodes_feats.append((gnodes, None))
+                continue
+#            print("snode {}, gn_indices {}, gnodes {}".format(snode, gn_indices, gnodes))
+            merging = len(gnodes) > 1
+            if not merging:
+                # Not really a merged node
+                features = []
+                gnode = gnodes[0]
                 snode_indices = gnode.snode_indices
                 snode_index = snode_indices.index(snode.index)
                 snode_anal = gnode.snode_anal[snode_index]
-                if verbosity:
-                    print("  Merge nodes for gnode {}: snode_anal {}".format(gnode, snode_anal))
-                # It could be a list of anals, only None if there aren't any.
                 if snode_anal and snode_anal[0] and snode_anal[0][1]:
+                    features = [a[1] for a in snode_anal]
+                if verbosity:
+                    print("  Not a merge node, anal {}, using preferred from {}".format(snode_anal, features))
+                # Use the first (preferred) analysis.
+                if features:
+                    feature = features[0]
+                    feats_unified = FSSet(feature)
+            else:
+                # A genuine merge node
+                features = []
+                for gnode in gnodes:
+                    snode_indices = gnode.snode_indices
+                    snode_index = snode_indices.index(snode.index)
+                    snode_anal = gnode.snode_anal[snode_index]
                     if verbosity:
-                        print("  Appending snode_anals for gnode {}: {}".format(gnode, [a[1] for a in snode_anal]))
-                    features.append([a[1] for a in snode_anal])
-            # Could this fail?? YES, currently it can
-            if verbosity:
-                print("  Unification result for {}: snode {}, gn_indices {} features {}".format(self, snode, gn_indices, features))
-            feats_unified = FSSet.unify_all([FSSet(feats) for feats in features])
-            if not feats_unified:
+                        print("   Merge nodes for gnode {}: snode_anal {}".format(gnode, snode_anal))
+                    # It could be a list of anals, only None if there aren't any.
+                    if snode_anal and snode_anal[0] and snode_anal[0][1]:
+                        if verbosity:
+                            print("   Appending snode_anals for gnode {}: {}".format(gnode, [a[1] for a in snode_anal]))
+                        features.append([a[1] for a in snode_anal])
+                # Could this fail?? YES, currently it can
+                if verbosity:
+                    print("  Unification result for {}: snode {}, gn_indices {} features {}".format(self, snode, gn_indices, features))
+#            if len(features) > 1 and verbosity:
+#                print("More than one feature to unify {}".features)
+                if verbosity:
+                    print("  Unifying fss in merge node {}".format(features))
+                feats_unified = FSSet.unify_all([FSSet(feats) for feats in features])
+#            if feats_unified:
+#                print("  Unified feats {}".format(feats_unified))
+#            if verbosity and len(features) > 1:
+#                print("Features now {}".format())
+            if merging and not feats_unified:
                 print("SOMETHING WRONG: unification failed for {}!".format(features))
                 return False
+            if verbosity:
+                print("  Unification result for {}: snode {}, gn_indices {} features {} feats unified {}".format(self, snode, gn_indices, features, feats_unified))
             self.gnodes_feats.append((gnodes, feats_unified))
         return True
 
@@ -1739,15 +1811,6 @@ class Solution:
                 print("TreeTrans {} already processed".format(tt))
                 tt.display_all()
             elif tt.top:
-                # A list of pairs, one for each merger node
-#                gnodes = [n for n, s in tt.sol_gnodes_feats if len(n) > 1]
-#                print("MERGER GNODES for {}".format(tt))
-#                for gn in gnodes:
-#                    print(" {}".format(gn))
-#                gnode_trans = [(tt.gnode_dict.get(n[0]), tt.gnode_dict.get(n[1])) for n in gnodes]
-#                print("MERGE TRANSLATIONS for {}".format(tt))
-#                for gt in gnode_trans:
-#                    print(" {}".format(gt))
                 # Translation groups for this tree (top level)
                 tt.all_tgroups.append(tt.tgroups)
                 for stt in tt.subTTs:
@@ -1761,14 +1824,7 @@ class Solution:
                         print("  {}".format(tgc))
                 # Figure out the maximum number of translations of merge nodes and non-merge nodes
                 # For non-merge nodes it's the number of translations of the group
-#                n_trans_nomerge = len(tt.group_attribs)
-#                n_trans_merge = 1
-#                merge = [s for s, f in tt.sol_gnodes_feats if len(s) > 1]
-#                if merge:
-#                    n_trans_merge = max([max([len(tt.gnode_dict.get(ss,[0])) for ss in s]) for s in merge])
                 for tgroup_comb in tgroup_combs:
-#                for tm_i in range(n_trans_merge):
-#                    for tnm_i in range(n_trans_nomerge):
                     tt.build(tg_comb=tgroup_comb, verbosity=verbosity)
                              #tgroup_combs.pop(), merge_index=tm_i, nomerge_index=tnm_i, verbosity=verbosity)
                     tt.generate_words()

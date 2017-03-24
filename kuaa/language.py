@@ -7,7 +7,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015, 2016, 2017; HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyleft 2014, 2015, 2016, 2017; HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -211,7 +211,7 @@ class Language:
         self.rev_segs = {}
         self.read_segs()
         # Cached entries read in when language is loaded if language will be used for analysis
-        if use in (ANALYSIS, SOURCE):
+        if use in (ANALYSIS, SOURCE, TRAIN):
             self.set_anal_cached()
         # Load groups now if not to be used for translation
         if use in (ANALYSIS,):
@@ -507,7 +507,7 @@ class Language:
         cache = self.get_cache_file(name=name)
         try:
             with open(cache, encoding='utf8') as f:
-                print("Leyendo archivo almacenado")
+#                print("Leyendo archivo almacenado")
                 for line in f:
                     split_line = line.strip().split(" || ")
                     word, analyses = split_line

@@ -35,16 +35,23 @@
 # -- Changed name to Mbojereha
 # 2015.12.07
 # -- Changed name of repository and folder to Mainumby
+# 2016
+# -- Sessions, users
 # 2017.3
-# -- Bilingual documents
+# -- Bilingual documents and training
 
 __version__ = 0.9
 
 import kuaa
 
-def ley_bidoc():
+def ley_bidoc(init=True, train=True):
     d = eg_arch_doc("../LingData/EsGn/Corp/FromCarlos/ley4251_es8.txt",
                     ruta_meta="../LingData/EsGn/Corp/FromCarlos/ley4251_gn8.txt")
+    if init:
+        d.initialize()
+    if train:
+        trainer = kuaa.Trainer(d)
+        return trainer
     return d
 
 ## Creación de oración simple y de documento.

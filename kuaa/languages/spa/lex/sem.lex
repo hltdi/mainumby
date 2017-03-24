@@ -6925,6 +6925,7 @@ guante_n $n
 guapo_n $n
 guapo_a $a
 guarani_n $n
+guaraní_n $n
 guarda_n $n,$n_prs
 guardacostas_n $n
 guardaespaldas_n $n
@@ -9651,6 +9652,7 @@ ofensiva_n $n
 oferta_n $n
 ofertar_v $v,$v_t
 oficial_n $n
+oficial_a $a
 oficina_n $n
 oficinista_n $n
 oficio_n $n

@@ -192,7 +192,7 @@ comete || cometer:[pos=v,+fin,p=3,n=0,tm=prs];comer+te:[+VOS,pos=v,p=2,n=0,tm=ip
 cometido || cometido:[g=m,n=0,pos=n];cometer:[g=m,n=0,pos=v,tm=prc]
 comida || comida:[g=f,n=0,pos=n];comer:[g=f,n=0,pos=v,tm=prc]
 comienzo || comienzo:[g=m,n=0,pos=n];comenzar:[pos=v,+fin,p=1,n=0,tm=prs]
-como || como:;comer:[pos=v,+fin,p=1,n=0,tm=prs]
+como || como:
 complacido || complacer:[g=m,n=0,pos=v,tm=prc];complacido:[g=m,n=0,pos=a]
 complejo || complejo:[g=m,n=0,pos=a];complejo:[g=m,n=0,pos=n]
 complejos || complejo:[g=m,n=1,pos=n];complejo:[g=m,n=1,pos=a]

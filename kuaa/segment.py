@@ -7,7 +7,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015, 2016, 2017; HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyleft 2014, 2015, 2016, 2017; HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -352,7 +352,7 @@ class SNode:
     def match(self, grp_item, grp_feats, verbosity=0):
         """Does this node match the group item (word, root, category) and
         any features associated with it?"""
-        if verbosity:
+        if verbosity > 1:
             print('   SNode {} with features {} trying to match item {} with features {}'.format(self, self.analyses, grp_item, grp_feats.__repr__()))
         # If item is a category, don't bother looking at token
         is_cat = Entry.is_cat(grp_item)
@@ -430,7 +430,7 @@ class SNode:
                     # SUCCEED: group has features but node doesn't
                     results.append((grp_item, grp_feats))
             if results:
-                if verbosity:
+                if verbosity > 1:
                     print("  Returning match results: {}".format(results))
                 return results
         return False
@@ -495,7 +495,7 @@ class GInst:
 
     def display(self, word_width=10, s2gnodes=None):
         """Show group in terminal."""
-        s = '<{}>'.format(self.index)
+        s = '<{}>'.format(self.index).rjust(4)
         n_index = 0
         n = self.nodes[n_index]
         ngnodes = len(self.nodes)
@@ -808,6 +808,8 @@ class TreeTrans:
         self.cache = {}
         if verbosity:
             print("Created TreeTrans {}".format(self))
+            print("  Indices: {}".format(self.tree))
+            print("  Sol gnodes feats: {}".format(self.sol_gnodes_feats))
 
     def __repr__(self):
         return "{{{}}}->".format(self.ginst)
@@ -864,6 +866,7 @@ class TreeTrans:
         tg_comb is a combination of target groups."""
         if verbosity:
             print('BUILDING {} with tgroups {}'.format(self, tg_comb))
+            print("  SNodes: {}".format(self.snodes))
         tnode_index = 0
         # Dictionary mapping source node indices to initial target node indices
         node_index_map, agreements, group_nodes = {}, {}, {}
@@ -876,7 +879,7 @@ class TreeTrans:
             print('Top group attribs: {}'.format(top_group_attribs))
         for snode, (gnodes, features) in zip(self.snodes, self.sol_gnodes_feats):
             if verbosity:
-                fstring = " snode {}, gnodes {}, features {}, tnode index {}"
+                fstring = "   snode {}, gnodes {}, features {}, tnode index {}"
                 print(fstring.format(snode, gnodes, features.__repr__(), tnode_index))
             if not gnodes:
                 # snode is not covered by any group
@@ -956,6 +959,7 @@ class TreeTrans:
                             group_nodes[t_index] = (tok, t_feats)
                     else:
                         tgroups, tokens, targ_feats, agrs, t_index = zip(gna1, gnc1)
+#                        print("   tgroups {}, tokens {}".format(tgroups, tokens))
                         token = tokens[1]
                         targ_feats = FeatStruct.unify_all(targ_feats)
                         # Merge the agreements
@@ -976,7 +980,11 @@ class TreeTrans:
                         if agrs:
                             # Use an (unfrozen) copy of target features
                             targ_feats = targ_feats.copy(True)
+                            if verbosity:
+                                print("  Causing sfeats {} to agree with tfeats {}".format(features, targ_feats))
                             features.agree(targ_feats, agrs)
+                            if verbosity:
+                                print("   Now: {} to agree with tfeats {}".format(features, targ_feats))
                         node_index_map[snode.index] = tnode_index
                         node_features.append((token, targ_feats, t_indices))
                         for t_index in t_indices:
@@ -1002,9 +1010,13 @@ class TreeTrans:
 #                        tgroup1 = tg_comb[tnode_index]
                         gnode_tuple_list = self.gnode_dict[gnode]
                         gnode_tuple = firsttrue(lambda x: x[0] in tg_comb, gnode_tuple_list)
-#                        gnode_tuple = list(itertools.filterfalse(lambda x: x[0] != tgroup1, gnode_tuple_list))[0]
+#                        print("gnode {}".format(gnode))
+#                        print(" tgcomb {}".format(tg_comb))
+#                        print(" gnode_tuple_list {}".format(gnode_tuple_list))
                         if verbosity > 1:
                             print("   gnode_tuple: {}".format(gnode_tuple))
+                        if not gnode_tuple:
+                            print("Something wrong")
                         tgroup, token, targ_feats, agrs, t_index = gnode_tuple
                         cache_key = tgroup, t_index
                         if cache_key in self.cache:
@@ -1024,7 +1036,12 @@ class TreeTrans:
                             if agrs:
                                 # Use an (unfrozen) copy of target features
                                 targ_feats = targ_feats.copy(True)
+                                if verbosity:
+                                    print("  Causing sfeats {} to agree with tfeats {}".format(features, targ_feats.__repr__()))
+                                    print("    features type: {}".format(type(features)))
                                 features.agree(targ_feats, agrs)
+                                if verbosity:
+                                    print("  Now {} and {}".format(features, targ_feats.__repr__()))
                             node_index_map[snode.index] = tnode_index
                             node_features.append((token, targ_feats, t_indices))
                             for t_ind in t_indices:
@@ -1206,7 +1223,7 @@ class TreeTrans:
 #            # Convexity (projectivity)
 #            self.constraints.append(SetConvexity(tree))
 
-    def realize(self, verbosity=0, display=True, all_trans=False, interactive=False):
+    def realize(self, verbosity=0, display=False, all_trans=False, interactive=False):
         """Run constraint satisfaction on the order and disjunction constraints,
         and convert variable values to sentence positions."""
 #        print("Realizing {}".format(self))

@@ -4,11 +4,11 @@
 #
 ########################################################################
 #
-#   This file is part of the HLTDI L^3 project
+#   This file is part of the HLTDI L^3 and PLoGS projects
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015, 2016 HLTDI <gasser@indiana.edu>
+#   Copyleft 2014, 2015, 2016 HLTDI and PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -211,8 +211,9 @@ class Solver:
         undet = state.dstore.ess_undet
 #        if verbosity:
         ndet = len(undet)
-        print("DISTRIBUYENDO desde estado {}, # variables no determinados: {}".format(state, ndet))
         if verbosity:
+            print("DISTRIBUYENDO desde estado {}, # variables no determinados: {}".format(state, ndet))
+        if verbosity > 1:
             for v in list(undet)[:5]:
                 v.pprint(dstore=state.dstore, spaces=2)
             if ndet > 5:
@@ -222,13 +223,13 @@ class Solver:
 #                                   verbosity=verbosity)
         var, values1, values2 = self.select_var_values(undet, dstore=state.dstore,
                                                        func=self.varselect, verbosity=verbosity)
-        if verbosity:
+        if verbosity > 1:
             print('Selected variable {} and value sets {},{}'.format(var, values1, values2))
         constraint1, constraint2 = self.make_constraints(var, dstore=state.dstore,
                                                          subset1=values1, subset2=values2,
                                                          verbosity=verbosity)
 #        print('Selected constraints {}, {}'.format(constraint1, constraint2))
-        if verbosity:
+        if verbosity > 1:
             print('Distribution constraints: a -- {}, b -- {}'.format(constraint1, constraint2))
         # The constraints of the selected variable (make copies)
         constraints = var.constraints[:]

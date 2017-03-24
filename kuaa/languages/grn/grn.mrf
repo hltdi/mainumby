@@ -156,7 +156,7 @@ feats:
 
   rel (relativo) = *None | sjoj | obl
 
-  pp (pospos) = *None | peve | jave | ramo | rire | haguã | vo | gui | guive | pe | re | icha
+  pp (pospos) = *None | peve | jave | ramo | rire | haguã | vo | gui | guive | pe | re | icha | vove | kuevo
 
   asp = va = False | True;
         ñepyrũ = False | True;

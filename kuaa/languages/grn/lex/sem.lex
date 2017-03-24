@@ -1104,7 +1104,7 @@ mbayru_ $n
 mbegue $adv
 mberu_ $n
 mbichy_ $a
-mbo'e_ $v,$v_t
+mbo'e_ $v,$v_t,$n
 mbo'ehare_ $n
 mbo'ehára_ $n,$n_prs
 mbo'ekuaahára_ $n
@@ -2080,6 +2080,7 @@ yvýrupi $adv
 ñe'ẽpyta_ $v,$v_i
 ñe'ẽrã_ $n
 ñe'ẽtéva_ $n
+ñe'ẽtee_ $n
 ñeguahẽ_ $v,$v_i
 ñeha'ã_ $v,$v_i,$n
 ñehendyvapo_ $v,$v_i

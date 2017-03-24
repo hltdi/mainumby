@@ -1,3 +1,5 @@
+haĝua
+a
 ahániri
 aipóramo
 aipórõ
@@ -5,10 +7,8 @@ aja
 aje'i
 aje'íma
 ajeve
-ajevéramo
 ajevérõ
 ajépa
-akatúape
 akatúvape
 ako
 akói
@@ -21,6 +21,7 @@ angerete
 angete
 ani
 anítei
+aníti
 apytépe
 apýri
 arai
@@ -40,21 +41,17 @@ aĝui
 gua'u
 guarã
 gueteri
-guio
 guive
 guivo
 guy
 guýpe
 ha
-haguã
 haĝua
-haguãicha
 haĝuáicha
 haguére
 haguéicha
 haimetéma
 hakykuépe
-hamaláia
 harehe
 hasypeve
 hasýpe
@@ -129,7 +126,6 @@ mba'érepa
 mbegue
 mborayhuhápe
 mbovyetéramo
-mbovyve
 mbovýpa
 mboypýiri
 mboypýri
@@ -143,7 +139,6 @@ moõpa
 máramo
 nahániri
 ndaje
-ndie
 ndive
 ne'ĩra
 nga'u
@@ -165,6 +160,9 @@ oñondive
 pavẽ
 pererĩ
 peteĩcha
+pegua
+peguarã
+peguáre
 peve
 piári
 porãmínte
@@ -177,7 +175,6 @@ pypuku
 péicha
 pýpe
 ramo
-rangue
 rãngue
 rapykuéri
 rasa
@@ -213,7 +210,6 @@ uméne
 upearã
 upéi
 uvei
-vai
 voi
 voiete
 vokói
@@ -259,6 +255,7 @@ papokõi
 paporundy
 papoteĩ
 parundy
+# ambig
 po
 poapy
 pokõi
@@ -268,6 +265,7 @@ porundy
 poteĩ
 sa
 su
+## "sufijos"
 aína
 reína
 hína
@@ -286,6 +284,7 @@ kuéra
 nguéra
 eterei
 guare
+## misc
 aguyje
 mayma
-maymáva
+maymavéva

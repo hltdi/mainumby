@@ -2,7 +2,7 @@
 #
 #   This file is part of the Mainumby project within the PLoGS meta-project
 #
-#   Copyright (C) 2015, 2016, 2017;  HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyleft 2015, 2016, 2017;  HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -208,23 +208,24 @@ class Morphology(dict):
                 return fst
             return casc
 
-    def restore_fst(self, label):
-        '''Return the FST with label.'''
-        cas_path = os.path.join(self.directory, label + '.cas')
-        cascade = None
-        if os.path.exists(cas_path):
-            cascade = FSTCascade.load(cas_path,
-                                      seg_units=self.seg_units, create_networks=True,
-                                      verbose=False)
-        if cascade != None:
-            # Look for the full, explicit FST
-            fst_file = label + '.fst'
-            fst_path = os.path.join(self.directory, fst_file)
-            if os.path.exists(fst_path):
-                return FST.restore_parse(self.directory, fst_file, cascade=cascade,
-                                         weighting=UNIFICATION_SR,
-                                         seg_units=self.seg_units,
-                                         create_weights=True)
+#    def restore_fst(self, label):
+#        '''Return the FST with label.'''
+#        print("Restoring FST {}".format(label))
+#        cas_path = os.path.join(self.directory, label + '.cas')
+#        cascade = None
+#        if os.path.exists(cas_path):
+#            cascade = FSTCascade.load(cas_path,
+#                                      seg_units=self.seg_units, create_networks=True,
+#                                      verbose=False)
+#        if cascade != None:
+#            # Look for the full, explicit FST
+#            fst_file = label + '.fst'
+#            fst_path = os.path.join(self.directory, fst_file)
+#            if os.path.exists(fst_path):
+#                return FST.restore_parse(self.directory, fst_file, cascade=cascade,
+#                                         weighting=UNIFICATION_SR,
+#                                         seg_units=self.seg_units,
+#                                         create_weights=True)
 
     def sort_analyses(self, analyses):
         """Each analysis is a root, fs pair. Sort by the list of values for each feature that has such a list.

@@ -97,7 +97,6 @@ bajo
 arriba
 encima
 muy
-bien
 cual
 cuál
 cuáles

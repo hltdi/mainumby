@@ -8,7 +8,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2014, 2015, 2016, 2017 HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyleft 2014, 2015, 2016, 2017 HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -356,7 +356,7 @@ class Group(Entry):
 #                print("Matching token {} in {} following deleted match".format(token, self))
             match_snodes1 = []
             feats = self.features[index] if self.features else None
-            if verbosity > 0:
+            if verbosity > 1:
                 print(" Attempting to match {} in {}".format(token, self))
             matched = False
             for node in snodes[snindex:]:
@@ -416,13 +416,13 @@ class Group(Entry):
 #                        print("  matched head {}".format(token))
                         # If the last token was not a category, this has to follow immediately; if it doesn't fail
                         if index > 0 and not last_cat and last_sindex >=0 and nodegap:
-                            if verbosity:
+                            if verbosity > 1:
                                 fstring = " Group head token {} in sentence position {} doesn't follow last token at {}"
                                 print(fstring.format(token, snode_indices, last_sindex))
                                 print("   {} failed to match in token {}".format(self, token))
                             return False
                         match_snodes1.append((node.index, node_match, token, True))
-                        if verbosity:
+                        if verbosity > 1:
                             fstring = " Group token {} matched node {} in {}, node index {}, last_sindex {}"
                             print(fstring.format(token, node, self, snode_indices, last_sindex))
                         last_sindex = snode_end
@@ -775,7 +775,7 @@ class MorphoSyn(Entry):
         2015.10.20: constraints can be applied either to sentence or its copy (in altsyns list)
         2016.03.11: returns True if it copies the sentence.
         """
-        if verbosity:
+        if verbosity > 1:
             print("Attempting to apply {} to {}".format(self, sentence))
         matches = self.match(sentence, verbosity=verbosity, terse=terse)
         s = sentence
@@ -826,7 +826,7 @@ class MorphoSyn(Entry):
                     if isinstance(feats_list, list):
                         for index, (fl, d) in enumerate(zip(feats_list, dicts)):
                             if not fl:
-                                if verbosity:
+                                if verbosity > 1:
                                     print("Match fails for {} for word {}, analysis {}".format(self, word, d))
                                 anal_fail = index
                                 anal_fail_index = eindex
@@ -874,7 +874,7 @@ class MorphoSyn(Entry):
                 # %%
                 s.morphosyns.append((self, start, end, anal_fail_index))
                 # Change either the sentence or the latest altsyn copy
-                if verbosity:
+                if verbosity > 1:
                     print(" Match {}".format(match))
                 self.enforce_constraints(start, end, elements, verbosity=verbosity)
                 self.insert_match(start, end, elements, s, verbosity=verbosity)
@@ -891,7 +891,7 @@ class MorphoSyn(Entry):
         sentence word.
         """
         results = []
-        if verbosity:
+        if verbosity > 1:
             print("Matching MS {} against {}, terse={}".format(self, sentence, terse))
         if self.direction:
             # Left-to-right; index of item within the pattern
@@ -908,7 +908,7 @@ class MorphoSyn(Entry):
                     failed = False
                     for ms, start, end, fail_word in sentence.morphosyns:
                         if ms.name.startswith(self.failif) and start <= sindex <= end:
-                            if verbosity:
+                            if verbosity > 1:
                                 print("{} fails because {} has already succeeded".format(self, ms))
                             failed = True
                             break
@@ -1012,7 +1012,7 @@ class MorphoSyn(Entry):
             sroot = sanal.get('root')
         else:
             sroot, sfeats = sanal
-        if verbosity:
+        if verbosity > 1:
             s = "  Attempting to match pattern forms {} and feats {} against sentence item root {} and feats {}"
             print(s.format(pforms, pfeats.__repr__(), sroot, sfeats.__repr__()))
         if not pforms or any([sroot == f for f in pforms]):
@@ -1040,7 +1040,7 @@ class MorphoSyn(Entry):
         Works by mutating the features in match.
         If there are deletion constraints, prefix ~ to the relevant tokens.
         """
-        if verbosity:
+        if verbosity > 1:
             print(" Enforcing constraints for match {}/{} {}".format(start, end, elements))
         # Exclude the source features
         if self.agr:
@@ -1048,7 +1048,7 @@ class MorphoSyn(Entry):
 #            print(" Agr {} {} {}".format(srci, trgi, feats))
             src_elem = elements[srci]
             trg_elem = elements[trgi]
-            if verbosity:
+            if verbosity > 1:
                 print("  Enforcing agreement on features {} from {} to {}".format(feats, src_elem, trg_elem))
             src_tok, src_feats_list, x = src_elem
             trg_tok, trg_feats_list, y = trg_elem
@@ -1063,7 +1063,7 @@ class MorphoSyn(Entry):
 #                changed = False
                 for src_feats in src_feats_list:
                     if src_feats:
-                        if verbosity:
+                        if verbosity > 1:
                             print("    Agreeing: {} ({}), {}, ({})".format(src_feats.__repr__(), src_feats.frozen(),
                                                                            trg_feats.__repr__(), trg_feats.frozen()))
                         # source features could be False
@@ -1071,7 +1071,7 @@ class MorphoSyn(Entry):
                         src_feats.agree(trg_feats, feats, force=True)
 #                        changed = True
 #            a = src_feats.agree(trg_feats, feats, force=True)
-                        if verbosity:
+                        if verbosity > 1:
                             print("    Result of agreement: {}".format(trg_feats.__repr__()))
                         # Only do this for the first set of src_feats that succeeds
                         break
@@ -1100,7 +1100,7 @@ class MorphoSyn(Entry):
             for fm_index, fm_feats in self.featmod:
                 elem = elements[fm_index]
                 feats_list = elem[1]
-                if verbosity:
+                if verbosity > 1:
                     print("    Modifying features: {}, {}, {}".format(fm_index, fm_feats.__repr__(), feats_list))
                 if not feats_list:
                     elem[1] = [fm_feats.copy()]
@@ -1122,7 +1122,7 @@ class MorphoSyn(Entry):
         """Replace matched portion of sentence with elements in match.
         Works by mutating sentence elements (tokens and analyses).
         """
-        if verbosity:
+        if verbosity > 1:
             print(" Inserting match {}/{} {}".format(start, end, m_elements))
         # start and end are indices within the sentence; some may have been
         # ignored within the pattern during matching
