@@ -79,7 +79,6 @@
 *** atención_n de $n ; ^ atención_n 0
 ->grn $n ñeñangareko_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n <hesa_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
-->grn $n japysaka_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n jesareko_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 *** aumento_n de $n ; ^ aumento_n 0
 ->grn $n jerumo_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
@@ -755,8 +754,6 @@
 ->grn $n porandu_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n ñeporandu_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 *** presidente_n de $n ; ^ presidente_n 0
-->grn $n kuaihára_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
-->grn $n akã_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n mburuvicha_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 *** primavera_n de $n ; ^ primavera_n 0
 ->grn $n arapoty_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
@@ -2553,7 +2550,6 @@
 *** atención_n ; ^ atención_n 0 ; #15
 ->grn ñeñangareko_n ; 0==0 n:n,poses:poses ; #12
 ->grn <hesa_n ; 0==0 n:n,poses:poses ; #96 ; ##1
-->grn japysaka_n ; 0==0 n:n,poses:poses ; #82
 ->grn jesareko_n ; 0==0 n:n,poses:poses ; #80
 *** ateo_n ; ^ ateo_n 0
 ->grn ñandejára_n kañy ; 0==0 n:n,poses:poses
@@ -9860,7 +9856,6 @@
 *** indígena_n[n=1] de la misma parcialidad ; ^ indígena_n 0
 ->grn ñandekuéra_n ; 0==0 n:n,poses:poses
 *** indígena_n ; ^ indígena_n 0
-->grn <he'ỹi_n ; 0==0 n:n,poses:poses ; #6
 ->grn <he'ýi_n ; 0==0 n:n,poses:poses
 ->grn ava_n ; 0==0 n:n,poses:poses ; #612
 *** infante_n ; ^ infante_n 0
@@ -10608,10 +10603,9 @@
 *** levante_n ; ^ levante_n 0 ; #4
 ->grn kuarahysẽ_n ; 0==0 n:n,poses:poses
 ->grn ñapysẽ_n ; 0==0 n:n,poses:poses
-*** ley_n[n=1] ; ^ ley_n 0
-->grn <hekorã_n ; 0==0 n:n,poses:poses
 *** ley_n ; ^ ley_n 0
 ->grn <hembiapoukapy_n ; 0==0 n:n,poses:poses
+->grn <hekome'ẽ_n ;  0==0 n:n,poses:poses
 *** leyenda_n ; ^ leyenda_n 0 ; #4
 ->grn mombe'upyrã_n ; 0==0 n:n,poses:poses
 ->grn mombe'upy_n ; 0==0 n:n,poses:poses ; #6
@@ -14609,8 +14603,6 @@
 ->grn andu_n ; 0==0 n:n,poses:poses ; #2
 ->grn <hyakuã_n ; 0==0 n:n,poses:poses ; #27
 *** presidente_n ; ^ presidente_n 0 ; #1
-->grn kuaihára_n ; 0==0 n:n,poses:poses
-->grn akã_n ; 0==0 n:n,poses:poses ; #168
 ->grn mburuvicha_n ; 0==0 n:n,poses:poses ; #646
 *** presión_n atmosférica ; ^ presión_n 0
 ->grn arapohyikue_n ; 0==0 n:n,poses:poses
@@ -21651,17 +21643,14 @@
 *** atención_n que $v[-ipv] ; ^ atención_n 0
 ->grn ñeñangareko_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <hesa_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn japysaka_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn jesareko_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** atención_n $pp $art que $v[-ipv] ; ^ atención_n 0
 ->grn ñeñangareko_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <hesa_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn japysaka_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn jesareko_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** atención_n $pp cual_n $v[-ipv] ; ^ atención_n 0
 ->grn ñeñangareko_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <hesa_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn japysaka_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn jesareko_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** ateo_n que $v[-ipv] ; ^ ateo_n 0
 ->grn ñandejára_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
@@ -34492,15 +34481,12 @@
 *** industria_n $pp cual_n $v[-ipv] ; ^ industria_n 0
 ->grn karakatu_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** indígena_n que $v[-ipv] ; ^ indígena_n 0
-->grn <he'ỹi_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <he'ýi_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ava_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** indígena_n $pp $art que $v[-ipv] ; ^ indígena_n 0
-->grn <he'ỹi_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <he'ýi_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ava_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** indígena_n $pp cual_n $v[-ipv] ; ^ indígena_n 0
-->grn <he'ỹi_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <he'ýi_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ava_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** infante_n que $v[-ipv] ; ^ infante_n 0
@@ -35852,10 +35838,13 @@
 ->grn ñapysẽ_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** ley_n que $v[-ipv] ; ^ ley_n 0
 ->grn <hembiapoukapy_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
+->grn <hekome'ẽ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** ley_n $pp $art que $v[-ipv] ; ^ ley_n 0
 ->grn <hembiapoukapy_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
+->grn <hekome'ẽ_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** ley_n $pp cual_n $v[-ipv] ; ^ ley_n 0
 ->grn <hembiapoukapy_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
+->grn <hekome'ẽ_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** leyenda_n que $v[-ipv] ; ^ leyenda_n 0
 ->grn mombe'upyrã_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn mombe'upy_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
@@ -42049,16 +42038,10 @@
 ->grn andu_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <hyakuã_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** presidente_n que $v[-ipv] ; ^ presidente_n 0
-->grn kuaihára_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn akã_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn mburuvicha_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** presidente_n $pp $art que $v[-ipv] ; ^ presidente_n 0
-->grn kuaihára_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn akã_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn mburuvicha_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** presidente_n $pp cual_n $v[-ipv] ; ^ presidente_n 0
-->grn kuaihára_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn akã_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn mburuvicha_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** preso_n que $v[-ipv] ; ^ preso_n 0
 ->grn akãsã_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no

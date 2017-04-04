@@ -52,6 +52,8 @@
 #    and subtree groups.
 # 2016.06.16
 # -- OK, I still wasn't quite finished.
+# 2017.03
+# -- Display for GInsts improved.
 
 import itertools, copy, re
 from .cs import *
@@ -76,15 +78,8 @@ class SolSeg:
 
     def __init__(self, solution, indices, translation, tokens, color=None,
                  spec_indices=None, session=None, gname=None, merger_groups=None):
-#        self.solution = solution
         self.source = solution.source
         self.indices = indices
-#        if not spec_indices:
-#            toks = solution.sentence.tokens
-#            print("Toks {}, indices {}".format(toks, indices))
-#            spec_indices = range(len(toks))[indices[0]:indices[0]+indices[1]]
-#        self.spec_indices = spec_indices
-#        print("Spec indices for {}".format(spec_indices))
         # Are there any alternatives among the translations?
         self.any_choices = any(['|' in t for t in translation])
         # For each translation alternative, separate words, each of which can have alternatives (separated by '|').
@@ -135,10 +130,7 @@ class SolSeg:
         and the dictionary of choices for the record of the SolSeg.
         Do postprocessing on phrases joined by '_' or special tokens (numerals).
         """
-#        print("Setting HTML segment {}: {}".format(self, self.translation))
         # Combine translations where possible
-#        tlengths = [len(t) for t in self.translation]
-
         if self.special:
             print("Setting HTML for special segment {}".format(self.raw_token_str))
         self.color = SolSeg.tt_notrans_color if not self.translation else SolSeg.tt_colors[index]
@@ -147,7 +139,6 @@ class SolSeg:
         choice_list = self.record.choices if self.record else None
         # Final source segment output
         tokens = self.token_str
-#        print("  tokens {}".format(tokens))
         for tindex, t in enumerate(self.translation):
             print("{} setting HTML for {}: {}".format(self, tindex, t))
             # Create all combinations of word sequences
@@ -292,19 +283,8 @@ class SNode:
             self.variables['features'] = EMPTY
         else:
             # GNodes associated with this SNode: 0, 1, or 2
-#            tokens = {self.token}
-#            for a in self.analyses:
-#                root = a.get('root')
-#                if root:
-#                    tokens.add(root)
-#                cats = a.get('cats')
-#                if cats:
-#                    tokens.update(cats)
             upper = set(self.gnodes)
-#            upper = {gn.sent_index for gn in self.sentence.gnodes if gn.token in tokens}
-#            print("   Upper: {}".format(upper))
             self.svar('gnodes', "w{}->gn".format(self.index), set(),
-#                      set(range(self.sentence.ngnodes)),
                       upper,
                       0, 2, ess=True)
             # Concrete GNodes associated with this SNode: must be 1
@@ -315,10 +295,6 @@ class SNode:
             self.svar('agnodes', "w{}->agn".format(self.index), set(),
                       {gn.sent_index for gn in self.sentence.gnodes if gn.cat},
                       0, 1)
-            # Merged concrete GNodes associated with this SNode: 0 or 1
-#            self.svar('mgnodes', "w{}->mgn".format(self.index), set(),
-#                      {gn.sent_index for gn in self.sentence.gnodes if not gn.cat},
-#                      0, 1)
             # Features
             features = self.get_features()
             if len(features) > 1:
@@ -828,6 +804,21 @@ class TreeTrans:
                 concgn = gnodes[1]
             groups.append((index, concgn.index, concgn.ginst.group.name))
         return groups
+
+    def get_merger_roots(self):
+        """A list of triples for each merger: gnode index within top-level group,
+        index of concrete gnode within its group, group head (root) for concrete node."""
+        roots = []
+        for index, gnodes in enumerate([s[0] for s in self.sol_gnodes_feats]):
+            # A single gnode means no merger
+            if len(gnodes) == 1:
+                continue
+            # A merger, find the concrete gnode
+            concgn = gnodes[0]
+            if gnodes[0].cat:
+                concgn = gnodes[1]
+            roots.append((index, concgn.index, concgn.ginst.group.head))
+        return roots
         
     def display(self, index):
         print("{}  {}".format(self, self.output_strings[index]))

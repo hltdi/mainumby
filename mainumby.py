@@ -31,7 +31,7 @@
 # -- Changed to Ñe'ẽasa, after incorporating morphological analysis/generation
 # 2015.06.12
 # -- Started Web app
-# 2015.07.04
+    # 2015.07.04
 # -- Changed name to Mbojereha
 # 2015.12.07
 # -- Changed name of repository and folder to Mainumby
@@ -40,13 +40,13 @@
 # 2017.3
 # -- Bilingual documents and training
 
-__version__ = 0.9
+__version__ = 1.0
 
 import kuaa
 
 def ley_bidoc(init=True, train=True):
-    d = eg_arch_doc("../LingData/EsGn/Corp/FromCarlos/ley4251_es8.txt",
-                    ruta_meta="../LingData/EsGn/Corp/FromCarlos/ley4251_gn8.txt")
+    d = eg_arch_doc("../LingData/EsGn/Corp/FromCarlos/ley4251_e0.txt",
+                    ruta_meta="../LingData/EsGn/Corp/FromCarlos/ley4251_g0.txt")
     if init:
         d.initialize()
     if train:

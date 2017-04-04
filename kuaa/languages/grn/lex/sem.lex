@@ -524,7 +524,8 @@ guyry_ $n
 guyryry_ $n
 guéi_ $n
 guýpe $adv
-ha_ $v,$v_i,$c
+ha $c
+ha_ $v,$v_i
 ha'aresa_ $v,$v_i
 ha'e $pro
 ha'ejevy_ $v,$v_t
@@ -2145,6 +2146,7 @@ yvýrupi $adv
 ñemosãso_ $n
 ñemotenonde_ $v,$v_i
 ñemotenondehára_ $n
+motenondehára_ $n
 ñemoña_ $v,$v_i,$n
 ñemoñare_ $n
 ñemoñe'ẽ_ $n

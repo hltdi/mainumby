@@ -1,3 +1,10 @@
+#### CONJUNCCIONES BÁSICAS
+*** y ; ^ y 0
+->grn ha
+*** o ; ^ o 0
+->grn térã
+*** u ; ^ u 0
+->grn térã
 #### PRONOMBRES PERSONALES
 *** yo solo ; ^ yo 0
 ->grn cheño
@@ -1163,7 +1170,9 @@
 ->grn upekuévo
 ->grn upe'aja
 # Later: mientras más = cuanto más
-### PARA QUE
+### PARA INF, PARA QUE
+*** para $v[tm=inf] ; ^ para 0
+->grn $v[tmp=prs] guarã ; || 1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 *** para que $v[tm=sbp] ; ^ para 0
 ->grn $v[tmp=prs] guarã ; || 1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 ### A MEDIDA QUE (-'AJA) [THIS COULD GO IN n.grp]

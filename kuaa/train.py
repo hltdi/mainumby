@@ -135,3 +135,45 @@ class Trainer:
         soltokens = self.get_source_trans_tokens(ss)
         ttokens = self.get_target_tokens(ts)
         return [ttokens.intersection(st) for st in soltokens]
+
+    def compare_roots(self, index=-1, ss=None, ts=None):
+        """For each source sentence solution, return the roots overlapping with the target sentence."""
+        if not ss or not ts:
+            ss, ts = self.doc.get_sentence_pair(index)
+        solroots = self.get_source_trans_roots(ss)
+        troots = self.get_target_roots(ts)
+        troots_coll = set()
+        for tr1 in troots:
+            troots_coll.update(tr1[1])
+        solroots_coll = []
+        for sr in solroots:
+            # One solution's tokens and roots
+            sr0 = set()
+            for ssr in sr:
+                for srrr in ssr:
+                    rr = srrr[1]
+                    for rrr in rr:
+#                        print("RRR {}".format(rrr))
+                        root = rrr[0]
+                        if '$' not in root:
+                            sr0.add(root)
+            solroots_coll.append(sr0)
+        st_root_inters = [s.intersection(troots_coll) for s in solroots_coll]
+        return solroots_coll, troots_coll, st_root_inters
+
+    def align(self, index=-1, ss=None, ts=None, sol=None):
+        if not ss or not ts:
+            ss, ts = self.doc.get_sentence_pair(index)
+        if not sol and not ss.solutions:
+            # Get one solution
+            ss.solve(translate=True)
+            sol = ss.solutions[0]
+        tsanals = ts.analyses
+        tto = sol.get_ttrans_outputs()
+        for indices, outputs, gname, mergers in tto:
+            stokens = [ss.tokens[x] for x in indices]
+            print("TOKENS {}||{}, outputs {}, gname {}".format(stokens, indices, outputs, gname))
+
+#    def match_ttrans(self, tt_props, 
+        
+        

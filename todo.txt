@@ -1,5 +1,13 @@
 2017 spring
-merges where concrete node is head of a multi-word target group, especially when this group has more tokens than the source group
+
+ambiguous Spa words with much less common interpretation eliminated: para, medida(s)
+
+force preference for larger groups that cover same tokens as two or more smaller groups: por objeto <por> <objeto> ; <por $n> [<objeto>]
+
+merges where concrete node is head of a multi-word target group, especially when 
+this group has more tokens than the source group
+
+SOLVE?:
 translation of this sentence fails in build():
 "Ella sufre por causa del idioma que utiliza."
 (but not without “ella” or without “que utiliza”; something to do with the number of groups (greater than 8?))

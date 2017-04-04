@@ -138,6 +138,9 @@
 #    Example: la casa en la cual dormimos -> <casa PP ART cual V> | <en N>
 # 2017.03
 # -- Lots of changes to make documents bilingual for training.
+# 2017.03.23
+# -- Fixed problems related to order of GInsts associated with a solution (value of 'groups' variable). The list from the
+#    set needed to be sorted by index before TreeTrans.build().
 
 import copy, re, random, itertools
 from .ui import *
@@ -1617,6 +1620,43 @@ class Solution:
                 self.ttrans_outputs.append([raw_indices, tt.output_strings, tt.ginst.group.name, tt.get_merger_groups()])
                 last_indices = raw_indices
         return self.ttrans_outputs
+
+    def get_ttrans_alignment(self):
+        """Return a list of (snode_indices, snode_words, snode_root, translation_strings, translation roots) for the solution's
+        tree translations."""
+        def get_trans_root(translations):
+            ttt = set()
+            for trans1 in translations:
+                for trans2 in trans1[1]:
+                    troot = trans2[1]
+                    if '$' not in troot:
+                        ttt.add(troot)
+            return ttt
+        ttrans_align = []
+        last_indices = [-1]
+        tokens = self.sentence.tokens
+        for tt in self.treetranss:
+            if not tt.output_strings:
+                continue
+            indices = tt.snode_indices
+            raw_indices = []
+            stokens = []
+            ginst = tt.ginst
+            group = ginst.group
+            translations = get_trans_root(ginst.translations)
+            subtt = tt.subTTs
+            if subtt:
+                subtt = [get_trans_root(st.ginst.translations) for st in subtt]
+            merger = tt.get_merger_roots()
+            for index in indices:
+                node = self.sentence.nodes[index]
+                raw1 = node.raw_indices
+                raw_indices.extend(raw1)
+                stokens.extend([tokens[i] for i in raw1])
+            raw_indices.sort()
+            ttrans_align.append([raw_indices, stokens, group.head, tt.output_strings, subtt, translations])
+            last_indices = raw_indices
+        return ttrans_align
 
     def get_segs(self):
         """Set the segments (instances of SolSegment) for the solution, including their translations."""
