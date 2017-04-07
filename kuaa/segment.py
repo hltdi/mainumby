@@ -1067,10 +1067,10 @@ class TreeTrans:
 
     @staticmethod
     def get_root_POS(token):
-        """Token may be something like guata_, guata_v, or guata_v_t."""
+        """Token may be something like guata_, guata_v, Ty_q_v."""
         if Entry.is_special(token):
             return token, None
-        root, x, pos = token.partition("_")
+        root, x, pos = token.rpartition("_")
         return root, pos
 
     @staticmethod

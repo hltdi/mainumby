@@ -109,7 +109,7 @@ ATTRIB_SEP = ';'
 WITHIN_ATTRIB_SEP = ','
 ## Regular expressions for reading groups from text files
 # non-empty form string followed by possibly empty FS string
-FORM_FEATS = re.compile("([$%<'¿?¡!|()\-\w]+)\s*((?:\[.+\])?)$")
+FORM_FEATS = re.compile("([$%<'*¿?¡!|()\-\w]+)\s*((?:\[.+\])?)$")
 # !FS(#1-#2), representing a sequence of #1 to #2 negative FS matches
 NEG_FEATS = re.compile("\s*!(\[.+\])(\(\d-\d\))$")
 HEAD = re.compile("\s*\^\s*([<'¿?¡!|\-\w]+)\s+(\d)\s*$")

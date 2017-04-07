@@ -7,7 +7,7 @@ seg: a e E i I o u H w y ' ` _ | *
 
 feats:
 
-  pos: v
+  pos: v ግስ
 
   acc = True | False
   def = True | False
@@ -40,7 +40,7 @@ feats:
        prp = True | False;
        expl = True | False
 
-  pos: n
+  pos: n ስም
 
   vc = smp | ps | tr | cs
   pos = n
