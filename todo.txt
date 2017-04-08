@@ -1,5 +1,9 @@
 2017 spring
 
+The portion of MorphSyn.apply() that’s supposed to make a copy of the sentence under certain circumstances (when there’s ambiguity and one or more analyses has not yet been matched by an earlier MorphoSyn) doesn’t seem to work properly.
+It can now be overridden by ‘%’ in a MorphoSyn’s name. Maybe this should be the default?
+To see the problem, try “I worked” after removing the ‘%’ from MS %v_1ps_pst.
+
 ambiguous Spa words with much less common interpretation eliminated: para, medida(s)
 
 force preference for larger groups that cover same tokens as two or more smaller groups: por objeto <por> <objeto> ; <por $n> [<objeto>]

@@ -109,7 +109,7 @@ ATTRIB_SEP = ';'
 WITHIN_ATTRIB_SEP = ','
 ## Regular expressions for reading groups from text files
 # non-empty form string followed by possibly empty FS string
-FORM_FEATS = re.compile("([$%<'*¿?¡!|()\-\w]+)\s*((?:\[.+\])?)$")
+FORM_FEATS = re.compile("([$%<'`^*¿?¡!|()\-\w]+)\s*((?:\[.+\])?)$")
 # !FS(#1-#2), representing a sequence of #1 to #2 negative FS matches
 NEG_FEATS = re.compile("\s*!(\[.+\])(\(\d-\d\))$")
 HEAD = re.compile("\s*\^\s*([<'¿?¡!|\-\w]+)\s+(\d)\s*$")
@@ -133,6 +133,8 @@ MS_PATTERN_SEP = ' '
 # Separates form alternatives in MorphSyn pattern
 FORMALT_SEP = '|'
 MS_ATTRIB_SEP = ';'
+AMBIG_CHAR = '*'
+DISAMBIG_CHAR = '%'
 # possibly empty form string followed by possibly empty FS string, for MorphoSyn pattern
 MS_FORM_FEATS = re.compile("\s*([$<'|\w¿¡?!]*)\s*((?:\[.+\])?)$")
 # negative features: ![] with only features catpured
@@ -653,7 +655,7 @@ class MorphoSyn(Entry):
 
     def is_ambig(self):
         """Is this an optional transformation; that is, is the sentence it succeeds on syntactically ambiguous?"""
-        return self.name[0] == '*'
+        return self.name[0] == AMBIG_CHAR
 
     def is_not_preferred(self):
         """For ambiguous sentences, whether the version to be modified syntactically is not preferred over the non-modified
@@ -663,6 +665,10 @@ class MorphoSyn(Entry):
     def is_feat_ambig(self):
         """For ambiguous patterns, whether the ambiguity depends on an alternate set of features that fails to match the morphosyn."""
         return '=' in self.name
+
+    def is_disambig(self):
+        """Whether this is an MS that disambiguates source words, rejecting analyses that don't match it if it matches one analysis."""
+        return self.name[0] == DISAMBIG_CHAR
 
     def expand(self, pattern):
         """
@@ -784,7 +790,7 @@ class MorphoSyn(Entry):
         if matches:
             if ambig and self.is_ambig():
                 # Ambiguous patterns
-#                print("{} matches ({}) with ambiguity".format(self, matches))
+                print("{} matches ({}) with ambiguity".format(self, matches))
                 if self.is_feat_ambig():
                     matchfail = False
                     for m in matches:
@@ -817,7 +823,8 @@ class MorphoSyn(Entry):
                 start, end, elements = match
                 # %%
                 # All of the crap between %% and %% is to create sentence copies if some analysis doesn't match this MS
-                # but not if enough copies have already been created for a given word to handle the different possibilities
+                # but not if enough copies have already been created for a given word to handle the different possibilities.
+                # All of this is skipped if the MS is a disambiguator, that is, if its name starts with DISAMBIG_CHAR.
                 anal_fail = -1
                 anal_fail_index = -1
                 anal_succeed = 0
@@ -832,7 +839,7 @@ class MorphoSyn(Entry):
                                 anal_fail_index = eindex
                             else:
                                 anal_succeed = index
-                if anal_fail > -1:
+                if anal_fail > -1 and not self.is_disambig():
                     # At least one of the analyses for some word is not compatible with this morphosyn, so create an altsyn
                     # See if other morphosyns have matched this section with ambiguity for the same word
                     all_ms = sentence.morphosyns[:]
@@ -869,6 +876,7 @@ class MorphoSyn(Entry):
                         copy = sentence.copy()
                         copied = True
                         if anal_fail < anal_succeed:
+#                            print("Swapping original sentence and copy")
                             # The analysis that fails has priority, so make the one that implements the morphosyn the altsyn
                             s = copy
                 # %%

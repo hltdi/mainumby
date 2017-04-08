@@ -5855,6 +5855,7 @@
 ->amh qs_t_v[as=rc,vc=tr]
 *** mock_v
 ->amh fyz_v[as=smp,vc=tr]
+->amh lgT_v[as=rc,vc=tr]
 ->amh ql_d_v[as=smp,vc=smp]
 ->amh tr_b_v[as=smp,vc=smp]
 ->amh lm_T_v[as=smp,vc=tr]
@@ -8394,7 +8395,6 @@
 ->amh dnq_v[as=smp,vc=tr]
 ->amh dnq_v[as=smp,vc=ps]
 *** work_v
-->amh xq_l_v[as=smp,vc=smp]
 ->amh sr'_v[as=smp,vc=smp]
 *** work_v feebly
 ->amh l|fsfs_v[as=smp,vc=tr]
@@ -8448,7 +8448,6 @@
 *** wrinkle_v up
 ->amh wCamd_v[as=smp,vc=ps]
 *** write_v
-->amh T'f_v[as=smp,vc=smp]
 ->amh S'f_v[as=smp,vc=smp]
 *** write_v off
 ->amh f'q_v[as=smp,vc=smp]
