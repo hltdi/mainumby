@@ -573,7 +573,7 @@ calve_v $v,$vi
 camouflage_v $v,$vt
 camp_v $v,$vt,$vi
 campaign_v $v,$vi
-can_v $v,$vt
+can_v $v,$vt,$vm
 canalize_v $v,$vt
 cancel_v $v,$vt,$vi
 cane_v $v,$vt
@@ -4778,7 +4778,7 @@ whiz_v $v,$vi
 widen_v $v,$vt,$vi
 wield_v $v,$vt
 wiggle_v $v,$vt,$vi
-will_v $v,$vt,$vi
+will_v $v,$vt,$vi,$vm
 wilt_v $v,$vt,$vi
 win_v $v,$vt,$vi
 wince_v $v,$vt
@@ -29028,6 +29028,7 @@ textual_a $a,$aatr,$aprd
 textured_a $a,$aatr,$aprd
 thankful_a $a,$aatr,$aprd
 thankless_a $a,$aatr,$aprd
+that_n $n,$pro
 that_a $a,$aatr,$aprd
 theatrical_a $a,$aatr,$aprd
 their_a $a,$aatr,$aprd
@@ -30366,7 +30367,7 @@ zoological_a $a,$aatr,$aprd
 delicately $adv
 overwhelmingly $adv
 enthusiastically $adv
-his $pro
+his $n,$pro
 wildly $adv
 aloft $adv
 scantily $adv
@@ -30414,7 +30415,7 @@ easterly $adv
 desolately $adv
 evenly $adv
 afield $adv
-whose $pro
+whose $n,$pro
 first-hand $adv
 artlessly $adv
 unblushingly $adv
@@ -30446,7 +30447,7 @@ daylong $adv
 magisterially $adv
 sidelong $adv
 inherently $adv
-hers $pro
+hers $n,$pro
 idly $adv
 immoderately $adv
 faultily $adv
@@ -30454,7 +30455,7 @@ munificently $adv
 guiltily $adv
 defiantly $adv
 specially $adv
-whosoever $pro
+whosoever $n,$pro
 ablaze $adv
 bawdily $adv
 astride $adv,$prp
@@ -30615,7 +30616,7 @@ momentarily $adv
 automatically $adv
 implicitly $adv
 wonderfully $adv
-everything $pro
+everything $n,$pro
 expressly $adv
 millionfold $adv
 hereto $adv
@@ -30715,12 +30716,12 @@ microscopically $adv
 upward $adv
 therefore $adv
 staunchly $adv
-own $pro
+own $n,$pro
 questionably $adv
 obstreperously $adv
 disgracefully $adv
 duly $adv
-she $pro
+she $n,$pro
 aslant $adv,$prp
 ineptly $adv
 breast-deep $adv
@@ -30768,7 +30769,7 @@ plus $prp
 halfway $adv
 intimately $adv
 within $adv,$prp
-oneself $pro
+oneself $n,$pro
 excitedly $adv
 sociologically $adv
 fancifully $adv
@@ -30869,7 +30870,7 @@ attentively $adv
 saving $prp
 valiantly $adv
 municipally $adv
-no_one $pro
+no_one $n,$pro
 sumptuously $adv
 decisively $adv
 jeeringly $adv
@@ -30905,7 +30906,7 @@ mildly $adv
 crossly $adv
 gratefully $adv
 equably $adv
-me $pro
+me $n,$pro
 outlandishly $adv
 mainly $adv
 baldly $adv
@@ -30924,7 +30925,7 @@ conventionally $adv
 mortally $adv
 decorously $adv
 compassionately $adv
-whoever $pro
+whoever $n,$pro
 resourcefully $adv
 daintily $adv
 stoically $adv
@@ -30972,7 +30973,7 @@ longer $adv
 pit-a-pat $adv
 second-best $adv
 numerically $adv
-this $adv,$pro
+this $n,$adv,$pro
 afar $adv
 constructively $adv
 shipshape $adv
@@ -30992,7 +30993,7 @@ cursorily $adv
 downstream $adv
 horribly $adv
 lightly $adv
-him $pro
+him $n,$pro
 downwards $adv
 organizationally $adv
 influentially $adv
@@ -31031,7 +31032,7 @@ interminably $adv
 whereas $cnj
 exclusively $adv
 magnetically $adv
-someone $pro
+someone $n,$pro
 affectingly $adv
 inexpertly $adv
 gaudily $adv
@@ -31081,7 +31082,7 @@ together $adv
 flatly $adv
 additionally $adv
 via $prp
-such $pro
+such $n,$pro
 illiberally $adv
 frostily $adv
 narrowly $adv
@@ -31125,14 +31126,14 @@ damn $adv
 pitiably $adv
 wherewithal $adv
 unadvisedly $adv
-aforesaid $pro
+aforesaid $n,$pro
 predominantly $adv
 henceforward $adv
 disreputably $adv
 even $adv
 senselessly $adv
 periodically $adv
-yours $pro
+yours $n,$pro
 albeit $cnj
 idolatrously $adv
 overmuch $adv
@@ -31154,7 +31155,7 @@ superficially $adv
 fraudulently $adv
 massively $adv
 intricately $adv
-best $adv,$pro
+best $adv,$pro,$n
 zealously $adv
 gloriously $adv
 impiously $adv
@@ -31171,7 +31172,7 @@ impertinently $adv
 minus $prp
 en_famille $adv
 descriptively $adv
-themselves $pro
+themselves $n,$pro
 mercilessly $adv
 joyously $adv
 inorganically $adv
@@ -31210,13 +31211,13 @@ alliteratively $adv
 extraordinarily $adv
 aground $adv
 crosscountry $adv
-they $pro
+they $n,$pro
 protestingly $adv
 scornfully $adv
 but $adv,$prp,$cnj
 wryly $adv
 stormily $adv
-those $pro
+those $n,$pro
 precious $adv
 frenziedly $adv
 asunder $adv
@@ -33093,7 +33094,7 @@ consciously $adv
 inclusively $adv
 stock-still $adv
 unfeignedly $adv
-ours $pro
+ours $n,$pro
 overtime $adv
 dazedly $adv
 chock-a-block $adv
@@ -33386,3 +33387,11 @@ unsuccessfully $adv
 distantly $adv
 grimly $adv
 sluggishly $adv
+could_v $v,$vm
+shall_v $v,$vm
+should_v $v,$vm
+ought_v $v,$vm
+may_v $v,$vm
+might_v $v,$vm
+would_v $v,$vm
+must_v $v,$vm

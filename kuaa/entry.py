@@ -288,6 +288,8 @@ class Group(Entry):
         self.nogap = nogap
         # Distance back from sentence node matching head to start in matching group
         self.snode_start = 0
+        # Whether to print out verbose messages
+        self.debug = False
         if self.head_index > 0:
             # What was this for? Why does it matter whether any nodes before the head are cats?
 #             and not any([Group.is_cat(t) for t in self.tokens[:self.head_index]]):
@@ -338,7 +340,7 @@ class Group(Entry):
     def match_nodes(self, snodes, head_sindex, verbosity=0):
         """Attempt to match the group tokens (and features) with tokens from a sentence,
         returning the snode indices and root and unified features if any."""
-        if verbosity > 1:
+        if verbosity > 1 or self.debug:
             print("Does {} match {} with head index {}".format(self, snodes, head_sindex))
         match_snodes = []
         last_sindex = -1
@@ -358,7 +360,7 @@ class Group(Entry):
 #                print("Matching token {} in {} following deleted match".format(token, self))
             match_snodes1 = []
             feats = self.features[index] if self.features else None
-            if verbosity > 1:
+            if verbosity > 1 or self.debug:
                 print(" Attempting to match {} in {}".format(token, self))
             matched = False
             for node in snodes[snindex:]:
@@ -389,7 +391,7 @@ class Group(Entry):
                 if node.right_delete:
                     rightdel = node.right_delete
 #                    print("    Trying to match {} in {} with right deleted stokens {}".format(token, self, rightdel))
-                if verbosity > 1:
+                if verbosity > 1 or self.debug:
                     fstring = "   Trying {}, token index {}, snode index {}, head index {}, last s index {}"
                     print(fstring.format(node, index, snode_indices, head_sindex, last_sindex))
                 if ishead:
@@ -401,7 +403,7 @@ class Group(Entry):
                     # If this is the sentence-initial node and token is capitalized, match with
                     # node's head capitalized.
                     if self.capitalized and head_sindex == 0:
-                        if verbosity > 1:
+                        if verbosity > 1 or self.debug:
                             print("    Matching capitalized group head with sentence-initial word")
                         node_match = node.match(token.lower(), feats, verbosity=verbosity)
                         # Capitalize the node's token if this succeeds
@@ -411,24 +413,24 @@ class Group(Entry):
                         node_match = node.match(token, feats, verbosity=verbosity)
                     if node_match == False:
                         # This has to match, so fail now
-                        if verbosity:
+                        if verbosity or self.debug:
                             print("   {} failed to match in head token {}".format(self, token))
                         return False
                     else:
 #                        print("  matched head {}".format(token))
                         # If the last token was not a category, this has to follow immediately; if it doesn't fail
                         if index > 0 and not last_cat and last_sindex >=0 and nodegap:
-                            if verbosity > 1:
+                            if verbosity > 1 or self.debug:
                                 fstring = " Group head token {} in sentence position {} doesn't follow last token at {}"
                                 print(fstring.format(token, snode_indices, last_sindex))
                                 print("   {} failed to match in token {}".format(self, token))
                             return False
                         match_snodes1.append((node.index, node_match, token, True))
-                        if verbosity > 1:
+                        if verbosity > 1 or self.debug:
                             fstring = " Group token {} matched node {} in {}, node index {}, last_sindex {}"
                             print(fstring.format(token, node, self, snode_indices, last_sindex))
                         last_sindex = snode_end
-                        if verbosity > 1:
+                        if verbosity > 1 or self.debug:
                             print("  Head matched already".format(node))
                         matched = True
                         snindex = node.index + 1
@@ -437,14 +439,14 @@ class Group(Entry):
                 else:
                     # Match a group token that's not the head
                     node_match = node.match(token, feats, verbosity=verbosity)
-                    if verbosity > 1:
+                    if verbosity > 1 or self.debug:
                         print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
                     if node_match != False:
 #                        if Group.is_cat(token):
 #                            print("Node {} matched cat token {}".format(node, token))
                         if not Group.is_cat(token) and not last_cat and index > 0 and last_sindex >= 0 and nodegap:
 #                            snode_start - last_sindex != 1:
-                            if verbosity:
+                            if verbosity or self.debug:
                                 fstring = " Group token {} in sentence position {} doesn't follow last token at {}"
                                 print(fstring.format(token, snode_indices, last_sindex))
                             return False
@@ -453,11 +455,11 @@ class Group(Entry):
                             last_cat = True
                         else:
                             last_cat = False
-                        if verbosity:
+                        if verbosity or self.debug:
                             fstring = " Group token {} matched node {} in {}, node index {}, last_sindex {}"
                             print(fstring.format(token, node, self, snode_indices, last_sindex))
                         last_sindex = snode_end
-                        if verbosity > 1:
+                        if verbosity > 1 or self.debug:
                             print("  Matched node {}".format(node))
                         matched = True
                         snindex = node.index + 1
@@ -468,17 +470,17 @@ class Group(Entry):
                         nodegap += 1
             if matcheddel:
                 # Matched a left deleted element; move on to next group token
-                if verbosity:
+                if verbosity or self.debug:
                     print("  Matched left del; move on to next group token; {}".format(match_snodes1))
                 match_snodes.append(match_snodes1)
                 continue
             if not matched:
-                if verbosity > 1:
+                if verbosity > 1 or self.debug:
                     print("  {} not matched; failed".format(token))
                 return False
             else:
                 match_snodes.append(match_snodes1)
-        if verbosity:
+        if verbosity or self.debug:
             print("Group {}, s_indices {}".format(self, match_snodes))
         return match_snodes
 
@@ -647,6 +649,8 @@ class MorphoSyn(Entry):
         self.direction = True
         # This also sets self.agr, self.del_indices, self.featmod; may also set direction
         self.pattern = self.expand(pattern)
+        # Whether to print out verbose messages
+        self.debug = False
 
     @staticmethod
     def make_name(pattern):
@@ -781,7 +785,7 @@ class MorphoSyn(Entry):
         2015.10.20: constraints can be applied either to sentence or its copy (in altsyns list)
         2016.03.11: returns True if it copies the sentence.
         """
-        if verbosity > 1:
+        if verbosity > 1 or self.debug:
             print("Attempting to apply {} to {}".format(self, sentence))
         matches = self.match(sentence, verbosity=verbosity, terse=terse)
         s = sentence
@@ -833,7 +837,7 @@ class MorphoSyn(Entry):
                     if isinstance(feats_list, list):
                         for index, (fl, d) in enumerate(zip(feats_list, dicts)):
                             if not fl:
-                                if verbosity > 1:
+                                if verbosity > 1 or self.debug:
                                     print("Match fails for {} for word {}, analysis {}".format(self, word, d))
                                 anal_fail = index
                                 anal_fail_index = eindex
@@ -851,7 +855,7 @@ class MorphoSyn(Entry):
                     else:
                         for asyn in sentence.altsyns:
                             all_ms.extend(asyn.morphosyns)
-                    if verbosity:
+                    if verbosity or self.debug:
                         print("Previous and current morphosyns: {}".format(all_ms))
                     # Count how many previous matches there are for this section and this word
                     matching_previous_ms = 0
@@ -859,19 +863,19 @@ class MorphoSyn(Entry):
                         m1, s1, e1, f1 = ms
                         if s1 == start and e1 == end and f1 == anal_fail_index:
                             matching_previous_ms += 1
-                    if verbosity:
+                    if verbosity or self.debug:
                         print("{} matching previous MS for word {}".format(matching_previous_ms, anal_fail_index))
                     # See if the number is one less than the number of analyses for the ambiguous word
                     n_fail_analyses = len(sentence.analyses[anal_fail_index])
-                    if verbosity:
+                    if verbosity or self.debug:
                         print("# analyses for word {}: {}".format(anal_fail_index, n_fail_analyses))
                     if matching_previous_ms == n_fail_analyses - 1:
                         # Don't make another copy
-                        if verbosity:
+                        if verbosity or self.debug:
                             print("Already matched enough MSs for word {}, no new copy necessary".format(anal_fail_index))
                     else:
                         # Make a copy to keep trying for further MSs
-                        if verbosity:
+                        if verbosity or self.debug:
                             print("Analysis {} fails, so sentence copied by {}".format(anal_fail, self))
                         copy = sentence.copy()
                         copied = True
@@ -882,7 +886,7 @@ class MorphoSyn(Entry):
                 # %%
                 s.morphosyns.append((self, start, end, anal_fail_index))
                 # Change either the sentence or the latest altsyn copy
-                if verbosity > 1:
+                if verbosity > 1 or self.debug:
                     print(" Match {}".format(match))
                 self.enforce_constraints(start, end, elements, verbosity=verbosity)
                 self.insert_match(start, end, elements, s, verbosity=verbosity)
@@ -899,7 +903,7 @@ class MorphoSyn(Entry):
         sentence word.
         """
         results = []
-        if verbosity > 1:
+        if verbosity > 1 or self.debug:
             print("Matching MS {} against {}, terse={}".format(self, sentence, terse))
         if self.direction:
             # Left-to-right; index of item within the pattern
@@ -916,7 +920,7 @@ class MorphoSyn(Entry):
                     failed = False
                     for ms, start, end, fail_word in sentence.morphosyns:
                         if ms.name.startswith(self.failif) and start <= sindex <= end:
-                            if verbosity > 1:
+                            if verbosity > 1 or self.debug:
                                 print("{} fails because {} has already succeeded".format(self, ms))
                             failed = True
                             break
@@ -964,7 +968,7 @@ class MorphoSyn(Entry):
         """Match a sentence item against a pattern item."""
         pforms, pfeats = self.pattern[pindex]
         isneg = pindex in self.neg_matches
-        if verbosity > 1:
+        if verbosity > 1 or self.debug:
             print("  Matching {}:{} against {}:{}".format(stoken, sanals, pforms, pfeats.__repr__()))
             if isneg:
                 print("  Negative match: {}, {}, {}, {}".format(stoken, sanals, pforms, pfeats))
@@ -974,7 +978,7 @@ class MorphoSyn(Entry):
         else:
             if not sanals:
                 # No morphological analyses for sentence item; fail
-                if verbosity > 1:
+                if verbosity > 1 or self.debug:
                     print("   No feats, match item failed")
                 return False
             # pattern FS must match features in one or more anals; record the results in
@@ -985,17 +989,17 @@ class MorphoSyn(Entry):
                                                     verbosity=verbosity))
             if any(anal_matches):
                 return [stoken, anal_matches, sanals]
-        if verbosity > 1:
+        if verbosity > 1 or self.debug:
             print("   Match item failed")
         return False
 
     def match_token(self, stoken, sanals, pforms, verbosity=0):
         """Match the word or roots in a sentence against the set of forms in a pattern item."""
-        if verbosity > 1:
+        if verbosity > 1 or self.debug:
             print("  Matching sentence token {} and analyses {} against pattern forms {}".format(stoken, sanals, pforms))
         if any([stoken == f for f in pforms]):
             # Do any of the pattern items match the sentence word?
-            if verbosity > 1:
+            if verbosity > 1 or self.debug:
                 print("   Succeeded on token")
             return [stoken, False, sanals]
         # Do any of the pattern items match a root in any sentence item analysis?
@@ -1007,7 +1011,7 @@ class MorphoSyn(Entry):
             else:
                 matched_anals.append(False)
         if any(matched_anals):
-            if verbosity > 1:
+            if verbosity > 1 or self.debug:
                 print("   Succeeded on root")
             return [stoken, matched_anals, sanals]
         return False
@@ -1020,26 +1024,26 @@ class MorphoSyn(Entry):
             sroot = sanal.get('root')
         else:
             sroot, sfeats = sanal
-        if verbosity > 1:
+        if verbosity > 1 or self.debug:
             s = "  Attempting to match pattern forms {} and feats {} against sentence item root {} and feats {}"
             print(s.format(pforms, pfeats.__repr__(), sroot, sfeats.__repr__()))
         if not pforms or any([sroot == f for f in pforms]):
-            if verbosity > 1:
+            if verbosity > 1 or self.debug:
                 print("   Root matched")
             # root matches
 #            print("{} unifying {}/{} and {}/{}".format(self, sroot, sfeats.__repr__(), pforms, pfeats.__repr__()))
             u = simple_unify(sfeats, pfeats)
             if u != 'fail':
                 if not neg:
-                    if verbosity > 1:
+                    if verbosity > 1 or self.debug:
                         print("   Feats matched")
                     # result could be frozen if nothing changed; we need an unfrozen FS for later changes
                     return u.unfreeze()
             elif neg:
-                if verbosity > 1:
+                if verbosity > 1 or self.debug:
                     print("   Neg feats match succeeded")
                 return True
-        if verbosity > 1:
+        if verbosity > 1 or self.debug:
             print("   Failed")
         return False
 
@@ -1048,7 +1052,7 @@ class MorphoSyn(Entry):
         Works by mutating the features in match.
         If there are deletion constraints, prefix ~ to the relevant tokens.
         """
-        if verbosity > 1:
+        if verbosity > 1 or self.debug:
             print(" Enforcing constraints for match {}/{} {}".format(start, end, elements))
         # Exclude the source features
         if self.agr:
@@ -1056,7 +1060,7 @@ class MorphoSyn(Entry):
 #            print(" Agr {} {} {}".format(srci, trgi, feats))
             src_elem = elements[srci]
             trg_elem = elements[trgi]
-            if verbosity > 1:
+            if verbosity > 1 or self.debug:
                 print("  Enforcing agreement on features {} from {} to {}".format(feats, src_elem, trg_elem))
             src_tok, src_feats_list, x = src_elem
             trg_tok, trg_feats_list, y = trg_elem
@@ -1071,7 +1075,7 @@ class MorphoSyn(Entry):
 #                changed = False
                 for src_feats in src_feats_list:
                     if src_feats:
-                        if verbosity > 1:
+                        if verbosity > 1 or self.debug:
                             print("    Agreeing: {} ({}), {}, ({})".format(src_feats.__repr__(), src_feats.frozen(),
                                                                            trg_feats.__repr__(), trg_feats.frozen()))
                         # source features could be False
@@ -1079,7 +1083,7 @@ class MorphoSyn(Entry):
                         src_feats.agree(trg_feats, feats, force=True)
 #                        changed = True
 #            a = src_feats.agree(trg_feats, feats, force=True)
-                        if verbosity > 1:
+                        if verbosity > 1 or self.debug:
                             print("    Result of agreement: {}".format(trg_feats.__repr__()))
                         # Only do this for the first set of src_feats that succeeds
                         break
@@ -1108,7 +1112,7 @@ class MorphoSyn(Entry):
             for fm_index, fm_feats in self.featmod:
                 elem = elements[fm_index]
                 feats_list = elem[1]
-                if verbosity > 1:
+                if verbosity > 1 or self.debug:
                     print("    Modifying features: {}, {}, {}".format(fm_index, fm_feats.__repr__(), feats_list))
                 if not feats_list:
                     elem[1] = [fm_feats.copy()]
@@ -1130,7 +1134,7 @@ class MorphoSyn(Entry):
         """Replace matched portion of sentence with elements in match.
         Works by mutating sentence elements (tokens and analyses).
         """
-        if verbosity > 1:
+        if verbosity > 1 or self.debug:
             print(" Inserting match {}/{} {}".format(start, end, m_elements))
         # start and end are indices within the sentence; some may have been
         # ignored within the pattern during matching

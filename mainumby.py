@@ -46,6 +46,15 @@ __version__ = 1.0
 
 import kuaa
 
+## shortcuts
+
+def generate(language, stem, feats=None, pos='v'):
+    if not feats:
+        feats = kuaa.FeatStruct("[]")
+    else:
+        feats = kuaa.FeatStruct(feats)
+    return language.generate(stem, feats, pos)
+
 def sol_outputs(sentence):
     """Show target outputs for all solutions for sentence."""
     for sol in sentence.solutions:

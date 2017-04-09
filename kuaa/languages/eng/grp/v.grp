@@ -1,5 +1,51 @@
 #### Features common to almost all translations
 +t == ; 0==0 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg
+#### Amharic auxiliaries
+## present continuous: 'y_eseb_erku new
+*** be_v[+aux,tam=prs,-prosp] $v ; ^ be_v 0
+->amh $v[pp=Iyye,rl=[+p,-acc],+sub,+rel,tm=prf] new ; || 1, 0 ; 0==1
+## past continuous: ysebr neb_er
+*** be_v[+aux,tam=pst,-prosp] $v ; ^ be_v 0
+->amh $v[tm=imf,ax=None] neb_er ; || 1, 0 ; 0 == 1
+## about to: lisebr new
+*** be_v[+aux,+prosp,tam=prs] $v ; ^ be_v 0
+->amh $v[cj1=lI,tm=imf,+sub] new ; || 1, 0 ; 0 == 1
+*** be_v[+aux,+prosp,tam=pst] $v ; ^ be_v 0
+->amh $v[cj1=lI,tm=imf,+sub] neb_er ; || 1, 0 ; 0 == 1
+## used to continuous: same as above
+*** use_v[+aux] $v ; ^ use_v 0
+->amh $v[tm=imf,ax=None] neb_er ; || 1, 0 ; 0 == 1
+## past perfect
+*** have_v[+aux,tam=pst] $v ; ^ have_v 0
+->amh $v[tm=ger,ax=None] neb_er ; || 1, 0 ; 0 == 1
+## should
+*** shall_v[+aux,tam=pst] $v ; ^ shall_v 0
+->amh $n[v=inf,pos=n] hl_w_v[tm=imf,sb=[-p1,-p2,-fem,-plr],ob=[+prp,+b,+expl]] ; || 1, 0 ; 0 == 1 sb:ob,neg:neg
+## can
+*** can_v $v ; ^ can_v 0
+->amh $v[cj1=lI,+sub,tm=imf] c'l_v ; || 1, 0 ; 0 == 1 sb:sb,neg:neg,tm:tm
+#### Special cases
+### be -> ne, nbr, hwn
+*** be_v[tm=imf,-aux] ; ^ be_v 0
+->amh ne_v[tm=imf] ; 0 == 0 sb:sb,neg:neg
+*** be_v[tm=prf,-aux] ; ^ be_v 0
+->amh nbr_v[tm=prf] ; 0 == 0 sb:sb,neg:neg
+*** be_v[tm=fut,-aux] ; ^ be_v 0
+->amh hwn_v[tm=imf,ax=al] ; 0 == 0 sb:sb,neg:neg
+### have -> hl_w
+*** have_v[tm=imf] $n[-plr] ; ^ have_v 0
+->amh $n hl_w_v[tm=imf,sb=[-plr]] ; || 1, 0 ; 0==1 sb:ob,neg:neg,rel:rel
+*** have_v[tm=imf] $n[+plr] ; ^ have_v 0
+->amh $n hl_w_v[tm=imf,sb=[+plr]] ; || 1, 0 ; 0==1 sb:ob,neg:neg,rel:rel
+### impersonal verbs 
+*** be_v[tam=prs] sick ; ^ sick 1
+->amh 'mm_v[as=smp,vc=smp,tm=prf,sb=[-p1,-p2,-fem,-plr]] ; || 0, -1 ; 0==0 sb:ob,neg:neg,rel:rel
+->amh 'mm_v[-neg,as=smp,vc=smp,tm=ger,ax=al,sb=[-p1,-p2,-fem,-plr]] ; || 0, -1 ; 0==0 sb:ob,neg:neg,rel:rel
+->amh 'mm_v[as=smp,vc=ps,tm=prf] ; || 0, -1 ; 0==0 sb:sb,neg:neg,rel:rel
+->amh 'mm_v[-neg,as=smp,vc=ps,tm=ger,ax=al] ; || 0, -1 ; 0==0 sb:sb,neg:neg,rel:rel
+*** be_v[tam=pst] sick ; ^ sick 1
+->amh 'mm_v[as=smp,vc=smp,tm=ger,sb=[-p1,-p2,-fem,-plr]] neb_er ; || 0, 1 ; 0==0 sb:ob,neg:neg,rel:rel
+->amh 'mm_v[as=smp,vc=ps,tm=ger] neb_er ; || 0, 1 ; 0==0 sb:sb,neg:neg,rel:rel
 *** abandon_v
 ->amh kd'_v[as=smp,vc=smp]
 ->amh lqq_v[as=smp,vc=smp]
@@ -33,8 +79,6 @@
 ->amh sbsb_v[as=smp,vc=smp]
 ->amh sbsb_v[as=smp,vc=ps]
 ->amh kb_t_v[as=smp,vc=smp]
-*** accumulate_v indiscriminately
-->amh g|bsbs_v[as=smp,vc=tr]
 *** accuse_v
 ->amh kss_v[as=smp,vc=smp]
 *** ache_v constantly
@@ -319,8 +363,6 @@
 ->amh 'Tb_v[as=smp,vc=smp]
 *** batter_v
 ->amh dqW_s_v[as=it,vc=smp]
-*** be_v
-->amh nbr_v[as=smp,vc=smp]
 *** be_v abducted
 ->amh Tlf_v[as=smp,vc=ps]
 *** be_v able
@@ -1792,9 +1834,6 @@
 ->amh 'y*_v[as=smp,vc=ps]
 *** be_v shrivelled
 ->amh kWramt_v[as=smp,vc=ps]
-*** be_v sick
-->amh 'mm_v[as=smp,vc=smp]
-->amh 'mm_v[as=smp,vc=ps]
 *** be_v sifted
 ->amh Tnff_v[as=smp,vc=smp]
 *** be_v signed
@@ -2824,7 +2863,6 @@
 *** breach_v
 ->amh T's_v[as=smp,vc=smp]
 *** break_v
-->amh brqs_v[as=smp,vc=smp]
 ->amh frT_v[as=smp,vc=smp]
 ->amh sbr_v[as=smp,vc=smp]
 *** break_v away
@@ -2960,10 +2998,12 @@
 ->amh qWl_f_v[as=smp,vc=ps]
 *** button_v up
 ->amh qWl_f_v[as=smp,vc=smp]
+*** buy_v $a $n ; ^ buy_v 0
+->amh $a[+acc,rl=[+acc]] $n gz'_v[as=smp,vc=smp] ; || 2, 0, 1 ; 0==2 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg
+*** buy_v $n ; ^ buy_v 0
+->amh $n[+acc,rl=[+acc]] gz'_v[as=smp,vc=smp] ; || 1, 0 ; 0==1 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg
 *** buy_v
 ->amh gz'_v[as=smp,vc=smp]
-*** buy_v commodities
-->amh xm_t_v[as=smp,vc=smp]
 *** cadge_v everywhere
 ->amh n|sWlsWl_v[as=smp,vc=ps]
 *** cajole_v
@@ -3807,10 +3847,7 @@
 *** devour_v
 ->amh gWamT_v[as=smp,vc=tr]
 *** die_v
-->amh rgf_v[as=smp,vc=smp]
 ->amh mwt_v[as=smp,vc=smp]
-*** die_v instantly
-->amh fncr_v[as=smp,vc=ps]
 *** die_v prematurely
 ->amh qTf_v[as=smp,vc=ps]
 *** die_v suddenly
@@ -8594,7 +8631,7 @@
 *** be_v awkward ; ^ awkward 1
 ->amh n|glajj_v[as=smp,vc=ps]
 *** be_v bad ; ^ bad 1
-->amh kf'_v[as=smp,vc=smp]
+->amh kf'_v[as=smp,vc=smp] ; 0==0 sb:sb,neg:neg
 *** be_v baked ; ^ baked 1
 ->amh gagr_v[as=smp,vc=ps]
 *** be_v banged ; ^ banged 1
@@ -10196,9 +10233,6 @@
 ->amh 'y*_v[as=smp,vc=ps]
 *** be_v shrivelled ; ^ shrivelled 1
 ->amh kWramt_v[as=smp,vc=ps]
-*** be_v sick ; ^ sick 1
-->amh 'mm_v[as=smp,vc=smp]
-->amh 'mm_v[as=smp,vc=ps]
 *** be_v sifted ; ^ sifted 1
 ->amh Tnff_v[as=smp,vc=smp]
 *** be_v signed ; ^ signed 1

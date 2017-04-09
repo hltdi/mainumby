@@ -20,7 +20,7 @@ feats:
   cj1 = sI | IndI | lI | IskI | bI
   cj2 = sa | nI | Inji | s | m | na | ma
   as = rc | it | smp
-  tm = imf | j_i | ger | prf | prs
+  tm = imf | j_i | ger | prf
   rel = True | False
   ax = al
   rl = acc = True | False;

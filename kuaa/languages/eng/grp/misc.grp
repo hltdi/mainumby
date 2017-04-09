@@ -829,8 +829,7 @@
 ->amh mnm_ bihon
 ->amh yehone bihonm
 *** whatever it is ; ^ whatever 0
-->amh ya bihon
-->amh yam_ hone yh
+->amh yam_ hone yh ; || 0, 1, 2
 *** whatever may be ; ^ whatever 0
 ->amh yemeT_aw bimeTam
 *** whatever may happen ; ^ happen 2

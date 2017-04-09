@@ -469,6 +469,8 @@ class Language:
         try:
             with open(file, encoding='utf8') as f:
                 for line in f:
+                    if not line or '=' not in line:
+                        print("Error: segmentation file line {} must contain '='".format(line.strip()))
                     form, seg = line.split('=')
                     form = form.strip()
                     seg = seg.strip()
@@ -1692,8 +1694,11 @@ class Language:
     ### Generation of word forms
 
     def generate(self, root, features, pos=None, guess=False, roman=True, cache=True, verbosity=0):
+        # Features may override the POS provided; needed for verbal nouns
+        if 'pos' in features:
+            pos = features['pos']
         if verbosity:
-            print("Generating {}:{}".format(root, features.__repr__()))
+            print("Generating {}:{} with POS {}".format(root, features.__repr__(), pos))
 #        if not features:
 #            features = FeatStruct({})
 #        features = features.freeze()
@@ -1722,7 +1727,7 @@ class Language:
                             output[oi] = outp.replace(d, c)
             return output
         else:
-            print("The root/feature combination {}:{} word can't be generated!".format(root, features.__repr__()))
+            print("The root/feature combination {}:{} can't be generated for POS {}!".format(root, features.__repr__(), pos))
             return [root]
 
     def gen_multroots(self, roots, features, pos=None, guess=False, roman=True, cache=True, verbosity=0):

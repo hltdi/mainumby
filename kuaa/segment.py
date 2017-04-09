@@ -953,6 +953,9 @@ class TreeTrans:
 #                        print("   tgroups {}, tokens {}".format(tgroups, tokens))
                         token = tokens[1]
                         targ_feats = FeatStruct.unify_all(targ_feats)
+                        if targ_feats == 'fail':
+                            print("Features fail to unify")
+                            return False
                         # Merge the agreements
                         agrs = TreeTrans.merge_agrs(agrs)
                         t_indices.append((tgroups[0], gna1[-1]))
@@ -1068,9 +1071,12 @@ class TreeTrans:
     @staticmethod
     def get_root_POS(token):
         """Token may be something like guata_, guata_v, Ty_q_v."""
-        if Entry.is_special(token):
+        if Entry.is_special(token) or '_' not in token:
             return token, None
         root, x, pos = token.rpartition("_")
+        if pos not in ['v', 'a', 'n']: # other POS categories possible?
+            # the '_' is part of the word itself
+            return token, None
         return root, pos
 
     @staticmethod
@@ -1112,7 +1118,7 @@ class TreeTrans:
         for token, features, index in self.node_features:
             root, pos = TreeTrans.get_root_POS(token)
             if verbosity:
-                print("  Token {}, features {}, index {}".format(token, features.__repr__(), index))
+                print("  Token {}, features {}, index {}, root {}, pos {}".format(token, features.__repr__(), index, root, pos))
             output = [token]
             if not pos:
                 # This word doesn't require generation, just return it in a list

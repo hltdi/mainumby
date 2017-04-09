@@ -1,5 +1,8 @@
 2017 spring
 
+What happens with POS ambiguity for synsem categories and groups?
+For example, “that” (adj, noun).
+
 The portion of MorphSyn.apply() that’s supposed to make a copy of the sentence under certain circumstances (when there’s ambiguity and one or more analyses has not yet been matched by an earlier MorphoSyn) doesn’t seem to work properly.
 It can now be overridden by ‘%’ in a MorphoSyn’s name. Maybe this should be the default?
 To see the problem, try “I worked” after removing the ‘%’ from MS %v_1ps_pst.
