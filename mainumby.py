@@ -55,7 +55,13 @@ def generate(language, stem, feats=None, pos='v'):
         feats = kuaa.FeatStruct(feats)
     return language.generate(stem, feats, pos)
 
-def sol_outputs(sentence):
+def solve1(sentence):
+    """Solve; print and return solutions."""
+    sentence.solve()
+    output_sols(sentence)
+    return sentence.solutions
+
+def output_sols(sentence):
     """Show target outputs for all solutions for sentence."""
     for sol in sentence.solutions:
         print(sol.get_ttrans_outputs())

@@ -6,6 +6,9 @@
 %v_3p_ob :: [pos=v,ob=[+expl,-p1,-p2,+plr,-fem]] them ; // 1
 
 ### negative
+## must
+## can, could
+%v_neg_1p_can :: i can_v[+neg,sb=[+expl,+p1,-plr],tm=imf] not [pos=v,sb=[+expl,+p1,-plr]] ; // 0:3 2:3
 ## should
 %v_neg_1s_should :: i shall_v[pos=v,+neg,tam=pst,+aux,sb=[+expl,+p1,-plr]] not [pos=v,tam=stm] ; 2-> [pos=n] ; // 0:3 2:3
 ## present
@@ -29,9 +32,6 @@
 %v_neg_3sf_fut :: she will not [pos=v,+neg,sb=[+expl,-p1,-p2,+fem,-plr],tm=imf] ; // 0:3 1:3 2:3
 %v_neg_1p_fut :: we will not [pos=v,+neg,sb=[+expl,+p1,+plr],tm=imf] ; // 0:3 1:3 2:3
 %v_neg_1p_fut :: they will not [pos=v,+neg,sb=[+expl,-p1,-p2,+plr],tm=imf] ; // 0:3 1:3 2:3
-## must
-## can, could
-%v_neg_1p_can :: i can_v[+neg,sb=[+expl,+p1,-plr],tm=imf] not [pos=v,sb=[+expl,+p1,-plr]] ; // 0:3 2:3
 ## future going to; most follow auxiliary cases
 %v_neg_1s_gt_fut :: i am not going to [pos=v,+neg,sb=[+expl,+p1,-plr],tm=imf] ; // 0:5 1:5 2:5 3:5 4:5
 %v_neg_2_gt_fut :: you are not going to [pos=v,+neg,sb=[+expl,+p2],tm=imf] ; //  0:5 1:5 2:5 3:5 4:5
@@ -59,6 +59,8 @@
 ## future continuous
 ## past perfect
 %v_neg_1s_pstprf :: i have_v[pos=v,tam=pst,+aux] not [pos=v,+neg,sb=[+expl,+p1,-plr],tam=pp] ; // 0:3 2:3
+%v_neg_2_pstprf :: you have_v[pos=v,tam=pst,+aux] not [pos=v,+neg,sb=[+p2],tam=pp] ; // 0:3 2:3
+%v_neg_3sf_pstprf :: she have_v[pos=v,tam=pst,+aux] not [pos=v,+neg,sb=[-p1,-p2,+fem,-plr],tam=pp] ; // 0:3 2:3
 ## conditional
 ## conditional perfect
 ## have to present
@@ -67,14 +69,15 @@
 
 ### affirmative
 ## should
-%v_1s_should :: i shall_v[pos=v,tam=pst,+aux,+neg,sb=[+expl,+p1,-plr]] [pos=v,tam=stm] ; 2-> [pos=n] ; // 0:2
+%v_1s_should :: i shall_v[pos=v,tam=pst,+aux,sb=[+expl,+p1,-plr]] [pos=v,tam=stm] ; 2-> [pos=n] ; // 0:2
 ## must
 ## have to present
 ## have to past
 ## can, could
 ## future will
+%v_1s_fut :: i will [pos=v,sb=[+expl,+p1,-plr],tm=imf,ax=al] ; // 0:2 1:2
 ## future going to
-%v_1s_gt_fut :: i am going to [pos=v,sb=[+expl,+p1,-plr],tm=imf] ; // 0:4 1:4 2:4 3:4
+%v_1s_gt_fut :: i am going to [pos=v,sb=[+expl,+p1,-plr],tm=imf,ax=al] ; // 0:4 1:4 2:4 3:4
 ## present perfect (use gerundive+al)
 %v_1s_prsprf :: i have [pos=v,sb=[+expl,+p1,-plr],tam=pp,tm=ger,ax=al] ; // 0:2 1:2
 %v_2_prsprf :: you have [pos=v,sb=[+expl,+p2],tam=pp,tm=ger,ax=al] ; // 0:2 1:2
@@ -93,7 +96,7 @@
 ## about to pres./past (prospective)
 %v_1s_prosp :: i be_v[pos=v,+aux,+prosp] about to [pos=v,sb=[+expl,+p1,-plr],tam=stm] ; // 0:4 2:4 3:4
 ## present ; must follow auxiliary cases
-%v_1ps_prs :: i [pos=v,tam=stm,sb=[+expl,+p1,-plr],tm=imf] ; // 0
+%v_1ps_prs :: i [pos=v,tam=stm,sb=[+expl,+p1,-plr],tm=imf,ax=al] ; // 0:1
 ## past
 %v_1ps_pst :: i [pos=v,tam=pst,sb=[+expl,+p1,-plr],tm=prf] ; // 0
 

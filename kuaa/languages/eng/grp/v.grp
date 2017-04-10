@@ -1,5 +1,5 @@
 #### Features common to almost all translations
-+t == ; 0==0 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg
++t == ; 0==0 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg,ax:ax
 #### Amharic auxiliaries
 ## present continuous: 'y_eseb_erku new
 *** be_v[+aux,tam=prs,-prosp] $v ; ^ be_v 0
@@ -15,9 +15,12 @@
 ## used to continuous: same as above
 *** use_v[+aux] $v ; ^ use_v 0
 ->amh $v[tm=imf,ax=None] neb_er ; || 1, 0 ; 0 == 1
-## past perfect
+## past perfect (affirmative)
 *** have_v[+aux,tam=pst] $v ; ^ have_v 0
 ->amh $v[tm=ger,ax=None] neb_er ; || 1, 0 ; 0 == 1
+## past perfect (negative)
+*** have_v[+aux,tam=pst] $v[+neg] ; ^ have_v 0
+->amh $v[+neg,tm=prf] neb_er ; || 1, 0 ; 0 == 1
 ## should
 *** shall_v[+aux,tam=pst] $v ; ^ shall_v 0
 ->amh $n[v=inf,pos=n] hl_w_v[tm=imf,sb=[-p1,-p2,-fem,-plr],ob=[+prp,+b,+expl]] ; || 1, 0 ; 0 == 1 sb:ob,neg:neg

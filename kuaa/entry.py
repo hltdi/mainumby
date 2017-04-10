@@ -93,6 +93,9 @@
 # 2016.5.25
 # -- In group matching, once a non-head group token is matched, it doesn't tolerate a gap
 #    before matching again.
+# 2017.4.10
+# -- Fixed a serious bug in MS matching, which came up when two successive sentence elements
+#    matched the same pattern element, causing <V them> to fail for "I will see them".
 
 import copy, itertools
 import yaml
@@ -904,27 +907,49 @@ class MorphoSyn(Entry):
         """
         results = []
         if verbosity > 1 or self.debug:
-            print("Matching MS {} against {}, terse={}".format(self, sentence, terse))
+            print("MS {} matching {}".format(self, sentence))
         if self.direction:
             # Left-to-right; index of item within the pattern
             pindex = 0
             # Index of sentence token where successful matching starts
             mindex = -1
+            # Index if sentence token of last successful match
+            lastmindex = -1
             result = []
-            for sindex, (stoken, sanals) in enumerate(sentence.analyses):
+            sindex = 0
+            while sindex < len(sentence.analyses):
+                if verbosity > 1 or self.debug:
+                    if mindex > -1:
+                        if lastmindex > -1:
+                            print(" Item {} matched sentence item {}, moving forward".format(pindex-1, lastmindex))
+                if mindex == -1:
+                    # Some sentence item matched part of the pattern and failed later
+                    if lastmindex > -1:
+                        sindex = lastmindex + 1
+                        if self.debug or verbosity > 1:
+                            print("  Backtracking to sentence item {}".format(sindex))
+                        # Resetting lastmindex
+                        lastmindex = -1
+                if self.debug:
+                    print(" MS {} matching item {} against sentence item {}".format(self, pindex, sindex))
+                    print("  First match {}, last match {}".format(mindex, lastmindex))
+                stoken, sanals = sentence.analyses[sindex]
                 if MorphoSyn.del_token(stoken):
+                    sindex += 1
                     continue
                 # Check next whether this is a FAILIF Morphosysn that should fail because of what
                 # MorphoSyns have already succeeded for the sentence
                 if self.failif:
                     failed = False
                     for ms, start, end, fail_word in sentence.morphosyns:
+                        # For each of MSs that have already matched portions of this sentence
                         if ms.name.startswith(self.failif) and start <= sindex <= end:
                             if verbosity > 1 or self.debug:
-                                print("{} fails because {} has already succeeded".format(self, ms))
+                                print(" {} fails because {} has already succeeded".format(self, ms))
                             failed = True
                             break
                     if failed:
+                        sindex += 1
                         continue
                 # sentence.analyses consists of pairs of word tokens and a list of analysis dicts
                 match = self.match_item(stoken, sanals, pindex, verbosity=verbosity)
@@ -954,11 +979,13 @@ class MorphoSyn(Entry):
                         if mindex < 0:
                             # Start of matching
                             mindex = sindex
+                        lastmindex = sindex
                 else:
                     # Start over
                     mindex = -1
                     pindex = 0
                     result = []
+                sindex += 1
             if results:
                 return results
             return False
@@ -969,9 +996,9 @@ class MorphoSyn(Entry):
         pforms, pfeats = self.pattern[pindex]
         isneg = pindex in self.neg_matches
         if verbosity > 1 or self.debug:
-            print("  Matching {}:{} against {}:{}".format(stoken, sanals, pforms, pfeats.__repr__()))
+            print("  MS {} matching {}:{} against {}:{}".format(self, stoken, sanals, pforms, pfeats.__repr__()))
             if isneg:
-                print("  Negative match: {}, {}, {}, {}".format(stoken, sanals, pforms, pfeats))
+                print("  MS {} negative match: {}, {}, {}, {}".format(self, stoken, sanals, pforms, pfeats))
         # No FS to match
         if not pfeats:
             return self.match_token(stoken, sanals, pforms, verbosity=verbosity)
@@ -996,7 +1023,7 @@ class MorphoSyn(Entry):
     def match_token(self, stoken, sanals, pforms, verbosity=0):
         """Match the word or roots in a sentence against the set of forms in a pattern item."""
         if verbosity > 1 or self.debug:
-            print("  Matching sentence token {} and analyses {} against pattern forms {}".format(stoken, sanals, pforms))
+            print("   Matching sentence token {} and analyses {} against pattern forms {}".format(stoken, sanals, pforms))
         if any([stoken == f for f in pforms]):
             # Do any of the pattern items match the sentence word?
             if verbosity > 1 or self.debug:
@@ -1014,6 +1041,8 @@ class MorphoSyn(Entry):
             if verbosity > 1 or self.debug:
                 print("   Succeeded on root")
             return [stoken, matched_anals, sanals]
+        if verbosity > 1 or self.debug:
+            print("    Match token failed")
         return False
 
     def match_anal(self, stoken, sanal, pforms, pfeats, neg=False, verbosity=0):
@@ -1025,26 +1054,28 @@ class MorphoSyn(Entry):
         else:
             sroot, sfeats = sanal
         if verbosity > 1 or self.debug:
-            s = "  Attempting to match pattern forms {} and feats {} against sentence item root {} and feats {}"
+            s = "   Attempting to match pattern forms {} and feats {} against sentence item root {} and feats {}"
             print(s.format(pforms, pfeats.__repr__(), sroot, sfeats.__repr__()))
         if not pforms or any([sroot == f for f in pforms]):
             if verbosity > 1 or self.debug:
-                print("   Root matched")
+                print("    Root matched")
             # root matches
 #            print("{} unifying {}/{} and {}/{}".format(self, sroot, sfeats.__repr__(), pforms, pfeats.__repr__()))
             u = simple_unify(sfeats, pfeats)
             if u != 'fail':
                 if not neg:
                     if verbosity > 1 or self.debug:
-                        print("   Feats matched")
+                        print("    Feats matched")
                     # result could be frozen if nothing changed; we need an unfrozen FS for later changes
                     return u.unfreeze()
+                elif verbosity > 1 or self.debug:
+                    print("    Anals failed")
             elif neg:
                 if verbosity > 1 or self.debug:
-                    print("   Neg feats match succeeded")
+                    print("    Neg feats match succeeded")
                 return True
-        if verbosity > 1 or self.debug:
-            print("   Failed")
+            elif verbosity > 1 or self.debug:
+                print("    Anals failed")
         return False
 
     def enforce_constraints(self, start, end, elements, verbosity=0):
