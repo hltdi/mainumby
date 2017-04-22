@@ -21,8 +21,11 @@
 ## past perfect (negative)
 *** have_v[+aux,tam=pst] $v[+neg] ; ^ have_v 0
 ->amh $v[+neg,tm=prf] neb_er ; || 1, 0 ; 0 == 1
-## should
+## should (also include possibility of tegeb_a?)
 *** shall_v[+aux,tam=pst] $v ; ^ shall_v 0
+->amh $n[v=inf,pos=n] hl_w_v[tm=imf,sb=[-p1,-p2,-fem,-plr],ob=[+prp,+b,+expl]] ; || 1, 0 ; 0 == 1 sb:ob,neg:neg
+## must (same as should)
+*** must_v[+aux] $v ; ^ must_v 0
 ->amh $n[v=inf,pos=n] hl_w_v[tm=imf,sb=[-p1,-p2,-fem,-plr],ob=[+prp,+b,+expl]] ; || 1, 0 ; 0 == 1 sb:ob,neg:neg
 ## can
 *** can_v $v ; ^ can_v 0
@@ -5528,7 +5531,6 @@
 ->amh tw_v[as=smp,vc=smp]
 *** leave_v behind
 ->amh rs'_v[as=smp,vc=smp]
-->amh rs'_v[as=smp,vc=ps]
 *** leave_v marker
 ->amh 'lb_v[as=smp,vc=smp]
 *** leave_v off
@@ -10705,3 +10707,7 @@
 ->amh wy_b_v[as=smp,vc=smp]
 *** be_v yolked ; ^ yolked 1
 ->amh Tmd_v[as=rc,vc=ps]
+*** be_v left behind ; ^ left 1
+->amh rs'_v[as=smp,vc=ps] ; || 0, -1, -1
+*** make_v fun of $n ; ^ make_v 0
+->amh $n[+acc,rl=[+acc]] xwf_v[as=smp,vc=tr] ; || 1, -1, -1, 0 ; 0==1 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg,ax:ax

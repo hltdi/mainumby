@@ -96,6 +96,7 @@
 # 2017.4.10
 # -- Fixed a serious bug in MS matching, which came up when two successive sentence elements
 #    matched the same pattern element, causing <V them> to fail for "I will see them".
+# -- Fixed element swapping in MS application, which wasn't working where there were deleted elements.
 
 import copy, itertools
 import yaml
@@ -999,6 +1000,9 @@ class MorphoSyn(Entry):
             print("  MS {} matching {}:{} against {}:{}".format(self, stoken, sanals, pforms, pfeats.__repr__()))
             if isneg:
                 print("  MS {} negative match: {}, {}, {}, {}".format(self, stoken, sanals, pforms, pfeats))
+        ## CHANGE THIS LATER SO ONLY ONE ANAL IS POSSIBLE
+        if not isinstance(sanals, list):
+            sanals = [sanals]
         # No FS to match
         if not pfeats:
             return self.match_token(stoken, sanals, pforms, verbosity=verbosity)
@@ -1102,8 +1106,6 @@ class MorphoSyn(Entry):
                     continue
 #                print("trg_feats {}, frozen? {}".format(trg_feats.__repr__(), trg_feats.frozen()))
                 # Because it may be mutated, use a copy of trg_feats
-#                trg_feats1 = trg_feats.copy()
-#                changed = False
                 for src_feats in src_feats_list:
                     if src_feats:
                         if verbosity > 1 or self.debug:
@@ -1112,19 +1114,12 @@ class MorphoSyn(Entry):
                         # source features could be False
                         # Force target to agree with source on feature pairs
                         src_feats.agree(trg_feats, feats, force=True)
-#                        changed = True
-#            a = src_feats.agree(trg_feats, feats, force=True)
                         if verbosity > 1 or self.debug:
                             print("    Result of agreement: {}".format(trg_feats.__repr__()))
                         # Only do this for the first set of src_feats that succeeds
                         break
-                # Replace original feats with copy
-#                if changed:
-#                    print("Feature {} replaced with copy".format(trg_feats.__repr__()))
-#                    trg_feats_list[tf_index] = trg_feats1
         if self.del_indices:
             for i, j in self.del_indices:
-#                if verbosity:
                 elements[i][0] = '~' + elements[i][0]
                 if j != -1:
 #                    print("Recording target distance {}".format(j-i))
@@ -1134,10 +1129,7 @@ class MorphoSyn(Entry):
             print("Warning: Adding items in Morphosyn not yet implemented!")
             for i, item in self.add_items:
                 print("Adding item {} in position {}".format(item, i))
-        if self.swap_indices:
-            i1, i2 = self.swap_indices
-            elements[i1], elements[i2] = elements[i2], elements[i1]
-            
+
         if self.featmod:
             # Modify features in indexed element
             for fm_index, fm_feats in self.featmod:
@@ -1153,14 +1145,13 @@ class MorphoSyn(Entry):
                             if feats.frozen():
                                 feats = feats.unfreeze()
                                 feats_list[index] = feats
-#                    print("Updating feat {} with fm_feats {}".format(feats.__repr__(), fm_feats.__repr__()))
-#                    feats1 = feats.copy()
-#                    print("Feature {} replaced with copy".format(feats.__repr__()))
-#                    print("Modifying features {}, {}, {}".format(elem, feats.__repr__(), fm_feats.__repr__()))
                             feats.update_inside(fm_feats)
-#                    feats_list[index] = feats1
-#                    print("Feature {} after update".format(feats.__repr__()))
 
+#        if self.swap_indices:
+#            i1, i2 = self.swap_indices
+#            print("Swapping {} and {}".format(elements[i1], elements[i2]))
+#            elements[i1], elements[i2] = elements[i2], elements[i1]
+            
     def insert_match(self, start, end, m_elements, sentence, verbosity=0):
         """Replace matched portion of sentence with elements in match.
         Works by mutating sentence elements (tokens and analyses).
@@ -1170,49 +1161,62 @@ class MorphoSyn(Entry):
         # start and end are indices within the sentence; some may have been
         # ignored within the pattern during matching
         m_index = 0
+        for s_elem in sentence.analyses[start:end]:
+            s_token = s_elem[0]
+            if MorphoSyn.del_token(s_token):
+                # Skip this sentence element; don't increment m_index
+                continue
+            m_elem = m_elements[m_index]
+            m_index += 1
+            # Replace the token (could have ~ now)
+            s_elem[0] = m_elem[0]
+            # Replace the features if match element has any
+            m_feats_list = m_elem[1]
+            s_anals = s_elem[1]
+            new_s_anals = []
+            if m_feats_list:
+                if not s_anals:
+                    new_s_anals = [{'features': mfl, 'root': s_token} for mfl in m_feats_list]
+                for m_feats, s_anal in zip(m_feats_list, s_anals):
+                    if not m_feats:
+                        # This anal failed to match pattern; filter it out
+                        continue
+                    else:
+                        s_feats = s_anal['features']
+                        if s_feats != m_feats:
+                            # Replace sentence features with match features if something
+                            # has changed
+                            s_anal['features'] = m_feats
+                        new_s_anals.append(s_anal)
+            else:
+                new_s_anals = s_anals
+            s_elem[1] = new_s_anals
         # Swap sentence.analyses and tokens elements if there are swap_indices in the MS
-        # Note: this only works if there are no other constraints to enforce.
+        # This has to take into consideration deleted elements, so it's a little ugly.
         if self.swap_indices:
             mstart, mend = self.swap_indices
             sstart, send = start+mstart, start+mend
-            sentence.analyses[sstart], sentence.analyses[send] = sentence.analyses[send], sentence.analyses[sstart]
-            sentence.tokens[sstart], sentence.tokens[send] = sentence.tokens[send], sentence.tokens[sstart]
-        else:
-            for s_elem in sentence.analyses[start:end]:
-#                print("{} INSERTING {}".format(self, s_elem))
-                s_token = s_elem[0]
-                if MorphoSyn.del_token(s_token):
-                    # Skip this sentence element; don't increment m_index
-#                    print("   Skipping deleted element {}".format(s_elem))
+            sindex = 0
+            swapi1 = -1
+            swapi2 = -1
+            for srawindex, (tok, anal) in enumerate(sentence.analyses):
+#                print("{}, {}, {}".format(srawindex, tok, sindex))
+                if MorphoSyn.del_token(tok):
                     continue
-                m_elem = m_elements[m_index]
-                m_index += 1
-                # Replace the token (could have ~ now)
-                s_elem[0] = m_elem[0]
-                # Replace the features if match element has any
-                m_feats_list = m_elem[1]
-                s_anals = s_elem[1]
-#                print("  Feature list: original {}, match {}".format(s_anals, m_feats_list))
-                new_s_anals = []
-                if m_feats_list:
-                    if not s_anals:
-                        new_s_anals = [{'features': mfl, 'root': s_token} for mfl in m_feats_list]
-                    for m_feats, s_anal in zip(m_feats_list, s_anals):
-                        if not m_feats:
-#                            print("Insert match fails: m_feats {}, s_anal {}".format(m_feats, s_anal))
-                            # This anal failed to match pattern; filter it out
-                            continue
-                        else:
-#                            print("Insert match succeeds: m_feats {}, s_anal {}".format(m_feats, s_anal))
-                            s_feats = s_anal['features']
-                            if s_feats != m_feats:
-                                # Replace sentence features with match features if something
-                                # has changed
-                                s_anal['features'] = m_feats
-                            new_s_anals.append(s_anal)
+                if sindex == sstart and swapi1 == -1:
+                    swapi1 = srawindex
+                    sindex += 1
+                elif sindex == send:
+                    swapi2 = srawindex
+#                    print("Sentence swap indices {}, {}".format(swapi1, swapi2))
+#                    print("  (Tokens {})".format(sentence.tokens))
+                    tokens = sentence.tokens[swapi1], sentence.tokens[swapi2]
+#                    print("Swapped tokens {}".format(tokens))
+                    sentence.analyses[swapi1], sentence.analyses[swapi2] = sentence.analyses[swapi2], sentence.analyses[swapi1]
+                    sentence.tokens[swapi1], sentence.tokens[swapi2] = tokens[1], tokens[0]
+                    return
                 else:
-                    new_s_anals = s_anals
-                s_elem[1] = new_s_anals
+                    sindex += 1
 
 class EntryError(Exception):
     '''Class for errors encountered when attempting to update an entry.'''

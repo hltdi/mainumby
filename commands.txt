@@ -15,3 +15,4 @@ pushing to git:
 git push https://github.com/hltdi/mainumby.git
 
 apache config file:
+/etc/apache2/sites-available/default

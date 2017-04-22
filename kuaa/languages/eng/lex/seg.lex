@@ -25,6 +25,7 @@ couldn't = could not
 wouldn't = would not
 shouldn't = should not
 shan't = shall not
+mustn't = must not
 let's = let us
 i'll = i will
 you'll = you will

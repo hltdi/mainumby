@@ -2,56 +2,92 @@ name: english
 abbrev: eng
 source: True
 target: True
-classes:
-- [$digit, one two three four five six seven eight nine]
-- [$10_19, ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen]
-- [$10, twenty thirty forty fifty sixty seventy eighty ninety]
-- [$100, cien cientos cientas doscientos doscientas trescientos trescientas cuatrocientos cuatrocientas quinientos quinientas seiscientos seiscientas sietecientos sietecientas ochocientos ochocientas novecientos novecientas]
-- [$millon, millón billón trillón cuatrillón]
-- [$millones, millones billones trillones cuatrillones]
-- [$num0, $digit $10_19 $10]
-- [$num1, $digit $10_19 $10 $100]
-- [$num2, $digit $10_19 $10 $100 mil]
-- [$num3, cero $digit $10_19 $10 $100 mil]
-- [$dia, lunes martes miércoles jueves viernes sábado domingo]
-- [$mes, enero febrero marzo abril mayo junio julio agosto setiembre septiembre octubre noviembre diciembre]
-patterns:
-- [/num_121, $100 /num_21]
-- [/num_120, $100 $num0]
-- [/num_21, $10 y $digit]
-- [/num_millones1, $num2 $millones de]
-- [/num_2121, $num1 mil /num_121]
-- [/num_2120, $num1 mil /num_120]
-- [/num_2020, $num1 mil $num1]
-- [/num_mil, $num1 mil]
-- [/num_miles, miles de]
-- [/num_millon, un $millon de]
-- [/num_millones0, $millones de]
-- [/num_millones1, $num2 $millones de]
-- [/num_1999, mil /num_121]
-- [/num_1901, mil /num_120]
-- [/num_1900, mil $num1]
-- [/num1, $num3]
-translations:
-  N_un: N_peteĩ
-  N_una: N_peteĩ
-  N_dos: N_mokõi
-  N_tres: N_mbohapy
-  N_cuatro: N_irundy
-  N_cinco: ND_5
-  N_seis: ND_6
-  N_siete: ND_7
-  N_ocho: ND_8
-  N_nueve: ND_9
-  N_diez: ND_10
-  N_once: ND_11
-  N_doce: ND_12
-  N_trece: ND_13
-  N_catorce: ND_14
-  N_quince: ND_15
-  N_dieciseis: ND_16
-  N_diecisiete: ND_17
-  N_dieciocho: ND_18
-  N_diecenueve: ND_19
-  N_veinte: ND_20
+#exttag: nltk|eng
+exttag: spacy|en
+lemmas: True
+pos:
+   VERB::v
+   NOUN::n
+   ADJ::a
+   DET::det
+   ADV::adv
+   CCONJ::c
+   NUM::num
+   PUNCT::pnc
+   PRON::n.prn
+   PROPN::n.prp
+#   $::pnc
+#   ``::pnc
+#   ''::pnc
+#   (::pnc
+#   )::pnc
+#   ,::pnc
+#   --::pnc
+#   .::pnc.eos
+#   :::pnc
+#   CC::c
+#   CD::num
+#   DT::det
+#   EX::adv.ex
+#   FW::fw
+#   IN::prp
+#   JJ::a
+#   JJR::a
+#   JJS::a
+#   LS::ls
+#   MD::v.mod
+#   NN::n
+#   NNP::n.prp
+#   NNPS::n.prp
+#   NNS::n
+#   PDT::pdt
+#   POS::gen
+#   PRP::n.prn
+#   PRP$::n.prn.pss
+#   RB::adv
+#   RBR::adv
+#   RBS::adv
+#   RP::prt
+#   SYM::sym
+#   TO::to
+#   UH::itj
+#   VB::v
+#   VBD::v
+#   VBG::v
+#   VBN::v
+#   VBP::v
+#   VBZ::v
+#   WDT::det.wh
+#   WP::n.prn.wh
+#   WP$::a.wh
+#   WRB::adv.wh
 
+morphology:
+  VBZ::*|[pos=v,tam=prs,sb=[+expl,-p1,-p2,-plr,-fem]]
+  VBD::*|[pos=v,tam=pst]
+  VBN::=|[pos=v,tam=pp]
+  VBG::*|[pos=v,tam=ing]
+  VBP::=|[pos=v,tam=prs,sb=[+expl,+plr]];[pos=v,tam=prs,sb=[+expl,+p1,-plr]];[pos=v,tam=prs,sb=[+expl,+p2,-plr]]
+  VB::=|[pos=n,tam=stm]
+  NNS::*|[pos=n,+plr]
+  NNPS::*|[pos=n,+plr]
+  NN::=|[pos=n,-plr]
+  NNP::=|[pos=n,-plr]
+  JJR::*|[pos=a,grd=cmp]
+  JJS::*|[pos=a,grd=sup]
+  VBP|am::be|[pos=v,tam=prs,sb=[+expl,+p1,-plr]]
+  VBP|'m::be|[pos=v,tam=prs,sb=[+expl,+p1,-plr]]
+  VBP|are::be|[pos=v,tam=prs,sb=[+expl,+plr]];[pos=v,tam=prs,sb=[+expl,+p2,-plr]]
+  VBP|'re::be|[pos=v,tam=prs,sb=[+expl,+plr]];[pos=v,tam=prs,sb=[+expl,+p2,-plr]]
+  VBZ|is::be|[pos=v,tam=prs,sb=[+expl,-p1,-p2,-plr,-fem]]
+  VBZ|'s::be|[pos=v,tam=prs,sb=[+expl,-p1,-p2,-plr,-fem]]
+  VBD|was::be|[pos=v,tam=pst,sb=[+expl,+plr]];[pos=v,tam=pst,sb=[+expl,+p2,-plr]]
+  VBD|were::be|[pos=v,tam=pst,sb=[+expl,+p1,-plr]];[pos=v,tam=pst,sb=[+expl,-p1,-p2,-plr]]
+  RB|n't::not|[pos=adv,+neg]
+  RB|not::not|[pos=adv,+neg]
+  VB|have::have|[pos=v,tam=stm]
+  VB|'ve::have|[pos=v,tam=stm]
+  VB|have::have|[pos=v,tam=prs,sb=[+expl,+plr]];[pos=v,tam=prs,sb=[+expl,+p1,-plr]];[pos=v,tam=prs,sb=[+expl,+p2,-plr]]
+  VBP|'ve::have|[pos=v,tam=prs,sb=[+expl,+plr]];[pos=v,tam=prs,sb=[+expl,+p1,-plr]];[pos=v,tam=prs,sb=[+expl,+p2,-plr]]
+  MD|would::would|[pos=v,tam=prs]
+  MD|'d::would|[pos=v,tam=prs]

@@ -1,5 +1,5 @@
 #### Features common to almost all translations
-+t == ; 0==0 plr:plr,def:def,poss:poss,acc:acc
++t == ; 0==0 plr:plr,def:def,poss:poss,acc:acc,rl:rl,gen:gen
 *** Amharic_n ; ^ Amharic_n 0
 ->amh 'amarN_a_n
 *** Bedouin_n ; ^ Bedouin_n 0
@@ -6084,7 +6084,6 @@
 ->amh quT_eba_n
 ->amh teqem_aC_n
 *** saw_n ; ^ saw_n 0
-->amh mesenTeqiya_n
 ->amh megaz_n
 *** scab_n ; ^ scab_n 0
 ->amh qr_afi_n
@@ -6161,7 +6160,6 @@
 *** search_n ; ^ search_n 0
 ->amh fl_ega_n
 ->amh ft_exa_n
-->amh 'as_esa_n
 *** searcher_n ; ^ searcher_n 0
 ->amh fel_agi_n
 *** season_n ; ^ season_n 0

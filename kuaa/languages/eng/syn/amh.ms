@@ -1,14 +1,32 @@
+#### nouns
+### indefinite articles; eliminate
+%n_adj_indef :: a [pos=a,-def] [pos=n] ; // 0:2
+%n_indef :: a [pos=n,-def] ; // 0:1
+### definite articles
+%n_adj_def :: the [pos=a,+def] [pos=n] ; // 0:1
+%n_def :: the [pos=n,+def] ; // 0:1
+### possessives
+%n_my :: my [pos=n,poss=[+expl,+p1,-plr],+def] ; // 0:1
+
 #### verbs
 
-### verb objects
-%v_1ps_ob :: [pos=v,ob=[+expl,+p1,-plr]] me ; // 1
-%v_3sm_ob :: [pos=v,ob=[+expl,-p1,-p2,-plr,-fem]] it ; // 1
-%v_3p_ob :: [pos=v,ob=[+expl,-p1,-p2,+plr,-fem]] them ; // 1
+### verb objects; FIGURE OUT HOW TO HANDLE INDIRECT AND DIRECT OBJECTS
+%v_1s_ob :: [pos=v,ob=[+expl,+p1,-plr]] me ; // 1:0
+%v_2_ob :: [pos=v,ob=[+expl,+p2]] you ; // 1:0
+%v_3sn_ob :: [pos=v,ob=[+expl,-p1,-p2,-plr,-fem]] it ; // 1:0
+%v_3sm_ob :: [pos=v,ob=[+expl,-p1,-p2,-plr,-fem]] him ; // 1:0
+%v_3sf_ob :: [pos=v,ob=[+expl,-p1,-p2,-plr,+fem]] her ; // 1:0
+%v_1p_ob :: [pos=v,ob=[+expl,+p1,+plr]] us ; // 1:0
+%v_3p_ob :: [pos=v,ob=[+expl,-p1,-p2,+plr,-fem]] them ; // 1:0
+
+#### verbs with definite objects; has to happen before must/should etc. because they make nouns out of verbs
+$v_defsing_ob :: [pos=v,ob=[+expl,-p1,-p2,-plr]] [pos=n,+def,+acc,rl=[+acc],-plr] ; >< 0 1
 
 ### negative
 ## must
+%v_neg_1s_must :: i must_v[pos=v,+aux,+neg,sb=[+expl,+p1,-plr]] not [pos=v,tam=stm] ; 3-> [pos=n] ; // 0:3 2:3
 ## can, could
-%v_neg_1p_can :: i can_v[+neg,sb=[+expl,+p1,-plr],tm=imf] not [pos=v,sb=[+expl,+p1,-plr]] ; // 0:3 2:3
+%v_neg_1s_can :: i can_v[+neg,sb=[+expl,+p1,-plr],tm=imf] not [pos=v,sb=[+expl,+p1,-plr]] ; // 0:3 2:3
 ## should
 %v_neg_1s_should :: i shall_v[pos=v,+neg,tam=pst,+aux,sb=[+expl,+p1,-plr]] not [pos=v,tam=stm] ; 2-> [pos=n] ; // 0:3 2:3
 ## present
@@ -71,6 +89,7 @@
 ## should
 %v_1s_should :: i shall_v[pos=v,tam=pst,+aux,sb=[+expl,+p1,-plr]] [pos=v,tam=stm] ; 2-> [pos=n] ; // 0:2
 ## must
+%v_1s_must :: i must_v[pos=v,+aux,sb=[+expl,+p1,-plr]] [pos=v,tam=stm] ; 2-> [pos=n] ; // 0:2
 ## have to present
 ## have to past
 ## can, could
@@ -96,9 +115,21 @@
 ## about to pres./past (prospective)
 %v_1s_prosp :: i be_v[pos=v,+aux,+prosp] about to [pos=v,sb=[+expl,+p1,-plr],tam=stm] ; // 0:4 2:4 3:4
 ## present ; must follow auxiliary cases
-%v_1ps_prs :: i [pos=v,tam=stm,sb=[+expl,+p1,-plr],tm=imf,ax=al] ; // 0:1
+%v_1s_prs :: i [pos=v,tam=stm,sb=[+expl,+p1,-plr],tm=imf,ax=al] ; // 0:1
+%v_2_prs :: you [pos=v,tam=stm,sb=[+expl,+p2],tm=imf,ax=al] ; // 0:1
+%v_3sm_prs :: he [pos=v,tam=prs,sb=[+expl,-p1,-p2,-plr,-fem],tm=imf,ax=al] ; // 0:1
+%v_3sf_prs :: she [pos=v,tam=prs,sb=[+expl,-p1,-p2,-plr,+fem],tm=imf,ax=al] ; // 0:1
+%v_3sn_prs :: it [pos=v,tam=prs,sb=[+expl,-p1,-p2,-fem,-plr],tm=imf,ax=al] ; // 0:1
+%v_1p_prs :: we [pos=v,tam=stm,sb=[+expl,+p1,+plr],tm=imf,ax=al] ; // 0:1
+%v_3p_prs :: they [pos=v,tam=stm,sb=[+expl,-p1,-p2,+plr],tm=imf,ax=al] ; // 0:1
 ## past
-%v_1ps_pst :: i [pos=v,tam=pst,sb=[+expl,+p1,-plr],tm=prf] ; // 0
+%v_1s_pst :: i [pos=v,tam=pst,sb=[+expl,-p1,-p2,-fem,-plr],tm=prf] ; // 0
+%v_2_pst :: you [pos=v,tam=pst,sb=[+expl,+p2],tm=prf] ; // 0
+%v_3sm_pst :: he [pos=v,tam=pst,sb=[+expl,-p1,-p2,-fem,-plr],tm=prf] ; // 0
+%v_3sf_pst :: she [pos=v,tam=pst,sb=[+expl,-p1,-p2,+fem,-plr],tm=prf] ; // 0
+%v_1p_pst :: we [pos=v,tam=pst,sb=[+expl,+p1,+plr],tm=prf] ; // 0
+%v_3p_pst :: they [pos=v,tam=pst,sb=[+expl,-p1,-p2,+plr],tm=prf] ; // 0
+%v_3sn_pst :: it [pos=v,tam=pst,sb=[+expl,-p1,-p2,-fem,-plr],tm=prf] ; // 0
 
 ## jussive (this has to follow the above because of "he will/can/ought to... let me go")
 %v_1ps_jus :: let me [pos=v,tam=stm,sb=[+expl,+p1,-plr],tm=j_i] ; // 0:2 1:2
@@ -124,6 +155,7 @@
 %v_neg_1s_am :: i be_v[pos=v,+neg,sb=[+expl,+p1,-plr],tam=prs,tm=imf] not ; // 0 2
 %v_neg_3sm_is :: he be_v[pos=v,+neg,sb=[+expl,-p1,-p2,-fem,-plr],tam=prs,tm=imf] ; // 0 2
 %v_neg_3sf_is :: she be_v[pos=v,+neg,sb=[+expl,-p1,-p2,+fem,-plr],tam=prs,tm=imf] ; // 0 2
+%v_net_3sn_is :: it be_v[pos=v,+neg,sb=[+expl,-p1,-p2,+fem,-plr],tam=prs,tm=imf] ; // 0 2
 %v_neg_2_are :: you be_v[pos=v,+neg,sb=[+expl,+p2],tam=prs,tm=imf] ; // 0 2
 %v_neg_1p_are :: we be_v[pos=v,+neg,sb=[+expl,+p1,+plr],tam=prs,tm=imf] ; // 0 2
 %v_neg_3p_are :: they be_v[pos=v,+neg,sb=[+expl,-p1,-p2,+plr],tam=prs,tm=imf] ; // 0 2
@@ -162,10 +194,3 @@
 
 ### other pp forms
 
-#### nouns
-### indefinite articles; eliminate
-%n_adj_indef :: a [pos=a,-def] [pos=n] ; // 0
-%n_indef :: a [pos=n,-def] ; // 0
-### definite articles
-%n_adj_def :: the [pos=a,+def] [pos=n] ; // 0
-%n_def :: the [pos=n,+def] ; // 0

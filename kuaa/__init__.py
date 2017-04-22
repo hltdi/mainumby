@@ -23,7 +23,7 @@
 #
 # =========================================================================
 
-__all__ = ['language', 'entry', 'ui', 'constraint', 'db', 'views', 'variable', 'sentence', 'cs', 'utils', 'record', 'train']
+__all__ = ['language', 'entry', 'ui', 'constraint', 'db', 'views', 'variable', 'sentence', 'cs', 'utils', 'record', 'train', 'tag']
 #  not needed for now: 'learn'
 
 from flask import Flask, url_for, render_template

@@ -1,6 +1,6 @@
 ########################################################################
 #
-#   This file is part of the Mainumby project.
+#   This file is part of the MDT project.
 #
 #   Copyleft 2014, 2016, 2017; HLTDI, PLoGS <gasser@indiana.edu>
 #   

@@ -1,5 +1,5 @@
 #   
-#   Mainumby: languages: dictionaries of lexical/grammatical entries
+#   Mainumby/Mit'mit'a: languages: dictionaries of lexical/grammatical entries
 #
 ########################################################################
 #
@@ -53,6 +53,8 @@
 # -- Postprocessing dict for generation (e.g., ĝ -> g̃)
 # 2016.05.07
 # -- Added nm.grp to group files that are automatically loaded
+# 2017.04.20
+# -- Add possibility of external, off-the-shelf tools for tokenization and POS tagging.
 
 from .entry import *
 from .utils import firsttrue
@@ -107,7 +109,12 @@ EXPL_FEAT_RE = re.compile(r'\s*xf(.*):\s*(.*)\s*=\s*(.*)')
 # clean: â, ä = ã
 CLEAN_RE = re.compile(r'\s*cle.*?:\s*(.*)\s*=\s*(.*)')
 # postprocessing: ĝ = g̃
-POSTPROC_RE = re.compile(r'\s*postproc.*?:\s*(.*)\s*=\s*(.*)')
+VOWEL_RE = re.compile(r'\s*vow.*?:\s*(.*)')
+CONS_RE = re.compile(r'\s*cons.*?:\s*(.*)')
+GEM_RE = re.compile(r'\s*gem.*?:\s*(.*)')
+POSTPROC_RE = re.compile(r'\s*postproc:\s*(.*)\s*=\s*(.*)')
+POSTSYLL_RE = re.compile(r'\s*postsyll.*?:\s*(.*)')
+POSTPUNC_RE = re.compile(r'\s*postpunc.*?:\s*(.*)')
 
 ## Regex for checking for non-ascii characters
 ASCII_RE = re.compile(r'[a-zA-Z]')
@@ -129,6 +136,9 @@ GROUP_SEP = '***'
 TRANS_START = '->'
 HEAD_SEP = ';'
 
+## Default end-of-sentence characters
+EOS = '.!?'
+
 class Language:
     """Dictionaries of words, lexemes, grammatical features, and
     lexical classes."""
@@ -149,17 +159,26 @@ class Language:
     numeral = re.compile("[,.]?\d+[\d.,]*$")
 
     def __init__(self, name, abbrev, use=ANALYSIS, groups=None, groupnames=None,
+                 # When an external tagger is used, these are read in from the .lg file
+                 # exttag: source|spec
+                 # conversion: (POS_tag_conversion_dict, feature_conversion_dict)
+                 exttag=False, conversion=False, lemmas=None,
+                 # end-of-sentence characters
+                 eos=EOS,
                  # Added from morphology/language
                  pos=None, cache=True):
         """Initialize dictionaries and names."""
         self.name = name
         self.abbrev = abbrev
+        # Whether to load POS tagger for this language (from elsewhere)
+        self.exttag = exttag
         self.groups = groups or {}
         # Explicit groups to load instead of default
         self.groupnames = groupnames
         # Candidate groups from training; added 2017.3.6
         self.cand_groups = {}
         self.ms = []
+        self.eos = eos
         self.use = use
         # Dict of groups with names as keys
         self.groupnames = {}
@@ -174,6 +193,13 @@ class Language:
         self.clean = {}
         # Dictionary of postprocessing character conversions
         self.postproc = {}
+        # Dictionary of postprocessing punctuation conversions
+        self.postpunc = {}
+        # Vowels, consonants, gemination character, and conversion dict needed for postprocessing for syllabaries
+        self.vowels = []
+        self.consonants = []
+        self.gem_char = '_'
+        self.postsyll = {}
         # Dictionary of suffixes and suffix sequences and what to do with them
         self.suffixes = {}
         self.accent = None
@@ -181,6 +207,7 @@ class Language:
         # Dictionary of prefixes and prefix sequences and what to do with them
         self.prefixes = {}
         self.punc = None
+        # Character and character sequences representing orthographic units
         self.seg_units = None
         # dict of POS: fst lists
         self.morphology = Morphology()
@@ -190,9 +217,10 @@ class Language:
         # Whether morphological data is loaded
         self.anal_loaded = False
         self.gen_loaded = False
-        self.load_morpho(generate=use in (GENERATION, TARGET, TRAIN),
-                         analyze=use in (ANALYSIS, SOURCE, TRAIN),
-                         segment=False, guess=False, verbose=False)
+        if not exttag:
+            self.load_morpho(generate=use in (GENERATION, TARGET, TRAIN),
+                             analyze=use in (ANALYSIS, SOURCE, TRAIN),
+                             segment=False, guess=False, verbose=False)
         # Categories (and other semantic features) of words and roots; word->cats dict
         self.cats = {}
         self.read_cats()
@@ -216,6 +244,19 @@ class Language:
         # Load groups now if not to be used for translation
         if use in (ANALYSIS,):
             self.read_groups(files=groupnames)
+        # Load POS tagger from NLTK or Spacy if called for for this language
+#        self.conversion = None
+        if exttag:
+            print("Loading external tagger...")
+            source, arg = exttag.split("|")
+            import kuaa.tag as tag
+            if lemmas:
+                lemmas = self.read_lemmas()
+            self.tagger = tag.get_tagger(source, arg, self.abbrev,
+                                         conversion=conversion, lemmas=lemmas,
+                                         eos=self.eos)
+        else:
+            self.tagger = None
 
     @staticmethod
     def is_dig_numeral(string):
@@ -405,6 +446,12 @@ class Language:
             name = 'sem'
         return os.path.join(d, name + '.lex')
 
+    def get_lemma_file(self, name=''):
+        d = self.get_lex_dir()
+        if name == True or not name:
+            name = 'lemmas'
+        return os.path.join(d, name + '.lex')
+
     def get_abbrev_file(self, name=''):
         d = self.get_lex_dir()
         if name == True or not name:
@@ -447,6 +494,19 @@ class Language:
         except IOError:
             pass
 #            print("El archivo semántico {} no existe".format(file))
+
+    def read_lemmas(self):
+        """Read in word, lemmas pairs, returning a dict."""
+        lemmas = {}
+        file = self.get_lemma_file()
+        try:
+            with open(file, encoding='utf8') as f:
+                for line in f:
+                    word, lemma = line.strip().split()
+                    lemmas[word] = lemma
+        except IOError:
+            print("No lemma file found")
+        return lemmas
 
     def get_cats(self, form):
 #        print("Getting cats for {}".format(form))
@@ -584,7 +644,7 @@ class Language:
 #            lines = contents.split('\n')
 
             seg = []
-            punc = []
+            postsyll = []
             abbrev = {}
             fv_abbrev = {}
             trans = {}
@@ -631,6 +691,24 @@ class Language:
                     seg = m.group(1).split()
                     continue
 
+                m = VOWEL_RE.match(line)
+                if m:
+                    vowels = m.group(1).split()
+                    self.vowels = vowels
+                    continue
+
+                m = CONS_RE.match(line)
+                if m:
+                    cons = m.group(1).split()
+                    self.consonants = cons
+                    continue
+
+                m = GEM_RE.match(line)
+                if m:
+                    gem = m.group(1)
+                    self.gem_char = gem
+                    continue
+
                 m = ACC_RE.match(line)
                 if m:
                     acc = m.group(1).split(',')
@@ -657,8 +735,21 @@ class Language:
 
                 m = PUNC_RE.match(line)
                 if m:
-                    current = 'punc'
-                    punc = m.group(1).split()
+                    self.punc = m.group(1).split()
+                    continue
+
+                m = POSTPUNC_RE.match(line)
+                if m:
+                    pairs = m.group(1).split()
+                    for pair in pairs:
+                        source, target = pair.split('=')
+                        self.postpunc[source] = target
+                    continue
+
+                m = POSTSYLL_RE.match(line)
+                if m:
+                    current = 'postsyll'
+                    postsyll = m.group(1).split()
                     continue
 
                 m = TRANS_RE.match(line)
@@ -839,11 +930,11 @@ class Language:
                 elif current == 'seg':
                     seg.extend(line.strip().split())
 
-                elif current == 'punc':
-                    punc.extend(line.strip().split())
-
                 elif current == 'pos':
                     pos.extend(line.strip().split())
+
+                elif current == 'postsyll':
+                    postsyll.extend(line.strip().split())
 
                 elif current == 'trans':
                     wd, gls = line.strip().split('=')
@@ -855,9 +946,11 @@ class Language:
                     print("Warning: can't interpret line in .mrf file: {}".format(line))
 #                    raise ValueError("bad line: {}".format(line))
 
-            if punc:
-                # Make punc list into a string
-                self.punc = ''.join(punc)
+            if postsyll:
+                # Make postsyll pairs into a dict
+                for pair in postsyll:
+                    roman, native = pair.split('=')
+                    self.postsyll[roman] = native
 
             if seg:
                 # Make a bracketed string of character ranges and other characters
@@ -1354,7 +1447,7 @@ class Language:
     ### End of morphology stuff
 
     def to_dict(self):
-        """Convert the language to a dictionary to be serialized as a yaml file."""
+        """Convert the language to a dictionary to be serialized as a yaml file. This is old and needs to be updated."""
         d = {}
         d['name'] = self.name
         d['abbrev'] = self.abbrev
@@ -1363,11 +1456,11 @@ class Language:
             for head, v in self.groups.items():
                 groups[head] = [g.to_dict() for g in v]
             d['groups'] = groups
-        if self.forms:
-            forms = {}
-            for k, v in self.forms.items():
-                # v is an fv dict or a list of fv dicts
-                forms[k] = v
+#        if self.forms:
+#            forms = {}
+#            for k, v in self.forms.items():
+#                # v is an fv dict or a list of fv dicts
+#                forms[k] = v
         return d
 
     def write(self, directory, filename=''):
@@ -1473,9 +1566,27 @@ class Language:
     @staticmethod
     def from_dict(d, reverse=True, use=ANALYSIS):
         """Convert a dict (loaded from a yaml file) to a Language object."""
+#        print("Language dict")
 #        for k, v in d.items():
 #            print("{}: {}".format(k, v))
-        l = Language(d.get('name'), d.get('abbrev'), use=use)
+        exttag = d.get('exttag')
+        conversion = None
+        if exttag:
+            # External tagger, so also look for conversion dictionaries for tags
+            feat_conv = d.get('morphology')
+            # Convert this to a dict with (word, tag) keys and lemma, FSSet values
+            new_feat_conv = {}
+            for key, (lemma, feats) in feat_conv.items():
+                wrd_tag = key.split('|')
+                tag = wrd_tag[0]
+                wrd = wrd_tag[1] if len(wrd_tag) == 2 else ''
+                new_feat_conv[(wrd, tag)] = (lemma, feats)
+            conversion = (d.get('pos'), new_feat_conv)
+            
+        l = Language(d.get('name'), d.get('abbrev'), use=use,
+                     exttag=exttag, conversion=conversion,
+                     eos=d.get('eos', EOS),
+                     lemmas=d.get('lemmas'))
         translations = d.get('translations')
         if translations:
             for s, t in translations.items():
@@ -1489,50 +1600,80 @@ class Language:
                 tokens = v.split()
                 l.patterns[k] = tokens
                 l.pattern_list.append((k, tokens))
-        # Create sorted pattern list
-#        l.pattern_list = list(l.patterns.items())
-#        l.pattern_list.sort(key=lambda x: len(x[1]), reverse=True)
-#        l.possible = d.get('possible')
-#        groups = d.get('groups')
-#        if groups:
-#            l.groups = {}
-#            for head, v in groups.items():
-#                group_objs = [Group.from_dict(g, l, head) for g in v]
-#                l.groups[head] = group_objs
-#                # Add groups to groupnames dict
-#                for go in group_objs:
-#                    l.groupnames[go.name] = go
-#        forms = d.get('forms')
-#        if forms:
-#            l.forms = {}
-#            for k, v in forms.items():
-#                # v should be a dict or a list of dicts
-#                # Convert features value to a FeatStruct object
-#                if isinstance(v, dict):
-#                    if 'features' in v:
-#                        v['features'] = FeatStruct(v['features'])
-#                else:
-#                    for d in v:
-#                        if 'features' in d:
-#                            d['features'] = FeatStruct(d['features'])
-#                l.forms[k] = v
-#                if reverse:
-#                    # Add item to genform dict
-#                    if isinstance(v, dict):
-#                        if 'seg' not in v:
-#                            l.add_genform(k, v['root'], v.get('features'))
-#                    else:
-#                        for d in v:
-#                            l.add_genform(k, d['root'], d.get('features'))
         return l
 
     @staticmethod
     def read(path, use=ANALYSIS):
-        """Create a Language from the contents of a yaml file, a dict
-        that must be then converted to a Language."""
+        """Create a Language from the contents of a file, a dict that must be then converted to a Language.
+        2017.4.18: Stopped using YAML."""
+        dct = {}
+        key = '' 
+        subdct = {}
+        ls = []
         with open(path, encoding='utf8') as file:
-            dct = yaml.load(file)
-            return Language.from_dict(dct, use=use)
+            lines = file.read().split('\n')[::-1]
+            while lines:
+                line = lines.pop().split('#')[0].strip() # strip comments
+                if not line: continue                    # ignore blank lines
+                splitline = line.split()
+                if splitline[0].endswith(':'):
+                    # the name of a new dict key
+                    if len(splitline) > 1:
+                        # the value is in this line
+                        key = splitline[0][:-1]
+                        value = splitline[1]
+                        dct[key] = value
+                        # if there's a subdct, incorporate it
+                        if subdct and key:
+#                            print("Adding subdict {}".format(key))
+#                            print("  {}".format(subdct))
+                            dct[key] = subdct
+                            key = ''
+                            subdct = {}
+                        # if there's a sublist, incorporate it
+                        elif ls and key:
+                            dct[key] = ls
+                            key = ''
+                            ls = []
+                    else:
+                        # the name of subdct
+                        # First add the last one
+                        if subdct and key:
+#                            print("Adding subdict {}".format(key))
+                            dct[key] = subdct
+                            subdct = {}
+                        elif ls and key:
+#                            print("Adding sublist {}".format(key))
+                            dct[key] = ls
+                            ls = []
+                        key = splitline[0][:-1]
+#                        print("New subdict: {}".format(key))
+                    continue
+                if '::' in line:
+                    # key and value for subdict
+                    # We need rpartition rather than split to handle the case :::pct
+                    subkey, xx, value = line.rpartition('::')
+                    subkey = subkey.strip()
+                    if '|' in value:
+                        value = value.split('|')
+                    subdct[subkey] = value
+                    continue
+                if line[0] == '-':
+                    # Sublist to add to list
+                    sublist = line.split('-')[1].strip()
+                    sublist = sublist.split(',')
+#                    print(" Sublist item: {}".format(sublist))
+                    ls.append(sublist)
+                    continue
+#                print("Something wrong with line {}".format(line))
+
+        if subdct and key:
+            dct[key] = subdct
+        elif ls and key:
+            dct[key] = ls
+                        
+#            dct = yaml.load(file)
+        return Language.from_dict(dct, use=use)
 
     @staticmethod
     def load_trans(source, target, groups=None, train=False):
@@ -1725,6 +1866,10 @@ class Language:
                     for d, c in self.postproc.items():
                         if d in outp:
                             output[oi] = outp.replace(d, c)
+            if self.postsyll:
+                # There is a syllabic postprocessing dict, apply it
+                for oi,outp in enumerate(output):
+                    output[oi] = self.syll_postproc(outp)
             return output
         else:
             print("The root/feature combination {}:{} can't be generated for POS {}!".format(root, features.__repr__(), pos))
@@ -1737,6 +1882,50 @@ class Language:
         for root in roots:
             outputs.extend(self.generate(root, features, pos=pos, guess=guess, roman=roman, cache=cache, verbosity=verbosity))
         return output
+
+    def punc_postproc(self, punc):
+        """Convert punctuation to another script if possible."""
+        if self.postpunc:
+            return self.postpunc.get(punc, punc)
+        return punc
+
+    def syll_postproc(self, form, replace_gem=True):
+        """Convert romanized form to a representation in a syllabary."""
+        dct = self.postsyll
+        vowels = self.vowels
+        # First delete gemination characters if required
+        if replace_gem:
+            form = form.replace(self.gem_char, '')
+        # Segment
+        res = ''
+        n = 0
+        nochange = False
+        while n < len(form):
+            char = form[n]
+            if n < len(form) - 1:
+                next_char = form[n + 1]
+                if next_char in vowels:
+                    # Doesn't handle long vowels
+                    trans = dct.get(form[n : n + 2], char + next_char)
+                    n += 1
+                elif next_char == 'W' or char == '^':
+                    # Consonant represented by 2 roman characters; this needs to be more general obviously
+                    if n < len(form) - 2 and form[n + 2] in vowels:
+                        # followed by vowel
+                        trans = dct.get(form[n : n + 3], char + next_char + form[n + 2])
+                        n += 1
+                        # followed by consonant
+                    else:
+                        trans = dct.get(form[n : n + 2], char + next_char)
+                    n += 1
+                else:
+                    trans = dct.get(char, char)
+            else:
+                trans = dct.get(char, char)
+            res += trans
+            n += 1
+        return res
+                      
 
 class LanguageError(Exception):
     '''Class for errors encountered when attempting to update the language.'''

@@ -78,7 +78,9 @@ class SolSeg:
 
     def __init__(self, solution, indices, translation, tokens, color=None,
                  spec_indices=None, session=None, gname=None, merger_groups=None):
+        print("Creating SolSeg with solution {}, indices {}, translation {}, tokens {}".format(solution, indices, translation, tokens))
         self.source = solution.source
+        self.target = solution.target
         self.indices = indices
         # Are there any alternatives among the translations?
         self.any_choices = any(['|' in t for t in translation])
@@ -232,6 +234,8 @@ class SNode:
         # Back pointer to sentence
         self.sentence = sentence
         # Raw sentence tokens associated with this SNode
+#        print("Tokens {}".format(sentence.tokens))
+#        print("Raw indices {}".format(self.raw_indices))
         self.raw_tokens = [sentence.tokens[i] for i in self.raw_indices]
         # Any deleted tokens to the left or right of the SNode token
         self.left_delete = None
@@ -729,6 +733,7 @@ class TreeTrans:
         # The solution generating this translation
         self.solution = solution
         self.source = solution.source
+        self.target = solution.target
         self.sentence = solution.sentence
         # Dict keeping information about each gnode; this dict is shared across different TreeTrans instances
         self.abs_gnode_dict = abs_gnode_dict
@@ -1121,8 +1126,11 @@ class TreeTrans:
                 print("  Token {}, features {}, index {}, root {}, pos {}".format(token, features.__repr__(), index, root, pos))
             output = [token]
             if not pos:
-                # This word doesn't require generation, just return it in a list
+                # This word doesn't require generation, just postprocess and return it in a list
 #                print("Generating {}: {}".format(index, output))
+                if self.target.postsyll:
+                    token = self.target.syll_postproc(token)
+                    output = [token]
                 self.nodes.append((output, index))
             else:
 #                print("Generating {} : {} : {}".format(root, features.__repr__(), pos))

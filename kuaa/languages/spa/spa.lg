@@ -3,55 +3,55 @@ abbrev: spa
 source: True
 target: True
 classes:
-- [$digito, un una dos tres cuatro cinco seis siete ocho nueve]
-- [$10_19, diez once doce trece catorce quince dieciseis diecesiete dieciocho diecinueve]
-- [$10, veinte treinta cuarenta cincuenta sesenta setenta ochenta noventa]
-- [$100, cien cientos cientas doscientos doscientas trescientos trescientas cuatrocientos cuatrocientas quinientos quinientas seiscientos seiscientas sietecientos sietecientas ochocientos ochocientas novecientos novecientas]
-- [$millon, millón billón trillón cuatrillón]
-- [$millones, millones billones trillones cuatrillones]
-- [$num0, $digito $10_19 $10]
-- [$num1, $digito $10_19 $10 $100]
-- [$num2, $digito $10_19 $10 $100 mil]
-- [$num3, cero $digito $10_19 $10 $100 mil]
-- [$dia, lunes martes miércoles jueves viernes sábado domingo]
-- [$mes, enero febrero marzo abril mayo junio julio agosto setiembre septiembre octubre noviembre diciembre]
+- $digito, un una dos tres cuatro cinco seis siete ocho nueve
+- $10_19, diez once doce trece catorce quince dieciseis diecesiete dieciocho diecinueve
+- $10, veinte treinta cuarenta cincuenta sesenta setenta ochenta noventa
+- $100, cien cientos cientas doscientos doscientas trescientos trescientas cuatrocientos cuatrocientas quinientos quinientas seiscientos seiscientas sietecientos sietecientas ochocientos ochocientas novecientos novecientas
+- $millon, millón billón trillón cuatrillón
+- $millones, millones billones trillones cuatrillones
+- $num0, $digito $10_19 $10
+- $num1, $digito $10_19 $10 $100
+- $num2, $digito $10_19 $10 $100 mil
+- $num3, cero $digito $10_19 $10 $100 mil
+- $dia, lunes martes miércoles jueves viernes sábado domingo
+- $mes, enero febrero marzo abril mayo junio julio agosto setiembre septiembre octubre noviembre diciembre
 patterns:
-- [/num_121, $100 /num_21]
-- [/num_120, $100 $num0]
-- [/num_21, $10 y $digito]
-- [/num_millones1, $num2 $millones de]
-- [/num_2121, $num1 mil /num_121]
-- [/num_2120, $num1 mil /num_120]
-- [/num_2020, $num1 mil $num1]
-- [/num_mil, $num1 mil]
-- [/num_miles, miles de]
-- [/num_millon, un $millon de]
-- [/num_millones0, $millones de]
-- [/num_millones1, $num2 $millones de]
-- [/num_1999, mil /num_121]
-- [/num_1901, mil /num_120]
-- [/num_1900, mil $num1]
-- [/num1, $num3]
+- /num_121, $100 /num_21
+- /num_120, $100 $num0
+- /num_21, $10 y $digito
+- /num_millones1, $num2 $millones de
+- /num_2121, $num1 mil /num_121
+- /num_2120, $num1 mil /num_120
+- /num_2020, $num1 mil $num1
+- /num_mil, $num1 mil
+- /num_miles, miles de
+- /num_millon, un $millon de
+- /num_millones0, $millones de
+- /num_millones1, $num2 $millones de
+- /num_1999, mil /num_121
+- /num_1901, mil /num_120
+- /num_1900, mil $num1
+- /num1, $num3
 translations:
-  N_un: N_peteĩ
-  N_una: N_peteĩ
-  N_dos: N_mokõi
-  N_tres: N_mbohapy
-  N_cuatro: N_irundy
-  N_cinco: ND_5
-  N_seis: ND_6
-  N_siete: ND_7
-  N_ocho: ND_8
-  N_nueve: ND_9
-  N_diez: ND_10
-  N_once: ND_11
-  N_doce: ND_12
-  N_trece: ND_13
-  N_catorce: ND_14
-  N_quince: ND_15
-  N_dieciseis: ND_16
-  N_diecisiete: ND_17
-  N_dieciocho: ND_18
-  N_diecenueve: ND_19
-  N_veinte: ND_20
+  N_un::N_peteĩ
+  N_una::N_peteĩ
+  N_dos::N_mokõi
+  N_tres::N_mbohapy
+  N_cuatro::N_irundy
+  N_cinco::ND_5
+  N_seis::ND_6
+  N_siete::ND_7
+  N_ocho::ND_8
+  N_nueve::ND_9
+  N_diez::ND_10
+  N_once::ND_11
+  N_doce::ND_12
+  N_trece::ND_13
+  N_catorce::ND_14
+  N_quince::ND_15
+  N_dieciseis::ND_16
+  N_diecisiete::ND_17
+  N_dieciocho::ND_18
+  N_diecenueve::ND_19
+  N_veinte::ND_20
 
