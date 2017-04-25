@@ -52,11 +52,12 @@ def load1(lang='eng'):
     l = kuaa.Language.load_lang(lang)
     return l
 
-def edoc(text):
+def ea_doc(text, process=True):
     e = kuaa.Language.languages.get('eng')
     if not e:
-        e = load1()
-    d = kuaa.Document(e, text=text, proc=False)
+        e, a = load_ea()
+#        e = load1()
+    d = kuaa.Document(e, a, text=text, proc=process)
     return d
 
 def output_sols(sentence):

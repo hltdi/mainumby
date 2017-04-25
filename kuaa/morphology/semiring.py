@@ -22,6 +22,9 @@
 # 2016.06.01
 # -- New functions for unification and agreement, extending those in FeatStruct.
 #    Needed for features of merged nodes.
+# 2017.04.24
+# -- Added unify_FS method and cast option for unfreeze (otherwise it
+#    returns a list FeatStructs).
 
 from .fs import *
 from .utils import *
@@ -75,12 +78,23 @@ class FSSet(set):
         return fsset
 
     def unify(self, fs2):
+        """Unify this FSSet with another one."""
         result1 = [simple_unify(f1, f2) for f1 in list(self) for f2 in list(fs2)]
         if every(lambda x: x == TOP, result1):
             # If everything unifies to TOP, return one of them
             return TOPFSS
         else:
             # Get rid of all instances of TOP and unification failures
+            return FSSet(*filter(lambda x: x != 'fail', result1))
+
+    def unify_FS(self, fs, strict=False, verbose=False):
+        """Attempt to unify this FSSet with a simple FeatStruct instance, basically filter
+        the FeatStructs in the set by their unification with fs. Pretty much like FSSet.unify()."""
+        # This is a list of the unifications of the elements of self with fs
+        result1 = [simple_unify(f1, fs, strict=strict, verbose=verbose) for f1 in list(self)]
+        if every(lambda x: x == TOP, result1):
+            return TOPFSS
+        else:
             return FSSet(*filter(lambda x: x != 'fail', result1))
 
     @staticmethod
@@ -173,9 +187,12 @@ class FSSet(set):
                 fslist.append(fs)
         return FSSet(*fslist)
 
-    def unfreeze(self):
-        """A copy of the FSSet (as a list!) that is a set of unfrozen FSs."""
-        return [fs.copy() for fs in self]
+    def unfreeze(self, cast=False):
+        """A copy of the FSSet (as a list unless cast is True!) that is a set of unfrozen FSs."""
+        c = [fs.copy() for fs in self]
+        if cast:
+            c = FSSet(c)
+        return c
 
 ## Feature structure that unifies with anything.
 TOP = FeatStruct('[]')

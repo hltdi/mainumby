@@ -54,9 +54,12 @@
 # -- OK, I still wasn't quite finished.
 # 2017.03
 # -- Display for GInsts improved.
+# 2017.04.24
+# -- Got things to work with external tagger (not many changes).
 
 import itertools, copy, re
 from .cs import *
+from kuaa.morphology.semiring import FSSet
 # needed for a few static methods
 from .entry import Entry, Group
 from .record import SegRecord
@@ -215,10 +218,13 @@ class SolSeg:
 class SNode:
     """Sentence token and its associated analyses and variables."""
 
-    def __init__(self, token, index, analyses, sentence, raw_indices): #, del_indices=None):
+    def __init__(self, token, index, analyses, sentence, raw_indices,
+                 rawtoken=None): #, del_indices=None):
 #        print("Creating SNode with args {}, {}, {}, {}".format(token, index, analyses, sentence))
         # Raw form in sentence (possibly result of segmentation)
         self.token = token
+        # Original form of this node's token (may be capitalized)
+        self.rawtoken = rawtoken
         # Position in sentence
         self.index = index
         # Positions in original sentence
@@ -370,6 +376,8 @@ class SNode:
                 node_cats = analysis.get('cats', [])
                 node_root = analysis.get('root', '')
                 node_roots = None
+                if verbosity > 1:
+                    print("    Trying to match analysis: {}/{}/{} against group".format(node_root, node_cats, node_features.__repr__()))
                 if '_' in node_root and not SolSeg.special_re.match(node_root):
                     # Numbers and other special tokens also contain '_'
                     node_roots = []
@@ -399,7 +407,13 @@ class SNode:
                     if grp_feats:
                         # 2015.7.5: strict option added to force True feature in grp_features
                         # to be present in node_features, e.g., for Spanish reflexive
-                        u_features = simple_unify(node_features, grp_feats, strict=True)
+                        if verbosity > 1:
+                            print("    Unifying n feats {} ({}) with g feats {} ({})".format(node_features, type(node_features), grp_feats.__repr__(), type(grp_features)))
+                        nfeattype = type(node_features)
+                        if nfeattype == FSSet:
+                            u_features = node_features.unify_FS(grp_feats, strict=True)
+                        else:
+                            u_features = simple_unify(node_features, grp_feats, strict=True)
                         if u_features != 'fail':
                             # SUCCEED: matched token and features
                             results.append((node_root, u_features))
@@ -572,6 +586,7 @@ class GInst:
         translations = self.group.get_translations()
         # Sort group translations by their translation frequency
         Group.sort_trans(translations)
+        print("Setting translations for {}: {}".format(self, translations))
 #        if verbosity:
 #            print("Translations {}".format(translations))
         # If alignments are missing, add default alignment
@@ -582,8 +597,8 @@ class GInst:
         ntokens = len(self.group.tokens)
         for tgroup, s2t_dict in translations:
             nttokens = len(tgroup.tokens)
-            if verbosity > 1:
-                print(" set_translations(): tgroup {}, s2t_dict {}".format(tgroup, s2t_dict))
+#            if verbosity > 1:
+            print("   tgroup {}, s2t_dict {}".format(tgroup, s2t_dict))
             # If there's no explicit alignment, it's the obvious default
             if 'align' in s2t_dict:
                 alignment = s2t_dict.get('align')

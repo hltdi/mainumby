@@ -97,12 +97,16 @@
 # -- Fixed a serious bug in MS matching, which came up when two successive sentence elements
 #    matched the same pattern element, causing <V them> to fail for "I will see them".
 # -- Fixed element swapping in MS application, which wasn't working where there were deleted elements.
+# 2017.4.24
+# -- Fixed matching for Morphosyn and Group with external tagger. Basically this involves accepting
+#    FSSets for features in addition to simple FeatStructs. Later FSSet should be the only possibility.
 
 import copy, itertools
 import yaml
 import re
 
 from kuaa.morphology.fs import *
+from kuaa.morphology.semiring import FSSet
 
 ## Group files
 LEXEME_CHAR = '_'
@@ -406,19 +410,24 @@ class Group(Entry):
                     # This is the token corresponding to the group head
                     # If this is the sentence-initial node and token is capitalized, match with
                     # node's head capitalized.
+                    node_verbosity = 0
+                    if verbosity > 1 or self.debug:
+                        node_verbosity = 2
                     if self.capitalized and head_sindex == 0:
                         if verbosity > 1 or self.debug:
                             print("    Matching capitalized group head with sentence-initial word")
-                        node_match = node.match(token.lower(), feats, verbosity=verbosity)
+                        node_match = node.match(token.lower(), feats, verbosity=node_verbosity)
                         # Capitalize the node's token if this succeeds
                         if node_match != False:
                             node.token = node.token.capitalize()
                     else:
-                        node_match = node.match(token, feats, verbosity=verbosity)
+                        if verbosity > 1 and self.debug:
+                            print("    Matching token {} and feats [] against node {}".format(token, feats, node))
+                        node_match = node.match(token, feats, verbosity=node_verbosity)
                     if node_match == False:
                         # This has to match, so fail now
                         if verbosity or self.debug:
-                            print("   {} failed to match in head token {}".format(self, token))
+                            print("   {} failed to find match for head token {} with node {}".format(self, token, node))
                         return False
                     else:
 #                        print("  matched head {}".format(token))
@@ -958,7 +967,8 @@ class MorphoSyn(Entry):
                     # If there are no anals but True, replace [True] with []
                     if match[1] == [True]:
                         match[1] = []
-#                    print(" {} found match {} for token {}".format(self, match, stoken))
+                    if self.debug:
+                        print(" {} found match {} for token {}".format(self, match, stoken))
                     result.append(match)
                     # Is this the end of the pattern? If so, succeed.
                     if self.pattern_length() == pindex + 1:
@@ -1063,15 +1073,23 @@ class MorphoSyn(Entry):
         if not pforms or any([sroot == f for f in pforms]):
             if verbosity > 1 or self.debug:
                 print("    Root matched")
-            # root matches
-#            print("{} unifying {}/{} and {}/{}".format(self, sroot, sfeats.__repr__(), pforms, pfeats.__repr__()))
-            u = simple_unify(sfeats, pfeats)
+                print("   {} unifying {}/{} and {}/{}".format(self, sroot, sfeats.__repr__(), pforms, pfeats.__repr__()))
+            if isinstance(sfeats, FSSet):
+                # This returns an FSSet too
+#                print("   Unifying FSSet {} with FeatStruct {}".format(sfeats, pfeats))
+                u = sfeats.unify_FS(pfeats)
+            else:
+                u = simple_unify(sfeats, pfeats)
             if u != 'fail':
                 if not neg:
-                    if verbosity > 1 or self.debug:
-                        print("    Feats matched")
                     # result could be frozen if nothing changed; we need an unfrozen FS for later changes
-                    return u.unfreeze()
+                    if isinstance(u, FSSet):
+                        u = u.unfreeze(cast=True)
+                    else:
+                        u = u.unfreeze()
+                    if verbosity > 1 or self.debug:
+                        print("    Feats matched: {}, (type {})".format(u, type(u)))
+                    return u
                 elif verbosity > 1 or self.debug:
                     print("    Anals failed")
             elif neg:
@@ -1173,6 +1191,9 @@ class MorphoSyn(Entry):
             # Replace the features if match element has any
             m_feats_list = m_elem[1]
             s_anals = s_elem[1]
+            # FIX THIS LATER; s_anals DOESN'T REALLY NEED TO BE A LIST
+            if not isinstance(s_anals, list):
+                s_anals = [s_anals]
             new_s_anals = []
             if m_feats_list:
                 if not s_anals:
@@ -1183,6 +1204,8 @@ class MorphoSyn(Entry):
                         continue
                     else:
                         s_feats = s_anal['features']
+                        if self.debug:
+                            print("  m_feats {} (type {}), s_feats {}".format(m_feats, type(m_feats), s_feats))
                         if s_feats != m_feats:
                             # Replace sentence features with match features if something
                             # has changed

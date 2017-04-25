@@ -153,18 +153,18 @@ $v_defsing_ob :: [pos=v,ob=[+expl,-p1,-p2,-plr]] [pos=n,+def,+acc,rl=[+acc],-plr
 ### be
 ## negative
 %v_neg_1s_am :: i be_v[pos=v,+neg,sb=[+expl,+p1,-plr],tam=prs,tm=imf] not ; // 0 2
-%v_neg_3sm_is :: he be_v[pos=v,+neg,sb=[+expl,-p1,-p2,-fem,-plr],tam=prs,tm=imf] ; // 0 2
-%v_neg_3sf_is :: she be_v[pos=v,+neg,sb=[+expl,-p1,-p2,+fem,-plr],tam=prs,tm=imf] ; // 0 2
-%v_net_3sn_is :: it be_v[pos=v,+neg,sb=[+expl,-p1,-p2,+fem,-plr],tam=prs,tm=imf] ; // 0 2
-%v_neg_2_are :: you be_v[pos=v,+neg,sb=[+expl,+p2],tam=prs,tm=imf] ; // 0 2
-%v_neg_1p_are :: we be_v[pos=v,+neg,sb=[+expl,+p1,+plr],tam=prs,tm=imf] ; // 0 2
-%v_neg_3p_are :: they be_v[pos=v,+neg,sb=[+expl,-p1,-p2,+plr],tam=prs,tm=imf] ; // 0 2
-%v_neg_1s_was :: i be_v[pos=v,+neg,sb=[+expl,+p1,-plr],tam=pst,tm=prf] ; // 0 2
-%v_neg_3sm_was :: he be_v[pos=v,+neg,sb=[+expl,-p1,-p2,-fem,-plr],tam=pst,tm=prf] ; // 0 2
-%v_neg_3sf_was :: she be_v[pos=v,+neg,sb=[+expl,-p1,-p2,+fem,-plr],tam=pst,tm=prf] ; // 0 2
-%v_neg_2_were :: you be_v[pos=v,+neg,sb=[+expl,+p2],tam=pst,tm=prf] ; // 0 2
-%v_neg_1p_were :: we be_v[pos=v,+neg,sb=[+expl,+p1,+plr],tam=pst,tm=prf] ; // 0 2
-%v_neg_3p_were :: they be_v[pos=v,+neg,sb=[+expl,-p1,-p2,+plr],tam=pst,tm=prf] ; // 0 2
+%v_neg_3sm_is :: he be_v[pos=v,+neg,sb=[+expl,-p1,-p2,-fem,-plr],tam=prs,tm=imf] not ; // 0 2
+%v_neg_3sf_is :: she be_v[pos=v,+neg,sb=[+expl,-p1,-p2,+fem,-plr],tam=prs,tm=imf] not ; // 0 2
+%v_net_3sn_is :: it be_v[pos=v,+neg,sb=[+expl,-p1,-p2,+fem,-plr],tam=prs,tm=imf] not ; // 0 2
+%v_neg_2_are :: you be_v[pos=v,+neg,sb=[+expl,+p2],tam=prs,tm=imf] not ; // 0 2
+%v_neg_1p_are :: we be_v[pos=v,+neg,sb=[+expl,+p1,+plr],tam=prs,tm=imf] not ; // 0 2
+%v_neg_3p_are :: they be_v[pos=v,+neg,sb=[+expl,-p1,-p2,+plr],tam=prs,tm=imf] not ; // 0 2
+%v_neg_1s_was :: i be_v[pos=v,+neg,sb=[+expl,+p1,-plr],tam=pst,tm=prf] not ; // 0 2
+%v_neg_3sm_was :: he be_v[pos=v,+neg,sb=[+expl,-p1,-p2,-fem,-plr],tam=pst,tm=prf] not ; // 0 2
+%v_neg_3sf_was :: she be_v[pos=v,+neg,sb=[+expl,-p1,-p2,+fem,-plr],tam=pst,tm=prf] not ; // 0 2
+%v_neg_2_were :: you be_v[pos=v,+neg,sb=[+expl,+p2],tam=pst,tm=prf] not ; // 0 2
+%v_neg_1p_were :: we be_v[pos=v,+neg,sb=[+expl,+p1,+plr],tam=pst,tm=prf] not ; // 0 2
+%v_neg_3p_were :: they be_v[pos=v,+neg,sb=[+expl,-p1,-p2,+plr],tam=pst,tm=prf] not ; // 0 2
 ## affirmative
 # present
 %v_1s_am :: i be_v[pos=v,sb=[+expl,+p1,-plr],tam=prs,tm=imf,-aux] ; // 0

@@ -55,6 +55,8 @@
 # -- Added nm.grp to group files that are automatically loaded
 # 2017.04.20
 # -- Add possibility of external, off-the-shelf tools for tokenization and POS tagging.
+# 2017.04.24
+# -- Fixed various stuff needed to make spaCy tagger work for English.
 
 from .entry import *
 from .utils import firsttrue

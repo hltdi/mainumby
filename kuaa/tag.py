@@ -31,6 +31,8 @@
 # -- Lots of things fixed in NLTK class. It now uses nltk.word_tokenizer
 #    for tokenization and then separates sentences on the basis of EOS
 #    characters before using a Brill tagger to do POS tagging.
+# 2017.4.22-4
+# -- Switched to spaCy for English. Fixed what was needed to make that work.
 
 import os
 from kuaa.morphology.semiring import FSSet
@@ -216,7 +218,18 @@ class Spacy(Tagger):
         featconv = self.get_feat_conversion()
         tag = self.get_tag(item)
         token = item.text
-        return featconv.get((token, tag), featconv.get(('', tag)))
+        mdt_feats = featconv.get((token, tag), featconv.get(('', tag)))
+        if mdt_feats:
+            lemma, features = mdt_feats
+            if lemma == '=':
+                lemma = token
+            elif lemma == '*':
+                lemma = self.get_lemma(item)
+            if features:
+                features = FSSet(*features.split(';'))
+            return lemma, features
+        else:
+            return token, None
 
     def get_lemma(self, item):
         return item.lemma_
@@ -241,13 +254,18 @@ class Spacy(Tagger):
         sentences = []
         sentence = []
         for item in tagged:
-            print("Item {}".format(item))
-            print("  Repr {}".format(self.get_repr(item)))
+#            print("Item {}".format(item))
+#            print("  Repr {}".format(self.get_repr(item)))
             itext, ilemma, ipos, itag, mpos, mfeats = self.get_repr(item)
             pos_exp = Tagger.expand_POS(mpos)
             short_pos = pos_exp[0]
-            root = ilemma + '_' + short_pos
-            sentence.append((itext, {'root': root, 'features': mfeats}))
+            if ilemma[0] == '-':
+                ilemma = itext
+            if short_pos:
+                root = ilemma + '_' + short_pos
+            else:
+                root = itext
+            sentence.append((itext, {'root': root, 'features': mfeats[1]}))
             if self.is_eos(item):
                 sentences.append(sentence)
                 sentence = []

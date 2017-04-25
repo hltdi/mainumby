@@ -1397,7 +1397,7 @@ class FeatureValueConcat(SubstituteBindingsSequence, tuple):
 #{ Simple unification (no variables)
 ######################################################################
 
-def simple_unify(x, y, strict=False):
+def simple_unify(x, y, strict=False, verbose=False):
     """Unify the expressions x and y, returning the result or 'fail'."""
     # If either expression doesn't exist, return the other, unless this is the top-level
     # If they're the same, return one.
@@ -1405,18 +1405,19 @@ def simple_unify(x, y, strict=False):
         return x
     # If both are dicts, call unify_dict
     elif isinstance(x, FeatStruct) and isinstance(y, FeatStruct):
-        return unify_dicts(x, y, strict=strict)
+        return unify_dicts(x, y, strict=strict, verbose=verbose)
     # Otherwise fail
     else:
         return 'fail'
 
-def unify_dicts(x, y, strict=False):
+def unify_dicts(x, y, strict=False, verbose=False):
     '''Try to unify two dicts in the context of bindings, returning the merged result.
     If strict is True, all features in y must appear explictly in x for success (unless the
     feature's value is False)."""
 #    only succeed if there are explicit matching values in both FSs.'''
     # Make an empty dict of the type of x
-#    print('Unifying dicts {} {}'.format(x.__repr__(), y.__repr__()))
+    if verbose:
+        print('Unifying dicts {} {}'.format(x.__repr__(), y.__repr__()))
     result = FeatStruct()
     for k in set(x.keys()) | set(y.keys()):
         # Check all of the keys of x and y

@@ -1,5 +1,5 @@
 #   
-#   Mainumby: sentences and how to parse and translate them.
+#   Mainumby/Mit'mit'a: sentences and how to parse and translate them.
 #
 ########################################################################
 #
@@ -144,6 +144,8 @@
 # 2017.04.13
 # -- Incorporated external tokenizer/tagger into Document class, replacing Document.tokenize(). Document.split(), and
 #    Language.anal_word() in Sentence.
+# 2017.04.24
+# -- Got sentence initialization and solution to work with external tagger.
 
 import copy, re, random, itertools
 from .ui import *
@@ -267,7 +269,7 @@ class Document(list):
 #            print("Found {} sentences".format(len(sentences)))
             for s in sentences:
                 tokens = [t[0] for t in s]
-                print("Tokens {}".format(tokens))
+#                analyses = [t[1] for t in s]
                 analyses = [[t.lower(), a[1]] for t, a in zip(tokens, s)]
                 sentence = Sentence(language=language,
                                     tokens=tokens, analyses=analyses,
@@ -465,7 +467,7 @@ class Sentence:
     # colors to display sentence (TreeTrans) segments in interface
     tt_colors = ['red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple']
 
-    def __init__(self, raw='', language=None, tokens=None,
+    def __init__(self, raw='', language=None, tokens=None, rawtokens=None,
                  toktypes=None, toksubtypes=None,
                  nodes=None, groups=None, target=None, init=False,
                  analyses=None, session=None, parent=None,
@@ -496,6 +498,9 @@ class Sentence:
 #                lasttyp = typ
 #            self.raw += tokens[-1][0]
             self.raw = ' '.join(self.tokens)
+            if not rawtokens:
+                # Make a copy of tokens, so that lowercasing doesn't affect rawtokens later
+                self.rawtokens = tokens[:]
         else:
             self.raw = raw
             self.tokens = None
@@ -616,7 +621,7 @@ class Sentence:
         skip is None or a list of triples: (position, token, feats). For each triple, the copy excludes the feats
         in the analysis of token in position."""
         s = Sentence(raw=self.raw[:],
-                     tokens=self.tokens[:],
+                     tokens=self.tokens[:], rawtokens=self.rawtokens[:],
                      # toktypes=self.toktypes[:], toksubtypes= self.toksubtypes[:],
                      language=self.language, target=self.target, parent=self,
                      analyses=copy.deepcopy(self.analyses))
@@ -779,7 +784,8 @@ class Sentence:
         index = 0
 #        incorp_indices = []
         del_indices = {}
-        for tokindex, (token, anals) in enumerate(self.analyses):
+        for tokindex, (rawtok, (token, anals)) in enumerate(zip(self.rawtokens, self.analyses)):
+#            print("Nodifying item {}, token {}".format(tokindex, token))
             if not incl_del and MorphoSyn.del_token(token):
                 # Ignore elements deleted by MorphoSyns
                 if anals and 'target' in anals[0]:
@@ -812,18 +818,22 @@ class Sentence:
                     if cats:
                         anal['cats'] = cats
                     features = anal['features']
-                    if features and isinstance(features, FeatStruct):
-                        pos = features.get('pos')
-                    else:
-                        pos = ''
+#                    print("  Cats {}, features {} (type {})".format(cats, features, type(features)))
+                    pos = ''
+                    if features:
+                        if isinstance(features, FSSet):
+                            pos = list(features)[0].get('pos')
+                        elif isinstance(features, FeatStruct):
+                            pos = features.get('pos')
                     if pos:
                         anal['pos'] = pos
+#                    print("    POS: {}".format(pos))
                 raw_indices = del_indices.get(tokindex, [])
 #                if raw_indices:
 #                    print("Adding del indices {} to SNode: {}:{}".format(raw_indices, token, index))
                 raw_indices.append(tokindex)
 #                incorp_indices.append(tokindex)
-                self.nodes.append(SNode(token, index, anals, self, raw_indices))
+                self.nodes.append(SNode(token, index, anals, self, raw_indices, rawtoken=rawtok))
 #                                        incorp_indices, del_indices=del_indices.get(tokindex, [])))
 #                incorp_indices = []
 #                del_indices = []
@@ -839,7 +849,7 @@ class Sentence:
                     anals = [{'cats': ['$nm']}]
                 else:
                     anals = None
-                self.nodes.append(SNode(token, index, anals, self, [tokindex]))
+                self.nodes.append(SNode(token, index, anals, self, [tokindex], rawtoken=rawtok))
                 incorp_indices = []
                 index += 1
 
@@ -856,21 +866,23 @@ class Sentence:
         candidates = []
         for index, node in enumerate(self.nodes):
             # Get keys into lexicon for this node
-            keys = [node.token]
+            keys = {node.token}
+            if node.rawtoken:
+                keys.add(node.rawtoken)
             if index == 0:
                 # For first word in sentence, try both capitalized an uncapitalized versions.
-                keys.append(node.token.capitalize())
+                keys.add(node.token.capitalize())
             anals = node.analyses
             if anals:
                 if not isinstance(anals, list):
                     # Is this still possible?
                     anals = [anals]
                 for a in anals:
-                    print("Analysis {}".format(a))
+#                    print("Analysis {}".format(a))
                     root = a.get('root')
                     if root:
                         if root not in keys:
-                            keys.append(root)
+                            keys.add(root)
                         if '|' in root:
                             # An ambiguous root (ir|ser)
                             psuf = ''
@@ -879,7 +891,7 @@ class Sentence:
                                 r, psuf = root.split('_')
                                 psuf = '_' + psuf
                             for rr in r.split('|'):
-                                keys.append(rr + psuf)
+                                keys.add(rr + psuf)
 #                        print("Root {} contains an alternative".format(root))
 #                        print(" Keys now {}".format(keys))
 
@@ -887,9 +899,9 @@ class Sentence:
                     if pos and '_' not in root:
                         k = root + '_' + pos
                         if k not in keys:
-                            keys.append(k)
+                            keys.add(k)
             # Look up candidate groups in lexicon
-            print("Group keys for {}: {}".format(node, keys))
+#            print("Group keys for {}: {}".format(node, keys))
             for k in keys:
                 if k in self.language.groups:
                     # All the groups with key k
@@ -1868,6 +1880,7 @@ class Solution:
         treetranss = []
         ttindex = 0
         for tree, ginst in zip(self.trees, self.ginsts):
+#            print("Translating {} / {}".format(tree, ginst))
             if ginst.treetrans and ginst.treetrans.top and ginst.treetrans.solution == self:
                 # There's a treetrans already and it's not the result of a merger,
                 # so just use it rather than creating a new one.
