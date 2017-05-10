@@ -25,6 +25,9 @@
 # 2017.04.24
 # -- Added unify_FS method and cast option for unfreeze (otherwise it
 #    returns a list FeatStructs).
+# 2017.05.10
+# -- Add method for getting a feature value within a FSSet
+# -- Override union for FSSet so it returns an FSSet
 
 from .fs import *
 from .utils import *
@@ -38,17 +41,18 @@ class FSSet(set):
 
     def __init__(self, *items):
         '''Create a feature structure set from items, normally a list of feature structures or strings.'''
-        # This is needed for unpickling, when items is a tuple of a list of FeatStructs
-        if len(items) > 0 and isinstance(items[0], list):
+        # This may sill be needed for unpickling, when items is a tuple of a list of FeatStructs
+        if len(items) > 0 and isinstance(items[0], (list, set)):
             items = items[0]
-        items = [(FeatStructParser().parse(i) if (isinstance(i, str) or isinstance(i, str)) else i) for i in items]
-        # Freeze each feature structure
-        for index, itm in enumerate(items):
-            if isinstance(itm, FeatStruct):
-                itm.freeze()
-            else:
-                # Umm...how is it possible for itm not to be a feature structure?
-                items[index] = tuple(itm)
+        if not isinstance(items, set):
+            items = [(FeatStructParser().parse(i) if (isinstance(i, str) or isinstance(i, str)) else i) for i in items]
+            # Freeze each feature structure
+            for index, itm in enumerate(items):
+                if isinstance(itm, FeatStruct):
+                    itm.freeze()
+                else:
+                    # Umm...how is it possible for itm not to be a feature structure?
+                    items[index] = tuple(itm)
         set.__init__(self, items)
 
     def __repr__(self):
@@ -61,6 +65,11 @@ class FSSet(set):
 
     def short_print(self):
         print(self.__repr__())
+
+    def union(self, fsset):
+        """Override set union method by casting result to FSSet."""
+        res = set.union(self, fsset)
+        return FSSet(res)
 
     def remove(self, FS):
         """Remove the FS from all FSs in the set, returning the new FSSet (as a list!)."""
@@ -140,6 +149,14 @@ class FSSet(set):
 #            print("Changing {} in {}".format(vals, target.__repr__()))
             for f, v in vals:
                 target[f] = v
+
+    def get(self, feature, default=None):
+        """Get the value of the feature in the first FeatStruct that has one."""
+        for fs in self:
+            value = fs.get(feature)
+            if value:
+                return value
+        return default
 
     def inherit(self):
         """Inherit feature values for all members of set, returning new set."""

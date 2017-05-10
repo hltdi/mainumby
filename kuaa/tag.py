@@ -51,11 +51,13 @@ def get_tagger(source, arg, lang_abbrev, conversion=None, lemmas=None, eos=None)
 class Tagger:
     """Interface class for tokenizer/taggers."""
 
-    def __init__(self, arg, lang_abbrev, conversion=None, lemmas=None, eos=None):
+    def __init__(self, arg, lang_abbrev, conversion=None, lemmas=None, eos=None,
+                 morph=False):
         self.lang = lang_abbrev
         self.conversion = conversion
         self.lemmas = lemmas
         self.eos = eos
+        self.morph = morph
 
     def get_pos_conversion(self):
         return self.conversion[0]
@@ -73,11 +75,14 @@ class NLTK(Tagger):
     a trained Brill tagger within MDT."""
 
     def __init__(self, arg, lang_abbrev, conversion=None, lemmas=None, eos=None):
-        Tagger.__init__(self, arg, lang_abbrev, conversion=conversion, lemmas=lemmas, eos=eos)
+        # Morphological analysis is not needed for English but is for other languages?
+        Tagger.__init__(self, arg, lang_abbrev, conversion=conversion,
+                        lemmas=lemmas, eos=eos, morph=lang_abbrev != 'eng')
         from pickle import load
         import nltk
         pickle_path = os.path.join(os.path.join(os.path.join(LANGUAGE_DIR, lang_abbrev), 'syn'), "tag.pkl")
-        self.tokenizer = nltk.word_tokenize
+        self.tokenizer = nltk.word_tokenize if lang_abbrev == 'eng' else None
+        self.tokenize = True if lang_abbrev == 'eng' else False
         with open(pickle_path, 'rb') as pkl:
             self.tagger = load(pkl)
 
@@ -137,13 +142,12 @@ class NLTK(Tagger):
         """Tokenize and tag the text if this hasn't happened already.
         Then split the resulting list into lists of sentence tuples."""
         if isinstance(text, str):
-            # text needs to be tokenized and tagged
+            # text needs to be tokenized, as well as tagged
             tokenized = self.tokenizer(text)
-#            tagged = self.tag(text)
         else:
-            # Text is already tokenized
+            # Text is already tokenized; this should already happened for languages
+            # without external taggers, like Spanish (currently).
             tokenized = text
-#            tagged = text
         sentences = []
         sentence = []
         # First separate text into sentences based on EOS characters
@@ -190,9 +194,11 @@ class Spacy(Tagger):
     """An object representing what a language needs to use the Spacy tagger within MDT."""
 
     def __init__(self, arg, lang_abbrev, conversion=None, eos=None):
-        Tagger.__init__(self, arg, lang_abbrev, conversion=conversion, eos=eos)
+        Tagger.__init__(self, arg, lang_abbrev, conversion=conversion, eos=eos, morph=False)
         import spacy
+        # No explicit tokenizer but the tagger itself tokenizes
         self.tokenizer = None
+        self.tokenize = True
         self.tagger = spacy.load(arg)
 
     def __repr__(self):

@@ -2589,17 +2589,12 @@ class FST:
                             accumfvals = {fs.get(tracefeat) for fs in accum_weight}
                             if not input_match:
                                 print('OUTPUT: {}; {} FAILED TO MATCH {}'.format(''.join(output), accumfvals, weightfvals))
-#                            else:
-#                                print(' Matched {}'.format(tracefvals))
                     if input_match and (in_pos < len(input) or in_string == ''):
                         # Don't bother if we've already reached the end of the word
                         if trace:
                             matching_arcs.append((arc[3:], in_string, self.out_string(arc), weight))
                             any_matches = True
                         frontier_elem = (arc, in_pos, len(output)) + ((input_match,) if weight else ())
-#                        if not in_string:
-#                            frontier.insert(0, frontier_elem)
-#                        else:
                         frontier.append(frontier_elem)
                     elif trace:
                         if trace > 2 and not input_match:
@@ -2611,7 +2606,6 @@ class FST:
                     if any_arcs:
                         if matching_arcs:
                             s = '  Matching:'
-                            #                            print('  Matching:', end='')
                             if trace > 1 or len(matching_arcs) < 9:
                                 for a, ins, outs, wt in matching_arcs:
                                     s += ' {}[{}:{}]'.format(a, ins, outs)
@@ -2619,23 +2613,17 @@ class FST:
                                         print(s + ' {}'.format(wt))
                             else:
                                 s += ' ...'
-                                #                                print(s + ' ...', end='')
                             print(s)
-                            #                            print()
                         if nonmatching_arcs:
                             s = '  Not matching:'
-                            #                            print('  Not matching:', end='')
                             if trace > 1 or len(nonmatching_arcs) < 9:
                                 for a, ins, outs, wt in nonmatching_arcs:
                                     s += ' {}[{}:{}]'.format(a, ins, outs)
-                                    #                                    print(' {}[{}:{}]'.format(a, ins, outs), end='')
                                     if trace > 3:
                                         print(s + ' {}'.format(wt))
                             else:
                                 s += ' ...'
-                                #                                print(' ...', end='')
                             print(s)
-                            #                            print()
                         if not any_matches:
                             print('  NO MATCHES')
                             if trace > 2:
@@ -2663,10 +2651,6 @@ class FST:
                     
                     # update our state, input position, & output.
                     state = self.dst(arc)
-#                    if out_pos > len(output):
-#                        print('out pos {}, output {}, in_string {}, out_string {}'.format(out_pos, output,
-#                                                                                          self.in_string(arc),
-#                                                                                          self.out_string(arc)))
                     assert out_pos <= len(output)
                     in_string = self.in_string(arc)
                     out_string = self.out_string(arc)

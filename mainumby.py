@@ -39,8 +39,6 @@
 # -- Sessions, users
 # 2017.3
 # -- Bilingual documents and training
-# 2017.4
-# -- English->Amharic
 
 __version__ = 1.0
 

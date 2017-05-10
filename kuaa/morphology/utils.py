@@ -1,8 +1,7 @@
 """
-This file is part of Mainumby.
+This file is part of MDT.
 
-    Copyright (C) 2015, 2016
-    The HLTDI L^3 Team <gasser@indiana.edu>
+    Copyleft 2015, 2016, 2017. HLTDI, PLoGS <gasser@indiana.edu>
    
     Mainumby is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,7 +14,7 @@ This file is part of Mainumby.
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Mainumby.  If not, see <http://www.gnu.org/licenses/>.
+    along with MDT.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------
 
 Miscellaneous utility functions.

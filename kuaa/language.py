@@ -57,6 +57,8 @@
 # -- Add possibility of external, off-the-shelf tools for tokenization and POS tagging.
 # 2017.04.24
 # -- Fixed various stuff needed to make spaCy tagger work for English.
+# 2017.05.07
+# -- Added possibility of phrases to be joined during sentence tokenization (about 500 for Spanish).
 
 from .entry import *
 from .utils import firsttrue
@@ -165,6 +167,8 @@ class Language:
                  # exttag: source|spec
                  # conversion: (POS_tag_conversion_dict, feature_conversion_dict)
                  exttag=False, conversion=False, lemmas=None,
+                 # phrases to be joined during sentence tokenization
+                 join=False,
                  # end-of-sentence characters
                  eos=EOS,
                  # Added from morphology/language
@@ -174,6 +178,8 @@ class Language:
         self.abbrev = abbrev
         # Whether to load POS tagger for this language (from elsewhere)
         self.exttag = exttag
+        # Phrases to join during sentence tokenization
+        self.join = join
         self.groups = groups or {}
         # Explicit groups to load instead of default
         self.groupnames = groupnames
@@ -219,10 +225,6 @@ class Language:
         # Whether morphological data is loaded
         self.anal_loaded = False
         self.gen_loaded = False
-        if not exttag:
-            self.load_morpho(generate=use in (GENERATION, TARGET, TRAIN),
-                             analyze=use in (ANALYSIS, SOURCE, TRAIN),
-                             segment=False, guess=False, verbose=False)
         # Categories (and other semantic features) of words and roots; word->cats dict
         self.cats = {}
         self.read_cats()
@@ -259,6 +261,10 @@ class Language:
                                          eos=self.eos)
         else:
             self.tagger = None
+        if not exttag or self.tagger.morph:
+            self.load_morpho(generate=use in (GENERATION, TARGET, TRAIN),
+                             analyze=use in (ANALYSIS, SOURCE, TRAIN),
+                             segment=False, guess=False, verbose=False)
 
     @staticmethod
     def is_dig_numeral(string):
@@ -602,6 +608,30 @@ class Language:
             self.cached[word] = entries[1:]
             return copy.deepcopy(entries[1:])
         return copy.deepcopy(entries)
+
+    ## Functions for creating and search word trees (for phrases that are joined in tokenizing).
+    
+    @staticmethod
+    def treeify(phrases, tree=None):
+        """Create a word tree (a dict of dicts) for phrases, where each phrase is a (list_of_strings, tag) pair."""
+        if len(phrases) == 0:
+            return ''
+        if isinstance(phrases, str):
+            return phrases
+        if not tree:
+            tree = {}
+        for phrase, tag in phrases:
+            if not phrase:
+                tree[''] = tag
+                continue
+            start, rest = phrase[0], phrase[1:]
+            if start in tree:
+                tree[start].append((rest, tag))
+            else:
+                tree[start] = [(phrase[1:], tag)]
+        for start, rests in tree.items():
+            tree[start] = Language.treeify(rests)
+        return tree
     
     @staticmethod
     def make_char_string(chars):
@@ -1326,8 +1356,9 @@ class Language:
                         # We have to really analyze it; first try lexical FSTs for each POS
                         for pos, POS in self.morphology.items():
                             analysis = POS.analyze(form, segment=segment,
-                                                   to_dict=to_dict, sep_anals=True, pretty=pretty)
+                                                   to_dict=to_dict, sep_anals=False, pretty=pretty)
                             if analysis:
+#                                print("word {}, analysis: {}".format(word, analysis))
                                 analyses.extend(analysis)
                                 if cache and not pretty:
                                     to_cache.extend(analysis)
@@ -1567,28 +1598,32 @@ class Language:
 
     @staticmethod
     def from_dict(d, reverse=True, use=ANALYSIS):
-        """Convert a dict (loaded from a yaml file) to a Language object."""
+        """Convert a dict (loaded from a file) to a Language object."""
 #        print("Language dict")
 #        for k, v in d.items():
 #            print("{}: {}".format(k, v))
         exttag = d.get('exttag')
+        joins = d.get('join')
         conversion = None
         if exttag:
             # External tagger, so also look for conversion dictionaries for tags
             feat_conv = d.get('morphology')
             # Convert this to a dict with (word, tag) keys and lemma, FSSet values
-            new_feat_conv = {}
-            for key, (lemma, feats) in feat_conv.items():
-                wrd_tag = key.split('|')
-                tag = wrd_tag[0]
-                wrd = wrd_tag[1] if len(wrd_tag) == 2 else ''
-                new_feat_conv[(wrd, tag)] = (lemma, feats)
-            conversion = (d.get('pos'), new_feat_conv)
+            if feat_conv:
+                new_feat_conv = {}
+                for key, (lemma, feats) in feat_conv.items():
+                    wrd_tag = key.split('|')
+                    tag = wrd_tag[0]
+                    wrd = wrd_tag[1] if len(wrd_tag) == 2 else ''
+                    new_feat_conv[(wrd, tag)] = (lemma, feats)
+                conversion = (d.get('pos'), new_feat_conv)
+        if joins:
+            joins = [(x.split('_'), y) for x, y in joins]
+            joins = Language.treeify(joins)
             
         l = Language(d.get('name'), d.get('abbrev'), use=use,
                      exttag=exttag, conversion=conversion,
-                     eos=d.get('eos', EOS),
-                     lemmas=d.get('lemmas'))
+                     join=joins, eos=d.get('eos', EOS), lemmas=d.get('lemmas'))
         translations = d.get('translations')
         if translations:
             for s, t in translations.items():
@@ -1665,9 +1700,11 @@ class Language:
                     sublist = line.split('-')[1].strip()
                     sublist = sublist.split(',')
 #                    print(" Sublist item: {}".format(sublist))
-                    ls.append(sublist)
+                    ls.append([x.strip() for x in sublist])
                     continue
-#                print("Something wrong with line {}".format(line))
+                if line[0] == ' ':
+                    print("{} begins with space".format(line))
+                print("Something wrong with line {}".format(line))
 
         if subdct and key:
             dct[key] = subdct

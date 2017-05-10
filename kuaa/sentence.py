@@ -262,9 +262,10 @@ class Document(list):
             target_language = self.target
             sentence_list = self
             text = self.text
-        if language.tagger:
+        if language.tagger and language.tagger.tokenize:
 #            print("Using external {} tagger for {}...".format(language, self))
             tagger = language.tagger
+            # tagger splits document into sentences
             sentences = tagger.get_sentences(text)
 #            print("Found {} sentences".format(len(sentences)))
             for s in sentences:
@@ -284,7 +285,7 @@ class Document(list):
 
     def tokenize(self, target=False, verbosity=0):
         """Split the text into word tokens, separating off punctuation except for
-        abbreviations and numerals. Later use a language-specific tokenizer.
+        abbreviations and numerals. Alternately use a language-specific tokenizer.
         If target is True, tokenize target-text."""
         # Later split at \n to get paragraphs.
         # Separate at whitespace.
@@ -293,11 +294,6 @@ class Document(list):
         language = self.target if target else self.language
         if verbosity:
             print("Tokenizing text {}".format(text))
-        if language.tagger:
-            # Use the tagger to do the tokenizing
-            tagged = language.tagger(text)
-            print("Using external tagger to tokenize doc")
-            print("Tagged: {}".format(tagged))
         text_tokens = text.split()
 #        print("Tokenizing text, {} tokens".format(len(text_tokens)))
         for token in text_tokens:
@@ -339,11 +335,6 @@ class Document(list):
                         if word1 not in self.language.abbrevs:
                             word = word1[:-1]
                             suf = '.' + suf1 + suf
-#                if word_tok and word.endswith('.'):
-#                    if word not in self.language.abbrevs:
-#                        # Strip of all trailing .s
-#                        word, x, y = word.partition('.')
-#                        suf = x + y + suf
                 tokens.append((word, 1, tok_subtype))
                 if suf:
                     tokens.append((suf, 2, 0))
@@ -475,43 +466,23 @@ class Sentence:
         self.set_id()
         # A list of string tokens, created by a Document object including this sentence
         # or None if the Sentence is created outside of Document
-#        if toktypes:
-#            # if copying, these will already be assigned
-#            self.tokens = tokens
-#            self.toktypes = toktypes
-#            self.toksubtypes = toksubtypes
-#            self.raw = raw
         if tokens:
-#            # tokens is a list of triples passed from Document object
-            self.tokens = tokens            # [t[0] for t in tokens]
-#            self.toktypes = [t[1] for t in tokens]
-#            self.toksubtypes = [t[2] for t in tokens]
-#            print("Joining tokens: {}".format(self.tokens))
-#            self.raw = tokens[0][0]
-#            lasttyp = 1
-#            for tok, typ, subtyp in tokens[1:-1]:
-#                if lasttyp == 0 or typ == 2:
-#                    # Last token was a punc prefix or current token is a punc suffix
-#                    self.raw += tok
-#                else:
-#                    self.raw += " " + tok
-#                lasttyp = typ
-#            self.raw += tokens[-1][0]
+            self.tokens = tokens
             self.raw = ' '.join(self.tokens)
             if not rawtokens:
                 # Make a copy of tokens, so that lowercasing doesn't affect rawtokens later
                 self.rawtokens = tokens[:]
+            else:
+                self.rawtokens = rawtokens
         else:
             self.raw = raw
             self.tokens = None
-#            self.toktypes = None
-#            self.toksubtypes = None
         # List of booleans, same length as self.tokens specifying whether the raw token was upper case
         self.isupper = []
-#        # A string representing the raw sentence (if it hasn't been tokenized)
-#        self.raw = raw
         # Source language: a language object
         self.language = language
+        # External tagger if there is one
+        self.tagger = language.tagger
         # Target language: a language object or None
         self.target = target
         # A list of tuples of analyzed words
@@ -747,6 +718,7 @@ class Sentence:
         2015.07.29: Segmentation and lowercasing of first word.
         2015.10.17: Added copy() possibility when there is morphosyntactic ambiguity.
         ambig option determines whether this happens.
+        2017.05: Added POS tagging, where this doesn't happen in Document
         """
         if verbosity:
             print("Tokenizing {}".format(self))
@@ -760,7 +732,15 @@ class Sentence:
             # Do morphological analysis (added 2015.06.07)
             # 2017.03.09: cleaning done in preprocess() so don't do it here.
             # 2017.04.21: do this only if it hasn't already happened in an external tagger
-            if not self.language.tagger:
+            # First tag the tokens if there's an external tagger and this hasn't happened
+            tagged = None
+            if self.tagger and not self.tagger.tokenizer:
+                # Use the POS tagger here
+                tagged = self.tagger.tag(self.tokens)
+                print("Tagged: {}".format(tagged))
+            # Still need to figure out how to integrated tagged results and morphological analyses
+            if not self.tagger or self.tagger.morph:
+                print("Doing analyses for {}".format(self.tokens))
                 self.analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
             # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
             if verbosity:
