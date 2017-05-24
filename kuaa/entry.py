@@ -1065,11 +1065,14 @@ class MorphoSyn(Entry):
         if isinstance(sanal, dict):
             sfeats = sanal.get('features')
             sroot = sanal.get('root')
+            spos = sanal.get('pos')
         else:
             sroot, sfeats = sanal
+            spos = None
+        ppos = pfeats.get('pos') if pfeats else None
         if verbosity > 1 or self.debug:
-            s = "   Attempting to match pattern forms {} and feats {} against sentence item root {} and feats {}"
-            print(s.format(pforms, pfeats.__repr__(), sroot, sfeats.__repr__()))
+            s = "   Attempting to match pattern forms {}, pos {} and feats {} against sentence item root {}, pos {} and feats {}"
+            print(s.format(pforms, ppos, pfeats.__repr__(), sroot, spos, sfeats.__repr__()))
         if not pforms or any([sroot == f for f in pforms]):
             if verbosity > 1 or self.debug:
                 print("    Root matched")
@@ -1088,7 +1091,7 @@ class MorphoSyn(Entry):
                     else:
                         u = u.unfreeze()
                     if verbosity > 1 or self.debug:
-                        print("    Feats matched: {}, (type {})".format(u, type(u)))
+                        print("    Feats matched: {}, (type {})".format(u.__repr__(), type(u)))
                     return u
                 elif verbosity > 1 or self.debug:
                     print("    Anals failed")
@@ -1126,12 +1129,12 @@ class MorphoSyn(Entry):
                 # Because it may be mutated, use a copy of trg_feats
                 for src_feats in src_feats_list:
                     if src_feats:
-                        if verbosity > 1 or self.debug:
-                            print("    Agreeing: {} ({}), {}, ({})".format(src_feats.__repr__(), src_feats.frozen(),
-                                                                           trg_feats.__repr__(), trg_feats.frozen()))
+#                        if verbosity > 1 or self.debug:
+                        print("    Agreeing: {}, {}".format(src_feats.__repr__(), trg_feats.__repr__()))
+                        print("    Types: source {}, target {}".format(type(src_feats), type(trg_feats)))
                         # source features could be False
                         # Force target to agree with source on feature pairs
-                        src_feats.agree(trg_feats, feats, force=True)
+                        trg_feats_list[tf_index] = src_feats.agree_FSS(trg_feats, feats, force=True)
                         if verbosity > 1 or self.debug:
                             print("    Result of agreement: {}".format(trg_feats.__repr__()))
                         # Only do this for the first set of src_feats that succeeds
@@ -1153,17 +1156,19 @@ class MorphoSyn(Entry):
             for fm_index, fm_feats in self.featmod:
                 elem = elements[fm_index]
                 feats_list = elem[1]
-                if verbosity > 1 or self.debug:
-                    print("    Modifying features: {}, {}, {}".format(fm_index, fm_feats.__repr__(), feats_list))
+#                if verbosity > 1 or self.debug:
+                print("    Modifying features: {}, {}, {}".format(fm_index, fm_feats.__repr__(), feats_list))
                 if not feats_list:
                     elem[1] = [fm_feats.copy()]
                 else:
                     for index, feats in enumerate(feats_list):
-                        if isinstance(feats, FeatStruct):
-                            if feats.frozen():
-                                feats = feats.unfreeze()
-                                feats_list[index] = feats
-                            feats.update_inside(fm_feats)
+                        print("      Feats {}, type {}".format(feats, type(feats)))
+                        feats.update_inside(fm_feats)
+#                        if isinstance(feats, FeatStruct):
+#                            if feats.frozen():
+#                                feats = feats.unfreeze()
+#                                feats_list[index] = feats
+#                            feats.update_inside(fm_feats)
 
 #        if self.swap_indices:
 #            i1, i2 = self.swap_indices

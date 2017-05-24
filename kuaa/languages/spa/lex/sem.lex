@@ -683,9 +683,9 @@ alumbramiento_n $n
 alumbrar_v $v,$vt,$vi
 alumbre_n $n
 aluminio_n $n
-alumna_n $n
+alumna_n $n,$nprs
 alumnado_n $n
-alumno_n $n
+alumno_n $n,$nprs
 alusión_n $n
 aluvión_n $n
 alza_n $n

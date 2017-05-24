@@ -30,7 +30,7 @@
 ## -- basic; including 1,2 object [-r] ? (use feature match failure)
 ## -- 3s object [-r,po=3,no=0]
 ## -- 3p object [-r,po=3,no=1]
-## -- NP personal object [-r] a $n_prs (for now make $n)
+## -- NP personal object [-r] a $nprs (for now make $n)
 ## -- passive [+r]
 ## -- %relative clause NP que ver (not implemented for any verbs)
 ## -- %antipassive (voz subsuntiva) (not implemented for any verbs)
@@ -881,10 +881,6 @@
 ->grn porokuaa_v[cat=a]
 *** conocer_v[+r,+fin] a así mismo ; ^ conocer_v 0 ; #5
 ->grn jekuaa_v[cat=a] ; #99 ; ##1
-*** conseguir_v[-r,+fin] algo especialmente en un reparto ; ^ conseguir_v 0 ; #56
-->grn mboliga_v[cat=a]
-*** conseguir_v[-r,+fin] algo ; ^ conseguir_v 0 ; #56
-->grn liga_v[cat=a]
 *** considerar_v[-r,+fin] con atención ; ^ considerar_v 0
 ->grn jepy'amongeta_v[cat=a]
 *** construir_v[+r,+fin] la casa ; ^ construir_v 0
@@ -1397,14 +1393,9 @@
 ->grn japiro_v[cat=a]
 *** descubrir_v[-r,+fin] el vientre ; ^ descubrir_v 0
 ->grn mbohyevera_v[cat=a]
-*** desear_v[-r,+fin] algo ; ^ desear_v 0
-->grn mba'epota_v[cat=a]
-->grn pota_v[subcat=i]
 *** desear_v[+r,+fin] con avidez ; ^ desear_v 0
 ->grn ñembotaryrýi_v[cat=a]
-*** desear_v[-r,+fin] una cosa ; ^ desear_v 0
-->grn mohendyno'õ_v[cat=a]
-*** desencajar_v[-r,+fin] una cosa ; ^ desencajar_v 0
+*** desencajar_v[-r,+fin] ; ^ desencajar_v 0
 ->grn mbokaráu_v[cat=a]
 *** desesperar_v[+r,+fin] en grado sumo ; ^ desesperar_v 0
 ->grn jepy'ajuka_v[cat=a]
@@ -1873,8 +1864,6 @@
 ->grn moapesã_v[cat=a]
 *** formar_v[+r,+fin] barritos o granos en la cara ; ^ formar_v 0
 ->grn ñembojari'i_v[cat=a]
-*** fornicar_v[-r,+fin] la mujer ; ^ fornicar_v 0 ; #25
-->grn ñemeno_v[cat=a]
 *** fracasar_v[-r,+fin] en algo ; ^ fracasar_v 0 ; #4
 ->grn japiro_v[cat=a]
 *** fregar_v[-r,+fin] con la mano ; ^ fregar_v 0
@@ -4389,8 +4378,8 @@
 *** acordar_v[+r,+fin] ; ^ acordar_v 0 ; #72
 ->grn mandu'a_v[cat=che]
 ->grn ñemomandu'a_v[cat=a] ; #2
-*** acordar_v[+r,+fin] de $n_prs; ^ acordar_v 0
-->grn mandu'a_v[cat=che] $n_prs rehe ; || 0, 2, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+*** acordar_v[+r,+fin] de $n; ^ acordar_v 0
+->grn mandu'a_v[cat=che] $n rehe ; || 0, 2, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
 *** acordar_v[+r,+fin] de $pro; ^ acordar_v 0
 ->grn mandu'a_v[cat=che] $pro[caso=re] ; || 0, -1, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
 *** acorralar_v[+r,+fin] ; ^ acorralar_v 0
@@ -13481,6 +13470,14 @@
 ->grn <ha'arõ_v[cat=a] (chupe)
 *** esperar_v[-r,po=3,no=1] ; ^ esperar_v 0
 ->grn <ha'arõ_v[cat=a] (chupekuéra)
+*** esperar_v[-r,+fin] en el camino ; ^ esperar_v 0
+->grn <hapera'arõ_v[cat=a]
+*** esperar_v[-r,+fin] a $n en el camino ; ^ esperar_v 0
+->grn <hapera'arõ_v[cat=a] $n[caso=pe] ; || 0, -1, 1, -1, -1, -1
+*** esperar_v[-r,po=3,no=0] en el camino ; ^ esperar_v 0
+->grn <hapera'arõ_v[cat=a] (chupe)
+*** esperar_v[-r,po=3,no=1] en el camino ; ^ esperar_v 0
+->grn <hapera'arõ_v[cat=a] (chupekuéra)
 *** espesar_v[-r,+fin] ; ^ espesar_v 0 ; #6
 ->grn moapovõ_v[cat=a]
 ->grn mboypy'a_v[cat=a]
@@ -17647,7 +17644,7 @@
 *** olvidar_v[-r,+fin] ; ^ olvidar_v 0
 ->grn <hesarái_v[cat=che]
 *** olvidar_v[-r,+fin] a $n ; ^ olvidar_v 0
-->grn <hesarái_v[cat=che] $n_prs[caso=gui] ; || 0, -1, 1
+->grn <hesarái_v[cat=che] $nprs[caso=gui] ; || 0, -1, 1
 *** olvidar_v[-r,po=3,no=0] ; ^ olvidar_v 0
 ->grn <hesarái_v[cat=che] chugui
 *** olvidar_v[-r,po=3,no=1] ; ^ olvidar_v 0
@@ -19833,7 +19830,7 @@
 *** recordar_v[-r,+fin] ; ^ recordar_v 0
 ->grn mandu'a_v[cat=che]
 *** recordar_v[-r,+fin] a $n ; ^ recordar_v 0
-->grn mandu'a_v[cat=che] $n_prs rehe ; || 0, 2, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+->grn mandu'a_v[cat=che] $nprs rehe ; || 0, 2, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
 *** recordar_v[-r,po=3,no=0] ; ^ recordar_v 0
 ->grn mandu'a_v[cat=che] (hese) ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
 *** recordar_v[-r,po=3,no=1] ; ^ recordar_v 0

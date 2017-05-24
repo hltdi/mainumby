@@ -21,6 +21,8 @@
 #
 #   Morphological processing.
 #
+# 2017.5.19
+# -- Made gen() work with update_feats that's an FSSet rather than just a FeatStruct
 
 from .fst import *
 import sys
@@ -625,26 +627,40 @@ class POS:
 #        print("Update feats {}, type {}".format(update_feats, type(update_feats)))
         if isinstance(update_feats, str):
             update_feats = FeatStruct(update_feats)
-        cached = self.get_cached_gen(root, update_feats)
-        if cached:
+        # See if there are already cached wordforms for the root and features
+        cache_keys = []
+        if isinstance(update_feats, FSSet):
+            cache_keys = list(update_feats)
+        else:
+            cache_keys.append(update_feats)
+        all_cached = []
+        for cache_key in cache_keys:
+            cached = self.get_cached_gen(root, cache_key)
+            if cached:
+                all_cached.extend(cached)
+        if all_cached:
             if trace:
-                print("Found {}:{} in cached generations".format(root, update_feats.__repr__()))
-            return cached
+                print("Found {}:{} in cached generations".format(root, cache_keys))
+            return all_cached
         features = features or self.defaultFS
         upd_features = features
         if update_feats:
-            upd_features = self.update_FS(FeatStruct(features), update_feats)
+            if isinstance(update_feats, FSSet):
+                upd_features = self.update_FSS(FeatStruct(features), update_feats)
+            else:
+                upd_features = self.update_FS(FeatStruct(features), update_feats)
         fst = fst or self.get_fst(generate=True, guess=guess, segment=segment)
         if not fst:
             return []
-        # Up to this point, features should be a FeatStruct instance
+        # Up to this point, features may be a FeatStruct instance; cast in case
         fsset = FSSet.cast(upd_features)
         if fst:
             gens = fst.transduce(root, fsset, seg_units=self.language.seg_units, trace=trace, timeit=timeit)
             if only_words:
                 gens = [g[0] for g in gens]
             if cache and gens:
-                self.add_new_gen(root, update_feats, gens)
+                for cache_key in cache_keys:
+                    self.add_new_gen(root, cache_key, gens)
             return gens
         elif trace:
             print('No generation FST loaded')
@@ -698,8 +714,19 @@ class POS:
             # only use the first generated word
             return new_word[0][0]
 
+    def update_FSS(self, fs, feat_fss, top=True):
+        """Starting with a FeatStruct fs, update it using the features in FSSet feat_fss,
+        resulting in an FSSet."""
+        fss = set()
+        for feat_fs in feat_fss:
+            fs1 = self.update_FS(fs, feat_fs, top=top)
+            fs1.freeze()
+            # Assume this always results in a non-zero FeatStruct
+            fss.add(fs1)
+        return FSSet(fss)
+
     def update_FS(self, fs, features, top=True):
-        """Add or modify features (a FS, dict, or string) in fs."""
+        """Add or modify features (a FS, FSSet, dict, or string) in fs."""
         fs = fs.copy()
         # First make sure features is a FeatStruct
         if isinstance(features, str):

@@ -737,11 +737,16 @@ class Sentence:
             if self.tagger and not self.tagger.tokenizer:
                 # Use the POS tagger here
                 tagged = self.tagger.tag(self.tokens)
-                print("Tagged: {}".format(tagged))
+#                print("Tagged: {}".format(tagged))
             # Still need to figure out how to integrated tagged results and morphological analyses
             if not self.tagger or self.tagger.morph:
-                print("Doing analyses for {}".format(self.tokens))
-                self.analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
+#                print("Doing analyses for {}".format(self.tokens))
+                analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
+                if self.tagger:
+                    # Merge results of tagging and morphological analysis
+                    self.analyses = self.merge_POS(tagged, analyses)
+                else:
+                    self.analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
             # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
             if verbosity:
                 print("Running Morphosyns for {} on {}".format(self.language, self))
@@ -755,6 +760,52 @@ class Sentence:
                     # Attempt to apply succeeding morphosyns to copy if there is one
                     for ms1 in self.language.ms[mi+1:]:
                         ms1.apply(scopy, ambig=ambig, verbosity=verbosity, terse=terse)
+
+    def merge_POS(self, tagged, analyzed, verbosity=0):
+        """Merge the output of an external tagger and the L3Morpho analyzer. Use the tagger to
+        disambiguate analyses, preferring the analysis if there's only one."""
+        if verbosity:
+            print("Merging tagger and analyzer results for {}".format(self))
+        results = []
+        for (word, tag), (token, anals) in zip(tagged, analyzed):
+            results1 = []
+            for anal in anals:
+                anal_pos = None
+                features = anal.get('features')
+                if features:
+                    anal_pos = features.get('pos')
+                if verbosity:
+                    print("  tagger tag {}, analyzer tag {}".format(tag, anal_pos))
+                if anal_pos and tag:
+                    if anal_pos == tag:
+                        if verbosity:
+                            print("  tagger and analyzer agree on {} for {}".format(tag, anal))
+                        results1.append(anal)
+                    else:
+                        if verbosity:
+                            print("  tagger and analyzer disagree on {}/{} for {}".format(tag, anal_pos, anal))
+                        if len(anals) == 1:
+                            if verbosity:
+                                print("   only 1 analysis, so accepting it")
+                            results1.append(anal)
+                        elif verbosity:
+                            print("    rejecting {}".format(anal))
+                elif tag:
+                    if verbosity:
+                        print("  no features for {}, using tagger POS {}".format(word, tag))
+                    anal['pos'] = tag
+                    results1.append(anal)
+                elif anal_pos:
+                    if verbosity:
+                        print("  no tagger tag, using analyzer POS {}".format(anal_pos))
+                    results1.append(anal)
+                else:
+                    if verbosity:
+                        print("  neither tagger nor analyzer provide tag for {}".format(word))
+                    results1.append(anal)
+            results.append([token, results1])
+#            print("{},{}: tag {}, anal {}".format(word, token, tag, anal))
+        return results
 
     def nodify(self, incl_del=False, verbosity=0):
         """Create nodes for sentence.

@@ -116,7 +116,8 @@ artdef/fs_adj :: la [pos=a,n=0] [pos=n,n=0] ; // 0:2
 artdef/mp_adj :: los [pos=a,n=1] [pos=n,n=1] ; // 0:2
 artdef/fp_adj :: las [pos=a,n=1] [pos=n,n=1] ; // 0:2
 artdef/ms :: el [pos=n,n=0] ; // 0
-artdef/fs :: la [pos=n,n=0] ; // 0
+artdef/fs :: la[pos=det] ; // 0
+#artdef/fs :: la [pos=n,n=0] ; // 0
 artdef/mp :: los [pos=n,n=1] ; // 0
 artdef/fp :: las [pos=n,n=1] ; // 0
 # con dos adjetivos antes del sustantivo

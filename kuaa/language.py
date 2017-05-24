@@ -1874,9 +1874,12 @@ class Language:
     ### Generation of word forms
 
     def generate(self, root, features, pos=None, guess=False, roman=True, cache=True, verbosity=0):
+        """2017.5.19: features may now be an FSSet; should probably be the only option."""
         # Features may override the POS provided; needed for verbal nouns
-        if 'pos' in features:
-            pos = features['pos']
+        featpos = features.get('pos')
+        pos = featpos or pos
+#        if 'pos' in features:
+#            pos = features['pos']
         if verbosity:
             print("Generating {}:{} with POS {}".format(root, features.__repr__(), pos))
 #        if not features:

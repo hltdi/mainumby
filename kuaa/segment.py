@@ -408,10 +408,12 @@ class SNode:
                         # 2015.7.5: strict option added to force True feature in grp_features
                         # to be present in node_features, e.g., for Spanish reflexive
                         if verbosity > 1:
-                            print("    Unifying n feats {} ({}) with g feats {} ({})".format(node_features, type(node_features), grp_feats.__repr__(), type(grp_features)))
+                            print("    Unifying n feats {} ({}) with g feats {} ({})".format(node_features, type(node_features), grp_feats.__repr__(), type(grp_feats)))
                         nfeattype = type(node_features)
                         if nfeattype == FSSet:
-                            u_features = node_features.unify_FS(grp_feats, strict=True)
+                            u_features = node_features.unify_FS(grp_feats, strict=True, verbose=verbosity>1)
+#                            if verbosity > 1:
+#                                print("     Result of unification: {}, type {}".format(u_features, type(u_features)))
                         else:
                             u_features = simple_unify(node_features, grp_feats, strict=True)
                         if u_features != 'fail':
@@ -586,7 +588,7 @@ class GInst:
         translations = self.group.get_translations()
         # Sort group translations by their translation frequency
         Group.sort_trans(translations)
-        print("Setting translations for {}: {}".format(self, translations))
+#        print("Setting translations for {}: {}".format(self, translations))
 #        if verbosity:
 #            print("Translations {}".format(translations))
         # If alignments are missing, add default alignment
@@ -597,8 +599,8 @@ class GInst:
         ntokens = len(self.group.tokens)
         for tgroup, s2t_dict in translations:
             nttokens = len(tgroup.tokens)
-#            if verbosity > 1:
-            print("   tgroup {}, s2t_dict {}".format(tgroup, s2t_dict))
+            if verbosity > 1:
+                print("   tgroup {}, s2t_dict {}".format(tgroup, s2t_dict))
             # If there's no explicit alignment, it's the obvious default
             if 'align' in s2t_dict:
                 alignment = s2t_dict.get('align')
@@ -861,20 +863,12 @@ class TreeTrans:
 #        string = string.replace('_', ' ')
         return string
 
-#    def initialize(self, verbosity=0):
-#        """Set up everything needed to run the constraints and generate the translation."""
-#        if verbosity:
-#            print("Initializing treetrans {}."treetransformat(self))
-#        self.build(verbosity=verbosity)
-#        self.generate_words(verbosity=verbosity)
-#        self.make_order_pairs(verbosity=verbosity)
-#        self.create_variables(verbosity=verbosity)
-#        self.create_constraints(verbosity=verbosity)
-
     def build(self, tg_comb=None, verbosity=0):
         """Unify translation features for merged nodes, map agr features from source to target,
         generate surface target forms from resulting roots and features.
-        tg_comb is a combination of target groups."""
+        tg_comb is a combination of target groups.
+        THIS IS WAY TOO COMPLICATED; SIMPLIFY IT.
+        """
         if verbosity:
             print('BUILDING {} with tgroups {}'.format(self, tg_comb))
             print("  SNodes: {}".format(self.snodes))
@@ -996,7 +990,7 @@ class TreeTrans:
                             targ_feats = targ_feats.copy(True)
                             if verbosity:
                                 print("  Causing sfeats {} to agree with tfeats {}".format(features, targ_feats))
-                            features.agree(targ_feats, agrs)
+                            targ_feats = features.agree_FSS(targ_feats, agrs)
                             if verbosity:
                                 print("   Now: {} to agree with tfeats {}".format(features, targ_feats))
                         node_index_map[snode.index] = tnode_index
@@ -1048,12 +1042,15 @@ class TreeTrans:
                             if not targ_feats:
                                 targ_feats = FeatStruct({})
                             if agrs:
-                                # Use an (unfrozen) copy of target features
-                                targ_feats = targ_feats.copy(True)
                                 if verbosity:
                                     print("  Causing sfeats {} to agree with tfeats {}".format(features, targ_feats.__repr__()))
                                     print("    features type: {}".format(type(features)))
-                                features.agree(targ_feats, agrs)
+#                                if isinstance(features, FSSet):
+                                targ_feats = features.agree_FSS(targ_feats, agrs)
+#                                else:
+#                                    # Use an (unfrozen) copy of target features
+#                                    targ_feats = targ_feats.copy(True)
+#                                    features.agree(targ_feats, agrs)
                                 if verbosity:
                                     print("  Now {} and {}".format(features, targ_feats.__repr__()))
                             node_index_map[snode.index] = tnode_index
@@ -1135,6 +1132,7 @@ class TreeTrans:
                 agr_feats1, agr_feats2 = agr_node1[1], agr_node2[1]
                 agr_feats1.mutual_agree(agr_feats2, feature_pairs)
         generator = self.sentence.target.generate
+#        print("Features for generation: {}".format(self.node_features))
         for token, features, index in self.node_features:
             root, pos = TreeTrans.get_root_POS(token)
             if verbosity:

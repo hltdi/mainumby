@@ -26,8 +26,12 @@
 # -- Added unify_FS method and cast option for unfreeze (otherwise it
 #    returns a list FeatStructs).
 # 2017.05.10
-# -- Add method for getting a feature value within a FSSet
-# -- Override union for FSSet so it returns an FSSet
+# -- Added method for getting a feature value within a FSSet
+# -- Overriding union for FSSet so it returns an FSSet
+# 2017.05.19
+# -- Fixed unify_FS() so it can "fail".
+# -- FSSet constructor modified so it never contains tuples
+# -- FSSet.update_inside(), corresponding to FeatStruct.update_inside()
 
 from .fs import *
 from .utils import *
@@ -51,8 +55,11 @@ class FSSet(set):
                 if isinstance(itm, FeatStruct):
                     itm.freeze()
                 else:
-                    # Umm...how is it possible for itm not to be a feature structure?
-                    items[index] = tuple(itm)
+                    # itm must be a dict
+                    items[index] = FeatStruct(itm)
+#                else:
+#                    # Umm...how is it possible for itm not to be a feature structure?
+#                    items[index] = tuple(itm)
         set.__init__(self, items)
 
     def __repr__(self):
@@ -71,7 +78,7 @@ class FSSet(set):
         res = set.union(self, fsset)
         return FSSet(res)
 
-    def remove(self, FS):
+    def removeFS(self, FS):
         """Remove the FS from all FSs in the set, returning the new FSSet (as a list!)."""
         fsset = self.unfreeze()
         to_remove = []
@@ -104,7 +111,14 @@ class FSSet(set):
         if every(lambda x: x == TOP, result1):
             return TOPFSS
         else:
-            return FSSet(*filter(lambda x: x != 'fail', result1))
+            # All FeatStructs in self that unify with fs
+            result2 = list(filter(lambda x: x != 'fail', result1))
+            if verbose:
+                print("unify_FS: unifying {} with {}, result {}".format(self, fs.__repr__(), result2))
+            if not result2:
+                # None of the FeatStructs in self unifies with fs
+                return 'fail'
+            return FSSet(*result2)
 
     @staticmethod
     def unify_all(fssets):
@@ -150,6 +164,63 @@ class FSSet(set):
             for f, v in vals:
                 target[f] = v
 
+    def agree_FSS(self, target, agrs, force=False):
+        """Return an FSSet consisting of a copy of target agreeing on agrs features for each FeatStruct in self."""
+        agr_pairs = agrs.items() if isinstance(agrs, dict) else agrs
+        new_target = set()
+#        print("Agr pairs {}".format(agr_pairs))
+        for fs in list(self):
+            if isinstance(target, FSSet):
+                targets1 = [target_fs.copy(True) for target_fs in target]
+            else:
+                targets1 = [target.copy(True)]
+            for target1 in targets1:
+                vals = []
+#                print("Target 1 {}, fs {}".format(target1.__repr__(), fs.__repr__()))
+                for src_feat, targ_feat in agr_pairs:
+#                    print("  Src feat {}, targ feat {}".format(src_feat, targ_feat))
+                    if src_feat in fs:
+                        src_value = fs[src_feat]
+                        if targ_feat not in target1:
+                            vals.append((targ_feat, src_value))
+                        else:
+                            targ_value = target1[targ_feat]
+#                            print("    Src value {}, targ value {}".format(src_value, targ_value))
+                            u = simple_unify(src_value, targ_value)
+                            if u == 'fail':
+#                                print("src feat {}/{} doesn't agree with targ feat {}/{}".format(src_feat, src_value, targ_feat, targ_value))
+                                if force:
+                                    vals.append((targ_feat, src_value))
+                                else:
+                                    # Ignore this feature
+                                    continue
+                            else:
+                                vals.append((targ_feat, u))
+                for f, v in vals:
+                    target1[f] = v
+                target1.freeze()
+                new_target.add(target1)
+        return FSSet(new_target)
+
+    def update_inside(self, features=None):
+        """
+        Based on update_inside for FeatStruct. Replaces features at the deepest level.
+        """
+        if features is None:
+            items = ()
+        else:
+            items = features.items()
+
+        for fs in self:
+            if fs.frozen():
+                fs1 = fs.unfreeze()
+                fs1.update_inside(features)
+                fs1.freeze()
+                self.remove(fs)
+                self.add(fs1)
+            else:
+                fs.update_inside(features)
+
     def get(self, feature, default=None):
         """Get the value of the feature in the first FeatStruct that has one."""
         for fs in self:
@@ -157,6 +228,12 @@ class FSSet(set):
             if value:
                 return value
         return default
+
+    def to_featstruct(self):
+        """Convert this FSSet to a FeatStruct instance by taking the first element in it."""
+        if len(self) > 0:
+            return list(self)[0]
+        return TOP
 
     def inherit(self):
         """Inherit feature values for all members of set, returning new set."""

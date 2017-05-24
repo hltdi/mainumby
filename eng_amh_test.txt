@@ -1,0 +1,73 @@
+write
+see
+carry
+die
+fall
+come
+
+didn’t x it
+will x them
+can’t x me
+
+be about to x
+should x
+hadn’t x
+
+he
+they
+we
+
+He didn’t write it.
+He will write them.
+He can’t write you.
+They didn’t write it.
+They will write them.
+They can’t write you.
+We didn’t write it.
+We will write them.
+We can’t write you.
+He didn’t carry it.
+He will carry them.
+He can’t carry you.
+They didn’t carry it.
+They will carry them.
+They can’t carry you.
+We didn’t carry it.
+We will carry them.
+We can’t carry you.
+He didn’see it.
+He will see them.
+He can’t see you.
+They didn’t see it.
+They will see them.
+They can’t see you.
+We didn’t see it.
+We will see them.
+We can’t see you.
+She’s about to die.
+She should die.
+She hadn’t died.
+I’m about to die.
+I should die.
+I hadn’t died.
+You’re about to die.
+You should die.
+You hadn’t died.
+She’s about to fall.
+She should fall.
+She hadn’t fallen.
+I’m about to fall.
+I should fall.
+I hadn’t fallen.
+You’re about to fall.
+You should fall.
+You hadn’t fallen.
+She’s about to come.
+She should come.
+She hadn’t come.
+I’m about to come.
+I should come.
+I hadn’t come.
+You’re about to come.
+You should come.
+You hadn’t come.
