@@ -1129,9 +1129,9 @@ class MorphoSyn(Entry):
                 # Because it may be mutated, use a copy of trg_feats
                 for src_feats in src_feats_list:
                     if src_feats:
-#                        if verbosity > 1 or self.debug:
-                        print("    Agreeing: {}, {}".format(src_feats.__repr__(), trg_feats.__repr__()))
-                        print("    Types: source {}, target {}".format(type(src_feats), type(trg_feats)))
+                        if verbosity > 1 or self.debug:
+                            print("    Agreeing: {}, {}".format(src_feats.__repr__(), trg_feats.__repr__()))
+                            print("    Types: source {}, target {}".format(type(src_feats), type(trg_feats)))
                         # source features could be False
                         # Force target to agree with source on feature pairs
                         trg_feats_list[tf_index] = src_feats.agree_FSS(trg_feats, feats, force=True)
@@ -1156,13 +1156,13 @@ class MorphoSyn(Entry):
             for fm_index, fm_feats in self.featmod:
                 elem = elements[fm_index]
                 feats_list = elem[1]
-#                if verbosity > 1 or self.debug:
-                print("    Modifying features: {}, {}, {}".format(fm_index, fm_feats.__repr__(), feats_list))
+                if verbosity > 1 or self.debug:
+                    print("    Modifying features: {}, {}, {}".format(fm_index, fm_feats.__repr__(), feats_list))
                 if not feats_list:
                     elem[1] = [fm_feats.copy()]
                 else:
                     for index, feats in enumerate(feats_list):
-                        print("      Feats {}, type {}".format(feats, type(feats)))
+#                        print("      Feats {}, type {}".format(feats, type(feats)))
                         feats.update_inside(fm_feats)
 #                        if isinstance(feats, FeatStruct):
 #                            if feats.frozen():

@@ -254,8 +254,10 @@ class Language:
             print("Loading external tagger...")
             source, arg = exttag.split("|")
             import kuaa.tag as tag
+            print("Imported tag module")
             if lemmas:
                 lemmas = self.read_lemmas()
+                print("Read lemmas")
             self.tagger = tag.get_tagger(source, arg, self.abbrev,
                                          conversion=conversion, lemmas=lemmas,
                                          eos=self.eos)

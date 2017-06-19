@@ -44,6 +44,7 @@ def get_tagger(source, arg, lang_abbrev, conversion=None, lemmas=None, eos=None)
     if source == 'spacy':
         return Spacy(arg, lang_abbrev, conversion=conversion, eos=eos)
     elif source == 'nltk':
+        print("Loading NLTK tagger")
         return NLTK(arg, lang_abbrev, conversion=conversion, lemmas=lemmas, eos=eos)
     else:
         print("No external tagger in {} available for {}".format(source, lang_abbrev))
@@ -80,6 +81,7 @@ class NLTK(Tagger):
                         lemmas=lemmas, eos=eos, morph=lang_abbrev != 'eng')
         from pickle import load
         import nltk
+        import nltk.tbl
         pickle_path = os.path.join(os.path.join(os.path.join(LANGUAGE_DIR, lang_abbrev), 'syn'), "tag.pkl")
         self.tokenizer = nltk.word_tokenize if lang_abbrev == 'eng' else None
         self.tokenize = True if lang_abbrev == 'eng' else False

@@ -1875,7 +1875,7 @@ class Solution:
                     if snode_anal and snode_anal[0] and snode_anal[0][1]:
                         if verbosity:
                             print("   Appending snode_anals for gnode {}: {}".format(gnode, [a[1] for a in snode_anal]))
-                        features.append([a[1] for a in snode_anal])
+                        features.extend([a[1] for a in snode_anal])
                 # Could this fail?? YES, currently it can
                 if verbosity:
                     print("  Unification result for {}: snode {}, gn_indices {} features {}".format(self, snode, gn_indices, features))

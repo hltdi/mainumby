@@ -49,6 +49,9 @@ class FSSet(set):
         if len(items) > 0 and isinstance(items[0], (list, set)):
             items = items[0]
         if not isinstance(items, set):
+#            if isinstance(items[0], FSSet):
+#                items = set(items)
+#            else:
             items = [(FeatStructParser().parse(i) if (isinstance(i, str) or isinstance(i, str)) else i) for i in items]
             # Freeze each feature structure
             for index, itm in enumerate(items):
@@ -57,9 +60,6 @@ class FSSet(set):
                 else:
                     # itm must be a dict
                     items[index] = FeatStruct(itm)
-#                else:
-#                    # Umm...how is it possible for itm not to be a feature structure?
-#                    items[index] = tuple(itm)
         set.__init__(self, items)
 
     def __repr__(self):
