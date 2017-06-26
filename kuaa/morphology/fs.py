@@ -167,6 +167,15 @@ class FeatStruct:
         if self._frozen: raise ValueError(self._FROZEN_ERROR)
         self._features.clear()
 
+    @staticmethod
+    def force_set(fs, feature, value):
+        """Set the value for the feature in fs to value. If fs is frozen,
+        unfreeze it first. Return fs (possibly a copy of the original fs)."""
+        if fs._frozen:
+            fs = fs.unfreeze()
+        fs[feature] = value
+        return fs
+
     def update(self, features=None, **morefeatures):
         """
         If C{features} is a mapping, then:
@@ -388,19 +397,77 @@ class FeatStruct:
 
     def mutual_agree(self, target, agrs):
         """Make target agree with self and self agree with target
-        on features specified in agrs dict or list of pairs."""
+        on features specified in agrs dict or list of pairs. A feature, pair can include
+        a feature of the form x|y, where y is a feature within the x feature.
+        Note: both self and target must be unfrozen before being modified."""
         agr_pairs = agrs.items() if isinstance(agrs, dict) else agrs
+        if self.frozen():
+            print("mutual_agree(): {} is frozen".format(self.__repr__()))
+        if target.frozen():
+            print("mutual_agree(): {} is frozen".format(target.__repr__()))
         for src_feat, targ_feat in agr_pairs:
-            if src_feat in self:
-                src_value = self[src_feat]
-                if targ_feat in target and target[targ_feat] != src_value:
-                    # Clash; fail!
-                    return 'fail'
+            # Either feature may be embedded
+            src_feat = src_feat.split('|')
+            targ_feat = targ_feat.split('|')
+            if len(src_feat) == 1:
+                # No source feature embedding
+                sf = src_feat[0]
+                if sf in self:
+                    src_value = self[sf]
+                    if len(targ_feat) == 1:
+                        # No target feature embedding
+                        if targ_feat[0] in target and target[targ_feat[0]] != src_value:
+                            # Clash; fail!
+                            return 'fail'
+                        else:
+                            target[targ_feat[0]] = src_value
+                    else:
+                        # Target feature embedding
+                        tf0, tf1 = targ_feat
+                        if tf0 in target:
+                            target1 = target[tf0]
+                            if tf1 in target1 and target1[tf1] != src_value:
+                                return 'fail'
+                            else:
+                                target1[tf1] = src_value
+                        # Do nothing if the first level down (target1) doesn't exist?
+                elif len(targ_feat) == 1:
+                    # Source feature is not in source and no target feature embedding
+                    tf = targ_feat[0]
+                    if tf in target:
+                        targ_value = target[tf]
+                        self[sf] = targ_value
                 else:
-                    target[targ_feat] = src_value
-            elif targ_feat in target:
-                targ_value = target[targ_feat]
-                self[src_feat] = targ_value
+                    # Source feature is not in source and target feature embedding
+                    tf0, tf1 = targ_feat
+                    if tf0 in target:
+                        target1 = target[tf0]
+                        if tf1 in target1:
+                            self[sf] = target1[tf1]
+            else:
+                # Source feature embedding
+                sf0, sf1 = src_feat
+                if sf0 in source:
+                    source1 = source[sf0]
+                    if sf1 in source1:
+                        src_value = source1[sf1]
+                        if len(targ_feat) == 1:
+                            # No target embedding
+                            tf = targ_feat[0]
+                            if tf in target and target[tf] != src_value:
+                                return 'fail'
+                            else:
+                                target[tf] = src_value
+                        else:
+                            # Target feature embedding
+                            tf0, tf1 = targ_feat
+                            if tf0 in target:
+                                target1 = target[tf0]
+                                if tf1 in target1 and target1[tf1] != src_value:
+                                    return 'fail'
+                                else:
+                                    target1[tf1] = src_value
+                # If sf0 is not in source, don't go further
 
     def agrees(self, target, agrs):
         """Does target agree with self on features specified in agrs dict or list of pairs?"""

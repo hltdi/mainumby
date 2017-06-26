@@ -639,21 +639,88 @@ class Sentence:
         tokens = []
         tok_position = 0
         num_found = False
+        # Handle numeral word sequences
         while tok_position < len(self.tokens):
             num = self.language.find_numeral(self.tokens[tok_position:])
             if num:
 #                print("NUM {}".format(num))
                 num_tokens, is_dig = num
                 num_found = True
-                prefix = "%ND_" if is_dig else "%N_"
-                tokens.append(prefix + '_'.join(num_tokens))
+                prefix = "%ND~" if is_dig else "%N~"
+                tokens.append(prefix + '~'.join(num_tokens))
                 tok_position += len(num_tokens)
             else:
                 tokens.append(self.tokens[tok_position])
                 tok_position += 1
         if num_found:
             self.tokens = tokens
+        # Join other phrases (stored in the tree self.language.join)
+        if self.language.join:
+            joined = Sentence.join_from_tree(self.tokens, self.language.join)
+            print("Joined tokens: {}".format(joined))
+            self.tokens = joined
 
+    @staticmethod
+    def join_from_tree(tokens, tree, position=0, subtree=None, result=None, to_join=None, previous_end=None):
+        """Return tokens list with any sub-sequence joined with _ if found in tree.
+        Searches for longest sequence when there are multiple possibilities beginning with the same sequence
+        of tokens, but may fail to find the longest sequence when sequences overlap, because it searches left-to-right only.
+        For example, given the sequence,
+          a b c d e f g
+          and possible joined subsequences, {b, c} and {c, d, e, f}, it will return
+          a b_c d e f g
+          rather than the otherwise preferable
+          a b c_d_e_f g
+        """
+        if position >= len(tokens):
+            return result
+        if subtree is None:
+            subtree = tree
+        if result is None:
+            result = []
+        if to_join is None:
+            to_join = []
+        next_token = tokens[position]
+#        print("Result: {}, position: {}, next_token: {}, current subtree: {}, previous end: {}".format(result, position, next_token, subtree, previous_end))
+        if next_token in subtree:
+            new_subtree = subtree[next_token]
+#            print(" In subtree, new subtree: {}".format(new_subtree))
+            to_join.append(next_token)
+            if '' in new_subtree:
+                # End of subtree is one option
+                new_token = '~'.join(to_join)
+                if len(new_subtree) > 1:
+                    # But there are other longer options
+#                    print(" End of subtree one option but not only one")
+                    previous_end = (result + [new_token], position+1)
+                    return Sentence.join_from_tree(tokens, tree, position=position+1, subtree=new_subtree,
+                                                   result=result, to_join=to_join, previous_end=previous_end)
+                else:
+                    result.append(new_token)
+#                    print(" End of subtree; new token: {}, new result: {}".format(new_token, result))
+                    return Sentence.join_from_tree(tokens, tree, position=position+1, result=result)
+            else:
+                # More tokens need to be found
+                return Sentence.join_from_tree(tokens, tree, position=position+1, subtree=new_subtree,
+                                               result=result, to_join=to_join, previous_end=previous_end)
+        else:
+            # Fail
+            if previous_end:
+                # Return to last end
+                prev_result, prev_pos = previous_end
+#                print(" Failing on subtree, using previous end {}, {}".format(prev_result, prev_pos))
+                return Sentence.join_from_tree(tokens, tree, position=prev_pos, result=prev_result)
+            else:
+                # Return to beginning of to_join sequence + 1
+                if to_join:
+                    result.append(to_join[0])
+                    position = position - len(to_join) + 1
+                else:
+                    result.append(next_token)
+                    position = position+1
+#                print(" Failing on subtree, return to position {}".format(position))
+                return Sentence.join_from_tree(tokens, tree, position=position, result=result)
+            
     def lowercase(self):
         """Make capitalized tokens lowercase.
         2016.05.08: only do this for the first word.
@@ -724,32 +791,37 @@ class Sentence:
             print("Tokenizing {}".format(self))
         if not self.nodes:
             # Don't do this if nodes have already been created.
-            # Split at spaces by default (later allow for dedicated language-specific tokenizers).
-            if not self.tokens:
-                self.tokens = self.raw.split()
-            # Lowercase capitalized words and segment contractions, possibly adding new tokens.
-            self.preprocess()
-            # Do morphological analysis (added 2015.06.07)
-            # 2017.03.09: cleaning done in preprocess() so don't do it here.
-            # 2017.04.21: do this only if it hasn't already happened in an external tagger
-            # First tag the tokens if there's an external tagger and this hasn't happened
-            tagged = None
-            if self.tagger and not self.tagger.tokenizer:
-                # Use the POS tagger here
-                tagged = self.tagger.tag(self.tokens)
-#                print("Tagged: {}".format(tagged))
-            # Still need to figure out how to integrated tagged results and morphological analyses
-            if not self.tagger or self.tagger.morph:
-#                print("Doing analyses for {}".format(self.tokens))
-                analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
-                if self.tagger:
-                    # Merge results of tagging and morphological analysis
-                    self.analyses = self.merge_POS(tagged, analyses)
-                else:
-                    self.analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
-            # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
-            if verbosity:
-                print("Running Morphosyns for {} on {}".format(self.language, self))
+            # Skip the next steps if tokenization and morphological analysis happened when the
+            # sentence was created.
+            if self.analyses:
+                self.lowercase()
+                # Also join_lex()??
+            else:
+                tagged = None
+                # Split at spaces by default.
+                if not self.tokens:
+                    self.tokens = self.raw.split()
+                # Lowercase capitalized words, segment contractions, join numerals and other fixed sequences.
+                self.preprocess()
+                # Do morphological analysis (added 2015.06.07)
+                # 2017.03.09: cleaning done in preprocess() so don't do it here.
+                # 2017.04.21: do this only if it hasn't already happened in an external tagger
+                # First tag the tokens if there's an external tagger and this hasn't happened
+                if self.tagger and not self.tagger.tokenizer:
+                    # Use the POS tagger here
+                    tagged = self.tagger.tag(self.tokens)
+                print("Tagged: {}".format(tagged))
+                # Still need to figure out how to integrated tagged results and morphological analyses
+                if not self.tagger or self.tagger.morph:
+                    analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
+                    if self.tagger:
+                        # Merge results of tagging and morphological analysis
+                        self.analyses = self.merge_POS(tagged, analyses)
+                    else:
+                        self.analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
+                    # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
+#            if verbosity:
+            print("Running Morphosyns for {} on {}".format(self.language, self))
             for mi, ms in enumerate(self.language.ms):
                 # If ms applies and is "ambiguous", create a new copy of the sentence and add to altsyns
                 # (this happens in MorphoSyn)
@@ -768,6 +840,7 @@ class Sentence:
             print("Merging tagger and analyzer results for {}".format(self))
         results = []
         for (word, tag), (token, anals) in zip(tagged, analyzed):
+#            print("word {}, tag {}, token {}, anals {}".format(word, tag, token, anals))
             results1 = []
             for anal in anals:
                 anal_pos = None
@@ -834,13 +907,12 @@ class Sentence:
                     del_indices[target_index].append(tokindex)
                 else:
                     del_indices[target_index] = [tokindex]
-#                incorp_indices.append(tokindex)
-#                del_indices.append(tokindex)
                 continue
             if anals:
                 # Multiple dicts: ambiguity; let node handle it
                 # Get cats
                 # FIX THIS LATER; ONLY ONE ANAL SHOULD BE POSSIBLE
+#                print("Token {}, anals {}".format(token, anals))
                 if not isinstance(anals, list):
                     anals = [anals]
                 for anal in anals:
@@ -908,6 +980,7 @@ class Sentence:
                 if not isinstance(anals, list):
                     # Is this still possible?
                     anals = [anals]
+#                print(" Node: {}, anals: {}".format(node, anals))
                 for a in anals:
 #                    print("Analysis {}".format(a))
                     root = a.get('root')

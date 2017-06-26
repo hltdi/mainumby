@@ -3005,9 +3005,9 @@
 *** button_v up
 ->amh qWl_f_v[as=smp,vc=smp]
 *** buy_v $a $n ; ^ buy_v 0
-->amh $a[+acc,rl=[+acc]] $n gz'_v[as=smp,vc=smp] ; || 2, 0, 1 ; 0==2 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg
+->amh $a[cs=acc] $n gz'_v[as=smp,vc=smp] ; || 2, 0, 1 ; 0==2 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg
 *** buy_v $n ; ^ buy_v 0
-->amh $n[+acc,rl=[+acc]] gz'_v[as=smp,vc=smp] ; || 1, 0 ; 0==1 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg
+->amh $n[cs=acc] gz'_v[as=smp,vc=smp] ; || 1, 0 ; 0==1 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg
 *** buy_v
 ->amh gz'_v[as=smp,vc=smp]
 *** cadge_v everywhere
@@ -6922,6 +6922,7 @@
 ->amh krkr_v[as=smp,vc=smp]
 *** say_v
 ->amh ngr_v[as=rc,vc=ps]
+->amh b'l_v[as=smp,vc=smp]
 *** scale_v
 ->amh f'q_v[as=smp,vc=smp]
 *** scare_v
@@ -7364,6 +7365,10 @@
 ->amh msl_v[as=smp,vc=cs]
 *** speak_v well
 ->amh mWg_s_v[as=smp,vc=tr]
+*** speak_v
+->amh ngr_v[as=rc,vc=ps]
+*** speak_v to $n
+->amh $n[cs=acc] ngr_v[as=rc,vc=tr,ob=[+expl,-p1,-p2]] ; || 1, -1, 0 ; 0==1 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg,ax:ax ; 0=1 plr:ob|plr
 *** speed_v
 ->amh fTn_v[as=rc,vc=tr]
 *** speed_v up
@@ -7818,8 +7823,8 @@
 ->amh qbaTr_v[as=smp,vc=smp]
 ->amh zbarq_v[as=smp,vc=smp]
 ->amh qbajr_v[as=smp,vc=smp]
-*** talk_v to
-->amh ngr_v[as=rc,vc=tr]
+*** talk_v to $n
+->amh $n[cs=acc] ngr_v[as=rc,vc=tr,ob=[+expl,-p1,-p2]] ; || 1, -1, 0 ; 0==1 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg
 *** tame_v
 ->amh gr'_v[as=smp,vc=smp]
 *** tamp_v down
@@ -10710,4 +10715,4 @@
 *** be_v left behind ; ^ left 1
 ->amh rs'_v[as=smp,vc=ps] ; || 0, -1, -1
 *** make_v fun of $n ; ^ make_v 0
-->amh $n[+acc,rl=[+acc]] xwf_v[as=smp,vc=tr] ; || 1, -1, -1, 0 ; 0==1 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg,ax:ax
+->amh $n[cs=acc] xwf_v[as=smp,vc=tr] ; || 1, -1, -1, 0 ; 0==1 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg,ax:ax

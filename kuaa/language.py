@@ -254,7 +254,6 @@ class Language:
             print("Loading external tagger...")
             source, arg = exttag.split("|")
             import kuaa.tag as tag
-            print("Imported tag module")
             if lemmas:
                 lemmas = self.read_lemmas()
                 print("Read lemmas")
@@ -1620,7 +1619,7 @@ class Language:
                     new_feat_conv[(wrd, tag)] = (lemma, feats)
                 conversion = (d.get('pos'), new_feat_conv)
         if joins:
-            joins = [(x.split('_'), y) for x, y in joins]
+            joins = [(x.split('~'), y) for x, y in joins]
             joins = Language.treeify(joins)
             
         l = Language(d.get('name'), d.get('abbrev'), use=use,
@@ -1880,13 +1879,8 @@ class Language:
         # Features may override the POS provided; needed for verbal nouns
         featpos = features.get('pos')
         pos = featpos or pos
-#        if 'pos' in features:
-#            pos = features['pos']
         if verbosity:
             print("Generating {}:{} with POS {}".format(root, features.__repr__(), pos))
-#        if not features:
-#            features = FeatStruct({})
-#        features = features.freeze()
         if not pos:
             print("Warning: no POS for generation of {}:{}".format(root, features.__repr__()))
         is_not_roman = not roman

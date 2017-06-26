@@ -54,6 +54,7 @@ def load1(lang='eng'):
 
 def ea_doc(text, process=True):
     e = kuaa.Language.languages.get('eng')
+    a = kuaa.Language.languages.get('amh')
     if not e:
         e, a = load_ea()
 #        e = load1()

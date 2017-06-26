@@ -56,6 +56,9 @@
 # -- Display for GInsts improved.
 # 2017.04.24
 # -- Got things to work with external tagger (not many changes).
+# 2017.06.22
+# -- Skip group item matching for punctuation nodes.
+#    Character joining items in phrases and numerals is now ~ instead of _.
 
 import itertools, copy, re
 from .cs import *
@@ -267,6 +270,14 @@ class SNode:
         """Print name."""
         return "*{}:{}".format(self.token, self.index)
 
+    def get_analysis(self):
+        """The single analysis for this node."""
+        return self.analyses[0]
+
+    def is_punc(self):
+        """Is this node a punctuation node?"""
+        return self.get_analysis().get('pos') == 'pnc'
+
     ## Create IVars and (set) Vars with sentence DS as root DS
 
     def ivar(self, key, name, domain, ess=False):
@@ -338,6 +349,9 @@ class SNode:
     def match(self, grp_item, grp_feats, verbosity=0):
         """Does this node match the group item (word, root, category) and
         any features associated with it?"""
+        # If this is a punctuation node, it can't match a group item
+        if self.is_punc():
+            return False
         if verbosity > 1:
             print('   SNode {} with features {} trying to match item {} with features {}'.format(self, self.analyses, grp_item, grp_feats.__repr__()))
         # If item is a category, don't bother looking at token
@@ -345,7 +359,7 @@ class SNode:
         is_spec = Entry.is_special(grp_item)
         if is_spec and Entry.is_special(self.token):
 #            print("Special entry {} for {}".format(grp_item, self.token))
-            token_type = self.token.split('_')[0]
+            token_type = self.token.split('~')[0]
             if token_type.startswith(grp_item):
                 # Special group item matches node token (grp_item could be shorter than token_type)
                 return None
@@ -377,12 +391,12 @@ class SNode:
                 node_root = analysis.get('root', '')
                 node_roots = None
                 if verbosity > 1:
-                    print("    Trying to match analysis: {}/{}/{} against group".format(node_root, node_cats, node_features.__repr__()))
-                if '_' in node_root and not SolSeg.special_re.match(node_root):
+                    print("    Trying to match analysis: {}/{}/{} against group {}".format(node_root, node_cats, node_features.__repr__(), grp_item))
+                if '_' in node_root: # and not SolSeg.special_re.match(node_root):
                     # Numbers and other special tokens also contain '_'
                     node_roots = []
-                    # An ambiguous root in analysis
-                    node_root_split = node_root.split('_')
+                    # An ambiguous root in analysis, for example, ser|ir in Spa
+#                    node_root_split = node_root.split('_')
 #                    if len(node_root_split) != 2:
 #                        print("Something wrong with node root {}".format(node_root))
                     r, p = node_root.split('_')
@@ -889,7 +903,7 @@ class TreeTrans:
             if not gnodes:
                 # snode is not covered by any group
                 node_index_map[snode.index] = tnode_index
-                node_features.append((snode.token, None, []))
+                node_features.append([snode.token, None, []])
                 tnode_index += 1
             elif len(gnodes) == 1 and gnodes[0].special:
                 gnode = gnodes[0]
@@ -907,7 +921,7 @@ class TreeTrans:
                 # Constrain the position of this node in the tgroup
                 if len(tgroup.tokens) > 1:
                     t_indices = [(tgroup, t_index)]
-                node_features.append((spec_trans, None, t_indices))
+                node_features.append([spec_trans, None, t_indices])
                 tnode_index += 1
             else:
                 cache_key = None
@@ -959,9 +973,10 @@ class TreeTrans:
                         if verbosity > 1:
                             print("   mergers for {}: {}".format(self, self.mergers))
                         node_index_map[snode.index] = tn_i
-                        node_features.append((tok, t_feats, t_i))
+                        feat_index = len(node_features)
+                        node_features.append([tok, t_feats, t_i])
                         for t_index in t_i:
-                            group_nodes[t_index] = (tok, t_feats)
+                            group_nodes[t_index] = [tok, t_feats, feat_index]
                     else:
                         tgroups, tokens, targ_feats, agrs, t_index = zip(gna1, gnc1)
 #                        print("   tgroups {}, tokens {}".format(tgroups, tokens))
@@ -994,9 +1009,10 @@ class TreeTrans:
                             if verbosity:
                                 print("   Now: {} to agree with tfeats {}".format(features, targ_feats))
                         node_index_map[snode.index] = tnode_index
-                        node_features.append((token, targ_feats, t_indices))
+                        feat_index = len(node_features)
+                        node_features.append([token, targ_feats, t_indices])
                         for t_index in t_indices:
-                            group_nodes[t_index] = (token, targ_feats)
+                            group_nodes[t_index] = [token, targ_feats, feat_index]
                         self.cache[cache_key] = (token, tnode_index, t_indices, tg, targ_feats)
                     
                 else:
@@ -1032,9 +1048,10 @@ class TreeTrans:
                             if verbosity > 1:
                                 print("   single node already in cache: {}".format(self.cache[cache_key]))
                             node_index_map[snode.index] = tn_i
-                            node_features.append((tok, t_feats, t_i))
+                            feat_index = len(node_features)
+                            node_features.append([tok, t_feats, t_i])
                             for t_ind in t_i:
-                                group_nodes[t_ind] = (tok, t_feats)
+                                group_nodes[t_ind] = [tok, t_feats, feat_index]
                         else:
                             if len(tgroup.tokens) > 1:
                                 t_indices.append((tgroup, t_index))
@@ -1054,9 +1071,10 @@ class TreeTrans:
                                 if verbosity:
                                     print("  Now {} and {}".format(features, targ_feats.__repr__()))
                             node_index_map[snode.index] = tnode_index
-                            node_features.append((token, targ_feats, t_indices))
+                            feat_index = len(node_features)
+                            node_features.append([token, targ_feats, t_indices])
                             for t_ind in t_indices:
-                                group_nodes[t_ind] = (token, targ_feats)
+                                group_nodes[t_ind] = [token, targ_feats, feat_index]
                             self.cache[cache_key] = (token, tnode_index, t_indices, None, targ_feats)
                             
                 tnode_index += 1
@@ -1078,8 +1096,9 @@ class TreeTrans:
                 src_index = len(node_features)
                 self.ttree.add(src_index)
                 index = [(tginst, tnode.index)]
-                node_features.append((tnode.token, features, index))
-                group_nodes[index[0]] = (tnode.token, features)
+                feat_index = len(node_features)
+                node_features.append([tnode.token, features, index])
+                group_nodes[index[0]] = [tnode.token, features, feat_index]
         self.node_features = node_features
         self.group_nodes = group_nodes
         self.agreements = agreements
@@ -1122,6 +1141,7 @@ class TreeTrans:
 #        print("Generating words in {}, features {}".format(self, self.node_features))
         self.nodes = []
         for group, agr_constraints in self.agreements.items():
+#            print("Group {}, agr constraints {}".format(group, agr_constraints))
             for agr_constraint in agr_constraints:
                 i1, i2 = agr_constraint[0], agr_constraint[1]
                 feature_pairs = agr_constraint[2:]
@@ -1130,7 +1150,16 @@ class TreeTrans:
                 agr_node2 = self.group_nodes[(group, i2)]
 #                print("Found node1 {} and node2 {} for constraint {}".format(agr_node1, agr_node2, feature_pairs))
                 agr_feats1, agr_feats2 = agr_node1[1], agr_node2[1]
-                agr_feats1.mutual_agree(agr_feats2, feature_pairs)
+                feat_index1, feat_index2 = agr_node1[2], agr_node2[2]
+                # FSSets agr_feats1 and agr_feats2 have to be unfrozen before then can be made to agree
+                agr_feats1 = agr_feats1.unfreeze(cast=False)
+                agr_feats2 = agr_feats2.unfreeze(cast=False)
+                af1, af2 = FSSet.mutual_agree(agr_feats1, agr_feats2, feature_pairs)
+                # Replace the frozen FSSets with the modified unfrozen ones
+#                print("Modified FSSets: {}, {}".format(af1, af2))
+                agr_node1[1], agr_node2[1] = af1, af2
+                self.node_features[feat_index1][1] = af1
+                self.node_features[feat_index2][1] = af2
         generator = self.sentence.target.generate
 #        print("Features for generation: {}".format(self.node_features))
         for token, features, index in self.node_features:

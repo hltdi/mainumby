@@ -871,15 +871,15 @@
 ->grn jeresarea_v[cat=a]
 *** congratular_v[-r,+fin] engrado sumo ; ^ congratular_v 0
 ->grn mboaguyjevete_v[cat=a]
-*** conocer_v[-r,+fin] las mañas de alguien ; ^ conocer_v 0
+*** conocer_v[-r,+fin] las mañas de alguien ; ^ conocer_v 0 ; -X-
 ->grn <hekopyty_v[cat=a]
-*** conocer_v[+r,+fin] uno a otro ; ^ conocer_v 0 ; #5
+*** conocer_v[+r,+fin] uno a otro ; ^ conocer_v 0 ; -X-
 ->grn jokuaa_v[cat=a] ; #6
-*** conocer_v[+r,+fin] dos o más personas entre sí ; ^ conocer_v 0 ; #5
+*** conocer_v[+r,+fin] dos o más personas entre sí ; ^ conocer_v 0 ; -X-
 ->grn jokuaa_v[cat=a] ; #6
-*** conocer_v[-r,+fin] a la gente ; ^ conocer_v 0
+*** conocer_v[-r,+fin] a la gente ; ^ conocer_v 0 ; -X-
 ->grn porokuaa_v[cat=a]
-*** conocer_v[+r,+fin] a así mismo ; ^ conocer_v 0 ; #5
+*** conocer_v[+r,+fin] a así mismo ; ^ conocer_v 0 ; -X-
 ->grn jekuaa_v[cat=a] ; #99 ; ##1
 *** considerar_v[-r,+fin] con atención ; ^ considerar_v 0
 ->grn jepy'amongeta_v[cat=a]

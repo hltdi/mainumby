@@ -100,6 +100,8 @@
 # 2017.4.24
 # -- Fixed matching for Morphosyn and Group with external tagger. Basically this involves accepting
 #    FSSets for features in addition to simple FeatStructs. Later FSSet should be the only possibility.
+# 2017.06.22
+# -- Character joining items in phrases and numerals is now ~ instead of _.
 
 import copy, itertools
 import yaml
@@ -117,10 +119,10 @@ ATTRIB_SEP = ';'
 WITHIN_ATTRIB_SEP = ','
 ## Regular expressions for reading groups from text files
 # non-empty form string followed by possibly empty FS string
-FORM_FEATS = re.compile("([$%<'`^*¿?¡!|()\-\w]+)\s*((?:\[.+\])?)$")
+FORM_FEATS = re.compile("([$%~<'`^*¿?¡!|()\-\w]+)\s*((?:\[.+\])?)$")
 # !FS(#1-#2), representing a sequence of #1 to #2 negative FS matches
 NEG_FEATS = re.compile("\s*!(\[.+\])(\(\d-\d\))$")
-HEAD = re.compile("\s*\^\s*([<'¿?¡!|\-\w]+)\s+(\d)\s*$")
+HEAD = re.compile("\s*\^\s*([~<'¿?¡!|\-\w]+)\s+(\d)\s*$")
 # Within agreement spec
 # 1=3 n,p
 WITHIN_AGR = re.compile("\s*(\d)\s*=\s*(\d)\s*(.+)$")

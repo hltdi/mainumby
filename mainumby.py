@@ -64,24 +64,6 @@ def output_sols(sentence):
     for sol in sentence.solutions:
         print(sol.get_ttrans_outputs())
 
-def load_ea(train=False):
-    eng, amh = kuaa.Language.load_trans('eng', 'amh', train=train)
-    return eng, amh
-
-def ea_sentence(sentence, ambig=True, solve=False, user=None, segment=False,
-                verbosity=0):
-    e, a = load_ea()
-    session = kuaa.start(e, a, user)
-    d = kuaa.Document(e, a, sentence, True, session=session)
-    s = d[0]
-    s.initialize(ambig=ambig, verbosity=verbosity)
-    if solve or segment:
-        s.solve(all_sols=ambig)
-        if s.solutions and segment:
-            solution = s.solutions[0]
-            solution.get_segs()
-    return s
-
 def ley_bidoc(init=True, train=True):
     d = eg_arch_doc("../LingData/EsGn/Corp/FromCarlos/ley4251_e0.txt",
                     ruta_meta="../LingData/EsGn/Corp/FromCarlos/ley4251_g0.txt")

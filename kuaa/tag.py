@@ -44,7 +44,7 @@ def get_tagger(source, arg, lang_abbrev, conversion=None, lemmas=None, eos=None)
     if source == 'spacy':
         return Spacy(arg, lang_abbrev, conversion=conversion, eos=eos)
     elif source == 'nltk':
-        print("Loading NLTK tagger")
+#        print("Loading NLTK tagger")
         return NLTK(arg, lang_abbrev, conversion=conversion, lemmas=lemmas, eos=eos)
     else:
         print("No external tagger in {} available for {}".format(source, lang_abbrev))
@@ -68,7 +68,7 @@ class Tagger:
 
     @staticmethod
     def expand_POS(pos):
-        """POS may multiple segments, separated by .s"""
+        """POS may have multiple segments, separated by .s"""
         return pos.split('.')
 
 class NLTK(Tagger):
@@ -82,15 +82,15 @@ class NLTK(Tagger):
         from pickle import load
         import nltk
         import nltk.tbl
-        print("Loaded NLTK")
+#        print("Loaded NLTK")
         pickle_path = os.path.join(os.path.join(os.path.join(LANGUAGE_DIR, lang_abbrev), 'syn'), "tag.pkl")
-        print("Pickle path {}".format(pickle_path))
+#        print("Pickle path {}".format(pickle_path))
         self.tokenizer = nltk.word_tokenize if lang_abbrev == 'eng' else None
-        print("Tokenizer: {}".format(self.tokenizer))
+#        print("Tokenizer: {}".format(self.tokenizer))
         self.tokenize = True if lang_abbrev == 'eng' else False
         with open(pickle_path, 'rb') as pkl:
             self.tagger = load(pkl)
-            print("Loaded tagger")
+#            print("Loaded tagger")
 
     def __repr__(self):
         return "NLTK:tagger:{}".format(self.lang)
@@ -211,7 +211,8 @@ class Spacy(Tagger):
         return "spaCy:tagger:{}".format(self.lang)
 
     def tag(self, text):
-        """Tokenize and POS tag the text, returning a list of Tokens."""
+        """Tokenize and POS tag the text, returning a list of Tokens, returning a Spacy Doc instance, which
+        (somehow) behaves like a list, at least supports indexing."""
         return self.tagger(text)
 
     def is_eos(self, item):
@@ -254,7 +255,6 @@ class Spacy(Tagger):
 #        return item.text, self.get_lemma(item), self.get_pos(item), self.get_tag(item)
         return item.text, self.get_lemma(item), self.get_pos(item), self.get_tag(item), self.get_mdt_pos(item), self.get_mdt_features(item)
     
-#            tagged_sents.append([(word, {'root': root, 'features': feats}) for word, root, feats in repr])
     def get_sentences(self, text):
         """Tokenize and tag the text if this hasn't happened already.
         Then split the resulting list into lists of sentence tuples."""
@@ -266,10 +266,11 @@ class Spacy(Tagger):
         sentences = []
         sentence = []
         for item in tagged:
-#            print("Item {}".format(item))
-#            print("  Repr {}".format(self.get_repr(item)))
             itext, ilemma, ipos, itag, mpos, mfeats = self.get_repr(item)
             pos_exp = Tagger.expand_POS(mpos)
+#            print("Item {}".format(item))
+#            print("  Repr {}".format(self.get_repr(item)))
+#            print("  Pos, exp {}".format(pos_exp))
             short_pos = pos_exp[0]
             if ilemma[0] == '-':
                 ilemma = itext
@@ -277,7 +278,8 @@ class Spacy(Tagger):
                 root = ilemma + '_' + short_pos
             else:
                 root = itext
-            sentence.append((itext, {'root': root, 'features': mfeats[1]}))
+            dct = {'root': root, 'pos': short_pos, 'features': mfeats[1]}
+            sentence.append((itext, dct))
             if self.is_eos(item):
                 sentences.append(sentence)
                 sentence = []

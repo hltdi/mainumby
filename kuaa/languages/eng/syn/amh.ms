@@ -123,7 +123,7 @@ $v_defsing_ob :: [pos=v,ob=[+expl,-p1,-p2,-plr]] [pos=n,+def,+acc,rl=[+acc],-plr
 %v_1p_prs :: we [pos=v,tam=stm,sb=[+expl,+p1,+plr],tm=imf,ax=al] ; // 0:1
 %v_3p_prs :: they [pos=v,tam=stm,sb=[+expl,-p1,-p2,+plr],tm=imf,ax=al] ; // 0:1
 ## past
-%v_1s_pst :: i [pos=v,tam=pst,sb=[+expl,-p1,-p2,-fem,-plr],tm=prf] ; // 0
+%v_1s_pst :: i [pos=v,tam=pst,sb=[+expl,+p1,-plr],tm=prf] ; // 0
 %v_2_pst :: you [pos=v,tam=pst,sb=[+expl,+p2],tm=prf] ; // 0
 %v_3sm_pst :: he [pos=v,tam=pst,sb=[+expl,-p1,-p2,-fem,-plr],tm=prf] ; // 0
 %v_3sf_pst :: she [pos=v,tam=pst,sb=[+expl,-p1,-p2,+fem,-plr],tm=prf] ; // 0

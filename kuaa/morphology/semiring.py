@@ -45,13 +45,10 @@ class FSSet(set):
 
     def __init__(self, *items):
         '''Create a feature structure set from items, normally a list of feature structures or strings.'''
-        # This may sill be needed for unpickling, when items is a tuple of a list of FeatStructs
+        # This may still be needed for unpickling, when items is a tuple or a list of FeatStructs
         if len(items) > 0 and isinstance(items[0], (list, set)):
             items = items[0]
         if not isinstance(items, set):
-#            if isinstance(items[0], FSSet):
-#                items = set(items)
-#            else:
             items = [(FeatStructParser().parse(i) if (isinstance(i, str) or isinstance(i, str)) else i) for i in items]
             # Freeze each feature structure
             for index, itm in enumerate(items):
@@ -164,7 +161,7 @@ class FSSet(set):
             for f, v in vals:
                 target[f] = v
 
-    def agree_FSS(self, target, agrs, force=False):
+    def agree_FSS(self, target, agrs, force=False, freeze=True):
         """Return an FSSet consisting of a copy of target agreeing on agrs features for each FeatStruct in self."""
         agr_pairs = agrs.items() if isinstance(agrs, dict) else agrs
         new_target = set()
@@ -198,9 +195,23 @@ class FSSet(set):
                                 vals.append((targ_feat, u))
                 for f, v in vals:
                     target1[f] = v
-                target1.freeze()
+                if freeze:
+                    target1.freeze()
                 new_target.add(target1)
         return FSSet(new_target)
+
+    @staticmethod
+    def mutual_agree(source, target, agrs):
+        """Source and target are lists of sets of unfrozen FeatStructs, not FSSets.
+        Make all FSs target agree with all FSs in self and FSs in sself agree with FSs in target
+        on features specified in agrs dict or list of pairs. Features can be of the form x|y, where
+        y is a feature within the feature x."""
+        for fs1 in source:
+            for fs2 in target:
+                agree1 = fs1.mutual_agree(fs2, agrs)
+                if agree1 == 'fail':
+                    return 'fail'
+        return FSSet(*source), FSSet(*target)
 
     def update_inside(self, features=None):
         """
@@ -283,7 +294,7 @@ class FSSet(set):
 
     def unfreeze(self, cast=False):
         """A copy of the FSSet (as a list unless cast is True!) that is a set of unfrozen FSs."""
-        c = [fs.copy() for fs in self]
+        c = [fs.copy(True) for fs in self]
         if cast:
             c = FSSet(c)
         return c
