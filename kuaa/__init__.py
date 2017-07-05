@@ -72,7 +72,7 @@ def seg_trans(sentence, source, target, session=None, verbosity=0):
         return [], sentence.get_html()
 
 def make_document(source, target, text, session=None):
-    """Create an Mbojereha Document object with the text."""
+    """Create an Mainumby Document object with the text."""
     d = kuaa.Document(source, target, text, True, session=session)
     return d
 
