@@ -296,6 +296,9 @@ class Document(list):
             print("Tokenizing text {}".format(text))
         text_tokens = text.split()
 #        print("Tokenizing text, {} tokens".format(len(text_tokens)))
+        pre = ''
+        suf = ''
+        word = None
         for token in text_tokens:
             tok_subtype = 0
             word_tok = False
@@ -335,9 +338,9 @@ class Document(list):
                         if word1 not in self.language.abbrevs:
                             word = word1[:-1]
                             suf = '.' + suf1 + suf
-                tokens.append((word, 1, tok_subtype))
-                if suf:
-                    tokens.append((suf, 2, 0))
+            tokens.append((word, 1, tok_subtype))
+            if suf:
+                tokens.append((suf, 2, 0))
 
     @staticmethod
     def is_sent_start(token):

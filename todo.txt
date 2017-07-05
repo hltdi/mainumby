@@ -1,4 +1,9 @@
-2017 spring
+2017 spring/summer
+
+ADJs not listed in adj.lex
+pochy
+mba’embyasy
+tindy
 
 What happens with POS ambiguity for synsem categories and groups?
 For example, “that” (adj, noun).

@@ -1,13 +1,13 @@
 #### Features common to almost all translations
 +t == ; 0==0 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg,ax:ax
 #### Amharic auxiliaries
-## present continuous: 'y_eseb_erku new
+## present continuous: እየሰበርኩ ነው 
 *** be_v[+aux,tam=prs,-prosp] $v ; ^ be_v 0
 ->amh $v[pp=Iyye,rl=[+p,-acc],+sub,+rel,tm=prf] new ; || 1, 0 ; 0==1
-## past continuous: ysebr neb_er
+## past continuous: ይሰብር ነበር 
 *** be_v[+aux,tam=pst,-prosp] $v ; ^ be_v 0
 ->amh $v[tm=imf,ax=None] neb_er ; || 1, 0 ; 0 == 1
-## about to: lisebr new
+## about to: ሊሰብር ነው 
 *** be_v[+aux,+prosp,tam=prs] $v ; ^ be_v 0
 ->amh $v[cj1=lI,tm=imf,+sub] new ; || 1, 0 ; 0 == 1
 *** be_v[+aux,+prosp,tam=pst] $v ; ^ be_v 0
