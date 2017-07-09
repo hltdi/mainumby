@@ -91,7 +91,7 @@ def get_segmentation():
 @app.route('/')
 def index():
 #    print("In index...")
-    return redirect(url_for('base'))
+    return redirect(url_for('ea_base'))
 
 @app.route('/base', methods=['GET', 'POST'])
 def base():

@@ -163,6 +163,8 @@ class Language:
     numeral = re.compile("[,.]?\d+[\d.,]*$")
 
     def __init__(self, name, abbrev, use=ANALYSIS, groups=None, groupnames=None,
+                 # A directory may be provided.
+                 directory=None,
                  # When an external tagger is used, these are read in from the .lg file
                  # exttag: source|spec
                  # conversion: (POS_tag_conversion_dict, feature_conversion_dict)
@@ -192,9 +194,10 @@ class Language:
         self.groupnames = {}
         # Record whether language has changed since last loaded
         self.changed = False
-        # For generation (target) language, a dictionary of morphologically generated words:
-        # {lexeme: {(feat, val): {(feat, val): wordform,...}, ...}, ...}
+        # Add to the dictionary of loaded languages.
         Language.languages[abbrev] = self
+        # Set the directory where data is
+        self.directory = directory or os.path.join(LANGUAGE_DIR, abbrev)
         ## 2015.5.15 Copied from morphology/language
         self.pos = pos or []
         # Dictionary of preprocessing character conversions
@@ -422,21 +425,21 @@ class Language:
 
     def get_syn_dir(self):
         """Directory for .ms (MorphoSyn) files (at least)."""
-        return os.path.join(self.get_dir(), 'syn')
+        return os.path.join(self.directory, 'syn')
 
     def get_fst_dir(self):
-        return os.path.join(self.get_dir(), 'fst')
+        return os.path.join(self.directory, 'fst')
 
     def get_lex_dir(self):
-        return os.path.join(self.get_dir(), 'lex')
+        return os.path.join(self.directory, 'lex')
 
     def get_cache_dir(self):
         """Directory with cached analyses."""
-        return os.path.join(self.get_dir(), 'cache')
+        return os.path.join(self.directory, 'cache')
 
     def get_group_dir(self):
         """Directory with group files."""
-        return os.path.join(self.get_dir(), 'grp')
+        return os.path.join(self.directory, 'grp')
 
     def get_ms_file(self, target_abbrev):
         d = self.get_syn_dir()
@@ -666,7 +669,7 @@ class Language:
 
     def load_morpho_data(self):
         """Load morphological data from .mrf file."""
-        path = os.path.join(self.get_dir(), self.abbrev + '.mrf')
+        path = os.path.join(self.directory, self.abbrev + '.mrf')
         if not os.path.exists(path):
             print("No existe archivo morfológico para {}".format(self.name))
             return
@@ -1598,7 +1601,7 @@ class Language:
             print('No such MS file as {}'.format(path))
 
     @staticmethod
-    def from_dict(d, reverse=True, use=ANALYSIS):
+    def from_dict(d, reverse=True, use=ANALYSIS, directory=None):
         """Convert a dict (loaded from a file) to a Language object."""
 #        print("Language dict")
 #        for k, v in d.items():
@@ -1622,7 +1625,7 @@ class Language:
             joins = [(x.split('~'), y) for x, y in joins]
             joins = Language.treeify(joins)
             
-        l = Language(d.get('name'), d.get('abbrev'), use=use,
+        l = Language(d.get('name'), d.get('abbrev'), use=use, directory=directory,
                      exttag=exttag, conversion=conversion,
                      join=joins, eos=d.get('eos', EOS), lemmas=d.get('lemmas'))
         translations = d.get('translations')
@@ -1641,7 +1644,7 @@ class Language:
         return l
 
     @staticmethod
-    def read(path, use=ANALYSIS):
+    def read(path, use=ANALYSIS, directory=None):
         """Create a Language from the contents of a file, a dict that must be then converted to a Language.
         2017.4.18: Stopped using YAML."""
         dct = {}
@@ -1713,7 +1716,7 @@ class Language:
             dct[key] = ls
                         
 #            dct = yaml.load(file)
-        return Language.from_dict(dct, use=use)
+        return Language.from_dict(dct, use=use, directory=directory)
 
     @staticmethod
     def load_trans(source, target, groups=None, train=False):

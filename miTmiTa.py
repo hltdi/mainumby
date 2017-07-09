@@ -31,15 +31,15 @@
 
 __version__ = 1.0
 
-import kuaa
+import iwqet
 
 ## shortcuts
 
 def generate(language, stem, feats=None, pos='v'):
     if not feats:
-        feats = kuaa.FeatStruct("[]")
+        feats = iwqet.FeatStruct("[]")
     else:
-        feats = kuaa.FeatStruct(feats)
+        feats = iwqet.FeatStruct(feats)
     return language.generate(stem, feats, pos)
 
 def solve1(sentence):
@@ -49,16 +49,16 @@ def solve1(sentence):
     return sentence.solutions
 
 def load1(lang='eng'):
-    l = kuaa.Language.load_lang(lang)
+    l = iwqet.Language.load_lang(lang)
     return l
 
 def ea_doc(text, process=True):
-    e = kuaa.Language.languages.get('eng')
-    a = kuaa.Language.languages.get('amh')
+    e = iwqet.Language.languages.get('eng')
+    a = iwqet.Language.languages.get('amh')
     if not e:
         e, a = load_ea()
 #        e = load1()
-    d = kuaa.Document(e, a, text=text, proc=process)
+    d = iwqet.Document(e, a, text=text, proc=process)
     return d
 
 def output_sols(sentence):
@@ -67,14 +67,14 @@ def output_sols(sentence):
         print(sol.get_ttrans_outputs())
 
 def load_ea(train=False):
-    eng, amh = kuaa.Language.load_trans('eng', 'amh', train=train)
+    eng, amh = iwqet.load('eng', 'amh')
     return eng, amh
 
 def ea_sentence(sentence, ambig=True, solve=False, user=None, segment=False,
                 verbosity=0):
     e, a = load_ea()
-    session = kuaa.start(e, a, user)
-    d = kuaa.Document(e, a, sentence, True, session=session)
+    session = iwqet.start(e, a, user)
+    d = iwqet.Document(e, a, sentence, True, session=session)
     s = d[0]
     s.initialize(ambig=ambig, verbosity=verbosity)
     if solve or segment:
@@ -90,46 +90,46 @@ def ley_bidoc(init=True, train=True):
     if init:
         d.initialize()
     if train:
-        trainer = kuaa.Trainer(d)
+        trainer = iwqet.Trainer(d)
         return trainer
     return d
 
 def eg_doc(text, proc=True):
     e, g = cargar_eg()
-    d = kuaa.Document(e, g, text, proc=proc)
+    d = iwqet.Document(e, g, text, proc=proc)
     return d
 
 def eg_arch_doc(ruta, proc=True, reinit=False, user=None, session=None,
                 ruta_meta=None):
     """Crear un documento del contenido de un archivo."""
     e, g = cargar_eg(train=ruta_meta)
-    session = session or kuaa.start(e, g, user)
+    session = session or iwqet.start(e, g, user)
     arch = open(ruta, encoding='utf8')
     texto = arch.read()
     if ruta_meta:
         arch_meta = open(ruta_meta, encoding='utf8')
         texto_meta = arch_meta.read()
-        d = kuaa.Document(e, g, texto, proc=proc, reinitid=reinit, session=session,
+        d = iwqet.Document(e, g, texto, proc=proc, reinitid=reinit, session=session,
                           biling=True, target_text=texto_meta)
     else:
-        d = kuaa.Document(e, g, texto, proc=proc, reinitid=reinit, session=session)
+        d = iwqet.Document(e, g, texto, proc=proc, reinitid=reinit, session=session)
     return d
 
 def arch_doc(lengua, ruta, session=None, user=None, proc=False):
     """Crear un documento del contenido de un archivo, solo para análisis."""
     l = cargar(lengua)
-    session = session or kuaa.start(l, None, user)
+    session = session or iwqet.start(l, None, user)
     arch = open(ruta, encoding='utf8')
     texto = arch.read()
-    d = kuaa.Document(l, None, texto, proc=proc, session=session)
+    d = iwqet.Document(l, None, texto, proc=proc, session=session)
     return d
 
 def usuario(username):
-    return kuaa.User.users.get(username)
+    return iwqet.User.users.get(username)
 
 ## Cargar una lengua, solo para análisis.
 def cargar(lang='spa'):
-    spa = kuaa.Language.load_lang(lang)
+    spa = iwqet.Language.load_lang(lang)
     return spa
 
 if __name__ == "__main__":

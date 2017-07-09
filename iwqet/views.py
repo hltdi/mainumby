@@ -1,4 +1,4 @@
-# Mainumby. Parsing and translation with minimal dependency grammars.
+# Mit'mit'a. Parsing and translation with minimal dependency grammars.
 #
 ########################################################################
 #
@@ -37,10 +37,13 @@
 # -- Segment translation selections are added to sentence translation TextArea in sent.html.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user
+#from kuaa.train import *
+#from kuaa.morphology import *
+#from kuaa.record import *
+from iwqet import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user
 
 # Global variables for views; probably a better way to do this...
-SESSION = SPA = GRN = DOC = SENT = SEGS = SEG_HTML = USER = None
+SESSION = ENG = AMH = DOC = SENT = SEGS = SEG_HTML = USER = None
 SINDEX = 0
 USERS_INITIALIZED = False
 # SOLINDEX = 0
@@ -52,23 +55,23 @@ def initialize():
 
 def init_session():
     global SESSION
-    global GRN
-    global SPA
-    if not SPA:
+    global AMH
+    global ENG
+    if not ENG:
         load_languages()
     # Load users and create session if there's a user
     if USER and not SESSION:
-        SESSION = start(SPA, GRN, USER)    
+        SESSION = start(ENG, AMH, USER)
 
 def load_languages():
     """Load Spanish and Guarani data."""
-    global GRN, SPA
-    SPA, GRN = load()
+    global ENG, AMH
+    ENG, AMH = load('eng', 'amh')
 
 def make_doc(text):
     """Create a Document object from the text."""
     global DOC
-    DOC = make_document(SPA, GRN, text, session=SESSION)
+    DOC = make_document(ENG, AMH, text, session=SESSION)
 
 def get_sentence():
     global SINDEX
@@ -86,7 +89,7 @@ def get_sentence():
 def get_segmentation():
     global SEGS
     global SEG_HTML
-    SEGS, SEG_HTML = seg_trans(SENTENCE, SPA, GRN)    
+    SEGS, SEG_HTML = seg_trans(SENTENCE, ENG, AMH)    
 
 @app.route('/')
 def index():
@@ -163,7 +166,7 @@ def doc():
     if not SESSION:
         init_session()
     # Load Spanish and Guarani if they're not loaded.
-#    if not SPA:
+#    if not ENG:
 #        load_languages()
     return render_template('doc.html', user=USER)
 
@@ -221,4 +224,4 @@ def contacto():
 
 # Not needed because this is in runserver.py.
 if __name__ == "__main__":
-    kuaa.app.run(host='0.0.0.0')
+    iwqet.app.run(host='0.0.0.0')
