@@ -6,7 +6,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyleft 2015, 2016, 2017 HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyleft 2017 PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -23,30 +23,17 @@
 #
 # =========================================================================
 #
-# Created 2015.06.12
-# 2015.07
-# -- Views for loading languages, entering document, sentence, and translation.
-# 2016.03
-# -- sent view can either get new sentence or record translation for sentence segment.
-# -- SESSION, SEGS, SEG_HTML globals added.
-# 2016.04.03
-# -- USER added; SESSION created only if there is one.
-# 2016.04.05
-# -- Login works.
-# 2016.04.10
-# -- Segment translation selections are added to sentence translation TextArea in sent.html.
+# Created 2017.07.08 from kuaa/views.py
+#   This file gets loaded in iwqet/__init__.py
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-#from kuaa.train import *
-#from kuaa.morphology import *
-#from kuaa.record import *
+# These functions are in iwqet/__init__.py
 from iwqet import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user
 
 # Global variables for views; probably a better way to do this...
 SESSION = ENG = AMH = DOC = SENT = SEGS = SEG_HTML = USER = None
 SINDEX = 0
 USERS_INITIALIZED = False
-# SOLINDEX = 0
 
 def initialize():
     global USERS_INITIALIZED
@@ -64,7 +51,7 @@ def init_session():
         SESSION = start(ENG, AMH, USER)
 
 def load_languages():
-    """Load Spanish and Guarani data."""
+    """Load English and Amharic data."""
     global ENG, AMH
     ENG, AMH = load('eng', 'amh')
 
@@ -74,6 +61,7 @@ def make_doc(text):
     DOC = make_document(ENG, AMH, text, session=SESSION)
 
 def get_sentence():
+    """Set SENTENCE to be the SINDEXth sentence in DOC and increment SINDEX."""
     global SINDEX
     global SENTENCE
     global DOC
@@ -87,6 +75,7 @@ def get_sentence():
     SINDEX += 1
 
 def get_segmentation():
+    """Segment and translate SENTENCE."""
     global SEGS
     global SEG_HTML
     SEGS, SEG_HTML = seg_trans(SENTENCE, ENG, AMH)    
@@ -105,7 +94,7 @@ def base():
 def login():
     global USER
     form = request.form
-    print("Form for login: {}".format(form))
+#    print("Form for login: {}".format(form))
     if not USERS_INITIALIZED:
         initialize()
     if request.method == 'POST' and 'login' in form:
@@ -113,16 +102,13 @@ def login():
         username = form.get('username')
         user = get_user(username)
         if not user:
-#            print("No such user as {}".format(username))
             return render_template('login.html', error='user')
         else:
-#            print("Found user {}".format(user))
             password = form.get('password')
             if user.check_password(password):
                 USER = user
                 return render_template('logged.html', username=username)
             else:
-#                print("Password doesn't match")
                 return render_template('login.html', error='password')
     return render_template('login.html')
 
@@ -146,7 +132,6 @@ def reg():
             return render_template('reg.html', error="password")
         else:
             user = create_user(form)
-#        print("Created user {}".format(user))
             USER = user
             return render_template('acct.html', username=form.get('username'))
     return render_template('reg.html')
@@ -165,9 +150,6 @@ def doc():
     # Initialize Session if there's a User and no Session
     if not SESSION:
         init_session()
-    # Load Spanish and Guarani if they're not loaded.
-#    if not ENG:
-#        load_languages()
     return render_template('doc.html', user=USER)
 
 # View for displaying parsed sentence and sentence translation and
@@ -180,7 +162,7 @@ def sent():
 #        print("SEG_HTML {}".format(SEG_HTML))
 #    if 'oratra' in form:
 #        print("Registering sentence translation {}".format(form.get('oratra')))
-    if 'ayuda' in form and form['ayuda'] == 'true':
+    if 'help' in form and form['help'] == 'true':
         # Opened help window. Keep everything else as is.
         raw = SENTENCE.raw if SENTENCE else None
         punc = SENTENCE.get_final_punc() if SENTENCE else None
@@ -214,13 +196,13 @@ def fin():
     SESSION = DOC = SENT = SEGS = SEG_HTML = USER = None
     return render_template('fin.html')
 
-@app.route('/proyecto')
-def proyecto():
-    return render_template('proyecto.html')
+@app.route('/project')
+def project():
+    return render_template('project.html')
 
-@app.route('/contacto')
-def contacto():
-    return render_template('contacto.html')
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 
 # Not needed because this is in runserver.py.
 if __name__ == "__main__":

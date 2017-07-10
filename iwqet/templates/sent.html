@@ -156,10 +156,10 @@ function EmptyDoc() {
    document.getElementById("document").value = "";
 }
 function ShowHelp() {
-    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
+    var helpWin = window.open("", "Mit'mit'a: Help", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
     helpWin.document.write('<html><head>' +
 '<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
-"<title>Mainumby: Ayuda</title></head><body>" +
+"<title>Mit'mit'a: Help</title></head><body>" +
 "<h4 class='help'>Ayuda para seleccionar y registrar traducciones</h4>" +
 "<p class='help'>En la ventana 'Selección de oraciones' " +
 "se presenta una oración y varias opciones para traducirla. " +
@@ -207,7 +207,7 @@ function ShowHelp() {
 "</p><p class='help'>" +
 "Para instrucciones más detalladas incluso ejemplos, ... " +
 "</p></body></html>");
-    document.Form1.ayuda.value = true;
+    document.Form1.help.value = true;
 }
 function OnRegOra(raw, punc) {
     var sentval = document.getElementById("sentence").value;
@@ -227,7 +227,7 @@ function OnRegFrase() {
     var radio = document.Form2.choice;
     var choice = "";
     var fratra = document.Form2.fratra.value;
-    document.getElementById("segtra2").innerHTML = "Traducción seleccionada";
+    document.getElementById("segtra2").innerHTML = "Selected translation";
     if (segtrans != "") {
         segtrans = limpiarGrn(segtrans);
         document.Form2.fratra.value += "||" + segment + "=" + segtrans;
@@ -247,7 +247,7 @@ function OnRegFrase() {
             if(radio[i].checked) {
                 choice = radio[i].value;
                 if (choice == "other") {
-                    document.getElementById("error").innerHTML = "¡Es necesario seleccionar una opción o introducir otra traducción!";
+                    document.getElementById("error").innerHTML = "You have to select an option or enter another translation!";
                     return false;
                 }
             }
@@ -270,11 +270,11 @@ function Segment(text, segment, color) {
     // Clear error space.
     document.getElementById("error").innerHTML = "";
     if (fratra.includes(segment)) {
-        document.getElementById("error").innerHTML = "¡Ya seleccionaste una traducción para " + segment + "!";
+        document.getElementById("error").innerHTML = "You already selected a translation for " + segment + "!";
         return false;        
     }
     document.getElementById('segtra').innerHTML = formatted;
-    document.getElementById('segtra2').innerHTML = "Introducir otra traducción";
+    document.getElementById('segtra2').innerHTML = "Enter another translation";
     document.Form2.seg.value = segment;
     document.getElementById("segment").value = '';
 }
@@ -289,7 +289,6 @@ function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 function limpiarGrn(string) {
-    // Clean up Guarani string, replacing characters if necessary.
     string = string.replace(/[âä]/, "ã");
     string = string.replace(/à/, "á");
     string = string.replace(/[êë]/, "ẽ");
@@ -308,7 +307,7 @@ function limpiarGrn(string) {
 }
 </script>
 
-<title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
+<title>Mit'mit'a: an English-Amharic Translation Assistant</title>
 
 </head>
 
@@ -326,15 +325,15 @@ function limpiarGrn(string) {
     </a>
     </td>
     <td class="menu" style="width: 200px">
-      <input type="submit" class="menu" action="sent" name="sent" value="PRÓXIMA ORACIÓN">
+      <input type="submit" class="menu" action="sent" name="sent" value="NEXT SENTENCE">
     </td>
     <td class="menu" style="width: 150px">
-      <input class="menu" type="submit" value="SALIR" name="salir" onclick="return OnSalir();">
+      <input class="menu" type="submit" value="QUIT" name="salir" onclick="return OnSalir();">
     </td>
     <td class="menu" style="width: 150px">
-      <button class="menu" onclick="ShowHelp();">AYUDA</button>
+      <button class="menu" onclick="ShowHelp();">HELP</button>
     </td>
-    <input type="hidden" name="ayuda" value="">
+    <input type="hidden" name="help" value="">
     </tr>
 </form>
 
@@ -344,14 +343,14 @@ function limpiarGrn(string) {
 {% if user %}
 <table class="title">
 <tr>
-<td class="titleleft">Selección y registro de traducciones</td>
+<td class="titleleft">Selecting and recording translations</td>
 <td class="titleright">
 Usuario: <span class="username">{{ user.username }}</span>
 </td>
 </tr>
 </table>
 {% else %}
-<h2>Selección y registro de traducciones</h2>
+<h2>Selecting and recording translations</h2>
 {% endif %}
 
 <p id="error" class="error">
@@ -375,7 +374,7 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 
 {% endif %}
 
-<h3>Traducción</h3>
+<h3>Translation</h3>
 
 <form name="Form2" method=POST action='sent'>
 
@@ -390,7 +389,7 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
   </td>
 </tr>
 <tr class="transtitle">
-  <td class="trans" colspan='2'>Sugerencias de Mbojereha</td>
+  <td class="trans" colspan='2'>Suggestions from ተርጓሚ</td>
 </tr>
 <tr class="trans">
   <td class="transchoice" colspan='2'>
@@ -398,7 +397,7 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
   </td>
 </tr>
 <tr class="transtitle">
-<td class="trans" colspan='2'><span id="segtra2">Introducir otra traducción</span></td>
+<td class="trans" colspan='2'><span id="segtra2">Enter another translation</span></td>
 </tr>
 <tr class="trans">
   <td class="transtext" colspan='2'>
@@ -409,10 +408,10 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 <p></p>
 <table class="trans">
 <tr class="trans">
-  <th class="transtitle">Oración entera</th>
+  <th class="transtitle">Whole sentence</th>
   <td class="transbutton">
     <input type="button" id="button" name="oreg"
-    onclick="OnRegOra({{'%r'|format(raw)|e}}, {{'%r'|format(punc)|e}});" value="Registrar traducción">
+    onclick="OnRegOra({{'%r'|format(raw)|e}}, {{'%r'|format(punc)|e}});" value="Record translation">
     </td>
 </tr>  
 <tr class="trans">
@@ -425,7 +424,7 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 <td class="transtitle">
   <table class="transdoc">
   <tr class="trans">
-    <th class="transtitle">Documento</th>
+    <th class="transtitle">Document</th>
   </tr>
   <tr class="trans">
   <td class="transtext">

@@ -77,12 +77,12 @@ def load(source='eng', target='amh', groups=None):
             srcdir = get_language_dir(source)
             targdir = get_language_dir(target)
             srcpath = os.path.join(srcdir,  source + '.lg')
-            print("srcpath {}".format(srcpath))
+#            print("srcpath {}".format(srcpath))
             srclang = Language.read(srcpath, use=srcuse, directory=srcdir)
-            print("Lengua fuente {} cargada".format(srclang))
+            print("Source language {} loaded".format(srclang))
             targpath = os.path.join(targdir, target + '.lg')
             targlang = Language.read(targpath, use=targuse, directory=targdir)
-            print("Lengua destino {} cargada".format(targlang))
+            print("Target language {} loaded".format(targlang))
         except IOError:
             print("At least one of these languages doesn't exist.")
             return
