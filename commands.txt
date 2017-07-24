@@ -11,6 +11,7 @@ apache error log:
 
 pulling from git:
 git pull https://github.com/hltdi/mainumby.git
+git pull https://github.com/hltdi/mitmita.git
 pushing to git:
 git push https://github.com/hltdi/mainumby.git
 

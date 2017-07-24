@@ -1,9 +1,9 @@
 #   
-#   Mainumby: sentences and solution segments
+#   Mainumby: Spanish-Guarani translation.
 #
 ########################################################################
 #
-#   This file is part of the Mainumby project of the PLoGS metaproject
+#   This file is part of the MDT project of the PLoGS metaproject
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
@@ -59,10 +59,13 @@
 # 2017.06.22
 # -- Skip group item matching for punctuation nodes.
 #    Character joining items in phrases and numerals is now ~ instead of _.
+# 2017.07.13
+# -- Fixed TNodes within subtrees (nodes corresponding words in TL that are not in TL).
+#    For example, ዓረፍተ in ዓረፍተ ነገር when this is part of a subtree.
 
 import itertools, copy, re
 from .cs import *
-from kuaa.morphology.semiring import FSSet
+from .morphology.semiring import FSSet
 # needed for a few static methods
 from .entry import Entry, Group
 from .record import SegRecord
@@ -80,10 +83,10 @@ class SolSeg:
 
     tt_notrans_color = "Gray"
 
-    special_re = re.compile("%[A-Z]+_")
+    special_re = re.compile("%[A-Z]+~")
 
     def __init__(self, solution, indices, translation, tokens, color=None,
-                 spec_indices=None, session=None, gname=None, merger_groups=None):
+                 spec_indices=None, session=None, gname=None, merger_groups=None, is_punc=False):
         print("Creating SolSeg with solution {}, indices {}, translation {}, tokens {}".format(solution, indices, translation, tokens))
         self.source = solution.source
         self.target = solution.target
@@ -102,8 +105,12 @@ class SolSeg:
             self.special = True
             if not translation:
                 # Set the translation for the special segment
-                self.translation = [[self.source.translate_special(tokens[0])]]
+                spec_trans = self.source.translate_special(tokens[0])
+                if spec_trans:
+                    self.translation = [[spec_trans]]
         self.color = color
+        # Whether this segment is just punctuation
+        self.is_punc = is_punc
         # Name of the group instantiated in this segment
         self.gname = gname
         # Triples for each merger with the segment
@@ -123,7 +130,7 @@ class SolSeg:
 
     @staticmethod
     def remove_spec_pre(string):
-        """Remove special prefixes, for example, '%ND_'."""
+        """Remove special prefixes, for example, '%ND~'."""
         if '%' in string:
             string = ''.join(SolSeg.special_re.split(string))
         return string
@@ -174,13 +181,16 @@ class SolSeg:
         if self.translation:
             # Add other translation button
             # Button to translate as source language
-            transhtml += '<tr><td class="source">'
-            transhtml += '<input type="radio" name="choice" id={} value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
+            if not self.is_punc:
+                transhtml += '<tr><td class="source">'
+                transhtml += '<input type="radio" name="choice" id={} value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
+            # Button for the user's own translation
             transhtml += '<tr><td class="other">'
             transhtml += '<input type="radio" name="choice" id="other" value="other" checked>otra traducción (introducir abajo)</td></tr>'
             # Remove special prefixes
             transhtml = SolSeg.remove_spec_pre(transhtml)
             transhtml = transhtml.replace('_', ' ')
+            transhtml = transhtml.replace('~', ' ')
         else:
             # No translations suggested: buttons for 'your translation' and 'translate as source'
             # Button to translate as source language
@@ -637,7 +647,7 @@ class GInst:
                 for i in empty_t_indices:
                     empty_t_token = tgroup.tokens[i]
                     empty_t_feats = tgroup.features[i] if tgroup.features else None
-                    tnodes.append(TNode(empty_t_token, empty_t_feats, self, i))
+                    tnodes.append(TNode(empty_t_token, empty_t_feats, tgroup, i))
             # Deal with individual gnodes in the group
             gnodes = []
             tokens = tgroup.tokens
@@ -734,11 +744,11 @@ class TNode:
     have a corresponding node in the source language group that it's the
     translation of."""
 
-    def __init__(self, token, features, ginst, index):
+    def __init__(self, token, features, group, index):
         self.token = token
         self.features = features
-        self.ginst = ginst
-        self.sentence = ginst.sentence
+        self.group = group
+#        self.sentence = ginst.sentence
         self.index = index
 
     def generate(self, verbosity=0):
@@ -796,6 +806,8 @@ class TreeTrans:
         self.group_attribs = group_attribs or []
         # Translation groups
         self.tgroups = [g[0] for g in group_attribs]
+        # TNodes
+        self.tnodes = [g[1] for g in group_attribs]
         # Root domain store for variables
         self.dstore = DStore(name="TT{}".format(self.index))
         # Order variables for each node, tree variables for groups
@@ -877,14 +889,14 @@ class TreeTrans:
 #        string = string.replace('_', ' ')
         return string
 
-    def build(self, tg_comb=None, verbosity=0):
+    def build(self, tg_groups=None, tg_tnodes=None, verbosity=0):
         """Unify translation features for merged nodes, map agr features from source to target,
         generate surface target forms from resulting roots and features.
-        tg_comb is a combination of target groups.
+        tg_groups is a combination of target groups.
         THIS IS WAY TOO COMPLICATED; SIMPLIFY IT.
         """
         if verbosity:
-            print('BUILDING {} with tgroups {}'.format(self, tg_comb))
+            print('BUILDING {} with tgroups {} and tnodes {}'.format(self, tg_groups, tg_tnodes))
             print("  SNodes: {}".format(self.snodes))
         tnode_index = 0
         # Dictionary mapping source node indices to initial target node indices
@@ -893,7 +905,7 @@ class TreeTrans:
         # reinitialize mergers
         self.mergers = []
         # Find the top-level tgroup
-        top_group_attribs = list(itertools.filterfalse(lambda x: x[0] not in tg_comb, self.group_attribs))[0]
+        top_group_attribs = list(itertools.filterfalse(lambda x: x[0] not in tg_groups, self.group_attribs))[0]
         if verbosity:
             print('Top group attribs: {}'.format(top_group_attribs))
         for snode, (gnodes, features) in zip(self.snodes, self.sol_gnodes_feats):
@@ -912,8 +924,7 @@ class TreeTrans:
                 spec_trans = self.source.translate_special(spec_token)
                 print("Translating {} as {}".format(spec_token, spec_trans))
                 gnode_tuple_list = self.gnode_dict[gnode]
-                gnode_tuple = firsttrue(lambda x: x[0] in tg_comb, gnode_tuple_list)
-#               gnode_tuple = list(itertools.filterfalse(lambda x: x[0] != tgroup1, gnode_tuple_list))[0]
+                gnode_tuple = firsttrue(lambda x: x[0] in tg_groups, gnode_tuple_list)
                 if verbosity > 1:
                     print("   gnode_tuple: {}".format(gnode_tuple))
                 tgroup, token, targ_feats, agrs, t_index = gnode_tuple
@@ -946,14 +957,10 @@ class TreeTrans:
                     if verbosity > 1:
                         print("   gna: {}".format(gna))
                         print("   gnc: {}".format(gnc))
-                    # Translation (target) group for this instance of build() and this node
-#                    tgroup1 = tg_comb[tnode_index]
-                    gnc1 = firsttrue(lambda x: x[0] in tg_comb, gnc)
-#                    list(itertools.filterfalse(lambda x: x[0] != tgroup1, gnc))[0]
+                    gnc1 = firsttrue(lambda x: x[0] in tg_groups, gnc)
                     if verbosity:
                         print("   concrete gnode tuple: {}".format(gnc1))
-                    gna1 = firsttrue(lambda x: x[0] in tg_comb, gna)
-#                    list(itertools.filterfalse(lambda x: x[0] not in tg_comb, gna))[0]
+                    gna1 = firsttrue(lambda x: x[0] in tg_groups, gna)
                     if verbosity:
                         print("   abstract gnode tuple: {}".format(gna1))
                     # There are two gnodes for this snode, one concrete, one abstract;
@@ -1005,7 +1012,8 @@ class TreeTrans:
                             targ_feats = targ_feats.copy(True)
                             if verbosity:
                                 print("  Causing sfeats {} to agree with tfeats {}".format(features, targ_feats))
-                            targ_feats = features.agree_FSS(targ_feats, agrs)
+                            if features:
+                                targ_feats = features.agree_FSS(targ_feats, agrs)
                             if verbosity:
                                 print("   Now: {} to agree with tfeats {}".format(features, targ_feats))
                         node_index_map[snode.index] = tnode_index
@@ -1031,11 +1039,11 @@ class TreeTrans:
                         continue
                     else:
                         # Translation (target) group for this instance of build() and this node
-#                        tgroup1 = tg_comb[tnode_index]
+#                        tgroup1 = tg_groups[tnode_index]
                         gnode_tuple_list = self.gnode_dict[gnode]
-                        gnode_tuple = firsttrue(lambda x: x[0] in tg_comb, gnode_tuple_list)
+                        gnode_tuple = firsttrue(lambda x: x[0] in tg_groups, gnode_tuple_list)
 #                        print("gnode {}".format(gnode))
-#                        print(" tgcomb {}".format(tg_comb))
+#                        print(" tgcomb {}".format(tg_groups))
 #                        print(" gnode_tuple_list {}".format(gnode_tuple_list))
                         if verbosity > 1:
                             print("   gnode_tuple: {}".format(gnode_tuple))
@@ -1062,12 +1070,8 @@ class TreeTrans:
                                 if verbosity:
                                     print("  Causing sfeats {} to agree with tfeats {}".format(features, targ_feats.__repr__()))
                                     print("    features type: {}".format(type(features)))
-#                                if isinstance(features, FSSet):
-                                targ_feats = features.agree_FSS(targ_feats, agrs)
-#                                else:
-#                                    # Use an (unfrozen) copy of target features
-#                                    targ_feats = targ_feats.copy(True)
-#                                    features.agree(targ_feats, agrs)
+                                if features:
+                                    targ_feats = features.agree_FSS(targ_feats, agrs)
                                 if verbosity:
                                     print("  Now {} and {}".format(features, targ_feats.__repr__()))
                             node_index_map[snode.index] = tnode_index
@@ -1090,19 +1094,33 @@ class TreeTrans:
             agreements[tginst] = agr
             if verbosity > 1:
                 print(" build(): tginst {} agr {}, agreements {}".format(tginst, agr, agreements))
-        if tnodes:
-            for tnode in tnodes:
-                features = tnode.features or FeatStruct({})
-                src_index = len(node_features)
-                self.ttree.add(src_index)
-                index = [(tginst, tnode.index)]
-                feat_index = len(node_features)
-                node_features.append([tnode.token, features, index])
-                group_nodes[index[0]] = [tnode.token, features, feat_index]
+        subtnodes = tg_tnodes[1] if len(tg_tnodes) > 1 else []
+        self.add_tnodes(tnodes, subtnodes, tginst, group_nodes, node_features)
+        # Store local variables as instance variables
         self.node_features = node_features
         self.group_nodes = group_nodes
         self.agreements = agreements
         return True
+
+    def add_tnodes(self, tnodes, subtnodes, tginst, group_nodes, node_features):
+        """Incorporate TNodes into nodes and features of TTrans."""
+        for tnode in tnodes:
+            features = tnode.features or FeatStruct({})
+            src_index = len(node_features)
+            self.ttree.add(src_index)
+            index = [(tginst, tnode.index)]
+            feat_index = len(node_features)
+            node_features.append([tnode.token, features, index])
+            group_nodes[index[0]] = [tnode.token, features, feat_index]
+        # TNodes in subTTs
+        for tnode in subtnodes:
+            features = tnode.features or FeatStruct({})
+            src_index = len(node_features)
+            self.ttree.add(src_index)
+            index = [(tnode.group, tnode.index)]
+            feat_index = len(node_features)
+            node_features.append([tnode.token, features, index])
+            
 
     @staticmethod
     def get_root_POS(token):

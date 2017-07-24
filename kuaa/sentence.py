@@ -660,7 +660,6 @@ class Sentence:
         # Join other phrases (stored in the tree self.language.join)
         if self.language.join:
             joined = Sentence.join_from_tree(self.tokens, self.language.join)
-            print("Joined tokens: {}".format(joined))
             self.tokens = joined
 
     @staticmethod
@@ -843,7 +842,7 @@ class Sentence:
             print("Merging tagger and analyzer results for {}".format(self))
         results = []
         for (word, tag), (token, anals) in zip(tagged, analyzed):
-#            print("word {}, tag {}, token {}, anals {}".format(word, tag, token, anals))
+            print("word {}, tag {}, token {}, anals {}".format(word, tag, token, anals))
             results1 = []
             for anal in anals:
                 anal_pos = None
@@ -879,6 +878,7 @@ class Sentence:
                     if verbosity:
                         print("  neither tagger nor analyzer provide tag for {}".format(word))
                     results1.append(anal)
+#            print(" Results for token {}: {}".format(token, results1))
             results.append([token, results1])
 #            print("{},{}: tag {}, anal {}".format(word, token, tag, anal))
         return results
@@ -1853,12 +1853,14 @@ class Solution:
                 # there's a gap between the farthest segment to the right and this one; make an untranslated segment
                 src_tokens = tokens[end_index+1:start]
                 print("Creating untranslated segment for {} in positions {}...{}".format(src_tokens, end_index+1, start-1))
-                if len(src_tokens) == 1 and self.source.is_punc(src_tokens[0]):
+                is_punc = len(src_tokens) == 1 and self.source.is_punc(src_tokens[0])
+                if is_punc:
+                    # Convert punctuation in source to punctuation in target if there is a mapping.
                     translation = [self.target.punc_postproc(src_tokens[0])]
                 else:
                     translation = []
                 seg = SolSeg(self, (end_index+1, start-1), translation, src_tokens, session=self.session, gname=gname,
-                             merger_groups=merger_groups)
+                             merger_groups=merger_groups, is_punc=is_punc)
                 self.segments.append(seg)
 #            src_tokens = tokens[start:end+1]
             if start < max_index:
@@ -1878,12 +1880,13 @@ class Solution:
         if max_index+1 < len(tokens):
             # Some word(s) at end not translated; use source forms with # prefix
             src_tokens = tokens[max_index+1:len(tokens)]
-            print("Creating untranslated segment at end: {}".format(src_tokens))
-            if len(src_tokens) == 1 and self.source.is_punc(src_tokens[0]):
+            is_punc = len(src_tokens) == 1 and self.source.is_punc(src_tokens[0])
+            print("Creating untranslated segment at end: {} ({})".format(src_tokens, "punc" if is_punc else "not punc"))
+            if is_punc:
                 translation = [self.target.punc_postproc(src_tokens[0])]
             else:
                 translation = []
-            seg = SolSeg(self, (max_index+1, len(tokens)-1), translation, src_tokens, session=self.session)
+            seg = SolSeg(self, (max_index+1, len(tokens)-1), translation, src_tokens, session=self.session, is_punc=is_punc)
             self.segments.append(seg)
         if html:
             self.seg_html()
@@ -2000,6 +2003,7 @@ class Solution:
                 group_attribs = []
                 any_anode = False
                 for tgroup, tgnodes, tnodes in ginst.translations:
+#                    print("  tgroup {}, tgnodes {}, tnodes {}".format(tgroup, tgnodes, tnodes))
                     for tgnode, tokens, feats, agrs, t_index in tgnodes:
 #                        if tgnode.special:
 #                            print("  Tgnode {} in tgroup {} is special".format(tgnode, tgroup))
@@ -2042,22 +2046,20 @@ class Solution:
                 print("TreeTrans {} already processed".format(tt))
                 tt.display_all()
             elif tt.top:
-                # Translation groups for this tree (top level)
-                tt.all_tgroups.append(tt.tgroups)
+                # Translation groups and associated tnodes for this tree (top level)
+                tt.all_tgroups.append(list(zip(tt.tgroups, tt.tnodes)))
                 for stt in tt.subTTs:
-                    tt.all_tgroups.append(stt.tgroups)
+                    tt.all_tgroups.append(list(zip(stt.tgroups, stt.tnodes)))
                 # Find all combinations of the target groups involved in this TT (at any level)
                 tgroup_combs = allcombs(tt.all_tgroups)
-#                list(itertools.product(*tt.all_tgroups))
                 if verbosity:
                     print(" TT group combs")
                     for tgc in tgroup_combs:
                         print("  {}".format(tgc))
-                # Figure out the maximum number of translations of merge nodes and non-merge nodes
-                # For non-merge nodes it's the number of translations of the group
                 for tgroup_comb in tgroup_combs:
-                    tt.build(tg_comb=tgroup_comb, verbosity=verbosity)
-                             #tgroup_combs.pop(), merge_index=tm_i, nomerge_index=tnm_i, verbosity=verbosity)
+                    tgroups = [t[0] for t in tgroup_comb]
+                    tnodes = [t[1] for t in tgroup_comb]
+                    tt.build(tg_groups=tgroups, tg_tnodes=tnodes, verbosity=verbosity)
                     tt.generate_words()
                     tt.make_order_pairs(verbosity=verbosity)
                     tt.create_variables()

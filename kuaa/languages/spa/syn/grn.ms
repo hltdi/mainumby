@@ -104,23 +104,26 @@ al_inf :: a el [pos=v,tm=inf,pp=vove] ; // 0 1 ; 2-> [tm=prs]
 #...
 
 ## artículos definitivos
-# antes adjetivos sin substantivo
-artdef/adj_fs :: la [pos=a,n=0,rel=sjoj] ![pos=n] ; // 0
-artdef/adj_ms :: el [pos=a,n=0,rel=sjoj] ![pos=n] ; // 0
-artdef/adj_fp :: las [pos=a,n=1,rel=sjoj] ![pos=n] ; // 0
-artdef/adj_mp :: los [pos=a,n=1,rel=sjoj] ![pos=n] ; // 0 ; 1-> [pos=v]
-# con adjetivo o número entre el artículo y el sustantivo
-artdef/ms_adj :: el [pos=a,n=0] [pos=n,n=0] ; // 0:2
-# ambiguo??
-artdef/fs_adj :: la [pos=a,n=0] [pos=n,n=0] ; // 0:2
-artdef/mp_adj :: los [pos=a,n=1] [pos=n,n=1] ; // 0:2
-artdef/fp_adj :: las [pos=a,n=1] [pos=n,n=1] ; // 0:2
-artdef/ms :: el [pos=n,n=0] ; // 0
+artdef/ms :: el[pos=det] ; // 0
 artdef/fs :: la[pos=det] ; // 0
+artdef/mp :: los[pos=det] ; // 0
+artdef/fp :: las[pos=det] ; // 0
+## antes adjetivos sin substantivo
+#artdef/adj_fs :: la [pos=a,n=0,rel=sjoj] ![pos=n] ; // 0
+#artdef/adj_ms :: el [pos=a,n=0,rel=sjoj] ![pos=n] ; // 0
+#artdef/adj_fp :: las [pos=a,n=1,rel=sjoj] ![pos=n] ; // 0
+#artdef/adj_mp :: los [pos=a,n=1,rel=sjoj] ![pos=n] ; // 0 ; 1-> [pos=v]
+## con adjetivo o número entre el artículo y el sustantivo
+#artdef/ms_adj :: el [pos=a,n=0] [pos=n,n=0] ; // 0:2
+## ambiguo??
+#artdef/fs_adj :: la [pos=a,n=0] [pos=n,n=0] ; // 0:2
+#artdef/mp_adj :: los [pos=a,n=1] [pos=n,n=1] ; // 0:2
+#artdef/fp_adj :: las [pos=a,n=1] [pos=n,n=1] ; // 0:2
+#artdef/ms :: el [pos=n,n=0] ; // 0
 #artdef/fs :: la [pos=n,n=0] ; // 0
-artdef/mp :: los [pos=n,n=1] ; // 0
-artdef/fp :: las [pos=n,n=1] ; // 0
-# con dos adjetivos antes del sustantivo
+#artdef/mp :: los [pos=n,n=1] ; // 0
+#artdef/fp :: las [pos=n,n=1] ; // 0
+## con dos adjetivos antes del sustantivo
 #...
 
 ## preguntas

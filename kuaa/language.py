@@ -575,7 +575,7 @@ class Language:
         # Empty new_anals in case we want to add things later
         self.new_anals.clear()
 
-    def read_cache(self, name='', expand=False):
+    def read_cache(self, name='', expand=False, verbose=False):
         """Read cached entries into self.cached from a file.
         Modified 2015/5/17 to include Mbojereha categories."""
         cache = self.get_cache_file(name=name)
@@ -597,7 +597,8 @@ class Language:
                         alist.insert(0, False)
                     self.cached[word] = alist
         except IOError:
-            print('No such cache file as {}'.format(cache))
+            if verbose:
+                print('No such cache file as {}'.format(cache))
 
     def get_cached_anal(self, word, expand=True):
         """Return a list of dicts, one for each analysis of the word, or None."""

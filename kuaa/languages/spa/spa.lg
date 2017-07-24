@@ -34,27 +34,27 @@ patterns:
 - /num_1900, mil $num1
 - /num1, $num3
 translations:
-  N_un::N_peteĩ
-  N_una::N_peteĩ
-  N_dos::N_mokõi
-  N_tres::N_mbohapy
-  N_cuatro::N_irundy
-  N_cinco::ND_5
-  N_seis::ND_6
-  N_siete::ND_7
-  N_ocho::ND_8
-  N_nueve::ND_9
-  N_diez::ND_10
-  N_once::ND_11
-  N_doce::ND_12
-  N_trece::ND_13
-  N_catorce::ND_14
-  N_quince::ND_15
-  N_dieciseis::ND_16
-  N_diecisiete::ND_17
-  N_dieciocho::ND_18
-  N_diecenueve::ND_19
-  N_veinte::ND_20
+  N~un::N~peteĩ
+  N~una::N~peteĩ
+  N~dos::N~mokõi
+  N~tres::N~mbohapy
+  N~cuatro::N~irundy
+  N~cinco::ND~5
+  N~seis::ND~6
+  N~siete::ND~7
+  N~ocho::ND~8
+  N~nueve::ND~9
+  N~diez::ND~10
+  N~once::ND~11
+  N~doce::ND~12
+  N~trece::ND~13
+  N~catorce::ND~14
+  N~quince::ND~15
+  N~dieciseis::ND~16
+  N~diecisiete::ND~17
+  N~dieciocho::ND~18
+  N~diecenueve::ND~19
+  N~veinte::ND~20
 join:
 - a~base~de, p
 - a~cambio~de, p

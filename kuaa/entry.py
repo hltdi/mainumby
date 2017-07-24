@@ -1078,11 +1078,17 @@ class MorphoSyn(Entry):
         if not pforms or any([sroot == f for f in pforms]):
             if verbosity > 1 or self.debug:
                 print("    Root matched")
-                print("   {} unifying {}/{} and {}/{}".format(self, sroot, sfeats.__repr__(), pforms, pfeats.__repr__()))
+                print("    {} unifying {}/{} and {}/{}".format(self, sroot, sfeats.__repr__(), pforms, pfeats.__repr__()))
             if isinstance(sfeats, FSSet):
                 # This returns an FSSet too
 #                print("   Unifying FSSet {} with FeatStruct {}".format(sfeats, pfeats))
                 u = sfeats.unify_FS(pfeats)
+            elif not sfeats:
+                # No sentence item features but there are match item features. See if the parts of speech match.
+                if ppos and spos and ppos == spos:
+                    return True
+                else:
+                    return False
             else:
                 u = simple_unify(sfeats, pfeats)
             if u != 'fail':
@@ -1145,9 +1151,8 @@ class MorphoSyn(Entry):
             for i, j in self.del_indices:
                 elements[i][0] = '~' + elements[i][0]
                 if j != -1:
-#                    print("Recording target distance {}".format(j-i))
                     elements[i][2][0]['target'] = j-i
-#                print("Recording deletion for match element {}, target: {}".format(elements[i], elements[j]))
+
         if self.add_items:
             print("Warning: Adding items in Morphosyn not yet implemented!")
             for i, item in self.add_items:
@@ -1166,16 +1171,6 @@ class MorphoSyn(Entry):
                     for index, feats in enumerate(feats_list):
 #                        print("      Feats {}, type {}".format(feats, type(feats)))
                         feats.update_inside(fm_feats)
-#                        if isinstance(feats, FeatStruct):
-#                            if feats.frozen():
-#                                feats = feats.unfreeze()
-#                                feats_list[index] = feats
-#                            feats.update_inside(fm_feats)
-
-#        if self.swap_indices:
-#            i1, i2 = self.swap_indices
-#            print("Swapping {} and {}".format(elements[i1], elements[i2]))
-#            elements[i1], elements[i2] = elements[i2], elements[i1]
             
     def insert_match(self, start, end, m_elements, sentence, verbosity=0):
         """Replace matched portion of sentence with elements in match.
@@ -1186,9 +1181,11 @@ class MorphoSyn(Entry):
         # start and end are indices within the sentence; some may have been
         # ignored within the pattern during matching
         m_index = 0
+        s_index = start
         for s_elem in sentence.analyses[start:end]:
             s_token = s_elem[0]
             if MorphoSyn.del_token(s_token):
+                s_index += 1
                 # Skip this sentence element; don't increment m_index
                 continue
             m_elem = m_elements[m_index]
@@ -1202,6 +1199,9 @@ class MorphoSyn(Entry):
             if not isinstance(s_anals, list):
                 s_anals = [s_anals]
             new_s_anals = []
+            if m_elem[0][0] == '~':
+                if 'target' in s_anals[0]:                    
+                    s_anals[0]['target-node'] = s_anals[0]['target'] + s_index
             if m_feats_list:
                 if not s_anals:
                     new_s_anals = [{'features': mfl, 'root': s_token} for mfl in m_feats_list]
@@ -1221,32 +1221,50 @@ class MorphoSyn(Entry):
             else:
                 new_s_anals = s_anals
             s_elem[1] = new_s_anals
+            s_index += 1
         # Swap sentence.analyses and tokens elements if there are swap_indices in the MS
         # This has to take into consideration deleted elements, so it's a little ugly.
+        # Basically swapping should be avoided in Morphosyns if at all possible.
         if self.swap_indices:
             mstart, mend = self.swap_indices
             sstart, send = start+mstart, start+mend
             sindex = 0
             swapi1 = -1
             swapi2 = -1
+            mindex = 0
+            deleted_targets = {}
             for srawindex, (tok, anal) in enumerate(sentence.analyses):
-#                print("{}, {}, {}".format(srawindex, tok, sindex))
                 if MorphoSyn.del_token(tok):
+                    anal1 = anal[0]
+                    if 'target-node' in anal1:
+                        targ = anal1['target-node']
+                        if targ in deleted_targets:
+                            deleted_targets[targ].append(srawindex)
+                        else:
+                            deleted_targets[targ] = [srawindex]
                     continue
-                if sindex == sstart and swapi1 == -1:
+                if srawindex == sstart and swapi1 == -1:
                     swapi1 = srawindex
                     sindex += 1
-                elif sindex == send:
+                    mindex += 1
+                elif mindex == mend:
                     swapi2 = srawindex
-#                    print("Sentence swap indices {}, {}".format(swapi1, swapi2))
-#                    print("  (Tokens {})".format(sentence.tokens))
-                    tokens = sentence.tokens[swapi1], sentence.tokens[swapi2]
-#                    print("Swapped tokens {}".format(tokens))
-                    sentence.analyses[swapi1], sentence.analyses[swapi2] = sentence.analyses[swapi2], sentence.analyses[swapi1]
-                    sentence.tokens[swapi1], sentence.tokens[swapi2] = tokens[1], tokens[0]
+                    s_indices1 = deleted_targets.get(swapi1, [])
+                    s_indices1.append(swapi1)
+                    s_indices1.sort()
+                    s_indices2 = deleted_targets.get(swapi2, [])
+                    s_indices2.append(swapi2)
+                    s_indices2.sort()
+                    range1 = s_indices1[0], s_indices1[-1]+1
+                    range2 = s_indices2[0], s_indices2[-1]+1
+                    toks = sentence.tokens
+                    anals = sentence.analyses
+                    toks[range1[0]:range1[1]], toks[range2[0]:range2[1]] = toks[range2[0]:range2[1]], toks[range1[0]:range1[1]]
+                    anals[range1[0]:range1[1]], anals[range2[0]:range2[1]] = anals[range2[0]:range2[1]], anals[range1[0]:range1[1]]
                     return
                 else:
                     sindex += 1
+                    mindex += 1
 
 class EntryError(Exception):
     '''Class for errors encountered when attempting to update an entry.'''

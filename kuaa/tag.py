@@ -180,20 +180,6 @@ class NLTK(Tagger):
             for items in ts:
                 print(" {}".format(items))
             print()
-                
-#        for item in tagged:
-#            # Each item is a word, tag pair.
-#            word, pos, lemma, feats = self.get_repr(item)
-#            print("Processing {} {} {}".format(word, pos, lemma))
-#            sentence.append((word, {'pos': pos, 'root': lemma, 'features': feats}))
-#            if word in self.eos:
-#                # This is an end of sentence character.
-##            if self.is_eos_tag(pos):
-#                sentences.append(sentence)
-#                sentence = []
-#        if sentence:
-#            # Last EOS token missing; call it a sentence anyway
-#            sentences.append(sentence)
         return tagged_sents
 
 class Spacy(Tagger):
@@ -206,7 +192,7 @@ class Spacy(Tagger):
         self.tokenizer = None
         self.tokenize = True
         # or spacy.load('en_depent_web_md') ??
-        self.tagger = spacy.load(arg)
+        self.tagger = spacy.load('en_core_web_sm')
 
     def __repr__(self):
         return "spaCy:tagger:{}".format(self.lang)
@@ -269,9 +255,6 @@ class Spacy(Tagger):
         for item in tagged:
             itext, ilemma, ipos, itag, mpos, mfeats = self.get_repr(item)
             pos_exp = Tagger.expand_POS(mpos)
-#            print("Item {}".format(item))
-#            print("  Repr {}".format(self.get_repr(item)))
-#            print("  Pos, exp {}".format(pos_exp))
             short_pos = pos_exp[0]
             if ilemma[0] == '-':
                 ilemma = itext
