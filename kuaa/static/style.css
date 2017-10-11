@@ -221,9 +221,21 @@ input.text
 /*        align: center; */
         width: 200px
 }
-#button:hover, #button:active
+#mainbutton
 {
-        background-color: #8DFFEE;
+        background-color: #8DEDCD;
+        color: #4B2B17;
+        font-family: "Verdana";
+	font-weight: bold;
+        font-size: 100%;
+/*        align: center; */
+        width: 200px
+}
+#button:hover, #button:active, #mainbutton:hover, #mainbutton:active, #widebutton:hover, #narrowbutton:hover
+{
+/*        background-color: #8DFFEE; */
+        background-color: #4B2B17;
+        color: #8DEDCD;
 }
 #medbutton
 {
@@ -255,10 +267,7 @@ input.text
         align: center;
         width: 100px;
 }
-#widebutton:hover, #narrowbutton:hover
-{
-        background-color: #8DFFEE;
-}
+
 #altbutton
 {
         color: #4B2B17;
@@ -270,7 +279,9 @@ input.text
 }
 #altbutton:hover
 {
-        background-color: #FFFF33;
+        color: #F5E754;
+        background-color: #4B2B17;
+/*        background-color: #FFFF33; */
 }
 #narrowlbbutton
 {

@@ -812,7 +812,7 @@ class Sentence:
                 if self.tagger and not self.tagger.tokenizer:
                     # Use the POS tagger here
                     tagged = self.tagger.tag(self.tokens)
-                print("Tagged: {}".format(tagged))
+#                print("Tagged: {}".format(tagged))
                 # Still need to figure out how to integrated tagged results and morphological analyses
                 if not self.tagger or self.tagger.morph:
                     analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
@@ -822,8 +822,8 @@ class Sentence:
                     else:
                         self.analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
                     # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
-#            if verbosity:
-            print("Running Morphosyns for {} on {}".format(self.language, self))
+            if verbosity:
+                print("Running Morphosyns for {} on {}".format(self.language, self))
             for mi, ms in enumerate(self.language.ms):
                 # If ms applies and is "ambiguous", create a new copy of the sentence and add to altsyns
                 # (this happens in MorphoSyn)
@@ -842,7 +842,7 @@ class Sentence:
             print("Merging tagger and analyzer results for {}".format(self))
         results = []
         for (word, tag), (token, anals) in zip(tagged, analyzed):
-            print("word {}, tag {}, token {}, anals {}".format(word, tag, token, anals))
+#            print("word {}, tag {}, token {}, anals {}".format(word, tag, token, anals))
             results1 = []
             for anal in anals:
                 anal_pos = None

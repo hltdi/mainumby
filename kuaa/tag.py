@@ -169,17 +169,17 @@ class NLTK(Tagger):
             sentences.append(sentence)
             sentence = []
         tagged_sents = []
-        print("Sentences: {}".format(sentences))
+#        print("Sentences: {}".format(sentences))
         # Now do POS tagging for each sentence
         for sentence in sentences:
             tagged = self.tag(sentence)
             repr = [self.get_repr(item) for item in tagged]
             tagged_sents.append([(word, {'root': root, 'features': feats}) for word, root, feats in repr])
-        print("Tagged sentences")
-        for ts in tagged_sents:
-            for items in ts:
-                print(" {}".format(items))
-            print()
+#        print("Tagged sentences")
+#        for ts in tagged_sents:
+#            for items in ts:
+#                print(" {}".format(items))
+#            print()
         return tagged_sents
 
 class Spacy(Tagger):

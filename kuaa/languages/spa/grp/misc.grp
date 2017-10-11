@@ -267,7 +267,7 @@
 ->grn angepyhare
 *** anteayer ; ^ anteayer 0
 ->grn kueheambue
-*** antes de amanecer ; ^ amanecer 2
+*** antes~de amanecer ; ^ amanecer 1
 ->grn ko'ẽmboyve
 *** luego de amanecer ; ^ amanecer 2
 ->grn ko'ẽko'ẽ
@@ -401,8 +401,6 @@
 ->grn manterei
 *** hasta entonces ; ^ entonces 1
 ->grn upepeve
-*** desde entonces ; ^ entonces 1
-->grn upeguive
 *** simultáneamente ; ^ simultáneamente 0
 ->grn ha'etépe
 ->grn upejave
@@ -1089,33 +1087,41 @@
 ->grn $v[pp=ramo] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
 ->grn $v[pp=jave] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
 ### ANTES (DE) (MBOYVE)
-*** antes de $n ; ^ antes 0
-->grn $n mboyve ; ^ 1, -1, 0
+*** antes~de $n ; ^ antes~de 0
+->grn $n mboyve ; || 1, 0
 ## cláusulas con antes
 # infinitive
-*** antes de $v[tm=inf] ; ^ antes 0
-->grn $v[tmp=prs] mboyve ; || 1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** antes~de $v[tm=inf] ; ^ antes~de 0
+->grn $v[tmp=prs] mboyve ; || 1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 # future "antes" clause (subjunctive)
-*** antes de que $v[tm=sbp] ; ^ antes 0
-->grn $v[tmp=prs] mboyve ; || 1, -1, -1, 0 ; 3==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** antes~de~que $v[tm=sbp] ; ^ antes~de~que 0
+->grn $v[tmp=prs] mboyve ; || 1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** antes~que $v[tm=sbp] ; ^ antes~que 0
+->grn $v[tmp=prs] mboyve ; || 1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 # other "antes" clauses
-*** antes de que $v ; ^ antes 0
-->grn $v mboyve ; || 1, -1, -1, 0 ; 3==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
+*** antes~de~que $v ; ^ antes~de~que 0
+->grn $v mboyve ; || 1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
+*** antes~que $v ; ^ antes~que 0
+->grn $v mboyve ; || 1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
 *** antes ; ^ antes 0
 ->grn mboyve
 ->grn yma
 ->grn ymaguare
 ### DESPUÉS (DE) (-RIRE)
-*** después de $n ; ^ después 0
-->grn $n rire ; || 1, -1, 0
-->grn $n rapykuépe ; || 1, -1, 0
+*** después~de $n ; ^ después~de 0
+->grn $n rire ; || 1, 0
+->grn $n rapykuépe ; || 1, 0
 ## cláusulas con después
 # future "después" clause (subjunctive)
-*** después de que $v[tm=sbp] ; ^ después 0
-->grn $v[tmp=prs,pp=rire] ; || -1, -1, -1, 0 ; 3==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** después~de~que $v[tm=sbp] ; ^ después~de~que 0
+->grn $v[tmp=prs,pp=rire] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 # "después" clauses in other tenses
-*** después de que $v ; ^ después 0
-->grn $v[pp=rire] ; || -1, -1, -1, 0 ; 3==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
+*** después~de~que $v ; ^ después~de~que 0
+->grn $v[pp=rire] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
+*** después~que $v[tm=sbp] ; ^ después~que 0
+->grn $v[tmp=prs,pp=rire] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** después~que $v ; ^ después~que 0
+->grn $v[pp=rire] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
 *** después ; ^ después 0
 ->grn rire
 ->grn uperire
@@ -1128,11 +1134,11 @@
 ->grn akói
 ## cláusulas con hasta
 # future "hasta" clauses
-*** hasta que $v[tm=sbp] ; ^ hasta 0
-->grn $v[tmp=prs,pp=peve] ; || -1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** hasta~que $v[tm=sbp] ; ^ hasta~que 0
+->grn $v[tmp=prs,pp=peve] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 # other "hasta" clauses
-*** hasta que $v ; ^ hasta 0
-->grn $v[pp=peve] ; || -1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
+*** hasta~que $v ; ^ hasta~que 0
+->grn $v[pp=peve] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,tm:tmp
 ### DESDE (GUIVE)
 *** desde hace tiempo ; ^ desde 0
 ->grn aréma
@@ -1151,8 +1157,10 @@
 *** desde hace %N $dur ; ^ desde 0
 ->grn ojapóma %N $dur ; || 0, -1, 1, 2
 ## cláusulas con desde
-*** desde que $v ; ^ desde 0
-->grn $v guive ; || 1, -1, 0 ; 2==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** desde~que $v ; ^ desde~que 0
+->grn $v guive ; || 1, 0 ; 1==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** desde~entonces ; ^ desde~entonces 0
+->grn upeguive
 ### DURANTE (otras posibilidades también??)
 *** durante $n ; ^ durante 0
 ->grn $n aja; || 1, 0
@@ -1162,24 +1170,24 @@
 ->grn $v[pp=jave,tmp=prs] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 *** mientras $v ; ^ mientras 0
 ->grn $v[pp=jave] ; || -1, 0 ; 1==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
-*** mientras que $v[tm=sbp] ; ^ mientras 0
-->grn $v[pp=jave,tmp=prs] ; || -1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
-*** mientras que $v ; ^ mientras 0
-->grn $v[pp=jave] ; || -1, -1, 0 ; 2==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
-*** mientras tanto ; ^ mientras 0
+*** mientras~que $v[tm=sbp] ; ^ mientras~que 0
+->grn $v[pp=jave,tmp=prs] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** mientras~que $v ; ^ mientras_que 0
+->grn $v[pp=jave] ; || -1, 0 ; 1==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** mientras~tanto ; ^ mientras~tanto 0
 ->grn upekuévo
 ->grn upe'aja
 # Later: mientras más = cuanto más
 ### PARA INF, PARA QUE
 *** para $v[tm=inf] ; ^ para 0
 ->grn $v[tmp=prs] guarã ; || 1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
-*** para que $v[tm=sbp] ; ^ para 0
-->grn $v[tmp=prs] guarã ; || 1, -1, 0 ; 2==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** para~que $v[tm=sbp] ; ^ para~que 0
+->grn $v[tmp=prs] guarã ; || 1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 ### A MEDIDA QUE (-'AJA) [THIS COULD GO IN n.grp]
 *** a medida que $v[tm=sbp] ; ^ medida_n 1
 ->grn $v[pp=jave,tmp=prs] ; || -1, -1, -1, 0 ; 3==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
-*** a medida que $v ; ^ medida_n 1
-->grn $v[pp=aja] ; || -1, -1, -1, 0 ; 3==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
+*** a~medida~que $v ; ^ a~medida~que 1
+->grn $v[pp=aja] ; || -1, 0 ; 1==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 #### OTRAS CLÁUSULAS ADVERBIALES O NOMINALES
 ### SI, CONDICIONAL
 *** si $v[tm=prs] ; ^ si 0
@@ -1203,10 +1211,10 @@
 ->grn $v[tmp=prs,pp=ramo] jepe ;
 *** a pesar de ello ; ^ pesar 1
 ->grn jepevénte
-*** a pesar de $n ; ^ pesar 1
-->grn $n jepe ; || -1, 1, -1, 0
-*** a pesar de que $v ; ^ pesar 1
-->grn $v jepe ; || -1, 1, -1, 0 ; 4==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
+*** a~pesar~de $n ; ^ a~pesar~de 0
+->grn $n jepe ; || 1, 0
+*** a~pesar~de~que $v ; ^ a~pesar~de~que 0
+->grn $v jepe ; || 1, 0 ; 1==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ### PORQUE / COMO
 *** porque ; ^ porque 0
 ->grn ajeve
@@ -1565,10 +1573,10 @@
 ->grn añete
 *** por ejemplo ; ^ ejemplo 1
 ->grn techapyrã
-*** sin embargo ; ^ embargo 1
+*** sin~embargo ; ^ sin~embargo 0
 ->grn uvei
-*** en cuanto a $n ; ^ cuanto 1
-->grn $n vove ; || -1, 1, -1, 0 ; 3==0 n:n,poses:poses
+*** en~cuanto~a $n ; ^ en~cuanto~a 0
+->grn $n vove ; || 1, 0 ; 1==0 n:n,poses:poses
 *** enfáticamente ; ^ enfáticamente 0
 ->grn voi
 *** de poco entendimiento ; ^ entendimiento 2

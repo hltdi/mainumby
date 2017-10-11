@@ -254,12 +254,12 @@ class Language:
         # Load POS tagger from NLTK or Spacy if called for for this language
 #        self.conversion = None
         if exttag:
-            print("Loading external tagger...")
+            print("Cargando etiquetadora external...")
             source, arg = exttag.split("|")
             import kuaa.tag as tag
             if lemmas:
                 lemmas = self.read_lemmas()
-                print("Read lemmas")
+#                print("Read lemmas")
             self.tagger = tag.get_tagger(source, arg, self.abbrev,
                                          conversion=conversion, lemmas=lemmas,
                                          eos=self.eos)
@@ -1598,6 +1598,9 @@ class Language:
                     name, x, pattern = line.partition(MS_NAME_SEP)
                     morphosyn = MorphoSyn(self, name=name.strip(), pattern=pattern.strip())
                     self.ms.append(morphosyn)
+                    # If there are optional Morphosyns associated with this Morphosyn add them too.
+                    if morphosyn.optional_ms:
+                        self.ms.extend(morphosyn.optional_ms)
         except IOError:
             print('No such MS file as {}'.format(path))
 
@@ -1892,7 +1895,7 @@ class Language:
         output = []
         if pos:
             if pos not in morf:
-                print("POS {} not in morphology {}".format(pos, morf))
+#                print("POS {} not in morphology {}".format(pos, morf))
                 return [root]
             posmorph = morf[pos]
 #            print("Generating root {} with POS {} and features {}".format(root, pos, features.__repr__()))
