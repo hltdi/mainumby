@@ -1,7 +1,7 @@
 """
 This file is part of the L3Morpho and Mainumby projects.
-    Copyright (C) 2014, 2015, 2016
-    by the HLTDI L^3 Team <gasser@indiana.edu>
+    Copyright (C) 2014, 2015, 2016, 2017
+    by the HLTDI and PLoGS team <gasser@indiana.edu>
 
     L3Morpho is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

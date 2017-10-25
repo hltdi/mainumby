@@ -488,7 +488,6 @@
 ->grn $n <hembiasakue_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n mombe'upy_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n káso_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
-->grn $n ojehúva_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n morangu_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 *** hombre_n de $n ; ^ hombre_n 0
 ->grn $n kuimba'e_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
@@ -504,7 +503,6 @@
 ->grn $n ñe'ẽ_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 *** iglesia_n de $n ; ^ iglesia_n 0
 ->grn $n tupão_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
-->grn $n tupao_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 *** igual_n de $n ; ^ igual_n 0
 ->grn $n <hapicha_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n ojoguáva_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
@@ -9365,7 +9363,6 @@
 ->grn <hembiasakue_n ; 0==0 n:n,poses:poses ; #19
 ->grn mombe'upy_n ; 0==0 n:n,poses:poses ; #6
 ->grn káso_n ; 0==0 n:n,poses:poses ; #30
-->grn ojehúva_n ; 0==0 n:n,poses:poses ; #10
 ->grn morangu_n ; 0==0 n:n,poses:poses ; #5
 *** historiador_n ; ^ historiador_n 0
 ->grn mombe'uha_n ; 0==0 n:n,poses:poses
@@ -9715,7 +9712,6 @@
 ->grn ha'eve_n ; 0==0 n:n,poses:poses
 *** iglesia_n ; ^ iglesia_n 0 ; #89
 ->grn tupão_n ; 0==0 n:n,poses:poses ; #74 ; ##2
-->grn tupao_n ; 0==0 n:n,poses:poses
 *** ignorancia_n ; ^ ignorancia_n 0 ; #6
 ->grn jeikuaa'ỹ_n ; 0==0 n:n,poses:poses
 ->grn tavy_n ; 0==0 n:n,poses:poses ; #96 ; ##2
@@ -33586,19 +33582,16 @@
 ->grn <hembiasakue_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn mombe'upy_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn káso_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn ojehúva_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn morangu_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** historia_n $pp $art que $v[-ipv] ; ^ historia_n 0
 ->grn <hembiasakue_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn mombe'upy_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn káso_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn ojehúva_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn morangu_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** historia_n $pp cual_n $v[-ipv] ; ^ historia_n 0
 ->grn <hembiasakue_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn mombe'upy_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn káso_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn ojehúva_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn morangu_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** historiador_n que $v[-ipv] ; ^ historiador_n 0
 ->grn mombe'uha_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
@@ -34127,13 +34120,10 @@
 ->grn ha'eve_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** iglesia_n que $v[-ipv] ; ^ iglesia_n 0
 ->grn tupão_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn tupao_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** iglesia_n $pp $art que $v[-ipv] ; ^ iglesia_n 0
 ->grn tupão_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn tupao_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** iglesia_n $pp cual_n $v[-ipv] ; ^ iglesia_n 0
 ->grn tupão_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn tupao_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** ignorancia_n que $v[-ipv] ; ^ ignorancia_n 0
 ->grn jeikuaa'ỹ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn tavy_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no

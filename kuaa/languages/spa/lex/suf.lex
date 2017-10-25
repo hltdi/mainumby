@@ -1,7 +1,11 @@
 ### PATTERNS
 ## vos imp: groups for accenting final syllable before mult suff
+##     or not accenting syllable before single suffix
 pat: vos_grp ([aeiou][^aeiouáéíóú]*?)([aei])$
 pat: vos [aeiou]\w*?[áéí]$
+# dame, dime, etc.
+pat: vos1 ^d[ai]$
+pat: vos1_grp ^([ds])([áíé])$
 ## tú, usted imp: groups for deaccenting penultimate syllable
 pat: penult_acc_grp ([áéíóú])(\w*?[ae])$
 # irregular tú imperatives: irr1: dé, sé; irr2: others
@@ -182,6 +186,8 @@ func: accent_irr1 n=1, ins='é'
 ## Deaccent
 # tú, usted(es), nosotros, vosotros, gerund, irr2
 func: deacc_first n=2, deacc=1
+# vos: di/da + 2 or 3 suffixes
+func: deacc_second n=2, deacc=2
 # nosotros + s before nos/se
 func: mosnos n=2, deacc=1, ins='s'
 # irr2, inf
@@ -195,6 +201,7 @@ suf: lo +lo
   pat=irr1_grp; change=accent_irr1; gram=usted_ipv_3s
   # vos
   pat=vos_grp; change=accent_last; gram=vos_ipv_3s
+  pat=vos1; gram=vos_ipv_3s
   # usted
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_3s
   # ustedes
@@ -208,6 +215,7 @@ suf: lo +lo
 suf: le +le
   pat=irr1_grp; change=accent_irr1; gram=usted_ipv_3s
   pat=vos_grp; change=accent_last; gram=vos_ipv_3s
+  pat=vos1; gram=vos_ipv_3s
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_3s
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_3s
   pat=nosotros_grp; change=deacc_first; gram=nosotros_ipv_3s
@@ -216,6 +224,7 @@ suf: le +le
 suf: la +la
   pat=irr1_grp; change=accent_irr1; gram=usted_ipv_3s
   pat=vos_grp; change=accent_last; gram=vos_ipv_3s
+  pat=vos1; gram=vos_ipv_3s
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_3s
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_3s
   pat=nosotros_grp; change=deacc_first; gram=nosotros_ipv_3s
@@ -224,6 +233,7 @@ suf: la +la
 suf: los +los
   pat=irr1_grp; change=accent_irr1; gram=usted_ipv_3p
   pat=vos_grp; change=accent_last; gram=vos_ipv_3p
+  pat=vos1; gram=vos_ipv_3p
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_3p
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_3p
   pat=nosotros_grp; change=deacc_first; gram=nosotros_ipv_3p
@@ -232,6 +242,7 @@ suf: los +los
 suf: las +las
   pat=irr1_grp; change=accent_irr1; gram=usted_ipv_3p
   pat=vos_grp; change=accent_last; gram=vos_ipv_3p
+  pat=vos1; gram=vos_ipv_3p
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_3p
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_3p
   pat=nosotros_grp; change=deacc_first; gram=nosotros_ipv_3p
@@ -240,6 +251,7 @@ suf: las +las
 suf: les +les
   pat=irr1_grp; change=accent_irr1; gram=usted_ipv_3p
   pat=vos_grp; change=accent_last; gram=vos_ipv_3p
+  pat=vos1; gram=vos_ipv_3p
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_3p
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_3p
   pat=nosotros_grp; change=deacc_first; gram=nosotros_ipv_3p
@@ -261,13 +273,15 @@ suf: me +me
   # nosotros not possible
   pat=irr1_grp; change=accent_irr1; gram=usted_ipv_1s
   pat=vos_grp; change=accent_last; gram=vos_ipv_1s
+  pat=vos1; gram=vos_ipv_1s
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_1s
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_1s
   pat=inf; gram=inf_1s
-  pat=ger_grp; change=deacc_first; gram=ger_2s
+  pat=ger_grp; change=deacc_first; gram=ger_1s
 suf: nos +nos
   pat=irr1_grp; change=accent_irr1; gram=usted_ipv_1p
   pat=vos_grp; change=accent_last; gram=vos_ipv_1p
+  pat=vos1; gram=vos_ipv_1p
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_1p
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_1p
   # nosotros (add s)
@@ -287,11 +301,13 @@ suf: te +te
 
 suf: teme +te+me
   pat=vos; gram=vos_ipv_1s_refl
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_1s_refl
   pat=eir; gram=inf_1s2s
   pat=inf_grp; change=deacc_mid; gram=inf_1s2s
   pat=ger_grp; change=deacc_first; gram=ger_1s2s
 suf: tenos +te+nos
   pat=vos; gram=vos_ipv_1p_refl
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_1p_refl
   pat=nosotros_grp; change=deacc_first; gram=nosotros_ipv_2s_refl
   pat=eir; gram=inf_1p2s
   pat=inf_grp; change=deacc_mid; gram=inf_1p2s
@@ -320,6 +336,7 @@ suf: sete +se+te
 # 1/2 + 3
 suf: melo +me+lo
   pat=vos; gram=vos_ipv_1s3s
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_1s3s
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_1s3s
   pat=irr1; gram=usted_ipv_1s3s
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_1s3s
@@ -328,6 +345,7 @@ suf: melo +me+lo
   pat=ger_grp; change=deacc_first; gram=ger_1s3s
 suf: mela +me+la
   pat=vos; gram=vos_ipv_1s3s
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_1s3s
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_1s3s
   pat=irr1; gram=usted_ipv_1s3s
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_1s3s
@@ -336,6 +354,7 @@ suf: mela +me+la
   pat=ger_grp; change=deacc_first; gram=ger_1s3s
 suf: mele +me+le
   pat=vos; gram=vos_ipv_1s3s
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_1s3s
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_1s3s
   pat=irr1; gram=usted_ipv_1s3s
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_1s3s
@@ -344,6 +363,7 @@ suf: mele +me+le
   pat=ger_grp; change=deacc_first; gram=ger_1s3s
 suf: melos +me+los
   pat=vos; gram=vos_ipv_1s3p
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_1s3p
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_1s3p
   pat=irr1; gram=usted_ipv_1s3p
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_1s3p
@@ -352,6 +372,7 @@ suf: melos +me+los
   pat=ger_grp; change=deacc_first; gram=ger_1s3p
 suf: melas +me+las
   pat=vos; gram=vos_ipv_1s3p
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_1s3p
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_1s3p
   pat=irr1; gram=usted_ipv_1s3p
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_1s3p
@@ -360,6 +381,7 @@ suf: melas +me+las
   pat=ger_grp; change=deacc_first; gram=ger_1s3p
 suf: meles +me+les
   pat=vos; gram=vos_ipv_1s3p
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_1s3p
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_1s3p
   pat=irr1; gram=usted_ipv_1s3p
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_1s3p
@@ -368,6 +390,7 @@ suf: meles +me+les
   pat=ger_grp; change=deacc_first; gram=ger_1s3p
 suf: noslo +nos+lo
   pat=vos; gram=vos_ipv_1p3s
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_1p3s
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_1p3s
   pat=irr1; gram=usted_ipv_1p3s
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_1p3s
@@ -377,6 +400,7 @@ suf: noslo +nos+lo
   pat=ger_grp; change=deacc_first; gram=ger_1p3s
 suf: nosla +nos+la
   pat=vos; gram=vos_ipv_1p3s
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_1p3s
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_1p3s
   pat=irr1; gram=usted_ipv_1p3s
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_1p3s
@@ -386,6 +410,7 @@ suf: nosla +nos+la
   pat=ger_grp; change=deacc_first; gram=ger_1p3s
 suf: nosle +nos+le
   pat=vos; gram=vos_ipv_1p3s
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_1p3s
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_1p3s
   pat=irr1; gram=usted_ipv_1p3s
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_1p3s
@@ -395,6 +420,7 @@ suf: nosle +nos+le
   pat=ger_grp; change=deacc_first; gram=ger_1p3s
 suf: noslos +nos+los
   pat=vos; gram=vos_ipv_1p3p
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_1p3p
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_1p3p
   pat=irr1; gram=usted_ipv_1p3p
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_1p3p
@@ -404,6 +430,7 @@ suf: noslos +nos+los
   pat=ger_grp; change=deacc_first; gram=ger_1p3p
 suf: noslas +nos+las
   pat=vos; gram=vos_ipv_1p3p
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_1p3p
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_1p3p
   pat=irr1; gram=usted_ipv_1p3p
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_1p3p
@@ -413,6 +440,7 @@ suf: noslas +nos+las
   pat=ger_grp; change=deacc_first; gram=ger_1p3p
 suf: nosles +nos+les
   pat=vos; gram=vos_ipv_1p3p
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_1p3p
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_1p3p
   pat=irr1; gram=usted_ipv_1p3p
   pat=ustedes_grp; change=deacc_first; gram=ustedes_ipv_1p3p
@@ -422,36 +450,42 @@ suf: nosles +nos+les
   pat=ger_grp; change=deacc_first; gram=ger_1p3p
 suf: telo +te+lo
   pat=vos; gram=vos_ipv_3s_refl
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_3s_refl
   pat=nosotros_grp; change=deacc_first; gram=nosotros_ipv_2s3s
   pat=eir; gram=inf_2s3s
   pat=inf_grp; change=deacc_mid; gram=inf_2s3s
   pat=ger_grp; change=deacc_first; gram=ger_2s3s
 suf: tela +te+la
   pat=vos; gram=vos_ipv_3s_refl
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_3s_refl
   pat=nosotros_grp; change=deacc_first; gram=nosotros_ipv_2s3s
   pat=eir; gram=inf_2s3s
   pat=inf_grp; change=deacc_mid; gram=inf_2s3s
   pat=ger_grp; change=deacc_first; gram=ger_2s3s
 suf: tele +te+le
   pat=vos; gram=vos_ipv_3s_refl
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_3s_refl
   pat=nosotros_grp; change=deacc_first; gram=nosotros_ipv_2s3s
   pat=eir; gram=inf_2s3s
   pat=inf_grp; change=deacc_mid; gram=inf_2s3s
   pat=ger_grp; change=deacc_first; gram=ger_2s3s
 suf: telos +te+los
   pat=vos; gram=vos_ipv_3p_refl
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_3p_refl
   pat=nosotros_grp; change=deacc_first; gram=nosotros_ipv_2s3p
   pat=eir; gram=inf_2s3p
   pat=inf_grp; change=deacc_mid; gram=inf_2s3p
   pat=ger_grp; change=deacc_first; gram=ger_2s3p
 suf: telas +te+las
   pat=vos; gram=vos_ipv_3p_refl
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_3p_refl
   pat=nosotros_grp; change=deacc_first; gram=nosotros_ipv_2s3p
   pat=eir; gram=inf_2s3p
   pat=inf_grp; change=deacc_mid; gram=inf_2s3p
   pat=ger_grp; change=deacc_first; gram=ger_2s3p
 suf: teles +te+les
   pat=vos; gram=vos_ipv_3p_refl
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_3p_refl
   pat=nosotros_grp; change=deacc_first; gram=nosotros_ipv_2s3p
   pat=eir; gram=inf_2s3p
   pat=inf_grp; change=deacc_mid; gram=inf_2s3p
@@ -461,6 +495,7 @@ suf: teles +te+les
 suf: selo +se+lo
   # vos
   pat=vos; gram=vos_ipv_33s
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_33s
   # tú
   # usted
   pat=irr1; gram=usted_ipv_3s_refl
@@ -479,6 +514,7 @@ suf: selo +se+lo
   pat=ger_grp; change=deacc_first; gram=ger_33s
 suf: sela +se+la
   pat=vos; gram=vos_ipv_33s
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_33s
   pat=irr1; gram=usted_ipv_3s_refl
   pat=irr1; gram=usted_ipv_33s
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_3s_refl
@@ -491,6 +527,7 @@ suf: sela +se+la
   pat=ger_grp; change=deacc_first; gram=ger_33s
 suf: sele +se+le
   pat=vos; gram=vos_ipv_33s
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_33s
   pat=irr1; gram=usted_ipv_3s_refl
   pat=irr1; gram=usted_ipv_33s
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_3s_refl
@@ -503,6 +540,7 @@ suf: sele +se+le
   pat=ger_grp; change=deacc_first; gram=ger_33s
 suf: selos +se+los
   pat=vos; gram=vos_ipv_33p
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_33p
   pat=irr1; gram=usted_ipv_3p_refl
   pat=irr1; gram=usted_ipv_33p
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_3p_refl
@@ -515,6 +553,7 @@ suf: selos +se+los
   pat=ger_grp; change=deacc_first; gram=ger_33p
 suf: selas +se+las
   pat=vos; gram=vos_ipv_33p
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_33p
   pat=irr1; gram=usted_ipv_3p_refl
   pat=irr1; gram=usted_ipv_33p
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_3p_refl
@@ -527,6 +566,7 @@ suf: selas +se+las
   pat=ger_grp; change=deacc_first; gram=ger_33p
 suf: seles +se+les
   pat=vos; gram=vos_ipv_33p
+  pat=vos1_grp; change=deacc_second; gram=vos_ipv_33p
   pat=irr1; gram=usted_ipv_3p_refl
   pat=irr1; gram=usted_ipv_33p
   pat=penult_acc_grp; change=deacc_first; gram=usted_ipv_3p_refl

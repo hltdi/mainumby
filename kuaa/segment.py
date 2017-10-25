@@ -105,6 +105,7 @@ class SolSeg:
             self.special = True
             if not translation:
                 # Set the translation for the special segment
+                print("Setting special segment: {}".format(tokens))
                 spec_trans = self.source.translate_special(tokens[0])
                 if spec_trans:
                     self.translation = [[spec_trans]]
@@ -122,7 +123,7 @@ class SolSeg:
         else:
             self.record = None
         self.html = []
-        print("Created {}".format(self))
+#        print("Created {}, punctuation? {}, translation {}".format(self, self.is_punc, self.translation))
 
     def __repr__(self):
         """Print name."""
@@ -154,6 +155,16 @@ class SolSeg:
         choice_list = self.record.choices if self.record else None
         # Final source segment output
         tokens = self.token_str
+        if self.is_punc:
+            trans = self.translation[0][0]
+            transhtml += "<tr><td class='transchoice'>"
+            transhtml += '<br/><input type="radio" name="choice" id={} value="{}" checked>{}</td>'.format(trans, trans, trans)
+            transhtml += '</tr>'
+            transhtml += '<tr><td class="other">'
+            transhtml += '<input type="radio" name="choice" id="other" value="other">otra traducción (introducir abajo)</td></tr>'
+            transhtml += '</table>'
+            self.html = (tokens, self.color, transhtml)
+            return
         for tindex, t in enumerate(self.translation):
             print("{} setting HTML for {}: {}".format(self, tindex, t))
             # Create all combinations of word sequences
@@ -172,7 +183,10 @@ class SolSeg:
             transhtml += "<td class='transchoice'>"
             html_choices = []
             for tcindex, tchoice in enumerate(tcombs):
-                html_choices.append('<input type="radio" name="choice" id={} value="{}">{}'.format(tchoice, tchoice, tchoice))
+                if tindex == 0 and tcindex == 0:
+                    html_choices.append('<input type="radio" name="choice" id={} value="{}" checked>{}'.format(tchoice, tchoice, tchoice))
+                else:
+                    html_choices.append('<input type="radio" name="choice" id={} value="{}">{}'.format(tchoice, tchoice, tchoice))
             transhtml += "<br/>".join(html_choices)
             transhtml += "</td>"
             if self.record:
@@ -186,7 +200,7 @@ class SolSeg:
                 transhtml += '<input type="radio" name="choice" id={} value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
             # Button for the user's own translation
             transhtml += '<tr><td class="other">'
-            transhtml += '<input type="radio" name="choice" id="other" value="other" checked>otra traducción (introducir abajo)</td></tr>'
+            transhtml += '<input type="radio" name="choice" id="other" value="other">otra traducción (introducir abajo)</td></tr>'
             # Remove special prefixes
             transhtml = SolSeg.remove_spec_pre(transhtml)
             transhtml = transhtml.replace('_', ' ')
@@ -356,13 +370,13 @@ class SNode:
                     features.append(FeatStruct({}))
         return features
 
-    def match(self, grp_item, grp_feats, verbosity=0):
+    def match(self, grp_item, grp_feats, verbosity=0, debug=False):
         """Does this node match the group item (word, root, category) and
         any features associated with it?"""
-        # If this is a punctuation node, it can't match a group item
-        if self.is_punc():
+        # If this is a punctuation node, it can't match a group item unless the item is also punctuation (not alphanum)
+        if self.is_punc() and grp_item.isalnum():
             return False
-        if verbosity > 1:
+        if verbosity > 1 or debug:
             print('   SNode {} with features {} trying to match item {} with features {}'.format(self, self.analyses, grp_item, grp_feats.__repr__()))
         # If item is a category, don't bother looking at token
         is_cat = Entry.is_cat(grp_item)
@@ -376,7 +390,7 @@ class SNode:
         if not self.analyses:
             # The node has no associated roots, cats, or features.
             if self.token == grp_item:
-                if verbosity:
+                if verbosity or debug:
                     print("    Non-cat token matches node token")
                 # Exact match between group and node tokens. SUCCEED with no features
                 return None
@@ -384,13 +398,14 @@ class SNode:
                 # All other cases fail because root or cat matches require node features
                 return False
         else:
+            # OK, there are analyses
             # Check whether a group item is really a set item (starting with '$$'); if so, drop the first '$' before matching
             if is_cat and Entry.is_set(grp_item):
                 grp_item = grp_item[1:]
             # If group token is not cat and there are no group features, check for perfect match
             if not is_cat and not grp_feats:
                 if self.token == grp_item:
-                    if verbosity:
+                    if verbosity or debug:
                         print("    Matches trivially")
                     return None
             # Go through analyses, checking cat, root, and features (if any group features)
@@ -414,7 +429,18 @@ class SNode:
                         node_roots.append(rr + '_' + p)
                 # Match group token
                 if is_cat:
-                    if grp_item not in node_cats:
+                    if grp_item in node_cats:
+                        # The category matches, but is there a group entry for the node's root
+                        item_groups = self.sentence.language.groups.get(node_root)
+                        if item_groups:
+                            if not any([len(g.tokens) == 1 for g in item_groups]):
+#                                print("Failing because there is no one-token entry for {}".format(node_root))
+                                continue
+                        else:
+#                            print("Failing because there's no group entry for {}".format(node_root))
+                            continue
+                    else:
+                        # Fail because the group category item doesn't match the node categories
                         continue
                 else:
                     # Not a category, has to match the root
@@ -431,7 +457,7 @@ class SNode:
                     if grp_feats:
                         # 2015.7.5: strict option added to force True feature in grp_features
                         # to be present in node_features, e.g., for Spanish reflexive
-                        if verbosity > 1:
+                        if verbosity > 1 or debug:
                             print("    Unifying n feats {} ({}) with g feats {} ({})".format(node_features, type(node_features), grp_feats.__repr__(), type(grp_feats)))
                         nfeattype = type(node_features)
                         if nfeattype == FSSet:
@@ -450,7 +476,7 @@ class SNode:
                     # SUCCEED: group has features but node doesn't
                     results.append((grp_item, grp_feats))
             if results:
-                if verbosity > 1:
+                if verbosity > 1 or debug:
                     print("  Returning match results: {}".format(results))
                 return results
         return False

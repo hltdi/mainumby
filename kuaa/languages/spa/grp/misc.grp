@@ -47,29 +47,29 @@
 ->grn chejehegui
 *** por mí misma ; ^ mí 1
 ->grn chejehegui
-*** a vos mismo ; ^ mi 1
+*** a vos mismo ; ^ vos 1
 ->grn ndejehe
-*** a vos misma ; ^ ti 1
+*** a vos misma ; ^ vos 1
 ->grn ndejehe
-*** de vos mismo ; ^ ti 1
+*** de vos mismo ; ^ vos 1
 ->grn ndejehegui
-*** de vos misma ; ^ ti 1
+*** de vos misma ; ^ vos 1
 ->grn ndejehegui
-*** por vos mismo ; ^ ti 1
+*** por vos mismo ; ^ vos 1
 ->grn ndejehegui
-*** por vos misma ; ^ ti 1
+*** por vos misma ; ^ vos 1
 ->grn ndejehegui
-*** a usted mismo ; ^ mi 1
+*** a usted mismo ; ^ usted 1
 ->grn ndejehe
-*** a usted misma ; ^ ti 1
+*** a usted misma ; ^ usted 1
 ->grn ndejehe
-*** de usted mismo ; ^ ti 1
+*** de usted mismo ; ^ usted 1
 ->grn ndejehegui
-*** de usted misma ; ^ ti 1
+*** de usted misma ; ^ usted 1
 ->grn ndejehegui
-*** por usted mismo ; ^ ti 1
+*** por usted mismo ; ^ usted 1
 ->grn ndejehegui
-*** por usted misma ; ^ ti 1
+*** por usted misma ; ^ usted 1
 ->grn ndejehegui
 *** a sí mismo ; ^ sí 1
 ->grn ijehe
@@ -1172,7 +1172,7 @@
 ->grn $v[pp=jave] ; || -1, 0 ; 1==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 *** mientras~que $v[tm=sbp] ; ^ mientras~que 0
 ->grn $v[pp=jave,tmp=prs] ; || -1, 0 ; 1==0 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
-*** mientras~que $v ; ^ mientras_que 0
+*** mientras~que $v ; ^ mientras~que 0
 ->grn $v[pp=jave] ; || -1, 0 ; 1==0 tm:tmp,n:ns,p:ps,asp:asp,neg:neg,po:po,no:no
 *** mientras~tanto ; ^ mientras~tanto 0
 ->grn upekuévo

@@ -217,6 +217,10 @@ def fin():
 def proyecto():
     return render_template('proyecto.html')
 
+@app.route('/uso')
+def uso():
+    return render_template('uso.html')
+
 @app.route('/contacto')
 def contacto():
     return render_template('contacto.html')

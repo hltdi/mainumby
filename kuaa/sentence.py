@@ -1029,6 +1029,7 @@ class Sentence:
         for head_i, key, group in candidates:
             # Check whether there is already a match for this position, key, and group length
             # LATER HAVE A BETTER WAY OF CHOOSING A MATCH
+#            print("Checking candidate {} with head {} and key {}".format(group, head_i, key))
             matched_key = (head_i, key, len(group.tokens))
             if matched_key in matched_keys:
                 # Reject this match because there's already a comparable one
@@ -1847,21 +1848,43 @@ class Solution:
         for raw_indices, forms, gname, merger_groups in tt:
             late = False
             start, end = raw_indices[0], raw_indices[-1]
-#            print("Segment {}->{}".format(start, end))
-#            print("Raw indices: {}, forms {}, gname {}, merger_groups {}".format(raw_indices, forms, gname, merger_groups))
+            print("Segment {}->{}".format(start, end))
+            print("Raw indices: {}, forms {}, gname {}, merger_groups {}".format(raw_indices, forms, gname, merger_groups))
             if start > max_index+1:
-                # there's a gap between the farthest segment to the right and this one; make an untranslated segment
+                # there's a gap between the farthest segment to the right and this one; make one or more untranslated segments
                 src_tokens = tokens[end_index+1:start]
-                print("Creating untranslated segment for {} in positions {}...{}".format(src_tokens, end_index+1, start-1))
-                is_punc = len(src_tokens) == 1 and self.source.is_punc(src_tokens[0])
-                if is_punc:
-                    # Convert punctuation in source to punctuation in target if there is a mapping.
-                    translation = [self.target.punc_postproc(src_tokens[0])]
-                else:
-                    translation = []
-                seg = SolSeg(self, (end_index+1, start-1), translation, src_tokens, session=self.session, gname=gname,
-                             merger_groups=merger_groups, is_punc=is_punc)
-                self.segments.append(seg)
+                stok_groups = []
+                stoks = []
+                i0 = end_index+1
+                for stok in src_tokens:
+                    if stok[0] == '%':
+                        # Special token; it should have its own segment
+                        if stoks:
+                            stok_groups.append(stoks)
+                        stok_groups.append([stok])
+                    else:
+                        stoks.append(stok)
+                if stoks:
+                    stok_groups.append(stoks)
+                i0 = end_index+1
+                for stok_group in stok_groups:
+                    is_punc = len(stok_group) == 1 and self.source.is_punc(stok_group[0])
+                    if is_punc:
+                        # Convert punctuation in source to punctuation in target if there is a mapping.
+                        translation = [self.target.punc_postproc(stok_group[0])]
+                    else:
+                        translation = []
+                    seg = SolSeg(self, (i0, i0+len(stok_group)-1), translation, stok_group, session=self.session, gname=gname,
+                                        merger_groups=merger_groups, is_punc=is_punc)
+                    self.segments.append(seg)
+                    i0 += len(stok_group)
+#                    SolSeg(self, (end_index+1, start-1), translation, stoks, session=self.session, gname=gname,
+#                                         merger_groups=merger_groups, is_punc=is_punc)
+                            
+#                print("Creating untranslated segment for {} in positions {}...{}, punc? {}".format(src_tokens, end_index+1, start-1, is_punc))
+#                seg = SolSeg(self, (end_index+1, start-1), translation, src_tokens, session=self.session, gname=gname,
+#                             merger_groups=merger_groups, is_punc=is_punc)
+#                self.segments.append(seg)
 #            src_tokens = tokens[start:end+1]
             if start < max_index:
 #                print("At least part of segment {} / {} actually appears earlier".format(raw_indices, forms))

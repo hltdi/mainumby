@@ -16014,32 +16014,16 @@
 ->grn pyhy_v[subcat=i] (chupekuéra)
 ->grn poreno_v[subcat=i] (chupekuéra)
 *** jugar_v[-r,+fin] ; ^ jugar_v 0 ; #6
-->grn pete_v[cat=a] ; #76
-->grn mbojaru_v[cat=a] ; #24
-->grn ñemboharái_v[cat=a] ; #8 ; ##2
 ->grn <ha'ã_v[cat=a] ; #190
-->grn ñembojaru_v[cat=a] ; #1
 ->grn ñembosarái_v[cat=a] ; #9
 *** jugar_v[-r,+fin] a $n ; ^ jugar_v 0
-->grn pete_v[cat=a] $n[caso=pe] ; || 0, -1, 1
-->grn mbojaru_v[cat=a] $n[caso=pe] ; || 0, -1, 1
-->grn ñemboharái_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 ->grn <ha'ã_v[cat=a] $n[caso=pe] ; || 0, -1, 1
-->grn ñembojaru_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 ->grn ñembosarái_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 *** jugar_v[-r,po=3,no=0] ; ^ jugar_v 0
-->grn pete_v[cat=a] (chupe)
-->grn mbojaru_v[cat=a] (chupe)
-->grn ñemboharái_v[cat=a] (chupe)
 ->grn <ha'ã_v[cat=a] (chupe)
-->grn ñembojaru_v[cat=a] (chupe)
 ->grn ñembosarái_v[cat=a] (chupe)
 *** jugar_v[-r,po=3,no=1] ; ^ jugar_v 0
-->grn pete_v[cat=a] (chupekuéra)
-->grn mbojaru_v[cat=a] (chupekuéra)
-->grn ñemboharái_v[cat=a] (chupekuéra)
 ->grn <ha'ã_v[cat=a] (chupekuéra)
-->grn ñembojaru_v[cat=a] (chupekuéra)
 ->grn ñembosarái_v[cat=a] (chupekuéra)
 *** juntar_v[+r,+fin] ; ^ juntar_v 0 ; #50
 ->grn joaju_v[cat=a] ; #50 ; ##2

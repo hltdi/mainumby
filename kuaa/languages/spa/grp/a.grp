@@ -1959,7 +1959,7 @@
 ->grn tara_v
 ->grn para_v ; #116
 ->grn para'i_v
-*** mucho_a $n ; ^ mucho_a 0
+*** mucho_a $n ; ^ mucho_a 0 ; -X-
 ->grn heta $n ; || 0, 1
 *** mudo_a ; ^ mudo_a 0
 ->grn ñe'engu_v

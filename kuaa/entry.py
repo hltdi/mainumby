@@ -147,7 +147,7 @@ AMBIG_CHAR = '*'
 DISAMBIG_CHAR = '%'
 # possibly empty form string followed by possibly empty FS string, for MorphoSyn pattern
 # ^prefix means this is head
-MS_FORM_FEATS = re.compile("\s*(\^?)([$<'|\w¿¡?!]*)\s*((?:\[.+\])?)$")
+MS_FORM_FEATS = re.compile("\s*(\^?)([$<'|\w¿¡?!]*)\s*((?:\*?\[.+\])?)$")
 # negative features: ![] with only features catpured
 MS_NEG_FEATS = re.compile("\s*!(\[.+\])$")
 MS_AGR = re.compile("\s*(\d)\s*=>\s*(\d)\s*(.+)$")
@@ -404,7 +404,7 @@ class Group(Entry):
                     rightdel = node.right_delete
 #                    print("    Trying to match {} in {} with right deleted stokens {}".format(token, self, rightdel))
                 if verbosity > 1 or self.debug:
-                    fstring = "   Trying {}, token index {}, snode index {}, head index {}, last s index {}"
+                    fstring = "  Trying {}, token index {}, snode index {}, head index {}, last s index {}"
                     print(fstring.format(node, index, snode_indices, head_sindex, last_sindex))
                 if ishead:
 #                    print("   Matching head, node index {}, head sindex {}".format(node.index, head_sindex))
@@ -455,7 +455,7 @@ class Group(Entry):
                         break
                 else:
                     # Match a group token that's not the head
-                    node_match = node.match(token, feats, verbosity=verbosity)
+                    node_match = node.match(token, feats, verbosity=verbosity, debug=self.debug)
                     if verbosity > 1 or self.debug:
                         print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
                     if node_match != False:
@@ -681,6 +681,8 @@ class MorphoSyn(Entry):
         self.head_index = -1
         # If there are optional features, additional morphosyns are created.
         self.optional_ms = []
+        # For each feature strict, whether it applies strictly to input.
+        self.strict = []
         # Expand unless this already happened (with optional form-feats)
         # This also sets self.agr, self.del_indices, self.featmod; may also set direction
         if not expanded:
@@ -804,6 +806,11 @@ class MorphoSyn(Entry):
             else:
                 head_pref, forms, feats = MS_FORM_FEATS.match(item).groups()
                 if feats:
+                    if feats[0] == '*':
+                        feats = feats[1:]
+                        self.strict.append(True)
+                    else:
+                        self.strict.append(False)
                     feats = FeatStruct(feats)
                 forms = [f.strip() for f in forms.split(FORMALT_SEP) if f]
                 if head_pref:
