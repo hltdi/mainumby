@@ -132,9 +132,9 @@ pregunta :: ¿ [pos=v,+inter] ; // 0
 ## infinitivos (deben ser finitos para coincidir con propiedades en grupos de verbos (v.grp))
 infin :: [pos=v,tm=inf] ; 0-> [+fin]
 
-## sujetos y complementos de la misma persona; hacer reflexivo
-refl_1s :: [+fin,n=0,no=0,p=1,po=1,pos=v,-r] ; 0 -> [+r,po=3]
-refl_2s :: [+fin,n=0,no=0,p=2,po=2,pos=v,-r] ; 0 -> [+r,po=3]
-# refl_3 ::  [+fin,p=3,po=3,pos=v,-r] ; 0 -> [+r]
-refl_1p :: [+fin,n=1,no=1,p=1,po=1,pos=v,-r] ; 0 -> [+r,po=3]
-refl_2p :: [+fin,n=1,no=1,p=2,po=2,pos=v,-r] ; 0 -> [+r,po=3]
+## sujetos y complementos de la misma persona; hacer reflexivo (debe coincidir "estrictamente")
+refl_1s :: *[+fin,n=0,no=0,p=1,po=1,pos=v,-r] ; 0 -> [+r,po=3]
+refl_2s :: *[+fin,n=0,no=0,p=2,po=2,pos=v,-r] ; 0 -> [+r,po=3]
+#refl_3 :: *[+fin,p=3,po=3,pos=v,-r] ; 0 -> [+r]
+refl_1p :: *[+fin,n=1,no=1,p=1,po=1,pos=v,-r] ; 0 -> [+r,po=3]
+refl_2p :: *[+fin,n=1,no=1,p=2,po=2,pos=v,-r] ; 0 -> [+r,po=3]

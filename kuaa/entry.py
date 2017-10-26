@@ -681,8 +681,9 @@ class MorphoSyn(Entry):
         self.head_index = -1
         # If there are optional features, additional morphosyns are created.
         self.optional_ms = []
-        # For each feature strict, whether it applies strictly to input.
-        self.strict = []
+        # For each item, whether the associated feature structure (if there is one) applies strictly to input.
+        # This is filled in in expand()
+        self.strict = None
         # Expand unless this already happened (with optional form-feats)
         # This also sets self.agr, self.del_indices, self.featmod; may also set direction
         if not expanded:
@@ -787,7 +788,9 @@ class MorphoSyn(Entry):
                 continue
             print("Something wrong with MS attribute {}".format(attrib))
         p = []
-        for index, item in enumerate(tokens.split(MS_PATTERN_SEP)):
+        items = tokens.split(MS_PATTERN_SEP)
+        self.strict = [False] * len(items)
+        for index, item in enumerate(items):
             forms = None
             feats = None
             optmatch = MS_OPT.match(item)
@@ -808,9 +811,8 @@ class MorphoSyn(Entry):
                 if feats:
                     if feats[0] == '*':
                         feats = feats[1:]
-                        self.strict.append(True)
-                    else:
-                        self.strict.append(False)
+#                        print("{} setting feature match {} to strict".format(self, index))
+                        self.strict[index] = True
                     feats = FeatStruct(feats)
                 forms = [f.strip() for f in forms.split(FORMALT_SEP) if f]
                 if head_pref:
@@ -1073,6 +1075,8 @@ class MorphoSyn(Entry):
     def match_item(self, stoken, sanals, pindex, verbosity=0):
         """Match a sentence item against a pattern item."""
         pforms, pfeats = self.pattern[pindex]
+        # Whether to match features strictly
+        strict = self.strict[pindex]
         isneg = pindex in self.neg_matches
         if verbosity > 1 or self.debug:
             print("  MS {} matching {}:{} against {}:{}".format(self, stoken, sanals, pforms, pfeats.__repr__()))
@@ -1094,7 +1098,7 @@ class MorphoSyn(Entry):
             # last corresponding to the list of anals in sentence
             anal_matches = []
             for sanal in sanals:
-                anal_matches.append(self.match_anal(stoken, sanal, pforms, pfeats, neg=isneg,
+                anal_matches.append(self.match_anal(stoken, sanal, pforms, pfeats, strict=strict, neg=isneg,
                                                     verbosity=verbosity))
             if any(anal_matches):
                 return [stoken, anal_matches, sanals]
@@ -1127,7 +1131,7 @@ class MorphoSyn(Entry):
             print("    Match token failed")
         return False
 
-    def match_anal(self, stoken, sanal, pforms, pfeats, neg=False, verbosity=0):
+    def match_anal(self, stoken, sanal, pforms, pfeats, strict=False, neg=False, verbosity=0):
         """Match the sentence analysis against pforms and pfeats in a pattern.
         sanal is either a dict or a pair (root, features)."""
         if isinstance(sanal, dict):
@@ -1139,8 +1143,8 @@ class MorphoSyn(Entry):
             spos = None
         ppos = pfeats.get('pos') if pfeats else None
         if verbosity > 1 or self.debug:
-            s = "   Attempting to match pattern forms {}, pos {} and feats {} against sentence item root {}, pos {} and feats {}"
-            print(s.format(pforms, ppos, pfeats.__repr__(), sroot, spos, sfeats.__repr__()))
+            s = "   Attempting to match pattern forms {} (strict? {}), pos {} and feats {} against sentence item root {}, pos {} and feats {}"
+            print(s.format(pforms, strict, ppos, pfeats.__repr__(), sroot, spos, sfeats.__repr__()))
         if not pforms or any([sroot == f for f in pforms]):
             if verbosity > 1 or self.debug:
                 print("    Root matched")
@@ -1148,7 +1152,7 @@ class MorphoSyn(Entry):
             if isinstance(sfeats, FSSet):
                 # This returns an FSSet too
 #                print("   Unifying FSSet {} with FeatStruct {}".format(sfeats, pfeats))
-                u = sfeats.unify_FS(pfeats)
+                u = sfeats.unify_FS(pfeats, strict=strict)
             elif not sfeats:
                 # No sentence item features but there are match item features. See if the parts of speech match.
                 if ppos and spos and ppos == spos:
@@ -1156,7 +1160,7 @@ class MorphoSyn(Entry):
                 else:
                     return False
             else:
-                u = simple_unify(sfeats, pfeats)
+                u = simple_unify(sfeats, pfeats, strict=strict)
             if u != 'fail':
                 if not neg:
                     # result could be frozen if nothing changed; we need an unfrozen FS for later changes
