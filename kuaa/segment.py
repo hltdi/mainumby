@@ -302,6 +302,11 @@ class SNode:
         """Is this node a punctuation node?"""
         return self.get_analysis().get('pos') == 'pnc'
 
+    def is_unk(self):
+        """Does this node have no analysis, no known category or POS?"""
+        a = self.get_analysis()
+        return not (a.get('pos') or a.get('cats') or a.get('features'))
+
     ## Create IVars and (set) Vars with sentence DS as root DS
 
     def ivar(self, key, name, domain, ess=False):
@@ -381,6 +386,8 @@ class SNode:
         # If item is a category, don't bother looking at token
         is_cat = Entry.is_cat(grp_item)
         is_spec = Entry.is_special(grp_item)
+        # If match succeeds, fail; otherwise, look for match with next item
+        is_neg = Entry.is_negative(grp_item)
         if is_spec and Entry.is_special(self.token):
 #            print("Special entry {} for {}".format(grp_item, self.token))
             token_type = self.token.split('~')[0]
@@ -388,7 +395,7 @@ class SNode:
                 # Special group item matches node token (grp_item could be shorter than token_type)
                 return None
         if not self.analyses:
-            # The node has no associated roots, cats, or features.
+            # The node has no associated pos, roots, cats, or features.
             if self.token == grp_item:
                 if verbosity or debug:
                     print("    Non-cat token matches node token")

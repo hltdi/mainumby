@@ -1,4 +1,4 @@
-guarani.soic.indiana.edu
+plogs.soic.indiana.edu
 
 mainumby on plogs
 /var/www/html/mainumby/mainumby
@@ -18,3 +18,8 @@ git push https://github.com/hltdi/mainumby.git
 apache config file:
 /etc/apache2/sites-available/default
 /etc/apache2/sites-available/000-default.conf
+
+ubuntu updates:
+sudo apt-get update        # Fetches the list of available updates
+sudo apt-get upgrade       # Strictly upgrades the current packages
+sudo apt-get dist-upgrade  # Installs updates (new ones)

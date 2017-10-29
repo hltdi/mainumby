@@ -1894,7 +1894,7 @@ class Solution:
             src_tokens = [(tokens[i] if i in raw_indices else '...') for i in range(start, end+1)]
             if late:
                 src_tokens[0] = "←" + src_tokens[0]
-            print("Creating segment for {}".format(src_tokens))
+#            print("Creating segment for {}".format(src_tokens))
             seg = SolSeg(self, raw_indices, forms, src_tokens, session=self.session, gname=gname,
                          merger_groups=merger_groups)
             self.segments.append(seg)
@@ -1904,7 +1904,7 @@ class Solution:
             # Some word(s) at end not translated; use source forms with # prefix
             src_tokens = tokens[max_index+1:len(tokens)]
             is_punc = len(src_tokens) == 1 and self.source.is_punc(src_tokens[0])
-            print("Creating untranslated segment at end: {} ({})".format(src_tokens, "punc" if is_punc else "not punc"))
+#            print("Creating untranslated segment at end: {} ({})".format(src_tokens, "punc" if is_punc else "not punc"))
             if is_punc:
                 translation = [self.target.punc_postproc(src_tokens[0])]
             else:

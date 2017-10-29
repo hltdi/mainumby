@@ -848,9 +848,9 @@
 *** con $num $n ; ^ con 0 ; -X-
 ->grn $num $n ndive ; || 2, 0, 1
 # has to take priority over <con $n>
-*** con $pro ; ^ con 0
+*** con $pro ; ^ con 0 ; -X-
 ->grn $pro[caso=ndi] ; || -1, 0
-*** con $n ; ^ con 0
+*** con $n ; ^ con 0 ; -X-
 ->grn $n ndive ; || 1, 0
 # needed so that con can merge with $pp node
 *** con ; ^ con 0
@@ -905,7 +905,7 @@
 *** por $num $n ; ^ por 0 ; -X-
 ->grn $num $n rehe ; || 2, 0, 1
 ->grn $num $n rupi ; || 2, 0, 1
-*** por $n ; ^ por 0
+*** por !$pp $n ; ^ por 0
 ->grn $n rehe|rupi ; || 1, 0
 *** por $pro ; ^ por 0 ; -X-
 ->grn $pro[caso=re] ; || -1, 0

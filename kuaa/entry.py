@@ -122,6 +122,10 @@ WITHIN_ATTRIB_SEP = ','
 FORM_FEATS = re.compile("([$%~<'`^*¿?¡!|()\-\w]+)\s*((?:\[.+\])?)$")
 # !FS(#1-#2), representing a sequence of #1 to #2 negative FS matches
 NEG_FEATS = re.compile("\s*!(\[.+\])(\(\d-\d\))$")
+# fail if feature matches an item that otherwise fails (before cat token)
+FAILIF_FEATS = re.compile("\s*!(\[.*\])$")
+# fail if category matches an item that otherwise fails
+FAILIF_CAT = re.compile("\s*(!\$\w+)$")
 HEAD = re.compile("\s*\^\s*([~<'¿?¡!|\-\w]+)\s+(\d)\s*$")
 # Within agreement spec
 # 1=3 n,p
@@ -190,6 +194,11 @@ class Entry:
     def is_special(name):
         """Is this a symbol for a special category, like numerals?"""
         return name and name[0] == SPEC_CHAR 
+
+    @staticmethod
+    def is_negative(name):
+        """Is this a symbol for a negative feature or category?"""
+        return name and name[0] == '!'
 
     @staticmethod
     def is_set(name):
@@ -376,7 +385,11 @@ class Group(Entry):
                 print(" Attempting to match {} in {}".format(token, self))
             matched = False
             for node in snodes[snindex:]:
-#                print("  Trying snode {}".format(node))
+                if self.debug or verbosity:
+                    print("  Trying snode {}, nodegap {}, nogap? {}".format(node, nodegap, self.nogap))
+                # If this snode is unknown, the group can't include it
+                if node.is_unk():
+                    break
                 if nodegap > 2:
                     break
                 if self.nogap and nodegap > 0:
@@ -480,6 +493,7 @@ class Group(Entry):
                             print("  Matched node {}".format(node))
                         matched = True
                         snindex = node.index + 1
+                        nodegap += 1
                     elif match_snodes1:
                         # There's already at least one snode matching token, so don't tolerate another gap
                         break
@@ -595,6 +609,22 @@ class Group(Entry):
 #                negfeats, counts = negm.groups()
 #                print("Negative match: {}, {}".format(negfeats, counts))
 #                continue
+            m = FAILIF_CAT.match(token)
+            if m:
+                failif_cat = m.groups()[0]
+                tokens[index] = failif_cat
+                continue
+            m = FAILIF_FEATS.match(token)
+            if m:
+                failif_feats = m.groups()[0]
+                if failif_feats == "[]":
+                    failif_feats = None
+                else:
+                    failif_feats = FeatStruct(failif_feats)
+                features.append(failif_feats)
+                tokens[index] = '!F'
+                print("Failif feats: {}".format(failif_feats.__repr__()))
+                continue
             # separate features if any
             m = FORM_FEATS.match(token)
             if not m:
