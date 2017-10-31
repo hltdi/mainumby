@@ -905,7 +905,7 @@
 *** por $num $n ; ^ por 0 ; -X-
 ->grn $num $n rehe ; || 2, 0, 1
 ->grn $num $n rupi ; || 2, 0, 1
-*** por !$pp $n ; ^ por 0
+*** por !prp|v $n ; ^ por 0
 ->grn $n rehe|rupi ; || 1, 0
 *** por $pro ; ^ por 0 ; -X-
 ->grn $pro[caso=re] ; || -1, 0

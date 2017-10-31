@@ -375,6 +375,45 @@ class SNode:
                     features.append(FeatStruct({}))
         return features
 
+    def neg_match(self, grp_specs, verbosity=0, debug=False):
+        """Does this node match a negative group condition, with grp_spec either a FeatStruc
+        or a category? Look through analyses until one *fails* to match."""
+        for grp_spec in grp_specs:
+#            print("Neg match: {}".format(grp_spec))
+            matched = True
+            # See if any analysis fails to match this grp_spec; if not succeed
+            for analysis in self.analyses:
+#                print(" {}".format(analysis))
+                if isinstance(grp_spec, str):
+                    sn_cats = analysis.get('cats', [])
+                    if grp_spec in sn_cats or grp_spec == analysis.get('pos'):
+                        # Matches, keep looking
+                        continue
+                    else:
+                        matched = False
+                        # Go to next grp_spec
+                        break
+                else:
+                    sn_feats = analysis.get('features')
+                    if sn_feats:
+                        u_features = sn_fats.unify_FS(grp_spec, strict=True, verbose=verbosity>1)
+                        if u_features != 'fail':
+                            # Matches, keep looking
+                            continue
+                        else:
+                            matched = False
+                            # Go to next grp_spec
+                            break
+                    else:
+                        matched = False
+                        # Go to next grp_spec
+                        break
+#            print(" Matched: {}".format(matched))
+            if matched:
+                return True
+        # None matched
+        return False
+
     def match(self, grp_item, grp_feats, verbosity=0, debug=False):
         """Does this node match the group item (word, root, category) and
         any features associated with it?"""
@@ -386,8 +425,6 @@ class SNode:
         # If item is a category, don't bother looking at token
         is_cat = Entry.is_cat(grp_item)
         is_spec = Entry.is_special(grp_item)
-        # If match succeeds, fail; otherwise, look for match with next item
-        is_neg = Entry.is_negative(grp_item)
         if is_spec and Entry.is_special(self.token):
 #            print("Special entry {} for {}".format(grp_item, self.token))
             token_type = self.token.split('~')[0]

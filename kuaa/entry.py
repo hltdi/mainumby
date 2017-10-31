@@ -122,10 +122,10 @@ WITHIN_ATTRIB_SEP = ','
 FORM_FEATS = re.compile("([$%~<'`^*¿?¡!|()\-\w]+)\s*((?:\[.+\])?)$")
 # !FS(#1-#2), representing a sequence of #1 to #2 negative FS matches
 NEG_FEATS = re.compile("\s*!(\[.+\])(\(\d-\d\))$")
-# fail if feature matches an item that otherwise fails (before cat token)
-FAILIF_FEATS = re.compile("\s*!(\[.*\])$")
-# fail if category matches an item that otherwise fails
-FAILIF_CAT = re.compile("\s*(!\$\w+)$")
+# fail if category or feature matches an item that otherwise fails (before cat token)
+FAILIF = re.compile("\s*!(.+)$")
+## fail if category matches an item that otherwise fails
+#FAILIF_CAT = re.compile("\s*(!\$\w+)$")
 HEAD = re.compile("\s*\^\s*([~<'¿?¡!|\-\w]+)\s+(\d)\s*$")
 # Within agreement spec
 # 1=3 n,p
@@ -195,10 +195,10 @@ class Entry:
         """Is this a symbol for a special category, like numerals?"""
         return name and name[0] == SPEC_CHAR 
 
-    @staticmethod
-    def is_negative(name):
-        """Is this a symbol for a negative feature or category?"""
-        return name and name[0] == '!'
+#    @staticmethod
+#    def is_negative(name):
+#        """Is this a symbol for a negative feature or category?"""
+#        return name and name[0] == '!'
 
     @staticmethod
     def is_set(name):
@@ -269,7 +269,7 @@ class Group(Entry):
     other languages."""
 
     def __init__(self, tokens, head_index=-1, head='', language=None, name='',
-                 features=None, agr=None, trans=None, count=0, nogap=False):
+                 features=None, agr=None, trans=None, count=0, nogap=False, failif=None):
         """Either head_index or head (a string) must be specified."""
         # tokens is a list of strings
         # name may be specified explicitly or not
@@ -309,6 +309,8 @@ class Group(Entry):
         self.nogap = nogap
         # Distance back from sentence node matching head to start in matching group
         self.snode_start = 0
+        # If not None, an index where a failif item occurs and either a category a feature structure to match
+        self.failif = failif
         # Whether to print out verbose messages
         self.debug = False
         if self.head_index > 0:
@@ -372,6 +374,8 @@ class Group(Entry):
             # Start of group is before beginning of sentence
             return False
         matcheddel = False
+        if self.failif:
+            failfrom, failspec = self.failif
         for index, token in enumerate(self.tokens):
             # Whether there's a sentence node gap between this token and the last one that matched
             nodegap = 0
@@ -379,10 +383,15 @@ class Group(Entry):
             ishead = (index == self.head_index)
 #            if matcheddel:
 #                print("Matching token {} in {} following deleted match".format(token, self))
+#            isneg = Entry.is_negative(token)
+            iscat = Entry.is_cat(token)
             match_snodes1 = []
             feats = self.features[index] if self.features else None
             if verbosity > 1 or self.debug:
                 print(" Attempting to match {} in {}".format(token, self))
+            tryfail = False
+            if self.failif and index >= failfrom:
+                tryfail = True
             matched = False
             for node in snodes[snindex:]:
                 if self.debug or verbosity:
@@ -394,6 +403,13 @@ class Group(Entry):
                     break
                 if self.nogap and nodegap > 0:
                     break
+                # If there is a failif condition for the group and the position within the group is right,
+                # see if we should fail here
+                if tryfail:
+                    negm = node.neg_match(failspec, debug=self.debug, verbosity=verbosity)
+                    if negm:
+#                        print("{}: negative match with {}".format(self, node))
+                        break
                 snode_indices = node.raw_indices
                 snode_start, snode_end = snode_indices[0], snode_indices[-1]
                 leftdel = None
@@ -533,6 +549,7 @@ class Group(Entry):
         head_index = -1
         head = None
         features = None
+        failif = None
         count = 0
         nogap = False
         if '[' in string:
@@ -601,35 +618,36 @@ class Group(Entry):
         # Go through tokens separating off features, if any, and assigning head
         # based on presence of '_'
         name_toks = []
+        realtokens = []
         for index, token in enumerate(tokens):
-            name_toks.append(token)
             foundfeats = False
 #            negm = NEG_FEATS.match(token)
 #            if negm:
 #                negfeats, counts = negm.groups()
 #                print("Negative match: {}, {}".format(negfeats, counts))
 #                continue
-            m = FAILIF_CAT.match(token)
+            m = FAILIF.match(token)
             if m:
-                failif_cat = m.groups()[0]
-                tokens[index] = failif_cat
-                continue
-            m = FAILIF_FEATS.match(token)
-            if m:
-                failif_feats = m.groups()[0]
-                if failif_feats == "[]":
-                    failif_feats = None
-                else:
-                    failif_feats = FeatStruct(failif_feats)
-                features.append(failif_feats)
-                tokens[index] = '!F'
-                print("Failif feats: {}".format(failif_feats.__repr__()))
+                failif_spec = m.groups()[0]
+                # This could be a set of specs separated by '|'
+                failif_specs = failif_spec.split('|')
+                for findex, f_spec in enumerate(failif_specs):
+                    # This is either a category (beginning with '$') or POS (just a string)
+                    # or a feature structure
+                    if '[' in f_spec:
+                        # This is a feature structure that must fail to match
+                        f_spec = FeatStruct(f_spec)
+                        failif_specs[findex] = f_spec
+                failif = (index, failif_specs)
+#                print("Fail if {}".format(failif))
                 continue
             # separate features if any
             m = FORM_FEATS.match(token)
             if not m:
                 print("No form/feats match for {}".format(tokens))
             tok, feats = m.groups()
+            realtokens.append(tok)
+            name_toks.append(token)
             if feats:
                 foundfeats = True
                 features.append(FeatStruct(feats))
@@ -650,15 +668,15 @@ class Group(Entry):
             tgroups = []
             for tstring in trans_strings:
                 tgroup, tagr, alg, tc = Group.from_string(tstring, target, trans_strings=None, trans=True,
-                                                          n_src_tokens=len(tokens))
+                                                          n_src_tokens=len(realtokens))
                 tattribs = {'agr': tagr}
                 if alg:
                     tattribs['align'] = alg
                 if tc:
                     tattribs['count'] = tc
                 tgroups.append((tgroup, tattribs))
-        g = Group(tokens, head_index=head_index, head=head, features=features, agr=within_agrs,
-                  nogap=nogap, name=Group.make_name(name_toks), count=count)
+        g = Group(realtokens, head_index=head_index, head=head, features=features, agr=within_agrs,
+                  failif=failif, nogap=nogap, name=Group.make_name(name_toks), count=count)
         if target and not trans:
             g.trans = tgroups
         language.add_group(g)
@@ -689,7 +707,7 @@ class MorphoSyn(Entry):
 
     def __init__(self, language, name=None, pattern=None,
                  del_indices=None, swap_indices=None, add_items=None, featmod=None, failif=None, agr=None,
-                 expanded=False):
+                 strict=None, expanded=False):
         """pattern and change are strings, which get expanded at initialization.
         direction = True is left-to-right matching, False right-to-left matching.
         """
@@ -713,7 +731,7 @@ class MorphoSyn(Entry):
         self.optional_ms = []
         # For each item, whether the associated feature structure (if there is one) applies strictly to input.
         # This is filled in in expand()
-        self.strict = None
+        self.strict = strict
         # Expand unless this already happened (with optional form-feats)
         # This also sets self.agr, self.del_indices, self.featmod; may also set direction
         if not expanded:
@@ -880,10 +898,12 @@ class MorphoSyn(Entry):
                             featmod[i][0] -= 1
                 else:
                     opt_pattern1.append((forms, feats))
+            # This assumes no strict matching in optional MSs
+            strict = [False] * len(opt_pattern1)
             self.optional_ms.append(MorphoSyn(self.language, name=self.name + '_opt1',
                                               del_indices=del_indices, swap_indices=swap_indices, agr=agr,
                                               add_items=add_items, featmod=featmod, failif=self.failif,
-                                              pattern=opt_pattern1,
+                                              pattern=opt_pattern1, strict=strict,
                                               expanded=True))
 #            print("Optional MS: {}".format(self.optional_ms))
         return p
