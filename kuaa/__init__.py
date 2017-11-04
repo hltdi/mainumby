@@ -73,7 +73,7 @@ def seg_trans(sentence, source, target, session=None, verbosity=0):
 
 def make_document(source, target, text, session=None):
     """Create an Mainumby Document object with the text."""
-    d = kuaa.Document(source, target, text, True, session=session)
+    d = kuaa.Document(source, target, text, proc=True, session=session)
     return d
 
 def quit(session=None):

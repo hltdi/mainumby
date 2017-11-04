@@ -1291,7 +1291,11 @@ class MorphoSyn(Entry):
                     elem[1] = [fm_feats.copy()]
                 else:
                     for index, feats in enumerate(feats_list):
-#                        print("      Feats {}, type {}".format(feats, type(feats)))
+                        if verbosity > 1 or self.debug:
+                            if isinstance(feats, FeatStruct):
+                                print("      Feats {}, frozen? {}".format(feats.__repr__(), feats.frozen()))
+                            else:
+                                print("      Feats (FSSet) {}".format(feats.__repr__()))
                         feats.update_inside(fm_feats)
             
     def insert_match(self, start, end, m_elements, sentence, verbosity=0):

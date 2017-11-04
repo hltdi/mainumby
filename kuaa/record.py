@@ -1,5 +1,5 @@
 #   
-#   Mainumby: sentences and how to parse and translate them.
+#   Mainumby: records kept for system translations and user feedback
 #
 ########################################################################
 #
@@ -36,12 +36,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 SESSIONS_DIR = os.path.join(os.path.dirname(__file__), 'sessions')
 
-SESSION_PRE = '⌨'
-TIME_PRE = '☽'
-SENTENCE_PRE = '✍'
-SEGMENT_PRE = '⧦'
-FEEDBACK_PRE = "⇐"
-USER_PRE = "☻"
+SESSION_PRE = '{$}'
+TIME_PRE = '{T}'
+SENTENCE_PRE = '{S'
+SENTENCE_POST = 'S}'
+SEGMENT_PRE = '{{s'
+SEGMENT_POST = '}}s'
+FEEDBACK_PRE = "{F}"
+USER_PRE = "{U}"
 TIME_FORMAT = "%d.%m.%Y/%H:%M:%S:%f"
 # Time format without microseconds; used in Session ID
 SHORT_TIME_FORMAT = "%d.%m.%Y/%H:%M:%S"
@@ -79,11 +81,15 @@ class Session:
         return time.strftime(TIME_FORMAT)
 
     @staticmethod
+    def time2shortstr(time):
+        return time.strftime(SHORT_TIME_FORMAT)
+
+    @staticmethod
     def str2time(string):
         return datetime.datetime.strptime(string, TIME_FORMAT)
 
     def make_id(self):
-        self.id = "{}::{}".format(self.user.username, self.start.strftime(SHORT_TIME_FORMAT))
+        self.id = "{}::{}".format(self.user.username, Session.time2shortstr(self.start))
 
     def get_path(self):
         userfilename = self.user.username + '.usr'
@@ -193,7 +199,7 @@ class SentRecord:
 
     def __repr__(self):
 #        session = "{}".format(self.session) if self.session else ""
-        return "{} {}".format(SENTENCE_PRE, self.raw)
+        return "{} {} {}".format(SENTENCE_PRE, self.raw, SENTENCE_POST)
 
     def record(self, translation):
         """Record user's translation for the whole sentence."""
@@ -202,13 +208,15 @@ class SentRecord:
         self.feedback = feedback
 
     def write(self, file=sys.stdout):
-        print("{}".format(self), file=file)
+        print("{}".format(SENTENCE_PRE), file=file)
+        print("{}".format(self.raw), file=file)
         if self.feedback:
             print("{}".format(self.feedback), file=file)
         # Can there be feedback for segments *and* for whole sentence?
         for key, segment in self.segments.items():
             if segment.feedback:
                 segment.write(file=file)
+        print("{}".format(SENTENCE_POST), file=file)
 
 class SegRecord:
     """A record of a sentence solution segment and its translation by a user."""
@@ -227,6 +235,7 @@ class SegRecord:
         # These get filled in during set_html() in SolSeg
         self.choices = []
         self.feedback = None
+        print("Created segment record {}".format(self))
 
     def __repr__(self):
 #        session =  "{}".format(self.session) if self.session else ""

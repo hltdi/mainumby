@@ -592,7 +592,8 @@ class Language:
                     alist = []
                     for r, a in anals:
                         if expand:
-                            a = FeatStruct(a, freeze=True)
+                            a = FSSet(a)
+#                            a = FeatStruct(a, freeze=True)
                         alist.append({'root': r, 'features': a})
                     if not expand:
                         # Put False at the front of the list to show that it hasn't been expanded
@@ -609,11 +610,13 @@ class Language:
             for entry in entries[1:]:
                 feat = entry.get('features')
                 if feat:
-                    entry['features'] = FeatStruct(entry['features'], freeze=True)
+                    entry['features'] = FSSet(entry['features'])
+#                    FeatStruct(entry['features'], freeze=True)
                     pos = entry['features'].get('pos', '')
                     entry['root'] = Language.make_root(entry['root'], pos)
             self.cached[word] = entries[1:]
             return copy.deepcopy(entries[1:])
+#        print("Found cached entry 2, {}: {}".format(word, entries))
         return copy.deepcopy(entries)
 
     ## Functions for creating and search word trees (for phrases that are joined in tokenizing).

@@ -33,3 +33,14 @@ moambue:[cat=a,+neg,ns=1,ps=1,tmp=prt] || noromoambuéikuri;noromoambuéi;nañam
 myatyrõ:[cat=a,ns=0,ps=2,tmp=ipv] || emyatyrõ
 papa:[no=0,ns=0,po=1,ps=2,subcat=i,tmp=prt] || chepapa'akue;chepapákuri;chepaparaka'e;chepapa
 mombe'u:[cat=a,no=0,ns=0,po=1,ps=2,tmp=prt] || chemombe'uraka'e;chemombe'úkuri;chemombe'u'akue;chemombe'u
+mbohasa:[cat=a,tmp=prs] || ombohasa
+mbojere:[cat=a,tmp=prs] || ombojere
+mbohyru:[cat=a,ns=0,ps=2,tmp=ipv] || embohyru
+moinge:[cat=a,ns=0,ps=2,tmp=ipv] || emoinge
+mbohyru:[cat=a,ns=1,ps=3,tmp=prt] || ombohyrúkuri;ombohyru;ombohyruraka'e;ombohyru'akue
+moinge:[cat=a,ns=1,ps=3,tmp=prt] || omoingékuri;omoinge;omoingeraka'e;omoinge'akue
+mbohyru:[cat=a,ns=0,ps=2,tmp=prt] || rembohyrúkuri;rembohyru;rembohyruraka'e;rembohyru'akue
+moinge:[cat=a,ns=0,ps=2,tmp=prt] || remoingékuri;remoinge;remoingeraka'e;remoinge'akue
+hai:[cat=a,rel=sjoj] || ohaíva
+sẽ:[cat=a,ns=1,ps=3,tmp=prt] || osẽ;osẽkuri;osẽraka'e;osẽ'akue
+jei:[cat=a,ns=1,ps=3,tmp=prt] || ojeíkuri;ojei;ojeiraka'e;ojei'akue

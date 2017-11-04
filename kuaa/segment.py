@@ -121,6 +121,7 @@ class SolSeg:
         if session and session.running and not self.source.is_punc(self.token_str):
             self.record = self.make_record(session, solution.sentence)
         else:
+            print("Not making a record for {}".format(self))
             self.record = None
         self.html = []
 #        print("Created {}, punctuation? {}, translation {}".format(self, self.is_punc, self.translation))

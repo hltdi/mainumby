@@ -2,6 +2,8 @@ plogs.soic.indiana.edu
 
 mainumby on plogs
 /var/www/html/mainumby/mainumby
+mitmita on plogs
+/var/www/html/mitmita/mitmita
 
 restarting apache:
 sudo /etc/init.d/apache2 restart
@@ -10,10 +12,10 @@ apache error log:
 /var/log/apache2/error.log
 
 pulling from git:
-git pull https://github.com/hltdi/mainumby.git
-git pull https://github.com/hltdi/mitmita.git
+sudo git pull https://github.com/hltdi/mainumby.git
+sudo git pull https://github.com/hltdi/mitmita.git
 pushing to git:
-git push https://github.com/hltdi/mainumby.git
+sudo git push https://github.com/hltdi/mainumby.git
 
 apache config file:
 /etc/apache2/sites-available/default
