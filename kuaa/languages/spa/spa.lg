@@ -73,6 +73,7 @@ join:
 - a~pesar~de, p
 - en~cuanto~a, p
 - sin~embargo, c
+- así~que, c
 #- a~base~de, p
 #- a~cambio~de, p
 #- a~causa, p
@@ -216,7 +217,6 @@ join:
 #- así~como, c
 #- así~como~también, c
 #- así~es~que, c
-#- así~que, c
 #- aun~cuando, c
 #- cada~vez~que, c
 #- como~quiera~que, c

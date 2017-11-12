@@ -1023,7 +1023,6 @@ class Sentence:
         # Now filter candidates to see if all words are present in the sentence
         # For each group, save a list of sentence token indices that correspond
         # to the group's words
-#        print("{} candidatos para grupos encontrados".format(len(candidates)))
         matched_keys = []
         group_index = 0
         for head_i, key, group in candidates:
@@ -1721,7 +1720,7 @@ class Sentence:
 
     def get_html(self):
         """Create HTML for a sentence with no solution."""
-        return [(self.raw, "Silver", "<table border=1></table>")]
+        return [(self.raw, "Silver", "<table border=1></table>", 0)]
         
     def verbatim(self, node):
         """Use the source token in the target complete translation."""
@@ -1849,7 +1848,7 @@ class Solution:
             late = False
             start, end = raw_indices[0], raw_indices[-1]
             print("Segment {}->{}".format(start, end))
-            print("Raw indices: {}, forms {}, gname {}, merger_groups {}".format(raw_indices, forms, gname, merger_groups))
+#            print("Raw indices: {}, forms {}, gname {}, merger_groups {}".format(raw_indices, forms, gname, merger_groups))
             if start > max_index+1:
                 # there's a gap between the farthest segment to the right and this one; make one or more untranslated segments
                 src_tokens = tokens[end_index+1:start]

@@ -87,7 +87,7 @@ class SolSeg:
 
     def __init__(self, solution, indices, translation, tokens, color=None,
                  spec_indices=None, session=None, gname=None, merger_groups=None, is_punc=False):
-        print("Creating SolSeg with solution {}, indices {}, translation {}, tokens {}".format(solution, indices, translation, tokens))
+        print("  Creating SolSeg for indices {}, translation {}, tokens {}".format(indices, translation, tokens))
         self.source = solution.source
         self.target = solution.target
         self.indices = indices
@@ -121,7 +121,7 @@ class SolSeg:
         if session and session.running and not self.source.is_punc(self.token_str):
             self.record = self.make_record(session, solution.sentence)
         else:
-            print("Not making a record for {}".format(self))
+            print("   Not making a record for {}".format(self))
             self.record = None
         self.html = []
 #        print("Created {}, punctuation? {}, translation {}".format(self, self.is_punc, self.translation))
@@ -156,8 +156,14 @@ class SolSeg:
         choice_list = self.record.choices if self.record else None
         # Final source segment output
         tokens = self.token_str
+#        print("Tokens for segment: {}".format(tokens))
+#        print("is punc? {}".format(self.is_punc))
         if self.is_punc:
             trans = self.translation[0][0]
+            print("Punc trans: {}".format(trans))
+            if '"' in trans:
+                trans = trans.replace('"', '\"')
+                print("Converted: {}".format(trans))
             transhtml += "<tr><td class='transchoice'>"
             transhtml += '<br/><input type="radio" name="choice" id={} value="{}" checked>{}</td>'.format(trans, trans, trans)
             transhtml += '</tr>'
@@ -235,7 +241,7 @@ class SolSeg:
                 tokens = ' '.join(toks)
             else:
                 tokens = tokens.capitalize()
-        self.html = (tokens, self.color, transhtml)
+        self.html = (tokens, self.color, transhtml, index)
 
     @staticmethod
     def list_html(segments):
@@ -289,7 +295,7 @@ class SNode:
         self.translations = []
         ## Groups found during candidate search
         self.group_cands = []
-#        print("Analysis for {}: {}".format(self, self.analyses))
+#        print("SNode {} created, with analyses: {}".format(self, self.analyses))
 
     def __repr__(self):
         """Print name."""
@@ -543,6 +549,8 @@ class GInst:
 #        self.head_pos = group.pos
         # List of GNodes
         self.nodes = []
+        # Index of the GNode that is the head
+        ghead_index = group.head_index
         for index, sntups in enumerate(snode_indices):
             # sntups is a list of snindex, match features, token, create? tuples
 #            print(" SNTups {}".format(sntups))
@@ -554,16 +562,18 @@ class GInst:
                     break
             if deleted:
 #                print("snode_index {} is a deleted node; make special GNode?".format(sntups))
+                # If this is before where the head should be, decrement that index
+                if index <= ghead_index:
+                    ghead_index -= 1
+#                print("Ghead index decremented to {}".format(ghead_index))
                 # Increment index so indices correspond to raw group tokens
-                index += 1
+                continue
             else:
                 self.nodes.append(GNode(self, index, sntups))
-#        self.nodes = [GNode(self, index, indices) for index, indices in enumerate(snode_indices)]
         # The GNode that is the head of this GInst
-        i = group.head_index
-        if i > len(self.nodes) - 1:
-            print("Problem instantiating {} for {}; head index {}".format(group, self.nodes, i))
-        self.head = self.nodes[group.head_index]
+        if ghead_index > len(self.nodes) - 1:
+            print("Problem instantiating {} for {}; head index {}".format(group, self.nodes, ghead_index))
+        self.head = self.nodes[ghead_index]
         # Dict of variables specific to this group
         self.variables = {}
         # List of target language groups, gnodes, tnodes

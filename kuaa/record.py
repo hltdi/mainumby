@@ -37,7 +37,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 SESSIONS_DIR = os.path.join(os.path.dirname(__file__), 'sessions')
 
 SESSION_PRE = '{$}'
-TIME_PRE = '{T}'
+TIME_PRE = '{t}'
 SENTENCE_PRE = '{S'
 SENTENCE_POST = 'S}'
 SEGMENT_PRE = '{{s'
@@ -122,7 +122,7 @@ class Session:
 
     def record(self, sentrecord, trans_dict):
         """Record feedback about a segment's or entire sentence's translation."""
-        print("{} recording translation for sentence {}".format(self, sentrecord))
+        print("{} recording translation for sentence {} with dict {}".format(self, sentrecord, trans_dict))
         segrecord = None
         if trans_dict.get("UTraOra"):
             translation = trans_dict.get("UTraOra")
@@ -235,7 +235,7 @@ class SegRecord:
         # These get filled in during set_html() in SolSeg
         self.choices = []
         self.feedback = None
-        print("Created segment record {}".format(self))
+        print("   Creating segment record {}".format(self))
 
     def __repr__(self):
 #        session =  "{}".format(self.session) if self.session else ""

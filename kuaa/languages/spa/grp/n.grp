@@ -17348,7 +17348,7 @@
 ->grn yvy_n sa'yju ; 0==0 n:n,poses:poses ; #726 ; ##1005
 *** tierra_n estéril ; ^ tierra_n 0 ; #1883
 ->grn yvykane'õ_n ; 0==0 n:n,poses:poses
-*** sobre la tierra ; ^ tierra_n 2
+*** sobre la tierra_n ; ^ tierra_n 2
 ->grn yvýpe
 *** tierra_n ; ^ tierra_n 0 ; #1883
 ->grn yvy_n ; 0==0 n:n,poses:poses ; #726 ; ##1005

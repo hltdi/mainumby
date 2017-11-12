@@ -44,3 +44,16 @@ moinge:[cat=a,ns=0,ps=2,tmp=prt] || remoingékuri;remoinge;remoingeraka'e;remoin
 hai:[cat=a,rel=sjoj] || ohaíva
 sẽ:[cat=a,ns=1,ps=3,tmp=prt] || osẽ;osẽkuri;osẽraka'e;osẽ'akue
 jei:[cat=a,ns=1,ps=3,tmp=prt] || ojeíkuri;ojei;ojeiraka'e;ojei'akue
+hai:[cat=a,ns=0,ps=2,tmp=prt] || rehaíkuri;rehai;rehairaka'e;rehai'akue
+sẽ:[cat=a,ns=0,ps=2,tmp=prt] || resẽ;resẽkuri;resẽraka'e;resẽ'akue
+jei:[cat=a,ns=0,ps=2,tmp=prt] || rejeíkuri;rejei;rejeiraka'e;rejei'akue
+mbojepota:[cat=a,ns=1,ps=1,tmp=fut] || ñambojepotáta;ñambojepota;ñambojepota'arã;ñambojepotava'erã;rombojepotáta;rombojepota;rombojepota'arã;rombojepotava'erã
+muña:[cat=a,ns=1,ps=1,tmp=fut] || ñamuñáta;ñamuña;ñamuña'arã;ñamuñava'erã;romuñáta;romuña;romuña'arã;romuñava'erã
+ime:[cat=a,ns=0,ps=3,tmp=prt] || oimékuri;oime;oimeraka'e;oime'akue
+mandu'a:[cat=che,ns=0,ps=1,rel=sjoj,tmp=prs] || chemandu'áva
+ñemomandu'a:[cat=a,ns=0,ps=1,rel=sjoj,tmp=prs] || añemomandu'áva
+imo'ã:[cat=a,ns=1,ps=1,tmp=prs] || ñaimo'ã;roimo'ã
+rovia:[ns=1,ps=1,subcat=gue,tmp=prs] || jarovia;roguerovia
+ju:[cat=a,ns=0,ps=3,tmp=prs] || ou
+mbojoapy:[cat=a,ns=1,pp=ramo,ps=1,tmp=prs] || ñambojoapýrõ;rombojoapýrõ
+reko:[+neg,ns=1,ps=1,subcat=gue,tmp=fut] || ndoroguerekói;ndoroguerekomo'ãi;ndajarekói;ndajarekomo'ãi
