@@ -35,6 +35,9 @@
 # -- Login works.
 # 2016.04.10
 # -- Segment translation selections are added to sentence translation TextArea in sent.html.
+#    Sentence translations are added to document TextArea in sent.html.
+# 2017.11
+# -- Document TextArea gets cleared when "Salir" happens.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
 from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user
@@ -182,15 +185,17 @@ def sent():
         document = form.get('UTraDoc', '')
         return render_template('sent.html', sentence=SEG_HTML, raw=raw, punc=punc,
                                document=document, user=USER)
-    if 'oratra' in form:
+    if 'senttrans' in form:
         # A sentence has been translated and the translation recorded.
-        # Record the translation and the segment translations if any.
-        translation = form.get('oratra')
-        segments = form.get('fratra', '')
+        # Really record the translation and the segment translations if any.
+        translation = form.get('senttrans')
+        segtrans = form.get('segtrans', '')
         document = form.get('UTraDoc', '')
         print("Registering sentence translation {} for {}".format(translation, SENTENCE))
-        print(" Segment translations: {}".format(segments))
+        print(" Segment translations: {}".format(segtrans))
         print("Current document: {}".format(document))
+        if SESSION:
+            SESSION.record(SENTENCE.record, translation=translation, segtrans=segtrans)
         return render_template('sent.html', user=USER, document=document)
     if 'text' in form and not DOC:
         # Create a new document

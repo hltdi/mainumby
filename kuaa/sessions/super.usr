@@ -1,90 +1,81 @@
-{$} super::04.11.2017/01:00:31
-{T} 04.11.2017/01:00:31:827425
-{T} 04.11.2017/01:01:38:731920
-{S
-Salieron con sus zapatos .
-S}
-{$} super::04.11.2017/19:32:00
-{T} 04.11.2017/19:32:00:955034
-{T} 04.11.2017/19:32:30:725088
-{S
-Introdujiste la palabra .
-S}
-{$} super::04.11.2017/19:42:44
-{t} 04.11.2017/19:42:44:828335
-{t} 04.11.2017/19:44:52:695780
-{S
-Escribiste .
-S}
-{$} super::04.11.2017/20:38:35
-{t} 04.11.2017/20:38:35:785798
-{t} 04.11.2017/20:39:25:178565
-{S
-Salieron .
-S}
-{$} super::05.11.2017/06:39:17
-{t} 05.11.2017/06:39:17:269763
-{t} 05.11.2017/06:39:37:903595
-{S
-Saliste .
-S}
-{$} super::06.11.2017/05:21:27
-{t} 06.11.2017/05:21:27:821314
-{t} 06.11.2017/05:23:52:411688
-{S
-La región se sitúa en el llano del país .
-S}
-{S
-Está cerca a una región mucho más pobre .
-S}
-{$} super::08.11.2017/00:24:34
-{t} 08.11.2017/00:24:34:187910
-{t} 08.11.2017/00:32:25:319132
-{S
-Seguiremos con la historia .
-S}
-{S
-Así fue .
-S}
-{S
-Es lo que me acuerdo .
-S}
-{$} super::08.11.2017/00:45:20
-{t} 08.11.2017/00:45:20:913824
-{t} 08.11.2017/00:46:26:450321
-{S
-Creemos una nueva oración .
-S}
-{S
-Además traduzcámosla .
-S}
-{$} super::08.11.2017/00:46:32
-{t} 08.11.2017/00:46:32:135738
-{t} 08.11.2017/00:47:20:532716
-{S
-Ahora el sol viene .
-S}
-{$} super::08.11.2017/22:03:22
-{t} 08.11.2017/22:03:22:593502
-{t} 08.11.2017/22:22:12:816185
-{S
-Continuar es imposible .
-S}
-{S
-Si continuamos , no vamos a tener éxito .
-S}
-{$} super::08.11.2017/22:36:09
-{t} 08.11.2017/22:36:09:225522
-{t} 08.11.2017/22:37:49:299949
-{S
-¿ Qué es " éxito "?
-S}
-{$} super::08.11.2017/22:56:23
-{t} 08.11.2017/22:56:23:029146
-{t} 08.11.2017/22:59:23:525666
-{S
-Es una " casa ".
-S}
-{S
-Un caballo , un perro , y un gato .
-S}
+{$} super::16.11.2017/06:39:36
+{t} 16.11.2017/06:39:36:376536
+{T} 16.11.2017/06:42:56:674832
+{S:
+El sol apareció en el cielo .
+{-> Kuarahy ojekuaa yvágape. <-}
+:S}
+{S:
+Brilló .
+{-> Omimbi'akue. <-}
+:S}
+{$} super::16.11.2017/07:08:06
+{t} 16.11.2017/07:08:06:606960
+{T} 16.11.2017/07:09:51:798440
+{S:
+Comprendieron la lectura .
+{-> Oikuaa'akue ñemoñe'ẽ. <-}
+:S}
+{S:
+Pues son inteligentes .
+{-> Ajeve katupyry. <-}
+:S}
+{$} super::20.11.2017/19:32:28
+{t} 20.11.2017/19:32:28:493402
+{T} 20.11.2017/19:35:01:662654
+{S:
+Existen varias teorías respecto de los detonantes de la guerra .
+{-> Oĩ varias teorías respecto de los detonantes de ñorairõ guasu. <-}
+:S}
+{$} super::20.11.2017/19:49:01
+{t} 20.11.2017/19:49:01:771267
+{T} 20.11.2017/19:49:59:558029
+{S:
+Introdujeron las oraciones para traducir .
+{-> Ombohyru'akue ñembo'ekuéra ombohasa guarã. <-}
+:S}
+{$} super::20.11.2017/19:53:42
+{t} 20.11.2017/19:53:42:871919
+{T} 20.11.2017/19:54:37:379135
+{S:
+Tradujeron las siguientes oraciones .
+{-> Ombohasa las siguientes ñembo'ekuéra. <-}
+:S}
+{$} super::20.11.2017/20:01:07
+{t} 20.11.2017/20:01:07:256763
+{T} 20.11.2017/20:01:53:730357
+{S:
+Tradujeron las oraciones que siguen .
+{-> Ombohasa ñe'ẽjoaju ombojepotáva. <-}
+:S}
+{$} super::21.11.2017/00:16:50
+{t} 21.11.2017/00:16:50:999344
+{T} 21.11.2017/00:17:24:044127
+{S:
+Introdujeron algunas oraciones .
+{-> Ombohyru oimeraẽ ñembo'ekuéra. <-}
+:S}
+{$} super::21.11.2017/23:59:43
+{t} 21.11.2017/23:59:43:509424
+{T} 22.11.2017/00:01:35:167069
+{S:
+Ésta es una oración que debería traducir .
+{-> Kóva oime peteĩ ñe'ẽjoaju kotevẽ mbohasa. <-}
+:S}
+{$} super::25.11.2017/23:25:40
+{t} 25.11.2017/23:25:40:412085
+{T} 25.11.2017/23:26:32:007132
+{S:
+Les envié una carta .
+{-> Amondo'akue  peteĩ kuatiañe'ẽ. <-}
+:S}
+{$} super::26.11.2017/00:19:04
+{t} 26.11.2017/00:19:04:379630
+{T} 26.11.2017/00:21:51:209751
+{S:
+Les voy a envío el libro que escribí .
+:S}
+{S:
+Les voy a enviar el libro que escribí .
+{-> Pomboúta kuatiañe'ẽ ohaíva. <-}
+:S}

@@ -32,6 +32,7 @@ function OnEnviar()
 }
 function OnSalir()
 {
+    // Currently fails to clear the document TextArea in sent.html
     document.Form1.action = "fin"
     document.Form1.target = "_self";     // Same window
     document.Form1.submit();             // Submit the page

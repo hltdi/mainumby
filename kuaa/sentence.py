@@ -1838,6 +1838,34 @@ class Solution:
             last_indices = raw_indices
         return ttrans_align
 
+    def get_untrans_segs(self, src_tokens, end_index, gname=None, merger_groups=None):
+        '''Set one or more segments for a sequence of untranslatable tokens.'''
+        stok_groups = []
+        stoks = []
+        i0 = end_index+1
+        for stok in src_tokens:
+            if stok[0] == '%':
+                # Special token; it should have its own segment
+                if stoks:
+                    stok_groups.append(stoks)
+                stok_groups.append([stok])
+            else:
+                stoks.append(stok)
+        if stoks:
+            stok_groups.append(stoks)
+        i0 = end_index+1
+        for stok_group in stok_groups:
+            is_punc = len(stok_group) == 1 and self.source.is_punc(stok_group[0])
+            if is_punc:
+                # Convert punctuation in source to punctuation in target if there is a mapping.
+                translation = [self.target.punc_postproc(stok_group[0])]
+            else:
+                translation = []
+            seg = SolSeg(self, (i0, i0+len(stok_group)-1), translation, stok_group, session=self.session, gname=gname,
+                                merger_groups=merger_groups, is_punc=is_punc)
+            self.segments.append(seg)
+            i0 += len(stok_group)
+
     def get_segs(self, html=True):
         """Set the segments (instances of SolSegment) for the solution, including their translations."""
         tt = self.get_ttrans_outputs()
@@ -1848,68 +1876,26 @@ class Solution:
             late = False
             start, end = raw_indices[0], raw_indices[-1]
             print("Segment {}->{}".format(start, end))
-#            print("Raw indices: {}, forms {}, gname {}, merger_groups {}".format(raw_indices, forms, gname, merger_groups))
             if start > max_index+1:
                 # there's a gap between the farthest segment to the right and this one; make one or more untranslated segments
                 src_tokens = tokens[end_index+1:start]
-                stok_groups = []
-                stoks = []
-                i0 = end_index+1
-                for stok in src_tokens:
-                    if stok[0] == '%':
-                        # Special token; it should have its own segment
-                        if stoks:
-                            stok_groups.append(stoks)
-                        stok_groups.append([stok])
-                    else:
-                        stoks.append(stok)
-                if stoks:
-                    stok_groups.append(stoks)
-                i0 = end_index+1
-                for stok_group in stok_groups:
-                    is_punc = len(stok_group) == 1 and self.source.is_punc(stok_group[0])
-                    if is_punc:
-                        # Convert punctuation in source to punctuation in target if there is a mapping.
-                        translation = [self.target.punc_postproc(stok_group[0])]
-                    else:
-                        translation = []
-                    seg = SolSeg(self, (i0, i0+len(stok_group)-1), translation, stok_group, session=self.session, gname=gname,
-                                        merger_groups=merger_groups, is_punc=is_punc)
-                    self.segments.append(seg)
-                    i0 += len(stok_group)
-#                    SolSeg(self, (end_index+1, start-1), translation, stoks, session=self.session, gname=gname,
-#                                         merger_groups=merger_groups, is_punc=is_punc)
-                            
-#                print("Creating untranslated segment for {} in positions {}...{}, punc? {}".format(src_tokens, end_index+1, start-1, is_punc))
-#                seg = SolSeg(self, (end_index+1, start-1), translation, src_tokens, session=self.session, gname=gname,
-#                             merger_groups=merger_groups, is_punc=is_punc)
-#                self.segments.append(seg)
-#            src_tokens = tokens[start:end+1]
+                self.get_untrans_segs(src_tokens, end_index, gname=gname, merger_groups=merger_groups)
             if start < max_index:
-#                print("At least part of segment {} / {} actually appears earlier".format(raw_indices, forms))
-#                print("  start: {}, max_index {}".format(start, max_index))
+                # There's a gap between the portions of the segment
                 late = True
             # There may be gaps in the source tokens for a group; fill these with ...
             src_tokens = [(tokens[i] if i in raw_indices else '...') for i in range(start, end+1)]
             if late:
                 src_tokens[0] = "←" + src_tokens[0]
-#            print("Creating segment for {}".format(src_tokens))
             seg = SolSeg(self, raw_indices, forms, src_tokens, session=self.session, gname=gname,
                          merger_groups=merger_groups)
             self.segments.append(seg)
             max_index = max(max_index, end)
             end_index = end
         if max_index+1 < len(tokens):
-            # Some word(s) at end not translated; use source forms with # prefix
+            # Some word(s) at end not translated; use source forms
             src_tokens = tokens[max_index+1:len(tokens)]
-            is_punc = len(src_tokens) == 1 and self.source.is_punc(src_tokens[0])
-#            print("Creating untranslated segment at end: {} ({})".format(src_tokens, "punc" if is_punc else "not punc"))
-            if is_punc:
-                translation = [self.target.punc_postproc(src_tokens[0])]
-            else:
-                translation = []
-            seg = SolSeg(self, (max_index+1, len(tokens)-1), translation, src_tokens, session=self.session, is_punc=is_punc)
-            self.segments.append(seg)
+            self.get_untrans_segs(src_tokens, len(tokens)-1, gname=gname, merger_groups=merger_groups)
         if html:
             self.seg_html()
 

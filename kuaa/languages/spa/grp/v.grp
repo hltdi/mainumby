@@ -1719,8 +1719,6 @@
 ->grn moñe'ẽmondo_v[cat=a]
 *** enviar_v[-r,+fin] para allá ; ^ enviar_v 0 ; #585
 ->grn rahauka_v[cat=a] ; #2 ; ##1
-*** enviar_v[-r,+fin] a uno ; ^ enviar_v 0 ; #585
-->grn jokuái_v[cat=a]
 *** envolver_v[-r,+fin] lazo ; ^ envolver_v 0
 ->grn mbo'apakua_v[cat=a]
 *** envolver_v[+r,+fin] una cosa en sí misma ; ^ envolver_v 0
@@ -21506,6 +21504,8 @@
 ->grn ñotỹ_v[cat=a] (chupe)
 *** sepultar_v[-r,po=3,no=1] ; ^ sepultar_v 0
 ->grn ñotỹ_v[cat=a] (chupekuéra)
+*** ser_v[-r,+fin,tm=prs] $n; ^ ser_v 0
+->grn $n ; || -1, 0
 *** ser_v[-r,+fin] ; ^ ser_v 0
 ->grn ime_v[cat=a]
 *** serenar_v[-r,+fin] ; ^ serenar_v 0

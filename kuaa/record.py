@@ -38,11 +38,14 @@ SESSIONS_DIR = os.path.join(os.path.dirname(__file__), 'sessions')
 
 SESSION_PRE = '{$}'
 TIME_PRE = '{t}'
-SENTENCE_PRE = '{S'
-SENTENCE_POST = 'S}'
-SEGMENT_PRE = '{{s'
-SEGMENT_POST = '}}s'
+TIME_PRE_END = '{T}'
+SENTENCE_PRE = '{S:'
+SENTENCE_POST = ':S}'
+SEGMENT_PRE = '{{s:'
+SEGMENT_POST = ':s}}'
 FEEDBACK_PRE = "{F}"
+TRANS_PRE = "{->"
+TRANS_POST = "<-}"
 USER_PRE = "{U}"
 TIME_FORMAT = "%d.%m.%Y/%H:%M:%S:%f"
 # Time format without microseconds; used in Session ID
@@ -116,43 +119,42 @@ class Session:
         self.end = get_time()
         self.save()
 
-    def record_translation(self, sentrecord, translation):
-        """Only record a verbatim translation of the sentence."""
-        sentrecord.translation = translation
+#    def record_translation(self, sentrecord, translation):
+#        """Only record a verbatim translation of the sentence."""
+#        sentrecord.translation = translation
 
-    def record(self, sentrecord, trans_dict):
-        """Record feedback about a segment's or entire sentence's translation."""
-        print("{} recording translation for sentence {} with dict {}".format(self, sentrecord, trans_dict))
+    def record(self, sentrecord, translation=None, segtrans=None):
+        """Record feedback about a sentence's translation."""
+        print("{} recording translation for sentence {} with translation {} and seg trans {}".format(self, sentrecord, translation, segtrans))
         segrecord = None
-        if trans_dict.get("UTraOra"):
-            translation = trans_dict.get("UTraOra")
+        if translation:
             translation = self.target.ortho_clean(translation)
-            print("Alternate sentence translation: {}".format(translation))
+            print("Recorded sentence translation: {}".format(translation))
             sentrecord.record(translation)
-        else:
-            # It might be capitalized
-            segment_key = trans_dict.get('seg').lower()
-            segrecord = sentrecord.segments.get(segment_key)
-            print("Segment to record: {}".format(segrecord))
 
-            # There might be both segment and whole sentence translations.
-            if trans_dict.get("UTraSeg"):
-                translation = trans_dict.get("UTraSeg")
-                translation = self.target.ortho_clean(translation)
-                print("Alternate segment translation: {}".format(translation))
-                segrecord.record(translation=translation)
-            else:
-                # If alternative is given, don't record any choices
-                tra_choices = []
-                for key, value in trans_dict.items():
-                    if key.isdigit():
-                        key = int(key)
-                        tra_choices.append((key, value))
-                print(" Choices: {}".format(segrecord.choices))
-#                for k, v in  tra_choices:
-#                    print("  Chosen for {}: {}".format(k, v))
-#                    print("  Alternatives: {}".format(segrecord.choices[k]))
-                segrecord.record(choices=tra_choices)
+        # There might be both segment and whole sentence translations.
+        if segtrans:
+            segrecords = sentrecord.segments
+#            print("Segs in sent record: {}".format(segrecords))
+            seg_src_trans = segtrans.split('|||')
+            for src_trans in seg_src_trans:
+                # index || selected_choice? || source_phrase = translation
+                index, agreed, src_trans = src_trans.split('||')
+                src, trans = src_trans.split('=')
+                print("src {}, trans {}, index {}, agreed? {}".format(src, trans, index, agreed))
+                print("  segrecord {}".format(segrecords.get(src.lower())))
+#            translation = self.target.ortho_clean(translation)
+#            print("Segment translation: {}".format(translation))
+#            segrecord.record(translation=translation)
+#        else:
+#            # If alternative is given, don't record any choices
+#            tra_choices = []
+#            for key, value in trans_dict.items():
+#                if key.isdigit():
+#                    key = int(key)
+#                    tra_choices.append((key, value))
+#            print(" Choices: {}".format(segrecord.choices))
+#            segrecord.record(choices=tra_choices)
 
     def save(self):
         """Write the session feedback to the user's file."""
@@ -163,7 +165,7 @@ class Session:
         print("{}".format(self), file=file)
         print("{} {}".format(TIME_PRE, Session.time2str(self.start)), file=file)
         if not self.running:
-            print("{} {}".format(TIME_PRE, Session.time2str(self.end)), file=file)
+            print("{} {}".format(TIME_PRE_END, Session.time2str(self.end)), file=file)
         for sentence in self.sentences:
             sentence.write(file=file)
 
@@ -239,7 +241,7 @@ class SegRecord:
 
     def __repr__(self):
 #        session =  "{}".format(self.session) if self.session else ""
-        return "{} {}".format(SEGMENT_PRE, self.tokens)
+        return "{} {} {}".format(SEGMENT_PRE, self.tokens, SEGMENT_POST)
 
     def record(self, choices=None, translation=None):
         print("{} recording translation {}, choices {}".format(self, translation, choices))
@@ -276,7 +278,7 @@ class Feedback:
 #        self.id = '@'
         self.id = ''
         if translation:
-            self.id += "{}".format(translation)
+            self.id += TRANS_PRE + " {} ".format(translation) + TRANS_POST
         elif choices:
             choice_string = ','.join(["{}={}".format(pos, c) for pos, c in choices])
             self.id += "{}".format(choice_string)
@@ -284,7 +286,8 @@ class Feedback:
             self.id += "ACC"
 
     def __repr__(self):
-        return "{} {}".format(FEEDBACK_PRE, self.id)
+        return self.id
+#        return "{} {}".format(FEEDBACK_PRE, self.id)
 
 ACCEPT = Feedback()
 

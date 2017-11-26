@@ -74,8 +74,8 @@ def ley_bidoc(init=True, train=True):
         return trainer
     return d
 
-## Creación de oración simple y de documento.
-def eg_oracion(sentence, ambig=False, solve=True, user=None, segment=False, verbosity=0):
+## Creación (y opcionalmente traducción) de oración simple y de documento.
+def ora(sentence, ambig=False, solve=True, user=None, segment=True, verbosity=0):
     e, g = cargar_eg()
     session = kuaa.start(e, g, user)
     d = kuaa.Document(e, g, sentence, True, session=session)

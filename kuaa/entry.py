@@ -1013,15 +1013,18 @@ class MorphoSyn(Entry):
                         copy = sentence.copy()
                         copied = True
                         if anal_fail < anal_succeed:
-#                            print("Swapping original sentence and copy")
+                            if verbosity or self.debug:
+                                print("Failing analysis has priority; swapping original sentence and copy")
                             # The analysis that fails has priority, so make the one that implements the morphosyn the altsyn
                             s = copy
                 # %%
+                if verbosity or self.debug:
+                    print("Appending {}, {}, {}, {} to morphosyns".format(self, start, end, anal_fail_index))
                 s.morphosyns.append((self, start, end, anal_fail_index))
                 # Change either the sentence or the latest altsyn copy
                 if verbosity > 1 or self.debug:
                     print(" Match {}".format(match))
-                self.enforce_constraints(start, end, elements, verbosity=verbosity)
+                self.enforce_constraints(start, end, elements, anal_fail_index, verbosity=verbosity)
                 self.insert_match(start, end, elements, s, verbosity=verbosity)
         return copied
 
@@ -1231,7 +1234,7 @@ class MorphoSyn(Entry):
                 print("    Anals failed")
         return False
 
-    def enforce_constraints(self, start, end, elements, verbosity=0):
+    def enforce_constraints(self, start, end, elements, anal_fail_index, verbosity=0):
         """If there is an agreement constraint, modify the match element features to reflect it.
         Works by mutating the features in match.
         If there are deletion constraints, prefix ~ to the relevant tokens.
@@ -1291,6 +1294,11 @@ class MorphoSyn(Entry):
                     elem[1] = [fm_feats.copy()]
                 else:
                     for index, feats in enumerate(feats_list):
+                        if index == anal_fail_index:
+                            # The MS didn't match
+                            if verbosity > 1 or self.debug:
+                                print("   Analysis {} fails to match MS!".format(index))
+                            continue
                         if verbosity > 1 or self.debug:
                             if isinstance(feats, FeatStruct):
                                 print("      Feats {}, frozen? {}".format(feats.__repr__(), feats.frozen()))

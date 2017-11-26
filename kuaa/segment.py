@@ -87,7 +87,7 @@ class SolSeg:
 
     def __init__(self, solution, indices, translation, tokens, color=None,
                  spec_indices=None, session=None, gname=None, merger_groups=None, is_punc=False):
-        print("  Creating SolSeg for indices {}, translation {}, tokens {}".format(indices, translation, tokens))
+#        print("Creating SolSeg for indices {}, translation {}, tokens {}".format(indices, translation, tokens))
         self.source = solution.source
         self.target = solution.target
         self.indices = indices
@@ -121,7 +121,7 @@ class SolSeg:
         if session and session.running and not self.source.is_punc(self.token_str):
             self.record = self.make_record(session, solution.sentence)
         else:
-            print("   Not making a record for {}".format(self))
+#            print("   Not making a record for {}".format(self))
             self.record = None
         self.html = []
 #        print("Created {}, punctuation? {}, translation {}".format(self, self.is_punc, self.translation))
@@ -148,8 +148,7 @@ class SolSeg:
         Do postprocessing on phrases joined by '_' or special tokens (numerals).
         """
         # Combine translations where possible
-        if self.special:
-            print("Setting HTML for special segment {}".format(self.raw_token_str))
+#        print("Setting HTML for segment {}: {}".format(index, self))
         self.color = SolSeg.tt_notrans_color if not self.translation else SolSeg.tt_colors[index]
         transhtml = '<table>'
         capitalized = False
@@ -160,10 +159,10 @@ class SolSeg:
 #        print("is punc? {}".format(self.is_punc))
         if self.is_punc:
             trans = self.translation[0][0]
-            print("Punc trans: {}".format(trans))
+#            print("Punc trans: {}".format(trans))
             if '"' in trans:
                 trans = trans.replace('"', '\"')
-                print("Converted: {}".format(trans))
+#                print("Converted: {}".format(trans))
             transhtml += "<tr><td class='transchoice'>"
             transhtml += '<br/><input type="radio" name="choice" id={} value="{}" checked>{}</td>'.format(trans, trans, trans)
             transhtml += '</tr>'
@@ -173,7 +172,7 @@ class SolSeg:
             self.html = (tokens, self.color, transhtml)
             return
         for tindex, t in enumerate(self.translation):
-            print("{} setting HTML for {}: {}".format(self, tindex, t))
+#            print("{} setting HTML for {}: {}".format(self, tindex, t))
             # Create all combinations of word sequences
             t_expanded = []
             for tt in t:
@@ -242,6 +241,7 @@ class SolSeg:
             else:
                 tokens = tokens.capitalize()
         self.html = (tokens, self.color, transhtml, index)
+#        print("HTML: {}".format(self.html))
 
     @staticmethod
     def list_html(segments):
