@@ -175,10 +175,9 @@ function ShowHelp() {
 "En ese espacio pod&eacute;s seleccionar una de las opciones, " +
 "haciendo clic en la casilla correspondiente. " +
 "Las opciones incluyen la palabra o frase castellana sin cambio " +
-"y además la posibilidad de introducir 'otra traducción' " +
-"(seleccionada por defecto). " +
-"Si has seleccionado 'otra traducción', deb&eacute;s escribir " +
-"tu traducción en el espacio abajo: 'Introducir otra traducción'. " +
+"y además la posibilidad de introducir otra traducción si no " +
+"te gustan la alternativas ofrecidas. " +
+"Introducís otra traducción escribi&eacute;ndola en el espacio abajo. " +
 "Una vez que est&eacute;s satisfecho con tu selección (o una " +
 "de las presentadas u otra que introdujiste) " +
 "hac&eacute; clic en 'Registrar traducción' a la derecha de " +
@@ -218,6 +217,8 @@ function OnRecordSent(raw, punc) {
         sentval += punc;
         document.getElementById("sentence").value += punc;
     }
+    // Give instructions for the next sentence.
+    document.getElementById("instructions").innerHTML = 'Hac&eacute; clic sobre "Próxima oración" o "Salir".';
     // Add the sentence and its translation to the doc textarea
     document.getElementById("document").value += raw + "\n"+ sentval + "\n"
     document.Form2.senttrans.value = sentval;
@@ -233,7 +234,8 @@ function OnRecordPhrase() {
     var choice = "";
     var prefix = "";
     segindex = document.Form2.segindex.value;
-    if (segindex != "0") {
+//    if (segindex != "0") {
+    if (document.Form2.segtrans.value != "") {
         prefix = "|||";
     }
     document.getElementById("segtra2").innerHTML = "Traducción seleccionada";
@@ -276,6 +278,8 @@ function OnRecordPhrase() {
         }
         document.getElementById("sentence").value += choice;
     }
+    // Give instructions for the next segment.
+    document.getElementById("instructions").innerHTML = 'Si has terminado la traducción de la oración, hac&eacute; clic en "Registrar oración", si no, sobre otro segmento colorizado de la oración castellana.';
     return true;
 }
 function Segment(text, segment, color, segindex) {
@@ -283,6 +287,8 @@ function Segment(text, segment, color, segindex) {
     var formatted = "<font color=" + color + ">" + text + "</font>";
     // Clear error space.
     document.getElementById("error").innerHTML = "";
+    // Give instructions for translation selection.
+    document.getElementById("instructions").innerHTML = "O seleccioná una opción o introducí otra traducción en el espacio provisto. Despu&eacute;s hac&eacute; clic en 'Registrar frase'.";
     // Generate an error message if this segment has already been translated
 //    document.getElementById("error").innerHTML = "segment indices " + segindices + ", index " + segindex;
     if (segindices.includes(segindex)) {
@@ -374,6 +380,17 @@ Usuario: <span class="username">{{ user.username }}</span>
 <h2>Selección y registro de traducciones</h2>
 {% endif %}
 
+<h3>Instrucciones</h3>
+
+<p id="instructions" class="instructions">
+{% if sentence %}
+ Hac&eacute; clic sobre un segmento colorizado de la oración para ver abajo las
+opciones de traducción.
+{% else %}
+Hac&eacute; clic en "Próxima oración", o en "Salir" si has terminado la sesión.
+{% endif %}
+</p>
+
 <p id="error" class="error">
 </p>
 
@@ -406,7 +423,7 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 <tr class="transtitle">
   <th class="transtitle">Frase</th>
   <td class="transbutton">
-  <input type="button" id="button" name="freg" onclick="OnRecordPhrase();" value="Registrar traducción">
+  <input type="button" id="button" name="freg" onclick="OnRecordPhrase();" value="Registrar frase">
   </td>
 </tr>
 <tr class="transtitle">
@@ -432,7 +449,7 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
   <th class="transtitle">Oración entera</th>
   <td class="transbutton">
     <input type="button" id="button" name="oreg"
-    onclick="OnRecordSent({{'%r'|format(raw)|e}}, {{'%r'|format(punc)|e}});" value="Registrar traducción">
+    onclick="OnRecordSent({{'%r'|format(raw)|e}}, {{'%r'|format(punc)|e}});" value="Registrar oración">
     </td>
 </tr>  
 <tr class="trans">

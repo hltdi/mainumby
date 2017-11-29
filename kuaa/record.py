@@ -139,6 +139,7 @@ class Session:
             seg_src_trans = segtrans.split('|||')
             for src_trans in seg_src_trans:
                 # index || selected_choice? || source_phrase = translation
+                print("  src_trans: {}".format(src_trans))
                 index, agreed, src_trans = src_trans.split('||')
                 src, trans = src_trans.split('=')
                 print("src {}, trans {}, index {}, agreed? {}".format(src, trans, index, agreed))
@@ -163,9 +164,9 @@ class Session:
 
     def write(self, file=sys.stdout):
         print("{}".format(self), file=file)
-        print("{} {}".format(TIME_PRE, Session.time2str(self.start)), file=file)
+        print("{} {}".format(TIME_PRE, Session.time2shortstr(self.start)), file=file)
         if not self.running:
-            print("{} {}".format(TIME_PRE_END, Session.time2str(self.end)), file=file)
+            print("{} {}".format(TIME_PRE_END, Session.time2shortstr(self.end)), file=file)
         for sentence in self.sentences:
             sentence.write(file=file)
 
