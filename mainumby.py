@@ -46,6 +46,26 @@ import kuaa
 
 ## shortcuts
 
+## Creación (y opcionalmente traducción) de oración simple y de documento.
+def ora(sentence, ambig=False, solve=True, user=None, segment=True, verbosity=0):
+    e, g = cargar_eg()
+    session = kuaa.start(e, g, user)
+    d = kuaa.Document(e, g, sentence, True, session=session)
+    s = d[0]
+    s.initialize(ambig=ambig, verbosity=verbosity)
+    if solve or segment:
+        s.solve(all_sols=ambig)
+        if s.solutions and segment:
+            solution = s.solutions[0]
+            solution.get_segs()
+        output_sols(s)
+    return s
+
+def doc(text, proc=True):
+    e, g = cargar_eg()
+    d = kuaa.Document(e, g, text, proc=proc)
+    return d
+
 def generate(language, stem, feats=None, pos='v'):
     if not feats:
         feats = kuaa.FeatStruct("[]")
@@ -74,27 +94,7 @@ def ley_bidoc(init=True, train=True):
         return trainer
     return d
 
-## Creación (y opcionalmente traducción) de oración simple y de documento.
-def ora(sentence, ambig=False, solve=True, user=None, segment=True, verbosity=0):
-    e, g = cargar_eg()
-    session = kuaa.start(e, g, user)
-    d = kuaa.Document(e, g, sentence, True, session=session)
-    s = d[0]
-    s.initialize(ambig=ambig, verbosity=verbosity)
-    if solve or segment:
-        s.solve(all_sols=ambig)
-        if s.solutions and segment:
-            solution = s.solutions[0]
-            solution.get_segs()
-        output_sols(s)
-    return s
-
-def eg_doc(text, proc=True):
-    e, g = cargar_eg()
-    d = kuaa.Document(e, g, text, proc=proc)
-    return d
-
-def eg_arch_doc(ruta, proc=True, reinit=False, user=None, session=None,
+def arch_doc(ruta, proc=True, reinit=False, user=None, session=None,
                 ruta_meta=None):
     """Crear un documento del contenido de un archivo."""
     e, g = cargar_eg(train=ruta_meta)

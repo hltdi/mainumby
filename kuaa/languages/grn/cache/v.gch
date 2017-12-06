@@ -84,3 +84,12 @@ mondo:[cat=a,no=1,ns=0,po=3,ps=1,tmp=prs] || amondo
 mbou:[cat=a,no=1,ns=0,po=3,ps=1,tmp=prs] || ambou
 rahauka:[cat=a,no=1,ns=0,po=3,ps=1,tmp=prs] || arahauka
 ju:[cat=a,ns=0,ps=3,tmp=prt] || oúkuri;ou;ouraka'e;ou'akue
+kuaa:[+inter,ns=0,ps=2,subcat=i,tmp=prs] || reikuaápa
+moingo:[cat=a,ns=0,pp=pe,ps=2,rel=sjoj,tmp=ipv] || omoingóvape
+moingo:[cat=a,ns=0,pp=pe,ps=3,rel=sjoj,tmp=prs] || omoingóvape
+ime:[cat=a,ns=0,pp=pe,ps=2,rel=sjoj,tmp=ipv] || oimévape
+ime:[cat=a,ns=0,pp=pe,ps=3,rel=sjoj,tmp=prs] || oimévape
+iko:[cat=a,ns=0,pp=pe,ps=2,rel=sjoj,tmp=ipv] || oikóvape
+iko:[cat=a,ns=0,pp=pe,ps=3,rel=sjoj,tmp=prs] || oikóvape
+ikove:[cat=a,ns=0,pp=pe,ps=2,rel=sjoj,tmp=ipv] || oikovévape
+ikove:[cat=a,ns=0,pp=pe,ps=3,rel=sjoj,tmp=prs] || oikovévape

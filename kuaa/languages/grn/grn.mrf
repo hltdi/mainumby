@@ -25,6 +25,8 @@ clean: ỳ = ý
 clean: ’,`,´,°,‘ = '
 
 postproc: ĝ = g̃
+postproc: < =
+postproc: > =
 
 feats:
 

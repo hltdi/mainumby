@@ -105,7 +105,7 @@ class SolSeg:
             self.special = True
             if not translation:
                 # Set the translation for the special segment
-                print("Setting special segment: {}".format(tokens))
+#                print("Setting special segment: {}".format(tokens))
                 spec_trans = self.source.translate_special(tokens[0])
                 if spec_trans:
                     self.translation = [[spec_trans]]
@@ -176,10 +176,19 @@ class SolSeg:
             # Create all combinations of word sequences
             t_expanded = []
             for tt in t:
+                # Get rid of parentheses around optional elements
                 if '(' in tt:
                     tt = ['', tt[1:-1]]
                 else:
                     tt = tt.split('|')
+#                # Get rid of other unacceptable characters: '<', '>'
+#                for iii, ttt in enumerate(tt):
+#                    if '<' in ttt:
+#                        ttt = ttt.replace('<', '')
+#                        tt[iii] = ttt
+#                    if '>' in ttt:
+#                        ttt = ttt.replace('>', '')
+#                        tt[iii] = ttt
                 t_expanded.append(tt)
             tcombs = [' '.join(y) for y in allcombs(t_expanded)]
             tcombs.sort()

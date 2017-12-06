@@ -1,5 +1,7 @@
 2017 fall
 Handle:
+cases where morphological generation fails
+lo que (...) $v
 todos los $n
 aunque
 un pequeño número

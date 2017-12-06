@@ -1213,3 +1213,6 @@ mujer || mujer:[g=f,n=0,pos=n]
 niños || niño:[g=m,n=1,pos=n]
 año || año:[g=m,n=0,pos=n]
 este || este:[g=m,n=0,pos=n]
+vive || vivir:[-VOS,+fin,+ipv,n=0,p=2,pos=v,tm=ipv];[+fin,n=0,p=3,pos=v,tm=prs]
+cerca || cerca:[g=f,n=0,pos=n];;cercar:[-VOS,+fin,+ipv,n=0,p=2,pos=v,tm=ipv];[+fin,n=0,p=3,pos=v,tm=prs]
+nosotros || nosotros:

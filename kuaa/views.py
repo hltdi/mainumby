@@ -212,7 +212,7 @@ def sent():
         solve_and_segment()
         print("Solved and segmented")
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
-    return render_template('sent.html', sentence=SEG_HTML, raw=SENTENCE.raw, document='',
+    return render_template('sent.html', sentence=SEG_HTML, raw=SENTENCE.original, document='',
                            record=SENTENCE.record, punc=SENTENCE.get_final_punc(), user=USER)
 
 @app.route('/fin', methods=['POST'])

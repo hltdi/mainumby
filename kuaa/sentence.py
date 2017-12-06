@@ -235,18 +235,6 @@ class Document(list):
         self.process1(reinit=reinit, verbosity=verbosity)
         if self.biling:
             self.process1(target=True, reinit=reinit,verbosity=verbosity)
-#        self.tokenize(verbosity=verbosity)
-#        if self.biling:
-#            self.tokenize(target=True, verbosity=verbosity)
-#        if verbosity:
-#            print("Found tokens {}".format(self.tokens))
-#        if reinit:
-#            Sentence.id = 0
-#        self.split()
-#        if self.biling:
-#            if reinit:
-#                Sentence.id = 0
-#            self.split(target=True)
         self.processed = True
 
     def process1(self, target=False, reinit=False, verbosity=0):
@@ -292,14 +280,15 @@ class Document(list):
         text = self.target_text if target else self.text
         tokens = self.target_tokens if target else self.tokens
         language = self.target if target else self.language
-        if verbosity:
-            print("Tokenizing text {}".format(text))
+#        if verbosity:
+        print("Tokenizing text {}".format(text))
         text_tokens = text.split()
 #        print("Tokenizing text, {} tokens".format(len(text_tokens)))
         pre = ''
         suf = ''
         word = None
         for token in text_tokens:
+#            print("  Token {}".format(token))
             tok_subtype = 0
             word_tok = False
             number = False
@@ -362,7 +351,7 @@ class Document(list):
         return False
             
     def split(self, target=False):
-        """Split tokenized text into sentences. Later use a language-specific splitter.
+        """Split tokenized text into sentences. Used when there is no language-specific splitter.
         If target is true, split target_text."""
         tokens = self.target_tokens if target else self.tokens
         sentence_list = self.target_sentences if target else self
@@ -374,11 +363,23 @@ class Document(list):
         tokindex = 0
         token = ''
         toktype = 1
+        raw_sentences = []
+        raw_sentence = []
+        raw_token = ''
+        last_token_triple = ('', 1, -1)
         while tokindex < ntokens:
             token, toktype, toksubtype = tokens[tokindex]
 #            print("token {}, toktype {}, toksubtype {}".format(token, toktype, toksubtype))
+#            print("last token, type, subtype: {}".format(last_token_triple))
             if toktype in (0, 1):
                 current_sentence.append((token, toktype, toksubtype))
+                if last_token_triple[1] in (1, 2):
+                    # New raw token
+                    if raw_token:
+                        raw_sentence.append(raw_token)
+                    raw_token = token
+                else:
+                    raw_token += token
             # Check whether this is a sentence end
             elif Document.end_re.match(token):
                 if not current_sentence:
@@ -386,28 +387,47 @@ class Document(list):
                     return
                 elif len(current_sentence) == 1 and current_sentence[0][2] == 2:
                     # Sentence consists only of a numeral following by this end-of-sentence punctuation; continue current sentence.
-#                    print("Current sentence consists only of a numeral {}; treat as sentence start".format(current_sentence[0]))
                     current_sentence.append((token, toktype, toksubtype))
+                    raw_token += token
                 else:
                     # End sentence
                     current_sentence.append((token, toktype, toksubtype))
                     sentences.append(current_sentence)
                     current_sentence = []
+                    # Handle raw tokens/sentences
+                    raw_token += token
+                    raw_sentence.append(raw_token)
+                    raw_sentences.append(raw_sentence)
+                    raw_token = ''
+                    raw_sentence = []
             elif Document.poss_end_re.match(token):
                 if current_sentence and (tokindex == ntokens-1 or Document.start_next(tokens[tokindex:])):
                     # End sentence
                     current_sentence.append((token, toktype, toksubtype))
                     sentences.append(current_sentence)
                     current_sentence = []
+                    # Handle raw tokens/sentences
+                    raw_token += token
+                    raw_sentence.append(raw_token)
+                    raw_sentences.append(raw_sentence)
+                    raw_token = ''
+                    raw_sentence = []
                 else:
                     current_sentence.append((token, toktype, toksubtype))
+                    raw_token += token
             else:
                 current_sentence.append((token, toktype, toksubtype))
+                raw_token += token
             tokindex += 1
+            last_token_triple = (token, toktype, toksubtype)
+        if raw_token:
+            raw_sentence.append(raw_token)
+            raw_sentences.append(raw_sentence)
         # Make Sentence objects for each list of tokens and types
-        for sentence in sentences:
+        for sentence, rawsent in zip(sentences, raw_sentences):
             sentence_list.append(Sentence(language=language,
                                           tokens=[t[0] for t in sentence],
+                                          original=' '.join(rawsent),
                                           target=target_language,
                                           session=self.session))
 
@@ -462,6 +482,8 @@ class Sentence:
     tt_colors = ['red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple']
 
     def __init__(self, raw='', language=None, tokens=None, rawtokens=None,
+                 # the (restored) original string
+                 original='',
                  toktypes=None, toksubtypes=None,
                  nodes=None, groups=None, target=None, init=False,
                  analyses=None, session=None, parent=None,
@@ -480,6 +502,7 @@ class Sentence:
         else:
             self.raw = raw
             self.tokens = None
+        self.original = original
         # List of booleans, same length as self.tokens specifying whether the raw token was upper case
         self.isupper = []
         # Source language: a language object
@@ -1848,6 +1871,7 @@ class Solution:
                 # Special token; it should have its own segment
                 if stoks:
                     stok_groups.append(stoks)
+                    stoks = []
                 stok_groups.append([stok])
             else:
                 stoks.append(stok)
@@ -1861,8 +1885,11 @@ class Solution:
                 translation = [self.target.punc_postproc(stok_group[0])]
             else:
                 translation = []
-            seg = SolSeg(self, (i0, i0+len(stok_group)-1), translation, stok_group, session=self.session, gname=gname,
-                                merger_groups=merger_groups, is_punc=is_punc)
+            start = i0
+            end = i0+len(stok_group)-1
+            seg = SolSeg(self, (start, end), translation, stok_group, session=self.session, gname=gname,
+                         merger_groups=merger_groups, is_punc=is_punc)
+            print("Untranslated segment {}->{}: {}".format(start, end, src_tokens))
             self.segments.append(seg)
             i0 += len(stok_group)
 
@@ -1875,7 +1902,6 @@ class Solution:
         for raw_indices, forms, gname, merger_groups in tt:
             late = False
             start, end = raw_indices[0], raw_indices[-1]
-            print("Segment {}->{}".format(start, end))
             if start > max_index+1:
                 # there's a gap between the farthest segment to the right and this one; make one or more untranslated segments
                 src_tokens = tokens[end_index+1:start]
@@ -1887,6 +1913,7 @@ class Solution:
             src_tokens = [(tokens[i] if i in raw_indices else '...') for i in range(start, end+1)]
             if late:
                 src_tokens[0] = "←" + src_tokens[0]
+            print("Segment {}->{}: {}={}".format(start, end, src_tokens, forms))
             seg = SolSeg(self, raw_indices, forms, src_tokens, session=self.session, gname=gname,
                          merger_groups=merger_groups)
             self.segments.append(seg)

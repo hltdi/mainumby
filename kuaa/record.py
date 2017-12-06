@@ -165,10 +165,10 @@ class Session:
     def write(self, file=sys.stdout):
         print("{}".format(self), file=file)
         print("{} {}".format(TIME_PRE, Session.time2shortstr(self.start)), file=file)
-        if not self.running:
-            print("{} {}".format(TIME_PRE_END, Session.time2shortstr(self.end)), file=file)
         for sentence in self.sentences:
             sentence.write(file=file)
+        if not self.running:
+            print("{} {}".format(TIME_PRE_END, Session.time2shortstr(self.end)), file=file)
 
     def write_doc(self, file=sys.stdout, tm=False):
         """Write the source and target translations in raw form to file."""
@@ -238,7 +238,7 @@ class SegRecord:
         # These get filled in during set_html() in SolSeg
         self.choices = []
         self.feedback = None
-        print("   Creating segment record {}".format(self))
+#        print("   Creating segment record {}".format(self))
 
     def __repr__(self):
 #        session =  "{}".format(self.session) if self.session else ""

@@ -1926,10 +1926,11 @@ class Language:
 #            o = [out[0] for out in output]
             # if there is a postprocessing dict, apply it
             if self.postproc:
-                for oi, outp in enumerate(output):
-                    for d, c in self.postproc.items():
-                        if d in outp:
-                            output[oi] = outp.replace(d, c)
+                self.char_postproc_list(output)
+#                for oi, outp in enumerate(output):
+#                    for d, c in self.postproc.items():
+#                        if d in outp:
+#                            output[oi] = outp.replace(d, c)
             if self.postsyll:
                 # There is a syllabic postprocessing dict, apply it
                 for oi,outp in enumerate(output):
@@ -1937,7 +1938,9 @@ class Language:
             return output
         else:
             print("The root/feature combination {}:{} can't be generated for POS {}!".format(root, features.__repr__(), pos))
-            return [root]
+            # Add * to mark this is a uninflected.
+            root = self.char_postproc(root)
+            return ['*' + root]
 
     def gen_multroots(self, roots, features, pos=None, guess=False, roman=True, cache=True, verbosity=0):
         """For multiple roots and the same features, return the list of possible outputs."""
@@ -1946,6 +1949,20 @@ class Language:
         for root in roots:
             outputs.extend(self.generate(root, features, pos=pos, guess=guess, roman=roman, cache=cache, verbosity=verbosity))
         return output
+
+    def char_postproc(self, form):
+        """Replace characters in form using the postproc dict."""
+        for d, c in self.postproc.items():
+            if d in form:
+                form = form.replace(d, c)
+        return form
+
+    def char_postproc_list(self, forms):
+        """Replace forms in list of strings forms using the postproc dict."""
+        for i, form in enumerate(forms):
+            for d, c in self.postproc.items():
+                if d in form:
+                    forms[i] = form.replace(d, c)
 
     def punc_postproc(self, punc):
         """Convert punctuation to another script if possible."""
