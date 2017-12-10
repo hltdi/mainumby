@@ -649,6 +649,9 @@ class POS:
                 upd_features = self.update_FSS(FeatStruct(features), update_feats)
             else:
                 upd_features = self.update_FS(FeatStruct(features), update_feats)
+        if not upd_features:
+            # Some features failed to unify
+            return []
         fst = fst or self.get_fst(generate=True, guess=guess, segment=segment)
         if not fst:
             return []
@@ -720,6 +723,9 @@ class POS:
         fss = set()
         for feat_fs in feat_fss:
             fs1 = self.update_FS(fs, feat_fs, top=top)
+            if not fs1:
+                # The features failed to unify
+                return []
             fs1.freeze()
             # Assume this always results in a non-zero FeatStruct
             fss.add(fs1)

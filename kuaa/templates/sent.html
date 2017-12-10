@@ -234,7 +234,6 @@ function OnRecordPhrase() {
     var choice = "";
     var prefix = "";
     segindex = document.Form2.segindex.value;
-//    if (segindex != "0") {
     if (document.Form2.segtrans.value != "") {
         prefix = "|||";
     }
@@ -279,7 +278,7 @@ function OnRecordPhrase() {
         document.getElementById("sentence").value += choice;
     }
     // Give instructions for the next segment.
-    document.getElementById("instructions").innerHTML = 'Si has terminado la traducción de la oración, hac&eacute; clic en "Registrar oración", si no, sobre otro segmento colorizado de la oración castellana.';
+    document.getElementById("instructions").innerHTML = 'Si has terminado la traducción de la oración, hac&eacute; clic en "Registrar oración", si no, hac&eacute; clic sobre otro segmento colorizado de la oración castellana.';
     return true;
 }
 function Segment(text, segment, color, segindex) {
