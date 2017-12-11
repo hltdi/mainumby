@@ -148,7 +148,7 @@ class SolSeg:
         Do postprocessing on phrases joined by '_' or special tokens (numerals).
         """
         # Combine translations where possible
-#        print("Setting HTML for segment {}: {}".format(index, self))
+        print("Setting HTML for segment {}: {}".format(index, self))
         self.color = SolSeg.tt_notrans_color if not self.translation else SolSeg.tt_colors[index]
         transhtml = '<table>'
         capitalized = False
@@ -181,14 +181,6 @@ class SolSeg:
                     tt = ['', tt[1:-1]]
                 else:
                     tt = tt.split('|')
-#                # Get rid of other unacceptable characters: '<', '>'
-#                for iii, ttt in enumerate(tt):
-#                    if '<' in ttt:
-#                        ttt = ttt.replace('<', '')
-#                        tt[iii] = ttt
-#                    if '>' in ttt:
-#                        ttt = ttt.replace('>', '')
-#                        tt[iii] = ttt
                 t_expanded.append(tt)
             tcombs = [' '.join(y) for y in allcombs(t_expanded)]
             tcombs.sort()

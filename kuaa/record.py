@@ -142,8 +142,10 @@ class Session:
                 print("  src_trans: {}".format(src_trans))
                 index, agreed, src_trans = src_trans.split('||')
                 src, trans = src_trans.split('=')
+                segrecord = segrecords.get(src.lower())
                 print("src {}, trans {}, index {}, agreed? {}".format(src, trans, index, agreed))
-                print("  segrecord {}".format(segrecords.get(src.lower())))
+                if segrecord:
+                    print("  segrecord {}, translation {}".format(segrecord, segrecord.translation))
 #            translation = self.target.ortho_clean(translation)
 #            print("Segment translation: {}".format(translation))
 #            segrecord.record(translation=translation)

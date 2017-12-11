@@ -680,6 +680,9 @@
 *** oportunidad_n de $n ; ^ oportunidad_n 0
 ->grn $n <hekopete_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n ja_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
+*** oración_n de $n ; ^ oración_n 0
+->grn $n ñe'ẽjoaju_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n ñembo'e_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 *** orden_n de $n ; ^ orden_n 0
 ->grn $n ñemyatyrõ_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n kuái_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
@@ -12840,7 +12843,7 @@
 *** oración_n[n=1] de difunto ; ^ oración_n 0
 ->grn amyrỹi_n ñembo'e ; 0==0 n:n,poses:poses
 *** oración_n ; ^ oración_n 0 ; #89
-->grn ñe'ẽjoaju ; 0==0 n:n,poses:poses ; #10
+->grn ñe'ẽjoaju_n ; 0==0 n:n,poses:poses ; #10
 ->grn ñembo'e_n ; 0==0 n:n,poses:poses ; #64 ; ##1
 *** oral_n ; ^ oral_n 0
 ->grn jurugua_n ; 0==0 n:n,poses:poses
