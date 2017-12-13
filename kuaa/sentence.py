@@ -280,10 +280,9 @@ class Document(list):
         text = self.target_text if target else self.text
         tokens = self.target_tokens if target else self.tokens
         language = self.target if target else self.language
-#        if verbosity:
-        print("Tokenizing text {}".format(text))
+        if verbosity:
+            print("Tokenizing text {}".format(text))
         text_tokens = text.split()
-#        print("Tokenizing text, {} tokens".format(len(text_tokens)))
         pre = ''
         suf = ''
         word = None
@@ -778,6 +777,7 @@ class Sentence:
         """Things to do before running constraint satisfaction."""
         if verbosity:
             print("Initializing {}".format(self))
+        # Note: this can change the number of tokens because of morphological segmentation.
         self.tokenize(verbosity=verbosity, ambig=ambig, terse=terse)
         # Tokenization could result in altsyns
         self.nodify(verbosity=verbosity)
@@ -912,9 +912,8 @@ class Sentence:
         """
         self.nodes = []
         index = 0
-#        incorp_indices = []
         del_indices = {}
-        for tokindex, (rawtok, (token, anals)) in enumerate(zip(self.rawtokens, self.analyses)):
+        for tokindex, (rawtok, (token, anals)) in enumerate(zip(self.tokens, self.analyses)):
 #            print("Nodifying item {}, token {}".format(tokindex, token))
             if not incl_del and MorphoSyn.del_token(token):
                 # Ignore elements deleted by MorphoSyns
@@ -1934,7 +1933,7 @@ class Solution:
         if max_index+1 < len(tokens):
             # Some word(s) at end not translated; use source forms
             src_tokens = tokens[max_index+1:len(tokens)]
-            self.get_untrans_segs(src_tokens, len(tokens)-1, gname=gname, merger_groups=merger_groups,
+            self.get_untrans_segs(src_tokens, max_index, gname=gname, merger_groups=merger_groups,
                                   indices_covered=indices_covered)
         if html:
             self.seg_html()

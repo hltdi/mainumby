@@ -1423,32 +1423,6 @@ class Language:
             a.append((root, posmorph.fullname, posmorph.fs2prettylist(fs)))
         return a
 
-#    def gen(self, root, features=None, pos=None, guess=False, roman=True):
-#        '''Generate a word, given stem/root and features (replacing those in default).
-#        If pos is specified, check only that POS; otherwise, try all in order until one succeeeds.
-#
-#        @param root:     string (roman); root or stem of a word
-#        @param features: FeatStruct: grammatical features to be added to default
-#        @param pos:      string: part-of-speech: use only the generator for this POS
-#        @param guess:    boolean: whether to use guess generator if lexical generator fails
-#        @param roman:    boolean: whether the language uses a roman script
-#        '''
-#        is_not_roman = not roman
-#        morf = self.morphology
-#        output = []
-#        features = features or []
-#        if pos:
-#            posmorph = morf[pos]
-#            output = posmorph.gen(root, update_feats=features, guess=guess)
-#        else:
-#            for posmorph in list(morf.values()):
-#                output.extend(posmorph.gen(root, update_feats=features, guess=guess))
-#        if output:
-#            o = [out[0] for out in output]
-#            return o
-#        print("This word can't be generated!")
-#        return output
-
     def get_gen_fvs(self):
         gf = []
         for f, m in self.morphology.items():
@@ -1809,52 +1783,6 @@ class Language:
             return '%' + self.translations[form1]
         return form
 
-    ### Basic setters. Create entries (dicts) for item. For debugging purposes, include name
-    ### in entry.
-
-#    def add_form(self, form, dct, reverse=True):
-#        """Form dict has root, features, cats.
-#        If reverse is True, also add the form to the genforms dict."""
-#        if form not in self.forms:
-#            self.forms[form] = dct
-#        else:
-#            entry = self.forms[form]
-#            if isinstance(entry, dict):
-#                # Make this the second entry
-#                self.forms[form] = [entry, dct]
-#            else:
-#                # There are already two or more entries in a list
-#                entry.append(dct)
-#        if reverse:
-#            lexeme = dct['root']
-#            features = dct['features']
-#            self.add_genform(form, lexeme, features)
-#
-#    def add_genform(self, form, lexeme, features):
-#        """Add the form to a lexeme- and feature-keyed dict."""
-#        if lexeme not in self.genforms:
-#            self.genforms[lexeme] = {}
-#        featdict = self.genforms[lexeme]
-#        # features is a FeatStruct object; convert it to a list of tuples
-#        features = tuple(features.to_list())
-#        featdict[features] = form
-##        feat = features.pop(0)
-##        self.make_featdict(featdict, feat, features, form)
-
-#    def add_group(self, tokens, head_index=-1, head='', name='', features=None):
-#        group = Group(tokens, head_index=head_index, head=head,
-#                      language=self, name=name, features=features)
-##        print('Group {}, head {}'.format(group, group.head))
-#        if features:
-#            head_i = tokens.index(group.head)
-#            head_feats = features[head_i]
-#        else:
-#            head_feats = None
-#        self.add_group_to_lexicon(group.head, group, head_feats)
-#        self.groupnames[group.name] = group
-#        self.changed = True
-#        return group
-
     @staticmethod
     def get_grouptoken(string):
         if '_' in string:
@@ -1876,27 +1804,6 @@ class Language:
         else:
             self.group_keys[token] = {head}
         self.changed = True
-
-#    def add_group_to_lexicon(self, head, group, features):
-#        if not features:
-#            # Add the group to the list of groups for the head word/lexeme
-#            if head not in self.groups:
-#                self.groups[head] = {}
-#            if () not in self.groups[head]:
-#                self.groups[head][()] = []
-#            self.groups[head][()].append(group)
-#        else:
-#            # Convert fv dict to an alphabetized tuple of fv pairs
-#            fvs = list(features.items())
-#            fvs.sort()
-#            fvs = tuple(fvs)
-#            if head not in self.groups:
-#                self.groups[head] = {}
-#            if fvs not in self.groups[head]:
-#                self.groups[head][fvs] = []
-#            self.groups[head][fvs].append(group)
-
-    ### Basic getters.
 
     ### Generation of word forms
 

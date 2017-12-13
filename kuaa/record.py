@@ -135,17 +135,24 @@ class Session:
         # There might be both segment and whole sentence translations.
         if segtrans:
             segrecords = sentrecord.segments
-#            print("Segs in sent record: {}".format(segrecords))
+            segreclist = sentrecord.seg_list
+            print("Seg list in sent record: {}".format(segreclist))
             seg_src_trans = segtrans.split('|||')
             for src_trans in seg_src_trans:
                 # index || selected_choice? || source_phrase = translation
                 print("  src_trans: {}".format(src_trans))
                 index, agreed, src_trans = src_trans.split('||')
                 src, trans = src_trans.split('=')
-                segrecord = segrecords.get(src.lower())
-                print("src {}, trans {}, index {}, agreed? {}".format(src, trans, index, agreed))
-                if segrecord:
-                    print("  segrecord {}, translation {}".format(segrecord, segrecord.translation))
+                index = int(index)
+                # Get the segrecord from the dict
+                segrecord1 = segrecords.get(src.lower())
+                # Get the segrecord from the list
+                segrecord2 = segreclist[index]
+                print("  src {}, trans {}, index {}, agreed? {}".format(src, trans, index, agreed))
+                if segrecord1:
+                    print("  segrecord {}, translation {}".format(segrecord1, segrecord1.translation))
+                if segrecord2:
+                    print("  segrecord {}, translation {}".format(segrecord2, segrecord2.translation))
 #            translation = self.target.ortho_clean(translation)
 #            print("Segment translation: {}".format(translation))
 #            segrecord.record(translation=translation)
@@ -198,6 +205,8 @@ class SentRecord:
         session.sentences.append(self)
         # a dict of SegRecord objects, with token strings as keys
         self.segments = {}
+        # a list of SegRecord objects
+        self.seg_list = []
         self.feedback = None
         # Verbatim translation of the sentence
         self.translation = ''
@@ -237,6 +246,7 @@ class SegRecord:
         self.merger_gnames = solseg.merger_gnames
         # Add to parent SentRecord
         self.sentence.segments[self.tokens] = self
+        self.sentence.seg_list.append(self)
         # These get filled in during set_html() in SolSeg
         self.choices = []
         self.feedback = None

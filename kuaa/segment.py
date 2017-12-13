@@ -166,8 +166,8 @@ class SolSeg:
             transhtml += "<tr><td class='transchoice'>"
             transhtml += '<br/><input type="radio" name="choice" id={} value="{}" checked>{}</td>'.format(trans, trans, trans)
             transhtml += '</tr>'
-            transhtml += '<tr><td class="other">'
-            transhtml += '<input type="radio" name="choice" id="other" value="other">otra traducción (introducir abajo)</td></tr>'
+#            transhtml += '<tr><td class="other">'
+#            transhtml += '<input type="radio" name="choice" id="other" value="other">otra traducción (introducir abajo)</td></tr>'
             transhtml += '</table>'
             self.html = (tokens, self.color, transhtml)
             return
@@ -202,24 +202,22 @@ class SolSeg:
         if self.translation:
             # Add other translation button
             # Button to translate as source language
-            if not self.is_punc:
-                transhtml += '<tr><td class="source">'
-                transhtml += '<input type="radio" name="choice" id={} value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
-            # Button for the user's own translation
-            transhtml += '<tr><td class="other">'
-            transhtml += '<input type="radio" name="choice" id="other" value="other">otra traducción (introducir abajo)</td></tr>'
+            transhtml += '<tr><td class="source">'
+            transhtml += '<input type="radio" name="choice" id={} value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
+#            # Button for the user's own translation
+#            transhtml += '<tr><td class="other">'
+#            transhtml += '<input type="radio" name="choice" id="other" value="other">otra traducción (introducir abajo)</td></tr>'
             # Remove special prefixes
             transhtml = SolSeg.remove_spec_pre(transhtml)
             transhtml = transhtml.replace('_', ' ')
             transhtml = transhtml.replace('~', ' ')
         else:
-            # No translations suggested: buttons for 'your translation' and 'translate as source'
-            # Button to translate as source language
+            # No translations suggested: checkbox for translating as source (only option)
             transhtml += '<tr><td class="source">'
-            transhtml += '<input type="radio" name="choice" id={} value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
-            # Add other translation button
-            transhtml += '<tr><td class="other">'
-            transhtml += '<input type="radio" name="choice" id="other" value="other" checked>otra traducción (introducir abajo)</td></tr>'
+            transhtml += '<input type="checkbox" name="choice" id={} value="{}" checked>{}</td></tr>'.format(tokens, tokens, tokens)
+#            # Add other translation button
+#            transhtml += '<tr><td class="other">'
+#            transhtml += '<input type="radio" name="choice" id="other" value="other" checked>otra traducción (introducir abajo)</td></tr>'
             # Remove special prefixes
             transhtml = SolSeg.remove_spec_pre(transhtml)
             transhtml = transhtml.replace('_', ' ')
