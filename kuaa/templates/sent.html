@@ -232,12 +232,14 @@ function OnRecordPhrase() {
     var sentval = document.getElementById("sentence").value;
     var segtrans = document.getElementById("segment").value;
     var segment = document.Form2.seg.value;
+    var segspace = document.Form2.segspace.value;
     // This can be either a single checkbox or a group of radio buttons.
     var selection = document.Form2.choice;
     // This is INPUT if checkbox, undefined otherwise.
     var seltype = selection.nodeName;
     var choice = "";
     var prefix = "";
+    var space = " ";
     segindex = document.Form2.segindex.value;
     if (document.Form2.segtrans.value != "") {
         // This is not the first phrase (segment) in the sentence to be recorded.
@@ -261,8 +263,11 @@ function OnRecordPhrase() {
             // Beginning of the sentence; capitalize the translation, stored in segtrans.
             segtrans = capitalize(segtrans);
         } else {
-	    // Not the beginning of the sentence; add a space before translation.
-            segtrans = " " + segtrans;
+	    // Not the beginning of the sentence; add a space before translation unless this is suffixing punctuation
+            if (segspace == "0") {
+                 space = "";
+            }
+            segtrans = space + segtrans;
         }
 	// Clear the error space.
         document.getElementById("error").innerHTML = "";
@@ -295,7 +300,11 @@ function OnRecordPhrase() {
         if (sentval == "") {
             choice = capitalize(choice);
         } else {
-            choice = " " + choice;
+            // If the choice is suffixed pronunciation, leave no space before it.
+            if (segspace == "0") {
+                 space = "";
+            }
+            choice = space + choice;
         }
         document.getElementById("sentence").value += choice;
     }
@@ -303,7 +312,7 @@ function OnRecordPhrase() {
     document.getElementById("instructions").innerHTML = 'Si has terminado la traducción de la oración, hac&eacute; clic en "Registrar oración", si no, hac&eacute; clic sobre otro segmento colorizado de la oración castellana.';
     return true;
 }
-function Segment(text, segment, color, segindex) {
+function Segment(text, segment, color, segindex, spacebefore) {
     var segindices = document.Form2.segindices.value;
     var formatted = "<font color=" + color + ">" + text + "</font>";
     // Clear error space.
@@ -321,6 +330,7 @@ function Segment(text, segment, color, segindex) {
     document.getElementById('segtra2').innerHTML = "Introducir otra traducción";
     document.Form2.seg.value = segment;
     document.Form2.segindex.value = segindex;
+    document.Form2.segspace.value = spacebefore;
     document.getElementById("segment").value = '';
 }
 function OnSalir()
@@ -425,7 +435,7 @@ Hac&eacute; clic en "Próxima oración", o en "Salir" si has terminado la sesió
 {# Each segment responds to mouse clicks which replace the segtra
 section with a table of translations and set the value of the seg form variable #}
 <span onmouseover="this.style.cursor='pointer'" onmouseout="this.style.cursor='default'"
-onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|format(seg[1])|e}}, {{'%r'|format(seg[3])|e}});">
+onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|format(seg[1])|e}}, {{'%r'|format(seg[3])|e}}, {{'%r'|format(seg[4])|e}});">
   <span style='color:{{ seg[1] }};'> {{ seg[0] }} </span></span>
 {% endfor %}
 </span>
@@ -495,6 +505,7 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
   <input type="hidden" name="segindices" value="">
   <input type="hidden" name="senttrans" value="">
   <input type="hidden" name="segtrans" value="">
+  <input type="hidden" name="segspace" value="">
   <input type="hidden" name="documento" value="">
 </form>
 

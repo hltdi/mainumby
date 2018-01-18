@@ -214,6 +214,9 @@ def sent():
         print("Solved and segmented")
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
     punc = SENTENCE.get_final_punc()
+#    print("sentence input to page:")
+#    for seg in SEG_HTML:
+#        print("  seg {}".format(seg))
     return render_template('sent.html', sentence=SEG_HTML, raw=SENTENCE.original, document='',
                            record=SENTENCE.record, punc=punc, user=USER)
 

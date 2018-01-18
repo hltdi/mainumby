@@ -85,12 +85,13 @@ class SolSeg:
 
     special_re = re.compile("%[A-Z]+~")
 
-    def __init__(self, solution, indices, translation, tokens, color=None,
+    def __init__(self, solution, indices, translation, tokens, color=None, space_before=1,
                  spec_indices=None, session=None, gname=None, merger_groups=None, is_punc=False):
 #        print("Creating SolSeg for indices {}, translation {}, tokens {}".format(indices, translation, tokens))
         self.source = solution.source
         self.target = solution.target
         self.indices = indices
+        self.space_before = space_before
         # Are there any alternatives among the translations?
         self.any_choices = any(['|' in t for t in translation])
         # For each translation alternative, separate words, each of which can have alternatives (separated by '|').
@@ -169,7 +170,7 @@ class SolSeg:
 #            transhtml += '<tr><td class="other">'
 #            transhtml += '<input type="radio" name="choice" id="other" value="other">otra traducción (introducir abajo)</td></tr>'
             transhtml += '</table>'
-            self.html = (tokens, self.color, transhtml)
+            self.html = (tokens, self.color, transhtml, index, self.space_before)
             return
         for tindex, t in enumerate(self.translation):
 #            print("{} setting HTML for {}: {}".format(self, tindex, t))
@@ -239,7 +240,7 @@ class SolSeg:
                 tokens = ' '.join(toks)
             else:
                 tokens = tokens.capitalize()
-        self.html = (tokens, self.color, transhtml, index)
+        self.html = (tokens, self.color, transhtml, index, self.space_before)
 #        print("HTML: {}".format(self.html))
 
     @staticmethod
@@ -252,10 +253,12 @@ class SNode:
     """Sentence token and its associated analyses and variables."""
 
     def __init__(self, token, index, analyses, sentence, raw_indices,
-                 rawtoken=None): #, del_indices=None):
+                 rawtoken=None, toktype=1): #, del_indices=None):
 #        print("Creating SNode with args {}, {}, {}, {}".format(token, index, analyses, sentence))
         # Raw form in sentence (possibly result of segmentation)
         self.token = token
+        # Token type (used to distinguish prefix from suffix punctuation.
+        self.toktype = toktype
         # Original form of this node's token (may be capitalized)
         self.rawtoken = rawtoken
         # Position in sentence

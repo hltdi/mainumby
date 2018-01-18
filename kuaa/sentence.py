@@ -426,6 +426,7 @@ class Document(list):
         for sentence, rawsent in zip(sentences, raw_sentences):
             sentence_list.append(Sentence(language=language,
                                           tokens=[t[0] for t in sentence],
+                                          toktypes=[t[1] for t in sentence],
                                           original=' '.join(rawsent),
                                           target=target_language,
                                           session=self.session))
@@ -490,6 +491,7 @@ class Sentence:
         self.set_id()
         # A list of string tokens, created by a Document object including this sentence
         # or None if the Sentence is created outside of Document
+#        print("Creating sentence with tokens {}".format(tokens))
         if tokens:
             self.tokens = tokens
             self.raw = ' '.join(self.tokens)
@@ -501,6 +503,7 @@ class Sentence:
         else:
             self.raw = raw
             self.tokens = None
+        self.toktypes = toktypes
         self.original = original
         # List of booleans, same length as self.tokens specifying whether the raw token was upper case
         self.isupper = []
@@ -639,6 +642,13 @@ class Sentence:
     def make_record(self, session):
         """Create a SentRecord object to this sentence."""
         return SentRecord(self, session=session)
+
+    def get_node_by_raw(self, index):
+        """Get the SNode that has index among its raw_indices."""
+        for n in self.nodes:
+            if index in n.raw_indices:
+                return n
+        return None
 
     ## Initial processing
     
@@ -913,8 +923,11 @@ class Sentence:
         self.nodes = []
         index = 0
         del_indices = {}
+        toktype = 1
         for tokindex, (rawtok, (token, anals)) in enumerate(zip(self.tokens, self.analyses)):
 #            print("Nodifying item {}, token {}".format(tokindex, token))
+            if self.toktypes:
+                toktype = self.toktypes[tokindex]
             if not incl_del and MorphoSyn.del_token(token):
                 # Ignore elements deleted by MorphoSyns
                 if anals and 'target' in anals[0]:
@@ -961,7 +974,7 @@ class Sentence:
 #                    print("Adding del indices {} to SNode: {}:{}".format(raw_indices, token, index))
                 raw_indices.append(tokindex)
 #                incorp_indices.append(tokindex)
-                self.nodes.append(SNode(token, index, anals, self, raw_indices, rawtoken=rawtok))
+                self.nodes.append(SNode(token, index, anals, self, raw_indices, rawtoken=rawtok, toktype=toktype))
 #                                        incorp_indices, del_indices=del_indices.get(tokindex, [])))
 #                incorp_indices = []
 #                del_indices = []
@@ -977,7 +990,7 @@ class Sentence:
                     anals = [{'cats': ['$nm']}]
                 else:
                     anals = None
-                self.nodes.append(SNode(token, index, anals, self, [tokindex], rawtoken=rawtok))
+                self.nodes.append(SNode(token, index, anals, self, [tokindex], rawtoken=rawtok, toktype=toktype))
                 incorp_indices = []
                 index += 1
 
@@ -1742,7 +1755,7 @@ class Sentence:
 
     def get_html(self):
         """Create HTML for a sentence with no solution."""
-        return [(self.raw, "Silver", "<table border=1></table>", 0)]
+        return [(self.raw, "Silver", "<table border=1></table>", 0, True)]
         
     def verbatim(self, node):
         """Use the source token in the target complete translation."""
@@ -1866,6 +1879,9 @@ class Solution:
         stoks = []
         index = end_index + 1
         included_tokens = []
+#        print("Untranslated segment, corresponding nodes")
+#        for i in indices_covered:
+#            print("  {}".format(self.sentence.nodes[i]))
         for stok in src_tokens:
             if index in indices_covered:
                 if stoks:
@@ -1894,8 +1910,13 @@ class Solution:
                 translation = []
             start = i0
             end = i0+len(stok_group)-1
+            node_toktype = [self.sentence.get_node_by_raw(i).toktype for i in range(start, end+1)][0]
+            space_before = 1
+            if node_toktype == 2:
+                space_before = 0
+#            print("Node type for untranslated SolSeg: {}".format(node_toktype))
             seg = SolSeg(self, (start, end), translation, stok_group, session=self.session, gname=gname,
-                         merger_groups=merger_groups, is_punc=is_punc)
+                         space_before=space_before, merger_groups=merger_groups, is_punc=is_punc)
             print("Segment (untranslated) {}->{}: {}".format(start, end, included_tokens))
             self.segments.append(seg)
             i0 += len(stok_group)
