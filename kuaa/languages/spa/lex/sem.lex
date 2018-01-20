@@ -319,6 +319,7 @@ adobo_n $n
 adoctrinar_v $v,$vt
 adolescencia_n $n
 adolescente_n $n
+adónde $adv
 adopción_n $n
 adoptar_v $v
 adoquín_n $n

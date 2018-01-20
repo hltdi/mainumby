@@ -85,6 +85,7 @@ def quit(session=None):
     if session:
         session.quit()
 
+## Probably only need to read in usernames.
 def init_users():
     # Read in current users before login.
     User.read_all()

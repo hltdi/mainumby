@@ -398,11 +398,14 @@ class Group(Entry):
                     print("  Trying snode {}, nodegap {}, nogap? {}".format(node, nodegap, self.nogap))
                 # If this snode is unknown, the group can't include it
                 if node.is_unk():
+                    if verbosity or self.debug:
+                        print("  Node is unknown!")
                     break
                 if nodegap > 2:
                     break
                 if self.nogap and nodegap > 0:
                     break
+
                 # If there is a failif condition for the group and the position within the group is right,
                 # see if we should fail here
                 if tryfail:
@@ -436,7 +439,8 @@ class Group(Entry):
                     fstring = "  Trying {}, token index {}, snode index {}, head index {}, last s index {}"
                     print(fstring.format(node, index, snode_indices, head_sindex, last_sindex))
                 if ishead:
-#                    print("   Matching head, node index {}, head sindex {}".format(node.index, head_sindex))
+                    if self.debug:
+                        print("   Matching head, node index {}, head sindex {}".format(node.index, head_sindex))
                     if node.index != head_sindex:
                         # Is there any way this could not fail??
                         return False

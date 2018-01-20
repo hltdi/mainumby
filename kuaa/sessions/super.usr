@@ -1,32 +1,10 @@
-{t} 12.12.2017/20:07:05
-{S:
-Para participar , tenés que inscribirte .
-{-> Omombe'uka guarã rehekotevẽ mitãherouka. <-}
-:S}
-{T} 12.12.2017/20:09:08
-{$} super::12.12.2017/20:35:37
-{t} 12.12.2017/20:35:37
-{S:
-Esta es la oración para traducir .
-{-> Kóva ñe'ẽjoaju ombohasa guarã. <-}
-:S}
-{T} 12.12.2017/20:36:40
-{$} super::12.12.2017/20:40:23
-{t} 12.12.2017/20:40:23
-{S:
-Esta es una oración para traducir .
-{-> Kóva peteĩ ñe'ẽjoaju ombohasa guarã. <-}
-:S}
-{T} 12.12.2017/20:41:30
-{$} super::12.12.2017/22:08:36
-{t} 12.12.2017/22:08:36
-{S:
-Patricia no nos escribió una carta .
-:S}
-{T} 12.12.2017/22:12:08
-{$} super::12.12.2017/22:15:18
-{t} 12.12.2017/22:15:18
-{S:
-Patricia no nos escribió una carta .
-:S}
-{T} 12.12.2017/22:17:25
+creation: 20.01.2018/00:43:07
+email: gasser@indiana.edu
+level: 1
+name: Michael Gasser
+nsentences: 0
+nsessions: 0
+pw_hash: pbkdf2:sha1:1000$cPioSBi1$592133001b1400fa18ff7c97b63eb249a5da9b90
+score: 0.0
+update: 20.01.2018/00:43:07
+username: super

@@ -113,10 +113,10 @@ def login():
         username = form.get('username')
         user = get_user(username)
         if not user:
-#            print("No such user as {}".format(username))
+            print("No such user as {}".format(username))
             return render_template('login.html', error='user')
         else:
-#            print("Found user {}".format(user))
+            print("Found user {}".format(user))
             password = form.get('password')
             if user.check_password(password):
                 USER = user

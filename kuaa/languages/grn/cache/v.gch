@@ -98,3 +98,15 @@ mombe'uka:[cat=a,tmp=prs] || omombe'uka
 <hekotevẽ:[cat=a,ns=0,ps=2,tmp=prs] || rehekotevẽ
 mitãherouka:[cat=a,no=0,po=2,tmp=inf] || mitãherouka
 hai:[cat=a,+neg,no=1,ns=0,po=1,ps=3,tmp=prt] || ndaorehaíri;ndaorehaírikuri;ndaorehaíriraka'e;ndaorehaíri'akue;nañandehaíri;nañandehaírikuri;nañandehaíriraka'e;nañandehaíri'akue
+moñe'ẽ:[cat=a,ns=0,ps=1,tmp=prt] || amoñe'ẽ;amoñe'ẽkuri;amoñe'ẽraka'e;amoñe'ẽ'akue
+japysaka:[cat=a,no=1,ns=0,po=3,ps=2,tmp=prt] || rejapysakákuri;rejapysaka;rejapysakaraka'e;rejapysaka'akue
+<hendu:[cat=a,no=1,ns=0,po=3,ps=2,tmp=prt] || rehendúkuri;rehendu;rehenduraka'e;rehendu'akue
+ñemondýi:[cat=a,+neg,ns=0,ps=3,tmp=prs] || noñemondýiri
+japysaka:[cat=a,ns=1,ps=1,tmp=prs] || jajapysakákuri;jajapysaka;jajapysakaraka'e;jajapysaka'akue;rojapysakákuri;rojapysaka;rojapysakaraka'e;rojapysaka'akue
+japysaka:[cat=a,ns=1,ps=1,tmp=prt] || jajapysakákuri;jajapysaka;jajapysakaraka'e;jajapysaka'akue;rojapysakákuri;rojapysaka;rojapysakaraka'e;rojapysaka'akue
+<hendu:[cat=a,ns=1,ps=1,tmp=prs] || ñahendúkuri;ñahendu;ñahenduraka'e;ñahendu'akue;rohendúkuri;rohendu;rohenduraka'e;rohendu'akue
+<hendu:[cat=a,ns=1,ps=1,tmp=prt] || ñahendúkuri;ñahendu;ñahenduraka'e;ñahendu'akue;rohendúkuri;rohendu;rohenduraka'e;rohendu'akue
+sẽ:[asp=[+vol],cat=a,+neg,ns=1,ps=1,tmp=ipf] || norosẽséi;norosẽséimi;nañasẽséi;nañasẽséimi
+jei:[asp=[+vol],cat=a,+neg,ns=1,ps=1,tmp=ipf] || ndorojeiséi;ndorojeiséimi;ndajajeiséi;ndajajeiséimi
+ju:[cat=a,ns=1,ps=1,tmp=prt] || jajúkuri;jaju;jajuraka'e;jaju'akue;rojúkuri;roju;rojuraka'e;roju'akue
+<hecha:[cat=a,+neg,ns=1,ps=1,tmp=prt] || ndorohechái;ndorohecháikuri;ndorohecháiraka'e;ndorohechái'akue;ndajahechái;ndajahecháikuri;ndajahecháiraka'e;ndajahechái'akue
