@@ -153,8 +153,8 @@ class Session:
         # There might be both segment and whole sentence translations.
         if segtrans:
             segrecords = sentrecord.segments
-            segreclist = sentrecord.seg_list
-            print("Seg list in sent record: {}".format(segreclist))
+#            segreclist = sentrecord.seg_list
+            print("Seg list in sent record: {}".format(segrecords))
             seg_src_trans = segtrans.split('|||')
             for src_trans in seg_src_trans:
                 # index || selected_choice? || source_phrase = translation
@@ -165,12 +165,14 @@ class Session:
                 # Get the segrecord from the dict
                 segrecord1 = segrecords.get(src.lower())
                 # Get the segrecord from the list
-                segrecord2 = segreclist[index]
+#                segrecord1 = segreclist[index]
                 print("  src {}, trans {}, index {}, agreed? {}".format(src, trans, index, agreed))
+#                if segrecord1:
+#                    print("  segrecord {}, translation {}".format(segrecord1, segrecord1.translation))
                 if segrecord1:
-                    print("  segrecord {}, translation {}".format(segrecord1, segrecord1.translation))
-                if segrecord2:
-                    print("  segrecord {}, translation {}".format(segrecord2, segrecord2.translation))
+                    segrecord1.response_code = 1 if agreed else 0
+                    segrecord1.seltrans = trans
+                    print("  segrecord {}, trans {}, code {}".format(segrecord1, segrecord1.seltrans, segrecord1.response_code))
 #            translation = self.target.ortho_clean(translation)
 #            print("Segment translation: {}".format(translation))
 #            segrecord.record(translation=translation)
@@ -248,9 +250,10 @@ class SentRecord:
 
     def record(self, translation):
         """Record user's translation for the whole sentence."""
-        feedback = Feedback(translation=translation)
-        print("{} recording translation {}, feedback: {}".format(self, translation, feedback))
-        self.feedback = feedback
+        self.translation = translation
+#        feedback = Feedback(translation=translation)
+#        print("{} recording translation {}, feedback: {}".format(self, translation, feedback))
+#        self.feedback = feedback
 
     def write(self, file=sys.stdout):
         d = self.to_dict()
@@ -275,15 +278,22 @@ class SegRecord:
         self.sentence = sentence
         self.session = session
         self.indices = solseg.indices
+        # translation options presented by the system
         self.translation = solseg.translation
         self.tokens = solseg.token_str
         self.gname = solseg.gname
         self.merger_gnames = solseg.merger_gnames
         # Add to parent SentRecord
         self.sentence.segments[self.tokens] = self
-        self.sentence.seg_list.append(self)
+#        self.sentence.seg_list.append(self)
         # These get filled in during set_html() in SolSeg
         self.choices = []
+        # Translation selected or provided by user
+        self.seltrans = ''
+        # Code representing user's response --
+        # 1: agrees with Mbojereha's choices,
+        # 0: alternative response
+        self.response_code = 0
         self.feedback = None
 #        print("   Creating segment record {}".format(self))
 
@@ -295,8 +305,9 @@ class SegRecord:
         """Create dictionary from SegRecord."""
         d = {}
         d['src'] = self.tokens
-#        d['trg'] = self.translation
         d['gname'] = self.gname
+        d['resp'] = self.response_code
+        d['trg'] = self.seltrans
         return d
         
     def record(self, choices=None, translation=None):

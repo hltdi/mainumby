@@ -110,3 +110,11 @@ sẽ:[asp=[+vol],cat=a,+neg,ns=1,ps=1,tmp=ipf] || norosẽséi;norosẽséimi;na
 jei:[asp=[+vol],cat=a,+neg,ns=1,ps=1,tmp=ipf] || ndorojeiséi;ndorojeiséimi;ndajajeiséi;ndajajeiséimi
 ju:[cat=a,ns=1,ps=1,tmp=prt] || jajúkuri;jaju;jajuraka'e;jaju'akue;rojúkuri;roju;rojuraka'e;roju'akue
 <hecha:[cat=a,+neg,ns=1,ps=1,tmp=prt] || ndorohechái;ndorohecháikuri;ndorohecháiraka'e;ndorohechái'akue;ndajahechái;ndajahecháikuri;ndajahecháiraka'e;ndajahechái'akue
+ky:[cat=a,ns=0,pp=ramo,ps=3,tmp=prs] || okýrõ
+pyta:[cat=a,ns=1,ps=1,tmp=prt] || japytákuri;japyta;japytaraka'e;japyta'akue;ropytákuri;ropyta;ropytaraka'e;ropyta'akue
+pyta:[cat=a,ns=1,ps=1,tmp=prs] || japytákuri;japyta;japytaraka'e;japyta'akue;ropytákuri;ropyta;ropytaraka'e;ropyta'akue
+ju:[cat=a,ns=0,pp=rire,ps=1,tmp=prt] || ajurirékuri;ajurire;ajurireraka'e;ajurire'akue
+ju:[cat=a,ns=0,pp=ramo,ps=1,tmp=prt] || ajúrõ;ajúrõkuri;ajúrõraka'e;aju'akuérõ
+ju:[cat=a,ns=0,pp=jave,ps=1,tmp=prt] || ajújave;ajújavekuri;ajújaveraka'e;ajújave'akue
+ime:[cat=a,ns=0,ps=1,tmp=ipf] || oimémi;oime;aimémi;aime
+ime:[cat=a,ns=0,ps=3,tmp=ipf] || oimémi;oime;aimémi;aime
