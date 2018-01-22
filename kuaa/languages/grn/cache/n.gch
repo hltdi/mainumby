@@ -64,3 +64,14 @@ ayvu:[n=0] || ayvu
 ava:[caso=pe,n=1] || avakuérape
 <hekove:[caso=pe,n=1] || tekovekuérape
 kóva:[] || kóva
+<hemimbo'e:[caso=pe,n=1] || temimbo'ekuérape
+mbo'ehára:[caso=pe,n=1] || mbo'eharakuérape
+guata:[n=0,poses=[-ext,pp=3]] || iguata
+<hekokue:[n=1,poses=[+ext,np=0,pp=1]] || che_rekokuekuéra
+irũ:[n=1,poses=[+ext,np=0,pp=2]] || ne_irũnguéra
+angirũ:[n=1,poses=[+ext,np=0,pp=2]] || ne_angirũnguéra
+ykeregua:[n=1,poses=[+ext,np=1,pp=1]] || ore_ykereguakuéra;ñande_ykereguakuéra
+kamby:[n=0] || kamby
+kaguy:[n=0] || kaguy
+mbujape:[n=0] || mbujape
+marandu:[n=1] || marandukuéra

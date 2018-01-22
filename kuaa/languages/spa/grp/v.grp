@@ -12898,17 +12898,14 @@
 ->grn mbo'e_v[cat=a] ; #368 ; ##85
 *** enseñar_v[-r,+fin] a $n ; ^ enseñar_v 0
 ->grn moarandu_v[cat=a] $n[caso=pe] ; || 0, -1, 1
-->grn porombo'e_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 ->grn <hekombo'e_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 ->grn mbo'e_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 *** enseñar_v[-r,po=3,no=0] ; ^ enseñar_v 0
 ->grn moarandu_v[cat=a] (chupe)
-->grn porombo'e_v[cat=a] (chupe)
 ->grn <hekombo'e_v[cat=a] (chupe)
 ->grn mbo'e_v[cat=a] (chupe)
 *** enseñar_v[-r,po=3,no=1] ; ^ enseñar_v 0
 ->grn moarandu_v[cat=a] (chupekuéra)
-->grn porombo'e_v[cat=a] (chupekuéra)
 ->grn <hekombo'e_v[cat=a] (chupekuéra)
 ->grn mbo'e_v[cat=a] (chupekuéra)
 *** ensillar_v[-r,+fin] ; ^ ensillar_v 0

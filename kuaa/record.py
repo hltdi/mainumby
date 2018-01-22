@@ -220,10 +220,11 @@ class SentRecord:
     """A record of a Sentence and a single user's response to it."""
 
     def __init__(self, sentence, session=None, user=None):
-        # Also include analyses??
+        self.sentence = sentence
         self.session = session
         self.raw = sentence.original
         self.tokens = sentence.tokens
+        self.analyses = sentence.analyses
         self.time = get_time()
         self.user = user
         # Add to parent Session
@@ -240,9 +241,53 @@ class SentRecord:
 #        session = "{}".format(self.session) if self.session else ""
         return "{} {} {}".format(SENTENCE_PRE, self.raw, SENTENCE_POST)
 
+    ## Methods to stringify Sentence Morphosyn matches, tokens, and morphology
+    def get_morphosyns(self):
+        return [SentRecord.MS_match2string(ms) for ms in self.sentence.morphosyns]
+
+    def get_tokens(self):
+        result = []
+        for analysis in self.sentence.analyses:
+            dct = analysis[1][0]
+            result.append("{};;{};;{};;{}".format(analysis[0], dct.get('pos'), dct.get('root'),
+                                                  SentRecord.stringify_feats(dct.get('features'))))
+        return result
+
+#    def get_tokens(self):
+#        return ';;'.join([a[0] for a in self.sentence.analyses])
+
+#    def get_pos(self):
+#        analyses = self.sentence.analyses
+#        return [anals[0].get('pos') for anals in [a[1] for a in analyses]]
+
+#    def get_roots(self):
+#        analyses = self.sentence.analyses
+#        return ";;".join([anals[0].get('root') for anals in [a[1] for a in analyses]])
+
+#    def get_features(self):
+#        analyses = self.sentence.analyses
+#        return ";;".join([SentRecord.stringify_feats(anals[0].get('features')) for anals in [a[1] for a in analyses]])
+
+    @staticmethod
+    def stringify_feats(feats):
+        if feats:
+            return feats.__repr__()
+        else:
+            return '[]'
+
+    @staticmethod
+    def MS_match2string(ms_match):
+        """Convert a Morphosyn match to a string."""
+        return "{} {} {}".format(ms_match[0].__repr__(), ms_match[1], ms_match[2])
+
     def to_dict(self):
         d = {}
-        d['src'] = self.raw
+        d['s_raw'] = self.raw
+        d['s_tok'] = self.get_tokens()
+#        d['s_feat'] = self.get_features()
+#        d['s_root'] = self.get_roots()
+#        d['s_pos'] = self.get_pos()
+        d['s_ms'] = self.get_morphosyns()
         d['trg'] = self.translation
         d['time'] = Session.time2shortstr(self.time)
         d['segs'] = [s.to_dict() for s in self.segments.values()]
@@ -401,9 +446,9 @@ class User:
         self.pw_hash = generate_password_hash(password)
 
     def check_password(self, password):
-        print("Checking password {} with hash {}".format(password, self.pw_hash))
+#        print("Checking password {} with hash {}".format(password, self.pw_hash))
         res = check_password_hash(self.pw_hash, password)
-        print("Result {}".format(res))
+#        print("Result {}".format(res))
         return check_password_hash(self.pw_hash, password)
 
     def add_user(self):
