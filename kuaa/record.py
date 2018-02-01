@@ -147,14 +147,15 @@ class Session:
         segrecord = None
         if translation:
             translation = self.target.ortho_clean(translation)
-            print("Recorded sentence translation: {}".format(translation))
+            print("  Recorded sentence translation: {}".format(translation))
+            print("  Segtrans: {}".format(segtrans))
             sentrecord.record(translation)
 
         # There might be both segment and whole sentence translations.
         if segtrans:
             segrecords = sentrecord.segments
 #            segreclist = sentrecord.seg_list
-            print("Seg list in sent record: {}".format(segrecords))
+            print("  Seg list in sent record: {}".format(segrecords))
             seg_src_trans = segtrans.split('|||')
             for src_trans in seg_src_trans:
                 # index || selected_choice? || source_phrase = translation
@@ -166,9 +167,7 @@ class Session:
                 segrecord1 = segrecords.get(src.lower())
                 # Get the segrecord from the list
 #                segrecord1 = segreclist[index]
-                print("  src {}, trans {}, index {}, agreed? {}".format(src, trans, index, agreed))
-#                if segrecord1:
-#                    print("  segrecord {}, translation {}".format(segrecord1, segrecord1.translation))
+                print("    src {}, trans {}, index {}, agreed? {}".format(src, trans, index, agreed))
                 if segrecord1:
                     segrecord1.response_code = 1 if agreed else 0
                     segrecord1.seltrans = trans
@@ -219,6 +218,8 @@ class Session:
 class SentRecord:
     """A record of a Sentence and a single user's response to it."""
 
+    toksep = "~~"
+
     def __init__(self, sentence, session=None, user=None):
         self.sentence = sentence
         self.session = session
@@ -249,7 +250,8 @@ class SentRecord:
         result = []
         for analysis in self.sentence.analyses:
             dct = analysis[1][0]
-            result.append("{};;{};;{};;{}".format(analysis[0], dct.get('pos'), dct.get('root'),
+            result.append("{}{}{}{}{}{}{}".format(analysis[0], SentRecord.toksep, dct.get('pos'),
+                                                  SentRecord.toksep, dct.get('root'), SentRecord.toksep,
                                                   SentRecord.stringify_feats(dct.get('features'))))
         return result
 

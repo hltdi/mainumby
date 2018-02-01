@@ -42,7 +42,7 @@ Peru_ $n,$nprs
 <hapypi_ $n
 <hasa_ $v,$vi
 <haso_ $n
-<hasy_ $a,$n
+<hasy_ $a,$n,$v
 <hasẽ_ $v,$vi,$n
 <hata_ $n
 <hata'y_ $n

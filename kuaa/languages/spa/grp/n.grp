@@ -7581,9 +7581,7 @@
 ->grn mba'eyru_n ; 0==0 n:n,poses:poses ; #7
 ->grn mba'yru_n ; 0==0 n:n,poses:poses ; #66
 *** estudiante_n ; ^ estudiante_n 0
-->grn kuaaha'ãha_n ; 0==0 n:n,poses:poses
 ->grn <hemimbo'e_n ; 0==0 n:n,poses:poses ; #48
-->grn kuaaha'ãhára_n ; 0==0 n:n,poses:poses
 *** estudio_n ; ^ estudio_n 0 ; #3
 ->grn mboaguera_n ; 0==0 n:n,poses:poses ; #10
 ->grn jetypeka_n ; 0==0 n:n,poses:poses
@@ -7717,10 +7715,6 @@
 ->grn <huguy'o_n ; 0==0 n:n,poses:poses
 *** extranjero_n ; ^ extranjero_n 0 ; #94
 ->grn pytagua_n ; 0==0 n:n,poses:poses ; #51 ; ##3
-->grn yvypo_n amboae ; 0==0 n:n,poses:poses
-->grn ambue_n tetãgua ; 0==0 n:n,poses:poses
-->grn ñande'ỹva_n ; 0==0 n:n,poses:poses ; #2
-->grn te'ýi_n morotĩ ; 0==0 n:n,poses:poses
 *** extraordinaria_n ; ^ extraordinaria_n 0
 ->grn mba'eguasu_n ; 0==0 n:n,poses:poses
 *** extravío_n ; ^ extravío_n 0
@@ -30768,17 +30762,11 @@
 ->grn mba'eyru_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn mba'yru_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** estudiante_n que $v[-ipv] ; ^ estudiante_n 0
-->grn kuaaha'ãha_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <hemimbo'e_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kuaaha'ãhára_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** estudiante_n $pp $art que $v[-ipv] ; ^ estudiante_n 0
-->grn kuaaha'ãha_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <hemimbo'e_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kuaaha'ãhára_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** estudiante_n $pp cual_n $v[-ipv] ; ^ estudiante_n 0
-->grn kuaaha'ãha_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <hemimbo'e_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kuaaha'ãhára_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** estudio_n que $v[-ipv] ; ^ estudio_n 0
 ->grn mboaguera_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn jetypeka_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
@@ -31036,22 +31024,10 @@
 ->grn mbogueha_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** extranjero_n que $v[-ipv] ; ^ extranjero_n 0
 ->grn pytagua_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn yvypo_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn ambue_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn ñande'ỹva_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn te'ýi_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** extranjero_n $pp $art que $v[-ipv] ; ^ extranjero_n 0
 ->grn pytagua_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn yvypo_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn ambue_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn ñande'ỹva_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn te'ýi_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** extranjero_n $pp cual_n $v[-ipv] ; ^ extranjero_n 0
 ->grn pytagua_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn yvypo_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn ambue_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn ñande'ỹva_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn te'ýi_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** extraordinaria_n que $v[-ipv] ; ^ extraordinaria_n 0
 ->grn mba'eguasu_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 *** extraordinaria_n $pp $art que $v[-ipv] ; ^ extraordinaria_n 0

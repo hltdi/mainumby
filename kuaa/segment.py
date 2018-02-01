@@ -86,8 +86,9 @@ class SolSeg:
     special_re = re.compile("%[A-Z]+~")
 
     def __init__(self, solution, indices, translation, tokens, color=None, space_before=1,
-                 spec_indices=None, session=None, gname=None, merger_groups=None, is_punc=False):
-#        print("Creating SolSeg for indices {}, translation {}, tokens {}".format(indices, translation, tokens))
+                 tgroups=None, merger_groups=None,
+                 spec_indices=None, session=None, gname=None, is_punc=False):
+#        print("Creating SolSeg for indices {}, translation {}, tgroups {}, tokens {}".format(indices, translation, tgroups, tokens))
         self.source = solution.source
         self.target = solution.target
         self.indices = indices
@@ -106,7 +107,6 @@ class SolSeg:
             self.special = True
             if not translation:
                 # Set the translation for the special segment
-#                print("Setting special segment: {}".format(tokens))
                 spec_trans = self.source.translate_special(tokens[0])
                 if spec_trans:
                     self.translation = [[spec_trans]]
@@ -117,12 +117,14 @@ class SolSeg:
         self.gname = gname
         # Triples for each merger with the segment
         self.merger_gnames = merger_groups
+        # Target-language groups
+        self.tgroups = tgroups or [[]] * len(self.translation)
+        # The session associated with this solution segment
         self.session = session
         # Create a record for this segment if there's a session running and it's not punctuation
         if session and session.running and not self.source.is_punc(self.token_str):
             self.record = self.make_record(session, solution.sentence)
         else:
-#            print("   Not making a record for {}".format(self))
             self.record = None
         self.html = []
 #        print("Created {}, punctuation? {}, translation {}".format(self, self.is_punc, self.translation))
@@ -156,46 +158,57 @@ class SolSeg:
         choice_list = self.record.choices if self.record else None
         # Final source segment output
         tokens = self.token_str
-#        print("Tokens for segment: {}".format(tokens))
-#        print("is punc? {}".format(self.is_punc))
+        trans_choice_index = 0
         if self.is_punc:
             trans = self.translation[0][0]
-#            print("Punc trans: {}".format(trans))
             if '"' in trans:
                 trans = trans.replace('"', '\"')
-#                print("Converted: {}".format(trans))
             transhtml += "<tr><td class='transchoice'>"
             transhtml += '<br/><input type="radio" name="choice" id={} value="{}" checked>{}</td>'.format(trans, trans, trans)
             transhtml += '</tr>'
-#            transhtml += '<tr><td class="other">'
-#            transhtml += '<input type="radio" name="choice" id="other" value="other">otra traducción (introducir abajo)</td></tr>'
             transhtml += '</table>'
             self.html = (tokens, self.color, transhtml, index, self.space_before)
             return
-        for tindex, t in enumerate(self.translation):
-#            print("{} setting HTML for {}: {}".format(self, tindex, t))
+        for tindex, (t, tgroups) in enumerate(zip(self.translation, self.tgroups)):
             # Create all combinations of word sequences
             t_expanded = []
-            for tt in t:
+            tg_expanded = []
+            for tt, tg in zip(t, tgroups):
                 # Get rid of parentheses around optional elements
                 if '(' in tt:
                     tt = ['', tt[1:-1]]
                 else:
                     tt = tt.split('|')
+                tg = [(ttt, tg) for ttt in tt]
                 t_expanded.append(tt)
-            tcombs = [' '.join(y) for y in allcombs(t_expanded)]
+                tg_expanded.append(tg)
+            print("   T{} expanded {}, tgroups {}".format(tindex, t_expanded, tgroups))
+            print("   TG{} expanded {}".format(tindex, tg_expanded))
+            tcombs = allcombs(t_expanded)
+            print("   T combinations")
+            for tc in tcombs:
+                print("     {}".format(tc))
+            tcombs = [' '.join(y) for y in tcombs]
             tcombs.sort()
-#            print("  Tcombs {}".format(tcombs))
+            tgcombs = allcombs(tg_expanded)
+            print("   TG combinations")
+            for tgc in tgcombs:
+                print("     {}".format(tgc))
+            print("   T combinations joined {}".format(tcombs))
             # A single translation of the source segment
             transhtml += '<tr>'
             transhtml += "<td class='transchoice'>"
             html_choices = []
             for tcindex, tchoice in enumerate(tcombs):
+#                print("  Choice {}: {}".format(trans_choice_index, tchoice))
                 if tindex == 0 and tcindex == 0:
                     html_choices.append('<input type="radio" name="choice" id={} value="{}" checked>{}'.format(tchoice, tchoice, tchoice))
                 else:
                     html_choices.append('<input type="radio" name="choice" id={} value="{}">{}'.format(tchoice, tchoice, tchoice))
+                trans_choice_index += 1
             transhtml += "<br/>".join(html_choices)
+            if len(tcombs) > 1:
+                transhtml += "<hr>"
             transhtml += "</td>"
             if self.record:
                 choice_list.append(tchoice)
@@ -205,9 +218,6 @@ class SolSeg:
             # Button to translate as source language
             transhtml += '<tr><td class="source">'
             transhtml += '<input type="radio" name="choice" id={} value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
-#            # Button for the user's own translation
-#            transhtml += '<tr><td class="other">'
-#            transhtml += '<input type="radio" name="choice" id="other" value="other">otra traducción (introducir abajo)</td></tr>'
             # Remove special prefixes
             transhtml = SolSeg.remove_spec_pre(transhtml)
             transhtml = transhtml.replace('_', ' ')
@@ -216,9 +226,6 @@ class SolSeg:
             # No translations suggested: checkbox for translating as source (only option)
             transhtml += '<tr><td class="source">'
             transhtml += '<input type="checkbox" name="choice" id={} value="{}" checked>{}</td></tr>'.format(tokens, tokens, tokens)
-#            # Add other translation button
-#            transhtml += '<tr><td class="other">'
-#            transhtml += '<input type="radio" name="choice" id="other" value="other" checked>otra traducción (introducir abajo)</td></tr>'
             # Remove special prefixes
             transhtml = SolSeg.remove_spec_pre(transhtml)
             transhtml = transhtml.replace('_', ' ')
@@ -872,6 +879,8 @@ class TreeTrans:
         self.top = top
         # All target groups for nodes within this TT
         self.all_tgroups = []
+        # Tgroups in output order for each translation
+        self.ordered_tgroups = []
         # Merged group indices
         self.mergers = []
         snode_indices = list(tree)
@@ -879,7 +888,6 @@ class TreeTrans:
         self.snode_indices = snode_indices
         self.snodes = [self.sentence.nodes[i] for i in snode_indices]
         self.sol_gnodes_feats = [solution.gnodes_feats[i] for i in snode_indices]
-        self.nodes = []
         # The GInst at the top of the tree
         self.ginst = ginst
         # Save this TreeTrans in the GInst
@@ -903,10 +911,13 @@ class TreeTrans:
                              verbosity=verbosity)
 #        # Positions of target words
 #        self.positions = []
-        # These are produced in self.build()
+        # These are produced in self.build(); each only applies to the latest translation
         self.node_features = None
         self.group_nodes = None
         self.agreements = None
+        self.nodes = []
+        # Accumulate the nodes found in build()
+        self.all_nodes = []
         # Final outputs; different ones have alternate word orders
         self.outputs = []
         # Strings representing outputs
@@ -1001,8 +1012,9 @@ class TreeTrans:
                 node_features.append([snode.token, None, []])
                 tnode_index += 1
             elif len(gnodes) == 1 and gnodes[0].special:
+                # one gnode, and it's "special"
                 gnode = gnodes[0]
-                # This is where a special node gets translated; by default, source language form is used.
+                # by default translation of special node is source language form
                 spec_token = snode.token
                 spec_trans = self.source.translate_special(spec_token)
                 print("Translating {} as {}".format(spec_token, spec_trans))
@@ -1015,9 +1027,12 @@ class TreeTrans:
                 # Constrain the position of this node in the tgroup
                 if len(tgroup.tokens) > 1:
                     t_indices = [(tgroup, t_index)]
+                else:
+                    t_indices = [(tgroup, 0)]
                 node_features.append([spec_trans, None, t_indices])
                 tnode_index += 1
             else:
+                # all other cases, there are one or more target translation groups
                 cache_key = None
                 gna, gnc, token = None, None, None
                 targ_feats, agrs = None, None
@@ -1036,7 +1051,7 @@ class TreeTrans:
                     gna = self.abs_gnode_dict[gnodes[1]]
                     gnc = self.gnode_dict[gnodes[0]]
                 if gna:
-                    # Two nodes to be merged
+                    # there are two nodes to be merged
                     if verbosity > 1:
                         print("   gna: {}".format(gna))
                         print("   gnc: {}".format(gnc))
@@ -1056,6 +1071,7 @@ class TreeTrans:
                         print("   merging nodes: concrete {}, abstract {}".format(gnc1, gna1))
                     cache_key = ((gnc1[0], gnc1[-1]), (gna1[0], gna1[-1]))
                     if cache_key in self.cache:
+                        # merged nodes found in local cache
                         tok, tn_i, t_i, tg, t_feats = self.cache[cache_key]
                         if verbosity > 1:
                             print("   merger already in cache: {}".format(self.cache[cache_key]))
@@ -1068,6 +1084,7 @@ class TreeTrans:
                         for t_index in t_i:
                             group_nodes[t_index] = [tok, t_feats, feat_index]
                     else:
+                        # merged nodes not found in cache
                         tgroups, tokens, targ_feats, agrs, t_index = zip(gna1, gnc1)
 #                        print("   tgroups {}, tokens {}".format(tgroups, tokens))
                         token = tokens[1]
@@ -1075,7 +1092,7 @@ class TreeTrans:
                         if targ_feats == 'fail':
                             print("Features fail to unify")
                             return False
-                        # Merge the agreements
+                        # merge the agreements
                         agrs = TreeTrans.merge_agrs(agrs)
                         t_indices.append((tgroups[0], gna1[-1]))
                         t_indices.append((tgroups[1], gnc1[-1]))
@@ -1107,27 +1124,20 @@ class TreeTrans:
                         self.cache[cache_key] = (token, tnode_index, t_indices, tg, targ_feats)
                     
                 else:
-                    # only one gnode in list
+                    # only one gnode in list, no merger
                     gnode = gnodes[0]
                     if verbosity > 1:
                         print("   single node to generate: {}".format(gnode))
                     if gnode not in self.gnode_dict:
                         if verbosity > 1:
                             print("   not in gnode dict, skipping")
-                        # But if this is the head of the TreeTrans's group, we need to increment the tnode_index
-#                        if gnode == self.ginst.head:
-#                            if verbosity:
-#                                print("   gnode is head of TT group")
+                            # But if this is the head of the TreeTrans's group, we need to increment the tnode_index
                             tnode_index += 1
                         continue
                     else:
-                        # Translation (target) group for this instance of build() and this node
-#                        tgroup1 = tg_groups[tnode_index]
+                        # translating single gnode
                         gnode_tuple_list = self.gnode_dict[gnode]
                         gnode_tuple = firsttrue(lambda x: x[0] in tg_groups, gnode_tuple_list)
-#                        print("gnode {}".format(gnode))
-#                        print(" tgcomb {}".format(tg_groups))
-#                        print(" gnode_tuple_list {}".format(gnode_tuple_list))
                         if verbosity > 1:
                             print("   gnode_tuple: {}".format(gnode_tuple))
                         if not gnode_tuple:
@@ -1135,6 +1145,7 @@ class TreeTrans:
                         tgroup, token, targ_feats, agrs, t_index = gnode_tuple
                         cache_key = tgroup, t_index
                         if cache_key in self.cache:
+                            # translation already in local cache
                             tok, tn_i, t_i, x, t_feats = self.cache[cache_key]
                             if verbosity > 1:
                                 print("   single node already in cache: {}".format(self.cache[cache_key]))
@@ -1144,8 +1155,11 @@ class TreeTrans:
                             for t_ind in t_i:
                                 group_nodes[t_ind] = [tok, t_feats, feat_index]
                         else:
+                            # translation not in local cache
                             if len(tgroup.tokens) > 1:
                                 t_indices.append((tgroup, t_index))
+                            else:
+                                t_indices = [(tgroup, 0)]
                             # Make target and source features agree as required
                             if not targ_feats:
                                 targ_feats = FeatStruct({})
@@ -1179,6 +1193,7 @@ class TreeTrans:
                 print(" build(): tginst {} agr {}, agreements {}".format(tginst, agr, agreements))
         subtnodes = tg_tnodes[1] if len(tg_tnodes) > 1 else []
         self.add_tnodes(tnodes, subtnodes, tginst, group_nodes, node_features)
+#        print("{}: node features {}".format(self, node_features))
         # Store local variables as instance variables
         self.node_features = node_features
         self.group_nodes = group_nodes
@@ -1203,7 +1218,6 @@ class TreeTrans:
             index = [(tnode.group, tnode.index)]
             feat_index = len(node_features)
             node_features.append([tnode.token, features, index])
-            
 
     @staticmethod
     def get_root_POS(token):
@@ -1387,10 +1401,14 @@ class TreeTrans:
                 succeeding_state = next(generator)
                 order_vars = self.variables['order']
                 positions = [list(v.get_value(dstore=succeeding_state.dstore))[0] for v in order_vars]
-#                print("Found positions {}".format(positions))
                 # list of (form, position) pairs; sort by position
-                node_pos = list(zip([n[0] for n in self.nodes], positions))
-                node_pos.sort(key=lambda x: x[1])
+                node_group_pos = list(zip(self.nodes, positions))
+                node_group_pos.sort(key=lambda x: x[1])
+                node_pos = [n[0] for n in node_group_pos]
+                self.all_nodes.append(node_pos)
+                # Groups and gnode indices in output order
+                group_pos = [n[1] for n in node_pos]
+                self.ordered_tgroups.append(group_pos)
                 # just the form
                 output = [n[0] for n in node_pos]
                 self.outputs.append(output)

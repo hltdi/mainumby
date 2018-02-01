@@ -424,6 +424,7 @@ class Document(list):
             raw_sentences.append(raw_sentence)
         # Make Sentence objects for each list of tokens and types
         for sentence, rawsent in zip(sentences, raw_sentences):
+#            print("Sentence: {}".format(sentence))
             sentence_list.append(Sentence(language=language,
                                           tokens=[t[0] for t in sentence],
                                           toktypes=[t[1] for t in sentence],
@@ -657,6 +658,8 @@ class Sentence:
         segmentation = self.language.segs.get(token)
         if segmentation:
             self.tokens[tok_index:tok_index+1] = segmentation
+            # Also increase the toktypes list
+            self.toktypes[tok_index:tok_index+1] = [self.toktypes[tok_index], 1]
 
     def clean(self):
         """Apply the language-specific clean-up function to normalize orthography and punctuation."""
@@ -925,7 +928,7 @@ class Sentence:
         del_indices = {}
         toktype = 1
         for tokindex, (rawtok, (token, anals)) in enumerate(zip(self.tokens, self.analyses)):
-#            print("Nodifying item {}, token {}".format(tokindex, token))
+#            print("Nodifying item {}, token {}, toktypes {}".format(tokindex, token, self.toktypes))
             if self.toktypes:
                 toktype = self.toktypes[tokindex]
             if not incl_del and MorphoSyn.del_token(token):
@@ -1825,6 +1828,7 @@ class Solution:
             for tt in self.treetranss:
                 if not tt.output_strings:
                     continue
+                trggroups = tt.ordered_tgroups
                 indices = tt.snode_indices
                 raw_indices = []
                 for index in indices:
@@ -1832,7 +1836,7 @@ class Solution:
                     raw1 = node.raw_indices
                     raw_indices.extend(raw1)
                 raw_indices.sort()
-                self.ttrans_outputs.append([raw_indices, tt.output_strings, tt.ginst.group.name, tt.get_merger_groups()])
+                self.ttrans_outputs.append([raw_indices, tt.output_strings, tt.ginst.group.name, tt.get_merger_groups(), trggroups])
                 last_indices = raw_indices
         return self.ttrans_outputs
 
@@ -1879,9 +1883,6 @@ class Solution:
         stoks = []
         index = end_index + 1
         included_tokens = []
-#        print("Untranslated segment, corresponding nodes")
-#        for i in indices_covered:
-#            print("  {}".format(self.sentence.nodes[i]))
         for stok in src_tokens:
             if index in indices_covered:
                 if stoks:
@@ -1917,7 +1918,7 @@ class Solution:
 #            print("Node type for untranslated SolSeg: {}".format(node_toktype))
             seg = SolSeg(self, (start, end), translation, stok_group, session=self.session, gname=gname,
                          space_before=space_before, merger_groups=merger_groups, is_punc=is_punc)
-            print("Segment (untranslated) {}->{}: {}".format(start, end, included_tokens))
+            print("Segment (untranslated) {}->{}: {}={}".format(start, end, included_tokens, seg.translation))
             self.segments.append(seg)
             i0 += len(stok_group)
 
@@ -1928,7 +1929,7 @@ class Solution:
         max_index = -1
         tokens = self.sentence.tokens
         indices_covered = []
-        for raw_indices, forms, gname, merger_groups in tt:
+        for raw_indices, forms, gname, merger_groups, tgroups in tt:
             late = False
             start, end = raw_indices[0], raw_indices[-1]
             if start > max_index+1:
@@ -1944,7 +1945,7 @@ class Solution:
             if late:
                 src_tokens[0] = "←" + src_tokens[0]
             seg = SolSeg(self, raw_indices, forms, src_tokens, session=self.session, gname=gname,
-                         merger_groups=merger_groups)
+                         tgroups=tgroups, merger_groups=merger_groups)
             print("Segment (translated) {}->{}: {}={}".format(start, end, src_tokens, forms))
             self.segments.append(seg)
             indices_covered.extend(raw_indices)

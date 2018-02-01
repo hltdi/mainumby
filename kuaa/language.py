@@ -271,6 +271,7 @@ class Language:
             self.load_morpho(generate=use in (GENERATION, TARGET, TRAIN),
                              analyze=use in (ANALYSIS, SOURCE, TRAIN),
                              segment=False, guess=False, verbose=False)
+        print("Lengua {} creaada".format(self))
 
     @staticmethod
     def is_dig_numeral(string):
@@ -409,11 +410,13 @@ class Language:
         return string
 
     ### Getting and setting
-    def get_group(self, name):
+    def get_group(self, name, key=None):
         """Name if not None is a string representing the group's 'name'."""
-        key = Group.get_key(name)
+        key = key or Group.get_key(name)
         cands = self.groups.get(key)
-        return firsttrue(lambda c: c.name == name, cands)
+        if cands:
+            return firsttrue(lambda c: c.name == name, cands)
+        return None
 
     ### Directories and files
     
@@ -1809,9 +1812,10 @@ class Language:
 
     def generate(self, root, features, pos=None, guess=False, roman=True, cache=True, verbosity=0):
         """2017.5.19: features may now be an FSSet; should probably be the only option."""
-        # Features may override the POS provided; needed for verbal nouns
-        featpos = features.get('pos')
-        pos = featpos or pos
+        # In Amharic features may override the POS provided (needed for verbal nouns), but this doesn't apply
+        # to Guarani, which may have posmorph v and feature pos a!
+#        featpos = features.get('pos')
+#        pos = featpos or pos
         if verbosity:
             print("Generating {}:{} with POS {}".format(root, features.__repr__(), pos))
         if not pos:
@@ -1821,7 +1825,7 @@ class Language:
         output = []
         if pos:
             if pos not in morf:
-#                print("POS {} not in morphology {}".format(pos, morf))
+                print("POS {} not in morphology {}".format(pos, morf))
                 return [root]
             posmorph = morf[pos]
 #            print("Generating root {} with POS {} and features {}".format(root, pos, features.__repr__()))

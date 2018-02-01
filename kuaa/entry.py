@@ -8,7 +8,8 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyleft 2014, 2015, 2016, 2017 HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyleft 2014, 2015, 2016, 2017, 2018
+#      HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -274,6 +275,8 @@ class Group(Entry):
         # tokens is a list of strings
         # name may be specified explicitly or not
         # head is a string like 'guata' or 'guata_' or 'guata_v'
+#        if "mbohovái_v" in head:
+#            print("Actually creating group for {} with head {}, tokens {}, name {}".format(language, head, tokens, name))
         if head:
             self.head = head
             root, x, pos = head.partition('_')
@@ -317,6 +320,8 @@ class Group(Entry):
             # What was this for? Why does it matter whether any nodes before the head are cats?
 #             and not any([Group.is_cat(t) for t in self.tokens[:self.head_index]]):
             self.snode_start = -self.head_index
+#        if "mbohovái_v" in head:
+#            print("Created group {} for {} with head {} and name {}".format(self, language, head, name))
 
     def __repr__(self):
         """Print name."""
@@ -381,9 +386,6 @@ class Group(Entry):
             nodegap = 0
             # Whether this token is the group head
             ishead = (index == self.head_index)
-#            if matcheddel:
-#                print("Matching token {} in {} following deleted match".format(token, self))
-#            isneg = Entry.is_negative(token)
             iscat = Entry.is_cat(token)
             match_snodes1 = []
             feats = self.features[index] if self.features else None
@@ -411,7 +413,6 @@ class Group(Entry):
                 if tryfail:
                     negm = node.neg_match(failspec, debug=self.debug, verbosity=verbosity)
                     if negm:
-#                        print("{}: negative match with {}".format(self, node))
                         break
                 snode_indices = node.raw_indices
                 snode_start, snode_end = snode_indices[0], snode_indices[-1]
@@ -419,13 +420,10 @@ class Group(Entry):
                 rightdel = None
                 if node.left_delete:
                     leftdel = node.left_delete
-#                    print("    Trying to match {} in {} with left deleted stokens {}".format(token, self, leftdel))
                     matcheddel = False
                     for ld in leftdel:
-#                        print(" Checking ld {}".format(ld))
                         if token == ld:
                             # Current group token matches left deleted sentence node token; advance to next group token
-#                            print("    {} matches, advancing to next group token".format(ld))
                             matcheddel = True
                             break
                     if matcheddel:
@@ -434,7 +432,6 @@ class Group(Entry):
                         break
                 if node.right_delete:
                     rightdel = node.right_delete
-#                    print("    Trying to match {} in {} with right deleted stokens {}".format(token, self, rightdel))
                 if verbosity > 1 or self.debug:
                     fstring = "  Trying {}, token index {}, snode index {}, head index {}, last s index {}"
                     print(fstring.format(node, index, snode_indices, head_sindex, last_sindex))
@@ -467,7 +464,6 @@ class Group(Entry):
                             print("   {} failed to find match for head token {} with node {}".format(self, token, node))
                         return False
                     else:
-#                        print("  matched head {}".format(token))
                         # If the last token was not a category, this has to follow immediately; if it doesn't fail
                         if index > 0 and not last_cat and last_sindex >=0 and nodegap:
                             if verbosity > 1 or self.debug:
@@ -492,10 +488,7 @@ class Group(Entry):
                     if verbosity > 1 or self.debug:
                         print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
                     if node_match != False:
-#                        if Group.is_cat(token):
-#                            print("Node {} matched cat token {}".format(node, token))
                         if not Group.is_cat(token) and not last_cat and index > 0 and last_sindex >= 0 and nodegap:
-#                            snode_start - last_sindex != 1:
                             if verbosity or self.debug:
                                 fstring = " Group token {} in sentence position {} doesn't follow last token at {}"
                                 print(fstring.format(token, snode_indices, last_sindex))
@@ -643,7 +636,6 @@ class Group(Entry):
                         f_spec = FeatStruct(f_spec)
                         failif_specs[findex] = f_spec
                 failif = (index, failif_specs)
-#                print("Fail if {}".format(failif))
                 continue
             # separate features if any
             m = FORM_FEATS.match(token)
@@ -679,13 +671,16 @@ class Group(Entry):
                 if tc:
                     tattribs['count'] = tc
                 tgroups.append((tgroup, tattribs))
-        g = Group(realtokens, head_index=head_index, head=head, features=features, agr=within_agrs,
-                  failif=failif, nogap=nogap, name=Group.make_name(name_toks), count=count)
+        # Check to see whether a group with this name has already been created for language;
+        # if so, use it
+        gname = Group.make_name(name_toks)
+        existing_group = language.get_group(gname, key=head)
+        g = existing_group or Group(realtokens, head_index=head_index, head=head, features=features, agr=within_agrs,
+                                    failif=failif, nogap=nogap, name=gname, count=count)
         if target and not trans:
             g.trans = tgroups
-        language.add_group(g)
-#        if trans_agrs:
-#            trans_agrs = tuple(trans_agrs)
+        if not existing_group:
+            language.add_group(g)
         return g, trans_agrs, alignment, trans_count
 
     ### Translations
