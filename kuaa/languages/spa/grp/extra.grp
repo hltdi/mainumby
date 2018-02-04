@@ -1,81 +1,81 @@
 
-*** ser_v[-r] inteligente ; ^ ser_v 0
+** ser_v[-r] inteligente ; ^ ser_v 0
 ->grn arandu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] perfecto ; ^ ser_v 0
+** ser_v[-r] perfecto ; ^ ser_v 0
 ->grn <hekokatu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] competente ; ^ ser_v 0
+** ser_v[-r] competente ; ^ ser_v 0
 ->grn ñembokatupyry_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] difícil ; ^ ser_v 0
+** ser_v[-r] difícil ; ^ ser_v 0
 ->grn <hasy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] antipático ; ^ ser_v 0
+** ser_v[-r] antipático ; ^ ser_v 0
 ->grn mbohái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn mbohuguy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] generoso ; ^ ser_v 0
+** ser_v[-r] generoso ; ^ ser_v 0
 ->grn ñepome'ẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] diferente ; ^ ser_v 0
+** ser_v[-r] diferente ; ^ ser_v 0
 ->grn juavy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn joavy_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] difícil de entender ; ^ ser_v 0
+** ser_v[-r] difícil de entender ; ^ ser_v 0
 ->grn <hypy'ũ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] feliz ; ^ ser_v 0
+** ser_v[-r] feliz ; ^ ser_v 0
 ->grn vy'a_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] espeso ; ^ ser_v 0
+** ser_v[-r] espeso ; ^ ser_v 0
 ->grn <hypy'ũ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] necesario ; ^ ser_v 0
+** ser_v[-r] necesario ; ^ ser_v 0
 ->grn <hekotevẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] iguales ; ^ ser_v 0
+** ser_v[-r] iguales ; ^ ser_v 0
 ->grn joja_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] grosero ; ^ ser_v 0
+** ser_v[-r] grosero ; ^ ser_v 0
 ->grn mokachiãi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] indiscreto ; ^ ser_v 0
+** ser_v[-r] indiscreto ; ^ ser_v 0
 ->grn ñe'ẽreirei_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] bondadoso ; ^ ser_v 0
+** ser_v[-r] bondadoso ; ^ ser_v 0
 ->grn <hekokatu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] charlatán ; ^ ser_v 0
+** ser_v[-r] charlatán ; ^ ser_v 0
 ->grn ñe'ẽmbuku_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] cortante ; ^ ser_v 0
+** ser_v[-r] cortante ; ^ ser_v 0
 ->grn <haimbe_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] negligente ; ^ ser_v 0
+** ser_v[-r] negligente ; ^ ser_v 0
 ->grn <hechagi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] hablador ; ^ ser_v 0
+** ser_v[-r] hablador ; ^ ser_v 0
 ->grn ñe'ẽmby'ỹi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] pobre ; ^ ser_v 0
+** ser_v[-r] pobre ; ^ ser_v 0
 ->grn kotevẽ_v[subcat=i] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] denso ; ^ ser_v 0
+** ser_v[-r] denso ; ^ ser_v 0
 ->grn <hypy'ũ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] correcto ; ^ ser_v 0
+** ser_v[-r] correcto ; ^ ser_v 0
 ->grn <hekokatu_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] sincero ; ^ ser_v 0
+** ser_v[-r] sincero ; ^ ser_v 0
 ->grn py'aporã_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] grosero ; ^ ser_v 0
+** ser_v[-r] grosero ; ^ ser_v 0
 ->grn motĩe'ỹ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] importante ; ^ ser_v 0
+** ser_v[-r] importante ; ^ ser_v 0
 ->grn <hekotevẽ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] ávido de ; ^ ser_v 0
+** ser_v[-r] ávido de ; ^ ser_v 0
 ->grn taryrýi_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] útil ; ^ ser_v 0
+** ser_v[-r] útil ; ^ ser_v 0
 ->grn jeporu_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] atento ; ^ ser_v 0
+** ser_v[-r] atento ; ^ ser_v 0
 ->grn mba'erechakuaa_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] arrogante ; ^ ser_v 0
+** ser_v[-r] arrogante ; ^ ser_v 0
 ->grn ñembotuvicha_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] rápido ; ^ ser_v 0
+** ser_v[-r] rápido ; ^ ser_v 0
 ->grn ñembopya'e_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] quisquilloso ; ^ ser_v 0
+** ser_v[-r] quisquilloso ; ^ ser_v 0
 ->grn jero_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] irónico ; ^ ser_v 0
+** ser_v[-r] irónico ; ^ ser_v 0
 ->grn ñemotĩcha'ĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] ocupado ; ^ ser_v 0
+** ser_v[-r] ocupado ; ^ ser_v 0
 ->grn jejokuái_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] caro ; ^ ser_v 0
+** ser_v[-r] caro ; ^ ser_v 0
 ->grn <hepy_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] miserable ; ^ ser_v 0
+** ser_v[-r] miserable ; ^ ser_v 0
 ->grn chi'õ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] poderoso ; ^ ser_v 0
+** ser_v[-r] poderoso ; ^ ser_v 0
 ->grn pu'aka_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] amarillo ; ^ ser_v 0
+** ser_v[-r] amarillo ; ^ ser_v 0
 ->grn <hesa'yju_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-*** ser_v[-r] infiel ; ^ ser_v 0
+** ser_v[-r] infiel ; ^ ser_v 0
 ->grn moakãratĩ_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ->grn momokõi_v[pos=v] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 

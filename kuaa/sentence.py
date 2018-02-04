@@ -833,7 +833,6 @@ class Sentence:
             # sentence was created.
             if self.analyses:
                 self.lowercase()
-                # Also join_lex()??
             else:
                 tagged = None
                 # Split at spaces by default.

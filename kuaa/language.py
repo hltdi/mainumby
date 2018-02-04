@@ -136,7 +136,7 @@ TARGET = 3
 TRAIN = 4
 
 ## Strings used in groups file
-GROUP_SEP = '***'
+GROUP_SEP = '**'
 TRANS_START = '->'
 HEAD_SEP = ';'
 
@@ -271,7 +271,7 @@ class Language:
             self.load_morpho(generate=use in (GENERATION, TARGET, TRAIN),
                              analyze=use in (ANALYSIS, SOURCE, TRAIN),
                              segment=False, guess=False, verbose=False)
-        print("Lengua {} creaada".format(self))
+        print("Lengua {} creada".format(self))
 
     @staticmethod
     def is_dig_numeral(string):

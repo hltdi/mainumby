@@ -302,7 +302,7 @@ input.text
 }
 table.center tr td.menu
 {
-    height: 85px;
+    height: 47px;
     background-color: #4B2B17;
     text-align: right;
     vertical-align: bottom;
@@ -414,7 +414,7 @@ textarea.doc
 {
     font-family: "Verdana";
     font-size: 100%;
-    width: 998px;
+    width: 798px;
     height: 300px;
     margin: 0;
     padding: 0;

@@ -153,25 +153,33 @@ class Session:
 
         # There might be both segment and whole sentence translations.
         if segtrans:
+            # dict of Seg records
             segrecords = sentrecord.segments
-#            segreclist = sentrecord.seg_list
+            tgroups = None
             print("  Seg list in sent record: {}".format(segrecords))
             seg_src_trans = segtrans.split('|||')
             for src_trans in seg_src_trans:
                 # index || selected_choice? || source_phrase = translation
                 print("  src_trans: {}".format(src_trans))
-                index, agreed, src_trans = src_trans.split('||')
+                index, agreed, choice_index, src_trans = src_trans.split('||')
+                choice_index = int(choice_index)
+                agreed = agreed == "T"
                 src, trans = src_trans.split('=')
                 index = int(index)
                 # Get the segrecord from the dict
                 segrecord1 = segrecords.get(src.lower())
                 # Get the segrecord from the list
-#                segrecord1 = segreclist[index]
-                print("    src {}, trans {}, index {}, agreed? {}".format(src, trans, index, agreed))
+                print("    src {}, trans {}, index {}, choice index {}, agreed? {}".format(src, trans, index, choice_index, agreed))
                 if segrecord1:
-                    segrecord1.response_code = 1 if agreed else 0
+                    if agreed:
+                        segrecord1.response_code = 1
+                        tgroups = segrecord1.choice_tgroups[choice_index]
+                        segrecord1.tgroups = tgroups
+                    else:
+                        segrecord1.response_code = 0
                     segrecord1.seltrans = trans
-                    print("  segrecord {}, trans {}, code {}".format(segrecord1, segrecord1.seltrans, segrecord1.response_code))
+                    # Only record tgroups if provided translation is selected
+                    print("  segrecord {}, trans {}, code {}, tgroups {}".format(segrecord1, segrecord1.seltrans, segrecord1.response_code, tgroups))
 #            translation = self.target.ortho_clean(translation)
 #            print("Segment translation: {}".format(translation))
 #            segrecord.record(translation=translation)
@@ -286,9 +294,6 @@ class SentRecord:
         d = {}
         d['s_raw'] = self.raw
         d['s_tok'] = self.get_tokens()
-#        d['s_feat'] = self.get_features()
-#        d['s_root'] = self.get_roots()
-#        d['s_pos'] = self.get_pos()
         d['s_ms'] = self.get_morphosyns()
         d['trg'] = self.translation
         d['time'] = Session.time2shortstr(self.time)
@@ -330,6 +335,10 @@ class SegRecord:
         self.tokens = solseg.token_str
         self.gname = solseg.gname
         self.merger_gnames = solseg.merger_gnames
+        # List of tg groups, one for each choice in GUI (this could be taken from SolSeg)
+        self.choice_tgroups = None
+        # tg group for selected translation
+        self.tgroups = None
         # Add to parent SentRecord
         self.sentence.segments[self.tokens] = self
 #        self.sentence.seg_list.append(self)
@@ -349,12 +358,15 @@ class SegRecord:
         return "{} {} {}".format(SEGMENT_PRE, self.tokens, SEGMENT_POST)
 
     def to_dict(self):
-        """Create dictionary from SegRecord."""
+        """Create dictionary from SegRecord, to write to session file."""
         d = {}
         d['src'] = self.tokens
         d['gname'] = self.gname
         d['resp'] = self.response_code
         d['trg'] = self.seltrans
+        if self.tgroups:
+            # Only if translation is selected
+            d['tgrp'] = self.tgroups
         return d
         
     def record(self, choices=None, translation=None):

@@ -119,6 +119,8 @@ class SolSeg:
         self.merger_gnames = merger_groups
         # Target-language groups
         self.tgroups = tgroups or [[]] * len(self.translation)
+        # Target-language group strings, ordered by choices; gets set in set_html()
+        self.choice_tgroups = None
         # The session associated with this solution segment
         self.session = session
         # Create a record for this segment if there's a session running and it's not punctuation
@@ -159,6 +161,8 @@ class SolSeg:
         # Final source segment output
         tokens = self.token_str
         trans_choice_index = 0
+        # T Group strings associated with each choice
+        choice_tgroups = []
         if self.is_punc:
             trans = self.translation[0][0]
             if '"' in trans:
@@ -171,47 +175,43 @@ class SolSeg:
             return
         for tindex, (t, tgroups) in enumerate(zip(self.translation, self.tgroups)):
             # Create all combinations of word sequences
-            t_expanded = []
             tg_expanded = []
             for tt, tg in zip(t, tgroups):
+                tg = Group.make_gpair_name(tg)
                 # Get rid of parentheses around optional elements
                 if '(' in tt:
                     tt = ['', tt[1:-1]]
                 else:
                     tt = tt.split('|')
+                # Add tg group string to each choice
                 tg = [(ttt, tg) for ttt in tt]
-                t_expanded.append(tt)
                 tg_expanded.append(tg)
-            print("   T{} expanded {}, tgroups {}".format(tindex, t_expanded, tgroups))
-            print("   TG{} expanded {}".format(tindex, tg_expanded))
-            tcombs = allcombs(t_expanded)
-            print("   T combinations")
-            for tc in tcombs:
-                print("     {}".format(tc))
-            tcombs = [' '.join(y) for y in tcombs]
-            tcombs.sort()
             tgcombs = allcombs(tg_expanded)
-            print("   TG combinations")
-            for tgc in tgcombs:
-                print("     {}".format(tgc))
-            print("   T combinations joined {}".format(tcombs))
+            tgcombs.sort()
+            tgforms = []
+            tggroups = []
+            for ttg in tgcombs:
+                # "if tttg[0]" prevents '' from being treated as a token
+                tgforms.append(' '.join([tttg[0] for tttg in ttg if tttg[0]]))
+                tggroups.append("||".join([tttg[1] for tttg in ttg if tttg[0]]))
             # A single translation of the source segment
             transhtml += '<tr>'
             transhtml += "<td class='transchoice'>"
             html_choices = []
-            for tcindex, tchoice in enumerate(tcombs):
-#                print("  Choice {}: {}".format(trans_choice_index, tchoice))
+            for tcindex, (tchoice, tcgroups) in enumerate(zip(tgforms, tggroups)):
+                choice_tgroups.append(tcgroups)
+#                print("  Choice {}: {} (groups: {})".format(trans_choice_index, tchoice, tcgroups))
                 if tindex == 0 and tcindex == 0:
                     html_choices.append('<input type="radio" name="choice" id={} value="{}" checked>{}'.format(tchoice, tchoice, tchoice))
                 else:
                     html_choices.append('<input type="radio" name="choice" id={} value="{}">{}'.format(tchoice, tchoice, tchoice))
                 trans_choice_index += 1
             transhtml += "<br/>".join(html_choices)
-            if len(tcombs) > 1:
+            if len(tgcombs) > 1:
                 transhtml += "<hr>"
             transhtml += "</td>"
-            if self.record:
-                choice_list.append(tchoice)
+#            if self.record:
+#                choice_list.append(tchoice)
             transhtml += '</tr>'
         if self.translation:
             # Add other translation button
@@ -247,8 +247,12 @@ class SolSeg:
                 tokens = ' '.join(toks)
             else:
                 tokens = tokens.capitalize()
+        self.choice_tgroups = choice_tgroups
+        if self.record:
+            self.record.choice_tgroups = choice_tgroups
+#        choice_tgroups = "!!".join(choice_tgroups)
         self.html = (tokens, self.color, transhtml, index, self.space_before)
-#        print("HTML: {}".format(self.html))
+#        print("HTML choice groups: {}".format(choice_tgroups))
 
     @staticmethod
     def list_html(segments):

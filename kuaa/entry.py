@@ -275,8 +275,6 @@ class Group(Entry):
         # tokens is a list of strings
         # name may be specified explicitly or not
         # head is a string like 'guata' or 'guata_' or 'guata_v'
-#        if "mbohovái_v" in head:
-#            print("Actually creating group for {} with head {}, tokens {}, name {}".format(language, head, tokens, name))
         if head:
             self.head = head
             root, x, pos = head.partition('_')
@@ -289,7 +287,6 @@ class Group(Entry):
                     self.head_index = tokens.index(root)
             else:
                 self.head_index = head_index
-#            self.head_index = tokens.index(head_tokens[0]) or tokens.index(head_tokens[1])
         else:
             self.head = tokens[head_index]
             self.head_index = head_index
@@ -320,8 +317,6 @@ class Group(Entry):
             # What was this for? Why does it matter whether any nodes before the head are cats?
 #             and not any([Group.is_cat(t) for t in self.tokens[:self.head_index]]):
             self.snode_start = -self.head_index
-#        if "mbohovái_v" in head:
-#            print("Created group {} for {} with head {} and name {}".format(self, language, head, name))
 
     def __repr__(self):
         """Print name."""
@@ -336,6 +331,20 @@ class Group(Entry):
     def get_key(name):
         """Get a group's key into Language.groups from its name or print name."""
         return name.split('.')[0].split('[')[0]
+
+    @staticmethod
+    def make_gpair_name(groups):
+        """Create a string name for one or two merged group nodes. Each is represented
+        by a pair: (group_name, index).
+        """
+        string = Group.make_node_name(groups[0][0], groups[0][1])
+        if len(groups) == 2:
+            string += "++{}".format(Group.make_node_name(groups[1][0], groups[1][1]))
+        return string
+
+    def make_node_name(group, index):
+        """Create a string name for a group node, given group name and index."""
+        return "{}:{}".format(group.name, index)
 
     def priority(self):
         """Returns a value that is used in sorting the groups associated with a particular key.
@@ -364,6 +373,14 @@ class Group(Entry):
         p = Group(tokens, head=head, language=language, features=features,
                   agr=agr, name=name, trans=trans)
         return p
+
+    def to_string(self):
+        """Convert the group to a string, writable to a file."""
+        # First line:
+        #   ** tokens ; ^ head head_index
+        string = "** {} ; ^ {} {}\n".format(' '.join(self.tokens), self.head, self.head_index)
+        #->amh $n[cs=acc] Tmd_v[as=smp,vc=smp] ; || 1, 0 ; 0==1 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg,ax:ax
+        return string
 
     def match_nodes(self, snodes, head_sindex, verbosity=0):
         """Attempt to match the group tokens (and features) with tokens from a sentence,

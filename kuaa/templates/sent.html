@@ -8,15 +8,22 @@ table.transmeta
 {
     border: 0;
     padding: 5px;
-    width: 985px;
+    width: 785px;
+}
+table.transphrase
+{
+    border: 2px solid black;
+    border-spacing: 10px;
+    vertical-align: top;
+    width: 425px;
+    display: none;
 }
 table.trans
 {
     border: 2px solid black;
     border-spacing: 10px;
     vertical-align: top;
-/*    border-collapse: collapse; */
-    width: 525px;
+    width: 425px;
 }
 table.transdoc
 {
@@ -88,10 +95,9 @@ td.transchoice
 }
 td.segsent
 {
-   text-align: left;
-   vertical-align: top;
-   padding: 5px;
-/*   font-style: italic; */
+    text-align: left;
+    vertical-align: top;
+    padding: 5px;
 }
 td.button
 {
@@ -110,14 +116,21 @@ textarea#sentence
 {
    font-family: "Verdana";
    font-size: 100%;
-   width: 495px;
+   width: 395px;
+   height: 50px;
+}
+textarea#comment
+{
+   font-family: "Verdana";
+   font-size: 100%;
+   width: 395px;
    height: 50px;
 }
 textarea#document
 {
    font-family: "Verdana";
    font-size: 85%;
-   width: 425px;
+   width: 325px;
    height: 200px;
    resize: none;
    overflow-y: scroll;
@@ -126,7 +139,7 @@ textarea#segment
 {
    font-family: "Verdana";
    font-size: 100%;
-   width: 495px;
+   width: 395px;
    height: 20px;
 }
 span#doctrans
@@ -238,11 +251,14 @@ function OnRecordPhrase() {
     // This is INPUT if checkbox, undefined otherwise.
     var seltype = selection.nodeName;
     var choice = "";
+    var group = "";
     var prefix = "";
     var space = " ";
-    segindex = document.Form2.segindex.value;
+    var choiceindex = 0;
+    var segindex = document.Form2.segindex.value;
     if (document.Form2.segtrans.value != "") {
         // This is not the first phrase (segment) in the sentence to be recorded.
+        // So add this separator.
         prefix = "|||";
     }
     document.getElementById("segtra2").innerHTML = "Traducción seleccionada";
@@ -250,14 +266,15 @@ function OnRecordPhrase() {
 	// User has provided their own translation.
 	// First clean up the Guarani.
         segtrans = limpiarGrn(segtrans);
+//	alert("Translation " + segtrans);
 	// Record the segment and its translation in the variable segtrans.
-        document.Form2.segtrans.value += prefix + segindex + "||F||" + segment + "=" + segtrans;
+        document.Form2.segtrans.value += prefix + segindex + "||F||-1||" + segment + "=" + segtrans;
 	// Record the index of this segment in the variable segindices.
         document.Form2.segindices.value += " " + segindex;
         if (segtrans == "0") {
             // User wants no translation for this segment; record this anyway in segtrans
 	    // (User may also just skip this segment. Should something happen in OnRecordSent in this case?)
-            document.Form2.segtrans.value += prefix + segindex + "||F||" + segment + "=";
+            document.Form2.segtrans.value += prefix + segindex + "||F||-1||" + segment + "=";
             return true;
         } else if (sentval == "") {
             // Beginning of the sentence; capitalize the translation, stored in segtrans.
@@ -274,6 +291,7 @@ function OnRecordPhrase() {
 	// Add the translation to the variable sentence.
         document.getElementById("sentence").value += segtrans;
     } else {
+	// User has selected one of the translation options.
 	if (seltype == "INPUT") {
 	    // The option is a single checkbox item; it must be checked.
 	    if (!selection.checked) {
@@ -284,18 +302,18 @@ function OnRecordPhrase() {
 		choice = selection.value;
 	    }
 	} else {
-	    // User has selected one of the translation options.
+	    // There are multiple options.
             for (var i = 0; i < selection.length; i++) {
 		if (selection[i].checked) {
 		    // The translation selected
                     choice = selection[i].value;
-                    alert("User selected choice " + i);
+                    choiceindex = i;
 		}
             }
 	}
         document.getElementById("error").innerHTML = "";
         document.getElementById("segment").value = choice;
-        document.Form2.segtrans.value += prefix + segindex + "||T||" + segment + "=" + choice;
+        document.Form2.segtrans.value += prefix + segindex + "||T||" + choiceindex + "||" + segment + "=" + choice;
         document.Form2.segindices.value += " " + segindex;
         choice = limpiarGrn(choice);
         if (sentval == "") {
@@ -310,7 +328,9 @@ function OnRecordPhrase() {
         document.getElementById("sentence").value += choice;
     }
     // Give instructions for the next segment.
-    document.getElementById("instructions").innerHTML = 'Si has terminado la traducción de la oración, hac&eacute; clic en "Registrar oración", si no, hac&eacute; clic sobre otro segmento colorizado de la oración castellana.';
+    document.getElementById("instructions").innerHTML = 'Si has terminado la traducción de la oración, \
+        hac&eacute; clic en "Registrar oración", si no, \
+        hac&eacute; clic sobre otro segmento colorizado de la oración castellana.';
     return true;
 }
 function Segment(text, segment, color, segindex, spacebefore) {
@@ -318,7 +338,7 @@ function Segment(text, segment, color, segindex, spacebefore) {
     var formatted = "<font color=" + color + ">" + text + "</font>";
     // Clear error space.
     document.getElementById("error").innerHTML = "";
-    // Give instructions for translation selection.
+    document.getElementById("transphrase").style.display="block";
     if (segindices.includes(segindex)) {
 	// Translation already recorded for this segment; clear instructions and show error message.
 	document.getElementById("instructions").innerHTML = "";
@@ -326,7 +346,9 @@ function Segment(text, segment, color, segindex, spacebefore) {
         return false;        
     }
     // Otherwise display the segment's HTML
-    document.getElementById("instructions").innerHTML = "O seleccioná una opción o introducí otra traducción en el espacio provisto. Despu&eacute;s hac&eacute; clic en 'Registrar frase'.";
+    // Give instructions for translation selection.
+    document.getElementById("instructions").innerHTML = "O seleccioná una opción o \
+        introducí otra traducción en el espacio provisto. Despu&eacute;s hac&eacute; clic en 'Registrar frase'.";
     document.getElementById('segtra').innerHTML = formatted;
     document.getElementById('segtra2').innerHTML = "Introducir otra traducción";
     document.Form2.seg.value = segment;
@@ -379,8 +401,8 @@ function limpiarGrn(string) {
     <td class="title">
     <a href="base">
     <img class='banner' src="{{url_for('static',
-      filename='banner_logo_short.png')}}" alt="" width="500px"
-      height="90px" />
+      filename='banner_logo.png')}}" alt="" width="300px"
+      height="52px" />
     </a>
     </td>
     <td class="menu" style="width: 200px">
@@ -397,7 +419,7 @@ function limpiarGrn(string) {
 </form>
 
 <tr>
-<td colspan="4" style="width:1000px">  
+<td colspan="4" style="width:800px">  
 
 {% if user %}
 <table class="title">
@@ -450,78 +472,92 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 
 <table class="transmeta">
 <tr class="trans">
-<td class="segsent">
-<table class="trans">
-<tr class="transtitle">
-  <th class="transtitle">Frase</th>
-  <td class="transbutton">
-  <input type="button" id="button" name="freg" onclick="OnRecordPhrase();" value="Registrar frase">
-  </td>
-</tr>
-<tr class="transtitle">
-  <td class="trans" colspan='2'>Sugerencias de Mbojereha</td>
-</tr>
-<tr class="trans">
-  <td class="transchoice" colspan='2'>
-    <p id="segtra"></p>
-  </td>
-</tr>
-<tr class="transtitle">
-<td class="trans" colspan='2'><span id="segtra2">Introducir otra traducción</span></td>
-</tr>
-<tr class="trans">
-  <td class="transtext" colspan='2'>
-    <textarea name="UTraSeg" id="segment"></textarea>
-  </td>
-</tr>
-</table>
-<p></p>
-<table class="trans">
-<tr class="trans">
-  <th class="transtitle">Oración entera</th>
-  <td class="transbutton">
-    <input type="button" id="button" name="oreg"
-    onclick="OnRecordSent({{'%r'|format(raw)|e}}, {{'%r'|format(punc)|e}});" value="Registrar oración">
+  <td class="segsent">
+  <table class="transphrase" id="transphrase">
+  <tr class="transtitle">
+    <th class="transtitle">Frase</th>
+    <td class="transbutton">
+    <input type="button" id="button" name="freg" onclick="OnRecordPhrase();" value="Registrar frase">
     </td>
-</tr>  
-<tr class="trans">
-  <td class="transtext" colspan="2">
-    <textarea name="UTraSent" id="sentence" value=""></textarea>
+  </tr>
+  <tr class="transtitle">
+    <td class="trans" colspan='2'>Sugerencias de Mbojereha</td>
+  </tr>
+  <tr class="trans">
+    <td class="transchoice" colspan='2'>
+    <p id="segtra"></p>
+    </td>
+  </tr>
+  <tr class="transtitle">
+    <td class="trans" colspan='2'><span id="segtra2">Introducir otra traducción</span></td>
+  </tr>
+  <tr class="trans">
+    <td class="transtext" colspan='2'>
+      <textarea name="UTraSeg" id="segment"></textarea>
+    </td>
+    </tr>
+  </table>
+
+  <table class="trans">
+  <tr class="trans">
+    <th class="transtitle">Oración entera</th>
+    <td class="transbutton">
+      <input type="button" id="button" name="oreg"
+        onclick="OnRecordSent({{'%r'|format(raw)|e}}, {{'%r'|format(punc)|e}});" value="Registrar oración">
+    </td>
+  </tr>  
+  <tr class="trans">
+    <td class="transtext" colspan="2">
+      <textarea name="UTraSent" id="sentence" value=""></textarea>
+    </td>
+  </tr>
+  </table>
+
+  <table class="trans">  
+  <tr class="trans">
+    <th class="transtitle">Comentario</th>
+  </tr>
+  <tr class="trans">
+    <td class="transtext">
+      <textarea name="UComment" id="comment" value=""></textarea>
+    </td>
+  </tr>
+  </table>
+
   </td>
-</tr>
-</table>
-</td>
-<td class="transtitle">
+
+  <td class="transtitle">
   <table class="transdoc">
-  <tr class="trans">
-    <th class="transtitle">Documento</th>
-  </tr>
-  <tr class="trans">
-  <td class="transtext">
-  <textarea name="UTraDoc" id="document" value={{ document }}></textarea>
-  </td>
-  </tr>
-  <input type="hidden" name="seg" value="">
-  <input type="hidden" name="segindex" value="">
-  <input type="hidden" name="segindices" value="">
-  <input type="hidden" name="senttrans" value="">
-  <input type="hidden" name="segtrans" value="">
-  <input type="hidden" name="segspace" value="">
-  <input type="hidden" name="documento" value="">
+    <tr class="trans">
+      <th class="transtitle">Documento</th>
+    </tr>
+    <tr class="trans">
+      <td class="transtext">
+        <textarea name="UTraDoc" id="document" value={{ document }}></textarea>
+      </td>
+    </tr>
+
+<input type="hidden" name="seg" value="">
+<input type="hidden" name="segindex" value="">
+<input type="hidden" name="segindices" value="">
+<input type="hidden" name="senttrans" value="">
+<input type="hidden" name="segtrans" value="">
+<input type="hidden" name="segspace" value="">
+<input type="hidden" name="documento" value="">
 </form>
 
 <form name="Form3" id="text-options">
-<tr class="trans">
-  <td>
-    <input type="submit" value="Guardar" id="narrowbutton"/>
-    <label>Nombre de archivo:<input type="text" class="filename" id="text-filename" placeholder="doc.txt" size="50"/></label>
-  </td>
-</tr>
-<tr class="trans">
-  <td>
-    <input type="button" id="narrowbutton" onclick="EmptyDoc();" value="Desechar"/>
-  </td>
-</tr>
+    <tr class="trans">
+      <td>
+        <input type="submit" value="Guardar" id="narrowbutton"/>
+        <label>Nombre de archivo:<input type="text" class="filename" id="text-filename" placeholder="doc.txt" size="50"/></label>
+      </td>
+    </tr>
+    <tr class="trans">
+      <td>
+        <input type="button" id="narrowbutton" onclick="EmptyDoc();" value="Desechar"/>
+    </td>
+  </tr>
 </form>  
 </table>    
 </td>
