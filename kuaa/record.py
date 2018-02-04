@@ -297,7 +297,10 @@ class SentRecord:
         d['s_ms'] = self.get_morphosyns()
         d['trg'] = self.translation
         d['time'] = Session.time2shortstr(self.time)
-        d['segs'] = [s.to_dict() for s in self.segments.values()]
+        segdicts = [s.to_dict() for s in self.segments.values()]
+        segdicts = [x for x in segdicts if x]
+        if segdicts:
+            d['segs'] = segdicts
         return d
 
     def record(self, translation):
@@ -359,15 +362,16 @@ class SegRecord:
 
     def to_dict(self):
         """Create dictionary from SegRecord, to write to session file."""
-        d = {}
-        d['src'] = self.tokens
-        d['gname'] = self.gname
-        d['resp'] = self.response_code
-        d['trg'] = self.seltrans
-        if self.tgroups:
-            # Only if translation is selected
-            d['tgrp'] = self.tgroups
-        return d
+        if self.seltrans:
+            d = {}
+            d['src'] = self.tokens
+            d['gname'] = self.gname
+            d['resp'] = self.response_code
+            d['trg'] = self.seltrans
+            if self.tgroups:
+                # Only if translation is selected
+                d['tgrp'] = self.tgroups
+            return d
         
     def record(self, choices=None, translation=None):
         print("{} recording translation {}, choices {}".format(self, translation, choices))
