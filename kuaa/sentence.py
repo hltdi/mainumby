@@ -1887,8 +1887,8 @@ class Solution:
                 if stoks:
                     stok_groups.append(stoks)
                     stoks = []
-            elif stok[0] == '%':
-                # Special token; it should have its own segment
+            elif stok[0] == '%' or self.source.is_punc(stok[0]):
+                # Special token or punctuation; it should have its own segment
                 if stoks:
                     stok_groups.append(stoks)
                     stoks = []
@@ -1945,7 +1945,7 @@ class Solution:
                 src_tokens[0] = "←" + src_tokens[0]
             seg = SolSeg(self, raw_indices, forms, src_tokens, session=self.session, gname=gname,
                          tgroups=tgroups, merger_groups=merger_groups)
-            print("Segment (translated) {}->{}: {}={}".format(start, end, src_tokens, forms))
+            print("Segment (translated) {}->{}: {}={}".format(start, end, src_tokens, seg.translation))
             self.segments.append(seg)
             indices_covered.extend(raw_indices)
 #            print(" Indices covered: {}".format(indices_covered))

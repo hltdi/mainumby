@@ -153,7 +153,7 @@ class SolSeg:
         Do postprocessing on phrases joined by '_' or special tokens (numerals).
         """
         # Combine translations where possible
-        print("Setting HTML for segment {}: {}".format(index, self))
+#        print("Setting HTML for segment {}: {}".format(index, self))
         self.color = SolSeg.tt_notrans_color if not self.translation else SolSeg.tt_colors[index]
         transhtml = '<table>'
         capitalized = False
@@ -176,17 +176,20 @@ class SolSeg:
         for tindex, (t, tgroups) in enumerate(zip(self.translation, self.tgroups)):
             # Create all combinations of word sequences
             tg_expanded = []
-            for tt, tg in zip(t, tgroups):
-                tg = Group.make_gpair_name(tg)
-                # Get rid of parentheses around optional elements
-                if '(' in tt:
-                    tt = ['', tt[1:-1]]
-                else:
-                    tt = tt.split('|')
-                # Add tg group string to each choice
-                tg = [(ttt, tg) for ttt in tt]
-                tg_expanded.append(tg)
-            tgcombs = allcombs(tg_expanded)
+            if self.special:
+                trans = t[0]
+                tgcombs = [[(trans, '')]]
+            else:
+                for tt, tg in zip(t, tgroups):
+                    tg = Group.make_gpair_name(tg)
+                    # Get rid of parentheses around optional elements
+                    if '(' in tt:
+                        tt = ['', tt[1:-1]]
+                    else:
+                        tt = tt.split('|')
+                    # Add tg group string to each choice
+                    tg_expanded.append([(ttt, tg) for ttt in tt])
+                tgcombs = allcombs(tg_expanded)
             tgcombs.sort()
             tgforms = []
             tggroups = []

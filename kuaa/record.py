@@ -373,53 +373,51 @@ class SegRecord:
                 d['tgrp'] = self.tgroups
             return d
         
-    def record(self, choices=None, translation=None):
-        print("{} recording translation {}, choices {}".format(self, translation, choices))
-        if choices:
-            self.feedback = Feedback(choices=choices)
-            print("{}".format(self.feedback))
-        elif translation:
-            self.feedback = Feedback(translation=translation)
-            print("{}".format(self.feedback))
-        else:
-            print("Something wrong: NO FEEDBACK TO RECORD")
+#    def record(self, choices=None, translation=None):
+#        print("{} recording translation {}, choices {}".format(self, translation, choices))
+#        if choices:
+#            self.feedback = Feedback(choices=choices)
+#            print("{}".format(self.feedback))
+#        elif translation:
+#            self.feedback = Feedback(translation=translation)
+#            print("{}".format(self.feedback))
+#        else:
+#            print("Something wrong: NO FEEDBACK TO RECORD")
 
-    def write(self, file=sys.stdout):
-        print("{}".format(self), file=file)
-        print("{}".format(self.gname), file=file)
-        print("{}".format(self.merger_gnames), file=file)
-        print("{}".format(self.feedback), file=file)
+#    def write(self, file=sys.stdout):
+#        print("{}".format(self), file=file)
+#        print("{}".format(self.gname), file=file)
+#        print("{}".format(self.merger_gnames), file=file)
+#        print("{}".format(self.feedback), file=file)
 
-class Feedback:
-    """Feedback from a user about a segment or sentence and its translation."""
+#class Feedback:
+#    """Feedback from a user about a segment or sentence and its translation."""
+#
+#    def __init__(self, accept=True, choices=None, translation=None):
+#        """
+#        EITHER the user simply
+#        -- accepts the system's translation (accept=True) OR
+#        -- makes selection from the alternatives offered by the system
+#           (choices is a list of pos_index, choice pairs) OR
+#        -- provides an alternate translation (translation is not None).
+#        No backpointer to the SegRecord or SentRecord that this refers to.
+#        """
+#        self.accept = accept
+#        self.choices = choices
+#        self.translation = translation
+#        self.id = ''
+#        if translation:
+#            self.id += TRANS_PRE + " {} ".format(translation) + TRANS_POST
+#        elif choices:
+#            choice_string = ','.join(["{}={}".format(pos, c) for pos, c in choices])
+#            self.id += "{}".format(choice_string)
+#        else:
+#            self.id += "ACC"
+#
+#    def __repr__(self):
+#        return self.id
 
-    def __init__(self, accept=True, choices=None, translation=None):
-        """
-        EITHER the user simply
-        -- accepts the system's translation (accept=True) OR
-        -- makes selection from the alternatives offered by the system
-           (choices is a list of pos_index, choice pairs) OR
-        -- provides an alternate translation (translation is not None).
-        No backpointer to the SegRecord or SentRecord that this refers to.
-        """
-        self.accept = accept
-        self.choices = choices
-        self.translation = translation
-#        self.id = '@'
-        self.id = ''
-        if translation:
-            self.id += TRANS_PRE + " {} ".format(translation) + TRANS_POST
-        elif choices:
-            choice_string = ','.join(["{}={}".format(pos, c) for pos, c in choices])
-            self.id += "{}".format(choice_string)
-        else:
-            self.id += "ACC"
-
-    def __repr__(self):
-        return self.id
-#        return "{} {}".format(FEEDBACK_PRE, self.id)
-
-ACCEPT = Feedback()
+# ACCEPT = Feedback()
 
 class User:
     """User of the system who is registered and whose feedback is saved."""
