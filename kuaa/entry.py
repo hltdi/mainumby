@@ -270,7 +270,8 @@ class Group(Entry):
     other languages."""
 
     def __init__(self, tokens, head_index=-1, head='', language=None, name='',
-                 features=None, agr=None, trans=None, count=0, nogap=False, failif=None):
+                 features=None, agr=None, trans=None, count=0, nogap=False, failif=None,
+                 string=None, trans_strings=None):
         """Either head_index or head (a string) must be specified."""
         # tokens is a list of strings
         # name may be specified explicitly or not
@@ -293,6 +294,10 @@ class Group(Entry):
             
         name = name or Group.make_name(tokens)
         Entry.__init__(self, name, language, trans=trans)
+        # The string in a .grp file encoding this Group
+        self.string = string
+        # The string in a .grp file encoding translations of this Group
+        self.trans_strings = trans_strings
         self.capitalized = self.head.istitle()
         self.tokens = tokens
         # Either None or a list of feat-val dicts for tokens that require them
@@ -378,7 +383,29 @@ class Group(Entry):
         """Convert the group to a string, writable to a file."""
         # First line:
         #   ** tokens ; ^ head head_index
-        string = "** {} ; ^ {} {}\n".format(' '.join(self.tokens), self.head, self.head_index)
+        tokens = []
+        feats = self.features
+        if feats and any(feats):
+            for tok, feat in zip(self.tokens, feats):
+                if feat:
+                    tokens.append("{}{}".format(tok, feat.__repr__()))
+                else:
+                    tokens.append(tok)
+        else:
+            tokens = self.tokens[:]
+        failif = self.failif
+        if failif:
+            failindex, failcats = failif
+            failcats = "!{}".format('|'.join(failcats))
+            tokens[failindex:failindex] = [failcats]
+        string = "** {} ; ^ {} {}\n".format(' '.join(tokens), self.head, self.head_index)
+        # Remaining lines:
+        #   ->target tokens ; || k, l ; m==n s:t,s:t ; u=v w,x ; -X-
+        for trans in self.trans:
+            tgroup, tdict = trans
+            string += "->{} {}".format(tgroup.language.abbrev, ' '.join(tgroup.tokens))
+            
+            string += "\n"
         #->amh $n[cs=acc] Tmd_v[as=smp,vc=smp] ; || 1, 0 ; 0==1 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg,ax:ax
         return string
 
@@ -546,9 +573,10 @@ class Group(Entry):
         return match_snodes
 
     @staticmethod
-    def from_string(string, language, trans_strings=None, target=None, trans=False, n_src_tokens=1):
-        """Convert a group string and possibly a set of translation group strings
-        to one or more groups."""
+    def from_string(string, language, trans_strings=None, target=None, trans=False, n_src_tokens=1,
+                    tstrings=None):
+        """Convert a group string and (if trans is False) possibly a set of translation group strings
+        to one or more groups. [trans=True means this is for a target-language Group.]"""
 #        print("Creating group from {} and trans strings {} [trans={}]".format(string, trans_strings, trans))
         # Separate the tokens from any group attributes
         tokens_attribs = string.split(ATTRIB_SEP)
@@ -693,12 +721,58 @@ class Group(Entry):
         gname = Group.make_name(name_toks)
         existing_group = language.get_group(gname, key=head)
         g = existing_group or Group(realtokens, head_index=head_index, head=head, features=features, agr=within_agrs,
-                                    failif=failif, nogap=nogap, name=gname, count=count)
+                                    failif=failif, nogap=nogap, name=gname, count=count, string=string,
+                                    trans_strings=tstrings)
         if target and not trans:
             g.trans = tgroups
         if not existing_group:
             language.add_group(g)
         return g, trans_agrs, alignment, trans_count
+
+    ## Methods for creating additional Groups and modifying existing Groups
+
+    @staticmethod
+    def add_trans_default(tstring, language, cat, defaults=None):
+        '''Augment tstring to include defaults for the given category.'''
+        tlang, x, tgroup = tstring.partition(' ')
+        defaults = defaults or language.group_defaults.get(cat)
+        if defaults:
+            for default in defaults:
+                # Assume it's a translation default
+                typ, addition = default
+                if typ not in tgroup:
+                    tgroup += " " + addition
+        return tgroup
+    
+    @staticmethod
+    def from_rawstring(string, language, cat, target=None, trans=False, n_src_tokens=1, tstrings=None):
+        """Like from_string, except that it incorporates the default group translation features for this group class, along
+        with any features that are specified."""
+        trans_strings = []
+        defaults = language.group_defaults.get(cat)
+        if defaults:
+            trans_strings = [Group.add_trans_default(tstring, language, cat, defaults=defaults) for tstring in tstrings]
+        else:
+            trans_strings = [t.partition(' ')[2] for t in tstrings]
+        return Group.from_string(string, language, trans_strings=trans_strings, target=target,
+                                 trans=trans, n_src_tokens=n_src_tokens, tstrings=tstrings)
+
+    def add_trans(self, target=None, tstring=None, default=True, cat='v'):
+        """Add translation in tstring to the group's translations."""
+        if target and tstring:
+            if default:
+                tstring_plus = Group.add_trans_default(tstring, self.language, cat)
+            else:
+                tstring_plus = tstring
+            tgroup, tagr, alg, tc = Group.from_string(tstring_plus, target, trans_strings=None, trans=True,
+                                                      n_src_tokens=len(self.tokens))
+            tattribs = {'agr': tagr}
+            if alg:
+                tattribs['align'] = alg
+            if tc:
+                tattribs['count'] = tc
+            self.trans.append((tgroup, tattribs))
+            self.trans_strings.append(tstring)
 
     ### Translations
 

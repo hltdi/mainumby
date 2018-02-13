@@ -433,20 +433,12 @@
 ->grn pokua_v[subcat=i]
 ** atar_v[+r,+fin] la cabeza ; ^ atar_v 0 ; #1
 ->grn ñakãpytĩ_v[cat=a]
-** atar_v[+rflx,+oi] a los pies ; ^ atar_v 0
-->grn jepykua_v[cat=a]
-** atar_v[+r,+fin] los pies ; ^ atar_v 0 ; #1
-->grn jepykua_v[cat=a]
 ** atar_v[-r,+fin] leñas ; ^ atar_v 0 ; #57
 ->grn jepe'ava_v[cat=a]
 ** atar_v[+r,+fin] a sí mismo ; ^ atar_v 0 ; #1
 ->grn ñeñapytĩ_v[cat=a]
 ** atar_v[-r,+fin] cabos ; ^ atar_v 0 ; #57
 ->grn moapokytã_v[cat=a]
-** atar_v[-r,+fin] pies y manos haciendo un bulto del cuerpo ; ^ atar_v 0 ; #57
-->grn myacha'ĩ_v[cat=a]
-** atar_v[-r,+fin] los pies ; ^ atar_v 0 ; #57
-->grn pykua_v[subcat=i]
 ** atar_v[-r,+fin] uno frente a otro ; ^ atar_v 0 ; #57
 ->grn ñotĩ_v[cat=a]
 ** atar_v[-r,+fin] con cuerda ; ^ atar_v 0 ; #57
@@ -761,7 +753,7 @@
 ->grn ñopũ_v[cat=a]
 ** causar_v[-r,+fin] pestañeo ; ^ causar_v 0
 ->grn myesapirĩ_v[cat=a]
-** causar_v[-r,+fin] sabañones en los pies o manos ; ^ causar_v 0
+** causar_v[-r,+fin] sabañones ; ^ causar_v 0
 ->grn mbosevo'i_v[cat=a]
 ** causar_v[-r,+fin] cojera ; ^ causar_v 0
 ->grn moparĩ_v[cat=a]
@@ -783,7 +775,7 @@
 ->grn jesapy_v[cat=a]
 ** cerrar_v[-r,+fin] los ojos a la verdad ; ^ cerrar_v 0
 ->grn ñembotavy_v[cat=a]
-** cerrar_v[-r,+fin] voluntaria y fuertemente los ojo ; ^ cerrar_v 0
+** cerrar_v[-r,+fin] fuertemente los ojos ; ^ cerrar_v 0
 ->grn sapymi_v[cat=a]
 ** ceñir_v[+r,+fin] la cintura ; ^ ceñir_v 0
 ->grn jeku'akua_v[cat=a]

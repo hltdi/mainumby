@@ -178,7 +178,7 @@ def doc():
 def sent():
     form = request.form
     punc = SENTENCE.get_final_punc() if SENTENCE else None
-    print("Form for sent: {}".format(form))
+#    print("Form for sent: {}".format(form))
     if 'ayuda' in form and form['ayuda'] == 'true':
         # Opened help window. Keep everything else as is.
         raw = SENTENCE.raw if SENTENCE else None
@@ -191,11 +191,13 @@ def sent():
         translation = form.get('senttrans')
         segtrans = form.get('segtrans', '')
         document = form.get('UTraDoc', '')
+        comments = form.get('UComment', '')
         print("Registering sentence translation {} for {}".format(translation, SENTENCE))
         print(" Segment translations: {}".format(segtrans))
-        print("Current document: {}".format(document))
+        print(" Comments: {}".format(comments))
+        print(" Current document: {}".format(document))
         if SESSION:
-            SESSION.record(SENTENCE.record, translation=translation, segtrans=segtrans)
+            SESSION.record(SENTENCE.record, translation=translation, segtrans=segtrans, comments=comments)
         # Continue with the next sentence in the document or quit
         return render_template('sent.html', user=USER, document=document)
     if 'text' in form and not DOC:

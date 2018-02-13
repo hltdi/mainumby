@@ -1873,7 +1873,7 @@
 ** muy pronto de mañana ; ^ mañana 3
 ->grn ko'ẽroite
 ** mediante $n ; ^ mediante 0
-->grn $n rupi ; || 0, 1 ; 1==0 n:n,poses:poses
+->grn $n rupi ; || 1, 0 ; 1==0 n:n,poses:poses
 ** menos ; ^ menos 0
 ->grn mbovyve
 ->grn michĩve

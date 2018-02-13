@@ -183,6 +183,8 @@ class Language:
         # Phrases to join during sentence tokenization
         self.join = join
         self.groups = groups or {}
+        # A dictionary of group attribute defaults for different head categories
+        self.group_defaults = {}
         # Dictionary of roots/stems/tokens to group keys, e.g., 'drop': ['drop_n', 'drop_v']
         self.group_keys = {}
         # Explicit groups to load instead of default
@@ -1501,8 +1503,10 @@ class Language:
         print("Leyendo grupos léxicos para {}".format(self.name))
         for gfile in self.get_group_files(files):
             with open(gfile, encoding='utf8') as file:
-                if verbosity:
-                    print("Leyendo grupos para {} de {}".format(self.name, gfile))
+                grouptype = gfile.rpartition('/')[-1].split('.')[0]
+                groupdefaults = []
+#                if verbosity:
+                print("  Leyendo grupos de tipo {}".format(grouptype))
                 # Groups separated by GROUP_SEP string
                 groups = file.read().split(GROUP_SEP)
                 transadd = ''
@@ -1519,8 +1523,12 @@ class Language:
                         if line[1] == 't':
 #                            print("Each group translation has {}: {}".format(tp, addition))
                             transadd = tp, addition
+                            groupdefaults.append(transadd)
                         else:
                             sourceadd = addition
+                            groupdefaults.append(sourceadd)
+                if groupdefaults:
+                    self.group_defaults[grouptype] = groupdefaults
                 for group_spec in groups[1:]:
                     group_trans = group_spec.split('\n')
                     n = 0
@@ -1538,6 +1546,7 @@ class Language:
 #                    source_group = source_group.strip()
                     source_groups.append(source_group)
                     translations = []
+                    trans_strings = []
                     n += 1
                     if target:
 #                        for t in group_trans[1:]:
@@ -1547,18 +1556,19 @@ class Language:
                                 continue
                             t = t.partition(TRANS_START)[2].strip()
                             if t:
+                                t = t.strip()
+                                trans_strings.append(t)
+                                # Or use the Group method add_trans_default() for this.
                                 tlang, x, tgroup = t.strip().partition(' ')
                                 if transadd:
                                     tp, ad = transadd
-#                                    if tp in tgroup:
-#                                        print("  feature {} already in tgroup {}".format(tp, tgroup))
                                     if tp not in tgroup:
                                         tgroup += " " + ad
                                 if tlang == target_abbrev:
                                     translations.append(tgroup)
                         target_groups.extend(translations)
                     # Creates the group and any target groups specified and adds them to self.groups
-                    Group.from_string(source_group, self, translations, target=target, trans=False)
+                    Group.from_string(source_group, self, translations, target=target, trans=False, tstrings=trans_strings)
 
         # Sort groups for each key by priority
         for key, groups in self.groups.items():
@@ -1806,6 +1816,7 @@ class Language:
             self.group_keys[token].add(head)
         else:
             self.group_keys[token] = {head}
+        group.language = self
         self.changed = True
 
     ### Generation of word forms

@@ -150,3 +150,7 @@ mano:[cat=a,+neg,ns=0,ps=3,tmp=prt] || nomanói;nomanóikuri;nomanóiraka'e;noma
 kuaa:[+neg,no=1,ns=0,po=3,ps=1,subcat=i,tmp=prs] || ndaikuaái
 <hecha:[cat=a,no=1,ns=0,po=3,ps=1,tmp=prt] || ahechákuri;ahecha;ahecharaka'e;ahecha'akue
 jogua:[cat=a,ns=0,ps=1,tmp=prt] || ajoguákuri;ajogua;ajoguaraka'e;ajogua'akue
+'a:[cat=a,ns=0,ps=1,tmp=prt] || ha'ákuri;ha'a;ha'araka'e;ha'a'akue
+kúi:[cat=a,ns=0,ps=1,tmp=prt] || akúi;akúikuri;akúiraka'e;akúi'akue
+'a:[cat=a,ns=0,ps=2,tmp=prt] || re'ákuri;re'a;re'araka'e;re'a'akue
+kúi:[cat=a,ns=0,ps=2,tmp=prt] || rekúi;rekúikuri;rekúiraka'e;rekúi'akue
