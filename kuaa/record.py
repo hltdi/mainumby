@@ -91,12 +91,16 @@ class Session:
 
     def to_dict(self):
         """Create dictionary from Session, after it stops."""
-        d = {}
-        d['start'] = Session.time2shortstr(self.start)
-        d['end'] = Session.time2shortstr(self.end)
-        d['id'] = self.id
-        d['sents'] = [s.to_dict() for s in self.sentences]
-        return d
+        sentrecords = [r for r in [s.to_dict() for s in self.sentences] if r]
+        if sentrecords:
+            # Don't record anything if there are no sentence records.
+            d = {}
+            d['sents'] = sentrecords
+            d['start'] = Session.time2shortstr(self.start)
+            d['end'] = Session.time2shortstr(self.end)
+            d['id'] = self.id
+            return d
+        return
 
     @staticmethod
     def time2str(time):
@@ -199,9 +203,11 @@ class Session:
             self.write(file=file)
 
     def write(self, file=sys.stdout):
-        """Write the Session's information and contents to a file our stdout."""
-        d = [self.to_dict()]
-        yaml.dump(d, file, default_flow_style=False)
+        """Write the Session's information and contents to a file our stdout.
+        Don't write anything if there are no sentence records."""
+        d = self.to_dict()
+        if d:
+            yaml.dump([d], file, default_flow_style=False)
 
 #    def write(self, file=sys.stdout):
 #        print("{}".format(self), file=file)
@@ -293,19 +299,22 @@ class SentRecord:
         return "{} {} {}".format(ms_match[0].__repr__(), ms_match[1], ms_match[2])
 
     def to_dict(self):
-        d = {}
-        d['s_raw'] = self.raw
-        d['s_tok'] = self.get_tokens()
-        d['s_ms'] = self.get_morphosyns()
-        d['trg'] = self.translation
-        d['time'] = Session.time2shortstr(self.time)
-        if self.comments:
-            d['cmt'] = self.comments
-        segdicts = [s.to_dict() for s in self.segments.values()]
-        segdicts = [x for x in segdicts if x]
-        if segdicts:
-            d['segs'] = segdicts
-        return d
+        if self.translation:
+            # If there's no translation, don't record anything.
+            d = {}
+            d['s_raw'] = self.raw
+            d['s_tok'] = self.get_tokens()
+            d['s_ms'] = self.get_morphosyns()
+            d['trg'] = self.translation
+            d['time'] = Session.time2shortstr(self.time)
+            if self.comments:
+                d['cmt'] = self.comments
+            segdicts = [s.to_dict() for s in self.segments.values()]
+            segdicts = [x for x in segdicts if x]
+            if segdicts:
+                d['segs'] = segdicts
+            return d
+        return
 
     def record(self, translation, comments=None):
         """Record user's translation for the whole sentence."""

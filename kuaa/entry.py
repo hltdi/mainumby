@@ -141,6 +141,8 @@ COUNT = re.compile("\s*#\s*(\d+)$")
 TRANS_COUNT = re.compile("\s*##\s*(\d+)$")
 # Group can have no gaps between elements: -X-
 NO_GAP = re.compile("\s*-X-\s*$")
+# Comments for group
+COMMENT = re.compile("\s*//\s*(.+)$")
 
 ## MorphoSyn regex
 # Separates elements of MorphoSyn pattern
@@ -170,12 +172,13 @@ class Entry:
     ID = 1
     dflt_dep = 'dflt'
     
-    def __init__(self, name, language, id=0, trans=None):
+    def __init__(self, name, language, id=0, trans=None, comment=''):
         """Initialize name and basic features: language, trans, count, id."""
         self.name = name
         self.language = language
         self.trans = trans
         self.count = 1
+        self.comment = comment
         if id:
             self.id = id
         else:
@@ -271,7 +274,7 @@ class Group(Entry):
 
     def __init__(self, tokens, head_index=-1, head='', language=None, name='',
                  features=None, agr=None, trans=None, count=0, nogap=False, failif=None,
-                 string=None, trans_strings=None):
+                 string=None, trans_strings=None, cat='', comment=''):
         """Either head_index or head (a string) must be specified."""
         # tokens is a list of strings
         # name may be specified explicitly or not
@@ -293,7 +296,9 @@ class Group(Entry):
             self.head_index = head_index
             
         name = name or Group.make_name(tokens)
-        Entry.__init__(self, name, language, trans=trans)
+        Entry.__init__(self, name, language, trans=trans, comment=comment)
+        # POS, 'misc', or other
+        self.cat = cat
         # The string in a .grp file encoding this Group
         self.string = string
         # The string in a .grp file encoding translations of this Group
@@ -574,7 +579,7 @@ class Group(Entry):
 
     @staticmethod
     def from_string(string, language, trans_strings=None, target=None, trans=False, n_src_tokens=1,
-                    tstrings=None):
+                    tstrings=None, cat=''):
         """Convert a group string and (if trans is False) possibly a set of translation group strings
         to one or more groups. [trans=True means this is for a target-language Group.]"""
 #        print("Creating group from {} and trans strings {} [trans={}]".format(string, trans_strings, trans))
@@ -599,6 +604,7 @@ class Group(Entry):
             features = []
         else:
             hasfeats = False
+        comment = ''
         # Go through attribs, finding head and head index if not provided and making agreement lists
         for attrib in attribs:
             # Root and root index
@@ -627,6 +633,12 @@ class Group(Entry):
                 match = NO_GAP.match(attrib)
                 if match:
                     nogap = True
+                    continue
+                match = COMMENT.match(attrib)
+                if match:
+                    c = match.groups()[0]
+                    comment = c
+                    continue
                 elif trans:
                     match = TRANS_AGR.match(attrib)
                     if match:
@@ -722,7 +734,7 @@ class Group(Entry):
         existing_group = language.get_group(gname, key=head)
         g = existing_group or Group(realtokens, head_index=head_index, head=head, features=features, agr=within_agrs,
                                     failif=failif, nogap=nogap, name=gname, count=count, string=string,
-                                    trans_strings=tstrings)
+                                    trans_strings=tstrings, cat=cat, comment=comment)
         if target and not trans:
             g.trans = tgroups
         if not existing_group:
@@ -755,7 +767,7 @@ class Group(Entry):
         else:
             trans_strings = [t.partition(' ')[2] for t in tstrings]
         return Group.from_string(string, language, trans_strings=trans_strings, target=target,
-                                 trans=trans, n_src_tokens=n_src_tokens, tstrings=tstrings)
+                                 trans=trans, n_src_tokens=n_src_tokens, tstrings=tstrings, cat=cat)
 
     def add_trans(self, target=None, tstring=None, default=True, cat='v'):
         """Add translation in tstring to the group's translations."""
@@ -765,7 +777,7 @@ class Group(Entry):
             else:
                 tstring_plus = tstring
             tgroup, tagr, alg, tc = Group.from_string(tstring_plus, target, trans_strings=None, trans=True,
-                                                      n_src_tokens=len(self.tokens))
+                                                      n_src_tokens=len(self.tokens), cat=cat)
             tattribs = {'agr': tagr}
             if alg:
                 tattribs['align'] = alg
@@ -773,6 +785,44 @@ class Group(Entry):
                 tattribs['count'] = tc
             self.trans.append((tgroup, tattribs))
             self.trans_strings.append(tstring)
+
+    def write(self, stream):
+        """Write the group to stream."""
+        print("** {}".format(self.string), file=stream)
+        for tstring in self.trans_strings:
+            print("->{}".format(tstring), file=stream)
+
+    @staticmethod
+    def write_groups(language, cat, groups=None, path=''):
+        """Write the groups belonging to a given category to the file at path.
+        If groups is None, use all of language's groups belonging to cat."""
+        groups = groups or Group.get_cat_groups(language, cat)
+        path = path or cat + '.grp'
+        with open(path, 'w', encoding='utf8') as file:
+            # First write the defaults for this category
+            language.write_group_defaults(cat, file)
+            for group in groups:
+                group.write(file)
+
+    @staticmethod
+    def rewrite_groups(language, cat, groups=None):
+        """Overwrite the groups file for cat with groups."""
+        path = language.get_cat_group_file(cat)
+        with open(path, 'w', encoding='utf8') as file:
+            # First write the defaults for this category
+            language.write_group_defaults(cat, file)
+            for group in groups:
+                group.write(file)
+
+    @staticmethod
+    def get_cat_groups(language, cat, filt=None):
+        """Return all groups in language with category cat that satisfy filter function."""
+        cat_groups = []
+        for groups in language.groups.values():
+            for group in filter(filt, groups):
+                if group.cat == cat:
+                    cat_groups.append(group)
+        return cat_groups
 
     ### Translations
 

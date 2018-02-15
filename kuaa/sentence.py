@@ -151,6 +151,7 @@ import copy, re, random, itertools
 from .ui import *
 from .segment import *
 from .record import SentRecord
+from .utils import remove_control_characters
 
 class Document(list):
     """A list of of Sentences, split from a text string. If biling is True, this is a bilingual document,
@@ -229,9 +230,15 @@ class Document(list):
     def __repr__(self):
         return "D[ {} ]D".format(self.id)
 
+    def preprocess(self):
+        """Preprocess the document text.
+        Remove Unicode control characters."""
+        self.text = remove_control_characters(self.text)
+
     def process(self, reinit=True, verbosity=0):
         """Use tokenize and split to generate tokenized sentences,
         or use the off-the-shelf tokenizer and tagger to do this."""
+        self.preprocess()
         self.process1(reinit=reinit, verbosity=verbosity)
         if self.biling:
             self.process1(target=True, reinit=reinit,verbosity=verbosity)

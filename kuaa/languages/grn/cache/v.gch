@@ -154,3 +154,12 @@ jogua:[cat=a,ns=0,ps=1,tmp=prt] || ajoguákuri;ajogua;ajoguaraka'e;ajogua'akue
 kúi:[cat=a,ns=0,ps=1,tmp=prt] || akúi;akúikuri;akúiraka'e;akúi'akue
 'a:[cat=a,ns=0,ps=2,tmp=prt] || re'ákuri;re'a;re'araka'e;re'a'akue
 kúi:[cat=a,ns=0,ps=2,tmp=prt] || rekúi;rekúikuri;rekúiraka'e;rekúi'akue
+kurepi:[ns=0,pos=a] || kurepi
+mboja:[cat=a,ns=1,ps=3,tmp=prs] || omboja
+moĩ:[cat=a,ns=0,ps=3,tmp=prs] || omoĩ;emoĩ
+moĩ:[cat=a,ns=0,ps=2,tmp=ipv] || omoĩ;emoĩ
+kachiãi:[ns=0,pos=a] || kachiãi
+reko:[ns=0,ps=3,subcat=gue,tmp=prs] || oguereko
+<ha'ã:[cat=a,ns=0,ps=3,tmp=prs] || oha'ã;eha'ã
+<ha'ã:[cat=a,ns=0,ps=2,tmp=ipv] || oha'ã;eha'ã
+mokõive:[ns=1,pos=a] || mokõive
