@@ -8,7 +8,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyleft 2014, 2015, 2016 HLTDI and PLoGS <gasser@indiana.edu>
+#   Copyleft 2014, 2015, 2016, 2018 HLTDI and PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -38,6 +38,10 @@
 #    used; currently this is the variable selection function.
 # 2016.01.17
 # -- Random value added to basic value for state evaluation to avoid ties
+# 2018.02.22
+# -- SearchStates save their value (priority). Parent values are used as the
+#    basis for evaluating children at distribution time, with 'a' state always
+#    preferred.
 
 from .constraint import *
 import queue, random
@@ -79,9 +83,7 @@ class Solver:
         '''A generator for solutions. Uses best-first search.'''
         tracevar = tracevar or []
         fringe = queue.PriorityQueue()
-#        print("Created fringe {}".format(fringe))
         init_state = initial or self.init_state
-#        print(" Init state on fringe: {}, value {}".format(init_state, init_state.get_value(evaluator=self.evaluator)))
         fringe.put((init_state.get_value(evaluator=self.evaluator), init_state))
         n = 0
         solutions = []
@@ -98,21 +100,30 @@ class Solver:
             if n >= cutoff:
                 print('STOPPING AT CUTOFF')
             priority, state = fringe.get()
-#            if expand_verbosity:
-#            print("{} GETTING and running state {} and score {} from fringe".format(self, state, priority))
+            if fringe.queue and expand_verbosity:
+                print("Estado {}, prioridad {}, estatus: {}, cola: {}".format(state, priority, state.status, fringe.queue))
             # Goal test for this state
             state.run(verbosity=test_verbosity, tracevar=tracevar)
-#            print("State status: {}".format(state.status))
             if state.status == SearchState.succeeded:
                 # Return this state
-#                print("state {} succeeded".format(state))
                 yield state
             # Expand to next states if distributable
             if state.status == SearchState.distributable:
                 score = random.random() / 100.0
-                for attribs, next_state in self.distribute(state=state, verbosity=expand_verbosity):
+                if self.evaluator and n > 0:
+                    # Figure the value (priority) of the parent state from scratch AFTER constraint satisfaction has
+                    # been run on it.
+                    state.get_value(evaluator=self.evaluator, var_value=None)
+                for index, (attribs, next_state) in enumerate(self.distribute(state=state, verbosity=expand_verbosity)):
+                    # There are exactly two next states: 'a', 'b'
                     if self.evaluator:
-                        val = next_state.get_value(evaluator=self.evaluator, var_value=attribs)
+                        if index == 0:
+                            # The 'a' branch with the promising selected variable and value; evaluate on the basis
+                            # of parent state (oldval)
+                            val = next_state.get_value(evaluator=self.evaluator, var_value=attribs)
+                        else:
+                            # The 'b' branch, excluding the promising value from the variable; use parent value
+                            val = state.value
                     else:
                         # If there's no evaluator function, just the order of states returned by distribute.
                         val = score
@@ -120,23 +131,13 @@ class Solver:
                     if expand_verbosity:
                         print(" Próximo estado {}, nivel {}, valor {}".format(next_state, n, val))
                     # Add next state where it belongs in the queue
-#                    if expand_verbosity:
-#                    print("  {} PUTTING new state {} and score {} on fringe of length {}".format(self, next_state, val, fringe.qsize()))
+                    if expand_verbosity:
+                        print("  {} PUTTING new state {} and score {} on fringe of length {}".format(self, next_state, val, fringe.qsize()))
                     fringe.put((val, next_state))
-#                    for v, s in list(fringe):
-#                        print("  state {}, score {}".format(s, v))
             n += 1
         if test_verbosity or expand_verbosity:
             print()
             print('>>>> HALTED AT SEARCH STATE', n, '<<<<')
-
-#    def select_variable(self, variables, dstore=None, func=None, verbosity=0):
-#        """One possibility for selecting variables to branch on:
-#        prefer smaller upper domains so the variable can be determined soon."""
-#        if func:
-#            return func(variables, dstore)
-#        else:
-#            return sorted(variables, key=lambda v: len(v.get_upper(dstore=dstore)))[0]
 
     def split_var_values(self, variable, dstore=None, verbosity=0):
         """For a selected variable, select a value by calling the value selection function,
@@ -209,18 +210,13 @@ class Solver:
 #            return []
         state = state or self.init_state
         undet = state.dstore.ess_undet
-#        if verbosity:
         ndet = len(undet)
-        if verbosity:
-            print("DISTRIBUYENDO desde estado {}, # variables no determinados: {}".format(state, ndet))
         if verbosity > 1:
             for v in list(undet)[:5]:
                 v.pprint(dstore=state.dstore, spaces=2)
             if ndet > 5:
                 print('  ...')
         # Select a variable and two disjoint basic constraints on it
-#        var = self.select_variable(undet, dstore=state.dstore, func=self.varselect,
-#                                   verbosity=verbosity)
         var, values1, values2 = self.select_var_values(undet, dstore=state.dstore,
                                                        func=self.varselect, verbosity=verbosity)
         if verbosity > 1:
@@ -244,7 +240,8 @@ class Solver:
         state2 = SearchState(constraints=constraints, dstore=new_dstore2, solver=self,
                              name=state.name+'b', depth=state.depth+1, parent=state, verbosity=verbosity)
         state.children.extend([state1, state2])
-#        print("*** var: {}, state 1: {}, value {}; state 2: {}, values {}".format(var, state1, values1, state2, values2))
+        if verbosity:
+            print("DISTRIBUYENDO desde {}; variable: {}, estado 1: {}, valor {}; estado 2: {}, valores {}".format(state, var, state1, values1, state2, values2))
         return [((var, values1), state1), ((var, values2), state2)]
 
 class SearchState:
@@ -271,17 +268,22 @@ class SearchState:
         self.depth = depth
         self.status = SearchState.running
         self.verbosity = verbosity
+        self.value = 0.0
 
     def __repr__(self):
         return "<SS {}/{}>".format(self.name, self.depth)
 
     def get_value(self, evaluator=None, var_value=None):
         """A measure of how promising this state is. Unless there is an explicit evaluator
-        for the solver, by default, this is how many undetermined essential variables there are."""
+        for the solver, by default this is how many undetermined essential variables there are.
+        (The lower the score, the better.)"""
+        par_value = self.parent.value if self.parent else 0.0
         if evaluator:
-            return evaluator(self.dstore, var_value)
+            value = evaluator(self.dstore, var_value, par_value)
         else:
-            return len(self.dstore.ess_undet)
+            value = len(self.dstore.ess_undet)
+        self.value = value
+        return value
 
     def exit(self, result, verbosity=0):
         if result == Constraint.failed:

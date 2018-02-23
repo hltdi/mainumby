@@ -1474,19 +1474,14 @@
 ->grn apoukapy_n ; 0==0 n:n,poses:poses
 ->grn <hekorã_n ; 0==0 n:n,poses:poses
 ** decisión_n $pp $art que $v[-ipv] ; ^ decisión_n 0
-->grn py'apeteĩ_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ñembopy'apeteĩ_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** decisión_n $pp cual_n $v[-ipv] ; ^ decisión_n 0
-->grn py'apeteĩ_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ñembopy'apeteĩ_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** decisión_n que $v[-ipv] ; ^ decisión_n 0
-->grn py'apeteĩ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ñembopy'apeteĩ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** decisión_n de $n ; ^ decisión_n 0
-->grn $n py'apeteĩ_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n ñembopy'apeteĩ_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ** decisión_n ; ^ decisión_n 0 ; #7
-->grn py'apeteĩ_n ; 0==0 n:n,poses:poses
 ->grn ñembopy'apeteĩ_n ; 0==0 n:n,poses:poses
 ** defensa_n $pp $art que $v[-ipv] ; ^ defensa_n 0
 ->grn pysyrõ_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
@@ -5707,19 +5702,14 @@
 ->grn vy'a_n ; 0==0 n:n,poses:poses ; #542 ; ##1
 ** seguridad_n $pp $art que $v[-ipv] ; ^ seguridad_n 0
 ->grn kyhyje'ỹ_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn py'apeteĩ_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** seguridad_n $pp cual_n $v[-ipv] ; ^ seguridad_n 0
 ->grn kyhyje'ỹ_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn py'apeteĩ_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** seguridad_n que $v[-ipv] ; ^ seguridad_n 0
 ->grn kyhyje'ỹ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn py'apeteĩ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** seguridad_n de $n ; ^ seguridad_n 0
 ->grn $n kyhyje'ỹ_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
-->grn $n py'apeteĩ_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ** seguridad_n ; ^ seguridad_n 0 ; #18
 ->grn kyhyje'ỹ_n ; 0==0 n:n,poses:poses
-->grn py'apeteĩ_n ; 0==0 n:n,poses:poses
 ** semejanza_n $pp $art que $v[-ipv] ; ^ semejanza_n 0
 ->grn <hekojoja_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <hekora'ã_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
@@ -19931,16 +19921,12 @@
 ** detención_n ; ^ detención_n 0
 ->grn ñemombyta_n ; 0==0 n:n,poses:poses
 ** determinación_n $pp $art que $v[-ipv] ; ^ determinación_n 0
-->grn py'apeteĩ_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ñembopy'apeteĩ_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** determinación_n $pp cual_n $v[-ipv] ; ^ determinación_n 0
-->grn py'apeteĩ_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ñembopy'apeteĩ_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** determinación_n que $v[-ipv] ; ^ determinación_n 0
-->grn py'apeteĩ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ñembopy'apeteĩ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** determinación_n ; ^ determinación_n 0
-->grn py'apeteĩ_n ; 0==0 n:n,poses:poses
 ->grn ñembopy'apeteĩ_n ; 0==0 n:n,poses:poses
 ** detonante_n $pp $art que $v[-ipv] ; ^ detonante_n 0
 ->grn kapurã_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no

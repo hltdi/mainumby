@@ -5091,7 +5091,6 @@
 ** juntar_v[-r,+fin] leñas ; ^ juntar_v 0 ; #371
 ->grn jepe'ava_v[cat=a]
 ** juntar_v[+r,+fin] carnalmente ; ^ juntar_v 0 ; #50
-->grn japokói_v[cat=a]
 ->grn japyhy_v[subcat=i]
 ** juntar_v[-r,po=3,no=0] ; ^ juntar_v 0
 ->grn mbyaty_v[cat=a] (chupe)
@@ -8342,7 +8341,6 @@
 ->grn ñemboyvytu_v[cat=a]
 ** tomar_v[-r,+fin] a $n ; ^ tomar_v 0
 ->grn pyhy_v[subcat=i] $n[caso=pe] ; || 0, -1, 1
-->grn japokói_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 ->grn japyhy_v[subcat=i] $n[caso=pe] ; || 0, -1, 1
 ** tomar_v[+oi] por tonto ; ^ tomar_v 0
 ->grn mbohovatavy_v[cat=a]
@@ -8368,11 +8366,9 @@
 ->grn karu_v[cat=a]
 ** tomar_v[-r,po=3,no=0] ; ^ tomar_v 0
 ->grn pyhy_v[subcat=i] (chupe)
-->grn japokói_v[cat=a] (chupe)
 ->grn japyhy_v[subcat=i] (chupe)
 ** tomar_v[-r,po=3,no=1] ; ^ tomar_v 0
 ->grn pyhy_v[subcat=i] (chupekuéra)
-->grn japokói_v[cat=a] (chupekuéra)
 ->grn japyhy_v[subcat=i] (chupekuéra)
 ** tomar_v[+r,+fin] ; ^ tomar_v 0 ; #3
 ->grn jejapokói_v[cat=a]
@@ -8380,7 +8376,6 @@
 ->grn jejapyhy_v[cat=a] ; #9
 ** tomar_v[-r,+fin] ; ^ tomar_v 0 ; #805
 ->grn pyhy_v[subcat=i] ; #38 ; ##9
-->grn japokói_v[cat=a]
 ->grn japyhy_v[subcat=i] ; #44
 ** topetar_v[+r,+fin] ; ^ topetar_v 0
 ->grn jejoso_v[cat=a] ; #12
@@ -10370,15 +10365,12 @@
 ->grn mboja_v[cat=a] ; #40
 ** apuntalar_v[-r,+fin] a $n ; ^ apuntalar_v 0
 ->grn joko_v[cat=a] $n[caso=pe] ; || 0, -1, 1
-->grn japokói_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 ->grn mbojetu'u_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 ** apuntalar_v[-r,po=3,no=0] ; ^ apuntalar_v 0
 ->grn joko_v[cat=a] (chupe)
-->grn japokói_v[cat=a] (chupe)
 ->grn mbojetu'u_v[cat=a] (chupe)
 ** apuntalar_v[-r,po=3,no=1] ; ^ apuntalar_v 0
 ->grn joko_v[cat=a] (chupekuéra)
-->grn japokói_v[cat=a] (chupekuéra)
 ->grn mbojetu'u_v[cat=a] (chupekuéra)
 ** apuntalar_v[+r,+fin] ; ^ apuntalar_v 0
 ->grn jejoko_v[cat=a] ; #13
@@ -10386,7 +10378,6 @@
 ->grn ñepyta'ã_v[cat=a] ; #2
 ** apuntalar_v[-r,+fin] ; ^ apuntalar_v 0
 ->grn joko_v[cat=a] ; #39
-->grn japokói_v[cat=a]
 ->grn mbojetu'u_v[cat=a]
 ** apuntar_v[-r,+fin] a $n ; ^ apuntar_v 0
 ->grn mohenda_v[cat=a] $n[caso=pe] ; || 0, -1, 1
@@ -10651,21 +10642,17 @@
 ->grn ñemoñe'ẽ_v[cat=a]
 ** asir_v[-r,+fin] a $n ; ^ asir_v 0
 ->grn pyhy_v[subcat=i] $n[caso=pe] ; || 0, -1, 1
-->grn japokói_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 ->grn japyhy_v[subcat=i] $n[caso=pe] ; || 0, -1, 1
 ** asir_v[-r,po=3,no=0] ; ^ asir_v 0
 ->grn pyhy_v[subcat=i] (chupe)
-->grn japokói_v[cat=a] (chupe)
 ->grn japyhy_v[subcat=i] (chupe)
 ** asir_v[-r,po=3,no=1] ; ^ asir_v 0
 ->grn pyhy_v[subcat=i] (chupekuéra)
-->grn japokói_v[cat=a] (chupekuéra)
 ->grn japyhy_v[subcat=i] (chupekuéra)
 ** asir_v[+r,+fin] ; ^ asir_v 0 ; #7
 ->grn jejapyhy_v[cat=a] ; #9
 ** asir_v[-r,+fin] ; ^ asir_v 0 ; #968
 ->grn pyhy_v[subcat=i] ; #38 ; ##2
-->grn japokói_v[cat=a]
 ->grn japyhy_v[subcat=i] ; #44
 ** asociar_v[-r,+fin] a $n ; ^ asociar_v 0
 ->grn moirũ_v[cat=a] $n[caso=pe] ; || 0, -1, 1
@@ -11294,19 +11281,15 @@
 ->grn japyhy_v[subcat=i] ; #44
 ** capturar_v[-r,+fin] a $n ; ^ capturar_v 0
 ->grn pyhy_v[subcat=i] $n[caso=pe] ; || 0, -1, 1
-->grn japokói_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 ->grn japyhy_v[subcat=i] $n[caso=pe] ; || 0, -1, 1
 ** capturar_v[-r,po=3,no=0] ; ^ capturar_v 0
 ->grn pyhy_v[subcat=i] (chupe)
-->grn japokói_v[cat=a] (chupe)
 ->grn japyhy_v[subcat=i] (chupe)
 ** capturar_v[-r,po=3,no=1] ; ^ capturar_v 0
 ->grn pyhy_v[subcat=i] (chupekuéra)
-->grn japokói_v[cat=a] (chupekuéra)
 ->grn japyhy_v[subcat=i] (chupekuéra)
 ** capturar_v[-r,+fin] ; ^ capturar_v 0 ; #9
 ->grn pyhy_v[subcat=i] ; #38
-->grn japokói_v[cat=a]
 ->grn japyhy_v[subcat=i] ; #44
 ** carcomer_v[-r,+fin] a $n ; ^ carcomer_v 0
 ->grn ñamindu'u_v[cat=a] $n[caso=pe] ; || 0, -1, 1

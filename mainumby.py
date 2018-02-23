@@ -47,17 +47,18 @@ import kuaa
 ## shortcuts
 
 ## Creación (y opcionalmente traducción) de oración simple y de documento.
-def ora(sentence, ambig=False, solve=True, user=None, segment=True, verbosity=0):
+def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
+        verbosity=0):
     e, g = cargar_eg()
     session = kuaa.start(e, g, user)
     d = kuaa.Document(e, g, sentence, True, session=session)
     s = d[0]
     s.initialize(ambig=ambig, verbosity=verbosity)
     if solve or segment:
-        s.solve(all_sols=ambig)
+        s.solve(all_sols=ambig or max_sols > 1, max_sols=max_sols)
         if s.solutions and segment:
-            solution = s.solutions[0]
-            solution.get_segs()
+            for sol in s.solutions:
+                sol.get_segs()
         output_sols(s)
     return s
 

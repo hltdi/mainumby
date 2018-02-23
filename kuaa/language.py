@@ -1862,6 +1862,7 @@ class Language:
             for posmorph in list(morf.values()):
                 output.extend(posmorph.gen(root, update_feats=features, guess=guess, only_words=True))
         if output:
+#            print(" output: {}".format(output))
 #            o = [out[0] for out in output]
             # if there is a postprocessing dict, apply it
             if self.postproc:

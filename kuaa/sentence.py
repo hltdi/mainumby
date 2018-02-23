@@ -179,7 +179,7 @@ class Document(list):
     # digits with intermediate characters (.,=></), which must be followed by one or more digits
     number_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$£€]?[\d]+[\d,.=></+\-±/×÷≤≥]*[\d]+[%¢°º]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
     # separated punctuation, including some that might be separated by error
-    punc_re = re.compile(r"([\-–—&=.,:;\"+<>/?!]{1,3})$")
+    punc_re = re.compile(r"([\-–—&=.,:;\"+<>/?!%$]{1,3})$")
     # word of one character
     word1_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)(\w)([)\]}\"\'»”’*\-–—,:;=]*[?|.]?)$")
     # word of more than one character: one beginning character, one end character, 0 or more within characters;
@@ -514,7 +514,7 @@ class Sentence:
         self.toktypes = toktypes
         self.original = original
         # List of booleans, same length as self.tokens specifying whether the raw token was upper case
-        self.isupper = []
+#        self.isupper = []
         # Source language: a language object
         self.language = language
         # External tagger if there is one
@@ -769,14 +769,28 @@ class Sentence:
         """Make capitalized tokens lowercase.
         2016.05.08: only do this for the first word.
         2017.03.19: do it for all words but keep a record of raw capitalization in self.isupper.
+        2018.02.15: do this only for the first word, unless a word is uppercase.
+        Still need to figure out what to do for words that are capitalized by convention within
+        sentences, for example, at the beginning of quotations.
         """
+        first_word = True
         for index, token in enumerate(self.tokens):
-            # Capitalized and uppercase words not distinguished
-            if token[0].isupper():
+            if first_word:
+                first_char = token[0]
+                if not self.language.is_punc(first_char):
+                    # Later figure out whether the first word is a name
+                    self.tokens[index] = token.lower()
+                    first_word = False
+            elif token.isupper():
+                # Lowercase words other than the first one if they're all uppercase
                 self.tokens[index] = token.lower()
-                self.isupper.append(True)
-            else:
-                self.isupper.append(False)
+#            # Otherwise leave capitalized tokens capitalized.
+#            # Capitalized and uppercase words not distinguished
+#            if token[0].isupper():
+#                self.tokens[index] = token.lower()
+#                self.isupper.append(True)
+#            else:
+#                self.isupper.append(False)
 #        # There may be initial punctuation.
 #        if self.language.is_punc(self.tokens[0]):
 #            self.tokens[1] = self.tokens[1].lower()
@@ -1339,13 +1353,6 @@ class Sentence:
                                                           mainvars=[node.variables['gnodes'] for node in self.nodes])
 #        print("SN_AC_U constraint: {}".format(snode_ac_union_constraint))
         self.constraints.append(snode_ac_union_constraint)
-#        for snode in self.nodes:
-#            if snode.gnodes:
-#                # Only do this for covered snodes
-#                # The value of 'gnodes' is the union of the value of 'cgnodes' and 'agnodes' for this snode
-#                self.constraints.extend(Union([snode.variables['gnodes'],
-#                                               snode.variables['cgnodes'],
-#                                               snode.variables['agnodes']]).constraints)
         # Constraints involving groups with category (abstract) nodes
         # For each group that succeeds, the set of snodes ('gnodes_pos') is the union of the concrete and abstract nodes
         group_union_sel= [DetVar("gU2", {2*pos, 2*pos+1}) for pos in range(len(self.groups))]
@@ -1360,14 +1367,6 @@ class Sentence:
                                                           mainvars=[group.variables['gnodes_pos'] for group in self.groups])
 #        print("G_AC_U constraint: {}".format(group_ac_union_constraint))
         self.constraints.append(group_ac_union_constraint)
-#        for group in self.groups:
-#            if group.nanodes > 0:
-#                # Only do this for groups with abstract nodes
-#                # For each group, the set of snodes ('gnodes_pos') is the union of the concrete and abstract nodes
-#                # ('agnodes_pos', 'cgnodes_pos')
-#                self.constraints.extend(Union([group.variables['gnodes_pos'],
-#                                               group.variables['agnodes_pos'],
-#                                               group.variables['cgnodes_pos']]).constraints)
         # The set of category (abstract) nodes used is the union of the category nodes of the groups used
         # ('agnodes' for each group)
         self.constraints.append(UnionSelection(self.variables['catgnodes'],
@@ -1395,12 +1394,6 @@ class Sentence:
                                                              mainvars=snode_mainvars)
 #        print("SN_GN_U constraint: {}".format(snode_gnode_union_constraint))
         self.constraints.append(snode_gnode_union_constraint)
-#        for snode in self.nodes:
-#            if snode.gnodes:
-#                # Only for covered snodes
-#                self.constraints.append(UnionSelection(mainvar=DetVar("sn{}".format(snode.index), {snode.index}),
-#                                                       selvar=snode.variables['gnodes'],
-#                                                       seqvars=gn2s))
         # Union of all gnodes used snodes is all gnodes used
         self.constraints.append(UnionSelection(self.variables['gnodes'], self.variables['snodes'], s2gn))
         # Union of all gnodes for groups used is all gnodes used
@@ -1420,11 +1413,6 @@ class Sentence:
                                                       selvars=[g.variables['agnodes_pos'] for g in self.groups],
                                                       seqvars=[s.variables['agnodes'] for s in self.nodes],
                                                       mainvars=[g.variables['agnodes'] for g in self.groups]))
-        # Complex union selection by groups on positions of all category gnodes in each selected group
-#        self.constraints.append(ComplexUnionSelection(selvar=groupvar,
-#                                                      selvars=[g.variables['gnodes_pos'] for g in self.groups],
-#                                                      seqvars=[s.variables['gnodes'] for s in self.nodes],
-#                                                      mainvars=[g.variables['gnodes'] for g in self.groups]))
         ## Agreement
 #        print("snode variables")
 #        for sn in self.nodes:
@@ -1459,84 +1447,71 @@ class Sentence:
 
     ## Methods to constrain search
 
-#    def group_snode_state_eval(self, dstore):
-#        varscore = 0
-#        undet = dstore.ess_undet
-#        groups = self.variables['groups']
-#        covered = self.variables['covered_snodes']
-#        if covered in undet:
-#            cu = covered.get_upper(dstore)
-#            print("  Covered upper: {}".format(cu))
-#            varscore -= len(cu)
-#        if groups in undet:
-#            gu = groups.get_upper(dstore)
-#            print("  Groups upper: {}".format(gu))
-#            gnodes = 0
-#            for g in gu:
-#                group = self.groups[g]
-#                gnodes += group.ngnodes
-#            gnodes /= len(gu)
-#            varscore -= gnodes
-#        return varscore
-
-    def state_eval(self, dstore, var_value, group_size_wt=2):
+    def state_eval(self, dstore, var_value, par_val, verbosity=0):
         """Assign a score to the domain store based on how many snodes are covered and how large groups are.
         Changed 2015.09.24, adding second constraint and eliminating number of undetermined esssential variables.
         Changed 2016.07.13 to using groups and snodes to figure score, independent of the variable selected,
         only sn->gn variables if one is selected.
+        Changed again massively 2018.02.20-22. Based on number of gnodes in determined (lower bound) groups greater than 1.
+        Variables are independent in determining score: change in variable value is added or subtracted to
+        previous (parent) score; that is, there are no interactions among the variables in determining the score.
+        If parent value and variable/value are given, just update on the basis of the variable.
         """
-        # No point in checking dstore since it's the same across states at time of evaluation
-        varscore = 0
-        undet = dstore.ess_undet
-        groups = self.variables['groups']
-        covered = self.variables['covered_snodes']
-        if covered in undet:
-            cu = covered.get_upper(dstore)
-            cl = covered.get_lower(dstore)
-            varscore -= len(cl)
-            varscore -= (len(cu) - len(cl)) / 2.0
-        else:
-            # covered variable is determined
-            varscore -= len(covered.get_value(dstore))
-        if groups in undet:
-            gu = groups.get_upper(dstore)
-            gl = groups.get_lower(dstore)
-            gnodes = 0
-            if gl:
-                for g in gl:
-                    group = self.groups[g]
-                    gnodes += group.ngnodes
-                gnodes /= len(gl)
-                varscore -= gnodes
-        else:
-            # groups variable is determined
-            gval = groups.get_value(dstore)
-            if gval:
-                gnodes = 0
-                for g in gval:
-                    group = self.groups[g]
-                    gnodes += group.ngnodes
-                gnodes /= len(gval)
-                varscore -= gnodes
-        if var_value:
+        score = 0.0
+        if par_val and var_value:
+            if verbosity:
+                print("Evaluating dstore {} from parent {} and var/val {}".format(dstore, par_val, var_value))
+            # Don't calculate the whole score; just update the parent's score on the basis of the variable and value
+            # (this is done for the ...a branch in distribution).
+            score = par_val
             variable, value = var_value
             typ = Sentence.get_var_type(variable)
-            if typ == 'sn->gn':
-                # sn->gn variables are good to the extent they point to gnodes in large groups
-                # and have lower indices (because preferred interpretations are earlier)
-                if value:
-                    for gni in value:
-                        gn = self.gnodes[gni]
-                        varscore -= gn.ginst.ngnodes
-                    varscore /= len(value)
+            if typ == 'groups':
+                # Subtract the number of gnodes in the group that is the single member of the value set
+                group = self.groups[list(value)[0]]
+                score -= (group.ngnodes - 1) / 2.0
             elif typ == 'covered_snodes':
-                pass
-            elif typ == 'groups':
-                pass
+                score -= 1
+            elif typ == 'sn->gn':
+                # sn->gn variable value selected represents a cat gnode that is to be merged with
+                # a concrete node in another group
+                if value:
+                    score -= 0.5
+            else:
+                print("Something wrong: state eval variable {} is not of an acceptable type".format(variable))
+            score = round(score, 4)
+            if verbosity:
+                print("  Score: {}".format(score))
+            return score
+        # Otherwise calculate the whole value, based on three types of variables
+        # Essential undetermined variables
+        undet = dstore.ess_undet
+        gnodes = 0
+        nnodes = len(self.nodes)
+        if verbosity:
+            print("Evaluating dstore {}; undet: {}, var/value {}, parent val {}".format(dstore, undet, var_value, par_val))
+        ## $groups
+        # lower bound of $groups variable for sentence
+        gl = self.variables['groups'].get_lower(dstore)
+        # Number of gnodes for each group in $groups lower bound
+        gllengths = [self.groups[g].ngnodes for g in gl]
+        glbonus = sum([max(0, n-1) for n in gllengths]) / 2.0
+        ## $s2g variables for sentence nodes
+        s2gl = [v.get_lower(dstore) for v in [node.variables.get('gnodes') for node in self.nodes]]
+        s2glbonus = sum([(1 if len(s) == 2 else 0) for s in s2gl]) / 2.0
+        # $covered_snodes
+        cl = self.variables['covered_snodes'].get_lower(dstore)
+        cslower = len(cl)
+        csscore = nnodes - cslower
+        if verbosity:
+            print("  Uncovered nodes {}, groups {}, s2g {}".format(csscore, glbonus, s2glbonus))
+        score = csscore - glbonus - s2glbonus
         # Tie breaker
-        varscore += random.random() / 100.0
-#        print("Evaluating dstore {}; undet: {}, var/value {}, score {}".format(dstore, undet, var_value, varscore))
-        return varscore
+        score += random.random() / 100.0
+        score = round(score, 4)
+        if verbosity:
+            print("  Score: {}".format(score))
+        return score
 
     @staticmethod
     def get_var_type(variable):
@@ -1602,6 +1577,7 @@ class Sentence:
 #        return covered, val, cundec - val
 
     def get_group_varval(self, undecvars, dstore):
+        """Select a value for the $groups variable."""
         groups = self.variables['groups']
         gundec = groups.get_undecided(dstore)
         if not gundec or not self.group_conflicts:
@@ -1609,17 +1585,23 @@ class Sentence:
         conflicts = []
         biggest = (0, 0)
         for conflict in self.group_conflicts:
+            # A list of conflicting group indices that are between
+            # upper and lower bounds
             conflict1 = [g for g in conflict if g in gundec]
+            # If there's more than one, add the list to conflicts
             if len(conflict1) > 1:
                 conflicts.append(conflict1)
         if conflicts:
-            for conflict in conflicts:
-                for conflict1 in conflict:
-                    group = self.groups[conflict1]
-                    gn = group.ngnodes
-                    if gn > biggest[1]:
-                        biggest = (conflict1, gn)
+            for conflict1 in conflicts[0]:
+                # For the first conflict, find the group with the most nodes
+                # (Later rank the conflicts?)
+                group = self.groups[conflict1]
+                gn = group.ngnodes
+                if gn > biggest[1]:
+                    biggest = (conflict1, gn)
             val = {biggest[0]}
+            # Return the $groups variable, the promising value, and
+            # the remaining uncertain values with the promising value removed
             return groups, val, gundec - val
         return
 
@@ -1924,7 +1906,7 @@ class Solution:
 #            print("Node type for untranslated SolSeg: {}".format(node_toktype))
             seg = SolSeg(self, (start, end), translation, stok_group, session=self.session, gname=gname,
                          space_before=space_before, merger_groups=merger_groups, is_punc=is_punc)
-            print("Segment (untranslated) {}->{}: {}={}".format(start, end, included_tokens, seg.translation))
+            print("Segment (untranslated) {}->{}: {}={}".format(start, end, stok_group, seg.translation))
             self.segments.append(seg)
             i0 += len(stok_group)
 
