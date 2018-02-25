@@ -892,7 +892,7 @@ class Sentence:
                     for ms1 in self.language.ms[mi+1:]:
                         ms1.apply(scopy, ambig=ambig, verbosity=verbosity, terse=terse)
 
-    def merge_POS(self, tagged, analyzed, verbosity=1):
+    def merge_POS(self, tagged, analyzed, verbosity=0):
         """Merge the output of an external tagger and the L3Morpho analyzer. Use the tagger to
         disambiguate analyses, preferring the analysis if there's only one."""
         if verbosity:
@@ -910,7 +910,7 @@ class Sentence:
                 if verbosity:
                     print("  tagger tag {}, analyzer tag {}".format(tag, anal_pos))
                 if anal_pos and tag:
-                    if anal_pos == tag:
+                    if anal_pos == tag or self.language.postag_match(tag, anal_pos):
                         if verbosity:
                             print("  tagger and analyzer agree on {} for {}".format(tag, anal))
                         results1.append(anal)
