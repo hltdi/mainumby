@@ -872,6 +872,7 @@ class Sentence:
                 # Still need to figure out how to integrated tagged results and morphological analyses
                 if not self.tagger or self.tagger.morph:
                     analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
+#                    print("Analyzed {}: {}".format(self.tokens, analyses))
                     if self.tagger:
                         # Merge results of tagging and morphological analysis
                         self.analyses = self.merge_POS(tagged, analyses)
@@ -891,14 +892,15 @@ class Sentence:
                     for ms1 in self.language.ms[mi+1:]:
                         ms1.apply(scopy, ambig=ambig, verbosity=verbosity, terse=terse)
 
-    def merge_POS(self, tagged, analyzed, verbosity=0):
+    def merge_POS(self, tagged, analyzed, verbosity=1):
         """Merge the output of an external tagger and the L3Morpho analyzer. Use the tagger to
         disambiguate analyses, preferring the analysis if there's only one."""
         if verbosity:
             print("Merging tagger and analyzer results for {}".format(self))
         results = []
         for (word, tag), (token, anals) in zip(tagged, analyzed):
-#            print("word {}, tag {}, token {}, anals {}".format(word, tag, token, anals))
+            if verbosity:
+                print("  word {}, tag {}, token {}, anals {}".format(word, tag, token, anals))
             results1 = []
             for anal in anals:
                 anal_pos = None

@@ -2080,7 +2080,6 @@
 ->grn ñembojy_v[cat=a]
 ** cocinar_v[-r,+fin] ; ^ cocinar_v 0 ; #2
 ->grn mbojy_v[cat=a] ; #38 ; ##2
-->grn kosina_v[cat=che]
 ->grn momimói_v[cat=a] ; #22
 ** coincidir_v[-r,+fin] ; ^ coincidir_v 0
 ->grn joja_v[cat=a]

@@ -46,23 +46,18 @@
 ->grn api'i_n ; 0==0 n:n,poses:poses
 ** aceite_n $pp $art que $v[-ipv] ; ^ aceite_n 0
 ->grn ñandy_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn ñandyry_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** aceite_n $pp cual_n $v[-ipv] ; ^ aceite_n 0
 ->grn ñandy_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn ñandyry_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** aceite_n extraído del tapir ; ^ aceite_n 0 ; #119
 ->grn mborevikyra_n ; 0==0 n:n,poses:poses
 ** aceite_n que $v[-ipv] ; ^ aceite_n 0
 ->grn ñandy_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn ñandyry_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** aceite_n de $n ; ^ aceite_n 0
 ->grn $n ñandy_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
-->grn $n ñandyry_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ** aceite_n de árbol ; ^ aceite_n 0 ; #119
 ->grn yvyrañandy_n ; 0==0 n:n,poses:poses
 ** aceite_n ; ^ aceite_n 0 ; #119
 ->grn ñandy_n ; 0==0 n:n,poses:poses ; #57 ; ##5
-->grn ñandyry_n ; 0==0 n:n,poses:poses
 ** actividad_n $pp $art que $v[-ipv] ; ^ actividad_n 0
 ->grn <hembiapo_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <hetia'e_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no

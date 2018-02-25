@@ -105,10 +105,14 @@ al_inf :: a el [pos=v,tm=inf,pp=vove] ; // 0 1 ; 2-> [tm=prs]
 #...
 
 ## artículos definitivos
-artdef/ms :: el[pos=det] ; // 0
-artdef/fs :: la[pos=det] ; // 0
-artdef/mp :: los[pos=det] ; // 0
-artdef/fp :: las[pos=det] ; // 0
+artdef/ms :: el[pos=det] [pos=n] ; // 0
+artdef/ms_adj :: el[pos=det] [pos=a,n=0] ; // 0
+artdef/fs :: la[pos=det] [pos=n] ; // 0
+artdef/fs_adj :: la[pos=det] [pos=a,n=0] ; // 0
+artdef/mp :: los[pos=det] [pos=n] ; // 0
+artdef/mp_adj :: los[pos=det] [pos=a,n=1] ; // 0
+artdef/fp :: las[pos=det] [pos=n] ; // 0
+artdef/fp_adj :: las[pos=det] [pos=a,n=1] ; // 0
 ## antes adjetivos sin substantivo
 #artdef/adj_fs :: la [pos=a,n=0,rel=sjoj] ![pos=n] ; // 0
 #artdef/adj_ms :: el [pos=a,n=0,rel=sjoj] ![pos=n] ; // 0

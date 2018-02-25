@@ -3,6 +3,10 @@ abbrev: spa
 source: True
 target: True
 exttag: nltk|spa
+postags:
+  a: [a, det]
+  n: [n]
+  v: [v]
 classes:
 - $digito, un una dos tres cuatro cinco seis siete ocho nueve
 - $10_19, diez once doce trece catorce quince dieciseis diecesiete dieciocho diecinueve
@@ -74,6 +78,7 @@ join:
 - en~cuanto~a, p
 - sin~embargo, c
 - así~que, c
+- es~decir, c
 #- a~base~de, p
 #- a~cambio~de, p
 #- a~causa, p
@@ -232,7 +237,6 @@ join:
 #- en~cuanto, c
 #- en~el~caso~de~que, c
 #- en~tanto~que, c
-#- es~decir, c
 #- hasta~tal~punto~que, c
 #- hasta~tanto, c
 #- igual~que, c

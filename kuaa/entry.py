@@ -103,6 +103,9 @@
 #    FSSets for features in addition to simple FeatStructs. Later FSSet should be the only possibility.
 # 2017.06.22
 # -- Character joining items in phrases and numerals is now ~ instead of _.
+# 2018.02
+# -- Simplification of matching words with categories in groups.
+
 
 import copy, itertools
 import yaml
@@ -445,8 +448,8 @@ class Group(Entry):
                 tryfail = True
             matched = False
             for node in snodes[snindex:]:
-                if self.debug or verbosity:
-                    print("  Trying snode {}, nodegap {}, nogap? {}".format(node, nodegap, self.nogap))
+#                if self.debug or verbosity:
+#                    print("  Trying snode {}, nodegap {}, nogap? {}".format(node, nodegap, self.nogap))
                 # If this snode is unknown, the group can't include it
                 if node.is_unk():
                     if verbosity or self.debug:
