@@ -103,7 +103,8 @@ class SolSeg:
         # If there are special tokens in the source language, fix them here.
         self.special = False
         if '%' in self.token_str:
-            self.token_str = SolSeg.remove_spec_pre(self.token_str).replace('_', ' ')
+            # Create the source string without special characters
+            self.token_str = SolSeg.remove_spec_pre(self.token_str).replace('~', ' ')
             self.special = True
             if not translation:
                 # Set the translation for the special segment
@@ -1004,26 +1005,6 @@ class TreeTrans:
                 # snode is not covered by any group
                 node_index_map[snode.index] = tnode_index
                 node_features.append([snode.token, None, []])
-                tnode_index += 1
-            elif len(gnodes) == 1 and gnodes[0].special:
-                # one gnode, and it's "special"
-                gnode = gnodes[0]
-                # by default translation of special node is source language form
-                spec_token = snode.token
-                spec_trans = self.source.translate_special(spec_token)
-                print("Translating {} as {}".format(spec_token, spec_trans))
-                gnode_tuple_list = self.gnode_dict[gnode]
-                gnode_tuple = firsttrue(lambda x: x[0] in tg_groups, gnode_tuple_list)
-                if verbosity > 1:
-                    print("   gnode_tuple: {}".format(gnode_tuple))
-                tgroup, token, targ_feats, agrs, t_index = gnode_tuple
-                node_index_map[snode.index] = tnode_index
-                # Constrain the position of this node in the tgroup
-                if len(tgroup.tokens) > 1:
-                    t_indices = [(tgroup, t_index)]
-                else:
-                    t_indices = [(tgroup, 0)]
-                node_features.append([spec_trans, None, t_indices])
                 tnode_index += 1
             else:
                 # all other cases, there are one or more target translation groups

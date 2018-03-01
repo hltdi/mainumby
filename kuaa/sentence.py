@@ -262,7 +262,6 @@ class Document(list):
             tagger = language.tagger
             # tagger splits document into sentences
             sentences = tagger.get_sentences(text)
-#            print("Found {} sentences".format(len(sentences)))
             for s in sentences:
                 tokens = [t[0] for t in s]
 #                analyses = [t[1] for t in s]
@@ -680,29 +679,45 @@ class Sentence:
                 self.tokens[index] = token
 
     def join_lex(self, verbosity=0):
-        """Combine tokens into units for numerals (and other things?)."""
+        """Combine tokens into units for numerals and names."""
         tokens = []
         tok_position = 0
-        num_found = False
+        spec_found = False
         # Handle numeral word sequences
         while tok_position < len(self.tokens):
-            num = self.language.find_numeral(self.tokens[tok_position:])
-            if num:
-#                print("NUM {}".format(num))
-                num_tokens, is_dig = num
-                num_found = True
-                prefix = "%ND~" if is_dig else "%N~"
-                tokens.append(prefix + '~'.join(num_tokens))
-                tok_position += len(num_tokens)
+            spec = self.language.find_special(self.tokens[tok_position:])
+#            num = self.language.find_numeral(self.tokens[tok_position:])
+            if spec:
+#                print("SPEC {}".format(spec))
+                newtokens, prefix = spec
+                spec_found = True
+                prefix = "%{}~".format(prefix)
+                tokens.append(prefix + '~'.join(newtokens))
+                tok_position += len(newtokens)
             else:
                 tokens.append(self.tokens[tok_position])
                 tok_position += 1
-        if num_found:
+        if spec_found:
             self.tokens = tokens
         # Join other phrases (stored in the tree self.language.join)
         if self.language.join:
             joined = Sentence.join_from_tree(self.tokens, self.language.join)
             self.tokens = joined
+                
+#                num_tokens, is_dig = num
+#                num_found = True
+#                prefix = "%ND~" if is_dig else "%N~"
+#                tokens.append(prefix + '~'.join(num_tokens))
+#                tok_position += len(num_tokens)
+#            else:
+#                tokens.append(self.tokens[tok_position])
+#                tok_position += 1
+#        if num_found:
+#            self.tokens = tokens
+#        # Join other phrases (stored in the tree self.language.join)
+#        if self.language.join:
+#            joined = Sentence.join_from_tree(self.tokens, self.language.join)
+#            self.tokens = joined
 
     @staticmethod
     def join_from_tree(tokens, tree, position=0, subtree=None, result=None, to_join=None, previous_end=None):
@@ -778,23 +793,13 @@ class Sentence:
             if first_word:
                 first_char = token[0]
                 if not self.language.is_punc(first_char):
-                    # Later figure out whether the first word is a name
-                    self.tokens[index] = token.lower()
+                    if self.language.is_known(token.lower()):
+                        self.tokens[index] = token.lower()
+                    # Otherwise this is a name, so keep it capitalized
                     first_word = False
             elif token.isupper():
                 # Lowercase words other than the first one if they're all uppercase
                 self.tokens[index] = token.lower()
-#            # Otherwise leave capitalized tokens capitalized.
-#            # Capitalized and uppercase words not distinguished
-#            if token[0].isupper():
-#                self.tokens[index] = token.lower()
-#                self.isupper.append(True)
-#            else:
-#                self.isupper.append(False)
-#        # There may be initial punctuation.
-#        if self.language.is_punc(self.tokens[0]):
-#            self.tokens[1] = self.tokens[1].lower()
-#        self.tokens[0] = self.tokens[0].lower()
 
     def preprocess(self, verbosity=0):
         """Segment contractions, join numerals, lowercase first word, normalize orthography and punctuation.

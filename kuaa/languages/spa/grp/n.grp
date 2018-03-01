@@ -36957,19 +36957,15 @@
 ** peregrino_n $pp $art que $v[-ipv] ; ^ peregrino_n 0
 ->grn <hasaha_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn guatahára_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn vatahára_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** peregrino_n $pp cual_n $v[-ipv] ; ^ peregrino_n 0
 ->grn <hasaha_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn guatahára_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn vatahára_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** peregrino_n que $v[-ipv] ; ^ peregrino_n 0
 ->grn <hasaha_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn guatahára_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn vatahára_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** peregrino_n ; ^ peregrino_n 0 ; #2
 ->grn <hasaha_n ; 0==0 n:n,poses:poses
 ->grn guatahára_n ; 0==0 n:n,poses:poses
-->grn vatahára_n ; 0==0 n:n,poses:poses
 ** perejil_n $pp $art que $v[-ipv] ; ^ perejil_n 0
 ->grn pere_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** perejil_n $pp cual_n $v[-ipv] ; ^ perejil_n 0
@@ -45980,19 +45976,15 @@
 ** transeúnte_n $pp $art que $v[-ipv] ; ^ transeúnte_n 0
 ->grn <hasaha_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn guatahára_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn vatahára_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** transeúnte_n $pp cual_n $v[-ipv] ; ^ transeúnte_n 0
 ->grn <hasaha_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn guatahára_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn vatahára_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** transeúnte_n que $v[-ipv] ; ^ transeúnte_n 0
 ->grn <hasaha_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn guatahára_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn vatahára_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** transeúnte_n ; ^ transeúnte_n 0 ; #2
 ->grn <hasaha_n ; 0==0 n:n,poses:poses
 ->grn guatahára_n ; 0==0 n:n,poses:poses
-->grn vatahára_n ; 0==0 n:n,poses:poses
 ** transformación_n $pp $art que $v[-ipv] ; ^ transformación_n 0
 ->grn jeva_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn va_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
@@ -47687,33 +47679,21 @@
 ** viaje_n ; ^ viaje_n 0
 ->grn guata_n ; 0==0 n:n,poses:poses
 ** viajero_n $pp $art que $v[-ipv] ; ^ viajero_n 0
-->grn vatahára_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <hasahára_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn guatahára_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn mombyrygua_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** viajero_n $pp cual_n $v[-ipv] ; ^ viajero_n 0
-->grn vatahára_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <hasahára_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn guatahára_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn mombyrygua_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** viajero_n que $v[-ipv] ; ^ viajero_n 0
-->grn vatahára_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <hasahára_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn guatahára_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn mombyrygua_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** viajero_n ; ^ viajero_n 0 ; #1
-->grn vatahára_n ; 0==0 n:n,poses:poses
 ->grn <hasahára_n ; 0==0 n:n,poses:poses
 ->grn guatahára_n ; 0==0 n:n,poses:poses
 ->grn mombyrygua_n ; 0==0 n:n,poses:poses
-** viandante_n $pp $art que $v[-ipv] ; ^ viandante_n 0
-->grn vatahára_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** viandante_n $pp cual_n $v[-ipv] ; ^ viandante_n 0
-->grn vatahára_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** viandante_n que $v[-ipv] ; ^ viandante_n 0
-->grn vatahára_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** viandante_n ; ^ viandante_n 0
-->grn vatahára_n ; 0==0 n:n,poses:poses
 ** vicio_n $pp $art que $v[-ipv] ; ^ vicio_n 0
 ->grn <hekovai_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <hekoky'a_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no

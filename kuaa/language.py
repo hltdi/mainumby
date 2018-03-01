@@ -175,7 +175,7 @@ class Language:
                  eos=EOS,
                  # Added from morphology/language
                  pos=None, cache=True,
-                 postags=None):
+                 postags=None, namejoin=None):
         """Initialize dictionaries and names."""
         self.name = name
         self.abbrev = abbrev
@@ -183,6 +183,8 @@ class Language:
         self.exttag = exttag
         # Phrases to join during sentence tokenization
         self.join = join
+        # Words that can join names
+        self.namejoin = namejoin
         self.groups = groups or {}
         # A dictionary of group attribute defaults for different head categories
         self.group_defaults = {}
@@ -235,6 +237,8 @@ class Language:
         # Whether morphological data is loaded
         self.anal_loaded = False
         self.gen_loaded = False
+        # All known morphologically simple words
+        self.words = []
         # Categories (and other semantic features) of words and roots; word->cats dict
         self.cats = {}
         self.read_cats()
@@ -290,6 +294,11 @@ class Language:
             if Language.is_dig_numeral(string[1:]):
                 return True
         return False
+
+    @staticmethod
+    def is_name(string):
+        """Is this a special, capitalized token?"""
+        
 
     @staticmethod
     def is_class(string):
@@ -377,21 +386,83 @@ class Language:
             return taggertag in self.postags[morphotag]
         return False
 
-    def find_numeral(self, words):
-        """Determines whether the list of words begins with a numeral, either in the form of digits or words.
-        If it does, it returns the list of numeral tokens and whether the numeral is digits."""
+    def is_known(self, token):
+        """Is the token a known word, either because it is in the list of known words or can be analyzed
+        by the morphological analyzer?"""
+        if token in self.words:
+            return True
+        anal = self.anal_word(token)
+        if anal[0].get('features'):
+            # There is a morphological analysis
+            # %% Figure out a way to save this
+            return True
+        return False
+
+    def find_special(self, words):
+        """Determines whether the list of words begins with a 'special' sequence, either
+          a numeral, either in the form of digits or words, or
+          a name, consisting of one or more capitalized words, possibly joined by
+            a namejoin token like 'y'.
+        If it does, it returns the list of tokens and the special character code
+          for the sequence.
+        """
         if isinstance(words, str):
             words = words.split()
+        # Try to find a digit
         if Language.is_dig_numeral(words[0]):
-            return [words[0]], True
-        else:
-            for name, pattern in self.get_num_patterns():
-                pat_match = self.match_pattern(pattern, words)
-                if pat_match:
-#                    print("Find numeral: {}".format(pat_match))
-                    numwords = pat_match[0]
-                    return numwords, False
+            return [words[0]], 'ND'
+        # Try to find a sequence of number words
+        for name, pattern in self.get_num_patterns():
+            pat_match = self.match_pattern(pattern, words)
+            if pat_match:
+                numwords = pat_match[0]
+                return numwords, 'N'
+        # Try to find a sequence of name words
+        name = True
+        names = []
+        while name and words:
+            word = words.pop(0)
+            if word.istitle():
+                names.append(word)
+            elif names and word in self.namejoin and words and words[0].istitle():
+                # Namejoin token, like 'y'
+                names.append(word)
+            else:
+                # End of name sequence
+                name = False
+        if names:
+            return names, 'C'
         return False
+
+#    def find_numeral(self, words):
+#        """Determines whether the list of words begins with a numeral, either in the form of digits or words.
+#        If it does, it returns the list of numeral tokens and whether the numeral is digits."""
+#        if isinstance(words, str):
+#            words = words.split()
+#        if Language.is_dig_numeral(words[0]):
+#            return [words[0]], True
+#        else:
+#            for name, pattern in self.get_num_patterns():
+#                pat_match = self.match_pattern(pattern, words)
+#                if pat_match:
+#                    numwords = pat_match[0]
+#                    return numwords, False
+#        return False
+
+#    def find_names(self, words):
+#        """Determines whether list of words begins with one or more names, returning the names
+#        in a list if so."""
+#        name = True
+#        names = []
+#        while name and words:
+#            word = words.pop(0)
+#            if word.istitle():
+#                names.append(word)
+#            elif names and word in self.namejoin and words and words[0].istitle():
+#                names.append(word)
+#            else:
+#                name = False
+#        return names
 
     def quit(self, cache=True):
         """Do stuff when the program exits. Only cache analyses and generation if there is a current
@@ -526,6 +597,7 @@ class Language:
                 for line in f:
                     form, sem = line.strip().split()
                     self.cats[form] = sem.split(',')
+                    self.words.append(form.split('_')[0])
         except IOError:
             pass
 #            print("El archivo semántico {} no existe".format(file))
@@ -1632,6 +1704,8 @@ class Language:
 #            print("{}: {}".format(k, v))
         exttag = d.get('exttag')
         joins = d.get('join')
+        namejoin = d.get('namejoin', '').split(',')
+#        print("Name join: {}".format(namejoin))
         conversion = None
         if exttag:
             # External tagger, so also look for conversion dictionaries for tags
@@ -1651,7 +1725,8 @@ class Language:
             
         l = Language(d.get('name'), d.get('abbrev'), use=use, directory=directory,
                      exttag=exttag, conversion=conversion, postags=d.get('postags'),
-                     join=joins, eos=d.get('eos', EOS), lemmas=d.get('lemmas'))
+                     join=joins, eos=d.get('eos', EOS), lemmas=d.get('lemmas'),
+                     namejoin=namejoin)
         translations = d.get('translations')
         if translations:
             for s, t in translations.items():
@@ -1668,7 +1743,7 @@ class Language:
         return l
 
     @staticmethod
-    def read(path, use=ANALYSIS, directory=None):
+    def read(path, use=ANALYSIS, directory=None, verbosity=0):
         """Create a Language from the contents of a file, a dict that must be then converted to a Language.
         2017.4.18: Stopped using YAML."""
         dct = {}
@@ -1680,40 +1755,9 @@ class Language:
             while lines:
                 line = lines.pop().split('#')[0].strip() # strip comments
                 if not line: continue                    # ignore blank lines
+                if verbosity:
+                    print("Key {}, subdict {}, line {}".format(key, subdct, line))
                 splitline = line.split()
-                if splitline[0].endswith(':'):
-                    # the name of a new dict key
-                    if len(splitline) > 1:
-                        # the value is in this line
-                        key = splitline[0][:-1]
-                        value = splitline[1]
-                        dct[key] = value
-                        # if there's a subdct, incorporate it
-                        if subdct and key:
-#                            print("Adding subdict {}".format(key))
-#                            print("  {}".format(subdct))
-                            dct[key] = subdct
-                            key = ''
-                            subdct = {}
-                        # if there's a sublist, incorporate it
-                        elif ls and key:
-                            dct[key] = ls
-                            key = ''
-                            ls = []
-                    else:
-                        # the name of subdct
-                        # First add the last one
-                        if subdct and key:
-#                            print("Adding subdict {}".format(key))
-                            dct[key] = subdct
-                            subdct = {}
-                        elif ls and key:
-#                            print("Adding sublist {}".format(key))
-                            dct[key] = ls
-                            ls = []
-                        key = splitline[0][:-1]
-#                        print("New subdict: {}".format(key))
-                    continue
                 if '::' in line:
                     # key and value for subdict
                     # We need rpartition rather than split to handle the case :::pct
@@ -1725,20 +1769,61 @@ class Language:
                         value = [v for v in value if v]
                     subdct[subkey] = value
                     continue
+                if splitline[0].endswith(':'):
+                    # the name of a new dict key
+                    if len(splitline) > 1:
+                        # if there's a subdct, incorporate it
+                        if subdct and key:
+                            dct[key] = subdct
+                            key = ''
+                            subdct = {}
+                        # if there's a sublist, incorporate it
+                        elif ls and key:
+                            dct[key] = ls
+                            key = ''
+                            ls = []
+                        # the value is in this line
+                        key = splitline[0][:-1]
+                        value = splitline[1]
+                        dct[key] = value
+                        if verbosity:
+                            print("  Key {}, value {}".format(key, value))
+                        key = ''
+                    else:
+                        # the name of subdct
+                        # First add the last one
+                        if subdct and key:
+                            if verbosity:
+                                print("  Adding last subdict {} to {}".format(subdct, key))
+                            dct[key] = subdct
+                            subdct = {}
+                        elif ls and key:
+                            if verbosity:
+                                print("  Adding last sublist {} to {}".format(sublist, key))
+                            dct[key] = ls
+                            ls = []
+                        key = splitline[0][:-1]
+                    continue
                 if line[0] == '-':
                     # Sublist to add to list
                     sublist = line.split('-')[1].strip()
                     sublist = sublist.split(',')
-#                    print(" Sublist item: {}".format(sublist))
+                    if verbosity:
+                        print("  Sublist item: {}".format(sublist))
                     ls.append([x.strip() for x in sublist])
                     continue
                 if line[0] == ' ':
                     print("{} begins with space".format(line))
                 print("Something wrong with line {}".format(line))
 
+        # Add left-over subdicts or sublist to current key
         if subdct and key:
+            if verbosity:
+                print("  Adding subdict {} to {}".format(subdct, key))
             dct[key] = subdct
         elif ls and key:
+            if verbosity:
+                print("  Adding sublist {} to {}".format(sublist, key))
             dct[key] = ls
                         
 #            dct = yaml.load(file)
@@ -1816,10 +1901,12 @@ class Language:
         return languages
 
     def translate_special(self, form):
-        """Translate a special form, for example, a numeral."""
+        """Translate a special form, for example, a numeral. form has already had the
+        % removed but not rest of the 'special' prefix. Default is to just return the form."""
         if not form:
             return form
         form1 = form[1:]
+        # See if form's translation is in the translation dict
         if form1 in self.translations:
             return '%' + self.translations[form1]
         return form

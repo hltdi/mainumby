@@ -130,8 +130,6 @@ class Solver:
                         score += 1
                     if expand_verbosity:
                         print(" Próximo estado {}, nivel {}, valor {}".format(next_state, n, val))
-                    # Add next state where it belongs in the queue
-                    if expand_verbosity:
                         print("  {} PUTTING new state {} and score {} on fringe of length {}".format(self, next_state, val, fringe.qsize()))
                     fringe.put((val, next_state))
             n += 1

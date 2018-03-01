@@ -49,7 +49,7 @@ import kuaa
 ## Creación (y opcionalmente traducción) de oración simple y de documento.
 def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
         verbosity=0):
-    e, g = cargar_eg()
+    e, g = cargar()
     session = kuaa.start(e, g, user)
     d = kuaa.Document(e, g, sentence, True, session=session)
     s = d[0]
@@ -130,12 +130,12 @@ def usuario(username):
     return kuaa.User.users.get(username)
 
 ## Cargar castellano y guaraní. Devuelve las 2 lenguas.
-def cargar_eg(train=False):
+def cargar(train=False):
     spa, grn = kuaa.Language.load_trans('spa', 'grn', train=train)
     return spa, grn
 
 ## Cargar una lengua, solo para análisis.
-def cargar(lang='spa'):
+def cargar1(lang='spa'):
     spa = kuaa.Language.load_lang(lang)
     return spa
 
