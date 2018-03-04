@@ -1116,8 +1116,8 @@ class Sentence:
                     print("Failed to match")
                 continue
             matched_keys.append(matched_key)
-#            if verbosity > 1:
-#            print('Group {} matches snodes {}'.format(group, snodes))
+            if verbosity > 1:
+                print('Group {} matches snodes {}'.format(group, snodes))
             # Create a GInst object and GNodes for each surviving group
             self.groups.append(GInst(group, self, head_i, snodes, group_index))
             group_index += 1
@@ -1814,6 +1814,178 @@ class Solution:
         for g in self.ginsts:
             g.display(word_width=word_width, s2gnodes=self.s2gnodes)
 
+    ## Creating translations
+    
+    def translate(self, verbosity=0, all_trans=False, interactive=False):
+        """Do everything you need to create the translation."""
+        merged = self.merge_nodes(verbosity=verbosity)
+        if not merged:
+            return False
+        for ginst in self.ginsts:
+            if ginst.translations:
+                if verbosity:
+                    print("{} translations already set in other solution".format(ginst))
+            else:
+                ginst.set_translations(verbosity=verbosity)
+        self.make_translations(verbosity=verbosity, all_trans=all_trans, interactive=interactive)
+        return True
+
+    def merge_nodes(self, verbosity=0):
+        """Merge the source features of cat and inst GNodes associated with each SNode.
+        Return False if unification fails."""
+        if verbosity:
+            print("Merging target nodes for {}".format(self))
+        for snode, gn_indices in zip(self.sentence.nodes, self.s2gnodes):
+            feats_unified = None
+            # gn_indices is either one or two ints indexing gnodes in self.gnodes
+            gnodes = [self.sentence.gnodes[index] for index in gn_indices]
+            if not gnodes:
+                self.gnodes_feats.append((gnodes, None))
+                continue
+#            print("snode {}, gn_indices {}, gnodes {}".format(snode, gn_indices, gnodes))
+            merging = len(gnodes) > 1
+            if not merging:
+                # Not really a merged node
+                features = []
+                gnode = gnodes[0]
+                snode_indices = gnode.snode_indices
+                snode_index = snode_indices.index(snode.index)
+                snode_anal = gnode.snode_anal[snode_index]
+                if snode_anal and snode_anal[0] and snode_anal[0][1]:
+                    features = [a[1] for a in snode_anal]
+                if verbosity:
+                    print("  Not a merge node, anal {}, using preferred from {}".format(snode_anal, features))
+                # Use the first (preferred) analysis.
+                if features:
+                    feature = features[0]
+                    feats_unified = FSSet(feature)
+            else:
+                # A genuine merge node
+                features = []
+                for gnode in gnodes:
+                    snode_indices = gnode.snode_indices
+                    snode_index = snode_indices.index(snode.index)
+                    snode_anal = gnode.snode_anal[snode_index]
+                    if verbosity:
+                        print("   Merge nodes for gnode {}: snode_anal {}".format(gnode, snode_anal))
+                    # It could be a list of anals, only None if there aren't any.
+                    if snode_anal and snode_anal[0] and snode_anal[0][1]:
+                        if verbosity:
+                            print("   Appending snode_anals for gnode {}: {}".format(gnode, [a[1] for a in snode_anal]))
+                        features.extend([a[1] for a in snode_anal])
+                # Could this fail?? YES, currently it can
+                if verbosity:
+                    print("  Unification result for {}: snode {}, gn_indices {} features {}".format(self, snode, gn_indices, features))
+#            if len(features) > 1 and verbosity:
+#                print("More than one feature to unify {}".features)
+                if verbosity:
+                    print("  Unifying fss in merge node {}".format(features))
+                feats_unified = FSSet.unify_all([FSSet(feats) for feats in features])
+#            if feats_unified:
+#                print("  Unified feats {}".format(feats_unified))
+#            if verbosity and len(features) > 1:
+#                print("Features now {}".format())
+            if merging and not feats_unified:
+                print("SOMETHING WRONG: unification failed for {}!".format(features))
+                return False
+            if verbosity:
+                print("  Unification result for {}: snode {}, gn_indices {} features {} feats unified {}".format(self, snode, gn_indices, features, feats_unified))
+            self.gnodes_feats.append((gnodes, feats_unified))
+        return True
+
+    def make_translations(self, verbosity=0, display=True, all_trans=False, interactive=False):
+        """Create a TreeTrans object for each GInst and tree. build() each top TreeTrans and
+        realize translation. Whew."""
+        if verbosity:
+            print("Making translations for {} with ginsts {}".format(self, self.ginsts))
+            for g in self.ginsts:
+                for t in g.translations:
+                    print("  {}".format(t))
+        # Create TreeTrans instances here
+        abs_gnode_dict = {}
+        # A single gnode_dict for all treetranss
+        gnode_dict = {}
+        treetranss = []
+        ttindex = 0
+        for tree, ginst in zip(self.trees, self.ginsts):
+#            print("Translating {} / {}".format(tree, ginst))
+            if ginst.treetrans and ginst.treetrans.top and ginst.treetrans.solution == self:
+                # There's a treetrans already and it's not the result of a merger,
+                # so just use it rather than creating a new one.
+                print("Not recreating treetrans for {}".format(ginst))
+                treetranss.append(ginst.treetrans)
+            else:
+#                print("Making translations for tree {} and ginst {}".format(tree, ginst))
+                # Figure the various features for the next TreeTrans instance.
+                is_top = not any([(tree < other_tree) for other_tree in self.trees])
+                group_attribs = []
+                any_anode = False
+                for tgroup, tgnodes, tnodes in ginst.translations:
+#                    print("  tgroup {}, tgnodes {}, tnodes {}".format(tgroup, tgnodes, tnodes))
+                    for tgnode, tokens, feats, agrs, t_index in tgnodes:
+                        if tgnode.cat:
+                            any_anode = True
+                            if tgnode in abs_gnode_dict:
+                                abs_gnode_dict[tgnode].append((tgroup, tokens, feats, agrs, t_index))
+                            else:
+                                abs_gnode_dict[tgnode] = [(tgroup, tokens, feats, agrs, t_index)]
+                        elif tgnode in gnode_dict:
+                            gnode_dict[tgnode].append((tgroup, tokens, feats, agrs, t_index))
+                        else:
+                            gnode_dict[tgnode] = [(tgroup, tokens, feats, agrs, t_index)]
+                    group_attribs.append((tgroup, tnodes, tgroup.agr, tgnodes))
+
+                treetrans = TreeTrans(self, tree=tree.copy(),
+                                      ginst=ginst, # attribs=ginst.translations,
+                                      gnode_dict=gnode_dict, abs_gnode_dict=abs_gnode_dict,
+                                      group_attribs=group_attribs,
+                                      any_anode=any_anode,
+                                      index=ttindex, top=is_top)
+                treetranss.append(treetrans)
+                ttindex += 1
+#        print("Gnode dict: {}".format(gnode_dict))
+        self.treetranss = treetranss
+
+        # Add subTTs to TTs (actually only have to do this for top TTs)
+        for index, tt1 in enumerate(treetranss[:-1]):
+            tree1 = tt1.tree
+            for tt2 in treetranss[index:]:
+                tree2 = tt2.tree
+                if tree1 < tree2:
+                    tt2.subTTs.append(tt1)
+                elif tree2 < tree1:
+                    tt1.subTTs.append(tt2)
+
+        # Build TTs
+        for tt in treetranss:
+            if tt.outputs:
+                print("TreeTrans {} already processed".format(tt))
+                tt.display_all()
+            elif tt.top:
+                # Translation groups and associated tnodes for this tree (top level)
+                tt.all_tgroups.append(list(zip(tt.tgroups, tt.tnodes)))
+                for stt in tt.subTTs:
+                    tt.all_tgroups.append(list(zip(stt.tgroups, stt.tnodes)))
+                # Find all combinations of the target groups involved in this TT (at any level)
+                tgroup_combs = allcombs(tt.all_tgroups)
+                if verbosity:
+                    print(" TT group combs")
+                    for tgc in tgroup_combs:
+                        print("  {}".format(tgc))
+                for tgroup_comb in tgroup_combs:
+                    tgroups = [t[0] for t in tgroup_comb]
+                    tnodes = [t[1] for t in tgroup_comb]
+                    tt.build(tg_groups=tgroups, tg_tnodes=tnodes, verbosity=verbosity)
+                    tt.generate_words()
+                    tt.make_order_pairs(verbosity=verbosity)
+                    tt.create_variables()
+                    tt.create_constraints()
+                    tt.realize(all_trans=all_trans, interactive=interactive)
+                    if all_trans:
+                        continue
+                    if not interactive or not input('SEARCH FOR ANOTHER TRANSLATION FOR {}? [yes/NO] '.format(tt)):
+                        break
+
     def get_ttrans_outputs(self):
         """Return a list of (snode_indices, translation_strings, source group name, source merger groups) for the solution's
         tree translations."""
@@ -1835,45 +2007,46 @@ class Solution:
                 last_indices = raw_indices
         return self.ttrans_outputs
 
-    def get_ttrans_alignment(self):
-        """Return a list of (snode_indices, snode_words, snode_root, translation_strings, translation roots) for the solution's
-        tree translations."""
-        def get_trans_root(translations):
-            ttt = set()
-            for trans1 in translations:
-                for trans2 in trans1[1]:
-                    troot = trans2[1]
-                    if '$' not in troot:
-                        ttt.add(troot)
-            return ttt
-        ttrans_align = []
-        last_indices = [-1]
-        tokens = self.sentence.tokens
-        for tt in self.treetranss:
-            if not tt.output_strings:
-                continue
-            indices = tt.snode_indices
-            raw_indices = []
-            stokens = []
-            ginst = tt.ginst
-            group = ginst.group
-            translations = get_trans_root(ginst.translations)
-            subtt = tt.subTTs
-            if subtt:
-                subtt = [get_trans_root(st.ginst.translations) for st in subtt]
-            merger = tt.get_merger_roots()
-            for index in indices:
-                node = self.sentence.nodes[index]
-                raw1 = node.raw_indices
-                raw_indices.extend(raw1)
-                stokens.extend([tokens[i] for i in raw1])
-            raw_indices.sort()
-            ttrans_align.append([raw_indices, stokens, group.head, tt.output_strings, subtt, translations])
-            last_indices = raw_indices
-        return ttrans_align
+#    def get_ttrans_alignment(self):
+#        """Return a list of (snode_indices, snode_words, snode_root, translation_strings, translation roots) for the solution's
+#        tree translations."""
+#        def get_trans_root(translations):
+#            ttt = set()
+#            for trans1 in translations:
+#                for trans2 in trans1[1]:
+#                    troot = trans2[1]
+#                    if '$' not in troot:
+#                        ttt.add(troot)
+#            return ttt
+#        ttrans_align = []
+#        last_indices = [-1]
+#        tokens = self.sentence.tokens
+#        for tt in self.treetranss:
+#            if not tt.output_strings:
+#                continue
+#            indices = tt.snode_indices
+#            raw_indices = []
+#            stokens = []
+#            ginst = tt.ginst
+#            group = ginst.group
+#            translations = get_trans_root(ginst.translations)
+#            subtt = tt.subTTs
+#            if subtt:
+#                subtt = [get_trans_root(st.ginst.translations) for st in subtt]
+#            merger = tt.get_merger_roots()
+#            for index in indices:
+#                node = self.sentence.nodes[index]
+#                raw1 = node.raw_indices
+#                raw_indices.extend(raw1)
+#                stokens.extend([tokens[i] for i in raw1])
+#            raw_indices.sort()
+#            ttrans_align.append([raw_indices, stokens, group.head, tt.output_strings, subtt, translations])
+#            last_indices = raw_indices
+#        return ttrans_align
 
     def get_untrans_segs(self, src_tokens, end_index, gname=None, merger_groups=None, indices_covered=None):
-        '''Set one or more segments for a sequence of untranslatable tokens. Ignore indices that are already covered by translated segments.'''
+        '''Set one or more segments for a sequence of untranslatable tokens. Ignore indices that are already
+         covered by translated segments.'''
         stok_groups = []
         stoks = []
         index = end_index + 1
@@ -1962,174 +2135,3 @@ class Solution:
     def get_seg_html(self):
         return [segment.html for segment in self.segments]
 
-    def translate(self, verbosity=0, all_trans=False, interactive=False):
-        """Do everything you need to create the translation."""
-        merged = self.merge_nodes(verbosity=verbosity)
-        if not merged:
-            return False
-        for ginst in self.ginsts:
-            if ginst.translations:
-                if verbosity:
-                    print("{} translations already set in other solution".format(ginst))
-            else:
-                ginst.set_translations(verbosity=verbosity)
-        self.make_translations(verbosity=verbosity, all_trans=all_trans, interactive=interactive)
-        return True
-
-    def merge_nodes(self, verbosity=0):
-        """Merge the source features of cat and inst GNodes associated with each SNode.
-        Return False if unification fails."""
-        if verbosity:
-            print("Merging target nodes for {}".format(self))
-        for snode, gn_indices in zip(self.sentence.nodes, self.s2gnodes):
-            feats_unified = None
-            # gn_indices is either one or two ints indexing gnodes in self.gnodes
-            gnodes = [self.sentence.gnodes[index] for index in gn_indices]
-            if not gnodes:
-                self.gnodes_feats.append((gnodes, None))
-                continue
-#            print("snode {}, gn_indices {}, gnodes {}".format(snode, gn_indices, gnodes))
-            merging = len(gnodes) > 1
-            if not merging:
-                # Not really a merged node
-                features = []
-                gnode = gnodes[0]
-                snode_indices = gnode.snode_indices
-                snode_index = snode_indices.index(snode.index)
-                snode_anal = gnode.snode_anal[snode_index]
-                if snode_anal and snode_anal[0] and snode_anal[0][1]:
-                    features = [a[1] for a in snode_anal]
-                if verbosity:
-                    print("  Not a merge node, anal {}, using preferred from {}".format(snode_anal, features))
-                # Use the first (preferred) analysis.
-                if features:
-                    feature = features[0]
-                    feats_unified = FSSet(feature)
-            else:
-                # A genuine merge node
-                features = []
-                for gnode in gnodes:
-                    snode_indices = gnode.snode_indices
-                    snode_index = snode_indices.index(snode.index)
-                    snode_anal = gnode.snode_anal[snode_index]
-                    if verbosity:
-                        print("   Merge nodes for gnode {}: snode_anal {}".format(gnode, snode_anal))
-                    # It could be a list of anals, only None if there aren't any.
-                    if snode_anal and snode_anal[0] and snode_anal[0][1]:
-                        if verbosity:
-                            print("   Appending snode_anals for gnode {}: {}".format(gnode, [a[1] for a in snode_anal]))
-                        features.extend([a[1] for a in snode_anal])
-                # Could this fail?? YES, currently it can
-                if verbosity:
-                    print("  Unification result for {}: snode {}, gn_indices {} features {}".format(self, snode, gn_indices, features))
-#            if len(features) > 1 and verbosity:
-#                print("More than one feature to unify {}".features)
-                if verbosity:
-                    print("  Unifying fss in merge node {}".format(features))
-                feats_unified = FSSet.unify_all([FSSet(feats) for feats in features])
-#            if feats_unified:
-#                print("  Unified feats {}".format(feats_unified))
-#            if verbosity and len(features) > 1:
-#                print("Features now {}".format())
-            if merging and not feats_unified:
-                print("SOMETHING WRONG: unification failed for {}!".format(features))
-                return False
-            if verbosity:
-                print("  Unification result for {}: snode {}, gn_indices {} features {} feats unified {}".format(self, snode, gn_indices, features, feats_unified))
-            self.gnodes_feats.append((gnodes, feats_unified))
-        return True
-
-    def make_translations(self, verbosity=0, display=True, all_trans=False, interactive=False):
-        """Create a TreeTrans object for each GInst and tree. build() each top TreeTrans and
-        realize translation."""
-        if verbosity:
-            print("Making translations for {} with ginsts {}".format(self, self.ginsts))
-            for g in self.ginsts:
-                for t in g.translations:
-                    print("  {}".format(t))
-        # Create TreeTrans instances here
-        abs_gnode_dict = {}
-        # A single gnode_dict for all treetranss
-        gnode_dict = {}
-        treetranss = []
-        ttindex = 0
-        for tree, ginst in zip(self.trees, self.ginsts):
-#            print("Translating {} / {}".format(tree, ginst))
-            if ginst.treetrans and ginst.treetrans.top and ginst.treetrans.solution == self:
-                # There's a treetrans already and it's not the result of a merger,
-                # so just use it rather than creating a new one.
-                print("Not recreating treetrans for {}".format(ginst))
-                treetranss.append(ginst.treetrans)
-            else:
-#                print("Making translations for tree {} and ginst {}".format(tree, ginst))
-                # Figure the various features for the next TreeTrans instance.
-                is_top = not any([(tree < other_tree) for other_tree in self.trees])
-                group_attribs = []
-                any_anode = False
-                for tgroup, tgnodes, tnodes in ginst.translations:
-#                    print("  tgroup {}, tgnodes {}, tnodes {}".format(tgroup, tgnodes, tnodes))
-                    for tgnode, tokens, feats, agrs, t_index in tgnodes:
-#                        if tgnode.special:
-#                            print("  Tgnode {} in tgroup {} is special".format(tgnode, tgroup))
-                        if tgnode.cat:
-                            any_anode = True
-                            if tgnode in abs_gnode_dict:
-                                abs_gnode_dict[tgnode].append((tgroup, tokens, feats, agrs, t_index))
-                            else:
-                                abs_gnode_dict[tgnode] = [(tgroup, tokens, feats, agrs, t_index)]
-                        elif tgnode in gnode_dict:
-                            gnode_dict[tgnode].append((tgroup, tokens, feats, agrs, t_index))
-                        else:
-                            gnode_dict[tgnode] = [(tgroup, tokens, feats, agrs, t_index)]
-                    group_attribs.append((tgroup, tnodes, tgroup.agr, tgnodes))
-
-                treetrans = TreeTrans(self, tree=tree.copy(),
-                                      ginst=ginst, # attribs=ginst.translations,
-                                      gnode_dict=gnode_dict, abs_gnode_dict=abs_gnode_dict,
-                                      group_attribs=group_attribs,
-                                      any_anode=any_anode,
-                                      index=ttindex, top=is_top)
-                treetranss.append(treetrans)
-                ttindex += 1
-#        print("Gnode dict: {}".format(gnode_dict))
-        self.treetranss = treetranss
-
-        # Add subTTs to TTs (actually only have to do this for top TTs)
-        for index, tt1 in enumerate(treetranss[:-1]):
-            tree1 = tt1.tree
-            for tt2 in treetranss[index:]:
-                tree2 = tt2.tree
-                if tree1 < tree2:
-                    tt2.subTTs.append(tt1)
-                elif tree2 < tree1:
-                    tt1.subTTs.append(tt2)
-
-        # Build TTs
-        for tt in treetranss:
-            if tt.outputs:
-                print("TreeTrans {} already processed".format(tt))
-                tt.display_all()
-            elif tt.top:
-                # Translation groups and associated tnodes for this tree (top level)
-                tt.all_tgroups.append(list(zip(tt.tgroups, tt.tnodes)))
-                for stt in tt.subTTs:
-                    tt.all_tgroups.append(list(zip(stt.tgroups, stt.tnodes)))
-                # Find all combinations of the target groups involved in this TT (at any level)
-                tgroup_combs = allcombs(tt.all_tgroups)
-                if verbosity:
-                    print(" TT group combs")
-                    for tgc in tgroup_combs:
-                        print("  {}".format(tgc))
-                for tgroup_comb in tgroup_combs:
-                    tgroups = [t[0] for t in tgroup_comb]
-                    tnodes = [t[1] for t in tgroup_comb]
-                    tt.build(tg_groups=tgroups, tg_tnodes=tnodes, verbosity=verbosity)
-                    tt.generate_words()
-                    tt.make_order_pairs(verbosity=verbosity)
-                    tt.create_variables()
-                    tt.create_constraints()
-                    tt.realize(all_trans=all_trans, interactive=interactive)
-                    if all_trans:
-                        continue
-                    if not interactive or not input('SEARCH FOR ANOTHER TRANSLATION FOR {}? [yes/NO] '.format(tt)):
-                        break

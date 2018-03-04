@@ -545,6 +545,8 @@ class Group(Entry):
                                 fstring = " Group token {} in sentence position {} doesn't follow last token at {}"
                                 print(fstring.format(token, snode_indices, last_sindex))
                             return False
+                        if Entry.is_special(token):
+                            token = node.token
                         match_snodes1.append((node.index, node_match, token, True))
                         if Group.is_cat(token):
                             last_cat = True

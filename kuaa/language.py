@@ -387,7 +387,7 @@ class Language:
         return False
 
     def is_known(self, token):
-        """Is the token a known word, either because it is in the list of known words or can be analyzed
+        """Is the lowercase token a known word, either because it is in the list of known words or can be analyzed
         by the morphological analyzer?"""
         if token in self.words:
             return True
@@ -1901,8 +1901,8 @@ class Language:
         return languages
 
     def translate_special(self, form):
-        """Translate a special form, for example, a numeral. form has already had the
-        % removed but not rest of the 'special' prefix. Default is to just return the form."""
+        """Translate a special form, for example, a numeral. Default is to just return the form."""
+#        print("Translating {}".format(form))
         if not form:
             return form
         form1 = form[1:]

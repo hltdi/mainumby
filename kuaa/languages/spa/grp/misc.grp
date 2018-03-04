@@ -246,7 +246,6 @@
 ->grn aje'ive
 ** hace %N $dur ; ^ hace 0
 ->grn %N $dur rasami ; || 2, 0, 1
-->grn ojapóma %n $dur ; || 0, 1, 2
 # otros
 ** de pronto ; ^ pronto 1
 ->grn sapy'a
@@ -916,6 +915,8 @@
 ->grn hese'ỹ
 ** sin ellas ; ^ sin 0
 ->grn hese'ỹ
+** sin %C ; ^ sin 0
+->grn %C 'ỹrehe ; || 1, 0
 ### DETRÁS (DE)
 ** detrás de $n ; ^ detrás 0
 ->grn $n atukupépe ; || 1, -1, 0

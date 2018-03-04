@@ -1327,3 +1327,11 @@ flanqueado || flanquear:[-fin,g=m,n=0,pos=v,tm=prc]
 ambos || ambo:[g=m,n=1,pos=a]
 lados || lado:[g=m,n=1,pos=n]
 pulmones || pulmón:[g=m,n=1,pos=n]
+carlos || carlos:
+%C~Carlos~y~Pedro || %C~Carlos~y~Pedro:
+%ND~12,000 || %ND~12,000:
+vacas || vaca:[g=f,n=1,pos=n]
+ana || ana:
+%C~Ana~y~Carlos || %C~Ana~y~Carlos:
+vinieron || venir:[+fin,n=1,p=3,pos=v,tm=prt]
+%C~Carlos~y~José || %C~Carlos~y~José:
