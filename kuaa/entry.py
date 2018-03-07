@@ -146,6 +146,8 @@ TRANS_COUNT = re.compile("\s*##\s*(\d+)$")
 NO_GAP = re.compile("\s*-X-\s*$")
 # Comments for group
 COMMENT = re.compile("\s*//\s*(.+)$")
+# Optional elements: (min-max)
+OPT_ELEM = re.compile("\((\d)+-(\d)+\)$")
 
 ## MorphoSyn regex
 # Separates elements of MorphoSyn pattern
@@ -438,6 +440,7 @@ class Group(Entry):
             nodegap = 0
             # Whether this token is the group head
             ishead = (index == self.head_index)
+            # Whether this token is a category (starting with $)
             iscat = Entry.is_cat(token)
             match_snodes1 = []
             feats = self.features[index] if self.features else None
@@ -447,9 +450,8 @@ class Group(Entry):
             if self.failif and index >= failfrom:
                 tryfail = True
             matched = False
+            # For each SNode starting with snindex...
             for node in snodes[snindex:]:
-#                if self.debug or verbosity:
-#                    print("  Trying snode {}, nodegap {}, nogap? {}".format(node, nodegap, self.nogap))
                 # If this snode is unknown, the group can't include it
                 if node.is_unk():
                     if verbosity or self.debug:

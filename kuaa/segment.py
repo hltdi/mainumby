@@ -86,7 +86,7 @@ class SolSeg:
     special_re = re.compile("%[A-Z]+~")
 
     def __init__(self, solution, indices, translation, tokens, color=None, space_before=1,
-                 tgroups=None, merger_groups=None,
+                 tgroups=None, merger_groups=None, has_paren=False, is_paren=False,
                  spec_indices=None, session=None, gname=None, is_punc=False):
 #        print("Creating SolSeg for indices {}, translation {}, tgroups {}, tokens {}".format(indices, translation, tgroups, tokens))
         self.source = solution.source
@@ -99,8 +99,23 @@ class SolSeg:
         self.translation = [t.split() for t in translation]
         self.cleaned_trans = None
         self.tokens = tokens
+        # Pre-parenthetical, parenthetical, post-parenthetical portions
+        self.has_paren = has_paren
+        # Whether this an unattached segment within another segment
+        self.is_paren = is_paren
         self.token_str = ' '.join(tokens)
         self.raw_token_str = self.token_str[:]
+        # Stuff to do when there's a parenthetical segment within the segment
+        if has_paren:
+            pre, paren, post = has_paren
+            self.original_tokens = pre + post
+            self.pre_token_str = ' '.join(pre)
+            self.paren_token_str = "(" + ' '.join(paren) + ")"
+            self.post_token_str = ' '.join(post)
+        else:
+            self.original_tokens = tokens
+        self.original_token_str = ' '.join(self.original_tokens)
+        self.original_token_str = self.original_token_str.replace("←", "")
         # If there are special tokens in the source language, fix them here.
         self.special = False
         if '%' in self.token_str:
@@ -157,11 +172,20 @@ class SolSeg:
         string = SolSeg.remove_spec_pre(string)
         string = string.replace('_', ' ').replace('~', ' ')
         return string
-    
+
     def make_record(self, session=None, sentence=None):
         """Create the SegRecord object for this SolSeg."""
         if sentence:
             return SegRecord(self, sentence=sentence.record, session=session)
+
+    def set_source_html(self):
+        if self.has_paren:
+            pre, paren, post = self.has_paren
+            self.source_html = "<span style='color:{};'> {} </span>".format(self.color, self.pre_token_str)
+            self.source_html += "<span id=parenthetical> {} </span>".format(self.paren_token_str)
+            self.source_html += "<span style='color:{};'> {} </span>".format(self.color, self.post_token_str)
+        else:
+            self.source_html = "<span style='color:{};'> {} </span>".format(self.color, self.token_str)
 
     def set_html(self, index, verbosity=0):
         """Set the HTML markup for this segment, given its position in the sentence,
@@ -169,13 +193,15 @@ class SolSeg:
         Do postprocessing on phrases joined by '_' or special tokens (numerals).
         """
         # Combine translations where possible
-#        print("Setting HTML for segment {}: {}".format(index, self))
+        print("Setting HTML for segment {}: {}, has paren {}, is paren {}".format(index, self, self.has_paren, self.is_paren))
         self.color = SolSeg.tt_notrans_color if not self.translation else SolSeg.tt_colors[index]
+        self.set_source_html()
         transhtml = '<table>'
         capitalized = False
         choice_list = self.record.choices if self.record else None
         # Final source segment output
         tokens = self.token_str
+        orig_tokens = self.original_token_str
         trans_choice_index = 0
         # T Group strings associated with each choice
         choice_tgroups = []
@@ -187,7 +213,7 @@ class SolSeg:
             transhtml += '<br/><input type="radio" name="choice" id={} value="{}" checked>{}</td>'.format(trans, trans, trans)
             transhtml += '</tr>'
             transhtml += '</table>'
-            self.html = (tokens, self.color, transhtml, index, self.space_before)
+            self.html = (tokens, self.color, transhtml, index, self.source_html)
             return
         for tindex, (t, tgroups) in enumerate(zip(self.cleaned_trans, self.tgroups)):
             # Create all combinations of word sequences
@@ -218,12 +244,13 @@ class SolSeg:
             transhtml += "<td class='transchoice'>"
             html_choices = []
             for tcindex, (tchoice, tcgroups) in enumerate(zip(tgforms, tggroups)):
+                tchoice = tchoice.replace('_', ' ')
                 choice_tgroups.append(tcgroups)
 #                print("  Choice {}: {} (groups: {})".format(trans_choice_index, tchoice, tcgroups))
                 if tindex == 0 and tcindex == 0:
-                    html_choices.append('<input type="radio" name="choice" id={} value="{}" checked>{}'.format(tchoice, tchoice, tchoice))
+                    html_choices.append('<input type="radio" name="choice" id="{}" value="{}" checked>{}'.format(tchoice, tchoice, tchoice))
                 else:
-                    html_choices.append('<input type="radio" name="choice" id={} value="{}">{}'.format(tchoice, tchoice, tchoice))
+                    html_choices.append('<input type="radio" name="choice" id="{}" value="{}">{}'.format(tchoice, tchoice, tchoice))
                 trans_choice_index += 1
             transhtml += "<br/>".join(html_choices)
             if len(tgcombs) > 1:
@@ -237,11 +264,11 @@ class SolSeg:
                 # Add other translation button
                 # Button to translate as source language
                 transhtml += '<tr><td class="source">'
-                transhtml += '<input type="radio" name="choice" id={} value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
+                transhtml += '<input type="radio" name="choice" id="{}" value="{}">{}</td></tr>'.format(orig_tokens, orig_tokens, orig_tokens)
         else:
             # No translations suggested: checkbox for translating as source (only option)
             transhtml += '<tr><td class="source">'
-            transhtml += '<input type="checkbox" name="choice" id={} value="{}" checked>{}</td></tr>'.format(tokens, tokens, tokens)
+            transhtml += '<input type="checkbox" name="choice" id="{}" value="{}" checked>{}</td></tr>'.format(orig_tokens, orig_tokens, orig_tokens)
         transhtml += '</table>'
         # Capitalize tokens if in first place        
         if index==0:
@@ -264,8 +291,10 @@ class SolSeg:
         if self.record:
             self.record.choice_tgroups = choice_tgroups
 #        choice_tgroups = "!!".join(choice_tgroups)
-        self.html = (tokens, self.color, transhtml, index, self.space_before)
-#        print("HTML choice groups: {}".format(choice_tgroups))
+        self.html = (tokens, self.color, transhtml, index, self.source_html)
+#        print("HTML for {}".format(self))
+#        for h in self.html:
+#            print(" {}".format(h))
 
     @staticmethod
     def list_html(segments):
@@ -435,7 +464,7 @@ class SNode:
                 else:
                     sn_feats = analysis.get('features')
                     if sn_feats:
-                        u_features = sn_fats.unify_FS(grp_spec, strict=True, verbose=verbosity>1)
+                        u_features = sn_feats.unify_FS(grp_spec, strict=True, verbose=verbosity>1)
                         if u_features != 'fail':
                             # Matches, keep looking
                             continue

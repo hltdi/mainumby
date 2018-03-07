@@ -343,23 +343,18 @@
 ->grn <hembipota_n ; 0==0 n:n,poses:poses ; #24 ; ##1
 ** anillo_n $pp $art que $v[-ipv] ; ^ anillo_n 0
 ->grn kuãirũ_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kuairũ_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** anillo_n $pp cual_n $v[-ipv] ; ^ anillo_n 0
 ->grn kuãirũ_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kuairũ_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** anillo_n que $v[-ipv] ; ^ anillo_n 0
 ->grn kuãirũ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kuairũ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** anillo_n de $n ; ^ anillo_n 0
 ->grn $n kuãirũ_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
-->grn $n kuairũ_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ** anillo_n de compromiso ; ^ anillo_n 0 ; #13
 ->grn menda_n kuãirũ ; 0==0 n:n,poses:poses
 ** anillo_n perdido ; ^ anillo_n 0 ; #13
 ->grn kuãirũkañy_n ; 0==0 n:n,poses:poses
 ** anillo_n ; ^ anillo_n 0 ; #13
 ->grn kuãirũ_n ; 0==0 n:n,poses:poses
-->grn kuairũ_n ; 0==0 n:n,poses:poses ; #2
 ** ansia_n $pp $art que $v[-ipv] ; ^ ansia_n 0
 ->grn py'apy_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn angata_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
@@ -27455,6 +27450,12 @@
 ->grn mbohupa_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** huésped_n ; ^ huésped_n 0
 ->grn mbohupa_n ; 0==0 n:n,poses:poses
+** huésped_n $a ; ^ huésped_n 0
+->grn mbohupa_n $a ; || 0, 1 ; 0==0 n:n,poses:poses
+** $a huésped_n ; ^ huésped_n 1
+->grn mbohupa_n $a ; || 1, 0 ; 1==0 n:n,poses:poses
+** %N huésped_n[n=1] ; ^ huésped_n 1
+->grn %N mbohupa_n[n=1] ; || 0, 1 ; 1==1 poses:poses
 ** hábitat_n $pp $art que $v[-ipv] ; ^ hábitat_n 0
 ->grn <henda_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn <hekoha_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no

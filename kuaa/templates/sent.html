@@ -245,7 +245,7 @@ function OnRecordPhrase() {
     var sentval = document.getElementById("sentence").value;
     var segtrans = document.getElementById("segment").value;
     var segment = document.Form2.seg.value;
-    var segspace = document.Form2.segspace.value;
+//    var segspace = document.Form2.segspace.value;
     // This can be either a single checkbox or a group of radio buttons.
     var selection = document.Form2.choice;
     // This is INPUT if checkbox, undefined otherwise.
@@ -281,15 +281,16 @@ function OnRecordPhrase() {
             segtrans = capitalize(segtrans);
         } else {
 	    // Not the beginning of the sentence; add a space before translation unless this is suffixing punctuation
-            if (segspace == "0") {
-                 space = "";
-            }
-            segtrans = space + segtrans;
+//            if (segspace == "0") {
+//                 space = "";
+//            }
+            segtrans = space + segtrans + space;
         }
 	// Clear the error space.
         document.getElementById("error").innerHTML = "";
 	// Add the translation to the variable sentence.
-        document.getElementById("sentence").value += segtrans;
+	AddSegment(segtrans);
+//        document.getElementById("sentence").value += segtrans;
     } else {
 	// User has selected one of the translation options.
 	if (seltype == "INPUT") {
@@ -320,12 +321,13 @@ function OnRecordPhrase() {
             choice = capitalize(choice);
         } else {
             // If the choice is suffixed pronunciation, leave no space before it.
-            if (segspace == "0") {
-                 space = "";
-            }
-            choice = space + choice;
+//            if (segspace == "0") {
+//                 space = "";
+//            }
+            choice = space + choice + space;
         }
-        document.getElementById("sentence").value += choice;
+	AddSegment(choice);
+//        document.getElementById("sentence").value += choice;
     }
     // Give instructions for the next segment.
     document.getElementById("instructions").innerHTML = 'Si has terminado la traducción de la oración, \
@@ -333,9 +335,21 @@ function OnRecordPhrase() {
         hac&eacute; clic sobre otro segmento colorizado de la oración castellana.';
     return true;
 }
-function Segment(text, segment, color, segindex, spacebefore) {
+function AddSegment(text) {
+    sentarea = document.getElementById("sentence");
+    if (sentarea.selectionStart || sentarea.selectionStart == '0') {
+	current = sentarea.value
+	start = sentarea.selectionStart;
+	length = sentarea.value.length;
+	beginning = current.substring(0, start);
+	end = current.substring(start, length);
+//	alert("Selection start " + start);
+	sentarea.value = beginning + text + end;
+    }
+}
+function Segment(html, segment, color, segindex) {
     var segindices = document.Form2.segindices.value;
-    var formatted = "<font color=" + color + ">" + text + "</font>";
+    var formatted = "<span style='color:" + color + ";'>" + html + "</span>";
     // Clear error space.
     document.getElementById("error").innerHTML = "";
     document.getElementById("transphrase").style.display="block";
@@ -353,7 +367,7 @@ function Segment(text, segment, color, segindex, spacebefore) {
     document.getElementById('segtra2').innerHTML = "Introducir otra traducción";
     document.Form2.seg.value = segment;
     document.Form2.segindex.value = segindex;
-    document.Form2.segspace.value = spacebefore;
+//    document.Form2.segspace.value = spacebefore;
     document.getElementById("segment").value = '';
 }
 function OnSalir()
@@ -458,8 +472,9 @@ Hac&eacute; clic en "Próxima oración", o en "Salir" si has terminado la sesió
 {# Each segment responds to mouse clicks which replace the segtra
 section with a table of translations and set the value of the seg form variable #}
 <span onmouseover="this.style.cursor='pointer'" onmouseout="this.style.cursor='default'"
-onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|format(seg[1])|e}}, {{'%r'|format(seg[3])|e}}, {{'%r'|format(seg[4])|e}});">
-  <span style='color:{{ seg[1] }};'> {{ seg[0] }} </span></span>
+onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|format(seg[1])|e}}, {{'%r'|format(seg[3])|e}});">
+{{seg[4]|safe}}
+</span>
 {% endfor %}
 </span>
 <p></p>
@@ -542,7 +557,9 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 <input type="hidden" name="segindices" value="">
 <input type="hidden" name="senttrans" value="">
 <input type="hidden" name="segtrans" value="">
-<input type="hidden" name="segspace" value="">
+<!--
+    <input type="hidden" name="segspace" value="">
+-->
 <input type="hidden" name="documento" value="">
 </form>
 

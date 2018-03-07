@@ -46,6 +46,20 @@ import kuaa
 
 ## shortcuts
 
+##def huesped("Vi al pobre huésped.", solve=True, user=None):
+##    e, g = cargar()
+##    session = kuaa.start(e, g, user)
+##    d = kuaa.Document(e, g, sentence, True, session=session)
+##    s = d[0]
+##    s.initialize(ambig=False)
+##    if solve:
+##        s.solve(all_sols=False)
+##        if s.solutions and segment:
+##            for sol in s.solutions:
+##                sol.get_segs()
+##        output_sols(s)
+##    return s.solutions[0]    
+
 ## Creación (y opcionalmente traducción) de oración simple y de documento.
 def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
         verbosity=0):
@@ -60,6 +74,8 @@ def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
             for sol in s.solutions:
                 sol.get_segs()
         output_sols(s)
+        if s.solutions:
+            return s.solutions[0]
     return s
 
 def doc(text, proc=True):
@@ -83,7 +99,8 @@ def solve1(sentence):
 def output_sols(sentence):
     """Show target outputs for all solutions for sentence."""
     for sol in sentence.solutions:
-        print(sol.get_ttrans_outputs())
+        for x in sol.get_ttrans_outputs():
+            print(x)
 
 def ley_bidoc(init=True, train=True):
     d = eg_arch_doc("../LingData/EsGn/Corp/FromCarlos/ley4251_e0.txt",

@@ -704,21 +704,6 @@ class Sentence:
             joined = Sentence.join_from_tree(self.tokens, self.language.join)
             self.tokens = joined
                 
-#                num_tokens, is_dig = num
-#                num_found = True
-#                prefix = "%ND~" if is_dig else "%N~"
-#                tokens.append(prefix + '~'.join(num_tokens))
-#                tok_position += len(num_tokens)
-#            else:
-#                tokens.append(self.tokens[tok_position])
-#                tok_position += 1
-#        if num_found:
-#            self.tokens = tokens
-#        # Join other phrases (stored in the tree self.language.join)
-#        if self.language.join:
-#            joined = Sentence.join_from_tree(self.tokens, self.language.join)
-#            self.tokens = joined
-
     @staticmethod
     def join_from_tree(tokens, tree, position=0, subtree=None, result=None, to_join=None, previous_end=None):
         """Return tokens list with any sub-sequence joined with _ if found in tree.
@@ -2079,12 +2064,13 @@ class Solution:
                 translation = []
             start = i0
             end = i0+len(stok_group)-1
+            indices = list(range(start, end+1))
             node_toktype = [self.sentence.get_node_by_raw(i).toktype for i in range(start, end+1)][0]
             space_before = 1
             if node_toktype == 2:
                 space_before = 0
 #            print("Node type for untranslated SolSeg: {}".format(node_toktype))
-            seg = SolSeg(self, (start, end), translation, stok_group, session=self.session, gname=gname,
+            seg = SolSeg(self, indices, translation, stok_group, session=self.session, gname=gname,
                          space_before=space_before, merger_groups=merger_groups, is_punc=is_punc)
             print("Segment (untranslated) {}->{}: {}={}".format(start, end, stok_group, seg.translation))
             self.segments.append(seg)
@@ -2108,12 +2094,31 @@ class Solution:
             if start < max_index:
                 # There's a gap between the portions of the segment
                 late = True
-            # There may be gaps in the source tokens for a group; fill these with ...
-            src_tokens = [(tokens[i] if i in raw_indices else '...') for i in range(start, end+1)]
-            if late:
-                src_tokens[0] = "←" + src_tokens[0]
+            # There may be gaps in the source tokens for a group; fill these with (..tokens...)
+            src_tokens = []
+            parenthetical = []
+            pre_paren = []
+            post_paren = []
+            for tokindex in range(start, end+1):
+                token = tokens[tokindex]
+                if tokindex in raw_indices:
+                    # A token in the group
+                    # First check whether there is a parenthetical before this
+                    if parenthetical:
+                        post_paren.append(token)
+                    else:
+                        pre_paren.append(token)
+                else:
+                    parenthetical.append(token)
+            if parenthetical:
+                src_tokens = pre_paren + parenthetical + post_paren
+            else:
+                src_tokens = pre_paren
+#            print("Creating SolSeg with parenthetical {} and source tokens {}".format(parenthetical, src_tokens))
             seg = SolSeg(self, raw_indices, forms, src_tokens, session=self.session, gname=gname,
-                         tgroups=tgroups, merger_groups=merger_groups)
+                         tgroups=tgroups, merger_groups=merger_groups,
+                         has_paren=[pre_paren, parenthetical, post_paren] if parenthetical else None,
+                         is_paren=late)
             print("Segment (translated) {}->{}: {}={}".format(start, end, src_tokens, seg.translation))
             self.segments.append(seg)
             indices_covered.extend(raw_indices)
