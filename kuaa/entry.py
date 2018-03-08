@@ -105,7 +105,8 @@
 # -- Character joining items in phrases and numerals is now ~ instead of _.
 # 2018.02
 # -- Simplification of matching words with categories in groups.
-
+# 2018.03
+# -- Gaps (position in group, minimum/maximum tokens) now need to specified to be allowed.
 
 import copy, itertools
 import yaml
@@ -142,12 +143,14 @@ ALIGNMENT = re.compile("\s*\|\|\s*(.+)$")
 COUNT = re.compile("\s*#\s*(\d+)$")
 # Count of translation to target group
 TRANS_COUNT = re.compile("\s*##\s*(\d+)$")
-# Group can have no gaps between elements: -X-
-NO_GAP = re.compile("\s*-X-\s*$")
+## Group can have no gaps between elements: -X-
+#NO_GAP = re.compile("\s*-X-\s*$")
 # Comments for group
 COMMENT = re.compile("\s*//\s*(.+)$")
-# Optional elements: (min-max)
-OPT_ELEM = re.compile("\((\d)+-(\d)+\)$")
+# Intervening elements: position and minimum/maximum number
+# (2,-3): after element 2, up to 3 elements
+# (1,1-2): after element 1, 1 or 2 elements
+INTERVENE = re.compile("\s*\((\d),(\d?)-(\d?)\)$")
 
 ## MorphoSyn regex
 # Separates elements of MorphoSyn pattern
@@ -278,8 +281,8 @@ class Group(Entry):
     other languages."""
 
     def __init__(self, tokens, head_index=-1, head='', language=None, name='',
-                 features=None, agr=None, trans=None, count=0, nogap=False, failif=None,
-                 string=None, trans_strings=None, cat='', comment=''):
+                 features=None, agr=None, trans=None, count=0, failif=None,
+                 string=None, trans_strings=None, cat='', comment='', intervening=None):
         """Either head_index or head (a string) must be specified."""
         # tokens is a list of strings
         # name may be specified explicitly or not
@@ -320,8 +323,10 @@ class Group(Entry):
         self.agr = agr or None
         # Count in TMs
         self.count = count
-        # Whether there can be no gap between the tokens
-        self.nogap = nogap
+#        # Whether there can be no gap between the tokens
+#        self.nogap = nogap
+        # Intervening tokens; if not None, a pair of the form (position, (min, max))
+        self.intervening = intervening
         # Distance back from sentence node matching head to start in matching group
         self.snode_start = 0
         # If not None, an index where a failif item occurs and either a category a feature structure to match
@@ -438,6 +443,13 @@ class Group(Entry):
         for index, token in enumerate(self.tokens):
             # Whether there's a sentence node gap between this token and the last one that matched
             nodegap = 0
+            # Whether a gap is permitted here.
+            ingap = False
+            gapmin = gapmax = 0
+            if self.intervening and index == self.intervening[0]:
+                ingap = True
+                # Whether this is a position that permits a gap
+                gapmin, gapmax = self.intervening[1]
             # Whether this token is the group head
             ishead = (index == self.head_index)
             # Whether this token is a category (starting with $)
@@ -452,16 +464,17 @@ class Group(Entry):
             matched = False
             # For each SNode starting with snindex...
             for node in snodes[snindex:]:
-                # If this snode is unknown, the group can't include it
-                if node.is_unk():
+                if verbosity > 1 or self.debug:
+                    fstring = "  Trying {}, token index {}, nodegap {} (gap max {})"
+                    print(fstring.format(node, index, nodegap, gapmax))
+                # If this snode is unknown, the group can't include it unless it's in a permitted gap
+                if node.is_unk() and gapmax == 0:
                     if verbosity or self.debug:
                         print("  Node is unknown!")
                     break
-                if nodegap > 2:
+                # Fail because gap is too long
+                if nodegap > gapmax:
                     break
-                if self.nogap and nodegap > 0:
-                    break
-
                 # If there is a failif condition for the group and the position within the group is right,
                 # see if we should fail here
                 if tryfail:
@@ -486,9 +499,6 @@ class Group(Entry):
                         break
                 if node.right_delete:
                     rightdel = node.right_delete
-                if verbosity > 1 or self.debug:
-                    fstring = "  Trying {}, token index {}, snode index {}, head index {}, last s index {}"
-                    print(fstring.format(node, index, snode_indices, head_sindex, last_sindex))
                 if ishead:
                     if self.debug:
                         print("   Matching head, node index {}, head sindex {}".format(node.index, head_sindex))
@@ -527,11 +537,11 @@ class Group(Entry):
                             return False
                         match_snodes1.append((node.index, node_match, token, True))
                         if verbosity > 1 or self.debug:
-                            fstring = " Group token {} matched node {} in {}, node index {}, last_sindex {}"
+                            fstring = " Group head {} matched node {} in {}, node index {}, last_sindex {}"
                             print(fstring.format(token, node, self, snode_indices, last_sindex))
                         last_sindex = snode_end
-                        if verbosity > 1 or self.debug:
-                            print("  Head matched already".format(node))
+#                        if verbosity > 1 or self.debug:
+#                            print("  Head matched already".format(node))
                         matched = True
                         snindex = node.index + 1
                         # Don't look further for an snode to match this token
@@ -542,11 +552,11 @@ class Group(Entry):
                     if verbosity > 1 or self.debug:
                         print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
                     if node_match != False:
-                        if not Group.is_cat(token) and not last_cat and index > 0 and last_sindex >= 0 and nodegap:
-                            if verbosity or self.debug:
-                                fstring = " Group token {} in sentence position {} doesn't follow last token at {}"
-                                print(fstring.format(token, snode_indices, last_sindex))
-                            return False
+#                        if not Group.is_cat(token) and not last_cat and index > 0 and last_sindex >= 0 and nodegap:
+#                            if verbosity or self.debug:
+#                                fstring = " Group token {} in sentence position {} doesn't follow last token at {}"
+#                                print(fstring.format(token, snode_indices, last_sindex))
+#                            return False
                         if Entry.is_special(token):
                             token = node.token
                         match_snodes1.append((node.index, node_match, token, True))
@@ -563,6 +573,8 @@ class Group(Entry):
                         matched = True
                         snindex = node.index + 1
                         nodegap += 1
+                        # Don't look further
+                        break
                     elif match_snodes1:
                         # There's already at least one snode matching token, so don't tolerate another gap
                         break
@@ -605,7 +617,8 @@ class Group(Entry):
         features = None
         failif = None
         count = 0
-        nogap = False
+#        nogap = False
+        intervening = None
         if '[' in string:
             hasfeats = True
             features = []
@@ -623,59 +636,69 @@ class Group(Entry):
             match = COUNT.match(attrib)
             if match:
                 count = int(match.groups()[0])
-            else:
-                match = WITHIN_AGR.match(attrib)
+                continue
+            match = INTERVENE.match(attrib)
+            if match:
+                position, i_min, i_max = match.groups()
+                position = int(position)
+                i_min = int(i_min) if i_min else 0
+                i_max = int(i_max) if i_max else 5
+#                print("Matched intervening: pos {}, min {}, max {}".format(position, i_min, i_max))
+                intervening = position, (i_min, i_max)
+                continue
+            match = WITHIN_AGR.match(attrib)
+            if match:
+                i1, i2, feats = match.groups()
+                feat_pairs = []
+                for f in feats.split(WITHIN_ATTRIB_SEP):
+                    f = f.strip()
+                    if ':' in f:
+                        f1, f2 = f.split(':')
+                        feat_pairs.append((f1.strip(), f2.strip()))
+                    else:
+                        feat_pairs.append((f.strip(), f.strip()))
+                within_agrs.append([int(i1), int(i2)] + feat_pairs)
+                continue
+#            match = NO_GAP.match(attrib)
+#            if match:
+#                nogap = True
+#                continue
+            match = COMMENT.match(attrib)
+            if match:
+                c = match.groups()[0]
+                comment = c
+                continue
+            # Translation group
+            if trans:
+                match = TRANS_AGR.match(attrib)
                 if match:
-                    i1, i2, feats = match.groups()
+                    if not trans_agrs:
+                        trans_agrs = [False] * n_src_tokens
+                    si, ti, feats = match.groups()
                     feat_pairs = []
                     for f in feats.split(WITHIN_ATTRIB_SEP):
-                        f = f.strip()
                         if ':' in f:
-                            f1, f2 = f.split(':')
-                            feat_pairs.append((f1.strip(), f2.strip()))
+                            sf, tf = f.split(':')
+                            feat_pairs.append((sf.strip(), tf.strip()))
                         else:
                             feat_pairs.append((f.strip(), f.strip()))
-                    within_agrs.append([int(i1), int(i2)] + feat_pairs)
+                    # 2016.1.26: changed to tuple so it can be part of a dict index later on
+                    feat_pairs = tuple(feat_pairs)
+                    # Changed 2015.07.13 to include index of target item
+                    trans_agrs[int(si)] = (int(ti), feat_pairs)
                     continue
-                match = NO_GAP.match(attrib)
+                match = ALIGNMENT.match(attrib)
                 if match:
-                    nogap = True
+                    align = match.groups()[0]
+                    for index in align.split(WITHIN_ATTRIB_SEP):
+                        alignment.append(int(index))
                     continue
-                match = COMMENT.match(attrib)
+                match = TRANS_COUNT.match(attrib)
                 if match:
-                    c = match.groups()[0]
-                    comment = c
+                    trans_count = int(match.groups()[0])
                     continue
-                elif trans:
-                    match = TRANS_AGR.match(attrib)
-                    if match:
-                        if not trans_agrs:
-                            trans_agrs = [False] * n_src_tokens
-                        si, ti, feats = match.groups()
-                        feat_pairs = []
-                        for f in feats.split(WITHIN_ATTRIB_SEP):
-                            if ':' in f:
-                                sf, tf = f.split(':')
-                                feat_pairs.append((sf.strip(), tf.strip()))
-                            else:
-                                feat_pairs.append((f.strip(), f.strip()))
-                        # 2016.1.26: changed to tuple so it can be part of a dict index later on
-                        feat_pairs = tuple(feat_pairs)
-                        # Changed 2015.07.13 to include index of target item
-                        trans_agrs[int(si)] = (int(ti), feat_pairs)
-                        continue
-                    match = ALIGNMENT.match(attrib)
-                    if match:
-                        align = match.groups()[0]
-                        for index in align.split(WITHIN_ATTRIB_SEP):
-                            alignment.append(int(index))
-                        continue
-                    match = TRANS_COUNT.match(attrib)
-                    if match:
-                        trans_count = int(match.groups()[0])
-                        continue
-                else:
-                    print("Something wrong with attribute string {}".format(attrib))
+            else:
+                print("Something wrong with attribute string {}".format(attrib))
         # Go through tokens separating off features, if any, and assigning head
         # based on presence of '_'
         name_toks = []
@@ -740,8 +763,8 @@ class Group(Entry):
         gname = Group.make_name(name_toks)
         existing_group = language.get_group(gname, key=head)
         g = existing_group or Group(realtokens, head_index=head_index, head=head, features=features, agr=within_agrs,
-                                    failif=failif, nogap=nogap, name=gname, count=count, string=string,
-                                    trans_strings=tstrings, cat=cat, comment=comment)
+                                    failif=failif, name=gname, count=count, string=string,
+                                    trans_strings=tstrings, cat=cat, comment=comment, intervening=intervening)
         if target and not trans:
             g.trans = tgroups
         if not existing_group:

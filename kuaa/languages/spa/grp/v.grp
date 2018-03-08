@@ -2219,11 +2219,11 @@
 ->grn mboaguyjevete_v[cat=a]
 ** congratular_v[-r,+fin] ; ^ congratular_v 0
 ->grn mboaguyje_v[cat=a]
-** conocer_v[+r,+fin] uno a otro ; ^ conocer_v 0 ; -X-
+** conocer_v[+r,+fin] uno a otro ; ^ conocer_v 0
 ->grn jokuaa_v[cat=a] ; #6
-** conocer_v[-r,+fin] a la gente ; ^ conocer_v 0 ; -X-
+** conocer_v[-r,+fin] a la gente ; ^ conocer_v 0
 ->grn porokuaa_v[cat=a]
-** conocer_v[+r,+fin] a así mismo ; ^ conocer_v 0 ; -X-
+** conocer_v[+r,+fin] a así mismo ; ^ conocer_v 0
 ->grn jekuaa_v[cat=a] ; #99 ; ##1
 ** conocer_v[-r,+fin] a $n ; ^ conocer_v 0
 ->grn kuaa_v[subcat=i] $n[caso=pe] ; || 0, -1, 1
