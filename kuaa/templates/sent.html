@@ -7,15 +7,15 @@
 table.transmeta
 {
     border: 0;
-    padding: 5px;
-    width: 785px;
+    padding: 2px;
+    width: 795px;
 }
 table.transphrase
 {
     border: 2px solid black;
     border-spacing: 10px;
     vertical-align: top;
-    width: 425px;
+    width: 410px;
     display: none;
 }
 table.trans
@@ -23,13 +23,13 @@ table.trans
     border: 2px solid black;
     border-spacing: 10px;
     vertical-align: top;
-    width: 425px;
+    width: 410px;
 }
 table.transdoc
 {
       border: 2px solid black;
       border-spacing: 10px;
-      width: 40%;
+      width: 375px;
 /*    border-collapse: collapse; */
 }
 th.trans
@@ -53,8 +53,6 @@ td.transtitle
    vertical-align: top;
    padding: 0px;
    font-size: 105%;
-/*   font-style: italic; */
-/*   border: 1px solid black; */
 }
 th.transtitle
 {
@@ -116,21 +114,21 @@ textarea#sentence
 {
    font-family: "Verdana";
    font-size: 100%;
-   width: 395px;
+   width: 380px;
    height: 50px;
 }
 textarea#comment
 {
    font-family: "Verdana";
    font-size: 100%;
-   width: 395px;
+   width: 380px;
    height: 50px;
 }
 textarea#document
 {
    font-family: "Verdana";
    font-size: 85%;
-   width: 325px;
+   width: 350px;
    height: 200px;
    resize: none;
    overflow-y: scroll;
@@ -139,7 +137,7 @@ textarea#segment
 {
    font-family: "Verdana";
    font-size: 100%;
-   width: 395px;
+   width: 380px;
    height: 20px;
 }
 span#doctrans
@@ -163,6 +161,30 @@ input.filename
 {
    width: 50pt;
 }
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 150px;
+    background-color: black;
+    font-size: 80%;
+    font-weight: normal;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -75px; /* Use half of the width (150/2 = 75), to center the tooltip */
+    z-index: 1;
+}
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}    
 </style>
 
 <script>
@@ -231,6 +253,8 @@ function OnRecordSent(raw, punc) {
         sentval += punc;
         document.getElementById("sentence").value += punc;
     }
+    // Clean up the spaces and punctuation.
+    sentval = CleanSentence(sentval);
     // Give instructions for the next sentence.
     document.getElementById("instructions").innerHTML = 'Hac&eacute; clic sobre "Próxima oración" o "Salir".';
     // Add the sentence and its translation to the doc textarea
@@ -245,7 +269,6 @@ function OnRecordPhrase() {
     var sentval = document.getElementById("sentence").value;
     var segtrans = document.getElementById("segment").value;
     var segment = document.Form2.seg.value;
-//    var segspace = document.Form2.segspace.value;
     // This can be either a single checkbox or a group of radio buttons.
     var selection = document.Form2.choice;
     // This is INPUT if checkbox, undefined otherwise.
@@ -266,7 +289,6 @@ function OnRecordPhrase() {
 	// User has provided their own translation.
 	// First clean up the Guarani.
         segtrans = limpiarGrn(segtrans);
-//	alert("Translation " + segtrans);
 	// Record the segment and its translation in the variable segtrans.
         document.Form2.segtrans.value += prefix + segindex + "||F||-1||" + segment + "=" + segtrans;
 	// Record the index of this segment in the variable segindices.
@@ -281,16 +303,13 @@ function OnRecordPhrase() {
             segtrans = capitalize(segtrans);
         } else {
 	    // Not the beginning of the sentence; add a space before translation unless this is suffixing punctuation
-//            if (segspace == "0") {
-//                 space = "";
-//            }
             segtrans = space + segtrans + space;
         }
 	// Clear the error space.
         document.getElementById("error").innerHTML = "";
 	// Add the translation to the variable sentence.
 	AddSegment(segtrans);
-//        document.getElementById("sentence").value += segtrans;
+	SetSentenceInsertion();
     } else {
 	// User has selected one of the translation options.
 	if (seltype == "INPUT") {
@@ -321,13 +340,10 @@ function OnRecordPhrase() {
             choice = capitalize(choice);
         } else {
             // If the choice is suffixed pronunciation, leave no space before it.
-//            if (segspace == "0") {
-//                 space = "";
-//            }
             choice = space + choice + space;
         }
 	AddSegment(choice);
-//        document.getElementById("sentence").value += choice;
+	SetSentenceInsertion();
     }
     // Give instructions for the next segment.
     document.getElementById("instructions").innerHTML = 'Si has terminado la traducción de la oración, \
@@ -336,16 +352,23 @@ function OnRecordPhrase() {
     return true;
 }
 function AddSegment(text) {
+    // Add the segment text to the current insertion point (selectionStart) in the sentence
+    // text area.
     sentarea = document.getElementById("sentence");
-    if (sentarea.selectionStart || sentarea.selectionStart == '0') {
-	current = sentarea.value
-	start = sentarea.selectionStart;
-	length = sentarea.value.length;
-	beginning = current.substring(0, start);
-	end = current.substring(start, length);
-//	alert("Selection start " + start);
-	sentarea.value = beginning + text + end;
-    }
+    current = sentarea.value
+    start = sentarea.selectionStart;
+    length = current.length;
+    beginning = current.substring(0, start);
+    end = current.substring(start, length);
+    sentarea.value = beginning + text + end;
+}
+function SetSentenceInsertion() {
+    // Set the selectionStart field of the sentence text area to be the end.
+    // (Not the default for all browsers.)
+    sentarea = document.getElementById("sentence");
+    current = sentarea.value;
+    length = current.length;
+    sentarea.selectionStart = length;
 }
 function Segment(html, segment, color, segindex) {
     var segindices = document.Form2.segindices.value;
@@ -361,13 +384,17 @@ function Segment(html, segment, color, segindex) {
     }
     // Otherwise display the segment's HTML
     // Give instructions for translation selection.
-    document.getElementById("instructions").innerHTML = "O seleccioná una opción o \
-        introducí otra traducción en el espacio provisto. Despu&eacute;s hac&eacute; clic en 'Registrar frase'.";
+    instructions = "O seleccioná una opción o introducí otra traducción en el espacio provisto. \
+    Despu&eacute;s hac&eacute; clic en 'Registrar frase'.";
+    if (document.getElementById("sentence").value) {
+	instructions += "\nSi querés insertar la frase entre palabras en \
+        la traducción de la oración, colocá el cursor en ese lugar antes de que selecciones 'Registrar frase'.";
+    }
+    document.getElementById("instructions").innerHTML = instructions;
     document.getElementById('segtra').innerHTML = formatted;
     document.getElementById('segtra2').innerHTML = "Introducir otra traducción";
     document.Form2.seg.value = segment;
     document.Form2.segindex.value = segindex;
-//    document.Form2.segspace.value = spacebefore;
     document.getElementById("segment").value = '';
 }
 function OnSalir()
@@ -381,6 +408,15 @@ function OnSalir()
 }
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+function CleanSentence(string) {
+    // Remove extra spaces
+    string = string.replace(/\s+/g," ");
+    // Remove spaces before periods, commas, and semicolons
+    string = string.replace(" .", ".");
+    string = string.replace(" ,", ",");
+    string = string.replace(" ;", ";");
+    return string
 }
 function limpiarGrn(string) {
     // Clean up Guarani string, replacing characters if necessary.
@@ -473,7 +509,7 @@ Hac&eacute; clic en "Próxima oración", o en "Salir" si has terminado la sesió
 section with a table of translations and set the value of the seg form variable #}
 <span onmouseover="this.style.cursor='pointer'" onmouseout="this.style.cursor='default'"
 onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|format(seg[1])|e}}, {{'%r'|format(seg[3])|e}});">
-{{seg[4]|safe}}
+<span class="tooltip">{{seg[4]|safe}}<span class="tooltiptext">{{seg[0]|safe}}</span></span>
 </span>
 {% endfor %}
 </span>
@@ -541,7 +577,7 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 
   </td>
 
-  <td class="transtitle">
+<td class="transtitle">
   <table class="transdoc">
     <tr class="trans">
       <th class="transtitle">Documento</th>
@@ -557,9 +593,6 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 <input type="hidden" name="segindices" value="">
 <input type="hidden" name="senttrans" value="">
 <input type="hidden" name="segtrans" value="">
-<!--
-    <input type="hidden" name="segspace" value="">
--->
 <input type="hidden" name="documento" value="">
 </form>
 

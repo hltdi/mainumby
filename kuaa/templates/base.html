@@ -7,12 +7,23 @@
 
 <script>
 function ShowHelp() {
-    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
+    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=600,height=400");
     helpWin.document.write('<html><head>' +
 '<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
 "<title>Mainumby: Ayuda</title></head><body>" +
 "<h4 class='help'>Ayuda general para la aplicación</h4>" +
 "</body></html>");
+}
+function Shortcut() {
+    form = document.getElementById("form");
+    document.getElementById("intro").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
+    form.action = "doc";
+    form.submit();
+}
+function Login() {
+    form = document.getElementById("form");
+    form.action = "login";
+    form.submit();
 }
 </script>
 
@@ -20,7 +31,7 @@ function ShowHelp() {
 
 <body>
 
-<form action='login' method="post">
+<form action='' id='form' method="post">
 
 <table class="center">
   <tr>
@@ -28,39 +39,47 @@ function ShowHelp() {
     <img class='banner' src="{{url_for('static',
       filename='banner_logo.png')}}" alt="" width="300" height="52" />
     </td>
-    <td class="menu" style="width: 166px"><a href="proyecto">PROYECTO</a></td>
-    <td class="menu" style="width: 167px"><a href="contacto">CONTACTO</a></td>
-<!--      
-    <td class="menu" style="width: 125px"><button class="menu"
-      onclick="ShowHelp();">AYUDA</button></td>
--->      
-    <td class="menu" style="width: 167px"><input type="submit" value="INICIAR SESIÓN" class="menu"></td>
+    <td class="menu" style="width: 149px"><button class="menu" onclick="Login()">INICIAR SESIÓN</button></td>
+    <td class="menu" style="width: 117px"><button class="menu" onclick="Shortcut()">ATAJO</button></td>
+    <td class="menu" style="width: 117px"><a href="proyecto">PROYECTO</a></td>
+    <td class="menu" style="width: 117px"><a href="contacto">CONTACTO</a></td>
 
 </tr>
 <tr>
-<td colspan="5" style="width:800px">  
+<td colspan="5" style="width:800px">
 <h1>¡Bienvenida/o a Mainumby! ¡Tereg̃uahẽ porãite Mainumby-me!</h1>
+
+<p class="instructions">
+  Para iniciar una sesión y registrarte, hacé clic en "INICIAR
+  SESIÓN".<br />
+  Para saltar la registración y ir directamente a la página donde
+  podés usar el sistema para traducir un documento, hacé clic en
+  "ATAJO".
+</p>
+
+<div id="intro">    
 
 <h2>¿Qu&eacute; es?</h2>
 
 <p>
 Mainumby es una aplicación experimental que ayuda a traducir del
 castellano al guaraní.
-En su forma final, tendrá dos componentes: un traductor automático
-rudimentario (Mbojereha) y una memoria de traducción (Mandu'a).
-En la versión actual, consiste sólo del traductor.
-  </p>
+Actualmente consiste en un <strong>traductor automático
+rudimentario (Mbojereha)</strong> y la interfaz en este sitio web.
+Además va a construir una <strong>memoria de traducción (Mandu'a)</strong>, basada en
+las traducciones de usuarios del sistema.
+</p>
 <p>
 Mainumby no ha sido diseñado para estudiantes del guaraní sino para
-  personas que manejan tanto el castellano como el guaraní.
-  Un usuario del sistema introduce un texto que quiere traducir, y
-  Mbojereha le propone traducciones para frases en el texto.
-  Entonces el usuario puede aceptar o rechazar las sugerencias del
-  sistema, introduciendo sus propias traducciones si quiere.
-  El sistema mantiene una memoria del texto y la traducción creada por
-  el usuario, y el usuario puede guardar este texto en cada momento
-  durante el proceso.
-  </p>
+personas que manejan tanto el castellano como el guaraní.
+Un usuario del sistema introduce un texto que quiere traducir, y
+el sistema le propone traducciones para frases en el texto.
+El usuario puede aceptar o rechazar las sugerencias del
+sistema, introduciendo sus propias traducciones si quiere.
+El sistema mantiene una memoria del texto y la traducción creada por
+el usuario, y el usuario puede guardar este texto en cada momento
+durante el proceso.
+</p>
   <!--
   <p>
   <a href="proyecto">Aprender más sobre el proyecto.</a>
@@ -73,15 +92,20 @@ Mainumby no ha sido diseñado para estudiantes del guaraní sino para
   El traductor Mbojereha tiene un diccionario bilingüe de frases y
   conocimiento básico de la gramática castellana, la
   gramática guaraní, y las relaciones entre ellas.
-  Para cada oración castellana que introduce el usuario, primero
-  analiza las palabras, extrayendo las raices y las propiedades gramáticas.
+  El diccionario y la gramática se basan en varios recursos publicados o
+  disponibles en forma digital, pero todavía padece lagunas grandes.
+</p>
+<p>
+  Para cada oración castellana que el usuario introduce, Mainumby
+  analiza las palabras, extrayendo las raíces y las propiedades gramáticas.
   Entonces busca frases en la oración analizada
   que coinciden con frases en su diccionario.
-  Finalmente, para cada frase genera una traducción guaraní, usando
-  su conocimiento de la gramática y ortografía guaraní (por ejemplo,
-  de la concordancia nasal).
+  Finalmente, para cada frase genera una o más traducciones en guaraní, usando
+  su conocimiento de la morfología y ortografía guaraní.
   En la interfaz de Mainumby, se le muestran estos resultados al
   usuario.
+</p>
+<p>
   Cuando el usuario corrige la salida del sistema o reemplaza una
   traducción de una diferente, Mbojereha aprende de esta
   retroalimentación, mejorando su diccionario y talvez su conocimiento
@@ -93,18 +117,13 @@ Mainumby no ha sido diseñado para estudiantes del guaraní sino para
 <p>
 <a href="proyecto">Aprender más sobre el proyecto y la teoría detrás de Mainumby.</a>
 </p>
-
-<!--
-<p>
-Para iniciar una sesión con Mainumby, hac&eacute; clic en el enlace
-"INICIAR" arriba.
-</p>
--->
-
+</div>
+						      
 <hr/>
 
 <p>
-<input type="submit" value="Iniciar sesión" id="button">
+  <input type="submit" value="Iniciar sesión" id="button" onclick="Login()">
+  <input type="submit" value="Atajo" id="button" onclick="Shortcut()">
 </p>
 
 </td>
@@ -112,7 +131,7 @@ Para iniciar una sesión con Mainumby, hac&eacute; clic en el enlace
 
 </table>  
 
-  </form>
+</form>
 
 </body>
 </html>

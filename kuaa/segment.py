@@ -7,7 +7,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyleft 2014, 2015, 2016, 2017; HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyleft 2014, 2015, 2016, 2017, 2018; HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -105,12 +105,16 @@ class SolSeg:
         self.is_paren = is_paren
         self.token_str = ' '.join(tokens)
         self.raw_token_str = self.token_str[:]
+        # Later set this to the SolSeg instance that intervenes within this one
+        self.paren_seg = None
         # Stuff to do when there's a parenthetical segment within the segment
         if has_paren:
             pre, paren, post = has_paren
+            self.paren_tokens = [p[0] for p in paren]
+            self.paren_indices = [p[1] for p in paren]
             self.original_tokens = pre + post
             self.pre_token_str = ' '.join(pre)
-            self.paren_token_str = "(" + ' '.join(paren) + ")"
+            self.paren_token_str = ' '.join(self.paren_tokens)
             self.post_token_str = ' '.join(post)
         else:
             self.original_tokens = tokens
@@ -119,19 +123,31 @@ class SolSeg:
         # If there are special tokens in the source language, fix them here.
         self.special = False
         if '%' in self.token_str:
-#            print("Segment has special token: tokens {}, string {}, translation {}".format(self.tokens, self.token_str, translation))
             # Create the source string without special characters
-#            remove_spec_pre(self.token_str).replace('~', ' ')
-            self.special = True
             if not translation:
+                self.special = True
                 # Set the translation for the special segment
                 spec_trans = self.source.translate_special(tokens[0])
                 if spec_trans:
                     self.translation = [[spec_trans]]
                     self.cleaned_trans = [[SolSeg.clean_spec(spec_trans)]]
-#            else:
-#                # A translated group instance that includes a special token
+            else:
+                # Group with special token
+                trans = []
+                cleaned_trans = []
+                for token in translation:
+                    if '%' in token:
+                        spec_trans = self.source.translate_special(token)
+                        if spec_trans:
+                            trans.append(spec_trans)
+                            cleaned_trans.append(SolSeg.clean_spec(spec_trans))
+                            continue
+                    trans.append(token)
+                    cleaned_trans.append(token)
+                self.translation = [trans]
+                self.cleaned_trans = [cleaned_trans]
             self.token_str = SolSeg.clean_spec(self.token_str)
+            self.original_token_str = SolSeg.clean_spec(self.original_token_str)
         if not self.cleaned_trans:
             self.cleaned_trans = self.translation
         self.color = color
@@ -153,6 +169,7 @@ class SolSeg:
         else:
             self.record = None
         self.html = []
+        self.source_html = None
 #        print("Created {}, punctuation? {}, translation {}, cleaned {}".format(self, self.is_punc, self.translation, self.cleaned_trans))
 
     def __repr__(self):
@@ -180,12 +197,19 @@ class SolSeg:
 
     def set_source_html(self):
         if self.has_paren:
-            pre, paren, post = self.has_paren
             self.source_html = "<span style='color:{};'> {} </span>".format(self.color, self.pre_token_str)
             self.source_html += "<span id=parenthetical> {} </span>".format(self.paren_token_str)
             self.source_html += "<span style='color:{};'> {} </span>".format(self.color, self.post_token_str)
         else:
             self.source_html = "<span style='color:{};'> {} </span>".format(self.color, self.token_str)
+
+    def get_gui_source(self, paren_color='Gray'):
+        if self.has_paren:
+            return ["<span style='color:{};'> {} </span>".format(self.color, self.pre_token_str),
+                    "<span style='color:{};'> {} </span>".format(paren_color, self.paren_token_str),
+                    "<span style='color:{};'> {} </span>".format(self.color, self.post_token_str)]
+        else:
+            return "<span style='color:{};'> {} </span>".format(self.color, self.token_str)
 
     def set_html(self, index, verbosity=0):
         """Set the HTML markup for this segment, given its position in the sentence,
@@ -193,7 +217,6 @@ class SolSeg:
         Do postprocessing on phrases joined by '_' or special tokens (numerals).
         """
         # Combine translations where possible
-        print("Setting HTML for segment {}: {}, has paren {}, is paren {}".format(index, self, self.has_paren, self.is_paren))
         self.color = SolSeg.tt_notrans_color if not self.translation else SolSeg.tt_colors[index]
         self.set_source_html()
         transhtml = '<table>'
@@ -203,6 +226,7 @@ class SolSeg:
         tokens = self.token_str
         orig_tokens = self.original_token_str
         trans_choice_index = 0
+        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
         # T Group strings associated with each choice
         choice_tgroups = []
         if self.is_punc:
@@ -291,7 +315,7 @@ class SolSeg:
         if self.record:
             self.record.choice_tgroups = choice_tgroups
 #        choice_tgroups = "!!".join(choice_tgroups)
-        self.html = (tokens, self.color, transhtml, index, self.source_html)
+        self.html = (orig_tokens, self.color, transhtml, index, self.source_html)
 #        print("HTML for {}".format(self))
 #        for h in self.html:
 #            print(" {}".format(h))

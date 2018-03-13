@@ -812,6 +812,8 @@
 ### DE (GENITIVO DE SUSTANTIVOS en n.grp)
 ** de $pro ; ^ de 0
 ->grn $pro[caso=gui] ; || -1, 0
+** de %C ; ^ de 0
+->grn %C -gui ; || 1, 0
 ### A
 ** a $num $n ; ^ a 0
 ->grn $num $n[caso=pe] ; || -1, 0, 1

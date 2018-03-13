@@ -2029,13 +2029,15 @@ class Solution:
 #            last_indices = raw_indices
 #        return ttrans_align
 
-    def get_untrans_segs(self, src_tokens, end_index, gname=None, merger_groups=None, indices_covered=None):
+    def get_untrans_segs(self, src_tokens, end_index, gname=None, merger_groups=None, indices_covered=None,
+                         is_paren=False):
         '''Set one or more segments for a sequence of untranslatable tokens. Ignore indices that are already
          covered by translated segments.'''
         stok_groups = []
         stoks = []
         index = end_index + 1
         included_tokens = []
+        newsegs = []
         for stok in src_tokens:
             if index in indices_covered:
                 if stoks:
@@ -2071,10 +2073,13 @@ class Solution:
                 space_before = 0
 #            print("Node type for untranslated SolSeg: {}".format(node_toktype))
             seg = SolSeg(self, indices, translation, stok_group, session=self.session, gname=gname,
-                         space_before=space_before, merger_groups=merger_groups, is_punc=is_punc)
+                         space_before=space_before, merger_groups=merger_groups, is_punc=is_punc,
+                         is_paren=is_paren)
             print("Segment (untranslated) {}->{}: {}={}".format(start, end, stok_group, seg.translation))
             self.segments.append(seg)
+            newsegs.append(seg)
             i0 += len(stok_group)
+        return newsegs
 
     def get_segs(self, html=True):
         """Set the segments (instances of SolSegment) for the solution, including their translations."""
@@ -2083,6 +2088,10 @@ class Solution:
         max_index = -1
         tokens = self.sentence.tokens
         indices_covered = []
+        # Token lists for parenthetical segments
+        parentheticals = []
+        # Segments containing parentheticals
+        has_parens = []
         for raw_indices, forms, gname, merger_groups, tgroups in tt:
             late = False
             start, end = raw_indices[0], raw_indices[-1]
@@ -2092,13 +2101,14 @@ class Solution:
                 self.get_untrans_segs(src_tokens, end_index, gname=gname, merger_groups=merger_groups,
                                       indices_covered=indices_covered)
             if start < max_index:
-                # There's a gap between the portions of the segment
+                # There's a gap between the portions of the segment; this is a parenthetical segment within an outer one
                 late = True
             # There may be gaps in the source tokens for a group; fill these with (..tokens...)
             src_tokens = []
             parenthetical = []
             pre_paren = []
             post_paren = []
+            paren_record = []
             for tokindex in range(start, end+1):
                 token = tokens[tokindex]
                 if tokindex in raw_indices:
@@ -2110,15 +2120,27 @@ class Solution:
                         pre_paren.append(token)
                 else:
                     parenthetical.append(token)
+                    paren_record.append((token, tokindex))
             if parenthetical:
+                parentheticals.append(paren_record)
                 src_tokens = pre_paren + parenthetical + post_paren
             else:
                 src_tokens = pre_paren
 #            print("Creating SolSeg with parenthetical {} and source tokens {}".format(parenthetical, src_tokens))
             seg = SolSeg(self, raw_indices, forms, src_tokens, session=self.session, gname=gname,
                          tgroups=tgroups, merger_groups=merger_groups,
-                         has_paren=[pre_paren, parenthetical, post_paren] if parenthetical else None,
+                         has_paren=[pre_paren, paren_record, post_paren] if parenthetical else None,
                          is_paren=late)
+            if parenthetical:
+                has_parens.append(seg)
+            if late:
+                pindices = seg.indices
+#                print("Looking for enclosing segment for parenthetical {} with tokens {} and indices {}".format(seg, ptokens, pindices))
+                for hp in has_parens:
+                    hp_pindices = hp.paren_indices
+                    if pindices == hp_pindices:
+#                        print(" Found matching enclosing segment {}".format(hp))
+                        hp.paren_seg = seg
             print("Segment (translated) {}->{}: {}={}".format(start, end, src_tokens, seg.translation))
             self.segments.append(seg)
             indices_covered.extend(raw_indices)
@@ -2130,6 +2152,32 @@ class Solution:
             src_tokens = tokens[max_index+1:len(tokens)]
             self.get_untrans_segs(src_tokens, max_index, gname=gname, merger_groups=merger_groups,
                                   indices_covered=indices_covered)
+        # Check whether untranslated parentheticals have gotten segments
+        for parenthetical in parentheticals:
+            ptokens = [p[0] for p in parenthetical]
+            pindices = [p[1] for p in parenthetical]
+#            print("Checking parenthetical: {}, {}".format(ptokens, pindices))
+            found = False
+            i = 0
+            while not found and i < len(self.segments):
+                segment = self.segments[i]
+                if segment.tokens == ptokens and segment.indices == pindices:
+#                    print(" Segment {} already created".format(segment))
+                    found = True
+                i += 1
+            if not found:
+#                print(" Creating untranslated segment")
+                newsegs = self.get_untrans_segs(ptokens, pindices[0]-1, indices_covered=indices_covered, is_paren=True)
+                # hopefully only one of these
+                newseg = newsegs[0]
+#                ptokens = newseg.tokens
+                pindices = newseg.indices
+                for hp in has_parens:
+                    if pindices == hp.paren_indices:
+                        print(" Found matching enclosing segment for untrans segment {}".format(newseg))
+                        hp.paren_seg = newseg
+        # Sort the segments by start indices in case they're not in order (because of parentheticals)
+        self.segments.sort(key=lambda s: s.indices[0])
         if html:
             self.seg_html()
 
@@ -2138,5 +2186,25 @@ class Solution:
             segment.set_html(i)
 
     def get_seg_html(self):
-        return [segment.html for segment in self.segments]
+#        return [segment.html for segment in self.segments]
+        return self.get_gui_segments()
 
+    def get_gui_segments(self):
+        """These may differ from SolSegs because of intervening segments within outer segments."""
+        segments = []
+        enclosings = []
+        parens = []
+        for segment in self.segments:
+            if segment.has_paren:
+                tokens, color, html, index, src_html = segment.html
+                paren_seg = segment.paren_seg
+                ptokens, pcolor, phtml, pindex, psrc = paren_seg.html
+                gui_src = segment.get_gui_source(pcolor)
+                preseg = tokens, color, html, index, gui_src[0]
+                parenseg = ptokens, pcolor, phtml, pindex, gui_src[1]
+                postseg = tokens, color, html, index, gui_src[2]
+#                print("Adding gui segments for {}".format(gui_src))
+                segments.extend([preseg, parenseg, postseg])
+            elif not segment.is_paren:
+                segments.append(segment.html)
+        return segments
