@@ -812,8 +812,6 @@
 ### DE (GENITIVO DE SUSTANTIVOS en n.grp)
 ** de $pro ; ^ de 0
 ->grn $pro[caso=gui] ; || -1, 0
-** de %C ; ^ de 0
-->grn %C -gui ; || 1, 0
 ### A
 ** a $num $n ; ^ a 0
 ->grn $num $n[caso=pe] ; || -1, 0, 1
@@ -917,8 +915,6 @@
 ->grn hese'ỹ
 ** sin ellas ; ^ sin 0
 ->grn hese'ỹ
-** sin %C ; ^ sin 0
-->grn %C 'ỹrehe ; || 1, 0
 ### DETRÁS (DE)
 ** detrás de $n ; ^ detrás 0
 ->grn $n atukupépe ; || 1, -1, 0
@@ -2321,3 +2317,20 @@
 ->grn mandi
 ** en el ínterin ; ^ ínterin 2
 ->grn upeaja
+## PREPOSICIONES CON NOMBRES
+** $n de %C ; ^ de 1
+->grn %C $n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
+** de %C ; ^ de 0
+->grn %C `-gua ; || 1, 0
+** en %C ; ^ en 0
+->grn %C `-pe ; || 1, 0
+** a %C ; ^ a 0
+->grn %C `-pe ; || 1, 0
+** con %C ; ^ con 0
+->grn %C ndive ; || 1, 0
+** para %C ; ^ para 0
+->grn %C guarã ; || 1, 0
+** por %C ; ^ por 0
+->grn %C rehe ; || 1, 0
+** sin %C ; ^ sin 0
+->grn %C 'ỹrehe ; || 1, 0

@@ -73,9 +73,11 @@ def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
         if s.solutions and segment:
             for sol in s.solutions:
                 sol.get_segs()
-        output_sols(s)
         if s.solutions:
-            return s.solutions[0]
+            solution = s.solutions[0]
+            for segment in solution.segments:
+                print("{}: {}".format(segment, segment.cleaned_trans))
+            return solution
     return s
 
 def doc(text, proc=True):

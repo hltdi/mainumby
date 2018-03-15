@@ -16,6 +16,8 @@ function ShowHelp() {
 }
 function Shortcut() {
     form = document.getElementById("form");
+    document.getElementById("instructions").innerHTML = "";
+    document.getElementById("buttons").innerHTML = "";
     document.getElementById("intro").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
     form.action = "doc";
     form.submit();
@@ -39,22 +41,21 @@ function Login() {
     <img class='banner' src="{{url_for('static',
       filename='banner_logo.png')}}" alt="" width="300" height="52" />
     </td>
-    <td class="menu" style="width: 149px"><button class="menu" onclick="Login()">INICIAR SESIÓN</button></td>
-    <td class="menu" style="width: 117px"><button class="menu" onclick="Shortcut()">ATAJO</button></td>
-    <td class="menu" style="width: 117px"><a href="proyecto">PROYECTO</a></td>
-    <td class="menu" style="width: 117px"><a href="contacto">CONTACTO</a></td>
+    <td class="menu" style="width: 156px"><button class="menu" onclick="Login()">INICIAR SESIÓN</button></td>
+    <td class="menu" style="width: 160px"><button class="menu"
+  onclick="Shortcut()">ATAJO A INTERFAZ</button></td>
+    <td class="menu" style="width: 92px"><a href="proyecto">PROYECTO</a></td>
+    <td class="menu" style="width: 92px"><a href="contacto">CONTACTO</a></td>
 
 </tr>
 <tr>
 <td colspan="5" style="width:800px">
 <h1>¡Bienvenida/o a Mainumby! ¡Tereg̃uahẽ porãite Mainumby-me!</h1>
 
-<p class="instructions">
+<p class="instructions" id="instructions">
   Para iniciar una sesión y registrarte, hacé clic en "INICIAR
   SESIÓN".<br />
-  Para saltar la registración y ir directamente a la página donde
-  podés usar el sistema para traducir un documento, hacé clic en
-  "ATAJO".
+  Para saltar la registración y ir directamente a la interfaz de traducción, hacé clic en "ATAJO A INTERFAZ".
 </p>
 
 <div id="intro">    
@@ -65,17 +66,17 @@ function Login() {
 Mainumby es una aplicación experimental que ayuda a traducir del
 castellano al guaraní.
 Actualmente consiste en un <strong>traductor automático
-rudimentario (Mbojereha)</strong> y la interfaz en este sitio web.
-Además va a construir una <strong>memoria de traducción (Mandu'a)</strong>, basada en
-las traducciones de usuarios del sistema.
+rudimentario (Mbojereha)</strong> y una interfaz para ususarios en este sitio web.
+Además el sistema va a construir una <strong>memoria de traducción (Mandu'a)</strong>, basada en
+las traducciones de futuros usuarios del sistema.
 </p>
 <p>
-Mainumby no ha sido diseñado para estudiantes del guaraní sino para
+Mainumby no se diseñó para estudiantes del guaraní sino para
 personas que manejan tanto el castellano como el guaraní.
 Un usuario del sistema introduce un texto que quiere traducir, y
 el sistema le propone traducciones para frases en el texto.
 El usuario puede aceptar o rechazar las sugerencias del
-sistema, introduciendo sus propias traducciones si quiere.
+sistema, introduciendo sus propias traducciones, según su preferencia.
 El sistema mantiene una memoria del texto y la traducción creada por
 el usuario, y el usuario puede guardar este texto en cada momento
 durante el proceso.
@@ -101,13 +102,13 @@ durante el proceso.
   Entonces busca frases en la oración analizada
   que coinciden con frases en su diccionario.
   Finalmente, para cada frase genera una o más traducciones en guaraní, usando
-  su conocimiento de la morfología y ortografía guaraní.
-  En la interfaz de Mainumby, se le muestran estos resultados al
+  su conocimiento de la morfología y ortografía del idiomoa.
+  En la interfaz, se le muestran estos resultados al
   usuario.
 </p>
 <p>
   Cuando el usuario corrige la salida del sistema o reemplaza una
-  traducción de una diferente, Mbojereha aprende de esta
+  traducción por una diferente, Mbojereha aprende de esta
   retroalimentación, mejorando su diccionario y talvez su conocimiento
   gramatical.
   Además Mainumby añade la traducción dada por el usuario a Mandu'a, su
@@ -121,9 +122,9 @@ durante el proceso.
 						      
 <hr/>
 
-<p>
+<p id='buttons'>
   <input type="submit" value="Iniciar sesión" id="button" onclick="Login()">
-  <input type="submit" value="Atajo" id="button" onclick="Shortcut()">
+  <input type="submit" value="Atajo a interfaz" id="button" onclick="Shortcut()">
 </p>
 
 </td>

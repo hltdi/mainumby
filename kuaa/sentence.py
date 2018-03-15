@@ -2169,13 +2169,13 @@ class Solution:
 #                print(" Creating untranslated segment")
                 newsegs = self.get_untrans_segs(ptokens, pindices[0]-1, indices_covered=indices_covered, is_paren=True)
                 # hopefully only one of these
-                newseg = newsegs[0]
-#                ptokens = newseg.tokens
-                pindices = newseg.indices
-                for hp in has_parens:
-                    if pindices == hp.paren_indices:
-                        print(" Found matching enclosing segment for untrans segment {}".format(newseg))
-                        hp.paren_seg = newseg
+                if newsegs and len(newsegs) > 0:
+                    newseg = newsegs[0]
+                    pindices = newseg.indices
+                    for hp in has_parens:
+                        if pindices == hp.paren_indices:
+#                            print(" Found matching enclosing segment for untrans segment {}".format(newseg))
+                            hp.paren_seg = newseg
         # Sort the segments by start indices in case they're not in order (because of parentheticals)
         self.segments.sort(key=lambda s: s.indices[0])
         if html:

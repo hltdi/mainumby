@@ -62,6 +62,8 @@
 # 2017.07.13
 # -- Fixed TNodes within subtrees (nodes corresponding words in TL that are not in TL).
 #    For example, ዓረፍተ in ዓረፍተ ነገር when this is part of a subtree.
+# 2018.02-03
+# -- Lots of changes and fixes in SolSeg.
 
 import itertools, copy, re
 from .cs import *
@@ -84,6 +86,9 @@ class SolSeg:
     tt_notrans_color = "Gray"
 
     special_re = re.compile("%[A-Z]+~")
+
+    # Character indicating that tokens in translation string should be joined ("Carlos `-pe" -> "Carlos-pe")
+    join_tok_char = "`"
 
     def __init__(self, solution, indices, translation, tokens, color=None, space_before=1,
                  tgroups=None, merger_groups=None, has_paren=False, is_paren=False,
@@ -115,6 +120,8 @@ class SolSeg:
             self.original_tokens = pre + post
             self.pre_token_str = ' '.join(pre)
             self.paren_token_str = ' '.join(self.paren_tokens)
+            # There could be special tokens in the parenthetical part
+            self.paren_token_str = SolSeg.clean_spec(self.paren_token_str)
             self.post_token_str = ' '.join(post)
         else:
             self.original_tokens = tokens
@@ -123,7 +130,7 @@ class SolSeg:
         # If there are special tokens in the source language, fix them here.
         self.special = False
         if '%' in self.token_str:
-            # Create the source string without special characters
+            # Create the source and target strings without special characters
             if not translation:
                 self.special = True
                 # Set the translation for the special segment
@@ -150,6 +157,8 @@ class SolSeg:
             self.original_token_str = SolSeg.clean_spec(self.original_token_str)
         if not self.cleaned_trans:
             self.cleaned_trans = self.translation
+        # Join tokens in cleaned translation if necessary
+        SolSeg.join_toks_in_strings(self.cleaned_trans)
         self.color = color
         # Whether this segment is just punctuation
         self.is_punc = is_punc
@@ -190,6 +199,18 @@ class SolSeg:
         string = string.replace('_', ' ').replace('~', ' ')
         return string
 
+    @staticmethod
+    def join_toks(string):
+        """Join tokens as specified by the join character."""
+        return string.replace(' ' + SolSeg.join_tok_char, '')
+
+    def join_toks_in_strings(stringlists):
+        """Join tokens in each item in list of strings."""
+        for i, stringlist in enumerate(stringlists):
+            for j, string in enumerate(stringlist):
+                if SolSeg.join_tok_char in string:
+                    stringlists[i][j] = SolSeg.join_toks(string)
+
     def make_record(self, session=None, sentence=None):
         """Create the SegRecord object for this SolSeg."""
         if sentence:
@@ -226,7 +247,7 @@ class SolSeg:
         tokens = self.token_str
         orig_tokens = self.original_token_str
         trans_choice_index = 0
-        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
+#        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
         # T Group strings associated with each choice
         choice_tgroups = []
         if self.is_punc:
