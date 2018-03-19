@@ -80,11 +80,15 @@ Usuario: <span class="username">{{ user.username }}</span>
 <h2>Introducción de un documento</h2>
 {% endif %}
 
-<p>
-<span class='instruction'>
+<p class='instructions'>
 Introducí una o más oraciones o frases para traducir.
-</span>
 </p>
+
+{% if error %}
+<p class="error">
+Hay un error en el documento. ¿Has olvidado la puntuación final?
+</p>
+{% endif %}
 
 <textarea name="text" class="doc" autofocus></textarea>
 

@@ -2320,8 +2320,6 @@
 ## PREPOSICIONES CON NOMBRES
 ** $n de %C ; ^ de 1
 ->grn %C $n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
-** de %C ; ^ de 0
-->grn %C `-gua ; || 1, 0
 ** en %C ; ^ en 0
 ->grn %C `-pe ; || 1, 0
 ** a %C ; ^ a 0

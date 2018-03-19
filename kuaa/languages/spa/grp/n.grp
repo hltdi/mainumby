@@ -2135,21 +2135,21 @@
 ->grn ñemitỹ_n ; 0==0 n:n,poses:poses ; #68 ; ##1
 ->grn kokue_n ; 0==0 n:n,poses:poses ; #183 ; ##6
 ** error_n $pp $art que $v[-ipv] ; ^ error_n 0 ; (4,-3)
-->grn avy_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
+->grn javy_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn jejavy_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** error_n $pp cual_n $v[-ipv] ; ^ error_n 0 ; (3,-3)
-->grn avy_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
+->grn javy_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn jejavy_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** error_n que $v[-ipv] ; ^ error_n 0 ; (2,-3)
-->grn avy_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
+->grn javy_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn jejavy_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** error_n de $n ; ^ error_n 0
-->grn $n avy_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n javy_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ->grn $n jejavy_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ** error_n de concepto ; ^ error_n 0 ; #15
 ->grn jepy'api_n ; 0==0 n:n,poses:poses
 ** error_n ; ^ error_n 0 ; #15
-->grn avy_n ; 0==0 n:n,poses:poses
+->grn javy_n ; 0==0 n:n,poses:poses
 ->grn jejavy_n ; 0==0 n:n,poses:poses ; #7
 ** escala_n $pp $art que $v[-ipv] ; ^ escala_n 0 ; (4,-3)
 ->grn hupiha_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
@@ -21827,19 +21827,15 @@
 ->grn py'ajoja_n ; 0==0 n:n,poses:poses
 ** equivocación_n $pp $art que $v[-ipv] ; ^ equivocación_n 0 ; (4,-3)
 ->grn javy_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn avy_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn jejavy_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** equivocación_n $pp cual_n $v[-ipv] ; ^ equivocación_n 0 ; (3,-3)
 ->grn javy_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn avy_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn jejavy_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** equivocación_n que $v[-ipv] ; ^ equivocación_n 0 ; (2,-3)
 ->grn javy_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn avy_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn jejavy_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** equivocación_n ; ^ equivocación_n 0 ; #1
 ->grn javy_n ; 0==0 n:n,poses:poses
-->grn avy_n ; 0==0 n:n,poses:poses
 ->grn jejavy_n ; 0==0 n:n,poses:poses ; #7
 ** erizo_n $pp $art que $v[-ipv] ; ^ erizo_n 0 ; (4,-3)
 ->grn kuti_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
@@ -25829,12 +25825,9 @@
 ->grn arasa_n ; 0==0 n:n,poses:poses
 ** guerra_n $pp $art que $v[-ipv] ; ^ guerra_n 0 ; (4,-3)
 ->grn ñorairõ_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn ñorairõ_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** guerra_n $pp cual_n $v[-ipv] ; ^ guerra_n 0 ; (3,-3)
 ->grn ñorairõ_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn ñorairõ_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** guerra_n que $v[-ipv] ; ^ guerra_n 0 ; (2,-3)
-->grn ñorairõ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ñorairõ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** guerra_n ; ^ guerra_n 0
 ->grn ñorairõ_n ; 0==0 n:n,poses:poses
@@ -48030,7 +48023,6 @@
 ->grn jehechapuku_n ; 0==0 n:n,poses:poses
 ** visión_n ; ^ visión_n 0
 ->grn <hecha_n ; 0==0 n:n,poses:poses
-->grn mba'e_n au ; 0==0 n:n,poses:poses
 ** vislumbre_n $pp $art que $v[-ipv] ; ^ vislumbre_n 0 ; (4,-3)
 ->grn <hembipe_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** vislumbre_n $pp cual_n $v[-ipv] ; ^ vislumbre_n 0 ; (3,-3)

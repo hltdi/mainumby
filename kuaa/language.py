@@ -1593,8 +1593,8 @@ class Language:
             with open(gfile, encoding='utf8') as file:
                 grouptype = gfile.rpartition('/')[-1].split('.')[0]
                 groupdefaults = []
-#                if verbosity:
-                print("  Leyendo grupos de tipo {}".format(grouptype))
+                if verbosity:
+                    print("  Leyendo grupos de tipo {}".format(grouptype))
                 # Groups separated by GROUP_SEP string
                 groups = file.read().split(GROUP_SEP)
                 transadd = ''

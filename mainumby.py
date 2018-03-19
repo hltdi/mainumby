@@ -66,6 +66,9 @@ def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
     e, g = cargar()
     session = kuaa.start(e, g, user)
     d = kuaa.Document(e, g, sentence, True, session=session)
+    if len(d) == 0:
+        print("Parece que falta puntuación final en el document.")
+        return
     s = d[0]
     s.initialize(ambig=ambig, verbosity=verbosity)
     if solve or segment:

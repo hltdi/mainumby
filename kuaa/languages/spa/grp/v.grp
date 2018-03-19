@@ -18195,6 +18195,8 @@
 ->grn <hupyty_v[cat=a] (chupekuéra)
 ** obtener_v[-r,+fin] ; ^ obtener_v 0
 ->grn <hupyty_v[cat=a]
+** obtener_v[+r,+fin] ; ^ obtener_v 0
+->grn <hupyty_v[cat=a,voz=reflx]
 ** obturar_v[+r,+fin] ; ^ obturar_v 0
 ->grn ñemboty_v[cat=a]
 ** obturar_v[-r,+fin] ; ^ obturar_v 0

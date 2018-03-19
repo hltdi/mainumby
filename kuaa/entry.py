@@ -162,7 +162,7 @@ AMBIG_CHAR = '*'
 DISAMBIG_CHAR = '%'
 # possibly empty form string followed by possibly empty FS string, for MorphoSyn pattern
 # ^prefix means this is head
-MS_FORM_FEATS = re.compile("\s*(\^?)([$<'|\w¿¡?!]*)\s*((?:\*?\[.+\])?)$")
+MS_FORM_FEATS = re.compile("\s*(\^?)([$%<'|\w¿¡?!]*)\s*((?:\*?\[.+\])?)$")
 # negative features: ![] with only features catpured
 MS_NEG_FEATS = re.compile("\s*!(\[.+\])$")
 MS_AGR = re.compile("\s*(\d)\s*=>\s*(\d)\s*(.+)$")
@@ -205,8 +205,21 @@ class Entry:
     @staticmethod
     def is_special(name):
         """Is this a symbol for a special category, like numerals?"""
-        return name and name[0] == SPEC_CHAR 
+        return name and name[0] == SPEC_CHAR
 
+    @staticmethod
+    def special_prefix(name, check=False):
+        """If this is a special token, return its prefix (what precedes ~)."""
+        if not check or Entry.is_special(name):
+            return name.split('~')[0]
+        return ''
+
+    @staticmethod
+    def match_special(stoken, ptokens):
+        """Does any MS pattern token (%C, %N, etc.) match the sentence token?"""
+        prefix = Entry.special_prefix(stoken, check=True)
+        return prefix and any([prefix == ptoken for ptoken in ptokens])
+        
 #    @staticmethod
 #    def is_negative(name):
 #        """Is this a symbol for a negative feature or category?"""
@@ -371,6 +384,12 @@ class Group(Entry):
         Groups with more tokens and more features have priority."""
         featscore = .3 * sum([len(f) for f in self.features if f]) if self.features else 0.0
         return len(self.tokens) + featscore
+
+    # Group properties
+
+    def get_cat_indices(self):
+        """Return a list of gnode positions for categories."""
+        return [index for index, token in enumerate(self.tokens) if Entry.is_cat(token)]
 
     # Serialization
 
@@ -552,11 +571,6 @@ class Group(Entry):
                     if verbosity > 1 or self.debug:
                         print('  Node {} match {}:{}, {}:: {}'.format(node, token, index, feats, node_match))
                     if node_match != False:
-#                        if not Group.is_cat(token) and not last_cat and index > 0 and last_sindex >= 0 and nodegap:
-#                            if verbosity or self.debug:
-#                                fstring = " Group token {} in sentence position {} doesn't follow last token at {}"
-#                                print(fstring.format(token, snode_indices, last_sindex))
-#                            return False
                         if Entry.is_special(token):
                             token = node.token
                         match_snodes1.append((node.index, node_match, token, True))
@@ -1025,6 +1039,9 @@ class MorphoSyn(Entry):
                 feats = negfeats
 #                p.append(([], negfeats))
             else:
+                match = MS_FORM_FEATS.match(item)
+                if not match:
+                    print("Something wrong: {} failed to match".format(item))
                 head_pref, forms, feats = MS_FORM_FEATS.match(item).groups()
                 if feats:
                     if feats[0] == '*':
@@ -1266,7 +1283,7 @@ class MorphoSyn(Entry):
                     # Is this the end of the pattern? If so, succeed.
                     if self.pattern_length() == pindex + 1:
                         if not terse:
-                            print("MS {} tuvo éxito".format(self))
+                            print("  MS {} tuvo éxito".format(self))
 #                        con resultado {}".format(self, result))
 #                        print("  Match result {}, stoken {}, sanals {}".format(result, stoken, sanals))
                         if mindex < 0:
@@ -1337,6 +1354,11 @@ class MorphoSyn(Entry):
             # Do any of the pattern items match the sentence word?
             if verbosity > 1 or self.debug:
                 print("   Succeeded on token")
+            return [stoken, False, sanals]
+        if Entry.match_special(stoken, pforms):
+            # If stoken and pforms are special, do they match?
+            if verbosity > 1 or self.debug:
+                print("   Succeeded on special token")
             return [stoken, False, sanals]
         # Do any of the pattern items match a root in any sentence item analysis?
         matched_anals = []

@@ -106,6 +106,8 @@ al_inf :: a el [pos=v,tm=inf,pp=vove] ; // 0 1 ; 2-> [tm=prs]
 
 ## artículos definitivos
 artdef/ms :: el[pos=det] [pos=n] ; // 0
+artdef/nom_m :: el[pos=det] %C ; // 0
+artdef/nom_f :: la[pos=det] %C ; // 0
 artdef/ms_adj :: el[pos=det] [pos=a,n=0] ; // 0
 artdef/fs :: la[pos=det] [pos=n] ; // 0
 artdef/fs_adj :: la[pos=det] [pos=a,n=0] ; // 0

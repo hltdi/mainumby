@@ -38,6 +38,8 @@
 #    Sentence translations are added to document TextArea in sent.html.
 # 2017.11
 # -- Document TextArea gets cleared when "Salir" happens.
+# 2018.01-03
+# -- Comments in sent, error message for empty Doc in doc.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
 from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user
@@ -46,7 +48,6 @@ from kuaa import app, make_document, load, seg_trans, quit, start, init_users, g
 SESSION = SPA = GRN = DOC = SENTENCE = SEGS = SEG_HTML = USER = None
 SINDEX = 0
 USERS_INITIALIZED = False
-# SOLINDEX = 0
 
 def initialize():
     global USERS_INITIALIZED
@@ -176,7 +177,7 @@ def doc():
 def sent():
     form = request.form
     punc = SENTENCE.get_final_punc() if SENTENCE else None
-#    print("Form for sent: {}".format(form))
+    print("Form for sent: {}".format(form))
     if 'ayuda' in form and form['ayuda'] == 'true':
         # Opened help window. Keep everything else as is.
         raw = SENTENCE.raw if SENTENCE else None
@@ -190,10 +191,10 @@ def sent():
         segtrans = form.get('segtrans', '')
         document = form.get('UTraDoc', '')
         comments = form.get('UComment', '')
-        print("Registering sentence translation {} for {}".format(translation, SENTENCE))
-        print(" Segment translations: {}".format(segtrans))
-        print(" Comments: {}".format(comments))
-        print(" Current document: {}".format(document))
+#        print("Registering sentence translation {} for {}".format(translation, SENTENCE))
+#        print(" Segment translations: {}".format(segtrans))
+#        print(" Comments: {}".format(comments))
+#        print(" Current document: {}".format(document))
         if SESSION:
             SESSION.record(SENTENCE.record, translation=translation, segtrans=segtrans, comments=comments)
         # Continue with the next sentence in the document or quit
@@ -202,6 +203,9 @@ def sent():
         # Create a new document
         make_doc(form['text'])
         print("Created document {}".format(DOC))
+        if len(DOC) == 0:
+            print(" But document is empty.")
+            return render_template('doc.html', user=USER, error=True)
     # Get the next sentence in the document, assigning SENTENCE
     get_sentence()
     print("Current sentence {}".format(SENTENCE))
@@ -214,9 +218,6 @@ def sent():
         print("Solved and segmented")
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
     punc = SENTENCE.get_final_punc()
-#    print("sentence input to page:")
-#    for seg in SEG_HTML:
-#        print("  seg {}".format(seg))
     return render_template('sent.html', sentence=SEG_HTML, raw=SENTENCE.original, document='',
                            record=SENTENCE.record, punc=punc, user=USER)
 

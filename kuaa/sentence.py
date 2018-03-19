@@ -7,7 +7,8 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyleft 2014, 2015, 2016, 2017 HLTDI and PLoGS <gasser@indiana.edu>
+#   Copyleft 2014, 2015, 2016, 2017, 2018
+#      HLTDI and PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -151,7 +152,7 @@ import copy, re, random, itertools
 from .ui import *
 from .segment import *
 from .record import SentRecord
-from .utils import remove_control_characters
+from .utils import remove_control_characters, firsttrue
 
 class Document(list):
     """A list of of Sentences, split from a text string. If biling is True, this is a bilingual document,
@@ -817,8 +818,8 @@ class Sentence:
             s.create_constraints(verbosity=verbosity)
             anygroups=True
         if not anygroups:
-            if not terse:
-                print("Ningunos grupos encontrados para {}".format(self))
+#            if not terse:
+#                print("Ningunos grupos encontrados para {}".format(self))
             return False
         else:
             return True
@@ -1070,39 +1071,64 @@ class Sentence:
                         candidates.append((node.index, k, group))
                         node.group_cands.append(group)
 #            print("Group cands for {}: {}".format(node, node.group_cands))
-        # Now filter candidates to see if all words are present in the sentence
+        # Now filter candidates to see if all words are present in the sentence.
         # For each group, save a list of sentence token indices that correspond
         # to the group's words
         matched_keys = []
         group_index = 0
+        # Initially filtered
+        filtered1 = []
+        # Candidate groups with categories
+        cat_groups = []
+        # Rejected category groups
+        rejected = []
         for head_i, key, group in candidates:
             # Check whether there is already a match for this position, key, and group length
             # LATER HAVE A BETTER WAY OF CHOOSING A MATCH
-#            print("Checking candidate {} with head {} and key {}".format(group, head_i, key))
+            if verbosity or group.debug:
+                print("Checking candidate {} with head {} and key {}".format(group, head_i, key))
             matched_key = (head_i, key, len(group.tokens))
             if matched_key in matched_keys:
                 # Reject this match because there's already a comparable one
-                if verbosity:
+                if verbosity or group.debug:
                     print("{} rejected because {} already found".format(group, matched_key))
                 continue
             # Matching snodes, along with root and unified features if any
-            if verbosity > 1:
+            if verbosity > 1 or group.debug:
                 print("Matching group {}".format(group))
-#            if (head_i, key) in matched_keys:
-#                # Already matched one for this key, so don't bother checking.
-#                if verbosity:
-#                    print("Not considering {} because already matched group with key {}".format(group, key))
-#                continue
             snodes = group.match_nodes(self.nodes, head_i, verbosity=verbosity)
             if not snodes:
-#                print("Group {} failed to match".format(group))
+                if group.debug:
+                    print("Group {} failed to match".format(group))
                 # This group is out
-                if verbosity > 1:
+                if verbosity > 1 or group.debug:
                     print("Failed to match")
                 continue
             matched_keys.append(matched_key)
-            if verbosity > 1:
+            if verbosity > 1 or group.debug:
                 print('Group {} matches snodes {}'.format(group, snodes))
+            # Find snodes that would be category nodes within this group
+            cat_i = group.get_cat_indices()
+            if cat_i:
+                # Groups with category nodes
+                cat_snodes = [snodes[i][0][0] for i in cat_i]
+                cat_groups.append((group, cat_snodes))
+            # All candidate groups
+            filtered1.append((group, head_i, snodes))
+        if cat_groups:
+            for cat_group, cat_snodes in cat_groups:
+                for cat_snode in cat_snodes:
+                    cat_match = firsttrue(lambda c: c[1] == cat_snode, filtered1)
+                    if not cat_match:
+                        print("  Group {} rejected; no match for cat snode {}".format(cat_group, cat_snode))
+                        rejected.append(cat_group)
+                        break
+                    else:
+                        print("    Found match {} for cat snode {}".format(cat_match, cat_snode))
+        for (group, head_i, snodes) in filtered1:
+            if group in rejected:
+                # This group was rejected because there was no match for its category token(s)
+                continue
             # Create a GInst object and GNodes for each surviving group
             self.groups.append(GInst(group, self, head_i, snodes, group_index))
             group_index += 1
@@ -1738,8 +1764,14 @@ class Sentence:
 
     def get_html(self):
         """Create HTML for a sentence with no solution."""
-        return [(self.raw, "Silver", "<table border=1></table>", 0, True)]
-        
+        tokens = ' '.join(self.tokens)
+        source_html = "<span style='color:Silver;'> {} </span>".format(tokens)
+        trans_html = "<table>"
+        trans_html += '<tr><td class="source">'
+        trans_html += '<input type="radio" name="choice" id="{}" value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
+        trans_html += '</table>'
+        return [(self.raw, "Silver", trans_html, 0, source_html)]
+
     def verbatim(self, node):
         """Use the source token in the target complete translation."""
         # If token consists of only punctuation or digits, just return it

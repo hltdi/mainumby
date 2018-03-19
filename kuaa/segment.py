@@ -83,7 +83,7 @@ class SolSeg:
                  'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
                  'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green']
 
-    tt_notrans_color = "Gray"
+    tt_notrans_color = "Silver"
 
     special_re = re.compile("%[A-Z]+~")
 
@@ -224,7 +224,7 @@ class SolSeg:
         else:
             self.source_html = "<span style='color:{};'> {} </span>".format(self.color, self.token_str)
 
-    def get_gui_source(self, paren_color='Gray'):
+    def get_gui_source(self, paren_color='Silver'):
         if self.has_paren:
             return ["<span style='color:{};'> {} </span>".format(self.color, self.pre_token_str),
                     "<span style='color:{};'> {} </span>".format(paren_color, self.paren_token_str),
@@ -304,7 +304,8 @@ class SolSeg:
 #            if self.record:
 #                choice_list.append(tchoice)
             transhtml += '</tr>'
-        if self.translation:
+        if self.translation and self.translation[0]:
+            print("Translation {}, clean trans {}".format(self.translation, self.cleaned_trans))
             if self.cleaned_trans[0][0] != tokens:
                 # Add other translation button
                 # Button to translate as source language
@@ -575,8 +576,13 @@ class SNode:
             # Match group token
             if is_cat:
                 if grp_item in node_cats:
+#                    if node_root not in self.sentence.language.groups:
+#                        if verbosity > 1 or debug:
+#                            print("      Cat succeeds but there's no group for {}".format(grp_item, node_root))
+#                        continue
+#                    else:
                     if verbosity > 1 or debug:
-                        print("      Succeeding for cat {}".format(grp_item))
+                        print("      Succeeding for cat {} for node with root {}".format(grp_item, node_root))
                 else:
                     # Fail because the group category item doesn't match the node categories
                     if verbosity > 1 or debug:
@@ -598,7 +604,7 @@ class SNode:
                     # 2015.7.5: strict option added to force True feature in grp_features
                     # to be present in node_features, e.g., for Spanish reflexive
                     if verbosity > 1 or debug:
-                        print("    Unifying n feats {} ({}) with g feats {} ({})".format(node_features, type(node_features), grp_feats.__repr__(), type(grp_feats)))
+                        print("    Unifying n feats {} with g feats {}".format(node_features, grp_feats.__repr__()))
                     nfeattype = type(node_features)
                     if nfeattype == FSSet:
                         u_features = node_features.unify_FS(grp_feats, strict=True, verbose=verbosity>1)
