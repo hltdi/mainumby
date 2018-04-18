@@ -165,3 +165,15 @@ reko:[ns=0,ps=3,subcat=gue,tmp=prs] || oguereko
 mokõive:[ns=1,pos=a] || mokõive
 ju:[cat=a,ns=1,ps=3,tmp=prt] || oúkuri;ou;ouraka'e;ou'akue
 jogua:[cat=a,ns=0,ps=3,rel=sjoj,tmp=prt] || ojoguava'ekue
+mbohasa:[cat=a,ns=0,ps=2,tmp=ipv] || embohasa
+mbojere:[cat=a,ns=0,ps=2,tmp=ipv] || embojere
+mbohyru:[asp=[+vol],cat=a,+neg,ns=0,ps=1,tmp=prs] || nambohyruséi
+moinge:[asp=[+vol],cat=a,+neg,ns=0,ps=1,tmp=prs] || namoingeséi
+<japo:[asp=[+vol],cat=a,ns=0,ps=1,rel=sjoj,tmp=prs] || ajaposéva
+ke:[cat=a,tmp=inf] || ke
+<japo:[asp=[+vol],cat=a,+neg,ns=0,ps=1,rel=sjoj,tmp=prs] || ndajaposéiva
+hai:[cat=a,no=0,po=2,tmp=inf] || hai
+mbojepota:[cat=a,ns=0,ps=2,tmp=ipv] || embojepota;ambojepotákuri;ambojepota;ambojepotaraka'e;ambojepota'akue
+mbojepota:[cat=a,ns=0,ps=1,tmp=prt] || embojepota;ambojepotákuri;ambojepota;ambojepotaraka'e;ambojepota'akue
+muña:[cat=a,ns=0,ps=2,tmp=ipv] || emuña;amuñákuri;amuña;amuñaraka'e;amuña'akue
+muña:[cat=a,ns=0,ps=1,tmp=prt] || emuña;amuñákuri;amuña;amuñaraka'e;amuña'akue

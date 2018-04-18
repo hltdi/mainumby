@@ -61,7 +61,8 @@ def init_session():
     if not SPA:
         load_languages()
     # Load users and create session if there's a user
-    if USER and not SESSION:
+    # or if USE_ANON is True
+    if not SESSION:
         SESSION = start(SPA, GRN, USER)
 
 def load_languages():
@@ -167,6 +168,9 @@ def doc():
     # Initialize Session if there's a User and no Session
     # and Spanish and Guarani if they're not loaded.
     if not SESSION:
+        print("No session")
+        if not USER:
+            print("And no user")
         init_session()
     print("Initialized session and languages")
     return render_template('doc.html', user=USER)
@@ -197,6 +201,8 @@ def sent():
 #        print(" Current document: {}".format(document))
         if SESSION:
             SESSION.record(SENTENCE.record, translation=translation, segtrans=segtrans, comments=comments)
+        else:
+            print("NO SESSION SO NOTHING TO RECORD")
         # Continue with the next sentence in the document or quit
         return render_template('sent.html', user=USER, document=document)
     if 'text' in form and not DOC:

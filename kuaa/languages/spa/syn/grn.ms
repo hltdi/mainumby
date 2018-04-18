@@ -16,7 +16,7 @@ acabar_de :: acabar_v[tm=prs] de [pos=v,tm=inf,asp=[+ramo]] ; 0=>2 p,n ; // 0:2 
 comenzar_a :: comenzar_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 1 ; 2-> [tm=prs,+fin]
 empezar_a :: empezar_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 1 ; 2-> [tm=prs,+fin]
 # seguir + ger
-seguir_ger :: seguir_v [pos=v,tm=ger] ; 0=>1 p,n,tm ; 1-> [+fin]
+seguir_ger :: seguir_v [pos=v,tm=ger] ; 0=>1 p,n,tm ; 1-> [+fin,grd=ve] ; // 0
 
 ## derivación 1
 volativo :: querer_v [pos=v,tm=inf,asp=[+vol]] ; 0=>1 p,n,tm,asp ; 1-> [+fin] ; // 0

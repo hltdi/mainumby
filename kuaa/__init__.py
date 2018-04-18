@@ -55,6 +55,9 @@ from .record import *
 app = Flask(__name__)
 app.config.from_object(__name__)
 
+## Whether to create a session for the anonymous user when user doesn't log in.
+USE_ANON = True
+
 def load(source='spa', target='grn'):
     """Load source and target languages for translation."""
     return kuaa.Language.load_trans(source, target)
@@ -99,6 +102,8 @@ def start(source, target, user):
     if isinstance(user, str):
         # Get the user from their username
         user = User.users.get(user)
+    if USE_ANON and not user:
+        user = User.get_anon()
     if user:
         return kuaa.Session(source=source, target=target, user=user)
 

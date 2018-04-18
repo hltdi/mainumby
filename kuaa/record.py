@@ -87,7 +87,7 @@ class Session:
         print("Creando sesión {}".format(self))
 
     def __repr__(self):
-        return "{} {}".format(SESSION_PRE, self.id)
+        return "{}::{}".format(SESSION_PRE, self.id)
 
     def to_dict(self):
         """Create dictionary from Session, after it stops."""
@@ -442,6 +442,12 @@ class User:
     # Dictionary of users created during the most recent session, with usernames as keys.
     new_users = {}
 
+    # Special anonymous user
+    anon_user = 'anon'
+    anon_pw = 'sin_nombre'
+    anon_name = 'anónima'
+    anon_email = 'gasser@indiana.edu'
+
     def __init__(self, username='', email='', password='', name='', level=1, pw_hash='',
                  creation=None, nsessions=0, nsentences=0, update=None, score=0.0,
                  new=False):
@@ -471,7 +477,7 @@ class User:
             User.new_users[self.username] = self
 
     def __repr__(self):
-        return "{} {}".format(USER_PRE, self.username)
+        return "{}::{}".format(USER_PRE, self.username)
 
     def set_password(self, password):
         self.pw_hash = generate_password_hash(password)
@@ -480,7 +486,7 @@ class User:
 #        print("Checking password {} with hash {}".format(password, self.pw_hash))
         res = check_password_hash(self.pw_hash, password)
 #        print("Result {}".format(res))
-        return check_password_hash(self.pw_hash, password)
+        return res
 
     def add_user(self):
         User.users[self.username] = self
@@ -499,7 +505,7 @@ class User:
         return u
 
     def user2dict(self):
-        """Create a dictionary or user properties."""
+        """Create a dictionary of user properties."""
         d = {}
         d['username'] = self.username
         d['level'] = self.level
@@ -589,3 +595,13 @@ class User:
     @staticmethod
     def get_user(username):
         return User.users.get(username)
+
+    @staticmethod
+    def get_anon():
+        """Get the anonymous user; if it doesn't exist, create it."""
+        anon = User.get_user(User.anon_user)
+        if not anon:
+            anon = User(username=User.anon_user, email=User.anon_email, password=User.anon_pw, name=User.anon_name, new=True)
+        return anon
+        
+        

@@ -45,7 +45,7 @@
 ->grn mbojepota_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 ->grn muña_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 ** seguir_v[-r,+fin] $v ; ^ seguir_v 0 ; // v has copied tns and sbj pers+num in morphosyns
-->grn $v manterei ; || 1, 0 ; 1==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
+->grn $v manterei|gueteri ; || 1, 0 ; 1==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
 ** seguir_v[-r,po=3,no=0] ; ^ seguir_v 0
 ->grn mbojepota_v[cat=a] (chupe)
 ->grn muña_v[cat=a] (chupe)

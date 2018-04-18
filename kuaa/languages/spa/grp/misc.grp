@@ -323,12 +323,12 @@
 ** como siempre ; ^ siempre 1
 ->grn akóinte
 ->grn jepiguáicha
+** como de siempre ; ^ siempre 2
+->grn jepiveguáichante
 ** siempre ; ^ siempre 0
-->grn akói
-->grn jepi
-->grn mante
+->grn akóinte
+->grn jepive
 ->grn manterei
-->grn meme
 ->grn tapia
 ** de tarde ; ^ tarde 1
 ->grn ka'aru

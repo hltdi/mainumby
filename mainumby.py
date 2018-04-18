@@ -44,21 +44,7 @@ __version__ = 1.0
 
 import kuaa
 
-## shortcuts
-
-##def huesped("Vi al pobre huésped.", solve=True, user=None):
-##    e, g = cargar()
-##    session = kuaa.start(e, g, user)
-##    d = kuaa.Document(e, g, sentence, True, session=session)
-##    s = d[0]
-##    s.initialize(ambig=False)
-##    if solve:
-##        s.solve(all_sols=False)
-##        if s.solutions and segment:
-##            for sol in s.solutions:
-##                sol.get_segs()
-##        output_sols(s)
-##    return s.solutions[0]    
+## Atajos
 
 ## Creación (y opcionalmente traducción) de oración simple y de documento.
 def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
@@ -67,7 +53,7 @@ def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
     session = kuaa.start(e, g, user)
     d = kuaa.Document(e, g, sentence, True, session=session)
     if len(d) == 0:
-        print("Parece que falta puntuación final en el document.")
+        print("Parece que falta puntuación final en el documento.")
         return
     s = d[0]
     s.initialize(ambig=ambig, verbosity=verbosity)
@@ -141,6 +127,20 @@ def arch_doc(lengua, ruta, session=None, user=None, proc=False):
     texto = arch.read()
     d = kuaa.Document(l, None, texto, proc=proc, session=session)
     return d
+
+##def huesped("Vi al pobre huésped.", solve=True, user=None):
+##    e, g = cargar()
+##    session = kuaa.start(e, g, user)
+##    d = kuaa.Document(e, g, sentence, True, session=session)
+##    s = d[0]
+##    s.initialize(ambig=False)
+##    if solve:
+##        s.solve(all_sols=False)
+##        if s.solutions and segment:
+##            for sol in s.solutions:
+##                sol.get_segs()
+##        output_sols(s)
+##    return s.solutions[0]    
 
 #def eg_bidoc(ruta1, ruta2, proc=True, reinit=False, user=None, docid=''):
 #    doc1 = eg_arch_doc(ruta1, user=user)
@@ -230,82 +230,5 @@ if __name__ == "__main__":
 ##    # ~ se, V, ..., N
 ##    return kuaa.Pattern([(('~', {'se'}), (None, None)), {('p', 'v')}, 2, {('p', 'n')}])
 
-### Parsing and translating of other language pairs
-
-##def test(verbosity=0):
-##    piece_of_mind_parse_ung(verbosity=verbosity)
-##    piece_of_mind_trans(verbosity=verbosity)
-##    kick_the_bucket(verbosity=verbosity)
-##    end_of_world(verbosity=verbosity)
-##    never_eaten_fish(verbosity=verbosity)
-##    never_eaten_fish_ungr(verbosity=verbosity)
-##    cantar_las_cuarenta_I(verbosity=verbosity)
-##    cantar_las_cuarenta_she(verbosity=verbosity)
-##
-##def piece_of_mind_parse_ung(verbosity=0, all_sols=True):
-##    """
-##    Eng parse.
-##    Illustrates
-##    (1) within SL agreement (fails because 'my' doesn't agree with 'gives')
-##    """
-##    eng = kuaa.Language.load('eng')[0]
-##    s = kuaa.Sentence(raw='Mary gives them a piece of my mind',
-##                         language=eng,
-##                         verbosity=verbosity)
-###    print("Parsing: {}".format(s.raw))
-##    s.initialize(verbosity=verbosity)
-##    s.solve(translate=False, verbosity=verbosity, all_sols=all_sols)
-##    return s
-##
-##def piece_of_mind_trans(verbosity=0, all_sols=True):
-##    """
-##    Eng->Spa
-##    Illustrates
-##    (1) within SL agreement (succeeds because 'her' agrees with 'gives')
-##    (2) SL-TL feature agreement
-##    (3) SL-TL word count mismatch (SL > TL)
-##    """
-##    eng, spa = kuaa.Language.load('eng', 'spa')
-##    s = kuaa.Sentence(raw='Mary gives them a piece of her mind',
-##                         language=eng, target=spa,
-##                         verbosity=verbosity)
-###    print("Translating {} to {}".format(s.raw, s.target))
-##    s.initialize(verbosity=verbosity)
-##    s.solve(translate=True, verbosity=verbosity, all_sols=all_sols)
-##    return s
-##
-##def kick_the_bucket(verbosity=0, all_sols=True):
-##    """
-##    Eng->Spa
-##    Illustrates
-##    (1) SL group ambiguity (search for solutions)
-##    (2) SL-TL feature agreement
-##    """
-##    eng, spa = kuaa.Language.load('eng', 'spa')
-##    s = kuaa.Sentence(raw='John kicked the bucket', language=eng, target=spa,
-##                         verbosity=verbosity)
-###    print("Translating {} to {}".format(s.raw, s.target))
-##    s.initialize(verbosity=verbosity)
-##    s.solve(verbosity=verbosity, all_sols=all_sols)
-##    return s
-##
-##
-##def get_ambig(language, write="../LingData/EsGn/ambig.txt"):
-##    ambig = {}
-##    groups = language.groups
-##    for head, grps in groups.items():
-##        for group in grps:
-##            if len(group.tokens) == 1:
-##                trans = group.trans
-##                if len(trans) > 1:
-##                    ambig[group.name] = [t.name for t, f in trans]
-##    if write:
-##        ambig = list(ambig.items())
-##        ambig.sort()
-##        with open(write, 'w', encoding='utf8') as file:
-##            for s, t in ambig:
-##                print("{} {}".format(s, ','.join(t)), file=file)
-##    else:
-##        return ambig
 
 
