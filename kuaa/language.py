@@ -295,10 +295,9 @@ class Language:
                 return True
         return False
 
-    @staticmethod
-    def is_name(string):
-        """Is this a special, capitalized token?"""
-        
+#    @staticmethod
+#    def is_name(string):
+#        """Is this a special, capitalized token?"""
 
     @staticmethod
     def is_class(string):
@@ -467,9 +466,9 @@ class Language:
     def quit(self, cache=True):
         """Do stuff when the program exits. Only cache analyses and generation if there is a current
         session/user."""
-        if cache and self.use in (ANALYSIS, SOURCE):
+        if cache and self.use in (ANALYSIS, SOURCE, TRAIN):
             self.write_cache()
-        if cache and self.use in (GENERATION, TARGET):
+        if cache and self.use in (GENERATION, TARGET, TRAIN):
             for pos in self.morphology.values():
                 pos.quit()
 
@@ -1414,6 +1413,10 @@ class Language:
                   clean=True,
                   verbosity=0):
         '''Analyze a single word, trying all existing POSs, both lexical and guesser FSTs.'''
+        # First make sure the analysis FSTs are loaded for this language
+        if self.use in (GENERATION, TARGET):
+            print("No se ha cargado el analizador para {}".format(self))
+            return
         # Before anything else, check to see if the word is in the list of words that
         # have failed to be analyzed
         if no_anal != None and word in no_anal:

@@ -546,8 +546,7 @@ class POS:
         except IOError:
             print('No such gen cache file as {}'.format(file))
 
-    def load_fst(self, generate=False, guess=False, segment=False,
-                 verbose=False):
+    def load_fst(self, generate=False, guess=False, segment=False, verbose=False):
         '''Load FST.'''
         fst = None
         if verbose:

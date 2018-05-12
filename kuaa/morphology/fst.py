@@ -1607,8 +1607,6 @@ class FST:
         empty_name = fst_name + '0'
         if empty:
             name = empty_name
-            if phon:
-                name = name + 'P'
         elif segment:
             name = fst_name + '+'
         else:
@@ -1623,8 +1621,7 @@ class FST:
             if verbose:
                 print('  Restoring FST', name, 'from FST file', explicit[0])
             return FST.restore_parse_from_files(explicit, name,
-                                                weighting=weighting,
-                                                seg_units=seg_units,
+                                                weighting=weighting, seg_units=seg_units,
                                                 create_weights=create_weights,
                                                 verbose=verbose)
 #           if verbose:
