@@ -110,3 +110,8 @@ kuãirũ:[n=0] || kuãirũ
 kóva:[] || kóva
 momaranduha:[n=0] || momaranduha
 kuatiahaipyre:[n=0] || kuatiahaipyre
+jejaposéva:[caso=pe,n=0,poses=[+ext,np=1,pp=1]] || ore_jejaposévape;ñande_jejaposévape
+jejaporã:[caso=pe,n=0,poses=[+ext,np=1,pp=1]] || ore_jejaporãme;ñane_jejaporãme
+jejaposéva:[caso=pe,n=0] || jejaposévape
+jejaporã:[caso=pe,n=0] || jejaporãme
+<hóga:[caso=pe,n=0] || ógape

@@ -177,3 +177,17 @@ mbojepota:[cat=a,ns=0,ps=2,tmp=ipv] || embojepota;ambojepotákuri;ambojepota;amb
 mbojepota:[cat=a,ns=0,ps=1,tmp=prt] || embojepota;ambojepotákuri;ambojepota;ambojepotaraka'e;ambojepota'akue
 muña:[cat=a,ns=0,ps=2,tmp=ipv] || emuña;amuñákuri;amuña;amuñaraka'e;amuña'akue
 muña:[cat=a,ns=0,ps=1,tmp=prt] || emuña;amuñákuri;amuña;amuñaraka'e;amuña'akue
+aguyje:[cat=che,no=0,ns=0,po=3,ps=1,tmp=prs] || cheaguyje
+mba'erechakuaa:[cat=a,no=0,ns=0,po=3,ps=1,tmp=prs] || amba'erechakuaa
+<hepyme'ẽ:[cat=a,no=0,ns=0,po=3,ps=1,tmp=prs] || ahepyme'ẽ
+aguyje:[cat=che,no=1,ns=0,po=3,ps=1,tmp=prs] || cheaguyje
+mba'erechakuaa:[cat=a,no=1,ns=0,po=3,ps=1,tmp=prs] || amba'erechakuaa
+<hepyme'ẽ:[cat=a,no=1,ns=0,po=3,ps=1,tmp=prs] || ahepyme'ẽ
+aguyje:[cat=che,ns=0,ps=1,tmp=prs] || cheaguyje
+mba'erechakuaa:[cat=a,ns=0,ps=1,tmp=prs] || amba'erechakuaa
+<hepyme'ẽ:[cat=a,ns=0,ps=1,tmp=prs] || ahepyme'ẽ
+ju:[cat=a,ns=1,ps=3,rel=sjoj,tmp=prt] || ouva'ekue
+ñopytyvõ:[cat=a,ns=1,ps=1,tmp=prs] || ñañopytyvõ;ñañopytyvõkuri;ñañopytyvõraka'e;ñañopytyvõ'akue;roñopytyvõ;roñopytyvõkuri;roñopytyvõraka'e;roñopytyvõ'akue
+ñopytyvõ:[cat=a,ns=1,ps=1,tmp=prt] || ñañopytyvõ;ñañopytyvõkuri;ñañopytyvõraka'e;ñañopytyvõ'akue;roñopytyvõ;roñopytyvõkuri;roñopytyvõraka'e;roñopytyvõ'akue
+ĝuahẽ:[cat=a,ns=1,ps=3,rel=sjoj,tmp=prt] || og̃uahẽva'ekue
+ĝuahẽ:[cat=a,ns=1,ps=3,tmp=prt] || og̃uahẽ;og̃uahẽkuri;og̃uahẽraka'e;og̃uahẽ'akue

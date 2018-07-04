@@ -35,6 +35,7 @@ class Learner:
         self.source = source
         self.target = target
         self.groups = source.groups
+        self.add_target_anal()
 
     def __repr__(self):
         return "L:{}->{}".format(self.source.abbrev, self.target.abbrev)
@@ -43,7 +44,7 @@ class Learner:
         print("Learning group for <{} -> {}>".format(sphrase, tphrase))
 
     def add_target_anal(self):
-        """Add the analyzer FSTs for the target language."""
+        """Add the analyzer FSTs for the target language (not normally loaded for translation.)"""
         if self.target.use != TRAIN:
             # Analyzer not yet loaded
             self.target.set_anal_cached()
@@ -57,7 +58,7 @@ class Phrase:
         self.language = language
         # A list of strings
         self.words = words
-        # None or a list of list of (root, feats) pairs (allowing for ambiguity)
+        # None or a list of lists of (root, feats) pairs (allowing for ambiguity)
         self.analyses = analyses or self.analyze()
 
     def __repr__(self):

@@ -1120,11 +1120,11 @@ class Sentence:
                 for cat_snode in cat_snodes:
                     cat_match = firsttrue(lambda c: c[1] == cat_snode, filtered1)
                     if not cat_match:
-                        print("  Group {} rejected; no match for cat snode {}".format(cat_group, cat_snode))
+#                        print("  Group {} rejected; no match for cat snode {}".format(cat_group, cat_snode))
                         rejected.append(cat_group)
                         break
-                    else:
-                        print("    Found match {} for cat snode {}".format(cat_match, cat_snode))
+#                    else:
+#                        print("    Found match {} for cat snode {}".format(cat_match, cat_snode))
         for (group, head_i, snodes) in filtered1:
             if group in rejected:
                 # This group was rejected because there was no match for its category token(s)
@@ -2104,10 +2104,10 @@ class Solution:
             if node_toktype == 2:
                 space_before = 0
 #            print("Node type for untranslated SolSeg: {}".format(node_toktype))
-            seg = SolSeg(self, indices, translation, stok_group, session=self.session, gname=gname,
-                         space_before=space_before, merger_groups=merger_groups, is_punc=is_punc,
+            seg = SolSeg(self, indices, translation, stok_group, session=self.session, gname=None,
+                         space_before=space_before, merger_groups=None, is_punc=is_punc,
                          is_paren=is_paren)
-            print("Segment (untranslated) {}->{}: {}={}".format(start, end, stok_group, seg.translation))
+            print("Segmento (no traducido) {}->{}: {}={}".format(start, end, stok_group, seg.translation))
             self.segments.append(seg)
             newsegs.append(seg)
             i0 += len(stok_group)
@@ -2173,7 +2173,7 @@ class Solution:
                     if pindices == hp_pindices:
 #                        print(" Found matching enclosing segment {}".format(hp))
                         hp.paren_seg = seg
-            print("Segment (translated) {}->{}: {}={}".format(start, end, src_tokens, seg.translation))
+            print("Segmento (traducido) {}->{}: {}={}".format(start, end, src_tokens, seg.translation))
             self.segments.append(seg)
             indices_covered.extend(raw_indices)
 #            print(" Indices covered: {}".format(indices_covered))
@@ -2194,7 +2194,7 @@ class Solution:
             while not found and i < len(self.segments):
                 segment = self.segments[i]
                 if segment.tokens == ptokens and segment.indices == pindices:
-#                    print(" Segment {} already created".format(segment))
+#                    print(" Segmento {} ya creado".format(segment))
                     found = True
                 i += 1
             if not found:

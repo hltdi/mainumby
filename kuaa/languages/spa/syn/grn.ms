@@ -16,7 +16,7 @@ acabar_de :: acabar_v[tm=prs] de [pos=v,tm=inf,asp=[+ramo]] ; 0=>2 p,n ; // 0:2 
 comenzar_a :: comenzar_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 1 ; 2-> [tm=prs,+fin]
 empezar_a :: empezar_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 1 ; 2-> [tm=prs,+fin]
 # seguir + ger
-seguir_ger :: seguir_v [pos=v,tm=ger] ; 0=>1 p,n,tm ; 1-> [+fin,grd=ve] ; // 0
+seguir_ger :: seguir_v [pos=v,tm=ger] ; 0=>1 p,n,tm ; 1-> [+fin]
 
 ## derivación 1
 volativo :: querer_v [pos=v,tm=inf,asp=[+vol]] ; 0=>1 p,n,tm,asp ; 1-> [+fin] ; // 0
@@ -37,9 +37,6 @@ obj/3sf :: la [pos=v,po=3,no=0] ; // 0
 obj/3pm :: los [pos=v,po=3,no=1] ; // 0
 obj/3pf :: las [pos=v,po=3,no=1] ; // 0
 obj/3pd :: les [pos=v,po=3,no=1] ; // 0
-# old versions that preserved and postposed the pronoun
-# obj/3sf :: la [pos=v,po=3,no=0] ; >< 0 1
-# obj/3sd :: le [pos=v,po=3,no=0] ; // 0 ; ++ 2 a, 3 él
 
 ## ambigüedad de 2, 3 persona
 # 3 pers sin ambigüedad
@@ -57,8 +54,6 @@ suj/3pf :: ellas [pos=v,p=3,n=1]
 # imperativo (hay otros casos?)
 neg_ipv :: ¡ no [pos=v,tm=sbp,+negipv] ; // 0 ; 2-> [tm=ipv,p=2] ; 1-> [+ipv]
 # que_neg_sbp :: que no [pos=v,tm=sbp,+neg] ; // 1
-# # imperativo (debe aplicarse antes de la regla más general)
-# neg_ipv :: no [pos=v,tm=sbp,+negipv] ; 1-> [tm=ipv] ; 0-> [+ipv] ; FAILIF que_neg_
 neg :: no [pos=v,+neg] ; // 0 ; FAILIF neg_ipv
 
 ## derivación 2
@@ -93,16 +88,6 @@ lo_que :: lo que [pos=v,rel=sjoj] ; // 0 1
 al_inf :: a el [pos=v,tm=inf,pp=vove] ; // 0 1 ; 2-> [tm=prs]
 # ambiguo, e.g., dije a mi vecino que vendrá
 # *rel_sj :: [pos=n] que [pos=v,rel=sjoj] ; // 1
-## all the following now handled in misc.grp or n.grp
-#a_donde_rel :: a donde [pos=v,rel=obl,pp=pe] ; // 0 1
-#por_donde_rel :: por donde [pos=v,rel=obl,pp=rupi] ; // 0 1
-# donde_rel :: [pos=n] donde [pos=v,rel=obl] ; // 1
-#al_que_rel :: [pos=n] a el que [pos=v,rel=obl] ; // 1 2 3
-#a_la_que_rel :: [pos=n] a la que [pos=v,rel=obl] ; //  1 2 3
-#a_los_que_rel :: [pos=n] a los que [pos=v,rel=obl] ; //  1 2 3
-#a_las_que_rel :: [pos=n] a las que [pos=v,rel=obl] ; //  1 2 3
-# otras preposiciones: en, con?, por?...
-#...
 
 ## artículos definitivos
 artdef/ms :: el[pos=det] [pos=n] ; // 0
@@ -115,23 +100,6 @@ artdef/mp :: los[pos=det] [pos=n] ; // 0
 artdef/mp_adj :: los[pos=det] [pos=a,n=1] ; // 0
 artdef/fp :: las[pos=det] [pos=n] ; // 0
 artdef/fp_adj :: las[pos=det] [pos=a,n=1] ; // 0
-## antes adjetivos sin substantivo
-#artdef/adj_fs :: la [pos=a,n=0,rel=sjoj] ![pos=n] ; // 0
-#artdef/adj_ms :: el [pos=a,n=0,rel=sjoj] ![pos=n] ; // 0
-#artdef/adj_fp :: las [pos=a,n=1,rel=sjoj] ![pos=n] ; // 0
-#artdef/adj_mp :: los [pos=a,n=1,rel=sjoj] ![pos=n] ; // 0 ; 1-> [pos=v]
-## con adjetivo o número entre el artículo y el sustantivo
-#artdef/ms_adj :: el [pos=a,n=0] [pos=n,n=0] ; // 0:2
-## ambiguo??
-#artdef/fs_adj :: la [pos=a,n=0] [pos=n,n=0] ; // 0:2
-#artdef/mp_adj :: los [pos=a,n=1] [pos=n,n=1] ; // 0:2
-#artdef/fp_adj :: las [pos=a,n=1] [pos=n,n=1] ; // 0:2
-#artdef/ms :: el [pos=n,n=0] ; // 0
-#artdef/fs :: la [pos=n,n=0] ; // 0
-#artdef/mp :: los [pos=n,n=1] ; // 0
-#artdef/fp :: las [pos=n,n=1] ; // 0
-## con dos adjetivos antes del sustantivo
-#...
 
 ## preguntas
 pregunta :: ¿ [pos=v,+inter] ; // 0

@@ -10241,19 +10241,15 @@
 ->grn ñemoñe'ẽhára_n ; 0==0 n:n,poses:poses
 ** asfalto_n $pp $art que $v[-ipv] ; ^ asfalto_n 0 ; (4,-3)
 ->grn itary_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn tape_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ita'y_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** asfalto_n $pp cual_n $v[-ipv] ; ^ asfalto_n 0 ; (3,-3)
 ->grn itary_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn tape_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ita'y_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** asfalto_n que $v[-ipv] ; ^ asfalto_n 0 ; (2,-3)
 ->grn itary_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn tape_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ita'y_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** asfalto_n ; ^ asfalto_n 0 ; #1
 ->grn itary_n ; 0==0 n:n,poses:poses
-->grn tape_n ape ; 0==0 n:n,poses:poses
 ->grn ita'y_n ; 0==0 n:n,poses:poses
 ** asfixia_n $pp $art que $v[-ipv] ; ^ asfixia_n 0 ; (4,-3)
 ->grn pytupa_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
@@ -13341,8 +13337,6 @@
 ->grn jeguata_n ; 0==0 n:n,poses:poses
 ** camino_n $pp $art que $v[-ipv] ; ^ camino_n 0 ; (4,-3)
 ->grn <hape_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** camino_n de rodeos y vericuetos ; ^ camino_n 0
-->grn tape_n kanduha ; 0==0 n:n,poses:poses
 ** camino_n $pp cual_n $v[-ipv] ; ^ camino_n 0 ; (3,-3)
 ->grn <hape_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** camino_n de la virtud ; ^ camino_n 0
@@ -19894,14 +19888,8 @@
 ->grn ajúra_n karẽ ; 0==0 n:n,poses:poses
 ** desviación_n ; ^ desviación_n 0
 ->grn ñemombia_n ; 0==0 n:n,poses:poses
-** desvío_n $pp $art que $v[-ipv] ; ^ desvío_n 0 ; (4,-3)
-->grn tape_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** desvío_n $pp cual_n $v[-ipv] ; ^ desvío_n 0 ; (3,-3)
-->grn tape_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** desvío_n que $v[-ipv] ; ^ desvío_n 0 ; (2,-3)
-->grn tape_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** desvío_n ; ^ desvío_n 0 ; #1
-->grn tape_n hakãmbýva ; 0==0 n:n,poses:poses
+->grn <hape_n hakãmbýva ; 0==0 n:n,poses:poses
 ** detención_n $pp $art que $v[-ipv] ; ^ detención_n 0 ; (4,-3)
 ->grn ñemombyta_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** detención_n $pp cual_n $v[-ipv] ; ^ detención_n 0 ; (3,-3)
@@ -43146,7 +43134,7 @@
 ** señal_n $pp cual_n $v[-ipv] ; ^ señal_n 0 ; (3,-3)
 ->grn <hechaukaha_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** señal_n[n=1] de tránsito ; ^ señal_n 0
-->grn tape_n jepuru chaukaha ; 0==0 n:n,poses:poses
+->grn <hape_n jepuru chaukaha ; 0==0 n:n,poses:poses
 ** señal_n que $v[-ipv] ; ^ señal_n 0 ; (2,-3)
 ->grn <hechaukaha_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** señal_n ; ^ señal_n 0

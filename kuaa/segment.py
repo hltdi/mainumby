@@ -305,7 +305,8 @@ class SolSeg:
 #                choice_list.append(tchoice)
             transhtml += '</tr>'
         if self.translation and self.translation[0]:
-            print("Translation {}, clean trans {}".format(self.translation, self.cleaned_trans))
+            if verbosity:
+                print("Translation {}, clean trans {}".format(self.translation, self.cleaned_trans))
             if self.cleaned_trans[0][0] != tokens:
                 # Add other translation button
                 # Button to translate as source language
@@ -1017,6 +1018,7 @@ class TreeTrans:
         index of concrete gnode within its group, name of group for concrete node."""
         groups = []
         for index, gnodes in enumerate([s[0] for s in self.sol_gnodes_feats]):
+#            print("Getting merger groups for {}: ({}, {})".format(self, index, gnodes))
             # A single gnode means no merger
             if len(gnodes) == 1:
                 continue

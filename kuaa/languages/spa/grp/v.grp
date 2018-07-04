@@ -15421,6 +15421,8 @@
 ** esparcir_v[-r,+fin] ; ^ esparcir_v 0 ; #69
 ->grn mosũ_v[cat=a]
 ->grn myasãi_v[cat=a] ; #24 ; ##3
+** esperar_v[-r] a $n en el camino ; ^ esperar_v 0
+->grn <hapera'arõ_v[cat=a] $n[caso=pe] ; || 0, -1, 1, -1, -1, -1
 ** esperar_v[-r,po=3,no=0] en el camino ; ^ esperar_v 0
 ->grn <hapera'arõ_v[cat=a] (chupe)
 ** esperar_v[-r,po=3,no=1] en el camino ; ^ esperar_v 0

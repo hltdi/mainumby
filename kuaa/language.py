@@ -1828,7 +1828,6 @@ class Language:
             if verbosity:
                 print("  Adding sublist {} to {}".format(sublist, key))
             dct[key] = ls
-                        
 #            dct = yaml.load(file)
         return Language.from_dict(dct, use=use, directory=directory)
 

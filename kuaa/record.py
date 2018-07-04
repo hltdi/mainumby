@@ -7,7 +7,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyright (C) 2016, 2017, 2018 PLoGS <gasser@indiana.edu>
+#   Copyleft 2016, 2017, 2018 PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -114,12 +114,32 @@ class Session:
     def str2time(string):
         return datetime.datetime.strptime(string, TIME_FORMAT)
 
+    @staticmethod
+    def shortstr2time(string):
+        return datetime.datetime.strptime(string, SHORT_TIME_FORMAT)
+
+    @staticmethod
+    def get_sessions(sessions, time_feat_dict):
+        """Get all session dicts in session dict list matching time features."""
+        filt = Session.filter_time_func(time_feat_dict)
+        return [s for s in sessions if filt(Session.shortstr2time(s['start']))]
+
+    @staticmethod
+    def filter_feature(feature, typ, value):
+        """Is feature of type typ either unconstraining or matching value?"""
+        return value is None or feature.__getattribute__(typ) == value
+
+    @staticmethod
+    def filter_time_func(time_feat_dict):
+        """Boolean function taking a time: whether it matches the constraints in time_feat_dict."""
+        return lambda feature: all([Session.filter_feature(feature, typ, time_feat_dict.get(typ, None)) for typ in ['year', 'month', 'day', 'hour', 'minute']])
+
     def make_id(self):
         self.id = "{}::{}".format(self.user.username, Session.time2shortstr(self.start))
 
-    def get_path(self):
-        sessionfilename = self.user.username + '.sess'
-        return os.path.join(SESSIONS_DIR, sessionfilename)
+#    def get_path(self):
+#        sessionfilename = self.user.username + '.sess'
+#        return os.path.join(SESSIONS_DIR, sessionfilename)
 
     def length(self):
         """Length of the session as a time delta object."""
@@ -199,7 +219,8 @@ class Session:
 
     def save(self):
         """Write the session feedback to the user's file."""
-        with open(self.get_path(), 'a', encoding='utf8') as file:
+        path = self.user.get_session_path()
+        with open(path, 'a', encoding='utf8') as file:
             self.write(file=file)
 
     def write(self, file=sys.stdout):
@@ -352,7 +373,15 @@ class SegRecord:
         self.translation = solseg.translation
         self.tokens = solseg.token_str
         self.gname = solseg.gname
-        self.merger_gnames = solseg.merger_gnames
+        mergers = solseg.merger_gnames
+        if mergers:
+            m = ''
+            for gi, ci, name in mergers:
+                m += "{}:{}:{}".format(name, gi, ci)
+            self.mergers = m
+        else:
+            self.mergers = None
+        print("Creating SegRecord for {} with gname {} and merger gnames {}".format(solseg, self.gname, self.mergers))
         # List of tg groups, one for each choice in GUI (this could be taken from SolSeg)
         self.choice_tgroups = None
         # tg group for selected translation
@@ -380,7 +409,10 @@ class SegRecord:
         if self.seltrans:
             d = {}
             d['src'] = self.tokens
-            d['gname'] = self.gname
+            if self.gname:
+                d['gname'] = self.gname
+                if self.mergers:
+                    d['mrg'] = self.mergers
             d['resp'] = self.response_code
             d['trg'] = self.seltrans
             if self.tgroups:
@@ -388,23 +420,6 @@ class SegRecord:
                 d['tgrp'] = self.tgroups
             return d
         
-#    def record(self, choices=None, translation=None):
-#        print("{} recording translation {}, choices {}".format(self, translation, choices))
-#        if choices:
-#            self.feedback = Feedback(choices=choices)
-#            print("{}".format(self.feedback))
-#        elif translation:
-#            self.feedback = Feedback(translation=translation)
-#            print("{}".format(self.feedback))
-#        else:
-#            print("Something wrong: NO FEEDBACK TO RECORD")
-
-#    def write(self, file=sys.stdout):
-#        print("{}".format(self), file=file)
-#        print("{}".format(self.gname), file=file)
-#        print("{}".format(self.merger_gnames), file=file)
-#        print("{}".format(self.feedback), file=file)
-
 #class Feedback:
 #    """Feedback from a user about a segment or sentence and its translation."""
 #
@@ -548,20 +563,20 @@ class User:
     def get_users_path():
         return os.path.join(SESSIONS_DIR, USERS_FILE)
 
+    def get_session_path(self):
+        name = self.username + '.sess'
+        return os.path.join(SESSIONS_DIR, name)
+
+    def read_sessions(self):
+        """Read in the sessions file for this user, returning a list of session dicts."""
+        path = self.get_session_path()
+        # catch?
+        return yaml.load(open(path, encoding="utf8"))
+
     @staticmethod
     def get_path(username):
         # File where the user's data is stored
         filename = "{}.usr".format(username)
-        return os.path.join(SESSIONS_DIR, filename)
-
-#    def get_path(self):
-#        # File where the user's data is stored
-#        filename = "{}.usr".format(self.username)
-#        return os.path.join(SESSIONS_DIR, filename)
-
-    def get_sessions_path():
-        # File where the user's sessions are stored
-        filename = "{}.sess".format(self.username)
         return os.path.join(SESSIONS_DIR, filename)
 
     @staticmethod

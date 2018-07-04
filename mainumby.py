@@ -31,7 +31,7 @@
 # -- Changed to Ñe'ẽasa, after incorporating morphological analysis/generation
 # 2015.06.12
 # -- Started Web app
-    # 2015.07.04
+# 2015.07.04
 # -- Changed name to Mbojereha
 # 2015.12.07
 # -- Changed name of repository and folder to Mainumby
@@ -68,6 +68,12 @@ def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
                 print("{}: {}".format(segment, segment.cleaned_trans))
             return solution
     return s
+
+## Aprendizaje de nuevos grupos
+
+def aprender(source, target):
+    l = kuaa.Learner(source, target)
+    return l
 
 def doc(text, proc=True):
     e, g = cargar_eg()
