@@ -15553,6 +15553,7 @@
 ->grn mombyta_v[cat=a]
 ** estar_v[-r,+fin] ; ^ estar_v 0
 ->grn ime_v[cat=a]
+->grn iko_v[cat=a]
 ** estimar_v[-r,+fin] a $n ; ^ estimar_v 0
 ->grn rovia_v[subcat=gue] $n[caso=pe] ; || 0, -1, 1
 ->grn <hayhu_v[cat=a] $n[caso=pe] ; || 0, -1, 1

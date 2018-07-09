@@ -59,6 +59,8 @@
 # -- Fixed various stuff needed to make spaCy tagger work for English.
 # 2017.05.07
 # -- Added possibility of phrases to be joined during sentence tokenization (about 500 for Spanish).
+# 2018.07.09
+# -- Added list of "exceptions" that can override the POS tagger if the lexicon disagrees with it.
 
 from .entry import *
 from .utils import firsttrue
@@ -256,6 +258,9 @@ class Language:
         self.segs = {}
         self.rev_segs = {}
         self.read_segs()
+        # Lexical exceptions
+        self.exceptions = []
+        self.load_exceptions()
         # Cached entries read in when language is loaded if language will be used for analysis
         if use in (ANALYSIS, SOURCE, TRAIN):
             self.set_anal_cached()
@@ -766,6 +771,19 @@ class Language:
             del dct[seg]
         singletons.sort()
         return [singletons, dct]
+
+    def load_exceptions(self):
+        path = os.path.join(self.get_lex_dir(), "excep.lex")
+        if not os.path.exists(path):
+#            print("No existe archivo de excepciones para {}".format(self.name))
+            return
+#        print("Cargando excepciones lexicales")
+        with open(path, encoding='utf8') as exc:
+            for line in exc:
+                if not line or '#' in line:
+                    continue
+                word = line.strip()
+                self.exceptions.append(word)
 
     def load_morpho_data(self):
         """Load morphological data from .mrf file."""
@@ -1942,8 +1960,6 @@ class Language:
         """2017.5.19: features may now be an FSSet; should probably be the only option."""
         # In Amharic features may override the POS provided (needed for verbal nouns), but this doesn't apply
         # to Guarani, which may have posmorph v and feature pos a!
-#        featpos = features.get('pos')
-#        pos = featpos or pos
         if verbosity:
             print("Generating {}:{} with POS {}".format(root, features.__repr__(), pos))
         if not pos:

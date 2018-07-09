@@ -815,6 +815,8 @@
 ### A
 ** a $num $n ; ^ a 0
 ->grn $num $n[caso=pe] ; || -1, 0, 1
+** a $a $n ; ^ a 0
+->grn $a $n[caso=pe] ; || -1, 0, 1
 ** a $n que $v ; ^ a 0
 ->grn $n $v[pp=pe,rel=sjoj] ; || -1, 0, -1, 1 ; 1==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** a $n donde $v ; ^ a 0
@@ -880,8 +882,8 @@
 ->grn hesehápe
 ** por eso ; ^ por 0
 ->grn ajeve
+->grn upévare
 ** por esto ; ^ por 0
-->grn kóagui
 ->grn kóvagui
 ** por lo cual ; ^ por 0
 ->grn ajeve
@@ -1199,6 +1201,8 @@
 ->grn $v[tmp=prs,pp=ramo] jepe ;
 ** a pesar de ello ; ^ pesar 1
 ->grn jepevénte
+** a pesar de eso ; ^ pesar 1
+->grn upevére
 ** a~pesar~de $n ; ^ a~pesar~de 0
 ->grn $n jepe ; || 1, 0
 ** a~pesar~de~que $v ; ^ a~pesar~de~que 0
@@ -2317,6 +2321,8 @@
 ->grn mandi
 ** en el ínterin ; ^ ínterin 2
 ->grn upeaja
+** bien
+->grn porã
 ## PREPOSICIONES CON NOMBRES
 ** $n de %C ; ^ de 1
 ->grn %C $n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n

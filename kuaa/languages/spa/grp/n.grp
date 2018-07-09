@@ -20620,17 +20620,7 @@
 ->grn <hóga_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** domicilio_n ; ^ domicilio_n 0
 ->grn <hóga_n ; 0==0 n:n,poses:poses
-** domingo_n $pp $art que $v[-ipv] ; ^ domingo_n 0 ; (4,-3)
-->grn arete_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn arateĩ_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** domingo_n $pp cual_n $v[-ipv] ; ^ domingo_n 0 ; (3,-3)
-->grn arete_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn arateĩ_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** domingo_n que $v[-ipv] ; ^ domingo_n 0 ; (2,-3)
-->grn arete_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn arateĩ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** domingo_n ; ^ domingo_n 0
-->grn arete_n ; 0==0 n:n,poses:poses ; #9
 ->grn arateĩ_n ; 0==0 n:n,poses:poses ; #23
 ** doméstico_n $pp $art que $v[-ipv] ; ^ doméstico_n 0 ; (4,-3)
 ->grn <hogaygua_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
@@ -28899,12 +28889,6 @@
 ->grn ñembosarái_n ; 0==0 n:n,poses:poses ; #9
 ** juerga_n de bebedores ; ^ juerga_n 0
 ->grn ka'ujere_n ; 0==0 n:n,poses:poses
-** jueves_n $pp $art que $v[-ipv] ; ^ jueves_n 0 ; (4,-3)
-->grn arapo_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** jueves_n $pp cual_n $v[-ipv] ; ^ jueves_n 0 ; (3,-3)
-->grn arapo_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** jueves_n que $v[-ipv] ; ^ jueves_n 0 ; (2,-3)
-->grn arapo_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** jueves_n ; ^ jueves_n 0
 ->grn arapo_n ; 0==0 n:n,poses:poses
 ** juez_n $pp $art que $v[-ipv] ; ^ juez_n 0 ; (4,-3)
@@ -30480,12 +30464,6 @@
 ->grn ñuaũ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** lunar_n ; ^ lunar_n 0
 ->grn ñuaũ_n ; 0==0 n:n,poses:poses
-** lunes_n $pp $art que $v[-ipv] ; ^ lunes_n 0 ; (4,-3)
-->grn arakõi_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** lunes_n $pp cual_n $v[-ipv] ; ^ lunes_n 0 ; (3,-3)
-->grn arakõi_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** lunes_n que $v[-ipv] ; ^ lunes_n 0 ; (2,-3)
-->grn arakõi_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** lunes_n indeseado ; ^ lunes_n 0
 ->grn lunero_n ; 0==0 n:n,poses:poses
 ** lunes_n ; ^ lunes_n 0
@@ -31576,12 +31554,6 @@
 ->grn tukumbo_n ; 0==0 n:n,poses:poses
 ** marrón_n anaranjado ; ^ marrón_n 0
 ->grn yvysa'y_n ; 0==0 n:n,poses:poses
-** martes_n $pp $art que $v[-ipv] ; ^ martes_n 0 ; (4,-3)
-->grn araapy_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** martes_n $pp cual_n $v[-ipv] ; ^ martes_n 0 ; (3,-3)
-->grn araapy_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** martes_n que $v[-ipv] ; ^ martes_n 0 ; (2,-3)
-->grn araapy_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** martes_n ; ^ martes_n 0
 ->grn araapy_n ; 0==0 n:n,poses:poses
 ** martillo_n $pp $art que $v[-ipv] ; ^ martillo_n 0 ; (4,-3)
@@ -32708,12 +32680,6 @@
 ->grn mombe'u_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** mito_n ; ^ mito_n 0
 ->grn mombe'u_n gua'u ; 0==0 n:n,poses:poses
-** miércoles_n $pp $art que $v[-ipv] ; ^ miércoles_n 0 ; (4,-3)
-->grn ararundy_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** miércoles_n $pp cual_n $v[-ipv] ; ^ miércoles_n 0 ; (3,-3)
-->grn ararundy_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** miércoles_n que $v[-ipv] ; ^ miércoles_n 0 ; (2,-3)
-->grn ararundy_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** miércoles_n ; ^ miércoles_n 0
 ->grn ararundy_n ; 0==0 n:n,poses:poses
 ** mochila_n $pp $art que $v[-ipv] ; ^ mochila_n 0 ; (4,-3)
@@ -44302,12 +44268,6 @@
 ->grn ñembovyvy_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** sutura_n ; ^ sutura_n 0
 ->grn ñembovyvy_n ; 0==0 n:n,poses:poses
-** sábado_n $pp $art que $v[-ipv] ; ^ sábado_n 0 ; (4,-3)
-->grn arapokõi_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** sábado_n $pp cual_n $v[-ipv] ; ^ sábado_n 0 ; (3,-3)
-->grn arapokõi_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** sábado_n que $v[-ipv] ; ^ sábado_n 0 ; (2,-3)
-->grn arapokõi_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** sábado_n ; ^ sábado_n 0
 ->grn arapokõi_n ; 0==0 n:n,poses:poses
 ** sábana_n $pp $art que $v[-ipv] ; ^ sábana_n 0 ; (4,-3)
@@ -47818,12 +47778,6 @@
 ** vientre_n ; ^ vientre_n 0 ; #55
 ->grn py'a_n ; 0==0 n:n,poses:poses ; #86 ; ##5
 ->grn <hye_n ; 0==0 n:n,poses:poses ; #125 ; ##28
-** viernes_n $pp $art que $v[-ipv] ; ^ viernes_n 0 ; (4,-3)
-->grn arapoteĩ_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** viernes_n $pp cual_n $v[-ipv] ; ^ viernes_n 0 ; (3,-3)
-->grn arapoteĩ_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** viernes_n que $v[-ipv] ; ^ viernes_n 0 ; (2,-3)
-->grn arapoteĩ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** viernes_n ; ^ viernes_n 0
 ->grn arapoteĩ_n ; 0==0 n:n,poses:poses
 ** vigilante_n $pp $art que $v[-ipv] ; ^ vigilante_n 0 ; (4,-3)

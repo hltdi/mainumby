@@ -147,6 +147,8 @@
 #    Language.anal_word() in Sentence.
 # 2017.04.24
 # -- Got sentence initialization and solution to work with external tagger.
+# 2018.07.09
+# -- Roots in language exceptions.lex file cause morphological analysis to take precedence over POS tagger (cuarto_n, cuarto_a).
 
 import copy, re, random, itertools
 from .ui import *
@@ -906,14 +908,21 @@ class Sentence:
                             print("  tagger and analyzer agree on {} for {}".format(tag, anal))
                         results1.append(anal)
                     else:
-                        if verbosity:
-                            print("  tagger and analyzer disagree on {}/{} for {}".format(tag, anal_pos, anal))
+#                        if verbosity:
+                        print("  tagger and analyzer disagree on {}/{} for {}".format(tag, anal_pos, anal))
                         if len(anals) == 1:
-                            if verbosity:
-                                print("   only 1 analysis, so accepting it")
+#                            if verbosity:
+                            print("   only 1 analysis, so accepting it")
                             results1.append(anal)
-                        elif verbosity:
-                            print("    rejecting {}".format(anal))
+                        else:
+                            root = anal.get('root')
+                            if root in self.language.exceptions:
+#                                if verbosity:
+                                print("  root {} is in exceptions, so using morphology".format(root))
+                                results1.append(anal)
+                            else:
+#                                if verbosity:
+                                print("    rejecting {}".format(anal))
                 elif tag:
                     if verbosity:
                         print("  no features for {}, using tagger POS {}".format(word, tag))
@@ -2023,43 +2032,6 @@ class Solution:
                 self.ttrans_outputs.append([raw_indices, tt.output_strings, tt.ginst.group.name, tt.get_merger_groups(), trggroups])
                 last_indices = raw_indices
         return self.ttrans_outputs
-
-#    def get_ttrans_alignment(self):
-#        """Return a list of (snode_indices, snode_words, snode_root, translation_strings, translation roots) for the solution's
-#        tree translations."""
-#        def get_trans_root(translations):
-#            ttt = set()
-#            for trans1 in translations:
-#                for trans2 in trans1[1]:
-#                    troot = trans2[1]
-#                    if '$' not in troot:
-#                        ttt.add(troot)
-#            return ttt
-#        ttrans_align = []
-#        last_indices = [-1]
-#        tokens = self.sentence.tokens
-#        for tt in self.treetranss:
-#            if not tt.output_strings:
-#                continue
-#            indices = tt.snode_indices
-#            raw_indices = []
-#            stokens = []
-#            ginst = tt.ginst
-#            group = ginst.group
-#            translations = get_trans_root(ginst.translations)
-#            subtt = tt.subTTs
-#            if subtt:
-#                subtt = [get_trans_root(st.ginst.translations) for st in subtt]
-#            merger = tt.get_merger_roots()
-#            for index in indices:
-#                node = self.sentence.nodes[index]
-#                raw1 = node.raw_indices
-#                raw_indices.extend(raw1)
-#                stokens.extend([tokens[i] for i in raw1])
-#            raw_indices.sort()
-#            ttrans_align.append([raw_indices, stokens, group.head, tt.output_strings, subtt, translations])
-#            last_indices = raw_indices
-#        return ttrans_align
 
     def get_untrans_segs(self, src_tokens, end_index, gname=None, merger_groups=None, indices_covered=None,
                          is_paren=False):

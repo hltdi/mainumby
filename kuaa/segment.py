@@ -1470,6 +1470,7 @@ class TreeTrans:
                 self.ordered_tgroups.append(group_pos)
                 # just the form
                 output = [n[0] for n in node_pos]
+#                print(" Output {}, node position {}".format(output, node_pos))
                 self.outputs.append(output)
                 self.output_strings.append(TreeTrans.output_string(output))
                 if display:
