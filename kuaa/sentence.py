@@ -1096,7 +1096,7 @@ class Sentence:
             # LATER HAVE A BETTER WAY OF CHOOSING A MATCH
             if verbosity or group.debug:
                 print("Checking candidate {} with head {} and key {}".format(group, head_i, key))
-            matched_key = (head_i, key, len(group.tokens))
+            matched_key = (head_i, key, len(group.tokens), group.get_nfeatures)
             if matched_key in matched_keys:
                 # Reject this match because there's already a comparable one
                 if verbosity or group.debug:
@@ -1124,6 +1124,7 @@ class Sentence:
                 cat_groups.append((group, cat_snodes))
             # All candidate groups
             filtered1.append((group, head_i, snodes))
+#        print("Filtered candidates: {}".format(filtered1))
         if cat_groups:
             for cat_group, cat_snodes in cat_groups:
                 for cat_snode in cat_snodes:
@@ -1486,8 +1487,8 @@ class Sentence:
         """
         score = 0.0
         if par_val and var_value:
-            if verbosity:
-                print("Evaluating dstore {} from parent {} and var/val {}".format(dstore, par_val, var_value))
+#            if verbosity:
+            print("Evaluating dstore {} from parent {} and var/val {}".format(dstore, par_val, var_value))
             # Don't calculate the whole score; just update the parent's score on the basis of the variable and value
             # (this is done for the ...a branch in distribution).
             score = par_val
@@ -1507,16 +1508,16 @@ class Sentence:
             else:
                 print("Something wrong: state eval variable {} is not of an acceptable type".format(variable))
             score = round(score, 4)
-            if verbosity:
-                print("  Score: {}".format(score))
+#            if verbosity:
+            print("  Score: {}".format(score))
             return score
         # Otherwise calculate the whole value, based on three types of variables
         # Essential undetermined variables
         undet = dstore.ess_undet
         gnodes = 0
         nnodes = len(self.nodes)
-        if verbosity:
-            print("Evaluating dstore {}; undet: {}, var/value {}, parent val {}".format(dstore, undet, var_value, par_val))
+#        if verbosity:
+        print("Evaluating dstore {}; undet: {}, var/value {}, parent val {}".format(dstore, undet, var_value, par_val))
         ## $groups
         # lower bound of $groups variable for sentence
         gl = self.variables['groups'].get_lower(dstore)
@@ -1536,8 +1537,8 @@ class Sentence:
         # Tie breaker
         score += random.random() / 100.0
         score = round(score, 4)
-        if verbosity:
-            print("  Score: {}".format(score))
+#        if verbosity:
+        print("  Score: {}".format(score))
         return score
 
     @staticmethod
@@ -1605,11 +1606,13 @@ class Sentence:
 
     def get_group_varval(self, undecvars, dstore):
         """Select a value for the $groups variable."""
+#        print("Getting group var value for {} / {}".format(undecvars, dstore))
         groups = self.variables['groups']
         gundec = groups.get_undecided(dstore)
         if not gundec or not self.group_conflicts:
             return
         conflicts = []
+        # index of group and number of nodes
         biggest = (0, 0)
         for conflict in self.group_conflicts:
             # A list of conflicting group indices that are between
@@ -1619,13 +1622,13 @@ class Sentence:
             if len(conflict1) > 1:
                 conflicts.append(conflict1)
         if conflicts:
-            for conflict1 in conflicts[0]:
-                # For the first conflict, find the group with the most nodes
-                # (Later rank the conflicts?)
-                group = self.groups[conflict1]
-                gn = group.ngnodes
-                if gn > biggest[1]:
-                    biggest = (conflict1, gn)
+            for conflict in conflicts:
+                for conflict1 in conflict:
+                    group = self.groups[conflict1]
+                    # 2018.7.10: Fixed this so it favors concrete over abstact tokens (nodes)
+                    gn = group.ncgnodes + group.nanodes / 2.0
+                    if gn > biggest[1]:
+                        biggest = (conflict1, gn)
             val = {biggest[0]}
             # Return the $groups variable, the promising value, and
             # the remaining uncertain values with the promising value removed

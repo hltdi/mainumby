@@ -220,6 +220,9 @@
 ->grn mboypýri
 #### ADVERBIOS DE TIEMPO
 # con por
+** hace tiempo ; ^ tiempo_n 1
+->grn are
+->grn yma
 ** por mucho tiempo ; ^ tiempo 2
 ->grn heta
 # con hace

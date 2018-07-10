@@ -391,6 +391,12 @@ class Group(Entry):
         """Return a list of gnode positions for categories."""
         return [index for index, token in enumerate(self.tokens) if Entry.is_cat(token)]
 
+    def get_nfeatures(self):
+        """Sum of the features for all group tokens."""
+        if not self.features:
+            return 0
+        return sum([(len(fs) if fs else 0) for fs in self.features])
+
     # Serialization
 
     def to_dict(self):

@@ -45283,12 +45283,6 @@
 ->grn arasakã_n ; 0==0 n:n,poses:poses
 ** tiempo_n calamitoso ; ^ tiempo_n 0
 ->grn aramaravo_n ; 0==0 n:n,poses:poses
-** a tiempo ; ^ tiempo_n 1
-->grn araitépe
-->grn ha'etépe
-** hace tiempo ; ^ tiempo_n 1
-->grn are
-->grn yma
 ** tiempo atrás ; ^ tiempo_n 0
 ->grn yma
 ** tiempo_n ; ^ tiempo_n 0

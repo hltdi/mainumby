@@ -1648,17 +1648,12 @@ class Language:
                         group_line = group_trans[n].strip()
                     # A string starting with tokens and with other attributes separated by ;
                     source_group = group_line
-#                    group_trans = group_spec.split(TRANS_START)
-#                    source_group = group_trans[0].strip()
                     # Not sure whether head should be used to speed up reading group from string?
-#                    head, source_group = source_group.split(HEAD_SEP)
-#                    source_group = source_group.strip()
                     source_groups.append(source_group)
                     translations = []
                     trans_strings = []
                     n += 1
                     if target:
-#                        for t in group_trans[1:]:
                         for t in group_trans[n:]:
                             # Skip comment lines
                             if len(t) > 0 and t[0] == '#':
