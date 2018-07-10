@@ -1342,13 +1342,9 @@ traducí || traducir:[+fin,+ipv,n=0,p=2,pos=v,tm=ipv]
 ! || !:
 introducir || introducir:[-fin,pos=v,tm=inf]
 escribirte || escribir:[-fin,no=0,po=2,pos=v,-r,tm=inf]
-ventanta || ventanta:
-reparimos || reparimos:
 seguí || seguir:[+fin,n=0,p=1,pos=v,tm=prt];[+fin,+ipv,n=0,p=2,pos=v,tm=ipv]
 leyendo || leyendo:
 periódico || periódico:[g=m,n=0,pos=n]
-agradezco || agradecer:[+fin,n=0,p=1,pos=v,tm=prs]
-interés || interés:[g=m,n=0,pos=n]
 agradezco || agradecer:[+fin,n=0,p=1,pos=v,tm=prs]
 interés || interés:[g=m,n=0,pos=n]
 colaboramos || colaborar:[+fin,n=1,p=1,pos=v,tm=prs];[+fin,n=1,p=1,pos=v,tm=prt]

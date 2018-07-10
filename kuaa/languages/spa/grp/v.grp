@@ -628,19 +628,15 @@
 ** agradecer_v[-r,+fin] a $n ; ^ agradecer_v 0
 ->grn aguyje_v[cat=che] $n[caso=pe] ; || 0, -1, 1
 ->grn mba'erechakuaa_v[cat=a] $n[caso=pe] ; || 0, -1, 1
-->grn <hepyme'ẽ_v[cat=a] $n[caso=pe] ; || 0, -1, 1
 ** agradecer_v[-r,po=3,no=0] ; ^ agradecer_v 0
 ->grn aguyje_v[cat=che] (chupe)
 ->grn mba'erechakuaa_v[cat=a] (chupe)
-->grn <hepyme'ẽ_v[cat=a] (chupe)
 ** agradecer_v[-r,po=3,no=1] ; ^ agradecer_v 0
 ->grn aguyje_v[cat=che] (chupekuéra)
 ->grn mba'erechakuaa_v[cat=a] (chupekuéra)
-->grn <hepyme'ẽ_v[cat=a] (chupekuéra)
 ** agradecer_v[-r,+fin] ; ^ agradecer_v 0 ; #2
 ->grn aguyje_v[cat=che]
 ->grn mba'erechakuaa_v[cat=a] ; #1
-->grn <hepyme'ẽ_v[cat=a] ; #50
 ** agrandar_v[-r,+fin] el fuego ; ^ agrandar_v 0
 ->grn mbojepota_v[cat=a]
 ** agrandar_v[-r,+fin] a $n ; ^ agrandar_v 0
@@ -6076,7 +6072,6 @@
 ** pagar_v[-r,po=3,no=1] ; ^ pagar_v 0
 ->grn <hepyme'ẽ_v[cat=a] (chupekuéra)
 ** pagar_v[+r,+fin] ; ^ pagar_v 0 ; #1
-->grn ñembohekovia_v[cat=a]
 ->grn ñemyengovia_v[cat=a] ; #1
 ** pagar_v[-r,+fin] ; ^ pagar_v 0
 ->grn <hepyme'ẽ_v[cat=a]
@@ -19677,7 +19672,6 @@
 ** recompensar_v[-r,po=3,no=1] ; ^ recompensar_v 0
 ->grn <hepyme'ẽ_v[cat=a] (chupekuéra)
 ** recompensar_v[+r,+fin] ; ^ recompensar_v 0
-->grn ñembohekovia_v[cat=a]
 ->grn ñemyengovia_v[cat=a] ; #1
 ** recompensar_v[-r,+fin] ; ^ recompensar_v 0
 ->grn <hepyme'ẽ_v[cat=a]
@@ -20261,7 +20255,6 @@
 ->grn <hepyme'ẽ_v[cat=a] (chupekuéra)
 ** resarcir_v[+r,+fin] ; ^ resarcir_v 0
 ->grn jehekýi_v[cat=a] ; #11
-->grn ñembohekovia_v[cat=a]
 ->grn ñemyengovia_v[cat=a] ; #1
 ** resarcir_v[-r,+fin] ; ^ resarcir_v 0
 ->grn <hepyme'ẽ_v[cat=a]
@@ -21317,7 +21310,6 @@
 ->grn mbohekovia_v[cat=a] (chupekuéra)
 ** sustituir_v[+r,+fin] ; ^ sustituir_v 0
 ->grn jopyru_v[cat=a] ; #4
-->grn ñembohekovia_v[cat=a]
 ->grn ñemyengovia_v[cat=a] ; #1
 ** sustituir_v[-r,+fin] ; ^ sustituir_v 0
 ->grn mbohekovia_v[cat=a]

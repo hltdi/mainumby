@@ -247,6 +247,9 @@
 ** hace %N $dur ; ^ hace 0
 ->grn %N $dur rasami ; || 2, 0, 1
 # otros
+** a tiempo ; ^ tiempo 1
+->grn ha'etépe
+->grn javete
 ** de pronto ; ^ pronto 1
 ->grn sapy'a
 ** muy pronto ; ^ pronto 1
@@ -1928,7 +1931,7 @@
 ->grn jevy
 ** sin objeto ; ^ objeto 1
 ->grn marãve
-** no obstante ; ^ obstante 1
+** no~obstante ; ^ no~obstante 0
 ->grn ko'ýte
 ** ocultamente ; ^ ocultamente 0
 ->grn kañyhápe

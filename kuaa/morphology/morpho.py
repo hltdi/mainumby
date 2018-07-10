@@ -656,6 +656,7 @@ class POS:
             return []
         # Up to this point, features may be a FeatStruct instance; cast in case
         fsset = FSSet.cast(upd_features)
+#        print("Updated features: {}".format(fsset.__repr__()))
         if fst:
             gens = fst.transduce(root, fsset, seg_units=self.language.seg_units, trace=trace, timeit=timeit)
             if only_words:

@@ -31,12 +31,13 @@ refl/1p :: nos [pos=v,p=1,n=1,voz=reflx,+r] ; // 0
 obj/1s :: me [pos=v,po=1,no=0] ; // 0
 obj/2s :: te [pos=v,po=2,no=0] ; // 0
 obj/1p :: nos [pos=v,po=1,no=1] ; // 0
+# 2 o 3 persona
 obj/3sd :: le [pos=v,po=3,no=0] ; // 0
 obj/3sm :: lo [pos=v,po=3,no=0] ; // 0
 obj/3sf :: la [pos=v,po=3,no=0] ; // 0
-obj/3pm :: los [pos=v,po=3,no=1] ; // 0
-obj/3pf :: las [pos=v,po=3,no=1] ; // 0
-obj/3pd :: les [pos=v,po=3,no=1] ; // 0
+obj/3pm :: los [pos=v,po=3,no=1][pos=v,po=2,no=1] ; // 0
+obj/3pf :: las [pos=v,po=3,no=1][pos=v,po=2,no=1] ; // 0
+obj/3pd :: les [pos=v,po=3,no=1][pos=v,po=2,no=1] ; // 0
 
 ## ambigüedad de 2, 3 persona
 # 3 pers sin ambigüedad
@@ -66,8 +67,9 @@ pos/1s.p :: mis [pos=n,n=1,poses=[+ext,pp=1,np=0]] ; // 0
 pos/2s.s :: tu [pos=n,n=0,poses=[+ext,pp=2,np=0]] ; // 0
 pos/2s.p :: tus [pos=n,n=1,poses=[+ext,pp=2,np=0]] ; // 0
 # pueden ser también 2 persona
-pos/3s.s :: su [pos=n,n=0,poses=[-ext,pp=3]] ; // 0
-pos/3s.p :: sus [pos=n,n=1,poses=[-ext,pp=3]] ; // 0
+#pos/3s.s :: su [pos=n,n=0,poses=[-ext,pp=3]] ; // 0
+pos/3s.s :: su [pos=n,n=0,poses=[-ext,pp=3]][pos=n,n=0,poses=[+ext,pp=2]] ; // 0
+pos/3s.p :: sus [pos=n,n=1,poses=[-ext,pp=3]][pos=n,n=1,poses=[+ext,pp=2]] ; // 0
 pos/1p.s :: nuestro [pos=n,n=0,poses=[+ext,pp=1,np=1]] ; // 0
 pos/1p.p :: nuestros [pos=n,n=1,poses=[+ext,pp=1,np=1]] ; // 0
 pos/1p.s :: nuestra [pos=n,n=0,poses=[+ext,pp=1,np=1]] ; // 0

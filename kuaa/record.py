@@ -381,7 +381,7 @@ class SegRecord:
             self.mergers = m
         else:
             self.mergers = None
-        print("Creating SegRecord for {} with gname {} and merger gnames {}".format(solseg, self.gname, self.mergers))
+#        print("Creating SegRecord for {} with gname {} and merger gnames {}".format(solseg, self.gname, self.mergers))
         # List of tg groups, one for each choice in GUI (this could be taken from SolSeg)
         self.choice_tgroups = None
         # tg group for selected translation

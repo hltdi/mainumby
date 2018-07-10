@@ -1961,7 +1961,7 @@ class Language:
         # In Amharic features may override the POS provided (needed for verbal nouns), but this doesn't apply
         # to Guarani, which may have posmorph v and feature pos a!
         if verbosity:
-            print("Generating {}:{} with POS {}".format(root, features.__repr__(), pos))
+            print("Generating {}:{} with POS {}, feature type {}".format(root, features.__repr__(), pos, type(features)))
         if not pos:
             print("Warning: no POS for generation of {}:{}".format(root, features.__repr__()))
         is_not_roman = not roman
@@ -1979,14 +1979,9 @@ class Language:
                 output.extend(posmorph.gen(root, update_feats=features, guess=guess, only_words=True))
         if output:
 #            print(" output: {}".format(output))
-#            o = [out[0] for out in output]
             # if there is a postprocessing dict, apply it
             if self.postproc:
                 self.char_postproc_list(output)
-#                for oi, outp in enumerate(output):
-#                    for d, c in self.postproc.items():
-#                        if d in outp:
-#                            output[oi] = outp.replace(d, c)
             if self.postsyll:
                 # There is a syllabic postprocessing dict, apply it
                 for oi,outp in enumerate(output):

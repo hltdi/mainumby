@@ -18133,6 +18133,8 @@
 ->grn koty_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** cuarto_n que $v[-ipv] ; ^ cuarto_n 0 ; (2,-3)
 ->grn koty_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
+** cuarto_n de $n ; ^ cuarto_n 0
+->grn $n koty_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ** cuarto_n menguante ; ^ cuarto_n 0
 ->grn jasyho_n ; 0==0 n:n,poses:poses
 ** cuarto_n creciente ; ^ cuarto_n 0

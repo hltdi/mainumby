@@ -80,6 +80,7 @@ join:
 - sin~embargo, c
 - así~que, c
 - es~decir, c
+- no~obstante, c
 #- a~base~de, p
 #- a~cambio~de, p
 #- a~causa, p
@@ -245,7 +246,6 @@ join:
 #- mucho~antes~que, c
 #- más~que, c
 #- no~bien, c
-#- no~obstante, c
 #- no~solamente, c
 #- no~sólo, c
 #- o~bien, c
