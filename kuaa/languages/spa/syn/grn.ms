@@ -1,3 +1,13 @@
+## intensificación, comparación (necesita concordancia grd:grd);
+## en casos predicativos, estar o ser recibe el rasgo grd
+## en casos atributivos, es el adjetivo
+muy_adj :: muy [pos=a,grd=ete] ; // 0
+mas_adj1 :: más [pos=a,grd=ve] ; // 0
+mas_adj2 :: mas [pos=a,grd=ve] ; // 0
+demasiado :: demasiado [pos=a,grd=eterei] ; // 0
+#estar_muy :: estar_v[grd=ete] muy ; // 1
+#ser_muy :: ser_v[grd=ete] muy ; // 1
+
 ### estar + adj sin sustantivo siguiente; introduce rasgo nuevo: ±perm
 estar_adj :: estar_v [pos=a,-perm] ![pos=n] ; 0=>1 p,n,tm ; // 0 ; 1-> [pos=v]
 ser_adj :: ser_v [pos=a,+perm] ![pos=n] ; 0=>1 p,n,tm ; // 0 ; 1-> [pos=v]
@@ -75,19 +85,9 @@ pos/1p.p :: nuestros [pos=n,n=1,poses=[+ext,pp=1,np=1]] ; // 0
 pos/1p.s :: nuestra [pos=n,n=0,poses=[+ext,pp=1,np=1]] ; // 0
 pos/1p.p :: nuestras [pos=n,n=1,poses=[+ext,pp=1,np=1]] ; // 0
 
-## intensificación, comparación (necesita concordancia grd:grd);
-## en casos predicativos, estar o ser recibe el rasgo grd
-## en casos atributivos, es el adjetivo
-estar_muy :: estar_v[grd=ete] muy ; // 1
-ser_muy :: ser_v[grd=ete] muy ; // 1
-muy_adj :: muy [pos=a,grd=ete] ; // 0
-mas_adj1 :: más [pos=a,grd=ve] ; // 0
-mas_adj2 :: mas [pos=a,grd=ve] ; // 0
-demasiado :: demasiado [pos=a,grd=eterei] ; // 0
-
 ## algunas cláusulas relativas, nominales, y adverbiales
 lo_que :: lo que [pos=v,rel=sjoj] ; // 0 1
-al_inf :: a el [pos=v,tm=inf,pp=vove] ; // 0 1 ; 2-> [tm=prs]
+al_inf :: a el [pos=v,tm=inf,pp=vove] ; // 0 1 ; 2-> [tm=prs,+fin]
 # ambiguo, e.g., dije a mi vecino que vendrá
 # *rel_sj :: [pos=n] que [pos=v,rel=sjoj] ; // 1
 

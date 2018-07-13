@@ -1414,6 +1414,11 @@ class MorphoSyn(Entry):
             elif not sfeats:
                 # No sentence item features but there are match item features. See if the parts of speech match.
                 if ppos and spos and ppos == spos:
+                    if neg:
+                        return False
+                    else:
+                        return True
+                elif neg:
                     return True
                 else:
                     return False
@@ -1421,6 +1426,8 @@ class MorphoSyn(Entry):
                 u = pfeats.unify_FS(sfeats, strict=strict)
             else:
                 u = simple_unify(sfeats, pfeats, strict=strict)
+            if verbosity > 1 or self.debug:
+                print("    Result of unification: {} (neg? {})".format(u.__repr__(), neg))
             if u != 'fail':
                 if not neg:
                     # result could be frozen if nothing changed; we need an unfrozen FS for later changes

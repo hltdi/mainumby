@@ -8230,12 +8230,6 @@
 ->grn líga_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** alcahuete_n ; ^ alcahuete_n 0
 ->grn líga_n ; 0==0 n:n,poses:poses
-** alcalde_n $pp $art que $v[-ipv] ; ^ alcalde_n 0 ; (4,-3)
-->grn ka'irãi_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** alcalde_n $pp cual_n $v[-ipv] ; ^ alcalde_n 0 ; (3,-3)
-->grn ka'irãi_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** alcalde_n que $v[-ipv] ; ^ alcalde_n 0 ; (2,-3)
-->grn ka'irãi_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** alcalde_n ; ^ alcalde_n 0
 ->grn ka'irãi_n ruvicha ; 0==0 n:n,poses:poses
 ** alcance_n $pp $art que $v[-ipv] ; ^ alcance_n 0 ; (4,-3)
@@ -26611,19 +26605,16 @@
 ->grn ka'a_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ñana_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ka'avo_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kapi'ipe_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** hierba_n perteneciente a las eufarbiáceas ; ^ hierba_n 0 ; #52
 ->grn ka'akamby_n ; 0==0 n:n,poses:poses
 ** hierba_n $pp cual_n $v[-ipv] ; ^ hierba_n 0 ; (3,-3)
 ->grn ka'a_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ñana_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ka'avo_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kapi'ipe_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** hierba_n que $v[-ipv] ; ^ hierba_n 0 ; (2,-3)
 ->grn ka'a_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ñana_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn ka'avo_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kapi'ipe_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** hierba_n no medicinal ; ^ hierba_n 0 ; #52
 ->grn ñana_n ; 0==0 n:n,poses:poses ; #27 ; ##10
 ** hierba_n en general ; ^ hierba_n 0 ; #52
@@ -26650,7 +26641,6 @@
 ->grn ka'a_n ; 0==0 n:n,poses:poses ; #370 ; ##1
 ->grn ñana_n ; 0==0 n:n,poses:poses ; #27 ; ##10
 ->grn ka'avo_n ; 0==0 n:n,poses:poses ; #50 ; ##8
-->grn kapi'ipe_n ; 0==0 n:n,poses:poses ; #16 ; ##7
 ** hierro_n $pp $art que $v[-ipv] ; ^ hierro_n 0 ; (4,-3)
 ->grn kuarepoti_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** hierro_n $pp cual_n $v[-ipv] ; ^ hierro_n 0 ; (3,-3)
@@ -35368,18 +35358,6 @@
 ** paisano_n ; ^ paisano_n 0
 ->grn <hetãgua_n ; 0==0 n:n,poses:poses
 ->grn <hetãygua_n ; 0==0 n:n,poses:poses ; #124
-** paja_n $pp $art que $v[-ipv] ; ^ paja_n 0 ; (4,-3)
-->grn kapi'i_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kapi'i_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kapi'i_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** paja_n $pp cual_n $v[-ipv] ; ^ paja_n 0 ; (3,-3)
-->grn kapi'i_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kapi'i_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kapi'i_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** paja_n que $v[-ipv] ; ^ paja_n 0 ; (2,-3)
-->grn kapi'i_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kapi'i_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-->grn kapi'i_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** paja_n ; ^ paja_n 0
 ->grn kapi'i_n chingui ; 0==0 n:n,poses:poses
 ->grn kapi'i_n katĩ paje ; 0==0 n:n,poses:poses

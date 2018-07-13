@@ -1487,8 +1487,8 @@ class Sentence:
         """
         score = 0.0
         if par_val and var_value:
-#            if verbosity:
-            print("Evaluating dstore {} from parent {} and var/val {}".format(dstore, par_val, var_value))
+            if verbosity:
+                print("Evaluating dstore {} from parent {} and var/val {}".format(dstore, par_val, var_value))
             # Don't calculate the whole score; just update the parent's score on the basis of the variable and value
             # (this is done for the ...a branch in distribution).
             score = par_val
@@ -1508,16 +1508,16 @@ class Sentence:
             else:
                 print("Something wrong: state eval variable {} is not of an acceptable type".format(variable))
             score = round(score, 4)
-#            if verbosity:
-            print("  Score: {}".format(score))
+            if verbosity:
+                print("  Score: {}".format(score))
             return score
         # Otherwise calculate the whole value, based on three types of variables
         # Essential undetermined variables
         undet = dstore.ess_undet
         gnodes = 0
         nnodes = len(self.nodes)
-#        if verbosity:
-        print("Evaluating dstore {}; undet: {}, var/value {}, parent val {}".format(dstore, undet, var_value, par_val))
+        if verbosity:
+            print("Evaluating dstore {}; undet: {}, var/value {}, parent val {}".format(dstore, undet, var_value, par_val))
         ## $groups
         # lower bound of $groups variable for sentence
         gl = self.variables['groups'].get_lower(dstore)
@@ -1537,8 +1537,8 @@ class Sentence:
         # Tie breaker
         score += random.random() / 100.0
         score = round(score, 4)
-#        if verbosity:
-        print("  Score: {}".format(score))
+        if verbosity:
+            print("  Score: {}".format(score))
         return score
 
     @staticmethod

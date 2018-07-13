@@ -129,7 +129,7 @@ class SolSeg:
         self.original_token_str = self.original_token_str.replace("←", "")
         # If there are special tokens in the source language, fix them here.
         self.special = False
-        if '%' in self.token_str:
+        if '%' in self.token_str or '~' in self.token_str:
             # Create the source and target strings without special characters
             if not translation:
                 self.special = True
@@ -247,7 +247,7 @@ class SolSeg:
         tokens = self.token_str
         orig_tokens = self.original_token_str
         trans_choice_index = 0
-#        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
+        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
         # T Group strings associated with each choice
         choice_tgroups = []
         if self.is_punc:
@@ -414,6 +414,9 @@ class SNode:
     def is_unk(self):
         """Does this node have no analysis, no known category or POS?"""
         if self.is_special():
+            return False
+        if '~' in self.token:
+            # A special phrase that bypasses POS tagging
             return False
         a = self.get_analysis()
         return not (a.get('pos') or a.get('cats') or a.get('features'))
