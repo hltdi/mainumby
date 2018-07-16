@@ -247,7 +247,7 @@ class SolSeg:
         tokens = self.token_str
         orig_tokens = self.original_token_str
         trans_choice_index = 0
-        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
+#        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
         # T Group strings associated with each choice
         choice_tgroups = []
         if self.is_punc:

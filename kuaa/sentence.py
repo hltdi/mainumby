@@ -291,7 +291,12 @@ class Document(list):
         language = self.target if target else self.language
         if verbosity:
             print("Tokenizing text {}".format(text))
-        text_tokens = text.split()
+        # Split at new lines ...
+        text_lines = text.split("\n")
+        text_tokens = []
+        # ... then at spaces.
+        for line in text_lines:
+            text_tokens.extend(line.split())
         pre = ''
         suf = ''
         word = None

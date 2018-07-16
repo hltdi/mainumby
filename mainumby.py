@@ -76,7 +76,7 @@ def aprender(source, target):
     return l
 
 def doc(text, proc=True):
-    e, g = cargar_eg()
+    e, g = cargar()
     d = kuaa.Document(e, g, text, proc=proc)
     return d
 

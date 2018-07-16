@@ -79,6 +79,7 @@ def get_sentence():
     global SINDEX
     global SENTENCE
     global DOC
+#    print("SINDEX {}, len(DOC) {}".format(SINDEX, len(DOC)))
     if SINDEX >= len(DOC):
         SENTENCE = None
         # Save DOC in database or translation cache here
@@ -100,14 +101,14 @@ def index():
 
 @app.route('/base', methods=['GET', 'POST'])
 def base():
-    print("In base...")
+#    print("In base...")
     return render_template('base.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     global USER
     form = request.form
-    print("Form for login: {}".format(form))
+#    print("Form for login: {}".format(form))
     if not USERS_INITIALIZED:
         initialize()
     if request.method == 'POST' and 'login' in form:
@@ -138,7 +139,7 @@ def logged():
 def reg():
     global USER
     form = request.form
-    print("Form for reg: {}".format(form))
+#    print("Form for reg: {}".format(form))
     if request.method == 'POST' and 'username' in form:
         if form.get('cancel') == 'Cancelar':
             return render_template('login.html')
@@ -164,15 +165,15 @@ def acct():
 @app.route('/doc', methods=['GET', 'POST'])
 def doc():
     form = request.form
-    print("Form for doc: {}".format(form))
+#    print("Form for doc: {}".format(form))
     # Initialize Session if there's a User and no Session
     # and Spanish and Guarani if they're not loaded.
     if not SESSION:
-        print("No session")
-        if not USER:
-            print("And no user")
+#        print("Ninguna sesión")
+#        if not USER:
+#            print("Y ningún usuario")
         init_session()
-    print("Initialized session and languages")
+#    print("Initialized session and languages")
     return render_template('doc.html', user=USER)
 
 # View for displaying parsed sentence and sentence translation and
@@ -181,7 +182,7 @@ def doc():
 def sent():
     form = request.form
     punc = SENTENCE.get_final_punc() if SENTENCE else None
-    print("Form for sent: {}".format(form))
+#    print("Form for sent: {}".format(form))
     if 'ayuda' in form and form['ayuda'] == 'true':
         # Opened help window. Keep everything else as is.
         raw = SENTENCE.raw if SENTENCE else None
@@ -207,21 +208,23 @@ def sent():
         return render_template('sent.html', user=USER, document=document)
     if 'text' in form and not DOC:
         # Create a new document
+#        print("Creating new document")
         make_doc(form['text'])
-        print("Created document {}".format(DOC))
+#        print("Created document {}".format(DOC))
         if len(DOC) == 0:
-            print(" But document is empty.")
+#            print(" But document is empty.")
             return render_template('doc.html', user=USER, error=True)
     # Get the next sentence in the document, assigning SENTENCE
     get_sentence()
-    print("Current sentence {}".format(SENTENCE))
+#    print("Current sentence {}".format(SENTENCE))
     if not SENTENCE:
         # No more sentences, return to doc.html for a new document
+#        print("No more sentences, return to doc.html")
         return render_template('doc.html', user=USER)
     else:
         # Translate and segment the sentence, assigning SEGS
         solve_and_segment()
-        print("Solved and segmented")
+#        print("Solved and segmented")
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
     punc = SENTENCE.get_final_punc()
     return render_template('sent.html', sentence=SEG_HTML, raw=SENTENCE.original, document='',
