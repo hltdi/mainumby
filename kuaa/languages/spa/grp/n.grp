@@ -30773,6 +30773,8 @@
 ->grn sy_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** madre_n $pp cual_n $v[-ipv] ; ^ madre_n 0 ; (3,-3)
 ->grn sy_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
+** madre_n de $n ; ^ madre_n 0
+->grn $n sy_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ** madre_n de la ura ; ^ madre_n 0
 ->grn mberu_n rãi ; 0==0 n:n,poses:poses
 ** madre_n de su hijo ; ^ madre_n 0

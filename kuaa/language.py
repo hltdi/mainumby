@@ -471,8 +471,8 @@ class Language:
     def quit(self, cache=True):
         """Do stuff when the program exits. Only cache analyses and generation if there is a current
         session/user."""
-        if cache and self.use in (ANALYSIS, SOURCE, TRAIN):
-            self.write_cache()
+#        if cache and self.use in (ANALYSIS, SOURCE, TRAIN):
+#            self.write_cache()
         if cache and self.use in (GENERATION, TARGET, TRAIN):
             for pos in self.morphology.values():
                 pos.quit()

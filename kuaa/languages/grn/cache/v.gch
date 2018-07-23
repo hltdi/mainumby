@@ -202,3 +202,6 @@ kañy:[cat=a,ns=1,ps=3,tmp=ipf] || okañými;okañy
 chovi:[ns=1,pos=a] || chovi
 jupi:[cat=a,ns=1,ps=3,tmp=ipf] || ojupími;ojupi
 jaho'i:[cat=a,ns=1,pp=pe,ps=3,rel=sjoj,tmp=ipf] || ojaho'iva'ekuépe
+muña:[cat=a,ns=0,-ojxpl,ps=3,tmp=prs] || omuña;emuña
+muña:[cat=a,ns=0,-ojxpl,ps=2,tmp=ipv] || omuña;emuña
+muña:[cat=a,ns=0,-ojxpl,ps=1,tmp=prt] || emuña;amuñákuri;amuña;amuñaraka'e;amuña'akue
