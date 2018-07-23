@@ -151,7 +151,7 @@ def reg():
             return render_template('reg.html', error="password")
         else:
             user = create_user(form)
-#        print("Created user {}".format(user))
+            print("Created user {}".format(user))
             USER = user
             return render_template('acct.html', username=form.get('username'))
     return render_template('reg.html')

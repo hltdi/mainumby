@@ -597,8 +597,11 @@ class User:
         """Enter all new users (normally at most one) in the users file.
         Create a user file for each new user.
         """
+        print("Writing new users {}".format(User.new_users))
         with open(User.get_users_path(), 'a', encoding='utf8') as file:
             for username, user in User.new_users.items():
+                print("  Writing {}".format(user))
+                user.create_user_file()
                 user.write(file=file)
 
     def create_user_file(self):
