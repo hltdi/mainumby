@@ -362,7 +362,8 @@ class POS:
 
     def quit(self):
         """Save new_gens in gen_cache."""
-        self.write_gen_cache()
+#        self.write_gen_cache()
+        pass
 
     def make_rev_abbrevs(self):
         """Make the reverse abbreviation dictionary."""
