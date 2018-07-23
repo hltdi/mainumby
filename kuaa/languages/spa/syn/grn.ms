@@ -55,6 +55,8 @@ suj/3sm :: él [+fin,pos=v,p=3,n=0]
 suj/3pm :: ellos [+fin,pos=v,p=3,n=1]
 suj/3sf :: ella [+fin,pos=v,p=3,n=0]
 suj/3pf :: ellas [+fin,pos=v,p=3,n=1]
+suj/3sn :: [pos=n,n=0] [+fin,pos=v,p=3,n=0]
+suj/3pn :: [pos=n,n=1] [+fin,pos=v,p=3,n=1]
 # 2 pers form sin ambigüedad
 2s_form :: usted [+fin,pos=v,p=3,n=0] ; 1-> [p=2]
 2p_form :: ustedes [+fin,pos=v,p=3,n=1] ; 1-> [p=2]

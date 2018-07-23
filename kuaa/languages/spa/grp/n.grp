@@ -4092,7 +4092,7 @@
 ** nombre_n que $v[-ipv] ; ^ nombre_n 0 ; (2,-3)
 ->grn <héra_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** nombre_n de $n ; ^ nombre_n 0
-->grn $n <hera_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
+->grn $n <héra_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ** nombre_n de cosa ; ^ nombre_n 0
 ->grn mba'eréra_n ; 0==0 n:n,poses:poses
 ** nombre_n[poses=[+ext],n=0] ser_v ; ^ nombre_n 0
@@ -20291,19 +20291,15 @@
 ** dirección_n ; ^ dirección_n 0
 ->grn kotyo_n ; 0==0 n:n,poses:poses
 ** director_n $pp $art que $v[-ipv] ; ^ director_n 0 ; (4,-3)
-->grn akã_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn sãmbyhyhára_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn mburuvicha_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** director_n $pp cual_n $v[-ipv] ; ^ director_n 0 ; (3,-3)
-->grn akã_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn sãmbyhyhára_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn mburuvicha_n $v[rel=obl] ; || 0, -1, -1, 1 ; 0==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** director_n que $v[-ipv] ; ^ director_n 0 ; (2,-3)
-->grn akã_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn sãmbyhyhára_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ->grn mburuvicha_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** director_n ; ^ director_n 0
-->grn akã_n ; 0==0 n:n,poses:poses ; #168
 ->grn sãmbyhyhára_n ; 0==0 n:n,poses:poses ; #12
 ->grn mburuvicha_n ; 0==0 n:n,poses:poses ; #646
 ** discordia_n familiar ; ^ discordia_n 0
