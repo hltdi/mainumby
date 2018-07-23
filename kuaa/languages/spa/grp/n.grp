@@ -25703,6 +25703,8 @@
 ->grn pu'ae_n aty ; 0==0 n:n,poses:poses
 ** grupo_n ; ^ grupo_n 0
 ->grn aty_n ; 0==0 n:n,poses:poses
+** grupo_n de $n ; ^ grupo_n 0
+->grn $n aty_n[poses=[+ext,pp=3]] ; || 1, -1, 0 ; 0==1 n:n
 ** gruta_n $pp $art que $v[-ipv] ; ^ gruta_n 0 ; (4,-3)
 ->grn yvytykua_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** gruta_n $pp cual_n $v[-ipv] ; ^ gruta_n 0 ; (3,-3)
