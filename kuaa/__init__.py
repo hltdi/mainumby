@@ -56,7 +56,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 ## Whether to create a session for the anonymous user when user doesn't log in.
-USE_ANON = True
+# USE_ANON = True
 
 def load(source='spa', target='grn'):
     """Load source and target languages for translation."""
@@ -93,7 +93,7 @@ def init_users():
     # Read in current users before login.
     User.read_all()
 
-def start(source, target, user):
+def start(source, target, user, use_anon=True):
     """Initialize a run. Create a session if there's a user."""
 #    print("Starting {}, {}, {}".format(source, target, user))
     # Read in current users so that we can find the current user and
@@ -102,7 +102,7 @@ def start(source, target, user):
     if isinstance(user, str):
         # Get the user from their username
         user = User.users.get(user)
-    if USE_ANON and not user:
+    if use_anon and not user:
         user = User.get_anon()
     if user:
         return kuaa.Session(source=source, target=target, user=user)

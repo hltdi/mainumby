@@ -65,6 +65,13 @@ def init_session():
     if not SESSION:
         SESSION = start(SPA, GRN, USER)
 
+#def ini_tra_ora():
+#    # Initialize a sentence translation session, without a user.
+#    global GRN
+#    global SPA
+#    if not SPA:
+#        load_languages()
+
 def load_languages():
     """Load Spanish and Guarani data."""
     global GRN, SPA
@@ -160,6 +167,16 @@ def reg():
 def acct():
 #    print("In acct...")
     return render_template('acct.html')
+
+# View for quicker version of program that displays sentence and its translation in
+# side-by-side windows.
+@app.route('/tra', methods=['GET', 'POST'])
+def tra():
+    form = request.form
+    print("Form for tra: {}".format(form))
+    if not SPA:
+        load_languages()
+    return render_template('tra.html')
 
 # View for document entry
 @app.route('/doc', methods=['GET', 'POST'])

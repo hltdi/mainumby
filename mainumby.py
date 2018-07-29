@@ -48,10 +48,10 @@ import kuaa
 
 ## Creación (y opcionalmente traducción) de oración simple y de documento.
 def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
-        verbosity=0):
+        single=False, verbosity=0):
     e, g = cargar()
     session = kuaa.start(e, g, user)
-    d = kuaa.Document(e, g, sentence, True, session=session)
+    d = kuaa.Document(e, g, sentence, True, single=single, session=session)
     if len(d) == 0:
         print("Parece que falta puntuación final en el documento.")
         return
@@ -75,9 +75,9 @@ def aprender(source, target):
     l = kuaa.Learner(source, target)
     return l
 
-def doc(text, proc=True):
+def doc(text, proc=True, single=False):
     e, g = cargar()
-    d = kuaa.Document(e, g, text, proc=proc)
+    d = kuaa.Document(e, g, text, proc=proc, single=single)
     return d
 
 def generate(language, stem, feats=None, pos='v'):

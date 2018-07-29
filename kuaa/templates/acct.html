@@ -5,7 +5,7 @@
 
 <script>
 function ShowHelp() {
-    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
+    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=600,height=400");
     helpWin.document.write('<html><head>' +
 '<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
 "<title>Mainumby: Ayuda</title></head><body>" +
@@ -34,7 +34,7 @@ function loading() {
   <tr>
     <td class="title">
     <img class='banner' src="{{url_for('static',
-      filename='banner_logo_short.png')}}" alt="" width="500px" height="90px" />
+      filename='banner_logo.png')}}" alt="" width="300px" height="52px" />
     </td>
     <td class="menu" style="width: 250px"><input class="menu"
       type="submit" value="SALIR" name="salir" onclick="return OnSalir();"></td>

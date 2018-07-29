@@ -1229,7 +1229,7 @@ class MorphoSyn(Entry):
 
     @staticmethod
     def del_token(token):
-        return token[0] == '~'
+        return token and token[0] == '~'
 
     def match(self, sentence, verbosity=0, terse=False):
         """

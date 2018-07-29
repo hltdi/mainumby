@@ -11,8 +11,8 @@ body
 	margin-right: 0pt;
 	margin-top: 20pt;
 	margin-bottom: 20pt;
-	padding-left: 0;
-	padding-right: 0;
+	padding-left: 20pt;
+	padding-right: 20pt;
 	padding-top: 0;
 	padding-bottom: 0;
         font-size: 14px;
@@ -99,12 +99,65 @@ table.center
 	padding: 0;
 	border-collapse: collapse;
 }
-/*
-table.center tr
+/* New 2018.7.27 */
+table.left
 {
-	border-bottom: 6pt solid #003;
+	table-layout: fixed;
+	margin-left: 0;
+	margin-right: auto;
+	border: 0;
+	padding: 0;
+	border-collapse: collapse;
 }
-*/
+table.left td.title
+{
+/*	background-color: #F5E754; */
+}
+table.left tr td
+{
+/*	background-color: #F5E754; */
+	vertical-align: top;
+	padding: 0pt;
+}
+
+table.left td p,h1,h2,h3,h4,ul
+{
+	margin-top: 10pt;
+	margin-bottom: 10pt;
+	margin-left: 0pt;
+	margin-right: 0pt;
+	width: auto;
+}
+
+table.left tr td img.banner
+{
+    vertical-align: bottom;
+}
+table.left tr td.menu
+{
+/*    height: 20px; */
+    background-color: #4B2B17;
+    text-align: center;
+    vertical-align: bottom;
+    padding-bottom: 5px;
+    border-right: 0;
+}
+table.left tr td.menu a
+{
+    color: #8DEDCD;
+/*    font-weight: bold; */
+    font-size: 100%;
+    text-decoration: none;
+}
+table.left tr td.menu a:hover
+{
+    color: #F5E754;
+    background-color: #4B2B17;
+}
+table.left tr.brown
+{
+    background-color: #4B2B17;
+}
 
 table.center td.title
 {

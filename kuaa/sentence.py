@@ -196,7 +196,8 @@ class Document(list):
 
     def __init__(self, language=None, target=None, text='', target_text='',
                  proc=True, session=None, biling=False,
-                 reinitid=False, docid=''):
+                 reinitid=False, docid='',
+                 single=False):
         self.set_id(reinitid=reinitid, docid=docid)
         self.language = language
         self.target = target
@@ -210,6 +211,8 @@ class Document(list):
         self.target_text = target_text
         self.target_tokens = []
         self.target_sentences = []
+        # Whether the input consists of a single "sentence", possibly without final punctuation
+        self.single = single
         # A list of pairs of raw source-target sentences, the result of the user's interaction
         # with the system.
         self.output = []
@@ -261,7 +264,6 @@ class Document(list):
             sentence_list = self
             text = self.text
         if language.tagger and language.tagger.tokenize:
-#            print("Using external {} tagger for {}...".format(language, self))
             tagger = language.tagger
             # tagger splits document into sentences
             sentences = tagger.get_sentences(text)
@@ -436,6 +438,9 @@ class Document(list):
         if raw_token:
             raw_sentence.append(raw_token)
             raw_sentences.append(raw_sentence)
+        if self.single and not sentences:
+            current_sentence.append(('', 1, 0))
+            sentences = [current_sentence]
         # Make Sentence objects for each list of tokens and types
         for sentence, rawsent in zip(sentences, raw_sentences):
 #            print("Sentence: {}".format(sentence))
@@ -2051,6 +2056,9 @@ class Solution:
         included_tokens = []
         newsegs = []
         for stok in src_tokens:
+            if not stok:
+                # empty sentence final token
+                continue
             if index in indices_covered:
                 if stoks:
                     stok_groups.append(stoks)
