@@ -27,6 +27,14 @@ function Login() {
     form.action = "login";
     form.submit();
 }
+function Traductor() {
+    form = document.getElementById("form");
+    document.getElementById("instructions").innerHTML = "";
+    document.getElementById("buttons").innerHTML = "";
+    document.getElementById("intro").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
+    form.action = "tra";
+    form.submit();
+}
 </script>
 
 </head>
@@ -35,27 +43,32 @@ function Login() {
 
 <form action='' id='form' method="post">
 
-<table class="center">
-  <tr>
+<table class="left">
+  <tr class="brown">
     <td class="title">
     <img class='banner' src="{{url_for('static',
       filename='banner_logo.png')}}" alt="" width="300" height="52" />
     </td>
-    <td class="menu" style="width: 156px"><button class="menu" onclick="Login()">INICIAR SESIÓN</button></td>
-    <td class="menu" style="width: 160px"><button class="menu"
-  onclick="Shortcut()">ATAJO A INTERFAZ</button></td>
-    <td class="menu" style="width: 92px"><a href="proyecto">PROYECTO</a></td>
-    <td class="menu" style="width: 92px"><a href="contacto">CONTACTO</a></td>
+    <td class="title" style="width: 700px">
 
-</tr>
-<tr>
+    <td class="menu" style="width: 140px"><button class="menu" onclick="Traductor()">ORACIÓN</button></td>
+    <td class="menu" style="width: 160px"><button class="menu" onclick="Login()">DOCUMENTO</button></td>
+    <td class="menu" style="width: 140px"><a href="proyecto">PROYECTO</a></td>
+    <td class="menu" style="width: 140px"><a href="contacto">CONTACTO</a></td>
+
+  </tr>
+</table>
+<!-- <tr>
 <td colspan="5" style="width:800px">
+-->
 <h1>¡Bienvenida/o a Mainumby! ¡Tereg̃uahẽ porãite Mainumby-me!</h1>
 
 <p class="instructions" id="instructions">
-  Para iniciar una sesión y registrarte, hacé clic en "INICIAR
-  SESIÓN".<br />
-  Para saltar la registración y ir directamente a la interfaz de traducción, hacé clic en "ATAJO A INTERFAZ".
+  Para traducir una palabra, una frase, o una oración corta, hac&eacute; clic en "ORACIÓN".<br/>  
+  Si estás traduciendo un documento y quer&eacute;s usar la interfaz
+  para traductores, hacé clic en "DOCUMENTO".<br />
+<!--  Para saltar la registración y ir directamente a la interfaz de
+  traducción, hacé clic en "ATAJO A INTERFAZ". -->
 </p>
 
 <div id="intro">    
@@ -123,14 +136,9 @@ durante el proceso.
 <hr/>
 
 <p id='buttons'>
-  <input type="submit" value="Iniciar sesión" id="button" onclick="Login()">
-  <input type="submit" value="Atajo a interfaz" id="button" onclick="Shortcut()">
+  <input type="button" value="Oración" id="button" onclick="Traductor()">
+  <input type="submit" value="Documento" id="button" onclick="Login()">
 </p>
-
-</td>
-</tr>
-
-</table>  
 
 </form>
 

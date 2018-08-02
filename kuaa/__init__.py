@@ -62,21 +62,23 @@ def load(source='spa', target='grn'):
     """Load source and target languages for translation."""
     return kuaa.Language.load_trans(source, target)
 
-def seg_trans(sentence, source, target, session=None, verbosity=0):
+def seg_trans(sentence, source, target, session=None, single=False, verbosity=0):
     """Translate sentence and return marked-up sentence with segments colored.
     So far only uses first solution."""
     sentence.initialize(ambig=True, verbosity=verbosity)
     sentence.solve(translate=True, all_sols=False, all_trans=True, interactive=False, verbosity=verbosity)
     if sentence.solutions:
         solution = sentence.solutions[0]
-        solution.get_segs()
-        return solution.segments, solution.get_seg_html()
+        solution.get_segs(single=single)
+        return solution.segments, solution.get_gui_segments(single=single)
     else:
-        return [], sentence.get_html()
+        return [], sentence.get_html(single=single)
 
-def make_document(source, target, text, session=None):
-    """Create an Mainumby Document object with the text."""
-    d = kuaa.Document(source, target, text, proc=True, session=session)
+def make_document(source, target, text, session=None, single=False):
+    """Create a Mainumby Document object with the text."""
+    if single:
+        print("Making sentence from {}".format(source))
+    d = kuaa.Document(source, target, text, proc=True, session=session, single=single)
     return d
 
 def quit(session=None):

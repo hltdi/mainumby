@@ -9,10 +9,14 @@
 
 <body>
 
+{% if modo == "ora" %}
+<form method=POST action='tra'>
+{% else %}
 <form method=POST action='login'>
+{% endif %}
 
-<table class="center">
-  <tr>
+<table class="left">
+  <tr class='brown'>
     <td class="title">
     <a href="base">
     <img class='banner' src="{{url_for('static',
@@ -20,18 +24,21 @@
       height="52px" />
     </a>
     </td>
+
+    <td class="title" style="width: 800px">
+    </td>
+
     <td class="menu" style="width: 500px">
       <input type="submit" action="reiniciar" name="reiniciar"
       value="REINICIAR" class="menu">
       </td>
   </tr>
 
-<tr>
-<td colspan="2" style="width:800px">
-
-<h1>¡Gracias por usar Mainumby!</h1>
+</table>
 
 </form>
+
+<h1>¡Gracias por usar Mainumby!</h1>
 
 </body>
 

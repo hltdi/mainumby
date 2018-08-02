@@ -1527,7 +1527,6 @@
 ** comer_v[-r,+fin] un bocado ; ^ comer_v 0 ; #2609
 ->grn jepy'ajoko_v[cat=a]
 ** comer_v[-r,+fin] a $n ; ^ comer_v 0
-->grn karu_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ->grn 'u_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ** comer_v[-r,+fin] apresuradamente ; ^ comer_v 0 ; #2609
 ->grn mbokoso_v[cat=a]
@@ -1688,12 +1687,10 @@
 ** crear_v[-r,+fin] a $n ; ^ crear_v 0
 ->grn ñemuña_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ->grn moheñói_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
-->grn ñemuña_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ->grn moñemuña_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ** crear_v[-r,+fin] ; ^ crear_v 0 ; #119
 ->grn ñemuña_v[cat=a] ; #18
 ->grn moheñói_v[cat=a] ; #26 ; ##1
-->grn ñemuña_v[cat=a] ; #18
 ->grn moñemuña_v[cat=a] ; #4
 ** creer_v[-r,+fin] en otros ; ^ creer_v 0 ; #173
 ->grn jerovia_v[cat=a]

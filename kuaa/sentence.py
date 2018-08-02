@@ -1784,14 +1784,22 @@ class Sentence:
         self.complete_trans = trans
         return trans
 
-    def get_html(self):
+    def get_html(self, single=False):
         """Create HTML for a sentence with no solution."""
         tokens = ' '.join(self.tokens)
         source_html = "<span style='color:Silver;'> {} </span>".format(tokens)
-        trans_html = "<table>"
-        trans_html += '<tr><td class="source">'
-        trans_html += '<input type="radio" name="choice" id="{}" value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
-        trans_html += '</table>'
+        if single:
+            # Create button
+            trans_html = "<div class='desplegable'>"
+            trans_html += "<button class='btndesplegable'>"
+            trans_html += tokens
+            trans_html += "</button>"
+            trans_html += '</div>'
+        else:
+            trans_html = "<table>"
+            trans_html += '<tr><td class="source">'
+            trans_html += '<input type="radio" name="choice" id="{}" value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
+            trans_html += '</table>'
         return [(self.raw, "Silver", trans_html, 0, source_html)]
 
     def verbatim(self, node):
@@ -2101,7 +2109,7 @@ class Solution:
             i0 += len(stok_group)
         return newsegs
 
-    def get_segs(self, html=True):
+    def get_segs(self, html=True, single=False):
         """Set the segments (instances of SolSegment) for the solution, including their translations."""
         tt = self.get_ttrans_outputs()
         end_index = -1
@@ -2199,17 +2207,17 @@ class Solution:
         # Sort the segments by start indices in case they're not in order (because of parentheticals)
         self.segments.sort(key=lambda s: s.indices[0])
         if html:
-            self.seg_html()
+            self.seg_html(single=single)
 
-    def seg_html(self):
+    def seg_html(self, single=False):
+        """Set the HTML for each of the segments in this solution."""
         for i, segment in enumerate(self.segments):
-            segment.set_html(i)
+            if single:
+                segment.set_single_html(i)
+            else:
+                segment.set_html(i)
 
-    def get_seg_html(self):
-#        return [segment.html for segment in self.segments]
-        return self.get_gui_segments()
-
-    def get_gui_segments(self):
+    def get_gui_segments(self, single=False):
         """These may differ from SolSegs because of intervening segments within outer segments."""
         segments = []
         enclosings = []
@@ -2227,4 +2235,8 @@ class Solution:
                 segments.extend([preseg, parenseg, postseg])
             elif not segment.is_paren:
                 segments.append(segment.html)
+#        for i, s in enumerate(segments):
+#            print("HTML for seg {}:".format(i))
+#            for ss in s:
+#                print("  {}".format(ss))
         return segments

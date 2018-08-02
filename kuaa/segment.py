@@ -232,9 +232,123 @@ class SolSeg:
         else:
             return "<span style='color:{};'> {} </span>".format(self.color, self.token_str)
 
+    def set_single_html(self, index, verbosity=0):
+        """Set the HTML markup for this segment as an colored segment in source and dropdown menu
+        in target, given its position in the sentence.
+        """
+        # Combine translations where possible
+        self.color = SolSeg.tt_notrans_color if not self.translation else SolSeg.tt_colors[index]
+        self.set_source_html()
+        transhtml = "<div class='desplegable'>"
+        capitalized = False
+        choice_list = self.record.choices if self.record else None
+        # Final source segment output
+        tokens = self.token_str
+        orig_tokens = self.original_token_str
+        trans_choice_index = 0
+#        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
+        # T Group strings associated with each choice
+        choice_tgroups = []
+        if self.is_punc:
+            trans = self.translation[0][0]
+            if '"' in trans:
+                trans = trans.replace('"', '\"')
+            transhtml += "<button class='btndesplegable'>"
+            transhtml += trans
+            transhtml += "</button>"
+            transhtml += '</div>'
+            self.html = (tokens, self.color, transhtml, index, self.source_html)
+            return
+        # No dropdown if there's only 1 translation
+        first_trans = True
+        ntgroups = len(self.tgroups)
+        multtrans = True
+        despleg = "despleg{}".format(index)
+        boton = "boton{}".format(index)
+        for tindex, (t, tgroups) in enumerate(zip(self.cleaned_trans, self.tgroups)):
+            # Create all combinations of word sequences
+            tg_expanded = []
+            if self.special:
+                trans = t[0]
+                tgcombs = [[(trans, '')]]
+            else:
+                for tt, tg in zip(t, tgroups):
+                    tg = Group.make_gpair_name(tg)
+                    # Get rid of parentheses around optional elements
+                    if '(' in tt:
+                        tt = ['', tt[1:-1]]
+                    else:
+                        tt = tt.split('|')
+                    # Add tg group string to each choice
+                    tg_expanded.append([(ttt, tg) for ttt in tt])
+                tgcombs = allcombs(tg_expanded)
+            tgcombs.sort()
+            tgforms = []
+            tggroups = []
+            for ttg in tgcombs:
+                # "if tttg[0]" prevents '' from being treated as a token
+                tgforms.append(' '.join([tttg[0] for tttg in ttg if tttg[0]]))
+                tggroups.append("||".join([tttg[1] for tttg in ttg if tttg[0]]))
+            ntggroups = len(tggroups)
+            if (ntgroups == 1) and (ntggroups == 1):
+                multtrans = False
+            for tcindex, (tchoice, tcgroups) in enumerate(zip(tgforms, tggroups)):
+                tchoice = tchoice.replace('_', ' ')
+                alttchoice = tchoice.replace("'", "ʼ")
+                alttchoice = alttchoice.replace(" ", "&nbsp;")
+                choiceid = 'opcion{}'.format(trans_choice_index)
+                choice_tgroups.append(tcgroups)
+                # The button itself
+                if tindex == 0 and tcindex == 0:
+                    if not multtrans:
+                        # Only translation; no dropdown menu
+                        transhtml += "<button class='btndesplegable' style='background-color:{}'>{}</button>".format(self.color, alttchoice)
+                    else:
+                        # First translation of multiple translations; make dropdown menu
+                        transhtml += '<button onclick="Desplegar(' + "'{}')\"".format(despleg)
+                        transhtml += " id='{}' class='btndesplegable' style='background-color:{}'>{}</button>".format(boton, self.color, alttchoice)
+                else:
+                    # Choice in menu under button
+                    if trans_choice_index == 1:
+                        # Start menu list
+                        transhtml += "<div id='{}' class='contenido-desplegable'>".format(despleg)
+                    transhtml += "<span class='opcion' id='{}' onclick='cambiarMeta(".format(choiceid)
+                    transhtml += "\"{}\", \"{}\")'".format(boton, choiceid)
+                    transhtml += ">{}</span><br/>".format(alttchoice)
+                trans_choice_index += 1
+        if not self.translation:
+            # No translations suggested: button for translating as source
+            multtrans = False
+            transhtml += "<button class='btndesplegable'>"
+            transhtml += orig_tokens
+            transhtml += "</button>"
+        if multtrans:
+            transhtml += '</div>'
+        transhtml += '</div>'
+        # Capitalize tokens if in first place        
+        if index==0:
+            capitalized = False
+            if ' ' in tokens:
+                toks = []
+                tok_list = tokens.split()
+                for tok in tok_list:
+                    if capitalized:
+                        toks.append(tok)
+                    elif self.source.is_punc(tok):
+                        toks.append(tok)
+                    else:
+                        toks.append(tok.capitalize())
+                        capitalized = True
+                tokens = ' '.join(toks)
+            else:
+                tokens = tokens.capitalize()
+        self.choice_tgroups = choice_tgroups
+        if self.record:
+            self.record.choice_tgroups = choice_tgroups
+        self.html = (orig_tokens, self.color, transhtml, index, self.source_html)
+
     def set_html(self, index, verbosity=0):
         """Set the HTML markup for this segment, given its position in the sentence,
-        and the dictionary of choices for the record of the SolSeg.
         Do postprocessing on phrases joined by '_' or special tokens (numerals).
         """
         # Combine translations where possible
@@ -337,17 +451,16 @@ class SolSeg:
         self.choice_tgroups = choice_tgroups
         if self.record:
             self.record.choice_tgroups = choice_tgroups
-#        choice_tgroups = "!!".join(choice_tgroups)
         self.html = (orig_tokens, self.color, transhtml, index, self.source_html)
-#        print("HTML for {}".format(self))
-#        for h in self.html:
-#            print(" {}".format(h))
+        print("HTML for {}".format(self))
+        for h in self.html:
+            print(" {}".format(h))
 
-    @staticmethod
-    def list_html(segments):
-        """Set the HTML for the list of segments in a sentence."""
-        for i, segment in enumerate(segments):
-            segment.set_html(i)
+#    @staticmethod
+#    def list_html(segments):
+#        """Set the HTML for the list of segments in a sentence."""
+#        for i, segment in enumerate(segments):
+#            segment.set_html(i)
 
 class SNode:
     """Sentence token and its associated analyses and variables."""

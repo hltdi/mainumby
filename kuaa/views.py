@@ -45,7 +45,7 @@ from flask import request, session, g, redirect, url_for, abort, render_template
 from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user
 
 # Global variables for views; probably a better way to do this...
-SESSION = SPA = GRN = DOC = SENTENCE = SEGS = SEG_HTML = USER = None
+SESSION = SPA = GRN = DOC = SENTENCE = SEGS = SEG_HTML = USER = OF_HTML = None
 SINDEX = 0
 USERS_INITIALIZED = False
 
@@ -77,10 +77,10 @@ def load_languages():
     global GRN, SPA
     SPA, GRN = load()
 
-def make_doc(text):
+def make_doc(text, single=False):
     """Create a Document object from the text."""
     global DOC
-    DOC = make_document(SPA, GRN, text, session=SESSION)
+    DOC = make_document(SPA, GRN, text, session=SESSION, single=single)
 
 def get_sentence():
     global SINDEX
@@ -96,10 +96,15 @@ def get_sentence():
     SENTENCE = DOC[SINDEX]
     SINDEX += 1
 
-def solve_and_segment():
+def solve_and_segment(single=False):
     global SEGS
     global SEG_HTML
-    SEGS, SEG_HTML = seg_trans(SENTENCE, SPA, GRN)    
+    SEGS, SEG_HTML = seg_trans(SENTENCE, SPA, GRN, single=single)
+    print("Solved segs: {}".format(SEGS))
+    if single:
+        global OF_HTML
+        OF_HTML = ''.join([s[-1] for s in SEG_HTML])
+        print("OF HTML {}".format(OF_HTML))
 
 @app.route('/')
 def index():
@@ -172,11 +177,47 @@ def acct():
 # side-by-side windows.
 @app.route('/tra', methods=['GET', 'POST'])
 def tra():
+    global SENTENCE
+    global DOC
+    global SEG_HTML
     form = request.form
+    of = None
     print("Form for tra: {}".format(form))
     if not SPA:
         load_languages()
-    return render_template('tra.html')
+#   AYUDA
+#    if 'ayuda' in form and form['ayuda'] == 'true':
+#        # Opened help window. Keep everything else as is.
+#        raw = SENTENCE.raw if SENTENCE else None
+#        document = form.get('UTraDoc', '')
+#        return render_template('sent.html', sentence=SEG_HTML, raw=raw, punc=punc,
+#                               document=document, user=USER)
+    if form.get('borrar') == 'true':
+        DOC = SENTENCE = SEG_HTML = None
+        return render_template('tra.html', sentence=None, ofuente=None, translation=None, raw=None, punc=None)
+    if not 'ofuente' in form:
+        return render_template('tra.html')
+    if not DOC:
+        # Create a new document
+        of = form['ofuente']
+        print("Creando nueva oración de {}".format(of))
+        make_doc(of, single=True)
+#        print("Created document {}".format(DOC))
+        if len(DOC) == 0:
+            print(" But document is empty.")
+            return render_template('tra.html', error=True)
+    # Get the sentence, the only one in DOC
+    SENTENCE = DOC[0]
+    print("Actual oración {}".format(SENTENCE))
+    # Translate and segment the sentence, assigning SEGS
+    solve_and_segment(single=True)
+    print("Solved and segmented")
+    print("SEG HTML")
+    for s in SEG_HTML:
+        print("  {}".format(s))
+    # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
+    punc = SENTENCE.get_final_punc()
+    return render_template('tra.html', sentence=OF_HTML, ofuente=of, translation=SEG_HTML, raw=SENTENCE.original, punc=punc)
 
 # View for document entry
 @app.route('/doc', methods=['GET', 'POST'])
@@ -199,7 +240,7 @@ def doc():
 def sent():
     form = request.form
     punc = SENTENCE.get_final_punc() if SENTENCE else None
-#    print("Form for sent: {}".format(form))
+    print("Form for sent: {}".format(form))
     if 'ayuda' in form and form['ayuda'] == 'true':
         # Opened help window. Keep everything else as is.
         raw = SENTENCE.raw if SENTENCE else None
@@ -213,10 +254,6 @@ def sent():
         segtrans = form.get('segtrans', '')
         document = form.get('UTraDoc', '')
         comments = form.get('UComment', '')
-#        print("Registering sentence translation {} for {}".format(translation, SENTENCE))
-#        print(" Segment translations: {}".format(segtrans))
-#        print(" Comments: {}".format(comments))
-#        print(" Current document: {}".format(document))
         if SESSION:
             SESSION.record(SENTENCE.record, translation=translation, segtrans=segtrans, comments=comments)
         else:
@@ -225,31 +262,27 @@ def sent():
         return render_template('sent.html', user=USER, document=document)
     if 'text' in form and not DOC:
         # Create a new document
-#        print("Creating new document")
         make_doc(form['text'])
-#        print("Created document {}".format(DOC))
         if len(DOC) == 0:
-#            print(" But document is empty.")
             return render_template('doc.html', user=USER, error=True)
     # Get the next sentence in the document, assigning SENTENCE
     get_sentence()
-#    print("Current sentence {}".format(SENTENCE))
     if not SENTENCE:
         # No more sentences, return to doc.html for a new document
-#        print("No more sentences, return to doc.html")
         return render_template('doc.html', user=USER)
     else:
         # Translate and segment the sentence, assigning SEGS
         solve_and_segment()
-#        print("Solved and segmented")
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
     punc = SENTENCE.get_final_punc()
     return render_template('sent.html', sentence=SEG_HTML, raw=SENTENCE.original, document='',
                            record=SENTENCE.record, punc=punc, user=USER)
 
-@app.route('/fin', methods=['POST'])
+@app.route('/fin', methods=['GET', 'POST'])
 def fin():
-#    print("In fin...")
+    form = request.form
+    print("Form for fin: {}".format(form))
+    modo = form.get('modo')
     global SESSION
     global DOC
     global SENTENCE
@@ -260,7 +293,7 @@ def fin():
     quit(SESSION)
     SESSION = DOC = SENTENCE = SEGS = SEG_HTML = USER = None
     SINDEX = 0
-    return render_template('fin.html')
+    return render_template('fin.html', modo=modo)
 
 @app.route('/proyecto')
 def proyecto():
