@@ -40,12 +40,14 @@
 # -- Document TextArea gets cleared when "Salir" happens.
 # 2018.01-03
 # -- Comments in sent, error message for empty Doc in doc.
+# 2018.07-08
+# -- New GT-like interface: tra.html; OF_HTML, OF1
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user
+from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user, clean_sentence
 
 # Global variables for views; probably a better way to do this...
-SESSION = SPA = GRN = DOC = SENTENCE = SEGS = SEG_HTML = USER = OF_HTML = None
+SESSION = SPA = GRN = DOC = SENTENCE = SEGS = SEG_HTML = USER = OF_HTML = OF1 = None
 SINDEX = 0
 USERS_INITIALIZED = False
 
@@ -64,13 +66,6 @@ def init_session():
     # or if USE_ANON is True
     if not SESSION:
         SESSION = start(SPA, GRN, USER)
-
-#def ini_tra_ora():
-#    # Initialize a sentence translation session, without a user.
-#    global GRN
-#    global SPA
-#    if not SPA:
-#        load_languages()
 
 def load_languages():
     """Load Spanish and Guarani data."""
@@ -103,7 +98,12 @@ def solve_and_segment(single=False):
     print("Solved segs: {}".format(SEGS))
     if single:
         global OF_HTML
+        global OF1
+        cap = SENTENCE.capitalized
+        print("Sentence capitalized? {}".format(cap))
         OF_HTML = ''.join([s[-1] for s in SEG_HTML])
+        OF1 = clean_sentence(' '.join([s[4] for s in SEG_HTML]), cap)
+        print("OF1 {}".format(OF1))
         print("OF HTML {}".format(OF_HTML))
 
 @app.route('/')
@@ -180,6 +180,7 @@ def tra():
     global SENTENCE
     global DOC
     global SEG_HTML
+    global OF1
     form = request.form
     of = None
     print("Form for tra: {}".format(form))
@@ -194,9 +195,10 @@ def tra():
 #                               document=document, user=USER)
     if form.get('borrar') == 'true':
         DOC = SENTENCE = SEG_HTML = None
-        return render_template('tra.html', sentence=None, ofuente=None, translation=None, raw=None, punc=None)
+        return render_template('tra.html', sentence=None, ofuente=None, translation=None, raw=None, punc=None,
+                               mayus='')
     if not 'ofuente' in form:
-        return render_template('tra.html')
+        return render_template('tra.html', mayus='')
     if not DOC:
         # Create a new document
         of = form['ofuente']
@@ -217,7 +219,8 @@ def tra():
         print("  {}".format(s))
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
     punc = SENTENCE.get_final_punc()
-    return render_template('tra.html', sentence=OF_HTML, ofuente=of, translation=SEG_HTML, raw=SENTENCE.original, punc=punc)
+    return render_template('tra.html', sentence=OF_HTML, ofuente=of, translation=SEG_HTML, trans1=OF1,
+                           raw=SENTENCE.original, punc=punc, mayus=SENTENCE.capitalized)
 
 # View for document entry
 @app.route('/doc', methods=['GET', 'POST'])

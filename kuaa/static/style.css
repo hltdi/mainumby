@@ -196,9 +196,9 @@ td.mbojereha
 td.text
 {
         vertical-align: top;
-        text-align: center;
+        text-align: left;
         width: 100%;
-        border: 1px solid black;
+/*        border: 1px solid black; */
 }
 #help
 {

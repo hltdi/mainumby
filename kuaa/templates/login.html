@@ -7,8 +7,10 @@
 
 table.login
 {
-        width: 100%;
-        border: 2px solid black;
+    width: 70%;
+    border: 0px;
+    border-collapse: collapse;
+/*     border: 2px solid black; */
 }
 </style>
 
@@ -60,8 +62,8 @@ function account() {
 
 <body>
 
-<table class="center">
-  <tr>
+<table class="left">
+  <tr class='brown'>
     <td class="title">
     <a href="base">
     <img class='banner' src="{{url_for('static',
@@ -69,17 +71,17 @@ function account() {
       height="52px" />
     </a>
     </td>
-    <td class="menu" style="width: 300px"><button class="menu"
+    <td class="title" style="width: 440px">
+    <td class="menu" style="width: 500px"><button class="menu"
       onclick="loading()">CONTINUAR SIN IDENTIFICARTE</button></td>
-    <td class="menu" style="width: 100px"><input class="menu"
+    <td class="menu" style="width: 130px"><input class="menu"
       type="submit" value="SALIR" name="salir" onclick="return OnSalir();">
-    <td class="menu" style="width: 100px"><button class="menu"
+    <td class="menu" style="width: 130px"><button class="menu"
       onclick="ShowHelp();">AYUDA</button></td>
   </tr>
+</table>
 
-<tr>
-<td colspan="4" style="width:800px">
-<h2>Inicio de sesión</h2>
+<h1>Inicio de sesión</h1>
 
 {% if error %}
 <p class="error">
@@ -124,16 +126,8 @@ favor introducí otro nombre o ingresá sin identificarte.
 
 </table>
 
-</td>
-</tr>
-
-<tr>
-  <td colspan="3">
-    <p id="loading">
-    </p>
-  </td>
-</tr>
-</table>  
+<p id="loading">
+</p>
 
 </body>
 

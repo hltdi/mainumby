@@ -523,8 +523,19 @@ class Sentence:
         else:
             self.raw = raw
             self.tokens = None
+            self.rawtokens = None
         self.toktypes = toktypes
         self.original = original
+        # Set capitalization and final punctuation booleans
+        if self.original[0].isupper():
+            self.capitalized = True
+        else:
+            self.capitalized = False
+        if self.original[-1].isupper():
+            self.finalpunc = True
+        else:
+            self.finalpunc = False
+        print("New sentence; cap? {}".format(self.capitalized))
         # List of booleans, same length as self.tokens specifying whether the raw token was upper case
 #        self.isupper = []
         # Source language: a language object
@@ -2224,9 +2235,13 @@ class Solution:
         parens = []
         for segment in self.segments:
             if segment.has_paren:
-                tokens, color, html, index, src_html = segment.html
                 paren_seg = segment.paren_seg
-                ptokens, pcolor, phtml, pindex, psrc = paren_seg.html
+                if single:
+                    tokens, color, html, index, trans1, src_html = segment.html
+                    ptokens, pcolor, phtml, pindex, trans1, psrc = paren_seg.html
+                else:
+                    tokens, color, html, index, src_html = segment.html
+                    ptokens, pcolor, phtml, pindex, psrc = paren_seg.html
                 gui_src = segment.get_gui_source(pcolor)
                 preseg = tokens, color, html, index, gui_src[0]
                 parenseg = ptokens, pcolor, phtml, pindex, gui_src[1]
@@ -2235,8 +2250,7 @@ class Solution:
                 segments.extend([preseg, parenseg, postseg])
             elif not segment.is_paren:
                 segments.append(segment.html)
-#        for i, s in enumerate(segments):
-#            print("HTML for seg {}:".format(i))
-#            for ss in s:
-#                print("  {}".format(ss))
+#        if single:
+#            for i, s in enumerate(segments):
+#                print("Initial trans for seg {}: {}".format(i, s[4]))
         return segments

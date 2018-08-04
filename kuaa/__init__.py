@@ -118,6 +118,15 @@ def create_user(dct):
     """Create a user from the dict of form values from login.html."""
     return User.dict2user(dct)
 
+def clean_sentence(string, capitalize=True):
+    """Clean up sentence for display in interface.
+    Basically a duplicate of the Javascript function in tra.html and sent.html."""
+    string = string.replace("&nbsp;", ' ')
+    string = re.sub(r"\s+([.,;?!])", r"\1", string)
+    if capitalize:
+        string = string.capitalize()
+    return string
+
 # Import views. This has to appear after the app is created.
 import kuaa.views
 

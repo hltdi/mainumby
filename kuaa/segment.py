@@ -96,6 +96,7 @@ class SolSeg:
 #        print("Creating SolSeg for indices {}, translation {}, tgroups {}, tokens {}".format(indices, translation, tgroups, tokens))
         self.source = solution.source
         self.target = solution.target
+        self.sentence = solution.sentence
         self.indices = indices
         self.space_before = space_before
         # Are there any alternatives among the translations?
@@ -216,13 +217,17 @@ class SolSeg:
         if sentence:
             return SegRecord(self, sentence=sentence.record, session=session)
 
-    def set_source_html(self):
+    def set_source_html(self, index):
         if self.has_paren:
             self.source_html = "<span style='color:{};'> {} </span>".format(self.color, self.pre_token_str)
             self.source_html += "<span id=parenthetical> {} </span>".format(self.paren_token_str)
             self.source_html += "<span style='color:{};'> {} </span>".format(self.color, self.post_token_str)
         else:
-            self.source_html = "<span style='color:{};'> {} </span>".format(self.color, self.token_str)
+            cap = index == 0 and self.sentence.capitalized
+            tokstr = self.token_str
+            if cap:
+                tokstr = tokstr[0].upper() + tokstr[1:]
+            self.source_html = "<span style='color:{};'> {} </span>".format(self.color, tokstr)
 
     def get_gui_source(self, paren_color='Silver'):
         if self.has_paren:
@@ -238,7 +243,7 @@ class SolSeg:
         """
         # Combine translations where possible
         self.color = SolSeg.tt_notrans_color if not self.translation else SolSeg.tt_colors[index]
-        self.set_source_html()
+        self.set_source_html(index)
         transhtml = "<div class='desplegable'>"
         capitalized = False
         choice_list = self.record.choices if self.record else None
@@ -249,15 +254,18 @@ class SolSeg:
 #        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
         # T Group strings associated with each choice
         choice_tgroups = []
+        # Currently selected translation
+        trans1 = ''
         if self.is_punc:
             trans = self.translation[0][0]
+            trans1 = trans
             if '"' in trans:
                 trans = trans.replace('"', '\"')
             transhtml += "<button class='btndesplegable'>"
             transhtml += trans
             transhtml += "</button>"
             transhtml += '</div>'
-            self.html = (tokens, self.color, transhtml, index, self.source_html)
+            self.html = (tokens, self.color, transhtml, index, trans1, self.source_html)
             return
         # No dropdown if there's only 1 translation
         first_trans = True
@@ -296,17 +304,19 @@ class SolSeg:
                 tchoice = tchoice.replace('_', ' ')
                 alttchoice = tchoice.replace("'", "ʼ")
                 alttchoice = alttchoice.replace(" ", "&nbsp;")
-                choiceid = 'opcion{}'.format(trans_choice_index)
+                # ID for the current choice item
+                choiceid = 'opcion{}.{}'.format(index, trans_choice_index)
                 choice_tgroups.append(tcgroups)
                 # The button itself
                 if tindex == 0 and tcindex == 0:
+                    trans1 = alttchoice
                     if not multtrans:
                         # Only translation; no dropdown menu
                         transhtml += "<button class='btndesplegable' style='background-color:{}'>{}</button>".format(self.color, alttchoice)
                     else:
                         # First translation of multiple translations; make dropdown menu
                         transhtml += '<button onclick="Desplegar(' + "'{}')\"".format(despleg)
-                        transhtml += " id='{}' class='btndesplegable' style='background-color:{}'>{}</button>".format(boton, self.color, alttchoice)
+                        transhtml += " id='{}' class='btndesplegable' style='background-color:{};cursor:pointer'>{}</button>".format(boton, self.color, alttchoice)
                 else:
                     # Choice in menu under button
                     if trans_choice_index == 1:
@@ -317,6 +327,7 @@ class SolSeg:
                     transhtml += ">{}</span><br/>".format(alttchoice)
                 trans_choice_index += 1
         if not self.translation:
+            trans1 = orig_tokens
             # No translations suggested: button for translating as source
             multtrans = False
             transhtml += "<button class='btndesplegable'>"
@@ -345,7 +356,7 @@ class SolSeg:
         self.choice_tgroups = choice_tgroups
         if self.record:
             self.record.choice_tgroups = choice_tgroups
-        self.html = (orig_tokens, self.color, transhtml, index, self.source_html)
+        self.html = (orig_tokens, self.color, transhtml, index, trans1, self.source_html)
 
     def set_html(self, index, verbosity=0):
         """Set the HTML markup for this segment, given its position in the sentence,
@@ -353,7 +364,7 @@ class SolSeg:
         """
         # Combine translations where possible
         self.color = SolSeg.tt_notrans_color if not self.translation else SolSeg.tt_colors[index]
-        self.set_source_html()
+        self.set_source_html(index)
         transhtml = '<table>'
         capitalized = False
         choice_list = self.record.choices if self.record else None

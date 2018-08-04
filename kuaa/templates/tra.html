@@ -37,21 +37,23 @@ span.lengua
     font-size: 110%;
     font-weight: bold;
 }
+textarea.ofuente
+{
+    font-family: "Verdana";
+    resize: none;
+    font-size: 120%;
+    padding: 4px;
+}
 .btndesplegable {
     font-family: "Verdana";
     background-color: #666666;
     color: white;
-/*    padding: 8px; */
     font-size: 100%;
     border: none;
-    cursor: pointer;
 }
 
 .btndesplegable:hover, .btndesplegable:focus {
     background-color: #2980B9;
-/*    border-style: solid; */
-/*    border-width: 2px; */
-/*    border-color: pink; */
 }
 
 .opcion {
@@ -138,85 +140,6 @@ input.button:hover
 }
 </style>
 
-<script>
-function ShowHelp() {
-    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
-    helpWin.document.write('<html><head>' +
-'<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
-"<title>Mainumby: Ayuda</title></head><body>" +
-"<h4 class='help'>Ayuda para usar el traductor</h4>" +
-"<p class='help'>En esta página... " +
-"</p><p class='help'>" +
-"etc..." +
-"</p></body></html>");
-    document.Form1.ayuda.value = true;
-}
-function OnSalir()
-{
-    document.Form1.action = "fin";
-    document.Form1.target = "_self";     // Same window
-    document.Form1.submit();             // Submit the page
-    return true;
-}
-function Borrar()
-{
-//    alert("Borrando...");
-    document.Form2.borrar.value = 'true';
-    document.Form2.ofuente.value = '';
-//    document.getElementById("fuente").innerHTML = '';
-    document.Form2.submit();
-    return true;
-}
-function capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-function CleanSentence(string) {
-    // Remove extra spaces
-    string = string.replace(/\s+/g," ");
-    // Remove spaces before periods, commas, and semicolons
-    string = string.replace(" .", ".");
-    string = string.replace(" ,", ",");
-    string = string.replace(" ;", ";");
-    string = string.replace(" ?", "?");
-    return string
-}
-function limpiarGrn(string) {
-    // Clean up Guarani string, replacing characters if necessary.
-    string = string.replace(/[âä]/, "ã");
-    string = string.replace(/à/, "á");
-    string = string.replace(/[êë]/, "ẽ");
-    string = string.replace(/è/, "é");
-    string = string.replace(/[îï]/, "ĩ");
-    string = string.replace(/ì/, "í");
-    string = string.replace(/[ôö]/, "õ");
-    string = string.replace(/ò/, "ó");
-    string = string.replace(/[ûü]/, "ũ");
-    string = string.replace(/ù/, "ú");
-    string = string.replace(/[ŷÿ]/, "ỹ");
-    string = string.replace(/ỳ/, "ý");
-    string = string.replace(/[’`´°‘]/, "'");
-    string = string.replace(/ĝ/, "g̃");
-    return string;
-}
-function fuente() {
-    f = document.getElementById("fuente").innerHTML;
-    return f;
-}
-function fuenteNuevaLinea() {
-    f = fuente();
-    // May contain <br>
-    f = f.replace(/<br>/g, "");
-//    alert("OF " + f);
-    document.getElementById("fuente").innerHTML = f;
-    document.Form2.ofuente.value = f;
-    document.Form2.action = "tra";
-    document.Form2.submit();
-}
-function borrarFuente() {
-    document.getElementById("fuente").innerHTML = "";
-}
-</script>
-
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
 
 </head>
@@ -269,17 +192,24 @@ hac&eacute; clic en "Salir" si has terminado la sesión.
 <p id="error" class="error">
 </p>
 
-<h2>Traducción</h2>
+<h1>Traducción de palabras y oraciones</h1>
 
 <table class='left'>
   <tr>
     <td style="width: 600px">
-    <span class="lengua">Castellano</span><br />
-    <div id='fuente' contenteditable="true">{% if sentence %}{{sentence|safe}}{% endif %}</div>
+      <span class="lengua">Castellano</span>
     </td>
     <td style="width: 25px"></td>
     <td style="width: 600px">
-    <span class="lengua">Guaraní</span><br />
+      <span class="lengua">Guaraní</span>
+  </tr>
+  <tr>
+    <td>
+    <div id='fuente' contenteditable="true">{% if sentence %}{{sentence|safe}}{% endif %}</div>
+    </td>
+    <td>
+    </td>
+    <td>
     <div id='meta'>
     {% if translation %}
       {% for trans in translation %}
@@ -289,11 +219,19 @@ hac&eacute; clic en "Salir" si has terminado la sesión.
     </div>
     </td>
   </tr>
+  <tr>
+  <td><input type="button" value="Borrar" id="button"
+    onclick="Borrar()"></td>
+  <td></td>
+  <td>
+    <textarea class='ofuente' id='textfuente' style="width: 600px">{% if trans1 %}{{trans1|safe}}{% endif %}
+    </textarea>
+  </td>
+  </tr>
 </table>
 <form name="Form2" method=POST action='tra'>
 <input type="hidden" name="ofuente" value="">
 <input type="hidden" name="borrar" value=false>
-<input type="button" value="Borrar" id="button" onclick="Borrar()">
 </form>
 
 <script>
@@ -307,18 +245,114 @@ document.getElementById("fuente").addEventListener("keypress", function(event) {
    }
 });
 
+function ShowHelp() {
+    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
+    helpWin.document.write('<html><head>' +
+'<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
+"<title>Mainumby: Ayuda</title></head><body>" +
+"<h4 class='help'>Ayuda para usar el traductor</h4>" +
+"<p class='help'>En esta página... " +
+"</p><p class='help'>" +
+"etc..." +
+"</p></body></html>");
+    document.Form1.ayuda.value = true;
+}
+function OnSalir()
+{
+    document.Form1.action = "fin";
+    document.Form1.target = "_self";     // Same window
+    document.Form1.submit();             // Submit the page
+    return true;
+}
+function Borrar()
+{
+//    alert("Borrando...");
+    document.Form2.borrar.value = 'true';
+    document.Form2.ofuente.value = '';
+//    document.getElementById("fuente").innerHTML = '';
+    document.Form2.submit();
+    return true;
+}
+function mayuscula(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+function limpiarMeta(string) {
+    string = string.trim();
+    string = string.replace("&nbsp;", " ");
+    // Remove extra spaces
+    string = string.replace(/\s+/g," ");
+    // Remove spaces before periods, commas, and semicolons
+    string = string.replace(" .", ".");
+    string = string.replace(" ,", ",");
+    string = string.replace(" ;", ";");
+    string = string.replace(" ?", "?");
+    {% if mayus %}
+    string = mayuscula(string);
+    {% endif %}
+    return string;
+}
+function limpiarGrn(string) {
+    // Clean up Guarani string, replacing characters if necessary.
+    string = string.replace(/[âä]/, "ã");
+    string = string.replace(/à/, "á");
+    string = string.replace(/[êë]/, "ẽ");
+    string = string.replace(/è/, "é");
+    string = string.replace(/[îï]/, "ĩ");
+    string = string.replace(/ì/, "í");
+    string = string.replace(/[ôö]/, "õ");
+    string = string.replace(/ò/, "ó");
+    string = string.replace(/[ûü]/, "ũ");
+    string = string.replace(/ù/, "ú");
+    string = string.replace(/[ŷÿ]/, "ỹ");
+    string = string.replace(/ỳ/, "ý");
+    string = string.replace(/[’`´°‘]/, "'");
+    string = string.replace(/ĝ/, "g̃");
+    return string;
+}
+function fuente() {
+    f = document.getElementById("fuente").innerHTML;
+    return f;
+}
+function fuenteNuevaLinea() {
+    f = fuente();
+    // May contain <br>
+    f = f.replace(/<br>/g, "");
+//    alert("OF " + f);
+    document.getElementById("fuente").innerHTML = f;
+    document.Form2.ofuente.value = f;
+    document.Form2.action = "tra";
+    document.Form2.submit();
+}
+function borrarFuente() {
+    document.getElementById("fuente").innerHTML = "";
+}
+
 function cambiarMeta(button, choiceid) {
     newitem = document.getElementById(choiceid).innerHTML;
     olditem = document.getElementById(button).innerHTML;
-    alert("Changing item for choice " + choiceid + ": old item " + olditem + " and new item " + newitem);
+//    alert("Changing item for choice " + choiceid + ": old item " + olditem + " and new item " + newitem);
     document.getElementById(button).innerHTML = newitem;
     document.getElementById(choiceid).innerHTML = olditem;
+    actualTra();
 }
 
-/* When the user clicks on the button, 
-toggle between hiding and showing the dropdown content */
+/* When the user clicks on the button, toggle between hiding and showing the dropdown content */
 function Desplegar(button) {
     document.getElementById(button).classList.toggle("show");
+}
+
+/* Encuentra las traducciones de segmentos actualmente seleccionadas */
+function actualTra() {
+    var trans = "";
+    var dropdowns = document.getElementsByClassName("btndesplegable");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var dropdown = dropdowns[i];
+      var trans1 = dropdown.innerHTML;
+      trans = trans + " " + trans1;
+    }
+    trans = limpiarMeta(trans);
+    document.getElementById('textfuente').value = trans;
 }
 
 // Close the dropdown if the user clicks outside of it
