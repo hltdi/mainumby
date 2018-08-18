@@ -124,7 +124,7 @@ def clean_sentence(string, capitalize=True):
     string = string.replace("&nbsp;", ' ')
     string = re.sub(r"\s+([.,;?!])", r"\1", string)
     if capitalize:
-        string = string.capitalize()
+        string = string[0].upper() + string[1:]
     return string
 
 # Import views. This has to appear after the app is created.

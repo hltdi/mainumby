@@ -1798,7 +1798,7 @@ class Sentence:
     def get_html(self, single=False):
         """Create HTML for a sentence with no solution."""
         tokens = ' '.join(self.tokens)
-        source_html = "<span style='color:Silver;'> {} </span>".format(tokens)
+        tokens = SolSeg.clean_spec(tokens)
         if single:
             # Create button
             trans_html = "<div class='desplegable'>"
@@ -1806,12 +1806,14 @@ class Sentence:
             trans_html += tokens
             trans_html += "</button>"
             trans_html += '</div>'
+            source_html = "<span style='color:Silver;'> {} </span>".format(tokens)
         else:
             trans_html = "<table>"
             trans_html += '<tr><td class="source">'
             trans_html += '<input type="radio" name="choice" id="{}" value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
             trans_html += '</table>'
-        return [(self.raw, "Silver", trans_html, 0, source_html)]
+            source_html = "<span style='color:Silver;'> {} </span>".format(tokens)
+        return [(self.raw, "Silver", trans_html, 0, tokens, source_html)]
 
     def verbatim(self, node):
         """Use the source token in the target complete translation."""

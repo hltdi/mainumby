@@ -244,7 +244,7 @@ class SolSeg:
         # Combine translations where possible
         self.color = SolSeg.tt_notrans_color if not self.translation else SolSeg.tt_colors[index]
         self.set_source_html(index)
-        transhtml = "<div class='desplegable'>"
+        transhtml = "<div class='desplegable' ondrop='drop(event);' ondragover='allowDrop(event);'>"
         capitalized = False
         choice_list = self.record.choices if self.record else None
         # Final source segment output
@@ -256,14 +256,18 @@ class SolSeg:
         choice_tgroups = []
         # Currently selected translation
         trans1 = ''
+        despleg = "despleg{}".format(index)
+        boton = "boton{}".format(index)
+        wrap = "wrap{}".format(index)
         if self.is_punc:
             trans = self.translation[0][0]
             trans1 = trans
             if '"' in trans:
                 trans = trans.replace('"', '\"')
-            transhtml += "<button class='btndesplegable'>"
+            transhtml += "<div class='btndesplegable' id='{}'>".format(boton)
+#             draggable='true' ondragstart='drag(event);'>".format(boton)
             transhtml += trans
-            transhtml += "</button>"
+            transhtml += "</div>"
             transhtml += '</div>'
             self.html = (tokens, self.color, transhtml, index, trans1, self.source_html)
             return
@@ -271,8 +275,6 @@ class SolSeg:
         first_trans = True
         ntgroups = len(self.tgroups)
         multtrans = True
-        despleg = "despleg{}".format(index)
-        boton = "boton{}".format(index)
         for tindex, (t, tgroups) in enumerate(zip(self.cleaned_trans, self.tgroups)):
             # Create all combinations of word sequences
             tg_expanded = []
@@ -312,11 +314,14 @@ class SolSeg:
                     trans1 = alttchoice
                     if not multtrans:
                         # Only translation; no dropdown menu
-                        transhtml += "<button class='btndesplegable' style='background-color:{}'>{}</button>".format(self.color, alttchoice)
+                        transhtml += "<div class='btndesplegable' id='{}' ".format(boton)
+                        transhtml += "style='background-color:{}' draggable='true' ondragstart='drag(event);'>{}</div>".format(self.color, alttchoice)
                     else:
                         # First translation of multiple translations; make dropdown menu
-                        transhtml += '<button onclick="Desplegar(' + "'{}')\"".format(despleg)
-                        transhtml += " id='{}' class='btndesplegable' style='background-color:{};cursor:pointer'>{}</button>".format(boton, self.color, alttchoice)
+                        transhtml += '<div draggable="true" id="{}" ondragstart="drag(event);">'.format(wrap)
+#                        transhtml += '<div draggable="true" ondragstart="drag(event);" onclick="desplegar(' + "'{}')\"".format(despleg)
+                        transhtml += '<div onclick="desplegar(' + "'{}')\"".format(despleg)
+                        transhtml += " id='{}' class='btndesplegable' style='background-color:{};cursor:pointer'>{}</div>".format(boton, self.color, alttchoice)
                 else:
                     # Choice in menu under button
                     if trans_choice_index == 1:
@@ -330,11 +335,11 @@ class SolSeg:
             trans1 = orig_tokens
             # No translations suggested: button for translating as source
             multtrans = False
-            transhtml += "<button class='btndesplegable'>"
+            transhtml += "<div class='btndesplegable' id='{}' draggable='true' ondragstart='drag(event);'>".format(boton)
             transhtml += orig_tokens
-            transhtml += "</button>"
+            transhtml += "</div>"
         if multtrans:
-            transhtml += '</div>'
+            transhtml += '</div></div>'
         transhtml += '</div>'
         # Capitalize tokens if in first place        
         if index==0:

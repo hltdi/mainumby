@@ -37,7 +37,7 @@ span.lengua
     font-size: 110%;
     font-weight: bold;
 }
-textarea.ofuente
+textarea.ometa
 {
     font-family: "Verdana";
     resize: none;
@@ -49,12 +49,18 @@ textarea.ofuente
     background-color: #666666;
     color: white;
     font-size: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 2px;
+    margin: none;
     border: none;
 }
 
+/*
 .btndesplegable:hover, .btndesplegable:focus {
     background-color: #2980B9;
 }
+*/
 
 .opcion {
     font-size: 80%;
@@ -221,10 +227,10 @@ hac&eacute; clic en "Salir" si has terminado la sesión.
   </tr>
   <tr>
   <td><input type="button" value="Borrar" id="button"
-    onclick="Borrar()"></td>
+    onclick="borrar()"></td>
   <td></td>
   <td>
-    <textarea class='ofuente' id='textfuente' style="width: 600px">{% if trans1 %}{{trans1|safe}}{% endif %}
+    <textarea class='ometa' id='textmeta' style="width: 600px">{% if trans1 %}{{trans1|safe}}{% endif %}
     </textarea>
   </td>
   </tr>
@@ -264,7 +270,7 @@ function OnSalir()
     document.Form1.submit();             // Submit the page
     return true;
 }
-function Borrar()
+function borrar()
 {
 //    alert("Borrando...");
     document.Form2.borrar.value = 'true';
@@ -278,7 +284,8 @@ function mayuscula(string) {
 }
 function limpiarMeta(string) {
     string = string.trim();
-    string = string.replace("&nbsp;", " ");
+    // Convert non-breaking spaces to spaces.
+    string = string.replace(/\&nbsp;/g, ' ');
     // Remove extra spaces
     string = string.replace(/\s+/g," ");
     // Remove spaces before periods, commas, and semicolons
@@ -317,7 +324,6 @@ function fuenteNuevaLinea() {
     f = fuente();
     // May contain <br>
     f = f.replace(/<br>/g, "");
-//    alert("OF " + f);
     document.getElementById("fuente").innerHTML = f;
     document.Form2.ofuente.value = f;
     document.Form2.action = "tra";
@@ -337,7 +343,7 @@ function cambiarMeta(button, choiceid) {
 }
 
 /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
-function Desplegar(button) {
+function desplegar(button) {
     document.getElementById(button).classList.toggle("show");
 }
 
@@ -352,7 +358,30 @@ function actualTra() {
       trans = trans + " " + trans1;
     }
     trans = limpiarMeta(trans);
-    document.getElementById('textfuente').value = trans;
+    document.getElementById('textmeta').value = trans;
+}
+
+/* Drag and drop translation buttons */
+function allowDrop(ev) {
+//    alert("Allowing drop");
+    ev.preventDefault();
+}
+
+function drag(ev) {
+//    ev.preventDefault();
+//    alert("Dragging " + ev.target.id);
+    ev.dataTransfer.setData("text/plain", ev.target.id);
+}
+function drop(ev) {
+    ev.preventDefault();
+    var src = document.getElementById(ev.dataTransfer.getData("text/plain"));
+//    alert("Dropping " + src);
+    var srcParent = src.parentNode;
+    var tgt = ev.currentTarget.firstElementChild;
+    ev.currentTarget.replaceChild(src, tgt);
+    srcParent.appendChild(tgt);
+    // Update the sentence in the ometa textbox
+    actualTra();
 }
 
 // Close the dropdown if the user clicks outside of it

@@ -41,13 +41,13 @@
 # 2018.01-03
 # -- Comments in sent, error message for empty Doc in doc.
 # 2018.07-08
-# -- New GT-like interface: tra.html; OF_HTML, OF1
+# -- New GT-like interface: tra.html; OM_HTML, OM1
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
 from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user, clean_sentence
 
 # Global variables for views; probably a better way to do this...
-SESSION = SPA = GRN = DOC = SENTENCE = SEGS = SEG_HTML = USER = OF_HTML = OF1 = None
+SESSION = SPA = GRN = DOC = SENTENCE = SEGS = SEG_HTML = USER = OM_HTML = OM1 = None
 SINDEX = 0
 USERS_INITIALIZED = False
 
@@ -97,14 +97,14 @@ def solve_and_segment(single=False):
     SEGS, SEG_HTML = seg_trans(SENTENCE, SPA, GRN, single=single)
     print("Solved segs: {}".format(SEGS))
     if single:
-        global OF_HTML
-        global OF1
+        global OM_HTML
+        global OM1
         cap = SENTENCE.capitalized
         print("Sentence capitalized? {}".format(cap))
-        OF_HTML = ''.join([s[-1] for s in SEG_HTML])
-        OF1 = clean_sentence(' '.join([s[4] for s in SEG_HTML]), cap)
-        print("OF1 {}".format(OF1))
-        print("OF HTML {}".format(OF_HTML))
+        OM_HTML = ''.join([s[-1] for s in SEG_HTML])
+        OM1 = clean_sentence(' '.join([s[4] for s in SEG_HTML]), cap)
+#        print("OM1 {}".format(OM1))
+#        print("OM HTML {}".format(OM_HTML))
 
 @app.route('/')
 def index():
@@ -180,9 +180,9 @@ def tra():
     global SENTENCE
     global DOC
     global SEG_HTML
-    global OF1
+    global OM1
     form = request.form
-    of = None
+    om = None
     print("Form for tra: {}".format(form))
     if not SPA:
         load_languages()
@@ -219,7 +219,7 @@ def tra():
         print("  {}".format(s))
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
     punc = SENTENCE.get_final_punc()
-    return render_template('tra.html', sentence=OF_HTML, ofuente=of, translation=SEG_HTML, trans1=OF1,
+    return render_template('tra.html', sentence=OM_HTML, ofuente=of, translation=SEG_HTML, trans1=OM1,
                            raw=SENTENCE.original, punc=punc, mayus=SENTENCE.capitalized)
 
 # View for document entry
