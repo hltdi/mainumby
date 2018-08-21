@@ -48,8 +48,8 @@ function OnSalir()
 
 <form name="Form1" method=POST>
 
-<table class="center">
-  <tr>
+<table class="left">
+  <tr class='brown'>
     <td class="title">
     <a href="base">
     <img class='banner' src="{{url_for('static',
@@ -57,6 +57,7 @@ function OnSalir()
       height="52px" />
     </a>
     </td>
+    <td class="title" style="width: 700px"></td>
     <td class="menu" style="width: 250px">
       <input class="menu" type="submit" value="SALIR" name="salir" onclick="return OnSalir();">
     </td>
@@ -64,9 +65,7 @@ function OnSalir()
       <button class="menu" onclick="ShowHelp();">AYUDA</button>
     </td>
   </tr>
-
-<tr>
-<td colspan="3" style="width:800px">
+</table>
 {% if user %}
 <table class="title">
 <tr>

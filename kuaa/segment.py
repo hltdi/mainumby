@@ -264,7 +264,7 @@ class SolSeg:
             trans1 = trans
             if '"' in trans:
                 trans = trans.replace('"', '\"')
-            transhtml += "<div class='btndesplegable' id='{}'>".format(boton)
+            transhtml += "<div class='btndesplegable' id='{}' style='cursor:default'>".format(boton)
 #             draggable='true' ondragstart='drag(event);'>".format(boton)
             transhtml += trans
             transhtml += "</div>"
@@ -315,13 +315,12 @@ class SolSeg:
                     if not multtrans:
                         # Only translation; no dropdown menu
                         transhtml += "<div class='btndesplegable' id='{}' ".format(boton)
-                        transhtml += "style='background-color:{}' draggable='true' ondragstart='drag(event);'>{}</div>".format(self.color, alttchoice)
+                        transhtml += "style='background-color:{};cursor:grab' draggable='true' ondragstart='drag(event);'>{}</div>".format(self.color, alttchoice)
                     else:
                         # First translation of multiple translations; make dropdown menu
                         transhtml += '<div draggable="true" id="{}" ondragstart="drag(event);">'.format(wrap)
-#                        transhtml += '<div draggable="true" ondragstart="drag(event);" onclick="desplegar(' + "'{}')\"".format(despleg)
                         transhtml += '<div onclick="desplegar(' + "'{}')\"".format(despleg)
-                        transhtml += " id='{}' class='btndesplegable' style='background-color:{};cursor:pointer'>{}</div>".format(boton, self.color, alttchoice)
+                        transhtml += " id='{}' class='btndesplegable' style='background-color:{};cursor:context-menu'>{} ▾</div>".format(boton, self.color, alttchoice)
                 else:
                     # Choice in menu under button
                     if trans_choice_index == 1:
@@ -335,7 +334,7 @@ class SolSeg:
             trans1 = orig_tokens
             # No translations suggested: button for translating as source
             multtrans = False
-            transhtml += "<div class='btndesplegable' id='{}' draggable='true' ondragstart='drag(event);'>".format(boton)
+            transhtml += "<div class='btndesplegable' id='{}'  style='cursor:grab' draggable='true' ondragstart='drag(event);'>".format(boton)
             transhtml += orig_tokens
             transhtml += "</div>"
         if multtrans:

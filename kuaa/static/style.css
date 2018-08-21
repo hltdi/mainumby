@@ -9,10 +9,10 @@ body
 {
 	margin-left: 0pt;
 	margin-right: 0pt;
-	margin-top: 15pt;
-	margin-bottom: 15pt;
-	padding-left: 15pt;
-	padding-right: 15pt;
+	margin-top: 12pt;
+	margin-bottom: 12pt;
+	padding-left: 12pt;
+	padding-right: 12pt;
 	padding-top: 0;
 	padding-bottom: 0;
         font-size: 14px;
@@ -78,6 +78,12 @@ p.center
         margin-top: .5em;
         margin-bottom: .5em;
         text-align: center;
+}
+p.left
+{
+        margin-top: .5em;
+        margin-bottom: .5em;
+        text-align: left;
 }
 p.error
 {

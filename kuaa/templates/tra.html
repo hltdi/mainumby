@@ -8,7 +8,7 @@
 div#fuente
 {
     font-family: "Verdana";
-    font-size: 140%;
+    font-size: {% if tfuente %} {{tfuente}} {% else %} 140% {% endif %};
     font-weight: bold;
     resize: none;
     padding: 8px 8px;
@@ -22,7 +22,7 @@ div#fuente
 div#meta
 {
     font-family: "Verdana";
-    font-size: 140%;
+    font-size: {% if tfuente %} {{tfuente}} {% else %} 140% {% endif %};
     resize: none;
     padding: 8px 8px;
     margin: 8px 0;
@@ -34,7 +34,7 @@ div#meta
 }
 span.lengua
 {
-    font-size: 110%;
+    font-size: 120%;
     font-weight: bold;
 }
 textarea.ometa
@@ -63,7 +63,7 @@ textarea.ometa
 */
 
 .opcion {
-    font-size: 80%;
+    font-size: 100%;
     cursor: pointer;
 }
 
@@ -78,7 +78,8 @@ textarea.ometa
     background-color: #f1f1f1;
     min-width: 160px;
     overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 4px 4px;
+    box-shadow: 0px 8px 16px 8px rgba(0,0,0,0.4);
     z-index: 1;
 }
 
@@ -92,6 +93,18 @@ textarea.ometa
 .desplegable a:hover {background-color: #ddd;}
 
 .show {display: block;}
+
+textarea.instruc
+{
+   width: 100%;
+   font-family: "Verdana";
+   font-size: 100%;
+   font-style: italic;
+   height: 40px;
+   resize: none;
+   color: #00f;
+   border: none;
+}
 
 textarea#comment
 {
@@ -120,6 +133,7 @@ input.button:hover
 {
    background-color: #00f;
 }
+/*
 .tooltip {
     position: relative;
     display: inline-block;
@@ -138,12 +152,13 @@ input.button:hover
     position: absolute;
     top: 100%;
     left: 50%;
-    margin-left: -75px; /* Use half of the width (150/2 = 75), to center the tooltip */
+    margin-left: -75px;
     z-index: 1;
 }
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
+*/
 </style>
 
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
@@ -168,11 +183,11 @@ input.button:hover
     </td>
 
     <td class="menu" style="width: 200px">
-      <input class="menu" type="submit" value="SALIR" name="salir" onclick="return OnSalir();">
+      <input class="menu" type="submit" value="SALIR" name="salir" onclick="return alSalir();">
     </td>
 
     <td class="menu" style="width: 200px">
-      <button class="menu" onclick="ShowHelp();">AYUDA</button>
+      <button class="menu" onclick="mostrarAyuda();">AYUDA</button>
     </td>
     <input type="hidden" name="ayuda" value="">
     <input type="hidden" name="modo" value="ora">
@@ -209,6 +224,17 @@ hac&eacute; clic en "Salir" si has terminado la sesión.
     <td style="width: 600px">
       <span class="lengua">Guaraní</span>
   </tr>
+<!--
+  <tr>
+    <td class="instruc">
+      <textarea class="instruc" id="instruc_fuente">Escribí una palabra, frase, u oración en el espacio, y marcá nueva línea para traducirla.</textarea>
+    </td>
+    <td style="width: 25px"></td>
+    <td class="instruc">
+      <textarea class="instruc" id="instruc_meta"></textarea>
+    </td>
+  </tr>
+-->
   <tr>
     <td>
     <div id='fuente' contenteditable="true">{% if sentence %}{{sentence|safe}}{% endif %}</div>
@@ -238,6 +264,7 @@ hac&eacute; clic en "Salir" si has terminado la sesión.
 <form name="Form2" method=POST action='tra'>
 <input type="hidden" name="ofuente" value="">
 <input type="hidden" name="borrar" value=false>
+<input type="hidden" name="tfuente" value="140%">
 </form>
 
 <script>
@@ -245,13 +272,27 @@ document.getElementById("fuente").focus();
 
 document.getElementById("fuente").addEventListener("keypress", function(event) {
    key = event.which || event.keyCode;
+   longFuente();
    if (key == 13) {
        event.preventDefault();
        fuenteNuevaLinea();
    }
 });
 
-function ShowHelp() {
+function longFuente()
+{
+    f = document.getElementById("fuente");
+    t = f.innerHTML;
+    t = t.replace(/<br>/g, "");
+    l = t.length;
+    if (l > 40) {
+//        alert("Fuente length of " + t + ": " + l);
+        f.style.fontSize = "115%";
+        document.Form2.tfuente.value = "115%";
+    }
+}
+
+function mostrarAyuda() {
     var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
     helpWin.document.write('<html><head>' +
 '<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
@@ -263,8 +304,9 @@ function ShowHelp() {
 "</p></body></html>");
     document.Form1.ayuda.value = true;
 }
-function OnSalir()
+function alSalir()
 {
+    document.Form2.tfuente.value = "140%";
     document.Form1.action = "fin";
     document.Form1.target = "_self";     // Same window
     document.Form1.submit();             // Submit the page
@@ -272,26 +314,33 @@ function OnSalir()
 }
 function borrar()
 {
-//    alert("Borrando...");
     document.Form2.borrar.value = 'true';
     document.Form2.ofuente.value = '';
-//    document.getElementById("fuente").innerHTML = '';
+    document.Form2.tfuente.value = "140%";
     document.Form2.submit();
     return true;
 }
 function mayuscula(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+function agregarTri(string) {
+    return string + " \u25BE";
+}
+function eliminarTri(string) {
+    return string.replace(/ \u25BE/g, '');
+}
 function limpiarMeta(string) {
     string = string.trim();
     // Convert non-breaking spaces to spaces.
     string = string.replace(/\&nbsp;/g, ' ');
+    // Remove menu triangle.
+    string = string.replace(/ \u25BE/g, '');
     // Remove extra spaces
     string = string.replace(/\s+/g," ");
     // Remove spaces before periods, commas, and semicolons
-    string = string.replace(" .", ".");
-    string = string.replace(" ,", ",");
-    string = string.replace(" ;", ";");
+    string = string.replace(/ \./g, ".");
+    string = string.replace(/ \,/g, ",");
+    string = string.replace(/ \;/g, ";");
     string = string.replace(" ?", "?");
     {% if mayus %}
     string = mayuscula(string);
@@ -336,6 +385,9 @@ function borrarFuente() {
 function cambiarMeta(button, choiceid) {
     newitem = document.getElementById(choiceid).innerHTML;
     olditem = document.getElementById(button).innerHTML;
+    // Add and remove the menu dropdown triangle.
+    newitem = agregarTri(newitem);
+    olditem = eliminarTri(olditem);
 //    alert("Changing item for choice " + choiceid + ": old item " + olditem + " and new item " + newitem);
     document.getElementById(button).innerHTML = newitem;
     document.getElementById(choiceid).innerHTML = olditem;
@@ -370,6 +422,7 @@ function allowDrop(ev) {
 function drag(ev) {
 //    ev.preventDefault();
 //    alert("Dragging " + ev.target.id);
+    ev.dataTransfer.effectAllowed = "move";
     ev.dataTransfer.setData("text/plain", ev.target.id);
 }
 function drop(ev) {

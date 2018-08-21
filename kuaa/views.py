@@ -41,13 +41,13 @@
 # 2018.01-03
 # -- Comments in sent, error message for empty Doc in doc.
 # 2018.07-08
-# -- New GT-like interface: tra.html; OM_HTML, OM1
+# -- New GT-like interface: tra.html; OF_HTML, OM1
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
 from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user, clean_sentence
 
 # Global variables for views; probably a better way to do this...
-SESSION = SPA = GRN = DOC = SENTENCE = SEGS = SEG_HTML = USER = OM_HTML = OM1 = None
+SESSION = SPA = GRN = DOC = SENTENCE = SEGS = SEG_HTML = USER = OF_HTML = OM1 = None
 SINDEX = 0
 USERS_INITIALIZED = False
 
@@ -95,16 +95,16 @@ def solve_and_segment(single=False):
     global SEGS
     global SEG_HTML
     SEGS, SEG_HTML = seg_trans(SENTENCE, SPA, GRN, single=single)
-    print("Solved segs: {}".format(SEGS))
+#    print("Solved segs: {}".format(SEGS))
     if single:
-        global OM_HTML
+        global OF_HTML
         global OM1
         cap = SENTENCE.capitalized
         print("Sentence capitalized? {}".format(cap))
-        OM_HTML = ''.join([s[-1] for s in SEG_HTML])
+        OF_HTML = ''.join([s[-1] for s in SEG_HTML])
         OM1 = clean_sentence(' '.join([s[4] for s in SEG_HTML]), cap)
 #        print("OM1 {}".format(OM1))
-#        print("OM HTML {}".format(OM_HTML))
+#        print("OM HTML {}".format(OF_HTML))
 
 @app.route('/')
 def index():
@@ -173,7 +173,7 @@ def acct():
 #    print("In acct...")
     return render_template('acct.html')
 
-# View for quicker version of program that displays sentence and its translation in
+# View for quick version of program that displays sentence and its translation in
 # side-by-side windows.
 @app.route('/tra', methods=['GET', 'POST'])
 def tra():
@@ -182,7 +182,7 @@ def tra():
     global SEG_HTML
     global OM1
     form = request.form
-    om = None
+    of = None
     print("Form for tra: {}".format(form))
     if not SPA:
         load_languages()
@@ -196,7 +196,7 @@ def tra():
     if form.get('borrar') == 'true':
         DOC = SENTENCE = SEG_HTML = None
         return render_template('tra.html', sentence=None, ofuente=None, translation=None, raw=None, punc=None,
-                               mayus='')
+                               mayus='', tfuente="140%")
     if not 'ofuente' in form:
         return render_template('tra.html', mayus='')
     if not DOC:
@@ -207,20 +207,22 @@ def tra():
 #        print("Created document {}".format(DOC))
         if len(DOC) == 0:
             print(" But document is empty.")
-            return render_template('tra.html', error=True)
+            return render_template('tra.html', error=True, tfuente="140%")
     # Get the sentence, the only one in DOC
     SENTENCE = DOC[0]
     print("Actual oración {}".format(SENTENCE))
     # Translate and segment the sentence, assigning SEGS
     solve_and_segment(single=True)
-    print("Solved and segmented")
-    print("SEG HTML")
-    for s in SEG_HTML:
-        print("  {}".format(s))
+#    print("Solved and segmented")
+#    print("SEG HTML")
+#    for s in SEG_HTML:
+#        print("  {}".format(s))
+    tf = form.get('tfuente', "140%")
+    print("TFuente {}".format(tf))
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
     punc = SENTENCE.get_final_punc()
-    return render_template('tra.html', sentence=OM_HTML, ofuente=of, translation=SEG_HTML, trans1=OM1,
-                           raw=SENTENCE.original, punc=punc, mayus=SENTENCE.capitalized)
+    return render_template('tra.html', sentence=OF_HTML, ofuente=of, translation=SEG_HTML, trans1=OM1,
+                           raw=SENTENCE.original, punc=punc, mayus=SENTENCE.capitalized, tfuente=tf)
 
 # View for document entry
 @app.route('/doc', methods=['GET', 'POST'])
@@ -284,7 +286,7 @@ def sent():
 @app.route('/fin', methods=['GET', 'POST'])
 def fin():
     form = request.form
-    print("Form for fin: {}".format(form))
+#    print("Form for fin: {}".format(form))
     modo = form.get('modo')
     global SESSION
     global DOC

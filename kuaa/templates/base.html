@@ -49,7 +49,7 @@ function Traductor() {
     <img class='banner' src="{{url_for('static',
       filename='banner_logo.png')}}" alt="" width="300" height="52" />
     </td>
-    <td class="title" style="width: 700px">
+    <td class="title" style="width: 700px"></td>
 
     <td class="menu" style="width: 140px"><button class="menu" onclick="Traductor()">ORACIÓN</button></td>
     <td class="menu" style="width: 160px"><button class="menu" onclick="Login()">DOCUMENTO</button></td>
@@ -64,7 +64,7 @@ function Traductor() {
 <h1>¡Tereg̃uahẽ porãite Mainumby-me!</h1>
 
 <p class="instructions" id="instructions">
-  Para traducir una palabra, una frase, o una oración corta, hac&eacute; clic en "ORACIÓN".<br/>  
+  Si quer&eacute;s traducir una palabra, una frase, o una oración corta, hac&eacute; clic en "ORACIÓN".<br/>  
   Si estás traduciendo un documento y quer&eacute;s usar la interfaz
   para traductores, hacé clic en "DOCUMENTO".<br />
 <!--  Para saltar la registración y ir directamente a la interfaz de
@@ -79,31 +79,29 @@ function Traductor() {
 Mainumby es una aplicación experimental que ayuda a traducir del
 castellano al guaraní.
 Actualmente consiste en un <strong>traductor automático
-rudimentario (Mbojereha)</strong> y una interfaz para ususarios en este sitio web.
-Además el sistema va a construir una <strong>memoria de traducción (Mandu'a)</strong>, basada en
-las traducciones de futuros usuarios del sistema.
+  rudimentario</strong> y una interfaz para usuarios en este sitio
+  web.
+<!--  
+Además, el sistema va a construir una <strong>memoria de traducción</strong>, basada en
+  las traducciones de futuros usuarios del sistema.
+-->
 </p>
 <p>
-Mainumby no se diseñó para estudiantes del guaraní sino para
-personas que manejan tanto el castellano como el guaraní.
-Un usuario del sistema introduce un texto que quiere traducir, y
+  Un usuario de Mainumby
+  introduce una palabra, una frase, una oración,
+  o un documento castellano que quiere traducir, y
 el sistema le propone traducciones para frases en el texto.
-El usuario puede aceptar o rechazar las sugerencias del
-sistema, introduciendo sus propias traducciones, según su preferencia.
-El sistema mantiene una memoria del texto y la traducción creada por
+El usuario puede seleccionar entre las opciones ofrecidas o
+  rechazarlas,
+  introduciendo su propia traducción, según su preferencia.
+El sistema mantiene una memoria de la traducción creada por
 el usuario, y el usuario puede guardar este texto en cada momento
 durante el proceso.
-</p>
-  <!--
-  <p>
-  <a href="proyecto">Aprender más sobre el proyecto.</a>
-  </p>
-  -->
 
 <h2>¿Cómo funciona?</h2>
 
 <p>
-  El traductor Mbojereha tiene un diccionario bilingüe de frases y
+  Mainumby tiene un diccionario bilingüe de frases y
   conocimiento básico de la gramática castellana, la
   gramática guaraní, y las relaciones entre ellas.
   El diccionario y la gramática se basan en varios recursos publicados o
@@ -112,20 +110,18 @@ durante el proceso.
 <p>
   Para cada oración castellana que el usuario introduce, Mainumby
   analiza las palabras, extrayendo las raíces y las propiedades gramáticas.
-  Entonces busca frases en la oración analizada
-  que coinciden con frases en su diccionario.
-  Finalmente, para cada frase genera una o más traducciones en guaraní, usando
+  Entonces busca frases en la oración analizada que coinciden con frases en su diccionario.
+  Finalmente, para cada frase coincidente genera una o más traducciones en guaraní, usando
   su conocimiento de la morfología y ortografía del idioma.
-  En la interfaz, se le muestran estos resultados al
-  usuario.
+  En la interfaz, se le muestran estos resultados al usuario.
 </p>
 <p>
   Cuando el usuario corrige la salida del sistema o reemplaza una
-  traducción por una diferente, Mbojereha aprende de esta
-  retroalimentación, mejorando su diccionario y talvez su conocimiento
+  traducción por una diferente, Mainumby aprende de esta
+  retroalimentación, mejorando su diccionario o su conocimiento
   gramatical.
-  Además Mainumby añade la traducción dada por el usuario a Mandu'a, su
-  memoria de traducción, de manera que se use en sesiones futuras cuando
+  Además Mainumby añade la traducción producida por el usuario a una
+  <strong>memoria de traducción</strong>, de manera que se use en sesiones futuras cuando
   otro usuario traduzca una oración semejante.
 </p>
 <p>
