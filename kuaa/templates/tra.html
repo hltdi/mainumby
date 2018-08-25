@@ -12,7 +12,7 @@ div#fuente
     font-weight: bold;
     resize: none;
     padding: 8px 8px;
-    margin: 8px 0;
+    margin: 6px 0;
     box-sizing: border-box;
     width: 100%;
     height: 56pt;
@@ -25,7 +25,7 @@ div#meta
     font-size: {% if tfuente %} {{tfuente}} {% else %} 140% {% endif %};
     resize: none;
     padding: 8px 8px;
-    margin: 8px 0;
+    margin: 6px 0;
     box-sizing: border-box;
     width: 100%;
     height: 56pt;
@@ -42,7 +42,8 @@ textarea.ometa
     font-family: "Verdana";
     resize: none;
     font-size: 120%;
-    padding: 4px;
+    padding: 4px 4px;
+    margin: 18px 0px 6px 0px;
 }
 .btndesplegable {
     font-family: "Verdana";
@@ -83,6 +84,7 @@ textarea.ometa
     z-index: 1;
 }
 
+/*
 .contenido-desplegable a {
     color: black;
     padding: 12px 16px;
@@ -91,19 +93,23 @@ textarea.ometa
 }
 
 .desplegable a:hover {background-color: #ddd;}
+*/
 
 .show {display: block;}
 
-textarea.instruc
+td.instruc
 {
+   vertical-align: top;
+}
+div.instruc
+{
+   vertical-align: top;
+   line-height: 1.1;
    width: 100%;
    font-family: "Verdana";
    font-size: 100%;
-   font-style: italic;
-   height: 40px;
-   resize: none;
-   color: #00f;
    border: none;
+   margin: none;
 }
 
 textarea#comment
@@ -113,50 +119,19 @@ textarea#comment
    width: 380px;
    height: 50px;
 }
-textarea#segment
-{
-   font-family: "Verdana";
-   font-size: 100%;
-   width: 380px;
-   height: 20px;
-}
+/*
 input.button
 {
    background-color: #00a;
    color: #fff;
    font-family: "Verdana";
-   font-size: 100%;
+   font-size: 120%;
    align: center;
    width: 100%;
 }
 input.button:hover
 {
    background-color: #00f;
-}
-/*
-.tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
-}
-.tooltip .tooltiptext {
-    visibility: hidden;
-    width: 150px;
-    background-color: black;
-    font-size: 80%;
-    font-weight: normal;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -75px;
-    z-index: 1;
-}
-.tooltip:hover .tooltiptext {
-    visibility: visible;
 }
 */
 </style>
@@ -216,6 +191,7 @@ hac&eacute; clic en "Salir" si has terminado la sesión.
 <h1>Traducción de palabras y oraciones</h1>
 
 <table class='left'>
+
   <tr>
     <td style="width: 600px">
       <span class="lengua">Castellano</span>
@@ -224,23 +200,14 @@ hac&eacute; clic en "Salir" si has terminado la sesión.
     <td style="width: 600px">
       <span class="lengua">Guaraní</span>
   </tr>
-<!--
-  <tr>
-    <td class="instruc">
-      <textarea class="instruc" id="instruc_fuente">Escribí una palabra, frase, u oración en el espacio, y marcá nueva línea para traducirla.</textarea>
-    </td>
-    <td style="width: 25px"></td>
-    <td class="instruc">
-      <textarea class="instruc" id="instruc_meta"></textarea>
-    </td>
-  </tr>
--->
+
   <tr>
     <td>
     <div id='fuente' contenteditable="true">{% if sentence %}{{sentence|safe}}{% endif %}</div>
     </td>
-    <td>
-    </td>
+
+    <td></td>
+
     <td>
     <div id='meta'>
     {% if translation %}
@@ -251,16 +218,50 @@ hac&eacute; clic en "Salir" si has terminado la sesión.
     </div>
     </td>
   </tr>
+
   <tr>
-  <td><input type="button" value="Borrar" id="button"
-    onclick="borrar()"></td>
-  <td></td>
-  <td>
-    <textarea class='ometa' id='textmeta' style="width: 600px">{% if trans1 %}{{trans1|safe}}{% endif %}
-    </textarea>
-  </td>
+    <td class='instruc'>
+    {% if sentence %}
+    <input type="button" value="Borrar" id="button" onclick="borrar()">
+    {% else %}
+    <div class="instruc" id="instruc_fuente">Escribí una palabra,
+    frase, u oración, y luego presioná Intro/Enter para traducirla.</div>
+    {% endif %}
+    </td>
+
+    <td></td>
+
+    <td class='instruc'>
+    {% if trans1 %}
+    <div class='instruc'>
+    • Para segmentos marcados con "▾", pod&eacute;s seleccionar otra opción.<br />
+    • Para cambiar la posición de un segmento, arrastralo sobre otro segmento.</div>
+    {% endif %}
+    </td>
   </tr>
+
+  {% if trans1 %}
+  <tr>
+    <td></td><td></td>
+    <td>
+      <textarea class='ometa' id='textmeta' style='width: 600px'>{{trans1|safe}}</textarea>
+    </td>
+  </tr>
+
+  <tr>
+    <td></td><td></td>
+    <td class='instruc'>
+      <div class="instruc" id="instruc_trad">• Si no estás satisfecho
+    con la traducción, pod&eacute;s editarla.<br />
+	• Para copiar la traducción al portapapeles, presioná el botón.
+      </div><br />
+      <input type="button" value="Copiar" id="button" onclick="copiar()">
+    </td>
+  </tr>
+  {% endif %}
+
 </table>
+
 <form name="Form2" method=POST action='tra'>
 <input type="hidden" name="ofuente" value="">
 <input type="hidden" name="borrar" value=false>
@@ -320,6 +321,12 @@ function borrar()
     document.Form2.submit();
     return true;
 }
+function copiar()
+{
+    textmeta = document.getElementById("textmeta");
+    textmeta.select();
+    document.execCommand("copy");
+}
 function mayuscula(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -330,6 +337,8 @@ function eliminarTri(string) {
     return string.replace(/ \u25BE/g, '');
 }
 function limpiarMeta(string) {
+    // Remove line breaks.
+    string = string.replace(/(\r\n|\n|\r)/gm, "");
     string = string.trim();
     // Convert non-breaking spaces to spaces.
     string = string.replace(/\&nbsp;/g, ' ');

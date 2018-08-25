@@ -107,6 +107,8 @@
 # -- Simplification of matching words with categories in groups.
 # 2018.03
 # -- Gaps (position in group, minimum/maximum tokens) now need to specified to be allowed.
+# 2018.08
+# -- Fixed ir/ser confusion in morphosyns (I think). So <ser_v adj> now matches "fue malo".
 
 import copy, itertools
 import yaml
@@ -124,7 +126,7 @@ ATTRIB_SEP = ';'
 WITHIN_ATTRIB_SEP = ','
 ## Regular expressions for reading groups from text files
 # non-empty form string followed by possibly empty FS string
-FORM_FEATS = re.compile("([$%~<'`^*¿?¡!|()\-\w]+)\s*((?:\[.+\])?)$")
+FORM_FEATS = re.compile("([$%~<'`^*¿?¡!|()\-\w̃]+)\s*((?:\[.+\])?)$")
 # !FS(#1-#2), representing a sequence of #1 to #2 negative FS matches
 NEG_FEATS = re.compile("\s*!(\[.+\])(\(\d-\d\))$")
 # fail if category or feature matches an item that otherwise fails (before cat token)
@@ -1376,7 +1378,17 @@ class MorphoSyn(Entry):
         matched_anals = []
         for anal in sanals:
             root = anal['root']
-            if any([root == f for f in pforms]):
+            if FORMALT_SEP in root:
+                roots, pos = root.split('_')
+                roots = roots.split(FORMALT_SEP)
+                roots = [(r + '_' + pos) for r in roots]
+                if self.debug:
+                    print("  Roots {}".format(roots))
+                if any([r == f for f in pforms for r in roots]):
+                    matched_anals.append(anal['features'])
+                else:
+                    matched_anals.append(False)
+            elif any([root == f for f in pforms]):
                 matched_anals.append(anal['features'])
             else:
                 matched_anals.append(False)
@@ -1560,7 +1572,7 @@ class MorphoSyn(Entry):
                     else:
                         s_feats = s_anal['features']
                         if self.debug:
-                            print("  m_feats {} (type {}), s_feats {}".format(m_feats, type(m_feats), s_feats))
+                            print("  m_feats {} (type {}), s_feats {}".format(m_feats, type(m_feats), s_feats.__repr__()))
                         if s_feats != m_feats:
                             # Replace sentence features with match features if something
                             # has changed

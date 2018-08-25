@@ -527,15 +527,15 @@ class Sentence:
         self.toktypes = toktypes
         self.original = original
         # Set capitalization and final punctuation booleans
-        if self.original[0].isupper():
+        if not self.original or self.original[0].isupper():
             self.capitalized = True
         else:
             self.capitalized = False
-        if self.original[-1].isupper():
+        if not self.original or self.original[-1].isupper():
             self.finalpunc = True
         else:
             self.finalpunc = False
-        print("New sentence; cap? {}".format(self.capitalized))
+#        print("New sentence; cap? {}".format(self.capitalized))
         # List of booleans, same length as self.tokens specifying whether the raw token was upper case
 #        self.isupper = []
         # Source language: a language object

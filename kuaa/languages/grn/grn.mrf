@@ -9,7 +9,7 @@ seg: a e i o u y á é í ó ú ý ã ẽ ĩ õ ũ ỹ
 accent:   a:á, e:é, i:í, o:ó, u:ú, y:ý
 deaccent: á:a, é:e, í:i, ó:o, ú:u, ý:y
 
-clean: g̃, ğ = ĝ
+clean: ğ = ĝ
 clean: ä, â = ã
 clean: ë, ê = ẽ
 clean: ï, î = ĩ

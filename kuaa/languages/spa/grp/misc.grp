@@ -256,18 +256,18 @@
 ** de pronto ; ^ pronto 1
 ->grn sapy'a
 ** muy pronto ; ^ pronto 1
-->grn aĝaite
+->grn ag̃aite
 ** pronto ; ^ pronto 0
 ->grn pya'evoi
 ->grn voi
 ** en el acto ; ^ acto 2
-->grn ko'aĝaite
+->grn ko'ag̃aite
 ** ahora mismo ; ^ ahora 0
-->grn aĝaite
-->grn ko'aĝaite
+->grn ag̃aite
+->grn ko'ag̃aite
 ** ahora ; ^ ahora 0
-->grn ko'áĝa
-->grn áĝa
+->grn ko'ág̃a
+->grn ág̃a
 ** anoche ; ^ anoche 0
 ->grn angepyhare
 ** anteayer ; ^ anteayer 0
@@ -292,8 +292,8 @@
 ->grn ymave
 ** enseguida ; ^ enseguida 0
 ->grn mandi
-->grn aĝaite
-->grn ko'aĝaite
+->grn ag̃aite
+->grn ko'ag̃aite
 ->grn voi
 ** entonces ; ^ entonces 0
 ->grn aipóramo
@@ -313,7 +313,7 @@
 ->grn angete
 ** hoy ; ^ hoy 0
 ->grn ange
-->grn ko'áĝa
+->grn ko'ág̃a
 ** el mediodía ; ^ mediodía 1
 ->grn asaje
 ** en punto de mediodía ; ^ mediodía 3
@@ -347,7 +347,7 @@
 ** más tarde ; ^ tarde 1
 ->grn kurive
 ** un poco más tarde ; ^ tarde 3
-->grn aĝamive
+->grn ag̃amive
 ** a la tardecita ; ^ tardecita 2
 ->grn ka'aruete
 ** más largo tiempo ; ^ tiempo 2
@@ -383,7 +383,7 @@
 ->grn arakue
 ->grn árape
 ** este día ; ^ día 1
-->grn ko'áĝa
+->grn ko'ág̃a
 ** días pasados ; ^ días 0
 ->grn kokueheve
 ** todos los días ; ^ días 2
@@ -1047,11 +1047,11 @@
 ->grn $n mbytépe ; || 1, 0
 ### CERCA (DE)
 ** cerca de $n ; ^ cerca 0
-->grn $n aĝui ; || 1, -1, 0
+->grn $n ag̃ui ; || 1, -1, 0
 ** cerca ; ^ cerca 0
-->grn aĝui
+->grn ag̃ui
 ** muy cerca ; ^ cerca 1
-->grn aĝuiete
+->grn ag̃uiete
 ### LEJOS
 ** de lejos ; ^ lejos 1
 ->grn mombyrygua
@@ -1059,7 +1059,7 @@
 ->grn mombyry
 ### PARA
 ** para $n ; ^ para 0
-->grn $n haĝua ; || 1, 0
+->grn $n hag̃ua ; || 1, 0
 ** para sí mismo ; ^ para 0
 ->grn ojuehe
 ### ALREDEDOR (DE)
@@ -1758,12 +1758,12 @@
 ** por propia iniciativa ; ^ iniciativa 2
 ->grn ijehegui
 ** inmediatamente ; ^ inmediatamente 0
-->grn aĝaite
-->grn ko'aĝaite
+->grn ag̃aite
+->grn ko'ag̃aite
 ->grn mandi
 ->grn mandivoi
 ** inmediato ; ^ inmediato 0
-->grn aĝui
+->grn ag̃ui
 ** al instante ; ^ instante 1
 ->grn hakukuére
 ->grn mandi
@@ -1801,7 +1801,7 @@
 ** juntamente ; ^ juntamente 0
 ->grn joa
 ** junto ; ^ junto 0
-->grn aĝui
+->grn ag̃ui
 ->grn ndive
 ** juntos ; ^ juntos 0
 ->grn joa
@@ -1831,7 +1831,7 @@
 ->grn upéicha
 ** luego ; ^ luego 0
 ->grn aipóramo
-->grn ko'aĝaite
+->grn ko'ag̃aite
 ->grn mandivoi
 ->grn upéi
 ** mal ; ^ mal 0
@@ -1861,7 +1861,7 @@
 ** de que manera ; ^ manera 2
 ->grn mba'éichapa
 ** de manera que ; ^ manera 1
-->grn haĝuáicha
+->grn hag̃uáicha
 ** de todas maneras ; ^ maneras 2
 ->grn opáicha
 ** al margen ; ^ margen 1
@@ -2061,9 +2061,9 @@
 ** proximidad ; ^ proximidad 0
 ->grn ypýpe
 ** muy próximo ; ^ próximo 1
-->grn aĝuiete
+->grn ag̃uiete
 ** próximo ; ^ próximo 0
-->grn aĝui
+->grn ag̃ui
 ** pseudo- $n; ^ pseudo- 0
 ->grn $n gua'u ; || 1, 0
 ** del pueblo ; ^ pueblo 1
@@ -2164,7 +2164,7 @@
 ** muy seguidamente ; ^ seguidamente 1
 ->grn py'ỹi
 ** seguidamente ; ^ seguidamente 0
-->grn ko'aĝaite
+->grn ko'ag̃aite
 ->grn mandi
 ->grn mandivoi
 ->grn mante

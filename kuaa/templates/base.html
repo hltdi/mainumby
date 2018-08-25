@@ -1,41 +1,73 @@
 <!doctype html>
 <html lang="es">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
+<style>
+.despleg-wrap {
+    float: left;
+    overflow: hidden;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-color: #4B2B17;
+    color: #8DEDCD;
+    padding: none;
+    margin: 0;
+}
+
+.despleg {
+    position: relative;
+    display: inline-block;
+    background-color: #4B2B17;
+    color: #8DEDCD;
+    font-family: "Verdana";
+    font-size: 100%;
+    text-align: right;
+    padding-right: 4pt;
+    padding-bottom: 0;
+    cursor: pointer;
+    border: 0;
+}
+.despleg:hover, .despleg:active, .despleg:focus
+{
+    color: #F5E754;
+    border: 0;
+    outline: none;
+}
+
+.contenido-despleg {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 100px;
+    text-align: left;
+    overflow: auto;
+    padding: 5px 0px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.opinic {
+    color: black;
+    cursor: pointer;
+    display: block;
+    padding: 0;
+}
+.contenido-despleg span {
+    color: black;
+    padding: 3px 7px;
+    text-decoration: none;
+    display: block;
+}
+
+/*
+.contenido-despleg span:hover {background-color: #ddd;}
+*/
+.show {display: block;}
+</style>
 
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
-
-<script>
-function ShowHelp() {
-    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=600,height=400");
-    helpWin.document.write('<html><head>' +
-'<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
-"<title>Mainumby: Ayuda</title></head><body>" +
-"<h4 class='help'>Ayuda general para la aplicación</h4>" +
-"</body></html>");
-}
-function Shortcut() {
-    form = document.getElementById("form");
-    document.getElementById("instructions").innerHTML = "";
-    document.getElementById("buttons").innerHTML = "";
-    document.getElementById("intro").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
-    form.action = "doc";
-    form.submit();
-}
-function Login() {
-    form = document.getElementById("form");
-    form.action = "login";
-    form.submit();
-}
-function Traductor() {
-    form = document.getElementById("form");
-    document.getElementById("instructions").innerHTML = "";
-    document.getElementById("buttons").innerHTML = "";
-    document.getElementById("intro").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
-    form.action = "tra";
-    form.submit();
-}
-</script>
 
 </head>
 
@@ -51,25 +83,30 @@ function Traductor() {
     </td>
     <td class="title" style="width: 700px"></td>
 
-    <td class="menu" style="width: 140px"><button class="menu" onclick="Traductor()">ORACIÓN</button></td>
-    <td class="menu" style="width: 160px"><button class="menu" onclick="Login()">DOCUMENTO</button></td>
-    <td class="menu" style="width: 140px"><a href="proyecto">PROYECTO</a></td>
-    <td class="menu" style="width: 140px"><a href="contacto">CONTACTO</a></td>
+    <td class="menu" style="width: 200px">
+      <div class='despleg-wrap'>
+      <button type="button" class="despleg" onclick="mostrarDespleg()">INICIAR SESIÓN ▾</button>
+      <div id="menudespleg" class="contenido-despleg">
+        <span class='opinic' onclick="Traducir()">ORACIÓN</span>
+	<span class='opinic' onclick="ingresar()">DOCUMENTO</span>
+      </div>
+      </div>
+    </td>
+    <td class="menu" style="width: 150px"><a href="proyecto">PROYECTO</a></td>
+    <td class="menu" style="width: 150px"><a href="contacto">CONTACTO</a></td>
 
   </tr>
 </table>
-<!-- <tr>
-<td colspan="5" style="width:800px">
--->
-<h1>¡Tereg̃uahẽ porãite Mainumby-me!</h1>
 
+<h1>¡Tereg̃uahẽ porãite Mainumby-me!</h1>
+<!--
 <p class="instructions" id="instructions">
   Si quer&eacute;s traducir una palabra, una frase, o una oración corta, hac&eacute; clic en "ORACIÓN".<br/>  
   Si estás traduciendo un documento y quer&eacute;s usar la interfaz
   para traductores, hacé clic en "DOCUMENTO".<br />
-<!--  Para saltar la registración y ir directamente a la interfaz de
-  traducción, hacé clic en "ATAJO A INTERFAZ". -->
+  traducción, hacé clic en "ATAJO A INTERFAZ".
 </p>
+-->
 
 <div id="intro">    
 
@@ -129,14 +166,72 @@ durante el proceso.
 </p>
 </div>
 						      
-<hr/>
-
-<p id='buttons'>
-  <input type="button" value="Oración" id="button" onclick="Traductor()">
-  <input type="submit" value="Documento" id="button" onclick="Login()">
+<h2>Inicio de una sesión</h2>
+<p>
+  Si quer&eacute;s traducir una palabra, una frase, o una oración corta, hac&eacute; clic en "ORACIÓN".<br/>  
+  Si estás traduciendo un documento y quer&eacute;s usar la interfaz
+  para traductores, hacé clic en "DOCUMENTO".
 </p>
 
+<p id='buttons'>
+  <input type="button" value="ORACIÓN" id="button" onclick="Traducir()">
+  <input type="submit" value="DOCUMENTO" id="button" onclick="ingresar()">
+</p>
 </form>
+
+<script>
+function ShowHelp() {
+    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=600,height=400");
+    helpWin.document.write('<html><head>' +
+'<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
+"<title>Mainumby: Ayuda</title></head><body>" +
+"<h4 class='help'>Ayuda general para la aplicación</h4>" +
+"</body></html>");
+}
+/*
+function Shortcut() {
+    form = document.getElementById("form");
+    document.getElementById("instructions").innerHTML = "";
+    document.getElementById("buttons").innerHTML = "";
+    document.getElementById("intro").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
+    form.action = "doc";
+    form.submit();
+}
+*/
+function ingresar() {
+    form = document.getElementById("form");
+    form.action = "login";
+    form.submit();
+}
+function Traducir() {
+    form = document.getElementById("form");
+//    document.getElementById("instructions").innerHTML = "";
+    document.getElementById("buttons").innerHTML = "";
+    document.getElementById("intro").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
+    form.action = "tra";
+    form.submit();
+}
+/* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+function mostrarDespleg() {
+    menu = document.getElementById("menudespleg");
+    list = menu.classList;
+    list.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.despleg')) {
+    var dropdowns = document.getElementsByClassName("contenido-despleg");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>
 
 </body>
 </html>

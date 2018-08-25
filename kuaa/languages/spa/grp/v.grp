@@ -8096,14 +8096,11 @@
 ->grn mbohysýi_v[cat=a]
 ** clausurar_v[-r,+fin] a $n ; ^ clausurar_v 0
 ->grn mboty_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
-->grn ñemohu'ã_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
-->grn ñemomba_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ** clausurar_v[+r,+fin] ; ^ clausurar_v 0
 ->grn ñemboty_v[cat=a] ; #14
 ->grn jejapopa_v[cat=a] ; #2
 ** clausurar_v[-r,+fin] ; ^ clausurar_v 0
 ->grn mboty_v[cat=a] ; #68
-->grn ñemohu'ã_v[cat=a]
 ->grn ñemomba_v[cat=a]
 ** coagular_v[-r,+fin] a $n ; ^ coagular_v 0
 ->grn mboypy'a_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
@@ -10829,14 +10826,10 @@
 ->grn 'yga_v[cat=che]
 ** finalizar_v[-r,+fin] a $n ; ^ finalizar_v 0
 ->grn momba_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
-->grn ñemohu'ã_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
-->grn ñemomba_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ** finalizar_v[+r,+fin] ; ^ finalizar_v 0
 ->grn jejapopa_v[cat=a]
 ** finalizar_v[-r,+fin] ; ^ finalizar_v 0 ; #1
 ->grn momba_v[cat=a] ; #2
-->grn ñemohu'ã_v[cat=a]
-->grn ñemomba_v[cat=a]
 ** flagelar_v[-r,+fin] a $n ; ^ flagelar_v 0
 ->grn <havira_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ->grn mbyapepu_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1

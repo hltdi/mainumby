@@ -467,9 +467,9 @@ class SolSeg:
         if self.record:
             self.record.choice_tgroups = choice_tgroups
         self.html = (orig_tokens, self.color, transhtml, index, self.source_html)
-        print("HTML for {}".format(self))
-        for h in self.html:
-            print(" {}".format(h))
+#        print("HTML for {}".format(self))
+#        for h in self.html:
+#            print(" {}".format(h))
 
 #    @staticmethod
 #    def list_html(segments):

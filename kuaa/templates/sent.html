@@ -463,17 +463,17 @@ function limpiarGrn(string) {
 
 <body>
 
-<table class="center">
+<table class="left">
 <form name="Form1" method=POST>
 
-  <tr>
+  <tr class="brown">
     <td class="title">
     <a href="base">
-    <img class='banner' src="{{url_for('static',
-      filename='banner_logo.png')}}" alt="" width="300px"
+    <img class='banner' src="{{url_for('static', filename='banner_logo.png')}}" alt="" width="300px"
       height="52px" />
     </a>
     </td>
+    <td style="width: 700px">
     <td class="menu" style="width: 200px">
       <input type="submit" class="menu" action="sent" name="sent" value="PRÓXIMA ORACIÓN">
     </td>
@@ -486,9 +486,12 @@ function limpiarGrn(string) {
     <input type="hidden" name="ayuda" value="">
     </tr>
 </form>
+</table>
 
+<!--
 <tr>
-<td colspan="4" style="width:800px">  
+  <td colspan="4" style="width:800px">
+-->
 
 {% if user %}
 <table class="title">
@@ -551,7 +554,7 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
     </td>
   </tr>
   <tr class="transtitle">
-    <td class="trans" colspan='2'>Sugerencias de Mbojereha</td>
+    <td class="trans" colspan='2'>Sugerencias de Mainumby</td>
   </tr>
   <tr class="trans">
     <td class="transchoice" colspan='2'>
@@ -628,9 +631,6 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
     </td>
   </tr>
 </form>  
-</table>
-</td>
-</tr>
 </table>
 </td>
 </tr>

@@ -19,6 +19,7 @@ body
 	font-family: verdana, geneva, arial, sans-serif;
 	background-color: #FFF;
 }
+/*
 a:link { color: #4B2B17; text-decoration: underline}
 span.fuzzy a:link { color: #66BB66; }
 a:visited { color: #4B2B17 }
@@ -26,6 +27,7 @@ span.fuzzy a:visited { color: #558855; }
 a:active { color: #000000; }
 a:hover { color: #338888; }
 span.fuzzy a:hover { background-color: #66FF66; color: #FFFFFF; }
+*/
 h1,h2,h3 { clear: left; }
 h1
 {
@@ -151,7 +153,6 @@ table.left tr td.menu
 table.left tr td.menu a
 {
     color: #8DEDCD;
-/*    font-weight: bold; */
     font-size: 100%;
     text-decoration: none;
 }
@@ -165,13 +166,8 @@ table.left tr.brown
     background-color: #4B2B17;
 }
 
-table.center td.title
-{
-/*	background-color: #F5E754; */
-}
 table.center tr td
 {
-/*	background-color: #F5E754; */
 	vertical-align: top;
 	padding: 0pt;
 }
@@ -286,7 +282,7 @@ input.text
         background-color: #8DEDCD;
         color: #4B2B17;
         font-family: "Verdana";
-        font-size: 100%;
+        font-size: 110%;
 /*        align: center; */
         width: 200px
 }
@@ -444,7 +440,6 @@ button.menu
     background-color: #4B2B17;
     color: #8DEDCD;
     font-family: "Verdana";
-/*    font-weight: bold; */
     font-size: 100%;
     text-align: right;
     padding-right: 4pt;

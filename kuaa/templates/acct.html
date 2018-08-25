@@ -30,33 +30,32 @@ function loading() {
 
 <body>
 
-<table class="center">
-  <tr>
+<form name="Form1" method=POST>
+
+<table class="left">
+  <tr class='brown'>
     <td class="title">
     <img class='banner' src="{{url_for('static',
       filename='banner_logo.png')}}" alt="" width="300px" height="52px" />
     </td>
+    <td style="width: 700px"></td>
     <td class="menu" style="width: 250px"><input class="menu"
       type="submit" value="SALIR" name="salir" onclick="return OnSalir();"></td>
     <td class="menu" style="width: 250px"><button class="menu"
       onclick="ShowHelp();">AYUDA</button></td>
   </tr>
+</table>
 
-<tr>
-<td colspan="3" style="width:1000px">  
-
-<p class="center">¡Cuenta creada!</p>
+<p>¡Cuenta creada!</p>
 
 <hr>
 
-<p class="center">
+<p>
 <button onclick="loading()" id="button">Continuar</button><br/>
 </p>
 
-<p class="center" id="loading">
-  </p>
-
-</td></tr></table>
+<p id="loading">  </p>
+</form>
 
 </body>
 
