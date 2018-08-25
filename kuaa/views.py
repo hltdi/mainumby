@@ -204,7 +204,6 @@ def tra():
         of = form['ofuente']
         print("Creando nueva oración de {}".format(of))
         make_doc(of, single=True)
-#        print("Created document {}".format(DOC))
         if len(DOC) == 0:
             print(" But document is empty.")
             return render_template('tra.html', error=True, tfuente="140%")
@@ -213,10 +212,6 @@ def tra():
     print("Actual oración {}".format(SENTENCE))
     # Translate and segment the sentence, assigning SEGS
     solve_and_segment(single=True)
-#    print("Solved and segmented")
-#    print("SEG HTML")
-#    for s in SEG_HTML:
-#        print("  {}".format(s))
     tf = form.get('tfuente', "140%")
     print("TFuente {}".format(tf))
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
@@ -278,6 +273,7 @@ def sent():
     else:
         # Translate and segment the sentence, assigning SEGS
         solve_and_segment()
+        print("SEG HTML {}".format(SEG_HTML))
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
     punc = SENTENCE.get_final_punc()
     return render_template('sent.html', sentence=SEG_HTML, raw=SENTENCE.original, document='',
