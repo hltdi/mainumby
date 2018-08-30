@@ -48,7 +48,7 @@ import kuaa
 
 ## Creación (y opcionalmente traducción) de oración simple y de documento.
 def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
-        single=False, verbosity=0):
+        single=False, translate=True, delay_gen=False, verbosity=0):
     e, g = cargar()
     session = kuaa.start(e, g, user)
     d = kuaa.Document(e, g, sentence, True, single=single, session=session)
@@ -58,15 +58,17 @@ def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
     s = d[0]
     s.initialize(ambig=ambig, verbosity=verbosity)
     if solve or segment:
-        s.solve(all_sols=ambig or max_sols > 1, max_sols=max_sols)
-        if s.solutions and segment:
-            for sol in s.solutions:
-                sol.get_segs()
+        s.solve(all_sols=ambig or max_sols > 1, max_sols=max_sols,
+                translate=translate, delay_gen=delay_gen)
         if s.solutions:
-            solution = s.solutions[0]
-            for segment in solution.segments:
-                print("{}: {}".format(segment, segment.cleaned_trans))
-            return solution
+            if translate and segment:
+                for sol in s.solutions:
+                    sol.get_segs(delay_gen=delay_gen)
+                solution = s.solutions[0]
+                for segment in solution.segments:
+                    print("{}: {}".format(segment, segment.cleaned_trans))
+                return solution
+            return s.solutions
     return s
 
 ## Aprendizaje de nuevos grupos

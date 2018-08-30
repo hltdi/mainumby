@@ -1261,17 +1261,17 @@ class Sentence:
     ## Solving: parsing and translation
 
     def solve(self, translate=True, all_sols=False, all_trans=True, interactive=False,
-              max_sols=0, verbosity=0, tracevar=None):
+              max_sols=0, delay_gen=False, verbosity=0, tracevar=None):
         """Generate solutions, for all analyses if all_sols is True and translations (if translate is True)."""
         self.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
-                    max_sols=max_sols, verbosity=verbosity, tracevar=tracevar)
+                    max_sols=max_sols, delay_gen=delay_gen, verbosity=verbosity, tracevar=tracevar)
         if all_sols or (len(self.solutions) < max_sols):
             for s in self.altsyns:
                 s.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
-                         max_sols=max_sols, verbosity=verbosity, tracevar=tracevar)
+                         max_sols=max_sols, delay_gen=delay_gen, verbosity=verbosity, tracevar=tracevar)
     
     def solve1(self, translate=True, all_sols=False, all_trans=True, interactive=False,
-               max_sols=0, verbosity=0, tracevar=None):
+               max_sols=0, delay_gen=False, verbosity=0, tracevar=None):
         """Generate solutions and translations (if translate is true)."""
         if not self.groups:
             print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SOLUCIÓN POSIBLE".format(self))
@@ -1292,7 +1292,8 @@ class Sentence:
                     print('FOUND ANALYSIS', solution)
                 if translate and self.target:
                     # Translating
-                    translated = solution.translate(verbosity=verbosity, all_trans=all_trans, interactive=interactive)
+                    translated = solution.translate(verbosity=verbosity, delay_gen=delay_gen,
+                                                    all_trans=all_trans, interactive=interactive)
                     if not translated:
                         print("Translation failed; trying next solution!")
                         continue
@@ -1876,7 +1877,8 @@ class Solution:
 
     ## Creating translations
     
-    def translate(self, verbosity=0, all_trans=False, interactive=False):
+    def translate(self, verbosity=0, all_trans=False, interactive=False,
+                  delay_gen=False):
         """Do everything you need to create the translation."""
         merged = self.merge_nodes(verbosity=verbosity)
         if not merged:
@@ -1887,7 +1889,8 @@ class Solution:
                     print("{} translations already set in other solution".format(ginst))
             else:
                 ginst.set_translations(verbosity=verbosity)
-        self.make_translations(verbosity=verbosity, all_trans=all_trans, interactive=interactive)
+        self.make_translations(verbosity=verbosity, all_trans=all_trans, interactive=interactive,
+                               delay_gen=delay_gen)
         return True
 
     def merge_nodes(self, verbosity=0):
@@ -1953,7 +1956,8 @@ class Solution:
             self.gnodes_feats.append((gnodes, feats_unified))
         return True
 
-    def make_translations(self, verbosity=0, display=True, all_trans=False, interactive=False):
+    def make_translations(self, verbosity=0, display=True, all_trans=False, interactive=False,
+                          delay_gen=False):
         """Create a TreeTrans object for each GInst and tree. build() each top TreeTrans and
         realize translation. Whew."""
         if verbosity:
@@ -2036,19 +2040,20 @@ class Solution:
                     tgroups = [t[0] for t in tgroup_comb]
                     tnodes = [t[1] for t in tgroup_comb]
                     tt.build(tg_groups=tgroups, tg_tnodes=tnodes, verbosity=verbosity)
-                    tt.generate_words()
+                    tt.generate_words(delay=delay_gen)
                     tt.make_order_pairs(verbosity=verbosity)
                     tt.create_variables()
                     tt.create_constraints()
-                    tt.realize(all_trans=all_trans, interactive=interactive)
+                    tt.realize(all_trans=all_trans, interactive=interactive,
+                               delay_gen=delay_gen)
                     if all_trans:
                         continue
                     if not interactive or not input('SEARCH FOR ANOTHER TRANSLATION FOR {}? [yes/NO] '.format(tt)):
                         break
 
     def get_ttrans_outputs(self):
-        """Return a list of (snode_indices, translation_strings, source group name, source merger groups) for the solution's
-        tree translations."""
+        """Return a list of (snode_indices, translation_strings, source group name, source merger groups, target targets)
+        for the solution's tree translations."""
         if not self.ttrans_outputs:
             self.ttrans_outputs = []
             last_indices = [-1]
@@ -2057,13 +2062,18 @@ class Solution:
                     continue
                 trggroups = tt.ordered_tgroups
                 indices = tt.snode_indices
+                thead = tt.ginst.head
+                thindex = thead.index
+                tfeats = thead.snode_anal
+#                print("TT {}: head {}, index {}, feats {}".format(tt, thead, thindex, tfeats))
+                head = (thindex, tfeats)
                 raw_indices = []
                 for index in indices:
                     node = self.sentence.nodes[index]
                     raw1 = node.raw_indices
                     raw_indices.extend(raw1)
                 raw_indices.sort()
-                self.ttrans_outputs.append([raw_indices, tt.output_strings, tt.ginst.group.name, tt.get_merger_groups(), trggroups])
+                self.ttrans_outputs.append([raw_indices, tt.output_strings, tt.ginst.group.name, tt.get_merger_groups(), trggroups, head])
                 last_indices = raw_indices
         return self.ttrans_outputs
 
@@ -2122,8 +2132,10 @@ class Solution:
             i0 += len(stok_group)
         return newsegs
 
-    def get_segs(self, html=True, single=False):
-        """Set the segments (instances of SolSegment) for the solution, including their translations."""
+    def get_segs(self, html=True, single=False, delay_gen=False):
+        """Set the segments (instances of SolSegment) for the solution, including their translations.
+        THIS IS MESSY BECAUSE OF THE POSSIBILITY OF PARENTHETICALS AND GAPS.
+        """
         tt = self.get_ttrans_outputs()
         end_index = -1
         max_index = -1
@@ -2133,7 +2145,7 @@ class Solution:
         parentheticals = []
         # Segments containing parentheticals
         has_parens = []
-        for raw_indices, forms, gname, merger_groups, tgroups in tt:
+        for raw_indices, forms, gname, merger_groups, tgroups, thead in tt:
             late = False
             start, end = raw_indices[0], raw_indices[-1]
             if start > max_index+1:
@@ -2144,7 +2156,7 @@ class Solution:
             if start < max_index:
                 # There's a gap between the portions of the segment; this is a parenthetical segment within an outer one
                 late = True
-            # There may be gaps in the source tokens for a group; fill these with (..tokens...)
+            # There may be gaps in the source tokens for a group; fill these with (...tokens...)
             src_tokens = []
             parenthetical = []
             pre_paren = []
@@ -2169,7 +2181,7 @@ class Solution:
                 src_tokens = pre_paren
 #            print("Creating SolSeg with parenthetical {} and source tokens {}".format(parenthetical, src_tokens))
             seg = SolSeg(self, raw_indices, forms, src_tokens, session=self.session, gname=gname,
-                         tgroups=tgroups, merger_groups=merger_groups,
+                         tgroups=tgroups, merger_groups=merger_groups, delay_gen=delay_gen,
                          has_paren=[pre_paren, paren_record, post_paren] if parenthetical else None,
                          is_paren=late)
             if parenthetical:
@@ -2219,7 +2231,7 @@ class Solution:
                             hp.paren_seg = newseg
         # Sort the segments by start indices in case they're not in order (because of parentheticals)
         self.segments.sort(key=lambda s: s.indices[0])
-        if html:
+        if html and not delay_gen:
             self.seg_html(single=single)
 
     def seg_html(self, single=False):
