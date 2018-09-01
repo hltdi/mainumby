@@ -56,7 +56,7 @@ def initialize():
     init_users()
     USERS_INITIALIZED = True
 
-def init_session():
+def init_session(create_memory=False):
     global SESSION
     global GRN
     global SPA
@@ -65,7 +65,7 @@ def init_session():
     # Load users and create session if there's a user
     # or if USE_ANON is True
     if not SESSION:
-        SESSION = start(SPA, GRN, USER)
+        SESSION = start(SPA, GRN, USER, create_memory=create_memory)
 
 def load_languages():
     """Load Spanish and Guarani data."""
@@ -181,6 +181,7 @@ def tra():
     global DOC
     global SEG_HTML
     global OM1
+#    global SEGS
     form = request.form
     of = None
     print("Form for tra: {}".format(form))
@@ -195,7 +196,9 @@ def tra():
 #                               document=document, user=USER)
     if form.get('borrar') == 'true':
         DOC = SENTENCE = SEG_HTML = None
-        return render_template('tra.html', sentence=None, ofuente=None, translation=None, raw=None, punc=None,
+        if form.get('registrar') == 'true':
+            print("Registrando {}->{}".format(form.get('ofuente'), form.get('ometa')))
+        return render_template('tra.html', sentence=None, ofuente=None, translation=None, punc=None,
                                mayus='', tfuente="140%")
     if not 'ofuente' in form:
         return render_template('tra.html', mayus='')
@@ -209,15 +212,17 @@ def tra():
             return render_template('tra.html', error=True, tfuente="140%")
     # Get the sentence, the only one in DOC
     SENTENCE = DOC[0]
-    print("Actual oración {}".format(SENTENCE))
     # Translate and segment the sentence, assigning SEGS
     solve_and_segment(single=True)
     tf = form.get('tfuente', "140%")
-    print("TFuente {}".format(tf))
+#    print("SENTENCE {}".format(SENTENCE))
+#    print("ofuente= {}".format(of))
+#    print("trans1= {}".format(OM1))
+#    print("translation= {}".format(SEG_HTML))
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
     punc = SENTENCE.get_final_punc()
     return render_template('tra.html', sentence=OF_HTML, ofuente=of, translation=SEG_HTML, trans1=OM1,
-                           raw=SENTENCE.original, punc=punc, mayus=SENTENCE.capitalized, tfuente=tf)
+                           punc=punc, mayus=SENTENCE.capitalized, tfuente=tf)
 
 # View for document entry
 @app.route('/doc', methods=['GET', 'POST'])

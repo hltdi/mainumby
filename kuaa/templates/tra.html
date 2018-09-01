@@ -209,9 +209,11 @@ textarea#comment
     <td class='instruc'>
       <div class="instruc" id="instruc_trad">• Si no estás satisfecho
     con la traducción, pod&eacute;s editarla.<br />
-	• Para copiar la traducción al portapapeles, presioná el botón.
+	• Para copiar la traducción al portapapeles, presioná "Copiar".<br />
+	• Para registrar la traducción en la memoria de Mainumby, presioná "Registrar".
       </div><br />
       <input type="button" value="Copiar" id="button" onclick="copiar()">
+      <input type="button" value="Registrar" id="button" onclick="registrar({{'%r'|format(ofuente)|e}});">
     </td>
   </tr>
   {% endif %}
@@ -221,12 +223,15 @@ textarea#comment
 <form name="Form2" method=POST action='tra'>
 <input type="hidden" name="ofuente" value="">
 <input type="hidden" name="borrar" value=false>
+<input type="hidden" name="registrar" value=false>
 <input type="hidden" name="tfuente" value="140%">
+<input type="hidden" name="ometa" value="">
 </form>
 
 <script>
 document.getElementById("fuente").focus();
 
+// Detectar nueva línea (Intro) en el espacio 'fuente' para iniciar traducción.
 document.getElementById("fuente").addEventListener("keypress", function(event) {
    key = event.which || event.keyCode;
    longFuente();
@@ -252,10 +257,11 @@ function alSalir()
 {
     document.Form2.tfuente.value = "140%";
     document.Form1.action = "fin";
-    document.Form1.target = "_self";     // Same window
-    document.Form1.submit();             // Submit the page
+    document.Form1.target = "_self";     // Misma ventana
+    document.Form1.submit();             // Enviar la página
     return true;
 }
+
 function borrar()
 {
     document.Form2.borrar.value = 'true';
@@ -264,21 +270,40 @@ function borrar()
     document.Form2.submit();
     return true;
 }
+
 function copiar()
 {
     textmeta = document.getElementById("textmeta");
     textmeta.select();
     document.execCommand("copy");
 }
+
+function registrar(fuente)
+{
+    meta = document.getElementById("textmeta").value;
+    document.Form2.ometa.value = meta;
+    document.Form2.ofuente.value = fuente;
+    alert("Registrando traducción " + fuente + meta);
+    document.Form2.borrar.value = 'true';
+    document.Form2.registrar.value = 'true';
+    document.Form2.ofuente.value = fuente;
+    document.Form2.tfuente.value = "140%";
+    document.Form2.action = "tra";
+    document.Form2.submit();
+}
+
 function mayuscula(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
 function agregarTri(string) {
     return string + " \u25BE";
 }
+
 function eliminarTri(string) {
     return string.replace(/ \u25BE/g, '');
 }
+
 function limpiarMeta(string) {
     // Remove line breaks.
     string = string.replace(/(\r\n|\n|\r)/gm, "");
@@ -299,6 +324,7 @@ function limpiarMeta(string) {
     {% endif %}
     return string;
 }
+
 function limpiarGrn(string) {
     // Clean up Guarani string, replacing characters if necessary.
     string = string.replace(/[âä]/, "ã");
@@ -317,10 +343,12 @@ function limpiarGrn(string) {
     string = string.replace(/ĝ/, "g̃");
     return string;
 }
+
 function fuente() {
     f = document.getElementById("fuente").innerHTML;
     return f;
 }
+
 function fuenteNuevaLinea() {
     f = fuente();
     // May contain <br>
@@ -330,6 +358,7 @@ function fuenteNuevaLinea() {
     document.Form2.action = "tra";
     document.Form2.submit();
 }
+
 function borrarFuente() {
     document.getElementById("fuente").innerHTML = "";
 }
@@ -362,13 +391,13 @@ function actualTra() {
     }
     trans = limpiarMeta(trans);
     document.getElementById('textmeta').value = trans;
+    document.Form2.tmeta.value = trans;
 }
 
 /* Drag and drop translation buttons */
 function allowDrop(ev) {
     ev.preventDefault();
 }
-
 function drag(ev) {
 //    ev.preventDefault();
     ev.dataTransfer.effectAllowed = "move";
@@ -398,6 +427,7 @@ window.onclick = function(event) {
     }
   }
 }
+
 function mostrarAyuda() {
     var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
     helpWin.document.write(

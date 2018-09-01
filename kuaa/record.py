@@ -39,6 +39,9 @@
 #       Each Session is a dict: id, date, SentRecords
 #       Each SentRecord is a dict: source, translation, SegRecord
 #       Each SegRecord is a triple: source, translation, feedback_code
+# 2018.08.30
+# -- Memory class for storing translations not associated with a given User
+#    or with different users.
 
 import datetime, sys, os, yaml
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -58,8 +61,9 @@ TRANS_PRE = "{->"
 TRANS_POST = "<-}"
 USER_PRE = "{U}"
 TIME_FORMAT = "%d.%m.%Y/%H:%M:%S:%f"
-# Time format without microseconds; used in Session ID and for User creation and update times
+# Time format without microseconds; used in Session and Memory ID and for User creation and update times
 SHORT_TIME_FORMAT = "%d.%m.%Y/%H:%M:%S"
+MEM_SHORT_TIME_FORMAT = "%Y%m%d%H%M%S"
 
 ZERO_TIME = datetime.timedelta()
 TIME0 = datetime.datetime.utcnow()
@@ -69,6 +73,100 @@ def get_time():
 
 def get_time_since0(time):
     return time - TIME0
+
+def time2str(time):
+    return time.strftime(TIME_FORMAT)
+
+def time2shortstr(time):
+    return time.strftime(SHORT_TIME_FORMAT)
+
+def str2time(string):
+    return datetime.datetime.strptime(string, TIME_FORMAT)
+
+def shortstr2time(string):
+    return datetime.datetime.strptime(string, SHORT_TIME_FORMAT)
+
+class Memory:
+    """A record of all translations made during a particular period."""
+
+    def __init__(self, id=None):
+        self.start = get_time()
+        self.short_start = Memory.time2shortstr(self.start)
+        self.end = None
+        self.translations = []
+        if id:
+            # A recreated Memory; file already exists
+            self.id = id
+        else:
+            # A new Memory; create the id and the file
+            self.make_id()
+            self.create_file()
+
+    @staticmethod
+    def time2shortstr(time):
+        """Represent Memory's start or end time with no punctuation."""
+        return time.strftime(MEM_SHORT_TIME_FORMAT)
+
+    def make_id(self):
+        self.id = "{}".format(self.short_start)
+
+    def __repr__(self):
+        return "M::" + self.id
+
+    @staticmethod
+    def get_memory_files():
+        """All memory files in Sessions directory."""
+        return [f for f in os.listdir(SESSIONS_DIR) if f.endswith(".mem")]
+
+    @staticmethod
+    def get_current_memory_file():
+        """Current memory file (the one most recently changed)."""
+        files = Memory.get_memory_files()
+        if files:
+            files.sort()
+            return files[-1]
+
+    @staticmethod
+    def recreate():
+        """Recreate a Memory for the current memory file."""
+        file = Memory.get_current_memory_file()
+        if file:
+            id = file.split(".mem")[0]
+            return Memory(id=id)
+
+    def get_path(self):
+        memoryfilename = self.id + ".mem"
+        return os.path.join(SESSIONS_DIR, memoryfilename)
+
+    def create_file(self):
+        """Create file for the Memory, putting start time in first list.
+        File contains a YAML list."""
+        with open(self.get_path(), 'w', encoding='utf8') as file:
+            print("- {}".format(self.short_start), file=file)
+
+    def record(self, translation):
+        with open(self.get_path(), 'a', encoding='utf8') as file:
+            print(self.trans2string(translation), file=file)
+
+    def trans2string(self, translation):
+        """Convert a 'translation' to a string for writing to a file.
+        Currently a 'translation' is a pair: (raw_source_sentence, raw_target_sentence)
+        """
+        return "{} == {}".format(translation[0], translation[1])
+
+    def close(self, create_new=True):
+        """Close this memory, puting the end time in the last line.
+        Further translations are recorded in another memory.
+        If create_new is True, create the next one."""
+        self.end = get_time()
+        with open(self.get_path(), 'a', encoding='utf8') as file:
+            print("- {}".format(Memory.time2shortstr(self.end)), file=file)
+        if create_new:
+            return Memory()
+
+    def is_open(self):
+        """Is this memory currently being used?"""
+        return not self.end
 
 class Session:
     """A record of a single user's responses to a set of sentences."""
@@ -96,33 +194,17 @@ class Session:
             # Don't record anything if there are no sentence records.
             d = {}
             d['sents'] = sentrecords
-            d['start'] = Session.time2shortstr(self.start)
-            d['end'] = Session.time2shortstr(self.end)
+            d['start'] = time2shortstr(self.start)
+            d['end'] = time2shortstr(self.end)
             d['id'] = self.id
             return d
         return
 
     @staticmethod
-    def time2str(time):
-        return time.strftime(TIME_FORMAT)
-
-    @staticmethod
-    def time2shortstr(time):
-        return time.strftime(SHORT_TIME_FORMAT)
-
-    @staticmethod
-    def str2time(string):
-        return datetime.datetime.strptime(string, TIME_FORMAT)
-
-    @staticmethod
-    def shortstr2time(string):
-        return datetime.datetime.strptime(string, SHORT_TIME_FORMAT)
-
-    @staticmethod
     def get_sessions(sessions, time_feat_dict):
         """Get all session dicts in session dict list matching time features."""
         filt = Session.filter_time_func(time_feat_dict)
-        return [s for s in sessions if filt(Session.shortstr2time(s['start']))]
+        return [s for s in sessions if filt(shortstr2time(s['start']))]
 
     @staticmethod
     def filter_feature(feature, typ, value):
@@ -135,7 +217,7 @@ class Session:
         return lambda feature: all([Session.filter_feature(feature, typ, time_feat_dict.get(typ, None)) for typ in ['year', 'month', 'day', 'hour', 'minute']])
 
     def make_id(self):
-        self.id = "{}::{}".format(self.user.username, Session.time2shortstr(self.start))
+        self.id = "{}::{}".format(self.user.username, time2shortstr(self.start))
 
 #    def get_path(self):
 #        sessionfilename = self.user.username + '.sess'
@@ -232,11 +314,11 @@ class Session:
 
 #    def write(self, file=sys.stdout):
 #        print("{}".format(self), file=file)
-#        print("{} {}".format(TIME_PRE, Session.time2shortstr(self.start)), file=file)
+#        print("{} {}".format(TIME_PRE, time2shortstr(self.start)), file=file)
 #        for sentence in self.sentences:
 #            sentence.write(file=file)
 #        if not self.running:
-#            print("{} {}".format(TIME_PRE_END, Session.time2shortstr(self.end)), file=file)
+#            print("{} {}".format(TIME_PRE_END, time2shortstr(self.end)), file=file)
 
     def write_doc(self, file=sys.stdout, tm=False):
         """Write the source and target translations in raw form to file."""
@@ -327,7 +409,7 @@ class SentRecord:
             d['s_tok'] = self.get_tokens()
             d['s_ms'] = self.get_morphosyns()
             d['trg'] = self.translation
-            d['time'] = Session.time2shortstr(self.time)
+            d['time'] = time2shortstr(self.time)
             if self.comments:
                 d['cmt'] = self.comments
             segdicts = [s.to_dict() for s in self.segments.values()]

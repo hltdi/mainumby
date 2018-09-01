@@ -95,8 +95,9 @@ def init_users():
     # Read in current users before login.
     User.read_all()
 
-def start(source, target, user, use_anon=True):
-    """Initialize a run. Create a session if there's a user."""
+def start(source, target, user, use_anon=True, create_memory=False):
+    """Initialize a run. Create a Session if there's a user, and we're not
+    using a Memory."""
 #    print("Starting {}, {}, {}".format(source, target, user))
     # Read in current users so that we can find the current user and
     # check for username overlap if a new account is created
@@ -107,7 +108,12 @@ def start(source, target, user, use_anon=True):
     if use_anon and not user:
         user = User.get_anon()
     if user:
-        return kuaa.Session(source=source, target=target, user=user)
+        if create_memory:
+            return kuaa.Memory.recreate()
+        else:
+            return kuaa.Session(source=source, target=target, user=user)
+#    else:
+#        return kuaa.Memory.recreate()
 
 def get_user(username):
     """Find the user with username username."""
