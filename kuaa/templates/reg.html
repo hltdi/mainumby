@@ -21,11 +21,32 @@ function ShowHelp() {
 "tu contraseña si la olvidás. Por eso, guardala bien.</p>" +
 "</body></html>");
 }
-function OnSalir() {
-    document.Form1.action = "fin"
-    document.Form1.target = "_self";     // Same window
-    document.Form1.submit();             // Submit the page
-    return true;
+function documento() {
+    document.getElementById("cargando").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
+    window.location.assign("doc");
+}
+function traducir() {
+    document.getElementById("cargando").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
+    window.location.assign("tra");
+}
+/* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+function mostrarDespleg() {
+    menu = document.getElementById("menudespleg");
+    list = menu.classList;
+    list.toggle("show");
+}
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.despleg')) {
+    var dropdowns = document.getElementsByClassName("contenido-despleg");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
 }
 </script>
 
@@ -41,16 +62,27 @@ function OnSalir() {
     <img class='banner' src="{{url_for('static',
       filename='banner_logo.png')}}" alt="" width="300px" height="52px" />
     </td>
-    <td class="title" style="width: 700px">
-    <td class="menu" style="width: 250px"><input class="menu"
-      type="submit" value="SALIR" name="salir" onclick="return OnSalir();"></td>
-    <td class="menu" style="width: 250px"><button class="menu"
+   <td class="title" style="width: 625px">
+    <td class="menu" style="width: 140px">
+      <div class='despleg-wrap'>
+      <button type="button" class="despleg" onclick="mostrarDespleg()">TRADUCIR ▾</button>
+      <div id="menudespleg" class="contenido-despleg">
+        <span class='opinic' onclick="traducir()">ORACIÓN</span>
+	<span class='opinic' onclick="documento()">DOCUMENTO</span>
+      </div>
+      </div>
+      </td>
+    <td class="menufuzzy" style="width: 160px">INICIAR SESIÓN</td>
+    <td class="menu" style="width: 140px"><button class="menu"
       onclick="ShowHelp();">AYUDA</button></td>
+    <td class="menu" style="width: 135px"><a
+      href="contacto">CONTACTO</a></td>
   </tr>
 </table>
 
 <h1>Creación de una cuenta</h1>
 
+<div id="cargando">
 {% if error %}
 <p class="error">
 {% if error == "password" %}
@@ -63,7 +95,7 @@ Error: ¡ten&eacute;s que introducir tu email!
 </p>
 {% endif %}
 
-<form name="Form1" action="reg" method="post">
+<form name="Form1" action="reg" id="form" method="post">
 
 <p>
 <span class='label'>Nombre de usuario</span><br/>
@@ -104,13 +136,9 @@ Error: ¡ten&eacute;s que introducir tu email!
   <input type="submit" value="Cancelar" name="cancel" id="button">  
 </p>
 
-  </form>
+</form>
 
-<!--  
-<p>
-<button id="help" onclick="ShowHelp();">Ayuda</button>
-  </p>
--->
+</div>
 
 </body>
 

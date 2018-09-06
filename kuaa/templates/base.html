@@ -3,70 +3,6 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
-<style>
-.despleg-wrap {
-    float: left;
-    overflow: hidden;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    background-color: #4B2B17;
-    color: #8DEDCD;
-    padding: none;
-    margin: 0;
-}
-
-.despleg {
-    position: relative;
-    display: inline-block;
-    background-color: #4B2B17;
-    color: #8DEDCD;
-    font-family: "Verdana";
-    font-size: 100%;
-    text-align: right;
-    padding-right: 4pt;
-    padding-bottom: 0;
-    cursor: pointer;
-    border: 0;
-}
-.despleg:hover, .despleg:active, .despleg:focus
-{
-    color: #F5E754;
-    border: 0;
-    outline: none;
-}
-
-.contenido-despleg {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 100px;
-    text-align: left;
-    overflow: auto;
-    padding: 5px 0px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.opinic {
-    color: black;
-    cursor: pointer;
-    display: block;
-    padding: 0;
-}
-.contenido-despleg span {
-    color: black;
-    padding: 3px 7px;
-    text-decoration: none;
-    display: block;
-}
-
-/*
-.contenido-despleg span:hover {background-color: #ddd;}
-*/
-.show {display: block;}
-</style>
-
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
 
 </head>
@@ -81,133 +17,67 @@
     <img class='banner' src="{{url_for('static',
       filename='banner_logo.png')}}" alt="" width="300" height="52" />
     </td>
-    <td class="title" style="width: 700px"></td>
 
-    <td class="menu" style="width: 200px">
+    <td class="title" style="width: 625px"></td>
+
+    <td class="menu" style="width: 140px">
       <div class='despleg-wrap'>
-      <button type="button" class="despleg" onclick="mostrarDespleg()">INICIAR SESIÓN ▾</button>
+      <button type="button" class="despleg" onclick="mostrarDespleg()">TRADUCIR ▾</button>
       <div id="menudespleg" class="contenido-despleg">
-        <span class='opinic' onclick="Traducir()">ORACIÓN</span>
-	<span class='opinic' onclick="ingresar()">DOCUMENTO</span>
+        <span class='opinic' onclick="traducir()">ORACIÓN</span>
+	<span class='opinic' onclick="documento()">DOCUMENTO</span>
       </div>
       </div>
-    </td>
-    <td class="menu" style="width: 150px"><a href="proyecto">PROYECTO</a></td>
-    <td class="menu" style="width: 150px"><a href="contacto">CONTACTO</a></td>
+      </td>
+    <td class="menu" style="width: 160px">
+       <button class="menu" onclick="ingresar()">INICIAR SESIÓN</button></td>
+    <td class="menu" style="width: 140px"><a href="acerca">ACERCA DE</a></td>
+    <td class="menu" style="width: 135px"><a href="contacto">CONTACTO</a></td>
 
   </tr>
 </table>
 
 <h1>¡Tereg̃uahẽ porãite Mainumby-me!</h1>
-<!--
-<p class="instructions" id="instructions">
-  Si quer&eacute;s traducir una palabra, una frase, o una oración corta, hac&eacute; clic en "ORACIÓN".<br/>  
-  Si estás traduciendo un documento y quer&eacute;s usar la interfaz
-  para traductores, hacé clic en "DOCUMENTO".<br />
-  traducción, hacé clic en "ATAJO A INTERFAZ".
-</p>
--->
-
-<div id="intro">    
-
-<h2>¿Qu&eacute; es?</h2>
+<div id="cargando">
 
 <p>
 Mainumby es una aplicación experimental que ayuda a traducir del
 castellano al guaraní.
-Actualmente consiste en un <strong>traductor automático
-  rudimentario</strong> y una interfaz para usuarios en este sitio
-  web.
-<!--  
-Además, el sistema va a construir una <strong>memoria de traducción</strong>, basada en
-  las traducciones de futuros usuarios del sistema.
--->
-</p>
-<p>
-  Un usuario de Mainumby
-  introduce una palabra, una frase, una oración,
-  o un documento castellano que quiere traducir, y
-el sistema le propone traducciones para frases en el texto.
-El usuario puede seleccionar entre las opciones ofrecidas o
-  rechazarlas,
-  introduciendo su propia traducción, según su preferencia.
-El sistema mantiene una memoria de la traducción creada por
-el usuario, y el usuario puede guardar este texto en cada momento
-durante el proceso.
+<ul>
+  <li>
+Para usarlo para la traducción de una palabra, una frase, o una
+  oración simple, seleccioná ORACIÓN bajo TRADUCIR.</li>
+<li>Para la traducción de un documento, seleccioná DOCUMENTO bajo TRADUCIR.</li>
+<li>Para identificarte antes de usar el traductor, seleccioná INICIAR
+  SESIÓN.</li>
+</ul>
 
-<h2>¿Cómo funciona?</h2>
-
-<p>
-  Mainumby tiene un diccionario bilingüe de frases y
-  conocimiento básico de la gramática castellana, la
-  gramática guaraní, y las relaciones entre ellas.
-  El diccionario y la gramática se basan en varios recursos publicados o
-  disponibles en forma digital, pero todavía padece lagunas grandes.
-</p>
-<p>
-  Para cada oración castellana que el usuario introduce, Mainumby
-  analiza las palabras, extrayendo las raíces y las propiedades gramáticas.
-  Entonces busca frases en la oración analizada que coinciden con frases en su diccionario.
-  Finalmente, para cada frase coincidente genera una o más traducciones en guaraní, usando
-  su conocimiento de la morfología y ortografía del idioma.
-  En la interfaz, se le muestran estos resultados al usuario.
-</p>
-<p>
-  Cuando el usuario corrige la salida del sistema o reemplaza una
-  traducción por una diferente, Mainumby aprende de esta
-  retroalimentación, mejorando su diccionario o su conocimiento
-  gramatical.
-  Además Mainumby añade la traducción producida por el usuario a una
-  <strong>memoria de traducción</strong>, de manera que se use en sesiones futuras cuando
-  otro usuario traduzca una oración semejante.
-</p>
-<p>
-<a href="proyecto">Aprender más sobre el proyecto y la teoría detrás de Mainumby.</a>
-</p>
-						      
-<h2>Inicio de una sesión</h2>
-<p>
-  Si quer&eacute;s traducir una palabra, una frase, o una oración corta, hac&eacute; clic en "ORACIÓN".<br/>  
-  Si estás traduciendo un documento y quer&eacute;s usar la interfaz
-  para traductores, hacé clic en "DOCUMENTO".
-</p>
-
+<!--
 <p id='buttons'>
-  <input type="button" value="ORACIÓN" id="button" onclick="Traducir()">
+  <input type="button" value="ORACIÓN" id="button" onclick="traducir()">
   <input type="submit" value="DOCUMENTO" id="button" onclick="ingresar()">
 </p>
+-->
 </form>
+
 </div>
 
 <script>
-function ShowHelp() {
-    var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=600,height=400");
-    helpWin.document.write('<html><head>' +
-'<link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>' +
-"<title>Mainumby: Ayuda</title></head><body>" +
-"<h4 class='help'>Ayuda general para la aplicación</h4>" +
-"</body></html>");
+function cargando() {
+    document.getElementById("cargando").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
 }
-/*
-function Shortcut() {
-    form = document.getElementById("form");
-    document.getElementById("instructions").innerHTML = "";
-    document.getElementById("buttons").innerHTML = "";
-    document.getElementById("intro").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
-    form.action = "doc";
-    form.submit();
+function documento() {
+    cargando();
+    window.location.assign("doc");
 }
-*/
 function ingresar() {
     form = document.getElementById("form");
     form.action = "login";
     form.submit();
 }
-function Traducir() {
+function traducir() {
+    cargando();
     form = document.getElementById("form");
-//    document.getElementById("instructions").innerHTML = "";
-    document.getElementById("buttons").innerHTML = "";
-    document.getElementById("intro").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
     form.action = "tra";
     form.submit();
 }
@@ -217,7 +87,6 @@ function mostrarDespleg() {
     list = menu.classList;
     list.toggle("show");
 }
-
 // Close the dropdown if the user clicks outside of it
 window.onclick = function(event) {
   if (!event.target.matches('.despleg')) {

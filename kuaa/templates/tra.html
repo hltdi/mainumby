@@ -111,7 +111,7 @@ textarea#comment
 <body>
 
 <table class='left'>
-<form name="Form1" method=POST>
+<form id='form' name="Form1" method=POST>
 
 <tr class="brown">
     <td class="title">
@@ -122,6 +122,23 @@ textarea#comment
     </a>
     </td>
 
+    <td class="title" style="width: 625px"></td>
+
+    <td class="menu" style="width: 140px">
+      <input class="menu" type="submit" value="SALIR" name="salir" onclick="return alSalir();">
+    </td>
+    {% if user %}
+    <td class="menuuser" style="width: 160px">{{ user }}</td>
+    {% else %}
+    <td class="menu" style="width: 160px">
+       <button class="menu" onclick="ingresar()">INICIAR SESIÓN</button>
+    </td>
+    {% endif %}
+    <td class="menu" style="width: 140px"><button class="menu"
+      onclick="mostrarAyuda();">AYUDA</button></td>
+    <td class="menu" style="width: 135px"><a href="contacto">CONTACTO</a></td>
+
+    <!--
     <td class="title" style="width: 800px">
     </td>
 
@@ -132,6 +149,7 @@ textarea#comment
     <td class="menu" style="width: 200px">
       <button class="menu" onclick="mostrarAyuda();">AYUDA</button>
     </td>
+    -->
     <input type="hidden" name="ayuda" value="">
     <input type="hidden" name="modo" value="ora">
 </tr>
@@ -177,7 +195,7 @@ textarea#comment
     <td class='instruc'>
     {% if sentence %}
     <div class="instruc" id="instruc_fuente">Para traducir otra
-    oración, primero hac&eacute; clic en 'Borrar'.</div><br />
+    oración, primero presioná 'Borrar'.</div><br />
     <input type="button" value="Borrar" id="button" onclick="borrar()">
     {% else %}
     <div class="instruc" id="instruc_fuente">Escribí una palabra,
@@ -213,7 +231,7 @@ textarea#comment
 	• Para registrar la traducción en la memoria de Mainumby, presioná "Registrar".
       </div><br />
       <input type="button" value="Copiar" id="button" onclick="copiar()">
-      <input type="button" value="Registrar" id="button" onclick="registrar({{'%r'|format(ofuente)|e}});">
+      <input type="button" value="Registrar" id="button" onclick="registrar();">
     </td>
   </tr>
   {% endif %}
@@ -278,15 +296,13 @@ function copiar()
     document.execCommand("copy");
 }
 
-function registrar(fuente)
+function registrar()
 {
     meta = document.getElementById("textmeta").value;
     document.Form2.ometa.value = meta;
-    document.Form2.ofuente.value = fuente;
-    alert("Registrando traducción " + fuente + meta);
+//    document.Form2.ofuente.value = fuente;
     document.Form2.borrar.value = 'true';
     document.Form2.registrar.value = 'true';
-    document.Form2.ofuente.value = fuente;
     document.Form2.tfuente.value = "140%";
     document.Form2.action = "tra";
     document.Form2.submit();
@@ -392,6 +408,12 @@ function actualTra() {
     trans = limpiarMeta(trans);
     document.getElementById('textmeta').value = trans;
     document.Form2.tmeta.value = trans;
+}
+
+function ingresar() {
+    form = document.getElementById("form");
+    form.action = "login";
+    form.submit();
 }
 
 /* Drag and drop translation buttons */

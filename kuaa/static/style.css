@@ -57,14 +57,14 @@ div.user
 h3
 {
 	background-color: #F5E754;
- 	font-size: 110%;
+ 	font-size: 115%;
 	font-weight: bold;
 	margin-top: .5em;
 	margin-bottom: .5em;
 }
 h4
 {
- 	font-size: 110%;
+ 	font-size: 115%;
 	font-weight: bold;
 	margin-top: .5em;
 	margin-bottom: .5em;
@@ -100,7 +100,6 @@ p.instructions
 table.center
 {
 	table-layout: fixed;
-/*	background-color: #F5E754; */
 	margin-left: auto;
 	margin-right: auto;
 	border: 0;
@@ -117,13 +116,8 @@ table.left
 	padding: 0;
 	border-collapse: collapse;
 }
-table.left td.title
-{
-/*	background-color: #F5E754; */
-}
 table.left tr td
 {
-/*	background-color: #F5E754; */
 	vertical-align: top;
 	padding: 0pt;
 }
@@ -143,12 +137,34 @@ table.left tr td img.banner
 }
 table.left tr td.menu
 {
-/*    height: 20px; */
     background-color: #4B2B17;
     text-align: center;
     vertical-align: bottom;
     padding-bottom: 5px;
     border-right: 0;
+    margin: 0;
+}
+table.left tr td.menufuzzy
+{
+    background-color: #4B2B17;
+    color: #999999;
+    text-align: center;
+    vertical-align: bottom;
+    padding-bottom: 5px;
+    border-right: 0;
+    margin: 0;
+}
+table.left tr td.menuuser
+{
+    background-color: #4B2B17;
+    color: #F5E754;
+    font-size: 110%;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: bottom;
+    padding-bottom: 5px;
+    border-right: 0;
+    margin: 0;
 }
 table.left tr td.menu a
 {
@@ -233,10 +249,9 @@ span.cargando
 }
 span.username
 {
-/*    background-color: #f00;
-    color: #fff;
-*/
-    font-style: italic;
+    background-color: #4B2B17;
+    color: #F5E754;
+/*    font-style: italic; */
 }
 span.root
 {
@@ -423,16 +438,17 @@ input.menu
     color: #8DEDCD;
     font-family: "Verdana";
     font-size: 100%;
-/*    font-weight: bold; */
     text-align: right;
     padding-right: 10pt;
     padding-bottom: 0;
     padding-top: 0;
     border: 0;
+    cursor: pointer;
 }
 input.menu:hover, input.menu:active, input.menu:focus
 {
     color: #F5E754;
+    border: none;
     outline: none;
 }
 button.menu
@@ -441,10 +457,11 @@ button.menu
     color: #8DEDCD;
     font-family: "Verdana";
     font-size: 100%;
-    text-align: right;
-    padding-right: 4pt;
-    padding-bottom: 0;
+    text-align: center;
+    padding: 0;
     border: 0;
+    margin: 0;
+    cursor: pointer;
 }
 button.menu:hover, button.menu:active, button.menu:focus
 {
@@ -495,3 +512,57 @@ textarea.doc
     padding: 0;
 /*    border: 0; */
 }
+.despleg-wrap {
+    float: left;
+    overflow: hidden;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-color: #4B2B17;
+    color: #8DEDCD;
+    padding: none;
+    margin: 0;
+}
+.despleg {
+    position: relative;
+    display: inline-block;
+    background-color: #4B2B17;
+    color: #8DEDCD;
+    font-family: "Verdana";
+    font-size: 100%;
+    text-align: right;
+    padding-right: 4pt;
+    padding-bottom: 0;
+    cursor: pointer;
+    border: 0;
+}
+.despleg:hover, .despleg:active, .despleg:focus
+{
+    color: #F5E754;
+    border: 0;
+    outline: none;
+}
+.contenido-despleg {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 100px;
+    text-align: center;
+    overflow: auto;
+    padding: 5px 0px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.opinic {
+    color: black;
+    cursor: pointer;
+    display: block;
+    padding: 0;
+}
+.contenido-despleg span {
+    color: black;
+    padding: 3px 7px;
+    text-decoration: none;
+    display: block;
+}
+.show {display: block;}

@@ -40,6 +40,7 @@ function ShowHelp() {
 "de manera que nadie se aprovechará de tu conocimiento de los idiomas.</p>" +
 "</body></html>");
 }
+<!--
 function OnSalir()
 {
     document.Form1.action = "fin"
@@ -47,12 +48,44 @@ function OnSalir()
     document.Form1.submit();             // Submit the page
     return true;
 }
-function loading() {
-    document.getElementById("loading").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
+-->
+function documento() {
+    document.getElementById("cargando").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
     window.location.assign("doc");
 }
 function account() {
     window.location.assign("reg");
+}
+function ingresar() {
+    form = document.getElementById("form");
+    form.action = "login";
+    form.submit();
+}
+function traducir() {
+//    form = document.getElementById("form");
+    document.getElementById("cargando").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
+    window.location.assign("tra");
+//    form.action = "tra";
+//    form.submit();
+}
+/* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+function mostrarDespleg() {
+    menu = document.getElementById("menudespleg");
+    list = menu.classList;
+    list.toggle("show");
+}
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.despleg')) {
+    var dropdowns = document.getElementsByClassName("contenido-despleg");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
 }
 </script>
 
@@ -71,17 +104,27 @@ function account() {
       height="52px" />
     </a>
     </td>
-    <td class="title" style="width: 440px"></td>
-    <td class="menu" style="width: 500px"><button class="menu"
-      onclick="loading()">CONTINUAR SIN IDENTIFICARTE</button></td>
-    <td class="menu" style="width: 130px"><input class="menu"
-      type="submit" value="SALIR" name="salir" onclick="return OnSalir();">
-    <td class="menu" style="width: 130px"><button class="menu"
+    <td class="title" style="width: 625px"></td>
+
+    <td class="menu" style="width: 140px">
+      <div class='despleg-wrap'>
+      <button type="button" class="despleg" onclick="mostrarDespleg()">TRADUCIR ▾</button>
+      <div id="menudespleg" class="contenido-despleg">
+        <span class='opinic' onclick="traducir()">ORACIÓN</span>
+	<span class='opinic' onclick="documento()">DOCUMENTO</span>
+      </div>
+      </div>
+      </td>
+    <td class="menufuzzy" style="width: 160px">INICIAR SESIÓN</td>
+    <td class="menu" style="width: 140px"><button class="menu"
       onclick="ShowHelp();">AYUDA</button></td>
+    <td class="menu" style="width: 135px"><a href="contacto">CONTACTO</a></td>
+
   </tr>
 </table>
 
 <h1>Inicio de sesión</h1>
+<div id="cargando">
 
 {% if error %}
 <p class="error">
@@ -89,7 +132,7 @@ function account() {
 Error: ¡la contraseña que introdujiste no es correcta! Por favor
 introducí otra.
 {% elif error == "user" %}
-Error: ¡el nombre de usuario que introdujiste no es correcto! Por
+Error: ¡El nombre de usuario que introdujiste no es correcto! Por
 favor introducí otro nombre o ingresá sin identificarte.
 {% endif %}
 </p>
@@ -98,7 +141,7 @@ favor introducí otro nombre o ingresá sin identificarte.
 <table class="login">
 <tr>
 <td class="text" colspan="3">
-<form name="Form1" action="login" method="post">
+<form id="form" name="Form1" method="post">
 
 <p>
 <span class='label'>Nombre de usuario</span><br/>
@@ -126,8 +169,7 @@ favor introducí otro nombre o ingresá sin identificarte.
 
 </table>
 
-<p id="loading">
-</p>
+</div>
 
 </body>
 

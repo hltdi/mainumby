@@ -22,16 +22,48 @@ table.example tr td,th
 
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní: Proyecto</title>
 
+<script>
+function ingresar() {
+    form = document.getElementById("form");
+    form.action = "login";
+    form.submit();
+}
+function traducir() {
+    form = document.getElementById("form");
+    document.getElementById("cargando").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
+    form.action = "tra";
+    form.submit();
+}
+/* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+function mostrarDespleg() {
+    menu = document.getElementById("menudespleg");
+    list = menu.classList;
+    list.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.despleg')) {
+    var dropdowns = document.getElementsByClassName("contenido-despleg");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
 </script>
 
 </head>
 
 <body>
 
-<form action='login' method="post">
+<form action='login' id='form' method="post">
 
-<table class="center">
-  <tr>
+<table class="left">
+  <tr class="brown">
     <td class="title">
     <a href="base">
     <img class='banner' src="{{url_for('static',
@@ -39,15 +71,33 @@ table.example tr td,th
       height="52" />
     </a>
     </td>
+
+    <td class="title" style="width: 625px"></td>
+
+    <td class="menu" style="width: 140px">
+      <div class='despleg-wrap'>
+      <button type="button" class="despleg" onclick="mostrarDespleg()">TRADUCIR ▾</button>
+      <div id="menudespleg" class="contenido-despleg">
+        <span class='opinic' onclick="traducir()">ORACIÓN</span>
+	<span class='opinic' onclick="ingresar()">DOCUMENTO</span>
+      </div>
+      </div>
+    </td>
+    <td class="menu" style="width: 160px">
+       <button class="menu" onclick="ingresar()">INICIAR SESIÓN</button></td>
+    <td class="menu" style="width: 140px"><a href="acerca">ACERCA DE</a></td>
+    <td class="menu" style="width: 135px"><a href="contacto">CONTACTO</a></td>
+<!--
     <td class="menu" style="width: 250px"><a href="contacto">CONTACTO</a></td>
     <td class="menu" style="width: 250px"><input type="submit" value="INICIAR SESÍON" class="menu"></td>
+-->
+  </tr>
+</table>  
 
-</tr>
-<tr>
-<td colspan="5" style="width:800px">  
 <h1>Mainumby: el proyecto
   </h1>
 
+<div id="cargando">
   <p>
   Mainumby es un componente del proyecto <a href="http://homes.soic.indiana.edu/gasser/plogs_es.html">
   <strong>Procesamiento de Idiomas del
@@ -331,11 +381,7 @@ Sept. 25-27, Bahir Dar, Etiopía.
 
 <hr/>
 
-</td>
-</tr>
-
-</table>  
-
+</div>
 </form>
 
 </body>

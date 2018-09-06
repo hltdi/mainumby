@@ -50,7 +50,7 @@ import kuaa
 def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
         single=False, translate=True, delay_gen=False, verbosity=0):
     e, g = cargar()
-    session = kuaa.start(e, g, user)
+    session = kuaa.start(e, g, user, create_memory=single)
     d = kuaa.Document(e, g, sentence, True, single=single, session=session)
     if len(d) == 0:
         print("Parece que falta puntuación final en el documento.")

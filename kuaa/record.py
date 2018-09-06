@@ -42,6 +42,8 @@
 # 2018.08.30
 # -- Memory class for storing translations not associated with a given User
 #    or with different users.
+# 2018.09.03
+# -- Record interface for Memory and Session. More in Memory.
 
 import datetime, sys, os, yaml
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -63,6 +65,7 @@ USER_PRE = "{U}"
 TIME_FORMAT = "%d.%m.%Y/%H:%M:%S:%f"
 # Time format without microseconds; used in Session and Memory ID and for User creation and update times
 SHORT_TIME_FORMAT = "%d.%m.%Y/%H:%M:%S"
+# Format without punctuation, for memory filenames (sortable by date created)
 MEM_SHORT_TIME_FORMAT = "%Y%m%d%H%M%S"
 
 ZERO_TIME = datetime.timedelta()
@@ -86,20 +89,40 @@ def str2time(string):
 def shortstr2time(string):
     return datetime.datetime.strptime(string, SHORT_TIME_FORMAT)
 
-class Memory:
-    """A record of all translations made during a particular period."""
+class Record:
+    """Superclass (interface?) for objects that record translations."""
 
-    def __init__(self, id=None):
+    def __init__(self, source=None, target=None, id=None, user=None):
         self.start = get_time()
-        self.short_start = Memory.time2shortstr(self.start)
         self.end = None
-        self.translations = []
+        # Source and target languages
+        self.source = source
+        self.target = target
+        self.user = user
+        self.running = True
         if id:
-            # A recreated Memory; file already exists
+            # A recreated Record; file already exists
             self.id = id
         else:
-            # A new Memory; create the id and the file
+            # A new Record; create the id and the file
             self.make_id()
+
+    def make_id(self):
+        print("make_id() not implemented...")
+
+    def record(self, sentrecord, translation=None, segtrans=None, comments=None):
+        print("record() not implemented...")
+
+    def quit(self):
+        print("quit() not implemented...")
+
+class Memory(Record):
+    """A record of all translations made during a particular period."""
+
+    def __init__(self, source=None, target=None, id=None, user=None):
+        Record.__init__(self, source=source, target=target, id=id, user=user)
+        if not id:
+            # A new Memory (not a recreated one).
             self.create_file()
 
     @staticmethod
@@ -108,7 +131,7 @@ class Memory:
         return time.strftime(MEM_SHORT_TIME_FORMAT)
 
     def make_id(self):
-        self.id = "{}".format(self.short_start)
+        self.id = "{}".format(Memory.time2shortstr(self.start))
 
     def __repr__(self):
         return "M::" + self.id
@@ -120,39 +143,57 @@ class Memory:
 
     @staticmethod
     def get_current_memory_file():
-        """Current memory file (the one most recently changed)."""
+        """Filename for current memory file (the one most recently changed)."""
         files = Memory.get_memory_files()
         if files:
             files.sort()
             return files[-1]
 
     @staticmethod
-    def recreate():
-        """Recreate a Memory for the current memory file."""
+    def recreate(user=None):
+        """Recreate a Memory for the current memory file; if there's no memory file, make one."""
         file = Memory.get_current_memory_file()
         if file:
             id = file.split(".mem")[0]
-            return Memory(id=id)
+            return Memory(id=id, user=user)
+        else:
+            return Memory(user=user)
+
+    def read(self):
+        file = open(self.get_path(), encoding='utf8')
+        return yaml.load(file)
 
     def get_path(self):
         memoryfilename = self.id + ".mem"
         return os.path.join(SESSIONS_DIR, memoryfilename)
 
     def create_file(self):
-        """Create file for the Memory, putting start time in first list.
+        """Create file for the Memory, putting start time in first line.
         File contains a YAML list."""
         with open(self.get_path(), 'w', encoding='utf8') as file:
-            print("- {}".format(self.short_start), file=file)
+            print("- {}".format(time2str(self.start)), file=file)
 
-    def record(self, translation):
-        with open(self.get_path(), 'a', encoding='utf8') as file:
-            print(self.trans2string(translation), file=file)
+    def record(self, sentrecord, translation=None, segtrans=None, comments=None):
+        print("record() not implemented...")
 
-    def trans2string(self, translation):
-        """Convert a 'translation' to a string for writing to a file.
-        Currently a 'translation' is a pair: (raw_source_sentence, raw_target_sentence)
-        """
-        return "{} == {}".format(translation[0], translation[1])
+    def record(self, sentrecord, translation=None, segtrans=None, comments=None):
+        """Record the translation for sentrecord in this Memory."""
+        print("Registrando traducción para {}: {}".format(sentrecord.raw, translation))
+        if translation:
+            sentrecord.record(translation, comments=comments)
+            d = sentrecord.to_dict(user=self.user)
+            print(" Dicc del registro: {}".format(d))
+            with open(self.get_path(), 'a', encoding='utf8') as file:
+                yaml.dump([d], file, default_flow_style=False)
+        # Eventually handles Segment records too?
+#        with open(self.get_path(), 'a', encoding='utf8') as file:
+#            print(self.trans2string(translation), file=file)
+
+#    def trans2string(self, translation):
+#        """Convert a 'translation' to a string for writing to a file.
+#        Currently a 'translation' is a pair: (raw_source_sentence, raw_target_sentence)
+#        """
+#        return "{} == {}".format(translation[0], translation[1])
 
     def close(self, create_new=True):
         """Close this memory, puting the end time in the last line.
@@ -160,7 +201,8 @@ class Memory:
         If create_new is True, create the next one."""
         self.end = get_time()
         with open(self.get_path(), 'a', encoding='utf8') as file:
-            print("- {}".format(Memory.time2shortstr(self.end)), file=file)
+            print("- {}".format(time2str(self.end)), file=file)
+        self.running = False
         if create_new:
             return Memory()
 
@@ -168,20 +210,19 @@ class Memory:
         """Is this memory currently being used?"""
         return not self.end
 
-class Session:
+    def quit(self):
+        User.write_new()
+        User.new_users.clear()
+        self.running = False
+
+class Session(Record):
     """A record of a single user's responses to a set of sentences."""
 
     def __init__(self, user=None, source=None, target=None):
-        self.start = get_time()
         self.user = user
-        # Source and target languages
-        self.source = source
-        self.target = target
-        self.end = None
-        self.running = True
         # List of SentRecord objects
         self.sentences = []
-        self.make_id()
+        Record.__init__(self, source=source, target=target)
         print("Creando sesión {}".format(self))
 
     def __repr__(self):
@@ -345,8 +386,9 @@ class SentRecord:
         self.analyses = sentence.analyses
         self.time = get_time()
         self.user = user
-        # Add to parent Session
-        session.sentences.append(self)
+        # Add to parent Session (but not to Memory)
+        if isinstance(session, Session):
+            session.sentences.append(self)
         # a dict of SegRecord objects, with token strings as keys
         self.segments = {}
         # a list of SegRecord objects
@@ -369,8 +411,9 @@ class SentRecord:
         result = []
         for analysis in self.sentence.analyses:
             dct = analysis[1][0]
-            result.append("{}{}{}{}{}{}{}".format(analysis[0], SentRecord.toksep, dct.get('pos'),
-                                                  SentRecord.toksep, dct.get('root'), SentRecord.toksep,
+            result.append("{}{}{}{}{}{}{}".format(analysis[0], SentRecord.toksep,
+                                                  dct.get('pos'), SentRecord.toksep,
+                                                  dct.get('root'), SentRecord.toksep,
                                                   SentRecord.stringify_feats(dct.get('features'))))
         return result
 
@@ -401,21 +444,26 @@ class SentRecord:
         """Convert a Morphosyn match to a string."""
         return "{} {} {}".format(ms_match[0].__repr__(), ms_match[1], ms_match[2])
 
-    def to_dict(self):
+    def to_dict(self, segs=True, user=None):
         if self.translation:
             # If there's no translation, don't record anything.
             d = {}
-            d['s_raw'] = self.raw
-            d['s_tok'] = self.get_tokens()
-            d['s_ms'] = self.get_morphosyns()
+            s = {}
+            s['raw'] = self.raw
+            s['tok'] = self.get_tokens()
+            s['ms'] = self.get_morphosyns()
+            d['src'] = s
             d['trg'] = self.translation
-            d['time'] = time2shortstr(self.time)
+            d['time'] = time2str(self.time)
             if self.comments:
                 d['cmt'] = self.comments
-            segdicts = [s.to_dict() for s in self.segments.values()]
-            segdicts = [x for x in segdicts if x]
-            if segdicts:
-                d['segs'] = segdicts
+            if segs:
+                segdicts = [s.to_dict() for s in self.segments.values()]
+                segdicts = [x for x in segdicts if x]
+                if segdicts:
+                    d['segs'] = segdicts
+            if user:
+                d['user'] = user
             return d
         return
 
@@ -679,12 +727,13 @@ class User:
         """Enter all new users (normally at most one) in the users file.
         Create a user file for each new user.
         """
-        print("Creando nuevos usuarios {}".format(User.new_users))
-        with open(User.get_users_path(), 'a', encoding='utf8') as file:
-            for username, user in User.new_users.items():
-                print("  Usuario {}".format(user))
-                user.create_user_file()
-                user.write(file=file)
+        if User.new_users:
+            print("Creando nuevos usuarios {}".format(User.new_users))
+            with open(User.get_users_path(), 'a', encoding='utf8') as file:
+                for username, user in User.new_users.items():
+                    print("  Usuario {}".format(user))
+                    user.create_user_file()
+                    user.write(file=file)
 
     def create_user_file(self):
         """Create user file with basic data about the user (to be changed later)."""

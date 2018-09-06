@@ -107,11 +107,13 @@ def start(source, target, user, use_anon=True, create_memory=False):
         user = User.users.get(user)
     if use_anon and not user:
         user = User.get_anon()
+    username = ''
     if user:
-        if create_memory:
-            return kuaa.Memory.recreate()
-        else:
-            return kuaa.Session(source=source, target=target, user=user)
+        username = user.username
+    if create_memory:
+        return kuaa.Memory.recreate(user=username)
+    elif user:
+        return kuaa.Session(source=source, target=target, user=user)
 #    else:
 #        return kuaa.Memory.recreate()
 

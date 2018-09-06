@@ -9,10 +9,10 @@
 
 <body>
 
-<form action='login' method="post">
+<form id='form' action='login' method="post">
 
-<table class="center">
-  <tr>
+<table class="left">
+  <tr class="brown">
     <td class="title">
     <a href="base">
     <img class='banner' src="{{url_for('static',
@@ -20,17 +20,33 @@
       height="52" />
     </a>
     </td>
+    <td class="title" style="width: 625px"></td>
+
+    <td class="menu" style="width: 140px">
+      <div class='despleg-wrap'>
+      <button type="button" class="despleg" onclick="mostrarDespleg()">TRADUCIR ▾</button>
+      <div id="menudespleg" class="contenido-despleg">
+        <span class='opinic' onclick="traducir()">ORACIÓN</span>
+	<span class='opinic' onclick="ingresar()">DOCUMENTO</span>
+      </div>
+      </div>
+      </td>
+    <td class="menu" style="width: 160px">
+       <button class="menu" onclick="ingresar()">INICIAR SESIÓN</button></td>
+    <td class="menu" style="width: 140px"><a href="acerca">ACERCA DE</a></td>
+    <td class="menufuzzy" style="width: 135px">CONTACTO</td>
+<!--
     <td class="menu" style="width: 250px"><a href="proyecto">PROYECTO</a></td>
     <td class="menu" style="width: 250px"><input type="submit" value="INICIAR SESÍON" class="menu"></td>
-
+-->
 </tr>
-<tr>
-<td colspan="5" style="width:800px">  
-<h2>Mainumby: contacto
-  </h2>
+</table>
 
-  <h3>Para hacernos preguntas, sugerencias, críticas
-  </h3>
+<h1>Contacto</h1>
+
+<div id="cargando">
+  <h2>Para hacernos preguntas, sugerencias, críticas
+  </h2>
 
   <p>
   Enviale un correo al director del proyecto,
@@ -38,8 +54,7 @@
   <a href="mailto:gasser@indiana.edu?Subject=Mainumby">gasser ARROBA indiana PUNTO edu</a>.
   </p>
 
-<h3>Para participar
-  </h3>
+<h2>Para participar</h2>
 
 <p>
   Tenemos un <a href="https://groups.google.com/forum/#!forum/mainumby-disc">
@@ -51,27 +66,42 @@
   enviale un correo a <a href="mailto:gasser@indiana.edu?Subject=Grupo%20de%20Google%20para%20Mainumby">Michael Gasser</a>.
 </p>
 
-  <!--
-<p>
-Para iniciar una sesión con Mainumby, hac&eacute; clic en el enlace
-"INICIAR" arriba.
-</p>
--->
+</div>
 
-<hr/>
+</form>
 
-<!--
-<p>
-<input type="submit" value="Iniciar sesión" id="button">
-</p>
--->
-
-</td>
-</tr>
-
-</table>  
-
-  </form>
-
+<script>
+function ingresar() {
+    form = document.getElementById("form");
+    form.action = "login";
+    form.submit();
+}
+function traducir() {
+    form = document.getElementById("form");
+//    document.getElementById("buttons").innerHTML = "";
+    document.getElementById("cargando").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
+    form.action = "tra";
+    form.submit();
+}
+/* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+function mostrarDespleg() {
+    menu = document.getElementById("menudespleg");
+    list = menu.classList;
+    list.toggle("show");
+}
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.despleg')) {
+    var dropdowns = document.getElementsByClassName("contenido-despleg");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>
 </body>
 </html>

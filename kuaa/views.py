@@ -116,6 +116,11 @@ def base():
 #    print("In base...")
     return render_template('base.html')
 
+@app.route('/acerca', methods=['GET', 'POST'])
+def acerca():
+    print("In acerca...")
+    return render_template('acerca.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     global USER
@@ -135,7 +140,7 @@ def login():
             password = form.get('password')
             if user.check_password(password):
                 USER = user
-                return render_template('logged.html', username=username)
+                return render_template('logged.html', user=username)
             else:
 #                print("Password doesn't match")
                 return render_template('login.html', error='password')
@@ -165,7 +170,7 @@ def reg():
             user = create_user(form)
             print("Created user {}".format(user))
             USER = user
-            return render_template('acct.html', username=form.get('username'))
+            return render_template('acct.html', user=form.get('username'))
     return render_template('reg.html')
 
 @app.route('/acct', methods=['POST'])
@@ -181,12 +186,13 @@ def tra():
     global DOC
     global SEG_HTML
     global OM1
-#    global SEGS
     form = request.form
     of = None
     print("Form for tra: {}".format(form))
-    if not SPA:
-        load_languages()
+    if not SESSION:
+        print("Ninguna memoria")
+        init_session(create_memory=True)
+    username = USER.username if USER else ''
 #   AYUDA
 #    if 'ayuda' in form and form['ayuda'] == 'true':
 #        # Opened help window. Keep everything else as is.
@@ -195,13 +201,22 @@ def tra():
 #        return render_template('sent.html', sentence=SEG_HTML, raw=raw, punc=punc,
 #                               document=document, user=USER)
     if form.get('borrar') == 'true':
+        sentrec = None
+        if SENTENCE:
+            sentrec = SENTENCE.record
         DOC = SENTENCE = SEG_HTML = None
         if form.get('registrar') == 'true':
-            print("Registrando {}->{}".format(form.get('ofuente'), form.get('ometa')))
+            if SESSION:
+                recordsrc = sentrec.raw
+                translation = form.get('ometa')
+                SESSION.record(sentrec, translation=translation)
+#                SESSION.record(SENTENCE.record, translation=translation, segtrans=segtrans, comments=comments)
+            else:
+                print("NO SESSION SO NOTHING TO RECORD")
         return render_template('tra.html', sentence=None, ofuente=None, translation=None, punc=None,
-                               mayus='', tfuente="140%")
+                               user=username, mayus='', tfuente="140%")
     if not 'ofuente' in form:
-        return render_template('tra.html', mayus='')
+        return render_template('tra.html', user=username, mayus='')
     if not DOC:
         # Create a new document
         of = form['ofuente']
@@ -209,7 +224,7 @@ def tra():
         make_doc(of, single=True)
         if len(DOC) == 0:
             print(" But document is empty.")
-            return render_template('tra.html', error=True, tfuente="140%")
+            return render_template('tra.html', error=True, tfuente="140%", user=username)
     # Get the sentence, the only one in DOC
     SENTENCE = DOC[0]
     # Translate and segment the sentence, assigning SEGS
@@ -222,7 +237,7 @@ def tra():
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
     punc = SENTENCE.get_final_punc()
     return render_template('tra.html', sentence=OF_HTML, ofuente=of, translation=SEG_HTML, trans1=OM1,
-                           punc=punc, mayus=SENTENCE.capitalized, tfuente=tf)
+                           punc=punc, mayus=SENTENCE.capitalized, tfuente=tf, user=username)
 
 # View for document entry
 @app.route('/doc', methods=['GET', 'POST'])
