@@ -230,6 +230,7 @@ def tra():
     # Translate and segment the sentence, assigning SEGS
     solve_and_segment(single=True)
     tf = form.get('tfuente', "140%")
+    nocorr = form.get('nocorr', '')
 #    print("SENTENCE {}".format(SENTENCE))
 #    print("ofuente= {}".format(of))
 #    print("trans1= {}".format(OM1))
@@ -237,7 +238,7 @@ def tra():
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
     punc = SENTENCE.get_final_punc()
     return render_template('tra.html', sentence=OF_HTML, ofuente=of, translation=SEG_HTML, trans1=OM1,
-                           punc=punc, mayus=SENTENCE.capitalized, tfuente=tf, user=username)
+                           punc=punc, mayus=SENTENCE.capitalized, tfuente=tf, user=username, nocorr=nocorr)
 
 # View for document entry
 @app.route('/doc', methods=['GET', 'POST'])

@@ -218,6 +218,7 @@ textarea#comment
   <tr>
     <td></td><td></td>
     <td>
+      <span id="correccion" class="alternar" onclick="alternarCorreccion();">Desactivar corrección ortográfica automática.</span><br/>
       <textarea class='ometa' id='textmeta' style='width: 600px'>{{trans1|safe}}</textarea>
     </td>
   </tr>
@@ -244,6 +245,7 @@ textarea#comment
 <input type="hidden" name="registrar" value=false>
 <input type="hidden" name="tfuente" value="140%">
 <input type="hidden" name="ometa" value="">
+<input type="hidden" name="nocorr" value="">
 </form>
 
 <script>
@@ -257,6 +259,17 @@ document.getElementById("fuente").addEventListener("keypress", function(event) {
        event.preventDefault();
        fuenteNuevaLinea();
    }
+});
+
+// Detectar ediciones del espacio 'textmeta' para corregir errores ortográficos.
+document.getElementById("textmeta").addEventListener("keyup", function(event) {
+    if (!document.Form2.nocorr.value) {
+	key = event.key;
+	code = event.which || event.keyCode;
+	if (code > 47 && code != 224) {
+	    corregirGn();
+	}
+    }
 });
 
 function longFuente()
@@ -341,23 +354,33 @@ function limpiarMeta(string) {
     return string;
 }
 
-function limpiarGrn(string) {
-    // Clean up Guarani string, replacing characters if necessary.
-    string = string.replace(/[âä]/, "ã");
-    string = string.replace(/à/, "á");
-    string = string.replace(/[êë]/, "ẽ");
-    string = string.replace(/è/, "é");
-    string = string.replace(/[îï]/, "ĩ");
-    string = string.replace(/ì/, "í");
-    string = string.replace(/[ôö]/, "õ");
-    string = string.replace(/ò/, "ó");
-    string = string.replace(/[ûü]/, "ũ");
-    string = string.replace(/ù/, "ú");
-    string = string.replace(/[ŷÿ]/, "ỹ");
-    string = string.replace(/ỳ/, "ý");
-    string = string.replace(/[’`´°‘]/, "'");
-    string = string.replace(/ĝ/, "g̃");
-    return string;
+function corregirGn() {
+    textmeta = document.getElementById("textmeta").value;
+    if (textmeta) {
+        changed = '';
+        c = textmeta.slice(-1);
+        if (["â", "ä"].indexOf(c) >= 0) {
+	    changed = "ã";
+        } else if (["ê", "ë"].indexOf(c) >= 0) {
+	    changed = "ẽ";
+        } else if (["î", "ï"].indexOf(c) >= 0) {
+	    changed = "ĩ";
+        } else if (["ô", "ö"].indexOf(c) >= 0) {
+	    changed = "õ";
+        } else if (["û", "ü"].indexOf(c) >= 0) {
+	    changed = "ũ";
+        } else if (["ŷ", "ÿ"].indexOf(c) >= 0) {
+	    changed = "ỹ";
+        } else if ("ĝ" == c) {
+	    changed = "g̃";
+	} else if (["`", "´", "°", "‘", "'"].indexOf(c) >= 0) {
+	    changed = "’";
+	}
+	if (changed) {
+	    textmeta = textmeta.slice(0,-1) + changed;
+	    document.getElementById("textmeta").value = textmeta;
+	}
+    }
 }
 
 function fuente() {
@@ -414,6 +437,20 @@ function ingresar() {
     form = document.getElementById("form");
     form.action = "login";
     form.submit();
+}
+
+/* Alternar corrección automática */
+function alternarCorreccion() {
+//    alert("Alternando " + document.Form2.nocorr.value);
+    if (document.Form2.nocorr.value) {
+//	alert("Activando...");
+	document.Form2.nocorr.value = "";
+        document.getElementById('correccion').innerHTML = "Desactivar corrección ortográfica automática.";
+    } else {
+//	alert("Desactivando...");
+	document.Form2.nocorr.value = "true";
+        document.getElementById('correccion').innerHTML = "Activar corrección ortográfica automática.";
+    }
 }
 
 /* Drag and drop translation buttons */

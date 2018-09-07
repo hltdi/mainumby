@@ -279,6 +279,16 @@ span.instruction
    font-size: 100%;
    font-style: italic;
 }
+span.alternar
+{
+    font-size: 90%;
+    cursor: default;
+}
+span.alternar:hover
+{
+    text-decoration: underline;
+    cursor: pointer;
+}
 input.text
 {
         font-family: "Verdana";
