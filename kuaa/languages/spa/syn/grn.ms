@@ -79,9 +79,10 @@ pos/1s.p :: mis [pos=n,n=1,poses=[+ext,pp=1,np=0]] ; // 0
 pos/2s.s :: tu [pos=n,n=0,poses=[+ext,pp=2,np=0]] ; // 0
 pos/2s.p :: tus [pos=n,n=1,poses=[+ext,pp=2,np=0]] ; // 0
 # pueden ser también 2 persona
-#pos/3s.s :: su [pos=n,n=0,poses=[-ext,pp=3]] ; // 0
-pos/3s.s :: su [pos=n,n=0,poses=[-ext,pp=3]][pos=n,n=0,poses=[+ext,pp=2]] ; // 0
-pos/3s.p :: sus [pos=n,n=1,poses=[-ext,pp=3]][pos=n,n=1,poses=[+ext,pp=2]] ; // 0
+pos/3s.s :: su [pos=n,n=0,poses=[-ext,pp=3]] ; // 0
+pos/3s.p :: sus [pos=n,n=1,poses=[-ext,pp=3]] ; // 0
+#pos/3s.s :: su [pos=n,n=0,poses=[-ext,pp=3]][pos=n,n=0,poses=[+ext,pp=2]] ; // 0
+#pos/3s.p :: sus [pos=n,n=1,poses=[-ext,pp=3]][pos=n,n=1,poses=[+ext,pp=2]] ; // 0
 pos/1p.s :: nuestro [pos=n,n=0,poses=[+ext,pp=1,np=1]] ; // 0
 pos/1p.p :: nuestros [pos=n,n=1,poses=[+ext,pp=1,np=1]] ; // 0
 pos/1p.s :: nuestra [pos=n,n=0,poses=[+ext,pp=1,np=1]] ; // 0

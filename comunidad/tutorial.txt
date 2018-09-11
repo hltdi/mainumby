@@ -1,0 +1,26 @@
+En este tutorial muestro el uso de Mainumby, una aplicación web que ayuda a la traducción desde el castellano hacia el guaraní.
+Primero vamos a la página de inicio de la aplicación. Aquí se ve la dirección web; también podés acceder a la página al hacer clic en el enlace que se encuentra debajo de este video.
+Mainumby tiene dos interfaces, una para la traducción de una palabra, una frase, o una oración, otra para la traducción de un documento. En este tutorial vamos a examinar solamente la primera. Para acceder a la interfaz, seleccionás "oración" bajo el menú "traducir".
+Entonces hay que esperar algunos segundos mientras el programa carga la base de datos que contiene su conocimiento gramatical y léxico de los dos idiomas y su relación.
+Acá se ve la interfaz donde se hace la traducción.
+En este espacio escribís la palabra, frase, u oración que querés traducir.
+...
+Y entonces presionás la tecla Intro/Enter, o sea la tecla en tu teclado que apretás para hacer una nueva línea.
+Una vez que hayas presionado esa tecla, el programa hace lo posible para analizar y traducir las palabras castellanas que escribiste.
+El texto castellano se convierte en segmentos coloreados, y las traducciones de los segmentos se muestran en el espacio a la derecha. Los colores de los segmentos guaraníes corresponden a los colores de los segmentos castellanos.
+
+Este símbolo, el triángulo, indica que hay más opciones para la traducción. Al presionar a la palabra, podés ver y seleccionar otra opción.
+
+Además es posible cambiar el orden de los segmentos. Arrastrando un segmento con el mouse y soltándolo sobre otro, intercambiás sus posiciones.
+
+En este espacio se muestra la traducción seleccionada actual. Se puede editar el texto acá. En nuestro ejemplo hay que guaranizar la ortografía de Ñeembucú pues el diccionario de Mainumby todavía no contiene nombres de lugares. Mientras estás editando, Mainumby corrige los caracteres nasales si no tienen la virgulilla, o se la tilde de la eñe. Por ejemplo, si escribo acá “e” con circunflejo, lo que aparece es el carácter correcto. Si no querés que se corrija así, podés desactivar esta característica al hacer clic acá.
+
+Una vez que estés satisfecho con ella, podés copiarla para pegarla en otra ventana al presionar este botón. Si querés que tu traducción se registre en la memoria de Mainumby, presionás aquí. Si no te has identificado para el sistema, tu traducción será anómina. Para identifcarte, hacé clic en “Inciar sesión” 
+
+Para traducir otra palabra u oración, presioná Borrar.
+
+Los viajeros llegaron a Ñeembucú.
+Allí encontraron a sus familiares.
+
+
+
