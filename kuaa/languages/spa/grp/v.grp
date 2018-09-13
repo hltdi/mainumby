@@ -1901,7 +1901,6 @@
 ** dar_v[-r,+fin] cabezada ; ^ dar_v 0
 ->grn ñakãity_v[cat=a]
 ** dar_v[-r,+fin] importancia ; ^ dar_v 0
-->grn mboete_v[cat=a]
 ->grn momba'e_v[cat=a]
 ->grn mboaje_v[cat=a]
 ->grn momorã_v[cat=a]
@@ -4459,7 +4458,6 @@
 ->grn mboja'o_v[cat=a]
 ** partir_v[-r,+fin] a $n ; ^ partir_v 0
 ->grn ja'o_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
-->grn ha_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ->grn mbovo_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ->grn mbo'i_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ** partir_v[-r,+fin] leñas ; ^ partir_v 0 ; #322
@@ -4467,7 +4465,6 @@
 ** partir_v[-r,+fin] apoderándose ; ^ partir_v 0 ; #322
 ->grn mboja'o_v[cat=a]
 ** partir_v[-r,+fin] ; ^ partir_v 0 ; #322
-->grn ja'o_v[cat=a] ; #11 ; ##1
 ->grn ha_v[cat=a] ; #3121 ; ##56
 ->grn mbovo_v[cat=a] ; #4 ; ##1
 ->grn mbo'i_v[cat=a] ; #20 ; ##2
@@ -6494,10 +6491,8 @@
 ->grn rova_v[subcat=gue] ; #34
 ->grn jeroja_v[cat=a]
 ** acatar_v[-r,+fin] a $n ; ^ acatar_v 0
-->grn mboete_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ->grn mboaje_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ** acatar_v[-r,+fin] ; ^ acatar_v 0
-->grn mboete_v[cat=a]
 ->grn mboaje_v[cat=a] ; #36
 ** acechar_v[-r,+fin] a $n ; ^ acechar_v 0
 ->grn moñuhã_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
@@ -8598,11 +8593,9 @@
 ->grn ñemitỹ_v[cat=a] ; #68 ; ##1
 ->grn ñotỹ_v[cat=a] ; #146
 ** cumplir_v[-r,+fin] a $n ; ^ cumplir_v 0
-->grn mboete_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ->grn mboty_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ->grn mboaje_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ** cumplir_v[-r,+fin] ; ^ cumplir_v 0 ; #145
-->grn mboete_v[cat=a]
 ->grn mboty_v[cat=a] ; #68 ; ##6
 ->grn mboaje_v[cat=a] ; #36
 ** curar_v[-r,+fin] a $n ; ^ curar_v 0

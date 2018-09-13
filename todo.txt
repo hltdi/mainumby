@@ -1,3 +1,7 @@
+2018 september
+how to handle verbs that are ambiguously trans/intrans like partir?
+analyses (post-MS?) should indicate transitivity, and there should then be separate groups
+
 2017 fall
 Handle:
 cases where morphological generation fails
