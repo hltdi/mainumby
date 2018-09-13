@@ -263,6 +263,7 @@ acusar_v $v,$vt,$vp
 acuático_a $a
 acuífero_n $n
 acuñar_v $v
+acá $adv
 acólito_n $n
 acústica_n $n
 adaptabilidad_n $n
@@ -274,6 +275,7 @@ adelantamiento_n $n
 adelantar_v $v,$vt,$vi,$vp
 adelanto_n $n
 adelgazar_v $v,$vt
+además $adv
 ademán_n $n
 adentrar_v $v,$vp
 adepto_n $n,$nprs

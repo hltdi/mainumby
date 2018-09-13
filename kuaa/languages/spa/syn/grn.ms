@@ -12,14 +12,20 @@ demasiado :: demasiado [pos=a,grd=eterei] ; // 0
 estar_adj :: estar_v [pos=a,-perm] ![pos=n] ; 0=>1 p,n,tm ; // 0 ; 1-> [pos=v]
 ser_adj :: ser_v [pos=a,+perm] ![pos=n] ; 0=>1 p,n,tm ; // 0 ; 1-> [pos=v]
 
+## reflexivo
+refl/3 :: se [+fin,pos=v,p=3,voz=reflx,+r] ; // 0 
+refl/1s :: me [+fin,pos=v,p=1,n=0,voz=reflx,+r] ; // 0
+refl/2s :: te [+fin,pos=v,p=2,n=0,voz=reflx,+r] ; // 0
+refl/1p :: nos [+fin,pos=v,p=1,n=1,voz=reflx,+r] ; // 0
+
 ## auxiliares
 perf :: haber_v[tm=prs] [pos=v,tm=prc,asp=[+prf]] ; 0=>1 p,n ; // 0 ; 1-> [tm=prs,+fin]
 pcp :: haber_v[tm=ipf] [pos=v,tm=prc] ; 0=>1 p,n ; // 0 ; 1-> [tm=pcp,+fin]
 # this only works for present progressive
 prog :: estar_v [pos=v,tm=ger,asp=[+prg]] ; 0=>1 p,n,tm ; // 0 ; 1-> [+fin]
 pasivo :: ser_v [pos=v,tm=prc,voz=reflx,+r] ; 0=>1 p,n,tm ; // 0
-# voy a ..., iba a ...; ignore tense of ir?
-fut/ir :: ir_v a [pos=v,tm=inf] ; 0=>2 p,n ; // 0:2 1:2 ; 2-> [tm=fut,+fin]
+# voy a ..., iba a ...; ignore tense of ir? ; prevent irse from triggering this
+fut/ir :: ir_v[-r] a [pos=v,tm=inf] ; 0=>2 p,n ; // 0:2 1:2 ; 2-> [tm=fut,+fin]
 # acabar de ...
 acabar_de :: acabar_v[tm=prs] de [pos=v,tm=inf,asp=[+ramo]] ; 0=>2 p,n ; // 0:2 1:2 ; 2-> [tm=prs,+fin]
 # comenzar/empezar a ...
@@ -31,12 +37,6 @@ seguir_ger :: seguir_v [pos=v,tm=ger] ; 0=>1 p,n,tm ; 1-> [+fin]
 ## derivación 1
 volativo :: querer_v [pos=v,tm=inf,asp=[+vol]] ; 0=>1 p,n,tm,asp ; 1-> [+fin] ; // 0
 
-## reflexivo
-refl/3 :: se [+fin,pos=v,p=3,voz=reflx,+r] ; // 0 
-refl/1s :: me [+fin,pos=v,p=1,n=0,voz=reflx,+r] ; // 0
-refl/2s :: te [+fin,pos=v,p=2,n=0,voz=reflx,+r] ; // 0
-refl/1p :: nos [+fin,pos=v,p=1,n=1,voz=reflx,+r] ; // 0
-
 ## otros pronombres clíticos
 obj/1s :: me [+fin,pos=v,po=1,no=0] ; // 0
 obj/2s :: te [+fin,pos=v,po=2,no=0] ; // 0
@@ -45,9 +45,12 @@ obj/1p :: nos [+fin,pos=v,po=1,no=1] ; // 0
 obj/3sd :: le [+fin,pos=v,po=3,no=0] ; // 0
 obj/3sm :: lo [+fin,pos=v,po=3,no=0] ; // 0
 obj/3sf :: la [+fin,pos=v,po=3,no=0] ; // 0
-obj/3pm :: los [+fin,pos=v,po=3,no=1][+fin,pos=v,po=2,no=1] ; // 0
-obj/3pf :: las [+fin,pos=v,po=3,no=1][+fin,pos=v,po=2,no=1] ; // 0
-obj/3pd :: les [+fin,pos=v,po=3,no=1][+fin,pos=v,po=2,no=1] ; // 0
+obj/3pm :: los [+fin,pos=v,po=3,no=1] ; // 0
+obj/3pf :: las [+fin,pos=v,po=3,no=1] ; // 0
+obj/3pd :: les [+fin,pos=v,po=3,no=1] ; // 0
+#obj/3pm :: los [+fin,pos=v,po=3,no=1][+fin,pos=v,po=2,no=1] ; // 0
+#obj/3pf :: las [+fin,pos=v,po=3,no=1][+fin,pos=v,po=2,no=1] ; // 0
+#obj/3pd :: les [+fin,pos=v,po=3,no=1][+fin,pos=v,po=2,no=1] ; // 0
 
 ## ambigüedad de 2, 3 persona
 # 3 pers sin ambigüedad

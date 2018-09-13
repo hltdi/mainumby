@@ -12,7 +12,9 @@ apache error log:
 /var/log/apache2/error.log
 
 pulling from git:
+mainumby
 sudo git pull https://github.com/hltdi/mainumby.git
+mitmita
 sudo git pull https://github.com/hltdi/mitmita.git
 pushing to git:
 sudo git push https://github.com/hltdi/mainumby.git

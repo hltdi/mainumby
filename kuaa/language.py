@@ -393,7 +393,9 @@ class Language:
     def is_known(self, token):
         """Is the lowercase token a known word, either because it is in the list of known words or can be analyzed
         by the morphological analyzer?"""
+#        print("Checking {}".format(token))
         if token in self.words:
+#            print(" known")
             return True
         anal = self.anal_word(token)
         if anal[0].get('features'):

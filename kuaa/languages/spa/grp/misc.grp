@@ -166,6 +166,9 @@
 ** aquí ; ^ aquí 0
 ->grn ko'ápe
 ->grn ápe
+** acá ; ^ acá 0
+->grn ko'ápe
+->grn ápe
 ### allá, allí, ahí
 ** allá está ; ^ allá 0
 ->grn amóina
@@ -450,6 +453,7 @@
 ->grn katuete
 ** sin~embargo ; ^ sin~embargo 0
 ->grn upevére
+->grn opáichavo
 ** sin falta ; ^ falta 1
 ->grn katuete
 ** continuamente ; ^ continuamente 0
@@ -1978,7 +1982,7 @@
 ** pero ; ^ pero 0
 ->grn jepeve
 ->grn katu
-->grn uvei
+->grn avei
 ** perteneciente a ; ^ perteneciente 0
 ->grn pegua
 ** de a pie ; ^ pie 2
@@ -2344,3 +2348,7 @@
 ->grn %C rehe ; || 1, 0
 ** sin %C ; ^ sin 0
 ->grn %C 'ỹrehe ; || 1, 0
+** hacia %C ; ^ hacia 0
+->grn %C gotyo ; || 1, 0
+** desde %C ; ^ desde 0
+->grn %C guive ; || 1, 0

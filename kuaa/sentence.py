@@ -816,8 +816,8 @@ class Sentence:
         Segmentation can add to the number of tokens in the sentence."""
         self.lowercase()
         self.join_lex()
+        # Examine tokens in reverse order because segment() might change the number
         for index, token in zip(range(len(self.tokens)-1, -1, -1), self.tokens[-1::-1]):
-#            print('index {}, token {}'.format(index, token))
             self.segment(token, index)
         self.clean()
 
@@ -971,7 +971,6 @@ class Sentence:
         del_indices = {}
         toktype = 1
         for tokindex, (rawtok, (token, anals)) in enumerate(zip(self.tokens, self.analyses)):
-#            print("Nodifying item {}, token {}, toktypes {}".format(tokindex, token, self.toktypes))
             if self.toktypes:
                 toktype = self.toktypes[tokindex]
             if not incl_del and MorphoSyn.del_token(token):
@@ -1059,6 +1058,7 @@ class Sentence:
             if index == 0:
                 # For first word in sentence, try both capitalized an uncapitalized versions.
                 keys.add(node.token.capitalize())
+#                print("Keys for {}".format(keys, node))
             anals = node.analyses
             if anals:
                 if not isinstance(anals, list):

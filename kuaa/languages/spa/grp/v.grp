@@ -5001,7 +5001,6 @@
 ->grn mbosako'i_v[cat=a]
 ** preparar_v[+r,+fin] ; ^ preparar_v 0 ; #12
 ->grn ñembosako'i_v[cat=a] ; #36
-->grn moñembosako'i_v[cat=a]
 ** presentir_v[-r,+fin] a $n ; ^ presentir_v 0
 ->grn <hetũ_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ** presentir_v[-r,+fin] algo ; ^ presentir_v 0
@@ -6992,8 +6991,6 @@
 ** alistar_v[+r,+fin] ; ^ alistar_v 0
 ->grn ñembosako'i_v[cat=a]
 ** alistar_v[-r,+fin] ; ^ alistar_v 0
-->grn moñembosako'i_v[cat=a]
-->grn mbosako'i_v[cat=a] ; #57
 ->grn mbosako'i_v[cat=a] ; #57
 ** aliñar_v[-r,+fin] a $n ; ^ aliñar_v 0
 ->grn mbojegua_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
@@ -7350,7 +7347,6 @@
 ** aprontar_v[+r,+fin] ; ^ aprontar_v 0
 ->grn ñembosako'i_v[cat=a]
 ** aprontar_v[-r,+fin] ; ^ aprontar_v 0
-->grn moñembosako'i_v[cat=a]
 ->grn mbosako'i_v[cat=a] ; #57
 ** apropiar_v[+r,+fin] ; ^ apropiar_v 0
 ->grn ñembojára_v[cat=a]

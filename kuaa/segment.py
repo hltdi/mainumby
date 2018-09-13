@@ -330,7 +330,7 @@ class SolSeg:
                 multtrans = False
             for tcindex, (tchoice, tcgroups) in enumerate(zip(tgforms, tggroups)):
                 tchoice = tchoice.replace('_', ' ')
-                alttchoice = tchoice.replace("'", "ʼ")
+                alttchoice = tchoice.replace("'", "’")
                 alttchoice = alttchoice.replace(" ", "&nbsp;")
                 # ID for the current choice item
                 choiceid = 'opcion{}.{}'.format(index, trans_choice_index)
@@ -1619,11 +1619,11 @@ class TreeTrans:
 #                self.nodes.append((output, index))
 #            if verbosity:
 #                print("Generating target node {}: {}".format(index, output))
-        print("Nodes after generation: {}".format(self.nodes))
+#        print("Nodes after generation: {}".format(self.nodes))
 
     def generate(self, delay=False, verbosity=0):
         generator = self.sentence.target.generate
-        print("Nodes and features for generation: {}, {}".format(self.nodes, self.node_features))
+#        print("Nodes and features for generation: {}, {}".format(self.nodes, self.node_features))
         for token, features, index in self.node_features:
             root, pos = TreeTrans.get_root_POS(token)
             if verbosity:

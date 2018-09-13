@@ -222,7 +222,7 @@ class Session(Record):
         self.user = user
         # List of SentRecord objects
         self.sentences = []
-        Record.__init__(self, source=source, target=target)
+        Record.__init__(self, source=source, target=target, user=user)
         print("Creando sesión {}".format(self))
 
     def __repr__(self):
