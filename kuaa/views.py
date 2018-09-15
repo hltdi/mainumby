@@ -234,7 +234,7 @@ def tra():
 #    print("SENTENCE {}".format(SENTENCE))
 #    print("ofuente= {}".format(of))
 #    print("trans1= {}".format(OM1))
-#    print("translation= {}".format(SEG_HTML))
+    print("translation= {}".format(SEG_HTML))
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
     punc = SENTENCE.get_final_punc()
     return render_template('tra.html', sentence=OF_HTML, ofuente=of, translation=SEG_HTML, trans1=OM1,

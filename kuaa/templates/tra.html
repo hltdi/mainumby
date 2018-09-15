@@ -425,6 +425,7 @@ function cambiarMeta(button, choiceid) {
 
 /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
 function desplegar(button) {
+    element = document.getElementById(button);
     document.getElementById(button).classList.toggle("show");
 }
 
@@ -485,16 +486,16 @@ function drop(ev) {
 
 // Close the dropdown if the user clicks outside of it
 window.onclick = function(event) {
-  if (!event.target.matches('.btndesplegable')) {
-    var dropdowns = document.getElementsByClassName("contenido-desplegable");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
+    if (!event.target.matches('.btndesplegable')) {
+	var dropdowns = document.getElementsByClassName("contenido-desplegable");
+	var i;
+	for (i = 0; i < dropdowns.length; i++) {
+	    var openDropdown = dropdowns[i];
+	    if (openDropdown.classList.contains('show')) {
+		openDropdown.classList.remove('show');
+	    }
+	}
     }
-  }
 }
 
 function mostrarAyuda() {
@@ -541,8 +542,6 @@ Si quer&eacute;s traducir un documento entero, ve en cambio a \
     document.Form1.ayuda.value = true;
 }
 </script>
-
-<script async="" src="{{url_for('static', filename='Misc.js')}}"></script>
 
 </body>
 
