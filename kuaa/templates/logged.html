@@ -13,9 +13,6 @@ function ShowHelp() {
 "<p class='help'>" +
 "</p></body></html>");
 }
-function cargando() {
-    document.getElementById("cargando").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
-}
 function documento() {
     cargando();
     window.location.assign("doc");
@@ -25,25 +22,6 @@ function traducir() {
     form = document.getElementById("form");
     form.action = "tra";
     form.submit();
-}
-/* When the user clicks on the button, toggle between hiding and showing the dropdown content */
-function mostrarDespleg() {
-    menu = document.getElementById("menudespleg");
-    list = menu.classList;
-    list.toggle("show");
-}
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.despleg')) {
-    var dropdowns = document.getElementsByClassName("contenido-despleg");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
 }
 /*
 function OnSalir() {
@@ -57,9 +35,6 @@ function loading() {
     window.location.assign("doc");
 }
 */
-function cargando() {
-    document.getElementById("cargando").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
-}
 function documento() {
     cargando();
     window.location.assign("doc");
@@ -69,25 +44,6 @@ function traducir() {
     form = document.getElementById("form");
     form.action = "tra";
     form.submit();
-}
-/* When the user clicks on the button, toggle between hiding and showing the dropdown content */
-function mostrarDespleg() {
-    menu = document.getElementById("menudespleg");
-    list = menu.classList;
-    list.toggle("show");
-}
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.despleg')) {
-    var dropdowns = document.getElementsByClassName("contenido-despleg");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
 }
 </script>
 
@@ -143,6 +99,7 @@ Para continuar, seleccioná una de las opciones bajo el menú TRADUCIR.
 </p>
 -->
 
+<script async="" src="{{url_for('static', filename='Misc.js')}}"></script>
 </body>
 
 </html>
