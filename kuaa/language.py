@@ -127,6 +127,7 @@ ASCII_RE = re.compile(r'[a-zA-Z]')
 
 ## Separtes Morphosyn name from pattern and other attributes
 MS_NAME_SEP = '::'
+JOIN_NAME_SEP = '::'
 
 ## Constants for language use
 ANALYSIS = 0
@@ -198,7 +199,10 @@ class Language:
         self.postags = postags or {}
         # Candidate groups from training; added 2017.3.6
         self.cand_groups = {}
+        # Morphosyns
         self.ms = []
+        # Joins
+        self.joins = []
         self.eos = eos
         self.use = use
         # Dict of groups with names as keys
@@ -537,6 +541,10 @@ class Language:
     def get_ms_file(self, target_abbrev):
         d = self.get_syn_dir()
         return os.path.join(d, target_abbrev + '.ms')
+
+    def get_join_file(self, target_abbrev):
+        d = self.get_syn_dir()
+        return os.path.join(d, target_abbrev + '.jn')
 
     def get_cache_file(self, name=''):
         d = self.get_cache_dir()
@@ -1699,7 +1707,7 @@ class Language:
             with open(path, encoding='utf8') as f:
                 print("Leyendo transformaciones morfosintácticas para {}".format(target))
                 lines = f.read().split('\n')[::-1]
-                # the order of MorphoSyns matterns
+                # the order of MorphoSyns matters
                 while lines:
                     # Strip comments
                     line = lines.pop().split('#')[0].strip()
@@ -1713,6 +1721,25 @@ class Language:
                         self.ms.extend(morphosyn.optional_ms)
         except IOError:
             print('No such MS file as {}'.format(path))
+
+    def read_joins(self, target=None, verbosity=0):
+        """Read in Join patterns for target from a .jn file."""
+        path = self.get_join_file(target.abbrev)
+        try:
+            with open(path, encoding='utf8') as f:
+                print("Leyendo patrones para juntar segmentos para {}".format(target))
+                lines = f.read().split('\n')[::-1]
+                # the order of Joins matters
+                while lines:
+                    # Strip comments
+                    line = lines.pop().split('#')[0].strip()
+                    # Ignore empty lines
+                    if not line: continue
+                    name, x, pattern = line.partition(JOIN_NAME_SEP)
+                    join = Join(self, target, name=name.strip(), pattern=pattern.strip())
+                    self.joins.append(join)
+        except IOError:
+            print('No such Join file as {}'.format(path))
 
     @staticmethod
     def from_dict(d, reverse=True, use=ANALYSIS, directory=None):
@@ -1874,6 +1901,7 @@ class Language:
         if not loaded:
             srclang.read_groups(files=groups, target=targlang)
             srclang.read_ms(target=targlang)
+            srclang.read_joins(target=targlang)
         return srclang, targlang
         
     @staticmethod

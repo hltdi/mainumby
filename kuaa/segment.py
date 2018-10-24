@@ -1,5 +1,5 @@
 #   
-#   Mainumby: Spanish-Guarani translation.
+#   MDT/TGS
 #
 ########################################################################
 #
@@ -87,15 +87,16 @@ class SuperSeg:
         if self.name:
             return self.name
         elif self.segments:
-            return "++".join([seg.repr() for seg in self.segments])
+            return "++".join([seg.__repr__() for seg in self.segments])
         else:
             return "SuperSeg"
 
 class SolSeg:
-    """Sentence solution segment, realization of a single Group. Displayed in GUI."""
+    """Sentence solution segment, realization of a Group, possibly merged with another. Displayed in GUI."""
 
     # colors to display segments in interface
-    tt_colors = ['blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
+    tt_colors = ['blue', 'sienna', 'green',
+                 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
                  'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
                  'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
                  'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
@@ -109,24 +110,30 @@ class SolSeg:
     join_tok_char = "`"
 
     def __init__(self, solution, indices, translation, tokens, color=None, space_before=1,
-                 # Whether to delay generation of individual target words
+                 treetrans=None,
+                 # Whether to delay generation
                  delay_gen=False,
                  tgroups=None, merger_groups=None, has_paren=False, is_paren=False,
+                 head=None,
                  spec_indices=None, session=None, gname=None, is_punc=False):
 #        print("Creating SolSeg for indices {}, translation {}, tgroups {}, tokens {}".format(indices, translation, tgroups, tokens))
         self.source = solution.source
         self.target = solution.target
         self.sentence = solution.sentence
+        if head:
+            self.shead_index, self.shead = head
+        else:
+            self.shead_index = -1
+            self.shead = None
+        self.treetrans = treetrans
+        self.thead = treetrans.outputs[0] if treetrans else None
         self.indices = indices
         self.space_before = space_before
         # Are there any alternatives among the translations?
         self.any_choices = any(['|' in t for t in translation])
         # For each translation alternative, separate words, each of which can have alternatives (separated by '|').
         if delay_gen:
-#            print("Doing translation {} for SolSeg with delayed generation".format(translation))
             self.translation = translation
-#            for t in translation:
-#                print("  Word {}".format(t))
         else:
             self.translation = [t.split() for t in translation]
         self.cleaned_trans = None
@@ -157,35 +164,25 @@ class SolSeg:
         # If there are special tokens in the source language, fix them here.
         self.special = False
         if '%' in self.token_str or '~' in self.token_str:
+#            print("Handling special item {}, delay_gen {}".format(self.token_str, delay_gen))
             # Create the source and target strings without special characters
             if not translation:
                 self.special = True
-                # Set the translation for the special segment
-                spec_trans = self.source.translate_special(tokens[0])
-                if spec_trans:
-                    self.translation = [[spec_trans]]
-                    self.cleaned_trans = [[SolSeg.clean_spec(spec_trans)]]
+            if delay_gen:
+                if translation:
+                    self.cleaned_trans = [translation]
+                    self.translation = [translation]
+                else:
+                    self.cleaned_trans = [[tokens[0]]]
             else:
-                # Group with special token
-                trans = []
-                cleaned_trans = []
-                for token in translation:
-                    if '%' in token:
-                        spec_trans = self.source.translate_special(token)
-                        if spec_trans:
-                            trans.append(spec_trans)
-                            cleaned_trans.append(SolSeg.clean_spec(spec_trans))
-                            continue
-                    trans.append(token)
-                    cleaned_trans.append(token)
-                self.translation = [trans]
-                self.cleaned_trans = [cleaned_trans]
+                self.translate_special(translation or tokens)
             self.token_str = SolSeg.clean_spec(self.token_str)
             self.original_token_str = SolSeg.clean_spec(self.original_token_str)
         if not self.cleaned_trans:
             self.cleaned_trans = self.translation
         # Join tokens in cleaned translation if necessary
-        SolSeg.join_toks_in_strings(self.cleaned_trans)
+        if not delay_gen:
+            SolSeg.join_toks_in_strings(self.cleaned_trans)
         self.color = color
         # Whether this segment is just punctuation
         self.is_punc = is_punc
@@ -231,6 +228,7 @@ class SolSeg:
         """Join tokens as specified by the join character."""
         return string.replace(' ' + SolSeg.join_tok_char, '')
 
+    @staticmethod
     def join_toks_in_strings(stringlists):
         """Join tokens in each item in list of strings."""
         for i, stringlist in enumerate(stringlists):
@@ -238,10 +236,39 @@ class SolSeg:
                 if SolSeg.join_tok_char in string:
                     stringlists[i][j] = SolSeg.join_toks(string)
 
+    ## Head properties (used in joining SolSegs to form Supersegs)
+    def get_shead_roots(self):
+        if self.shead:
+            return [h[0] for h in self.shead]
+
+    def get_shead_feats(self):
+        if self.shead:
+            return [h[1] for h in self.shead]
+
+    def get_shead_pos(self):
+        if self.shead:
+            return [f.get('pos') for f in self.get_shead_feats()]
+
+    def get_thead_roots(self):
+        if self.thead:
+            return [h[0] for h in self.thead]
+
+    def get_thead_feats(self):
+        if self.thead:
+            return [h[2] for h in self.thead]
+
+    def get_thead_pos(self):
+        if self.thead:
+            return [h[1] for h in self.thead]
+
+    ## Record
+
     def make_record(self, session=None, sentence=None):
         """Create the SegRecord object for this SolSeg."""
         if sentence:
             return SegRecord(self, sentence=sentence.record, session=session)
+
+    ## Web app
 
     def set_source_html(self, index):
         if self.has_paren:
@@ -497,11 +524,51 @@ class SolSeg:
 #        for h in self.html:
 #            print(" {}".format(h))
 
-#    @staticmethod
-#    def list_html(segments):
-#        """Set the HTML for the list of segments in a sentence."""
-#        for i, segment in enumerate(segments):
-#            segment.set_html(i)
+    def translate_special(self, tokens, assign=True):
+        trans = []
+        cleaned_trans = []
+        for token in tokens:
+            if '%' in token:
+                spec_trans = self.source.translate_special(token)
+                if spec_trans:
+                    trans.append(spec_trans)
+                    cleaned_trans.append(SolSeg.clean_spec(spec_trans))
+                    continue
+                trans.append(token)
+                cleaned_trans.append(token)
+        if assign:
+            self.translation = [trans]
+            self.cleaned_trans = [cleaned_trans]
+        else:
+            return cleaned_trans, trans
+
+    def generate(self, verbosity=0):
+        """When generation is delayed (that is, it doesn't happen with TreeTrans instances),
+        it happens here in SolSeg."""
+        if verbosity:
+            print("Generating forms for segment {} with cleaned trans {} and raw token str {}".format(self, self.cleaned_trans, self.raw_token_str))
+        generator = self.target.generate
+        special = '%' in self.raw_token_str or '~' in self.raw_token_str
+        output1 = []
+        for index, translation in enumerate(self.cleaned_trans):
+            if special:
+                cleaned1, trans1 = self.translate_special(translation, False)
+                self.cleaned_trans[index] = cleaned1
+                continue
+            for item in translation:
+                if isinstance(item, tuple):
+                    # We need to generate it
+                    token, pos, feats = item
+                    form = generator(token, feats, pos=pos)
+                    form = '|'.join(form)
+                    if verbosity:
+                        print(" Generated form {}".format(form))
+                    output1.append(form)
+                    generated = True
+                else:
+                    output1.append(item)
+            self.cleaned_trans[index] = output1
+        SolSeg.join_toks_in_strings(self.cleaned_trans)
 
 class SNode:
     """Sentence token and its associated analyses and variables."""
@@ -1210,18 +1277,24 @@ class TreeTrans:
             self.display(index)
 
     @staticmethod
-    def output_string(output):
-#        print("Converting output {} to string".format(output))
-        l = []
+    def output_string(output, delay_gen=False):
+        out = []
+        # False if there is a (root, pos, feats) tuple because generation
+        # is delayed
+        generated = True
         for word_list in output:
             if len(word_list) == 1:
-                l.append(word_list[0])
+                wl0 = word_list[0]
+                out.append(wl0)
+                if isinstance(wl0, tuple):
+                    generated = False
             else:
-                l.append('|'.join(word_list))
-        string = ' '.join(l)
+                out.append('|'.join(word_list))
+        if not delay_gen or generated:
+            out = ' '.join(out)
         # _ is a placeholder for space
 #        string = string.replace('_', ' ')
-        return string
+        return out
 
     def get_abs_conc(self, gnodes, tg_groups, verbosity=0):
         """If there are no gnodes, return None, None.
@@ -1358,8 +1431,6 @@ class TreeTrans:
             if not gnode:
                 # snode is not covered by any group
                 self.record_ind_feats(tnode_index=tnode_index, snode=snode, node_index_map=node_index_map)
-#                node_index_map[snode.index] = tnode_index
-#                self.node_features.append([snode.token, None, []])
                 tnode_index += 1
             else:
                 # all other cases, there are one or more target translation groups
@@ -1380,11 +1451,6 @@ class TreeTrans:
                             print("   mergers for {}: {}".format(self, self.mergers))
                         self.record_ind_feats(token=tok, tnode_index=tn_i, t_indices=t_i, 
                                               targ_feats=t_feats, snode=snode, node_index_map=node_index_map)
-#                        node_index_map[snode.index] = tn_i
-#                        feat_index = len(self.node_features)
-#                        self.node_features.append([tok, t_feats, t_i])
-#                        for t_index in t_i:
-#                            self.group_nodes[t_index] = [tok, t_feats, feat_index]
                     else:
                         # merged nodes not found in cache
                         tgroups, tokens, targ_feats, agrs, t_index = zip(gna1, gnode)
@@ -1401,37 +1467,12 @@ class TreeTrans:
                         t_indices.extend([(tgroups[0], t_index[0]), (tgroups[1], t_index[1])])
                         ## Record target merger groups and their target node index in mergers
                         tg_merger_groups = self.make_merger_groups(tgroups, gnodes, tnode_index, verbosity=verbosity)
-#                        tg_merger_groups = list(zip(tgroups, gnodes))
-#                        # Sort the groups with concrete first, abstract next
-#                        tg_merger_groups.sort(key=lambda x: x[1].cat)
-#                        tg_merger_groups = [x[0] for x in tg_merger_groups]
-#                        if verbosity:
-#                            print("   creating merger {} for snode index {}, tnode index {}".format(tg_merger_groups, snode.index, tnode_index))
-#                        self.mergers.append((tnode_index, tg_merger_groups))
                         # Make target and source features agree as required
                         targ_feats = self.merge_agr_feats(agrs, targ_feats, features, verbosity=verbosity)
-#                        if not targ_feats:
-#                            targ_feats = FeatStruct({})
-#                        if agrs:
-#                            # Use an (unfrozen) copy of target features
-#                            targ_feats = targ_feats.copy(True)
-#                            if verbosity:
-#                                print("  Causing sfeats {} to agree with tfeats {}".format(features, targ_feats))
-#                            if features:
-#                                targ_feats = features.agree_FSS(targ_feats, agrs)
-#                            if verbosity:
-#                                print("   Now: {} to agree with tfeats {}".format(features, targ_feats))
                         self.record_ind_feats(token=token, tnode_index=tnode_index, t_indices=t_indices,
                                               targ_feats=targ_feats, snode=snode, node_index_map=node_index_map)
-#                        node_index_map[snode.index] = tnode_index
-#                        feat_index = len(self.node_features)
-#                        self.node_features.append([token, targ_feats, t_indices])
-#                        for t_index in t_indices:
-#                            self.group_nodes[t_index] = [token, targ_feats, feat_index]
                         self.cache_gnodes(cache_key=cache_key, token=token, tnode_index=tnode_index, t_indices=t_indices,
                                           tg_merger_groups=tg_merger_groups, targ_feats=targ_feats)
-#                        self.cache[cache_key] = (token, tnode_index, t_indices, tg_merger_groups, targ_feats)
-#                        print("   cached: {}".format(self.cache[cache_key]))
                     
                 else:
                     # only one gnode in list, no merger
@@ -1440,8 +1481,6 @@ class TreeTrans:
                     if gnode not in self.gnode_dict:
                         if verbosity > 1:
                             print("   not in gnode dict, skipping")
-#                        # But if this is the head of the TreeTrans's group, don't we need to increment the tnode_index?
-#                        tnode_index += 1
                         continue
                     # translating single gnode
                     gnode_tuple_list = self.gnode_dict[gnode]
@@ -1452,19 +1491,11 @@ class TreeTrans:
                         print("Something wrong")
                     cache_key = self.make_cache_key(gnode_tuple, None)
                     cached = self.get_cached(gnode_tuple, None, cache_key=cache_key, verbosity=verbosity)
-#                    print("Single gnode {}, gnode_tuple {} in cached {}".format(gnode, gnode_tuple, cached))
-#                    cache_key = tgroup, t_index
-#                    if cache_key in self.cache:
                     if cached:
                         # translation already in local cache
                         tok, tn_i, t_i, x, t_feats = cached
                         self.record_ind_feats(token=tok, tnode_index=tn_i, t_indices=t_i,
                                               targ_feats=t_feats, snode=snode, node_index_map=node_index_map)
-#                        node_index_map[snode.index] = tn_i
-#                        feat_index = len(self.node_features)
-#                        self.node_features.append([tok, t_feats, t_i])
-#                        for t_ind in t_i:
-#                            self.group_nodes[t_ind] = [tok, t_feats, feat_index]
                     else:
                         # translation not in local cache
                         tgroup, token, targ_feats, agrs, t_index = gnode_tuple
@@ -1474,26 +1505,10 @@ class TreeTrans:
                             t_indices = [(tgroup, 0)]
                         # Make target and source features agree as required
                         targ_feats = self.merge_agr_feats(agrs, targ_feats, features, verbosity=verbosity)
-#                        if not targ_feats:
-#                            targ_feats = FeatStruct({})
-#                        if agrs:
-#                            if verbosity:
-#                                print("  Causing sfeats {} to agree with tfeats {}".format(features, targ_feats.__repr__()))
-#                                print("    features type: {}".format(type(features)))
-#                            if features:
-#                                targ_feats = features.agree_FSS(targ_feats, agrs)
-#                            if verbosity:
-#                                print("  Now {} and {}".format(features, targ_feats.__repr__()))
                         self.record_ind_feats(token=token, tnode_index=tnode_index, t_indices=t_indices,
                                               targ_feats=targ_feats, snode=snode, node_index_map=node_index_map)
-#                        node_index_map[snode.index] = tnode_index
-#                        feat_index = len(self.node_features)
-#                        self.node_features.append([token, targ_feats, t_indices])
-#                        for t_ind in t_indices:
-#                            self.group_nodes[t_ind] = [token, targ_feats, feat_index]
                         self.cache_gnodes(cache_key=cache_key, token=token, tnode_index=tnode_index,
                                           t_indices=t_indices, targ_feats=targ_feats)
-#                        self.cache[cache_key] = (token, tnode_index, t_indices, None, targ_feats)
                             
                 tnode_index += 1
         
@@ -1511,13 +1526,6 @@ class TreeTrans:
         subtnodes = tg_tnodes[1] if len(tg_tnodes) > 1 else []
         # Incorporate TNodes into nodes and features of this TTrans
         self.add_tnodes(tnodes, subtnodes, tginst)
-#        print("Cache {}".format(self.cache))
-#        print("Node index map {}".format(node_index_map))
-#        print("{}: node features {}".format(self, self.node_features))
-        # Store local variables as instance variables
-#        self.node_features = node_features
-#        self.group_nodes = group_nodes
-#        self.agreements = agreements
         return True
 
     def add_tnodes(self, tnodes, subtnodes, tginst):
@@ -1635,13 +1643,14 @@ class TreeTrans:
                 if self.target.postsyll:
                     token = self.target.syll_postproc(token)
                     output = [token]
-                self.nodes.append([output, index])
+#                self.nodes.append([output, index])
             elif delay:
-                self.nodes.append([(root, pos, features), index])
+                output = [(root, pos, features)]
+#                self.nodes.append([(root, pos, features), index])
             else:
 #                print("Generating {} : {} : {}".format(root, features.__repr__(), pos))
                 output = generator(root, features, pos=pos)
-                self.nodes.append([output, index])
+            self.nodes.append([output, index])
             if verbosity:
                 print("Generating target node {}: {}".format(index, output))
 
@@ -1756,11 +1765,10 @@ class TreeTrans:
                 self.ordered_tgroups.append(group_pos)
                 # just the form
                 output = [n[0] for n in node_pos]
-#                print(" Output {}, node position {}".format(output, node_pos))
                 self.outputs.append(output)
                 output_string = output
-                if not delay_gen:
-                    output_string = TreeTrans.output_string(output)
+#                if not delay_gen:
+                output_string = TreeTrans.output_string(output, delay_gen=delay_gen)
                 self.output_strings.append(output_string)
                 if display:
                     self.display(len(self.outputs)-1)

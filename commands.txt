@@ -16,7 +16,12 @@ mainumby
 sudo git pull https://github.com/hltdi/mainumby.git
 mitmita
 sudo git pull https://github.com/hltdi/mitmita.git
+morfo
+sudo git pull https://github.com/hltdi/morfo.git
+
+
 pushing to git:
+mainumby
 sudo git push https://github.com/hltdi/mainumby.git
 
 apache config file:

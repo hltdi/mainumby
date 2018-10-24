@@ -47,8 +47,9 @@ import kuaa
 ## Atajos
 
 ## Creación (y opcionalmente traducción) de oración simple y de documento.
+## Por defecto, las palabras en segmentos no se generan morfológicamente.
 def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
-        single=False, translate=True, delay_gen=False, verbosity=0):
+        single=False, translate=True, delay_gen=True, verbosity=0):
     e, g = cargar()
     session = kuaa.start(e, g, user, create_memory=single)
     d = kuaa.Document(e, g, sentence, True, single=single, session=session)

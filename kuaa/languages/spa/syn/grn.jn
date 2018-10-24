@@ -1,0 +1,4 @@
+## unidades sintácticas al nivel de la oración
+# sujeto - verbo; number agree ? in Es; number agree ! in Gn
+SV :: [pos=n] [pos=v] ; 0=?1 n:n ; 0=!1 n:n ; ^1
+AJ :: [pos=a] [pos=n] ; >1 0 ; ^1

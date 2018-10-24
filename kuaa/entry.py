@@ -1,6 +1,8 @@
-#   
-#   Mainumby
-#   Mbojereha entries: words, grammatical morphemes, lexemes, lexical classes
+#   MDT/TGS
+#     Entry interface
+#     Group: basic lexical unit
+#     Morphosyn: pattern specifying source-to-target morphosyntactic transformation
+#     Join: pattern specifying joining sequence of SolSegs
 #
 ########################################################################
 #
@@ -177,7 +179,7 @@ MS_FEATMOD = re.compile("\s*(\d)\s*->\s*(\[.+\])$")
 MS_OPT = re.compile("\s*\((.+)\)$")
 
 class Entry:
-    """Superclass for Group and possibly other lexical classes."""
+    """Superclass for Group, Morphosyn and possibly other lexical classes."""
 
     ID = 1
     dflt_dep = 'dflt'
@@ -267,7 +269,7 @@ class Entry:
 
     def get_translations(self):
         """Changed 2015.05.22. translations is not a list of group, dict pairs
-        for the target language, no longer a dict with language abbrev keys."""
+        for the target language, no lo>nger a dict with language abbrev keys."""
         
 #        if self.trans is None:
 #            self.trans = {}
@@ -895,7 +897,9 @@ class Group(Entry):
             translations.sort(key=lambda x: x[1].get('count', 0), reverse=True)
 
 class MorphoSyn(Entry):
-    """Within-language patterns that modify morphology and can delete words on the basis of the occurrence of other words or features."""
+    """Within-language patterns that modify morphology and can delete words on the basis of
+    the occurrence of other words or features.
+    """
 
     def __init__(self, language, name=None, pattern=None,
                  del_indices=None, swap_indices=None, add_items=None, featmod=None, failif=None, agr=None,
@@ -948,11 +952,15 @@ class MorphoSyn(Entry):
         return self.name.startswith('**')
 
     def is_feat_ambig(self):
-        """For ambiguous patterns, whether the ambiguity depends on an alternate set of features that fails to match the morphosyn."""
+        """For ambiguous patterns, whether the ambiguity depends on an
+        alternate set of features that fails to match the morphosyn.
+        """
         return '=' in self.name
 
     def is_disambig(self):
-        """Whether this is an MS that disambiguates source words, rejecting analyses that don't match it if it matches one analysis."""
+        """Whether this is an MS that disambiguates source words,
+        rejecting analyses that don't match it if it matches one analysis.
+        """
         return self.name[0] == DISAMBIG_CHAR
 
     def expand(self, pattern):
@@ -1625,6 +1633,93 @@ class MorphoSyn(Entry):
                 else:
                     sindex += 1
                     mindex += 1
+
+class Join(Entry):
+    """
+    Pattern specifying how bilingual Segments can be merged to form SuperSegs.
+    """
+    ## Symbols in Join files
+    attrib_sep = ';'
+    # separates tokens (segments)
+    pattern_sep = ' '
+    ## Regex for Join files
+    form_feats= re.compile("\s*(\^?)([$%<'|\w¿¡?!]*)\s*((?:\*?\[.+\])*)$")
+    does_agree = re.compile("\s*(\d)\s*=\?\s*(\d)\s*(.+)$")
+    must_agree = re.compile("\s*(\d)\s*=!\s*(\d)\s*(.+)$")
+    head_index = re.compile("\s*\^\s*(\d)$")
+    swap_order = re.compile("\s*>\s*((?:\d\s*)+)$")
+
+    def __init__(self, source, target, name=None, pattern=None, expanded=False):
+        Entry.__init__(self, name, source)
+        self.target = target
+        self.name = name
+        self.pattern = pattern
+        self.agree_conditions = []
+        self.agree_changes = []
+        self.head_index = -1
+        self.segment_order = None
+        # Expand unless this already happened (with optional form-feats)
+        # This also sets self.agr, self.del_indices, self.featmod; may also set direction
+        if not expanded:
+            self.pattern = self.expand(pattern)
+        else:
+            self.pattern = pattern
+
+    def match_seg(self, segment, index):
+        """Does pattern element at index match SolSeg segment?"""
+        
+
+    def expand(self, pattern, verbose=1):
+        """Expand pattern from string in Join file."""
+        if verbose:
+            print("Expanding Join pattern {}".format(pattern))
+        # split the string into tokens
+        pattern = pattern.split(Join.attrib_sep)
+        # Actual pattern
+        tokens = pattern[0].strip()
+        # Attributes: agree?, agree!, swap
+        attribs = pattern[1:]
+        # Expand attributes
+        for attrib in attribs:
+            attrib = attrib.strip()
+            if verbose:
+                print("Join attribute {}".format(attrib))
+            match = Join.does_agree.match(attrib)
+            if match:
+                s1, s2, feats = match.groups()
+                f1, f2 = feats.split(':')
+                if verbose:
+                    print("  Matched 'does agree' condition {}, s1 {}, s2 {}, f1 {}, f2 {}".format(attrib, s1, s2, f1, f2))
+                self.agree_conditions.append((s1, s2, f1, f2))
+                continue
+            match = Join.must_agree.match(attrib)
+            if match:
+                s1, s2, feats = match.groups()
+                f1, f2 = feats.split(':')
+                s1 = int(s1)
+                s2 = int(s2)
+                if verbose:
+                    print("  Matched 'must agree' condition {}, s1 {}, s2 {}, f1 {}, f2 {}".format(attrib, s1, s2, f1, f2))
+                self.agree_changes.append((s1, s2, f1, f2))
+                continue
+            match = Join.head_index.match(attrib)
+            if match:
+                head_index = match.groups()[0]
+                head_index = int(head_index)
+                if verbose:
+                    print("  Matched head index: {}".format(head_index))
+                self.head_index = head_index
+                continue
+            match = Join.swap_order.match(attrib)
+            if match:
+                indices = match.groups()[0]
+                indices = indices.replace(" ", "")
+                indices = list(indices)
+                indices = [int(i) for i in indices]
+                if verbose:
+                    print("  Matched swap order: {}".format(indices))
+                self.segment_order = indices
+                continue
 
 class EntryError(Exception):
     '''Class for errors encountered when attempting to update an entry.'''

@@ -1952,7 +1952,8 @@ class Solution:
                 print("SOMETHING WRONG: unification failed for {}!".format(features))
                 return False
             if verbosity:
-                print("  Unification result for {}: snode {}, gn_indices {} features {} feats unified {}".format(self, snode, gn_indices, features, feats_unified))
+                s = "  Unification result for {}: snode {}, gn_indices {} features {} feats unified {}"
+                print(s.format(self, snode, gn_indices, features, feats_unified))
             self.gnodes_feats.append((gnodes, feats_unified))
         return True
 
@@ -2052,7 +2053,7 @@ class Solution:
                         break
 
     def get_ttrans_outputs(self):
-        """Return a list of (snode_indices, translation_strings, source group name, source merger groups, target targets)
+        """Return a list of (snode_indices, translation_strings, source group name, source merger groups, target targets, group head)
         for the solution's tree translations."""
         if not self.ttrans_outputs:
             self.ttrans_outputs = []
@@ -2060,25 +2061,25 @@ class Solution:
             for tt in self.treetranss:
                 if not tt.output_strings:
                     continue
-                trggroups = tt.ordered_tgroups
+#                trggroups = tt.ordered_tgroups
                 indices = tt.snode_indices
                 thead = tt.ginst.head
                 thindex = thead.index
                 tfeats = thead.snode_anal
 #                print("TT {}: head {}, index {}, feats {}".format(tt, thead, thindex, tfeats))
-                head = (thindex, tfeats)
+                head = (thindex, tfeats[thindex])
                 raw_indices = []
                 for index in indices:
                     node = self.sentence.nodes[index]
                     raw1 = node.raw_indices
                     raw_indices.extend(raw1)
                 raw_indices.sort()
-                self.ttrans_outputs.append([raw_indices, tt.output_strings, tt.ginst.group.name, tt.get_merger_groups(), trggroups, head])
+                self.ttrans_outputs.append([tt, raw_indices, head])
                 last_indices = raw_indices
         return self.ttrans_outputs
 
     def get_untrans_segs(self, src_tokens, end_index, gname=None, merger_groups=None, indices_covered=None,
-                         is_paren=False):
+                         delay_gen=False, is_paren=False):
         '''Set one or more segments for a sequence of untranslatable tokens. Ignore indices that are already
          covered by translated segments.'''
         stok_groups = []
@@ -2123,7 +2124,8 @@ class Solution:
             if node_toktype == 2:
                 space_before = 0
 #            print("Node type for untranslated SolSeg: {}".format(node_toktype))
-            seg = SolSeg(self, indices, translation, stok_group, session=self.session, gname=None,
+            seg = SolSeg(self, indices, translation, stok_group, session=self.session,
+                         gname=None, delay_gen=delay_gen,
                          space_before=space_before, merger_groups=None, is_punc=is_punc,
                          is_paren=is_paren)
             print("Segmento (no traducido) {}->{}: {}={}".format(start, end, stok_group, seg.translation))
@@ -2145,14 +2147,18 @@ class Solution:
         parentheticals = []
         # Segments containing parentheticals
         has_parens = []
-        for raw_indices, forms, gname, merger_groups, tgroups, thead in tt:
+        for treetrans, raw_indices, thead in tt:
+            forms = treetrans.output_strings
+            gname = treetrans.ginst.group.name
+            merger_groups = treetrans.get_merger_groups()
+            tgroups = treetrans.ordered_tgroups
             late = False
             start, end = raw_indices[0], raw_indices[-1]
             if start > max_index+1:
                 # there's a gap between the farthest segment to the right and this one; make one or more untranslated segments
                 src_tokens = tokens[end_index+1:start]
                 self.get_untrans_segs(src_tokens, end_index, gname=gname, merger_groups=merger_groups,
-                                      indices_covered=indices_covered)
+                                      delay_gen=delay_gen, indices_covered=indices_covered)
             if start < max_index:
                 # There's a gap between the portions of the segment; this is a parenthetical segment within an outer one
                 late = True
@@ -2180,8 +2186,9 @@ class Solution:
             else:
                 src_tokens = pre_paren
 #            print("Creating SolSeg with parenthetical {} and source tokens {}".format(parenthetical, src_tokens))
-            seg = SolSeg(self, raw_indices, forms, src_tokens, session=self.session, gname=gname,
-                         tgroups=tgroups, merger_groups=merger_groups, delay_gen=delay_gen,
+            seg = SolSeg(self, raw_indices, forms, src_tokens, treetrans=treetrans,
+                         session=self.session, gname=gname,
+                         tgroups=tgroups, merger_groups=merger_groups, delay_gen=delay_gen, head=thead,
                          has_paren=[pre_paren, paren_record, post_paren] if parenthetical else None,
                          is_paren=late)
             if parenthetical:
@@ -2204,7 +2211,7 @@ class Solution:
             # Some word(s) at end not translated; use source forms
             src_tokens = tokens[max_index+1:len(tokens)]
             self.get_untrans_segs(src_tokens, max_index, gname=gname, merger_groups=merger_groups,
-                                  indices_covered=indices_covered)
+                                  delay_gen=delay_gen, indices_covered=indices_covered)
         # Check whether untranslated parentheticals have gotten segments
         for parenthetical in parentheticals:
             ptokens = [p[0] for p in parenthetical]
@@ -2220,7 +2227,8 @@ class Solution:
                 i += 1
             if not found:
 #                print(" Creating untranslated segment")
-                newsegs = self.get_untrans_segs(ptokens, pindices[0]-1, indices_covered=indices_covered, is_paren=True)
+                newsegs = self.get_untrans_segs(ptokens, pindices[0]-1, indices_covered=indices_covered,
+                                                delay_gen=delay_gen, is_paren=True)
                 # hopefully only one of these
                 if newsegs and len(newsegs) > 0:
                     newseg = newsegs[0]
@@ -2268,3 +2276,10 @@ class Solution:
 #            for i, s in enumerate(segments):
 #                print("Initial trans for seg {}: {}".format(i, s[4]))
         return segments
+
+    def generate(self, verbosity=1):
+        """Generate forms within solution segments, when this is delayed
+        and so doesn't happen in TreeTranss.
+        """
+        for segment in self.segments:
+            segment.generate(verbosity=verbosity)
