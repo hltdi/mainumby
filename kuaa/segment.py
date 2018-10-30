@@ -132,10 +132,12 @@ class SolSeg:
         # Are there any alternatives among the translations?
         self.any_choices = any(['|' in t for t in translation])
         # For each translation alternative, separate words, each of which can have alternatives (separated by '|').
-        if delay_gen:
-            self.translation = translation
-        else:
-            self.translation = [t.split() for t in translation]
+#        if delay_gen:
+#            self.translation = translation
+#        else:
+        # What happens here differs depending on whether delay_gen is True;
+        # self.translation is a list of lists
+        self.translation = [(t.split() if isinstance(t, str) else t) for t in translation]
         self.cleaned_trans = None
         self.tokens = tokens
         # Pre-parenthetical, parenthetical, post-parenthetical portions
@@ -260,6 +262,20 @@ class SolSeg:
     def get_thead_pos(self):
         if self.thead:
             return [h[1] for h in self.thead]
+
+    def get_untrans_token(self):
+        """For untranslated segments, return the cleaned string."""
+        return self.cleaned_trans[0][0]
+
+    def get_special(self, del_spec=False):
+        """If SolSeg is special, return its category and the token as a tuple."""
+        if self.special:
+            tok = self.get_untrans_token()
+            pre, form = tok.split('~')
+            if del_spec:
+                pre = pre[1:]
+            return pre, form
+        return None, None
 
     ## Record
 
@@ -525,6 +541,9 @@ class SolSeg:
 #            print(" {}".format(h))
 
     def translate_special(self, tokens, assign=True):
+        """Translate a 'special' set of tokens (containing a name, numeral or
+        other special token).
+        """
         trans = []
         cleaned_trans = []
         for token in tokens:
@@ -570,6 +589,36 @@ class SolSeg:
             self.cleaned_trans[index] = output1
         SolSeg.join_toks_in_strings(self.cleaned_trans)
 
+    def match_join(self, join_elem, verbosity=0):
+        """Does this SolSeg match a pattern element in a Join? join_elem
+        is either a FSSet or a string."""
+        if isinstance(join_elem, str):
+            if verbosity:
+                print("Matching item {} with special join elem {}".format(self, join_elem))
+            # Match special type, category, or explicit token
+            if '%' in join_elem:
+                # Match special type
+                pre, tok = self.get_special()
+                if verbosity:
+                    print("  prefix {}, token {}".format(pre, tok))
+                return pre == join_elem and tok
+            else:
+                tok = self.get_untrans_token()
+                return tok == join_elem and tok
+        else:
+            feats = self.get_shead_feats()
+            if verbosity:
+                print("Matching features {} with join elem {}".format(feats, join_elem))
+            # Match features
+            if feats:
+                for feat in feats:
+                    if verbosity:
+                        print("  Feat {}".format(feat.__repr__()))
+                    u = join_elem.u(feat)
+                    if u and u != 'fail':
+                        return u
+            return False
+            
 class SNode:
     """Sentence token and its associated analyses and variables."""
 

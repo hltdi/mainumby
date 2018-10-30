@@ -223,6 +223,12 @@ class Entry:
         """Does any MS pattern token (%C, %N, etc.) match the sentence token?"""
         prefix = Entry.special_prefix(stoken, check=True)
         return prefix and any([prefix == ptoken for ptoken in ptokens])
+
+    @staticmethod
+    def match_special1(stoken, ptoken):
+        """Does Join or MS pattern token match sentence token?"""
+        prefix = Entry.special_prefix(stoken, check=True)
+        return prefix and prefix == ptoken
         
 #    @staticmethod
 #    def is_negative(name):
@@ -1661,22 +1667,30 @@ class Join(Entry):
         # Expand unless this already happened (with optional form-feats)
         # This also sets self.agr, self.del_indices, self.featmod; may also set direction
         if not expanded:
-            self.pattern = self.expand(pattern)
+            self.expand(pattern)
+            expanded = True
         else:
             self.pattern = pattern
 
-    def match_seg(self, segment, index):
-        """Does pattern element at index match SolSeg segment?"""
-        
-
-    def expand(self, pattern, verbose=1):
+    def expand(self, pattern, verbose=0):
         """Expand pattern from string in Join file."""
         if verbose:
             print("Expanding Join pattern {}".format(pattern))
+        self.pattern = []
         # split the string into tokens
         pattern = pattern.split(Join.attrib_sep)
         # Actual pattern
-        tokens = pattern[0].strip()
+        for token in pattern[0].strip().split():
+            if "[" in token:
+                # Feature specification
+                # Make it into a FSSet
+                token = FSSet(token)
+                self.pattern.append(token)
+            else:
+                # Special token: %C, %N
+                # Category: $vt
+                # Token: con
+                self.pattern.append(token)
         # Attributes: agree?, agree!, swap
         attribs = pattern[1:]
         # Expand attributes
@@ -1720,6 +1734,27 @@ class Join(Entry):
                     print("  Matched swap order: {}".format(indices))
                 self.segment_order = indices
                 continue
+
+    def match(self, segments, startindex=0, verbosity=0):
+        """Match this Join against segments in Solution starting with
+        position startindex."""
+        matched = True
+        pattern = self.pattern
+        patlength = len(pattern)
+        patindex = 0
+        segindex = startindex
+        match1 = [segindex]
+        while matched and patindex < patlength:
+            patelem = pattern[patindex]
+            segment = segments[segindex]
+            match2 = segment.match_join(patelem, verbosity=verbosity)
+            if match2:
+                match1.append(match2)
+                segindex += 1
+                patindex += 1
+            else:
+                return False
+        return match1
 
 class EntryError(Exception):
     '''Class for errors encountered when attempting to update an entry.'''

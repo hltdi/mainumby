@@ -2067,7 +2067,8 @@ class Solution:
                 thindex = thead.index
                 tfeats = thead.snode_anal
 #                print("TT {}: head {}, index {}, feats {}".format(tt, thead, thindex, tfeats))
-                head = (thindex, tfeats[thindex])
+                # WHY [0]??
+                head = (thindex, tfeats[0])
                 raw_indices = []
                 for index in indices:
                     node = self.sentence.nodes[index]
@@ -2277,9 +2278,33 @@ class Solution:
 #                print("Initial trans for seg {}: {}".format(i, s[4]))
         return segments
 
+    ## Generation and joining following segmentation
+    
     def generate(self, verbosity=1):
         """Generate forms within solution segments, when this is delayed
         and so doesn't happen in TreeTranss.
         """
         for segment in self.segments:
             segment.generate(verbosity=verbosity)
+
+    def match_join(self, join, verbosity=1):
+        """Try to match the sequence of SolSegs in this solution with the pattern
+        in Join instance join."""
+        print("{} matching {}".format(self, join))
+        matches = []
+        pattern = join.pattern
+        segments = self.segments
+        patlength = len(pattern)
+        sollength = len(segments)
+        # Match can't begin after this position in segments
+        laststart = sollength - patlength
+        # The join pattern may be too long for the solution
+        if laststart < 0:
+            return False
+        for segstart in range(laststart + 1):
+            match1 = join.match(segments, segstart, verbosity=verbosity)
+            if match1:
+                matches.append(match1)
+        if matches:
+            print("Matched: {}".format(matches))
+        return matches
