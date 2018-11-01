@@ -64,6 +64,8 @@
 #    For example, ዓረፍተ in ዓረፍተ ነገር when this is part of a subtree.
 # 2018.02-03
 # -- Lots of changes and fixes in SolSeg.
+# 2018.10.30
+# -- SuperSeg
 
 import itertools, copy, re
 from .cs import *
@@ -73,15 +75,65 @@ from .entry import Entry, Group
 from .record import SegRecord
 from .utils import *
 
-class SuperSeg:
-    """SuperSegment: joins SolSeg instances into larger units."""
+class Seg:
+    """Interface class for segments:
+    SolSeg, resulting from matching a group and possibly one or more merged groups under it
+    SuperSeg, resulting from joining two or more SolSegs
+    """
 
-    def __init__(self, solution, segments=None, name=None):
+    def __init__(self, solution):
         self.solution = solution
         self.source = solution.source
         self.target = solution.target
+        self.solution = solution.sentence
+        self.generated = False
+        self.shead = None
+        self.thead = None
+        self.special = False
+
+    ## Head properties (used in joining SolSegs to form Supersegs)
+    def get_shead_roots(self):
+        if self.shead:
+            return [h[0] for h in self.shead]
+
+    def get_shead_feats(self):
+        if self.shead:
+            return [h[1] for h in self.shead]
+
+    def get_shead_pos(self):
+        if self.shead:
+            return [f.get('pos') for f in self.get_shead_feats()]
+
+    def get_thead_roots(self):
+        if not self.generated:
+            if self.thead:
+                return [h[0] for h in self.thead]
+
+    def get_thead_feats(self):
+        if not self.generated:
+            if self.thead:
+                return [h[2] for h in self.thead]
+
+    def get_thead_pos(self):
+        if not self.generated:
+            if self.thead:
+                return [h[1] for h in self.thead]
+
+class SuperSeg(Seg):
+    """SuperSegment: joins SolSeg instances into larger units."""
+
+    def __init__(self, solution, segments=None, name=None, join=None):
+        Seg.__init__(self, solution)
         self.segments = segments
         self.name = name
+        self.join = join
+        self.order = list(range(len(segments)))
+        self.head_seg = segments[join.head_index]
+        self.shead = self.head_seg.shead
+        self.thead = self.head_seg.thead
+        if self.head_seg.special:
+            self.special = True
+        self.apply_changes()
 
     def __repr__(self):
         if self.name:
@@ -91,7 +143,16 @@ class SuperSeg:
         else:
             return "SuperSeg"
 
-class SolSeg:
+    def apply_changes(self, verbosity=1):
+        """Implement the changes to features and order specified in the Join instance."""
+        self.join.apply(self, verbosity=verbosity)
+
+    def generate(self, verbosity=1):
+        """Do morphological generation in all the sub-segments of this SuperSeg."""
+        for segment in self.segments:
+            segment.generate(verbosity=verbosity)
+
+class SolSeg(Seg):
     """Sentence solution segment, realization of a Group, possibly merged with another. Displayed in GUI."""
 
     # colors to display segments in interface
@@ -116,17 +177,18 @@ class SolSeg:
                  tgroups=None, merger_groups=None, has_paren=False, is_paren=False,
                  head=None,
                  spec_indices=None, session=None, gname=None, is_punc=False):
-#        print("Creating SolSeg for indices {}, translation {}, tgroups {}, tokens {}".format(indices, translation, tgroups, tokens))
-        self.source = solution.source
-        self.target = solution.target
-        self.sentence = solution.sentence
+#        print("Creating SolSeg for indices {}, translation {}, head {}".format(indices, translation, head))
+        Seg.__init__(self, solution)
         if head:
             self.shead_index, self.shead = head
         else:
             self.shead_index = -1
             self.shead = None
         self.treetrans = treetrans
-        self.thead = treetrans.outputs[0] if treetrans else None
+        # Whether morphological generation has applied
+        if not delay_gen:
+            self.generated = True
+#        self.thead = treetrans.outputs[0] if treetrans else None
         self.indices = indices
         self.space_before = space_before
         # Are there any alternatives among the translations?
@@ -164,7 +226,6 @@ class SolSeg:
         self.original_token_str = ' '.join(self.original_tokens)
         self.original_token_str = self.original_token_str.replace("←", "")
         # If there are special tokens in the source language, fix them here.
-        self.special = False
         if '%' in self.token_str or '~' in self.token_str:
 #            print("Handling special item {}, delay_gen {}".format(self.token_str, delay_gen))
             # Create the source and target strings without special characters
@@ -185,6 +246,11 @@ class SolSeg:
         # Join tokens in cleaned translation if necessary
         if not delay_gen:
             SolSeg.join_toks_in_strings(self.cleaned_trans)
+        if treetrans:
+            thead_indices = [g.head_index for g in treetrans.tgroups]
+            self.thead = [o[i] for i, o in zip(thead_indices, self.cleaned_trans)]
+        else:
+            self.thead = None
         self.color = color
         # Whether this segment is just punctuation
         self.is_punc = is_punc
@@ -237,31 +303,6 @@ class SolSeg:
             for j, string in enumerate(stringlist):
                 if SolSeg.join_tok_char in string:
                     stringlists[i][j] = SolSeg.join_toks(string)
-
-    ## Head properties (used in joining SolSegs to form Supersegs)
-    def get_shead_roots(self):
-        if self.shead:
-            return [h[0] for h in self.shead]
-
-    def get_shead_feats(self):
-        if self.shead:
-            return [h[1] for h in self.shead]
-
-    def get_shead_pos(self):
-        if self.shead:
-            return [f.get('pos') for f in self.get_shead_feats()]
-
-    def get_thead_roots(self):
-        if self.thead:
-            return [h[0] for h in self.thead]
-
-    def get_thead_feats(self):
-        if self.thead:
-            return [h[2] for h in self.thead]
-
-    def get_thead_pos(self):
-        if self.thead:
-            return [h[1] for h in self.thead]
 
     def get_untrans_token(self):
         """For untranslated segments, return the cleaned string."""
@@ -568,26 +609,35 @@ class SolSeg:
             print("Generating forms for segment {} with cleaned trans {} and raw token str {}".format(self, self.cleaned_trans, self.raw_token_str))
         generator = self.target.generate
         special = '%' in self.raw_token_str or '~' in self.raw_token_str
-        output1 = []
-        for index, translation in enumerate(self.cleaned_trans):
+        cleaned_trans = []
+        for translation in self.cleaned_trans:
+            output1 = []
+            if verbosity:
+                print("  Generating {}".format(translation))
             if special:
                 cleaned1, trans1 = self.translate_special(translation, False)
-                self.cleaned_trans[index] = cleaned1
+                cleaned_trans.append(cleaned1)
                 continue
             for item in translation:
+                if verbosity:
+                    print("   Generating {}".format(item))
                 if isinstance(item, tuple):
                     # We need to generate it
                     token, pos, feats = item
                     form = generator(token, feats, pos=pos)
                     form = '|'.join(form)
                     if verbosity:
-                        print(" Generated form {}".format(form))
+                        print("      Generated form {}".format(form))
                     output1.append(form)
                     generated = True
                 else:
                     output1.append(item)
-            self.cleaned_trans[index] = output1
-        SolSeg.join_toks_in_strings(self.cleaned_trans)
+            cleaned_trans.append(output1)
+            if verbosity:
+                print("  Cleaned: {}".format(cleaned_trans))
+        SolSeg.join_toks_in_strings(cleaned_trans)
+        self.cleaned_trans = cleaned_trans
+        self.generated = True
 
     def match_join(self, join_elem, verbosity=0):
         """Does this SolSeg match a pattern element in a Join? join_elem
@@ -1212,9 +1262,7 @@ class TreeTrans:
     def __init__(self, solution, tree=None, ginst=None,
                  abs_gnode_dict=None, gnode_dict=None, group_attribs=None,
                  # Whether the tree has any abstract nodes (to merge with concrete nodes)
-                 any_anode=False,
-#                 attribs=None,
-                 index=0, top=False, verbosity=0):
+                 any_anode=False, index=0, top=False, verbosity=0):
         # The solution generating this translation
         self.solution = solution
         self.source = solution.source
@@ -1261,11 +1309,9 @@ class TreeTrans:
         self.order_pairs = []
         # Order and disjunction constraints
         self.constraints = []
-        # Create the solver for order elements within the TreeTrans
+        # Create the solver for ordering elements within the TreeTrans
         self.solver = Solver(self.constraints, self.dstore, description='target tree realization',
                              verbosity=verbosity)
-#        # Positions of target words
-#        self.positions = []
         # These are produced in self.build(); each only applies to the latest translation
         self.node_features = None
         self.group_nodes = None
@@ -1327,6 +1373,7 @@ class TreeTrans:
 
     @staticmethod
     def output_string(output, delay_gen=False):
+        """Create an output string from a list."""
         out = []
         # False if there is a (root, pos, feats) tuple because generation
         # is delayed
@@ -1341,8 +1388,6 @@ class TreeTrans:
                 out.append('|'.join(word_list))
         if not delay_gen or generated:
             out = ' '.join(out)
-        # _ is a placeholder for space
-#        string = string.replace('_', ' ')
         return out
 
     def get_abs_conc(self, gnodes, tg_groups, verbosity=0):

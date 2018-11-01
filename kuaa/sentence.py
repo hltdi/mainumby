@@ -2054,7 +2054,7 @@ class Solution:
 
     def get_ttrans_outputs(self):
         """Return a list of (snode_indices, translation_strings, source group name, source merger groups, target targets, group head)
-        for the solution's tree translations."""
+        for the solution's tree translations. These are needed for the creation of SolSeg instances."""
         if not self.ttrans_outputs:
             self.ttrans_outputs = []
             last_indices = [-1]
@@ -2287,24 +2287,41 @@ class Solution:
         for segment in self.segments:
             segment.generate(verbosity=verbosity)
 
-    def match_join(self, join, verbosity=1):
-        """Try to match the sequence of SolSegs in this solution with the pattern
-        in Join instance join."""
-        print("{} matching {}".format(self, join))
+    def match(self, verbosity=1):
+        """Try to match the sequence of SolSegs in this solution with the patterns
+        in all the Join instances."""
         matches = []
-        pattern = join.pattern
         segments = self.segments
-        patlength = len(pattern)
         sollength = len(segments)
-        # Match can't begin after this position in segments
-        laststart = sollength - patlength
-        # The join pattern may be too long for the solution
-        if laststart < 0:
-            return False
-        for segstart in range(laststart + 1):
-            match1 = join.match(segments, segstart, verbosity=verbosity)
-            if match1:
-                matches.append(match1)
-        if matches:
-            print("Matched: {}".format(matches))
+        segstart = 0
+        while segstart < sollength - 1:
+            match1 = None
+            if verbosity:
+                print("Matching joins from {}".format(segstart))
+            for join in self.source.joins:
+                pattern = join.pattern
+                patlength = len(pattern)
+                laststart = sollength - patlength - segstart
+                if laststart < 0:
+                    continue
+                match1 = join.match(segments, segstart, verbosity=verbosity)
+                if match1:
+                    match2 = join.match_conds(segments, segstart, verbosity=verbosity)
+                    if match2:
+                        matches.append((join, match1))
+                        # Don't look for more matches from this position; move forward
+                        # by the length of the join - 1 (because we're moving forward
+                        # anyway at the end of this loop)
+                        segstart += len(match1) - 1
+                        break
+            # Move forward
+            segstart += 1
         return matches
+
+    def match2superseg(self, match):
+        """Given a match (from match()), create a new SuperSeg instance."""
+        join, seglist = match
+        segs = [s[1] for s in seglist]
+        positions = [s[0] for s in seglist]
+        superseg = SuperSeg(self, segs, join=join)
+        self.segments[positions[0]:positions[-1]+1] = [superseg]

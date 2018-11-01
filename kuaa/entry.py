@@ -111,6 +111,9 @@
 # -- Gaps (position in group, minimum/maximum tokens) now need to specified to be allowed.
 # 2018.08
 # -- Fixed ir/ser confusion in morphosyns (I think). So <ser_v adj> now matches "fue malo".
+# 2018.10
+# -- Join: patterns to join SolSegs into SuperSegs. Later share more in Entry (between
+#    Group, Morphosyn, Join).
 
 import copy, itertools
 import yaml
@@ -1702,6 +1705,8 @@ class Join(Entry):
             if match:
                 s1, s2, feats = match.groups()
                 f1, f2 = feats.split(':')
+                s1 = int(s1)
+                s2 = int(s2)
                 if verbose:
                     print("  Matched 'does agree' condition {}, s1 {}, s2 {}, f1 {}, f2 {}".format(attrib, s1, s2, f1, f2))
                 self.agree_conditions.append((s1, s2, f1, f2))
@@ -1728,7 +1733,6 @@ class Join(Entry):
             if match:
                 indices = match.groups()[0]
                 indices = indices.replace(" ", "")
-                indices = list(indices)
                 indices = [int(i) for i in indices]
                 if verbose:
                     print("  Matched swap order: {}".format(indices))
@@ -1743,18 +1747,63 @@ class Join(Entry):
         patlength = len(pattern)
         patindex = 0
         segindex = startindex
-        match1 = [segindex]
+        match1 = []
         while matched and patindex < patlength:
             patelem = pattern[patindex]
             segment = segments[segindex]
             match2 = segment.match_join(patelem, verbosity=verbosity)
             if match2:
-                match1.append(match2)
+                match1.append((segindex, segment, match2))
                 segindex += 1
                 patindex += 1
             else:
                 return False
         return match1
+
+    def match_conds(self, segments, startindex=0, verbosity=1):
+        """Match the conditions in this Join against segments in Solution
+        starting with position startindex."""
+        for s1, s2, f1, f2 in self.agree_conditions:
+            if verbosity:
+                print("Matching condition {} {}; {} {}".format(s1, s2, f1, f2))
+            seg1 = segments[s1]
+            seg2 = segments[s2]
+            segfeats1 = seg1.get_shead_feats()
+            segfeats2 = seg2.get_shead_feats()
+            if verbosity:
+                print("  Features {} and {} must match on {} and {}".format(segfeats1, segfeats2, f1, f2))
+            for feats1 in segfeats1:
+                for feats2 in segfeats2:
+                    v1 = feats1.get(f1)
+                    v2 = feats2.get(f2)
+                    if verbosity:
+                        print("    Feats {} {}, vals {} {}".format(feats1.__repr__(), feats2.__repr__(), v1, v2))
+                    if v1 != v2:
+                        return False
+        return True
+
+    def apply(self, superseg, verbosity=1):
+        """Make changes specified in Join to segments matching it."""
+        # Feature agreement, change
+        segments = superseg.segments
+        for change in self.agree_changes:
+            seg1index, seg2index, feat1, feat2 = change
+            if verbosity:
+                print("  Must agree {} {} ; {} {}".format(seg1index, seg2index, feat1, feat2))
+            seg1 = segments[seg1index]
+            seg2 = segments[seg2index]
+            segfeats1 = seg1.get_thead_feats()
+            segfeats2 = seg2.get_thead_feats()
+            if verbosity:
+                print("  Seg1 {} feats {}, seg2 {} feats {}".format(seg1, segfeats1, seg2, segfeats2))
+        if self.segment_order:
+            if verbosity:
+                print("  Swap {}".format(self.segment_order))
+            i1, i2 = self.segment_order
+            sso = superseg.order
+            sso[i1], sso[i2] = sso[i2], sso[i1]
+            if verbosity:
+                print("  Indices swapped {}".format(sso))
 
 class EntryError(Exception):
     '''Class for errors encountered when attempting to update an entry.'''

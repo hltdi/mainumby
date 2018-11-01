@@ -2,7 +2,7 @@
 #
 #   This file is part of the MDT project.
 #
-#   Copyleft 2014, 2016, 2017; HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyleft 2014, 2016, 2017, 2018; HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -145,7 +145,6 @@ class FSSet(set):
         agr_pairs = agrs.items() if isinstance(agrs, dict) else agrs
         for fs in list(self):
             vals = []
-#            fail = False
             for src_feat, targ_feat in agr_pairs:
                 if src_feat in fs:
                     src_value = fs[src_feat]
@@ -162,9 +161,6 @@ class FSSet(set):
                                 continue
                         else:
                             vals.append((targ_feat, u))
-#            if fail:
-#                continue
-#            print("Changing {} in {}".format(vals, target.__repr__()))
             for f, v in vals:
                 target[f] = v
 
@@ -172,7 +168,6 @@ class FSSet(set):
         """Return an FSSet consisting of a copy of target agreeing on agrs features for each FeatStruct in self."""
         agr_pairs = agrs.items() if isinstance(agrs, dict) else agrs
         new_target = set()
-#        print("Agr pairs {}".format(agr_pairs))
         for fs in list(self):
             if isinstance(target, FSSet):
                 targets1 = [target_fs.copy(True) for target_fs in target]
@@ -180,19 +175,15 @@ class FSSet(set):
                 targets1 = [target.copy(True)]
             for target1 in targets1:
                 vals = []
-#                print("Target 1 {}, fs {}".format(target1.__repr__(), fs.__repr__()))
                 for src_feat, targ_feat in agr_pairs:
-#                    print("  Src feat {}, targ feat {}".format(src_feat, targ_feat))
                     if src_feat in fs:
                         src_value = fs[src_feat]
                         if targ_feat not in target1:
                             vals.append((targ_feat, src_value))
                         else:
                             targ_value = target1[targ_feat]
-#                            print("    Src value {}, targ value {}".format(src_value, targ_value))
                             u = simple_unify(src_value, targ_value)
                             if u == 'fail':
-#                                print("src feat {}/{} doesn't agree with targ feat {}/{}".format(src_feat, src_value, targ_feat, targ_value))
                                 if force:
                                     vals.append((targ_feat, src_value))
                                 else:

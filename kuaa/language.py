@@ -289,7 +289,7 @@ class Language:
             self.load_morpho(generate=use in (GENERATION, TARGET, TRAIN),
                              analyze=use in (ANALYSIS, SOURCE, TRAIN),
                              segment=False, guess=False, verbose=False)
-        print("Lengua {} creada".format(self))
+#        print("Lengua {} creada".format(self))
 
     @staticmethod
     def is_dig_numeral(string):
