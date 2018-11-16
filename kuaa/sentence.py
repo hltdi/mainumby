@@ -2066,9 +2066,11 @@ class Solution:
                 thead = tt.ginst.head
                 thindex = thead.index
                 tfeats = thead.snode_anal
-#                print("TT {}: head {}, index {}, feats {}".format(tt, thead, thindex, tfeats))
+                ttoken = tfeats[0] or [thead.token]
+                tcats = tt.snodes[thindex].cats
+#                print("TT {}: head {}, index {}, feats {}, cats {}".format(tt, thead, thindex, tfeats, tcats))
                 # WHY [0]??
-                head = (thindex, tfeats[0])
+                head = (thindex, ttoken, tcats)
                 raw_indices = []
                 for index in indices:
                     node = self.sentence.nodes[index]
@@ -2186,7 +2188,7 @@ class Solution:
                 src_tokens = pre_paren + parenthetical + post_paren
             else:
                 src_tokens = pre_paren
-#            print("Creating SolSeg with parenthetical {} and source tokens {}".format(parenthetical, src_tokens))
+#            print("Creating SolSeg with parenthetical {}, source tokens {}, head {}".format(parenthetical, src_tokens, thead))
             seg = SolSeg(self, raw_indices, forms, src_tokens, treetrans=treetrans,
                          session=self.session, gname=gname,
                          tgroups=tgroups, merger_groups=merger_groups, delay_gen=delay_gen, head=thead,
@@ -2279,8 +2281,24 @@ class Solution:
         return segments
 
     ## Generation and joining following segmentation
+
+    def join(self, iters=3, generate=True, verbosity=1):
+        """Iteratively match Join instances where possible, create supersegs for matches,
+        and optionally finish by generating morphological surface forms for final segments."""
+        iteration = 0
+        matched = True
+        while matched and iteration < iters:
+            matches = self.match(verbosity=verbosity)
+            if matches:
+                for match in matches:
+                    self.match2superseg(match, verbosity=verbosity)
+            else:
+                matched = False
+            iteration += 1
+        if generate:
+            self.generate(verbosity=verbosity)
     
-    def generate(self, verbosity=1):
+    def generate(self, verbosity=0):
         """Generate forms within solution segments, when this is delayed
         and so doesn't happen in TreeTranss.
         """
@@ -2299,15 +2317,23 @@ class Solution:
             if verbosity:
                 print("Matching joins from {}".format(segstart))
             for join in self.source.joins:
+                if verbosity:
+                    (" Matching {}".format(join))
                 pattern = join.pattern
                 patlength = len(pattern)
                 laststart = sollength - patlength - segstart
                 if laststart < 0:
+                    # Not enough segments left to match this join
                     continue
                 match1 = join.match(segments, segstart, verbosity=verbosity)
                 if match1:
+                    if verbosity:
+                        print("  Matched {}".format(join))
+                    # Check the conditions on the join
                     match2 = join.match_conds(segments, segstart, verbosity=verbosity)
                     if match2:
+                        if verbosity:
+                            print("  Matched conds")
                         matches.append((join, match1))
                         # Don't look for more matches from this position; move forward
                         # by the length of the join - 1 (because we're moving forward
@@ -2316,12 +2342,21 @@ class Solution:
                         break
             # Move forward
             segstart += 1
+        if matches and verbosity:
+            print("Found matches {}".format(matches))
         return matches
 
-    def match2superseg(self, match):
+    def match2superseg(self, match, verbosity=0):
         """Given a match (from match()), create a new SuperSeg instance."""
         join, seglist = match
         segs = [s[1] for s in seglist]
         positions = [s[0] for s in seglist]
         superseg = SuperSeg(self, segs, join=join)
+        if verbosity:
+            print("Creating superseg for {} and {}".format(segs, join))
+        # replace the joined segments in the solution with the superseg
         self.segments[positions[0]:positions[-1]+1] = [superseg]
+
+    ## Final translation
+    def get_translation(self):
+        return [s.cleaned_trans for s in self.segments]

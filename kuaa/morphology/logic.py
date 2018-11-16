@@ -1,6 +1,6 @@
 """
-This file is part of the ParaMorfo proejct.
-Author: Michael Gasser <gasser@cs.indiana.edu>
+This file is part of the PLoGS projedts.
+Author: Michael Gasser <gasser@indiana.edu>
 
 -----------------------------------------------------------------
 logic.py is part of

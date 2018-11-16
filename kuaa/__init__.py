@@ -70,6 +70,7 @@ def seg_trans(sentence, source, target, session=None, single=False, verbosity=0)
     if sentence.solutions:
         solution = sentence.solutions[0]
         solution.get_segs(single=single)
+        solution.generate()
         return solution.segments, solution.get_gui_segments(single=single)
     else:
         return [], sentence.get_html(single=single)

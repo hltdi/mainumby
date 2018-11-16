@@ -1657,6 +1657,7 @@ class Join(Entry):
     must_agree = re.compile("\s*(\d)\s*=!\s*(\d)\s*(.+)$")
     head_index = re.compile("\s*\^\s*(\d)$")
     swap_order = re.compile("\s*>\s*((?:\d\s*)+)$")
+    add_feats = re.compile("\s*(\d)\s*(\[.+\])$")
 
     def __init__(self, source, target, name=None, pattern=None, expanded=False):
         Entry.__init__(self, name, source)
@@ -1665,6 +1666,7 @@ class Join(Entry):
         self.pattern = pattern
         self.agree_conditions = []
         self.agree_changes = []
+        self.targ_feats = []
         self.head_index = -1
         self.segment_order = None
         # Expand unless this already happened (with optional form-feats)
@@ -1738,6 +1740,15 @@ class Join(Entry):
                     print("  Matched swap order: {}".format(indices))
                 self.segment_order = indices
                 continue
+            match = Join.add_feats.match(attrib)
+            if match:
+                index, feats = match.groups()
+                index = int(index)
+                feats = FeatStruct(feats)
+                if verbose:
+                    print("  Matched 'add feats' action {}, {}".format(index, feats.__repr__()))
+                self.targ_feats.append((index, feats))
+                continue
 
     def match(self, segments, startindex=0, verbosity=0):
         """Match this Join against segments in Solution starting with
@@ -1753,6 +1764,7 @@ class Join(Entry):
             segment = segments[segindex]
             match2 = segment.match_join(patelem, verbosity=verbosity)
             if match2:
+                print(" {} matched {}".format(segment, self))
                 match1.append((segindex, segment, match2))
                 segindex += 1
                 patindex += 1
@@ -1780,6 +1792,8 @@ class Join(Entry):
                         print("    Feats {} {}, vals {} {}".format(feats1.__repr__(), feats2.__repr__(), v1, v2))
                     if v1 != v2:
                         return False
+            if verbosity:
+                print("{} and {} matched condition {}|{}".format(seg1, seg2, f1, f2))
         return True
 
     def apply(self, superseg, verbosity=1):
@@ -1796,6 +1810,20 @@ class Join(Entry):
             segfeats2 = seg2.get_thead_feats()
             if verbosity:
                 print("  Seg1 {} feats {}, seg2 {} feats {}".format(seg1, segfeats1, seg2, segfeats2))
+        if self.targ_feats:
+            for segindex, addfeats in self.targ_feats:
+                # Add targfeats to feats in segindex Seg
+                segment = superseg.segments[segindex]
+                tfeats = segment.get_thead_feats()
+                print("Adding features {} to targ features {}".format(addfeats.__repr__(), tfeats.__repr__()))
+                for ti, th in enumerate(segment.thead):
+#                    troot, tpos, tf = th
+                    tf = th[2]
+                    newtf = tf.unify_FS(addfeats)
+                    if newtf != 'fail':
+                        th[2] = newtf
+#                    segment.thead[ti] = troot, tpos, newtf
+                print("New thead {}".format(segment.thead))
         if self.segment_order:
             if verbosity:
                 print("  Swap {}".format(self.segment_order))

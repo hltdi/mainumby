@@ -1,5 +1,5 @@
 """
-This file is part of the L3Morpho and Mainumby projects.
+This file is part of the PLoGS projects.
     Copyright (C) 2014, 2015, 2016, 2017; HLTDI, PLoGS <gasser@indiana.edu>
 
     L3Morpho is free software: you can redistribute it and/or modify
@@ -264,8 +264,6 @@ def parse_number(s, start_position):
         raise ParseError('number', start_position)
     if m.group(2): return float(m.group()), m.end()
     else: return int(m.group()), m.end()
-    
-
 
 ######################################################################
 # Check if a method has been overridden

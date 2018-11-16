@@ -174,9 +174,6 @@ class Memory(Record):
             print("- {}".format(time2str(self.start)), file=file)
 
     def record(self, sentrecord, translation=None, segtrans=None, comments=None):
-        print("record() not implemented...")
-
-    def record(self, sentrecord, translation=None, segtrans=None, comments=None):
         """Record the translation for sentrecord in this Memory."""
         print("Registrando traducción para {}: {}".format(sentrecord.raw, translation))
         if translation:
