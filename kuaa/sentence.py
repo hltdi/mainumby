@@ -957,9 +957,7 @@ class Sentence:
                     if verbosity:
                         print("  neither tagger nor analyzer provide tag for {}".format(word))
                     results1.append(anal)
-#            print(" Results for token {}: {}".format(token, results1))
             results.append([token, results1])
-#            print("{},{}: tag {}, anal {}".format(word, token, tag, anal))
         return results
 
     def nodify(self, incl_del=False, verbosity=0):
@@ -995,7 +993,6 @@ class Sentence:
                 # Multiple dicts: ambiguity; let node handle it
                 # Get cats
                 # FIX THIS LATER; ONLY ONE ANAL SHOULD BE POSSIBLE
-#                print("Token {}, anals {}".format(token, anals))
                 if not isinstance(anals, list):
                     anals = [anals]
                 for anal in anals:
@@ -1004,7 +1001,6 @@ class Sentence:
                     if cats:
                         anal['cats'] = cats
                     features = anal['features']
-#                    print("  Cats {}, features {} (type {})".format(cats, features, type(features)))
                     pos = ''
                     if features:
                         if isinstance(features, FSSet):
@@ -1013,16 +1009,9 @@ class Sentence:
                             pos = features.get('pos')
                     if pos:
                         anal['pos'] = pos
-#                    print("    POS: {}".format(pos))
                 raw_indices = del_indices.get(tokindex, [])
-#                if raw_indices:
-#                    print("Adding del indices {} to SNode: {}:{}".format(raw_indices, token, index))
                 raw_indices.append(tokindex)
-#                incorp_indices.append(tokindex)
                 self.nodes.append(SNode(token, index, anals, self, raw_indices, rawtoken=rawtok, toktype=toktype))
-#                                        incorp_indices, del_indices=del_indices.get(tokindex, [])))
-#                incorp_indices = []
-#                del_indices = []
                 index += 1
             else:
                 # No analysis, just use the raw string
@@ -1058,15 +1047,12 @@ class Sentence:
             if index == 0:
                 # For first word in sentence, try both capitalized an uncapitalized versions.
                 keys.add(node.token.capitalize())
-#                print("Keys for {}".format(keys, node))
             anals = node.analyses
             if anals:
                 if not isinstance(anals, list):
                     # Is this still possible?
                     anals = [anals]
-#                print(" Node: {}, anals: {}".format(node, anals))
                 for a in anals:
-#                    print("Analysis {}".format(a))
                     root = a.get('root')
                     if root:
                         if root not in keys:
@@ -1080,8 +1066,6 @@ class Sentence:
                                 psuf = '_' + psuf
                             for rr in r.split('|'):
                                 keys.add(rr + psuf)
-#                        print("Root {} contains an alternative".format(root))
-#                        print(" Keys now {}".format(keys))
 
                     pos = a.get('pos')
                     if pos and '_' not in root:
@@ -1089,7 +1073,6 @@ class Sentence:
                         if k not in keys:
                             keys.add(k)
             # Look up candidate groups in lexicon
-#            print("Group keys for {}: {}".format(node, keys))
             for k in keys:
                 if k in self.language.groups:
                     # All the groups with key k
@@ -1100,7 +1083,6 @@ class Sentence:
                             continue
                         candidates.append((node.index, k, group))
                         node.group_cands.append(group)
-#            print("Group cands for {}: {}".format(node, node.group_cands))
         # Now filter candidates to see if all words are present in the sentence.
         # For each group, save a list of sentence token indices that correspond
         # to the group's words
@@ -1145,17 +1127,13 @@ class Sentence:
                 cat_groups.append((group, cat_snodes))
             # All candidate groups
             filtered1.append((group, head_i, snodes))
-#        print("Filtered candidates: {}".format(filtered1))
         if cat_groups:
             for cat_group, cat_snodes in cat_groups:
                 for cat_snode in cat_snodes:
                     cat_match = firsttrue(lambda c: c[1] == cat_snode, filtered1)
                     if not cat_match:
-#                        print("  Group {} rejected; no match for cat snode {}".format(cat_group, cat_snode))
                         rejected.append(cat_group)
                         break
-#                    else:
-#                        print("    Found match {} for cat snode {}".format(cat_match, cat_snode))
         for (group, head_i, snodes) in filtered1:
             if group in rejected:
                 # This group was rejected because there was no match for its category token(s)
@@ -1180,7 +1158,6 @@ class Sentence:
         covered = {}
         for gnode in self.gnodes:
             si = gnode.snode_indices
-#            print("Checking covered indices for gnode {}: {}".format(gnode, si))
             for i in si:
                 if i not in covered:
                     covered[i] = []
@@ -1277,8 +1254,6 @@ class Sentence:
             print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SOLUCIÓN POSIBLE".format(self))
             return
         print("Resolviendo {}".format(self))
-#        if self.altsyns:
-#            print("Alt analyses: {}".format(self.altsyns))
         ds = None
         generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity,
                                           tracevar=tracevar)
@@ -1396,26 +1371,21 @@ class Sentence:
         node_apos_cpos_vars = []
         for node in self.nodes:
             node_apos_cpos_vars.extend([node.variables['cgnodes'], node.variables['agnodes']])
-#        print("SNode APos CPos var list: {}".format(node_apos_cpos_vars))
         snode_ac_union_constraint = ComplexUnionSelection(selvar=self.variables['covered_snodes'],
                                                           selvars=snodes_union_sel,
                                                           seqvars=node_apos_cpos_vars,
                                                           mainvars=[node.variables['gnodes'] for node in self.nodes])
-#        print("SN_AC_U constraint: {}".format(snode_ac_union_constraint))
         self.constraints.append(snode_ac_union_constraint)
         # Constraints involving groups with category (abstract) nodes
         # For each group that succeeds, the set of snodes ('gnodes_pos') is the union of the concrete and abstract nodes
         group_union_sel= [DetVar("gU2", {2*pos, 2*pos+1}) for pos in range(len(self.groups))]
-#        print("Group union selection: {}".format(group_union_sel))
         apos_cpos_vars = []
         for group in self.groups:
             apos_cpos_vars.extend([group.variables['agnodes_pos'], group.variables['cgnodes_pos']])
-#        print ("APos CPos var list: {}".format(apos_cpos_vars))
         group_ac_union_constraint = ComplexUnionSelection(selvar=groupvar,
                                                           selvars=group_union_sel,
                                                           seqvars=apos_cpos_vars,
                                                           mainvars=[group.variables['gnodes_pos'] for group in self.groups])
-#        print("G_AC_U constraint: {}".format(group_ac_union_constraint))
         self.constraints.append(group_ac_union_constraint)
         # The set of category (abstract) nodes used is the union of the category nodes of the groups used
         # ('agnodes' for each group)
@@ -1442,7 +1412,6 @@ class Sentence:
                                                              selvars=s2gn,
                                                              seqvars=gn2s,
                                                              mainvars=snode_mainvars)
-#        print("SN_GN_U constraint: {}".format(snode_gnode_union_constraint))
         self.constraints.append(snode_gnode_union_constraint)
         # Union of all gnodes used snodes is all gnodes used
         self.constraints.append(UnionSelection(self.variables['gnodes'], self.variables['snodes'], s2gn))
@@ -1464,9 +1433,6 @@ class Sentence:
                                                       seqvars=[s.variables['agnodes'] for s in self.nodes],
                                                       mainvars=[g.variables['agnodes'] for g in self.groups]))
         ## Agreement
-#        print("snode variables")
-#        for sn in self.nodes:
-#            print(' {} variables: {}'.format(sn, sn.variables))
         if any([g.variables.get('agr') for g in self.groups]):
             # If any groups have an 'agr' variable...
             self.constraints.append(ComplexAgrSelection(selvar=groupvar,
@@ -1478,7 +1444,6 @@ class Sentence:
     def update_tree(group_dict, group_i, tree, depth=0):
         """Update a tree (a set of snode indices) for the group with index group_i
         by searching for merged groups and their trees in group_dict."""
-#        print("Making tree: {}, {}, {}, {}".format(group_dict, group_i, tree, depth))
         if depth > 3:
             print("Infinite loop!")
             return
@@ -1623,12 +1588,8 @@ class Sentence:
             print("  SELECTED random snode {}".format(sn))
         return covered, val, cundec - val
             
-#        val = {list(cundec)[0]}
-#        return covered, val, cundec - val
-
     def get_group_varval(self, undecvars, dstore):
         """Select a value for the $groups variable."""
-#        print("Getting group var value for {} / {}".format(undecvars, dstore))
         groups = self.variables['groups']
         gundec = groups.get_undecided(dstore)
         if not gundec or not self.group_conflicts:
@@ -1663,7 +1624,6 @@ class Sentence:
         at least one other value that is part of a group with only one node. Use this
         to select variable and values in search (distribution).
         """
-#        print("  Undecided for covered: {}".format(snode_var.get_undecided(dstore=dstore)))
         variables = [node.variables.get('gnodes') for node in self.nodes]
         # Variable whose possible values are tuples of gnodes for individual groups
         gn_pos = self.variables['gnode_pos']
@@ -1699,7 +1659,6 @@ class Sentence:
         # For each snode, find which gnodes are associated with it in this dstore. This becomes the value of
         # the s2gnodes field in the solution created.
         for node in self.nodes:
-#            print("Creating solution for {}, gnodes {}".format(node, node.variables['gnodes'].get_value(dstore=dstore)))
             if node.index in covered_snodes:
                 gnodes = list(node.variables['gnodes'].get_value(dstore=dstore))
             else:
@@ -1709,17 +1668,12 @@ class Sentence:
             print("groups for {}: {}".format(self, groups))
             print("ginsts for {}: {}".format(self, ginsts))
             print("covered nodes for {}: {}".format(self, covered_snodes))
-#        print("{} s2gnodes: {}".format(self, s2gnodes))
         # Create trees for each group
         tree_attribs = {}
-#        print("NEW SOLUTION: groups: {}, covered nodes: {}, s2gnodes: {}".format(groups, covered_snodes, s2gnodes))
         for snindex, sg in enumerate(s2gnodes):
-#            print(" snode {}, snindex {}".format(self.nodes[snindex], snindex))
             for gn in sg:
                 gnode = self.gnodes[gn]
-#                print("  Creating solution for {}: {}".format(snindex, gnode))
                 gn_group = gnode.ginst.index
-#                print("  gn group {}, {}".format(gnode.ginst, gn_group))
                 if gn_group not in tree_attribs:
                     tree_attribs[gn_group] = [[], []]
                 tree_attribs[gn_group][0].append(snindex)
@@ -1732,16 +1686,12 @@ class Sentence:
                     tree_attribs[group0][1].append(group1)
                 else:
                     tree_attribs[group1][1].append(group0)
-#        print("Tree attribs {}".format(tree_attribs))
         for gindex, sn in tree_attribs.items():
             # First store the group's own tree as a set of sn indices and
             # the third element of sn
             sn.append(set(sn[0]))
             # Next check for mergers
-#            print("Updating tree for {}, {}, {}".format(tree_attribs, gindex, sn[2]))
-#            print(" Gindex {}, sn2 {}".format(gindex, sn[2]))
             Sentence.update_tree(tree_attribs, gindex, sn[2])
-#        print("Tree_attribs {}".format(tree_attribs))
         # Convert the dict to a list and sort by group indices
         trees = list(tree_attribs.items())
         trees.sort(key=lambda x: x[0])
@@ -1750,7 +1700,6 @@ class Sentence:
         # Get the indices of the GNodes for each SNode
         solution = Solution(self, ginsts, s2gnodes, len(self.solutions),
                             trees=trees, dstore=dstore, session=self.session)
-#        self.solutions.append(solution)
         return solution
 
     ### Various ways of displaying translation outputs.
@@ -2282,21 +2231,29 @@ class Solution:
 
     ## Generation and joining following segmentation
 
-    def join(self, iters=3, generate=True, verbosity=1):
+    def join(self, iters=3, makesuper=True, generate=True, verbosity=1):
         """Iteratively match Join instances where possible, create supersegs for matches,
         and optionally finish by generating morphological surface forms for final segments."""
         iteration = 0
         matched = True
+        all_matches = []
         while matched and iteration < iters:
+            print("MATCHING JOINS, ITERATION {}".format(iteration))
+            print("Segments: {}".format(self.segments))
             matches = self.match(verbosity=verbosity)
             if matches:
-                for match in matches:
-                    self.match2superseg(match, verbosity=verbosity)
+                all_matches.extend(matches)
+                if makesuper:
+                    # Make supersegs in reverse order of matches
+                    # because segment indices change each time a new one is created
+                    for match in reversed(matches):
+                        self.match2superseg(match, verbosity=verbosity)
             else:
                 matched = False
             iteration += 1
         if generate:
             self.generate(verbosity=verbosity)
+        return all_matches
     
     def generate(self, verbosity=0):
         """Generate forms within solution segments, when this is delayed
@@ -2307,41 +2264,41 @@ class Solution:
 
     def match(self, verbosity=1):
         """Try to match the sequence of SolSegs in this solution with the patterns
-        in all the Join instances."""
+        in all the Join instances, taking Join instances one at a time in order."""
         matches = []
         segments = self.segments
         sollength = len(segments)
         segstart = 0
-        while segstart < sollength - 1:
-            match1 = None
+        matches = []
+        for join in self.source.joins:
             if verbosity:
-                print("Matching joins from {}".format(segstart))
-            for join in self.source.joins:
-                if verbosity:
-                    (" Matching {}".format(join))
-                pattern = join.pattern
-                patlength = len(pattern)
-                laststart = sollength - patlength - segstart
-                if laststart < 0:
-                    # Not enough segments left to match this join
-                    continue
+                print("Matching {}".format(join))
+            pattern = join.pattern
+            patlength = len(pattern)
+            endgap = sollength - patlength
+            segstart = 0
+            matches1 = []
+            while segstart < sollength - 1 and endgap - segstart >= 0:
                 match1 = join.match(segments, segstart, verbosity=verbosity)
                 if match1:
                     if verbosity:
-                        print("  Matched {}".format(join))
+                        print("  Matched at {}".format(segstart))
                     # Check the conditions on the join
                     match2 = join.match_conds(segments, segstart, verbosity=verbosity)
                     if match2:
                         if verbosity:
                             print("  Matched conds")
-                        matches.append((join, match1))
+                        matches1.append((join, match1))
                         # Don't look for more matches from this position; move forward
                         # by the length of the join - 1 (because we're moving forward
                         # anyway at the end of this loop)
-                        segstart += len(match1) - 1
-                        break
-            # Move forward
-            segstart += 1
+                        segstart += patlength - 1
+                # Move forward
+                segstart += 1
+            if matches1:
+                # For now just match one Join
+                matches.extend(matches1)
+                break
         if matches and verbosity:
             print("Found matches {}".format(matches))
         return matches
@@ -2353,7 +2310,7 @@ class Solution:
         positions = [s[0] for s in seglist]
         superseg = SuperSeg(self, segs, join=join)
         if verbosity:
-            print("Creating superseg for {} and {}".format(segs, join))
+            print("CREATING SUPERSEG FOR {} AND {} in positions {}".format(segs, join, positions))
         # replace the joined segments in the solution with the superseg
         self.segments[positions[0]:positions[-1]+1] = [superseg]
 

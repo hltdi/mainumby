@@ -109,6 +109,12 @@ class Seg:
         self.special = False
         self.raw_token_str = None
         self.clean_trans = None
+        self.html = []
+        self.source_html = None
+        self.has_paren = False
+        self.is_paren = False
+        self.is_punc = False
+        self.record = None
 
     def get_untrans_token(self):
         """For untranslated segments, return the cleaned string."""
@@ -230,192 +236,6 @@ class Seg:
         self.cleaned_trans = cleaned_trans
         self.generated = True
 
-    @staticmethod
-    def remove_spec_pre(string):
-        """Remove special prefixes, for example, '%ND~'."""
-        if '%' in string:
-            string = ''.join(Seg.special_re.split(string))
-        return string
-
-    @staticmethod
-    def clean_spec(string):
-        """Remove special prefixes and connecting characters."""
-        string = Seg.remove_spec_pre(string)
-        string = string.replace('_', ' ').replace('~', ' ')
-        return string
-
-    @staticmethod
-    def join_toks(string):
-        """Join tokens as specified by the join character."""
-        return string.replace(' ' + Seg.join_tok_char, '')
-
-    @staticmethod
-    def join_toks_in_strings(stringlists):
-        """Join tokens in each item in list of strings."""
-        for i, stringlist in enumerate(stringlists):
-            for j, string in enumerate(stringlist):
-                if Seg.join_tok_char in string:
-                    stringlists[i][j] = Seg.join_toks(string)
-
-class SuperSeg(Seg):
-    """SuperSegment: joins SolSeg instances into larger units."""
-
-    def __init__(self, solution, segments=None, name=None, join=None):
-        Seg.__init__(self, solution)
-        self.segments = segments
-        self.name = name
-        self.join = join
-        self.order = list(range(len(segments)))
-        self.head_seg = segments[join.head_index]
-        self.shead = self.head_seg.shead
-        self.scats = self.head_seg.scats
-        self.thead = self.head_seg.thead
-        if self.head_seg.special:
-            self.special = True
-        self.apply_changes()
-        self.cleaned_trans = []
-        raw_tokens = []
-        for i in self.order:
-            segment = self.segments[i]
-            self.cleaned_trans.extend(segment.cleaned_trans)
-            raw_tokens.append(segment.raw_token_str)
-        self.raw_token_str = ' '.join(raw_tokens)
-
-    def __repr__(self):
-        if self.name:
-            return self.name
-        elif self.segments:
-            return ">>" + "++".join([seg.raw_token_str for seg in self.segments]) + "<<"
-        else:
-            return "SuperSeg"
-
-    def apply_changes(self, verbosity=1):
-        """Implement the changes to features and order specified in the Join instance."""
-        self.join.apply(self, verbosity=verbosity)
-
-#    def generate(self, verbosity=0):
-#        """Do morphological generation in all the sub-segments of this SuperSeg."""
-#        for segment in self.segments:
-#            segment.generate(verbosity=verbosity)
-
-class SolSeg(Seg):
-    """Sentence solution segment, realization of a Group, possibly merged with another. Displayed in GUI."""
-
-    def __init__(self, solution, indices, translation, tokens, color=None, space_before=1,
-                 treetrans=None,
-                 # Whether to delay generation
-                 delay_gen=False,
-                 tgroups=None, merger_groups=None, has_paren=False, is_paren=False,
-                 head=None,
-                 spec_indices=None, session=None, gname=None, is_punc=False):
-#        print("Creating SolSeg for indices {}, translation {}, head {}".format(indices, translation, head))
-        Seg.__init__(self, solution)
-        if head:
-            self.shead_index, self.shead, self.scats = head
-        else:
-            self.shead_index = -1
-            self.shead = None
-            self.cats = None
-        self.treetrans = treetrans
-        # Whether morphological generation has applied
-        if not delay_gen:
-            self.generated = True
-#        self.thead = treetrans.outputs[0] if treetrans else None
-        self.indices = indices
-        self.space_before = space_before
-        # Are there any alternatives among the translations?
-        self.any_choices = any(['|' in t for t in translation])
-        # For each translation alternative, separate words, each of which can have alternatives (separated by '|').
-#        if delay_gen:
-#            self.translation = translation
-#        else:
-        # What happens here differs depending on whether delay_gen is True;
-        # self.translation is a list of lists
-        self.translation = [(t.split() if isinstance(t, str) else t) for t in translation]
-        self.cleaned_trans = None
-        self.tokens = tokens
-        # Pre-parenthetical, parenthetical, post-parenthetical portions
-        self.has_paren = has_paren
-        # Whether this an unattached segment within another segment
-        self.is_paren = is_paren
-        self.token_str = ' '.join(tokens)
-        self.raw_token_str = self.token_str[:]
-        # Later set this to the SolSeg instance that intervenes within this one
-        self.paren_seg = None
-        # Stuff to do when there's a parenthetical segment within the segment
-        if has_paren:
-            pre, paren, post = has_paren
-            self.paren_tokens = [p[0] for p in paren]
-            self.paren_indices = [p[1] for p in paren]
-            self.original_tokens = pre + post
-            self.pre_token_str = ' '.join(pre)
-            self.paren_token_str = ' '.join(self.paren_tokens)
-            # There could be special tokens in the parenthetical part
-            self.paren_token_str = Seg.clean_spec(self.paren_token_str)
-            self.post_token_str = ' '.join(post)
-        else:
-            self.original_tokens = tokens
-        self.original_token_str = ' '.join(self.original_tokens)
-        self.original_token_str = self.original_token_str.replace("←", "")
-        # If there are special tokens in the source language, fix them here.
-        if '%' in self.token_str or '~' in self.token_str:
-#            print("Handling special item {}, delay_gen {}".format(self.token_str, delay_gen))
-            # Create the source and target strings without special characters
-            if not translation:
-                self.special = True
-            if delay_gen:
-                if translation:
-                    self.cleaned_trans = [translation]
-                    self.translation = [translation]
-                else:
-                    self.cleaned_trans = [[tokens[0]]]
-            else:
-                self.translate_special(translation or tokens)
-            self.token_str = Seg.clean_spec(self.token_str)
-            self.original_token_str = Seg.clean_spec(self.original_token_str)
-        if not self.cleaned_trans:
-            self.cleaned_trans = self.translation
-        # Join tokens in cleaned translation if necessary
-        if not delay_gen:
-            Seg.join_toks_in_strings(self.cleaned_trans)
-        if treetrans:
-            thead_indices = [g.head_index for g in treetrans.tgroups]
-            self.thead = [o[i] for i, o in zip(thead_indices, self.cleaned_trans)]
-        else:
-            self.thead = None
-        self.color = color
-        # Whether this segment is just punctuation
-        self.is_punc = is_punc
-        # Name of the group instantiated in this segment
-        self.gname = gname
-        # Triples for each merger with the segment
-        self.merger_gnames = merger_groups
-        # Target-language groups
-        self.tgroups = tgroups or [[]] * len(self.translation)
-        # Target-language group strings, ordered by choices; gets set in set_html()
-        self.choice_tgroups = None
-        # The session associated with this solution segment
-        self.session = session
-        # Create a record for this segment if there's a session running and it's not punctuation
-        if session and session.running and not self.source.is_punc(self.token_str):
-            self.record = self.make_record(session, solution.sentence)
-        else:
-            self.record = None
-        self.html = []
-        self.source_html = None
-#        print("Created {}, punctuation? {}, translation {}, cleaned {}".format(self, self.is_punc, self.translation, self.cleaned_trans))
-
-    def __repr__(self):
-        """Print name."""
-        return ">>{}<<".format(self.token_str)
-
-    ## Record
-
-    def make_record(self, session=None, sentence=None):
-        """Create the SegRecord object for this SolSeg."""
-        if sentence:
-            return SegRecord(self, sentence=sentence.record, session=session)
-
     ## Web app
 
     def set_source_html(self, index):
@@ -452,7 +272,7 @@ class SolSeg(Seg):
         tokens = self.token_str
         orig_tokens = self.original_token_str
         trans_choice_index = 0
-#        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
+        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
         # T Group strings associated with each choice
         choice_tgroups = []
         # Currently selected translation
@@ -477,6 +297,7 @@ class SolSeg(Seg):
         ntgroups = len(self.tgroups)
         multtrans = True
         for tindex, (t, tgroups) in enumerate(zip(self.cleaned_trans, self.tgroups)):
+            print("  tindex {}, t {}, tgroups {}".format(tindex, t, tgroups))
             # Create all combinations of word sequences
             tg_expanded = []
             if self.special:
@@ -671,6 +492,198 @@ class SolSeg(Seg):
 #        print("HTML for {}".format(self))
 #        for h in self.html:
 #            print(" {}".format(h))
+
+    @staticmethod
+    def remove_spec_pre(string):
+        """Remove special prefixes, for example, '%ND~'."""
+        if '%' in string:
+            string = ''.join(Seg.special_re.split(string))
+        return string
+
+    @staticmethod
+    def clean_spec(string):
+        """Remove special prefixes and connecting characters."""
+        string = Seg.remove_spec_pre(string)
+        string = string.replace('_', ' ').replace('~', ' ')
+        return string
+
+    @staticmethod
+    def join_toks(string):
+        """Join tokens as specified by the join character."""
+        return string.replace(' ' + Seg.join_tok_char, '')
+
+    @staticmethod
+    def join_toks_in_strings(stringlists):
+        """Join tokens in each item in list of strings."""
+        for i, stringlist in enumerate(stringlists):
+            for j, string in enumerate(stringlist):
+                if Seg.join_tok_char in string:
+                    stringlists[i][j] = Seg.join_toks(string)
+
+class SuperSeg(Seg):
+    """SuperSegment: joins SolSeg instances into larger units."""
+
+    def __init__(self, solution, segments=None, name=None, join=None):
+        Seg.__init__(self, solution)
+        self.segments = segments
+        self.name = name
+        self.join = join
+        self.order = list(range(len(segments)))
+        self.head_seg = segments[join.head_index]
+        self.shead = self.head_seg.shead
+        self.scats = self.head_seg.scats
+        self.thead = self.head_seg.thead
+        if self.head_seg.special:
+            self.special = True
+        self.apply_changes()
+#        self.cleaned_trans = []
+        raw_tokens = []
+        token_str = []
+        original_token_str = []
+        self.translation = []
+        for i in self.order:
+            segment = self.segments[i]
+#            self.cleaned_trans.extend(segment.cleaned_trans)
+            self.translation.append(segment.translation)
+            raw_tokens.append(segment.raw_token_str)
+            token_str.append(segment.token_str)
+            original_token_str.append(segment.original_token_str)
+        # Assumes there are only two overt sub-segments
+        seg1 = self.segments[self.order[0]]
+        seg2 = self.segments[self.order[1]]
+        self.tgroups = [tg1 + tg2 for tg1 in seg1.tgroups for tg2 in seg2.tgroups]
+        self.cleaned_trans = [ct1 + ct2 for ct1 in seg1.cleaned_trans for ct2 in seg2.cleaned_trans]
+        self.raw_token_str = ' '.join(raw_tokens)
+        self.token_str = ' '.join(token_str)
+        self.original_token_str = ' '.join(original_token_str)
+
+    def __repr__(self):
+        if self.name:
+            return self.name
+        elif self.segments:
+            return ">>" + "++".join([seg.raw_token_str for seg in self.segments]) + "<<"
+        else:
+            return "SuperSeg"
+
+    def apply_changes(self, verbosity=1):
+        """Implement the changes to features and order specified in the Join instance."""
+        self.join.apply(self, verbosity=verbosity)
+
+class SolSeg(Seg):
+    """Sentence solution segment, realization of a Group, possibly merged with another. Displayed in GUI."""
+
+    def __init__(self, solution, indices, translation, tokens, color=None, space_before=1,
+                 treetrans=None,
+                 # Whether to delay generation
+                 delay_gen=False,
+                 tgroups=None, merger_groups=None, has_paren=False, is_paren=False,
+                 head=None,
+                 spec_indices=None, session=None, gname=None, is_punc=False):
+#        print("Creating SolSeg for indices {}, translation {}, head {}".format(indices, translation, head))
+        Seg.__init__(self, solution)
+        if head:
+            self.shead_index, self.shead, self.scats = head
+        else:
+            self.shead_index = -1
+            self.shead = None
+            self.cats = None
+        self.treetrans = treetrans
+        # Whether morphological generation has applied
+        if not delay_gen:
+            self.generated = True
+#        self.thead = treetrans.outputs[0] if treetrans else None
+        self.indices = indices
+        self.space_before = space_before
+        # Are there any alternatives among the translations?
+        self.any_choices = any(['|' in t for t in translation])
+        # For each translation alternative, separate words, each of which can have alternatives (separated by '|').
+#        if delay_gen:
+#            self.translation = translation
+#        else:
+        # What happens here differs depending on whether delay_gen is True;
+        # self.translation is a list of lists
+        self.translation = [(t.split() if isinstance(t, str) else t) for t in translation]
+        self.cleaned_trans = None
+        self.tokens = tokens
+        # Pre-parenthetical, parenthetical, post-parenthetical portions
+        self.has_paren = has_paren
+        # Whether this an unattached segment within another segment
+        self.is_paren = is_paren
+        self.token_str = ' '.join(tokens)
+        self.raw_token_str = self.token_str[:]
+        # Later set this to the SolSeg instance that intervenes within this one
+        self.paren_seg = None
+        # Stuff to do when there's a parenthetical segment within the segment
+        if has_paren:
+            pre, paren, post = has_paren
+            self.paren_tokens = [p[0] for p in paren]
+            self.paren_indices = [p[1] for p in paren]
+            self.original_tokens = pre + post
+            self.pre_token_str = ' '.join(pre)
+            self.paren_token_str = ' '.join(self.paren_tokens)
+            # There could be special tokens in the parenthetical part
+            self.paren_token_str = Seg.clean_spec(self.paren_token_str)
+            self.post_token_str = ' '.join(post)
+        else:
+            self.original_tokens = tokens
+        self.original_token_str = ' '.join(self.original_tokens)
+        self.original_token_str = self.original_token_str.replace("←", "")
+        # If there are special tokens in the source language, fix them here.
+        if '%' in self.token_str or '~' in self.token_str:
+#            print("Handling special item {}, delay_gen {}".format(self.token_str, delay_gen))
+            # Create the source and target strings without special characters
+            if not translation:
+                self.special = True
+            if delay_gen:
+                if translation:
+                    self.cleaned_trans = [translation]
+                    self.translation = [translation]
+                else:
+                    self.cleaned_trans = [[tokens[0]]]
+            else:
+                self.translate_special(translation or tokens)
+            self.token_str = Seg.clean_spec(self.token_str)
+            self.original_token_str = Seg.clean_spec(self.original_token_str)
+        if not self.cleaned_trans:
+            self.cleaned_trans = self.translation
+        # Join tokens in cleaned translation if necessary
+        if not delay_gen:
+            Seg.join_toks_in_strings(self.cleaned_trans)
+        if treetrans:
+            thead_indices = [g.head_index for g in treetrans.tgroups]
+            self.thead = [o[i] for i, o in zip(thead_indices, self.cleaned_trans)]
+        else:
+            self.thead = None
+        self.color = color
+        # Whether this segment is just punctuation
+        self.is_punc = is_punc
+        # Name of the group instantiated in this segment
+        self.gname = gname
+        # Triples for each merger with the segment
+        self.merger_gnames = merger_groups
+        # Target-language groups
+        self.tgroups = tgroups or [[]] * len(self.translation)
+        # Target-language group strings, ordered by choices; gets set in set_html()
+        self.choice_tgroups = None
+        # The session associated with this solution segment
+        self.session = session
+        # Create a record for this segment if there's a session running and it's not punctuation
+        if session and session.running and not self.source.is_punc(self.token_str):
+            self.record = self.make_record(session, solution.sentence)
+        else:
+            self.record = None
+#        print("Created {}, punctuation? {}, translation {}, cleaned {}".format(self, self.is_punc, self.translation, self.cleaned_trans))
+
+    def __repr__(self):
+        """Print name."""
+        return ">>{}<<".format(self.token_str)
+
+    ## Record
+
+    def make_record(self, session=None, sentence=None):
+        """Create the SegRecord object for this SolSeg."""
+        if sentence:
+            return SegRecord(self, sentence=sentence.record, session=session)
 
     def translate_special(self, tokens, assign=True):
         """Translate a 'special' set of tokens (containing a name, numeral or

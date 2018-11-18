@@ -1798,7 +1798,6 @@
 ** malicioso_a ; ^ malicioso_a 0
 ->grn aña_v
 ** malo_a ; ^ malo_a 0 ; #238
-->grn ipochýva_v ; #6
 ->grn mba'evai_v ; #109
 ->grn vai_v ; #284
 ->grn meĝua_v ; #1
@@ -1810,7 +1809,6 @@
 ->grn ne_v ; #90
 ** malvado_a ; ^ malvado_a 0 ; #106
 ->grn aña_v ; #105
-->grn ipochýva_v ; #6
 ->grn ñaña_v ; #66
 ** maléfico_a ; ^ maléfico_a 0
 ->grn harúva_v

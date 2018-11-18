@@ -1777,23 +1777,28 @@ class Join(Entry):
         starting with position startindex."""
         for s1, s2, f1, f2 in self.agree_conditions:
             if verbosity:
-                print("Matching condition {} {}; {} {}".format(s1, s2, f1, f2))
-            seg1 = segments[s1]
-            seg2 = segments[s2]
+                print("  Matching condition {} {}; {} {}".format(s1, s2, f1, f2))
+            seg1 = segments[s1+startindex]
+            seg2 = segments[s2+startindex]
             segfeats1 = seg1.get_shead_feats()
             segfeats2 = seg2.get_shead_feats()
             if verbosity:
-                print("  Features {} and {} must match on {} and {}".format(segfeats1, segfeats2, f1, f2))
+                print("    Features {} and {} must match on {} and {}".format(segfeats1, segfeats2, f1, f2))
             for feats1 in segfeats1:
+                v1 = feats1.get(f1)
+                # Allow match when one or the other feature has no value for the feature
+                if v1 == None:
+                    continue
                 for feats2 in segfeats2:
-                    v1 = feats1.get(f1)
                     v2 = feats2.get(f2)
                     if verbosity:
-                        print("    Feats {} {}, vals {} {}".format(feats1.__repr__(), feats2.__repr__(), v1, v2))
+                        print("      Feats {} {}, vals {} {}".format(feats1.__repr__(), feats2.__repr__(), v1, v2))
+                    if v2 == None:
+                        continue
                     if v1 != v2:
                         return False
             if verbosity:
-                print("{} and {} matched condition {}|{}".format(seg1, seg2, f1, f2))
+                print("  {} and {} matched condition {}|{}".format(seg1, seg2, f1, f2))
         return True
 
     def apply(self, superseg, verbosity=1):
@@ -1815,10 +1820,12 @@ class Join(Entry):
                 # Add targfeats to feats in segindex Seg
                 segment = superseg.segments[segindex]
                 tfeats = segment.get_thead_feats()
+                print("Segment {}, thead {}, tfeats {}".format(segment, segment.thead, tfeats))
                 print("Adding features {} to targ features {}".format(addfeats.__repr__(), tfeats.__repr__()))
                 for ti, th in enumerate(segment.thead):
 #                    troot, tpos, tf = th
                     tf = th[2]
+                    print("th {}".format(th))
                     newtf = tf.unify_FS(addfeats)
                     if newtf != 'fail':
                         th[2] = newtf

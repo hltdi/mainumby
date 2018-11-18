@@ -39,8 +39,11 @@
 # -- Sessions, users
 # 2017.3
 # -- Bilingual documents and training
+# 2018
+# -- Web app
+#    Joins and SuperSegs
 
-__version__ = 1.0
+__version__ = 2.0
 
 import kuaa
 
@@ -71,6 +74,11 @@ def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
                 return solution
             return s.solutions
     return s
+
+def ora1(sentence):
+    """A sentence prior to solution, segmentation, translation."""
+    return ora(sentence, solve=False, segment=False, single=True, translate=False,
+               delay_gen=True)
 
 ## Aprendizaje de nuevos grupos
 
