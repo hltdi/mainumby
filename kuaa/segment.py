@@ -107,7 +107,8 @@ class Seg:
         self.thead = None
         self.scats = None
         self.special = False
-        self.raw_token_str = None
+        self.raw_token_str = ''
+        self.token_string = ''
         self.clean_trans = None
         self.html = []
         self.source_html = None
@@ -115,6 +116,11 @@ class Seg:
         self.is_paren = False
         self.is_punc = False
         self.record = None
+        self.gname = None
+        self.merger_gnames = None
+
+    def get_tokens(self):
+        return self.get_shead_tokens() or self.get_untrans_token() or [self.token_str]
 
     def get_untrans_token(self):
         """For untranslated segments, return the cleaned string."""
@@ -182,8 +188,7 @@ class Seg:
                 # Match a category
                 return self.scats and join_elem in self.scats
             else:
-#                tok = self.get_untrans_token()
-                toks = self.get_shead_tokens() or self.get_untrans_token()
+                toks = self.get_tokens()
                 return any([join_elem == tok for tok in toks]) and toks
         else:
             feats = self.get_shead_feats()
@@ -198,6 +203,52 @@ class Seg:
                     if u and u != 'fail':
                         return u
             return False
+            
+    def match_group_tok(self, group_tok, group_feats, verbosity=1):
+        """Does this Seg match pattern elem and features from a Group?"""
+        if verbosity:
+            print("Matching item {} with group token {}".format(self, group_tok))
+        if '$' in group_tok:
+            if not self.scats or group_tok not in self.scats:
+                return False
+            elif self.get_shead_feats():
+                return self.get_shead_feats()[0]
+            else:
+                return True
+        elif '%' in group_tok:
+            pre, tok = self.get_special()
+            if pre != group_tok:
+                return False
+        else:
+            toks = self.get_tokens()
+#            if verbosity:
+#                print(" Matching group token {} with segment tokens {}".format(group_tok, toks))
+            if not any([group_tok == tok for tok in toks]):
+                return False
+            if not group_feats:
+                return True
+            feats = self.get_shead_feats()
+            if feats:
+                for feat in feats:
+                    if verbosity:
+                        print(" Matching group features {} with segment features {}".format(group_feats.__repr__(), feat.__repr__()))
+                    u = feat.u(group_feats)
+                    if u == 'fail':
+                        return False
+                    else:
+                        return u
+        return True
+
+    def get_group_cands(self, all_groups=None):
+        """Get groups that could match this segment and surrounding segments."""
+        tokens = self.get_tokens()
+        all_groups = all_groups or self.source.groups
+        if all_groups and tokens:
+            groups = []
+            for token in tokens:
+                groups1 = [(g, g.head_index) for g in all_groups.get(token)]
+                groups.extend(groups1)
+            return groups
             
     def generate(self, verbosity=0):
         """When generation is delayed (that is, it doesn't happen with TreeTrans instances),
@@ -521,7 +572,8 @@ class Seg:
                     stringlists[i][j] = Seg.join_toks(string)
 
 class SuperSeg(Seg):
-    """SuperSegment: joins SolSeg instances into larger units."""
+    """SuperSegment: joins SolSeg instances into larger units, either via a Join rule
+    or a Group."""
 
     def __init__(self, solution, segments=None, name=None, join=None):
         Seg.__init__(self, solution)
@@ -537,22 +589,39 @@ class SuperSeg(Seg):
             self.special = True
         self.apply_changes()
 #        self.cleaned_trans = []
+        ## Copy properties of sub-SolSegs
+        self.record = self.segments[0].record
         raw_tokens = []
         token_str = []
         original_token_str = []
         self.translation = []
+        gname = []
+        self.merger_gnames = []
+        self.cleaned_trans = []
+        self.tgroups = []
         for i in self.order:
             segment = self.segments[i]
-#            self.cleaned_trans.extend(segment.cleaned_trans)
+            if self.cleaned_trans:
+                self.cleaned_trans = [ct1 + ct2 for ct1 in self.cleaned_trans for ct2 in segment.cleaned_trans]
+            else:
+                self.cleaned_trans = segment.cleaned_trans
+            if self.tgroups:
+                self.tgroups = [tg1 + tg2 for tg1 in self.tgroups for tg2 in segment.tgroups]
+            else:
+                self.tgroups = segment.tgroups
             self.translation.append(segment.translation)
             raw_tokens.append(segment.raw_token_str)
             token_str.append(segment.token_str)
             original_token_str.append(segment.original_token_str)
+            gname.append(segment.gname)
+            if segment.merger_gnames:
+                self.merger_gnames.extend(segment.merger_gnames)
+        self.gname = "++".join(gname)
         # Assumes there are only two overt sub-segments
-        seg1 = self.segments[self.order[0]]
-        seg2 = self.segments[self.order[1]]
-        self.tgroups = [tg1 + tg2 for tg1 in seg1.tgroups for tg2 in seg2.tgroups]
-        self.cleaned_trans = [ct1 + ct2 for ct1 in seg1.cleaned_trans for ct2 in seg2.cleaned_trans]
+#        seg1 = self.segments[self.order[0]]
+#        seg2 = self.segments[self.order[1]]
+#        self.tgroups = [tg1 + tg2 for tg1 in seg1.tgroups for tg2 in seg2.tgroups]
+#        self.cleaned_trans = [ct1 + ct2 for ct1 in seg1.cleaned_trans for ct2 in seg2.cleaned_trans]
         self.raw_token_str = ' '.join(raw_tokens)
         self.token_str = ' '.join(token_str)
         self.original_token_str = ' '.join(original_token_str)
@@ -566,23 +635,28 @@ class SuperSeg(Seg):
             return "SuperSeg"
 
     def apply_changes(self, verbosity=1):
-        """Implement the changes to features and order specified in the Join instance."""
+        """Implement the changes to features and order specified in the Join or Group instance."""
         self.join.apply(self, verbosity=verbosity)
 
 class SolSeg(Seg):
     """Sentence solution segment, realization of a Group, possibly merged with another. Displayed in GUI."""
 
     def __init__(self, solution, indices, translation, tokens, color=None, space_before=1,
-                 treetrans=None,
+                 treetrans=None, sfeats=None,
                  # Whether to delay generation
                  delay_gen=False,
                  tgroups=None, merger_groups=None, has_paren=False, is_paren=False,
                  head=None,
                  spec_indices=None, session=None, gname=None, is_punc=False):
-#        print("Creating SolSeg for indices {}, translation {}, head {}".format(indices, translation, head))
+        print("Creating SolSeg for indices {}, translation {}, head {}, sfeats {}".format(indices, translation, head, sfeats))
         Seg.__init__(self, solution)
         if head:
             self.shead_index, self.shead, self.scats = head
+        elif sfeats:
+            sfeat_dict = sfeats[0]
+            self.shead_index = 0
+            self.shead = [(sfeat_dict.get('root'), sfeat_dict.get('features'))]
+            self.scats = sfeat_dict.get('cats', set())
         else:
             self.shead_index = -1
             self.shead = None

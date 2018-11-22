@@ -489,7 +489,7 @@ class SentRecord:
 #        print("{}".format(SENTENCE_POST), file=file)
 
 class SegRecord:
-    """A record of a sentence solution segment and its translation by a user."""
+    """A record of a sentence solution segment or Superseg and its translation by a user."""
 
     def __init__(self, solseg, sentence=None, session=None):
         # a SentRecord instance

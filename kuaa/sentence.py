@@ -2031,37 +2031,49 @@ class Solution:
         return self.ttrans_outputs
 
     def get_untrans_segs(self, src_tokens, end_index, gname=None, merger_groups=None, indices_covered=None,
-                         delay_gen=False, is_paren=False):
+                         src_feats=None, delay_gen=False, is_paren=False):
         '''Set one or more segments for a sequence of untranslatable tokens. Ignore indices that are already
          covered by translated segments.'''
         stok_groups = []
+        sfeat_groups = []
         stoks = []
+        sfeatures = []
         index = end_index + 1
         included_tokens = []
         newsegs = []
-        for stok in src_tokens:
+        for stok, sfeats in zip(src_tokens, src_feats):
             if not stok:
                 # empty sentence final token
                 continue
             if index in indices_covered:
                 if stoks:
                     stok_groups.append(stoks)
+                    sfeat_groups.append(sfeatures)
                     stoks = []
-            elif stok[0] == '%' or self.source.is_punc(stok[0]):
+                    sfeatures = []
+            else:
+                # For now make one segment for each token
+#            elif stok[0] == '%' or self.source.is_punc(stok[0]):
                 # Special token or punctuation; it should have its own segment
                 if stoks:
                     stok_groups.append(stoks)
+                    sfeat_roups.append(sfeatures)
                     stoks = []
+                    sfeatures = []
                 stok_groups.append([stok])
+                sfeat_groups.append([sfeats])
                 included_tokens.append(stok)
-            else:
-                stoks.append(stok)
-                included_tokens.append(stok)
+#            else:
+#                stoks.append(stok)
+#                sfeatures.append(sfeats)
+#                included_tokens.append(stok)
             index += 1
         if stoks:
             stok_groups.append(stoks)
+            sfeat_groups.append(sfeatures)
         i0 = end_index+1
-        for stok_group in stok_groups:
+        for stok_group, sfeat_group in zip(stok_groups, sfeat_groups):
+#            print("stok_group {}".format(stok_group))
             is_punc = len(stok_group) == 1 and self.source.is_punc(stok_group[0])
             if is_punc:
                 # Convert punctuation in source to punctuation in target if there is a mapping.
@@ -2077,7 +2089,7 @@ class Solution:
                 space_before = 0
 #            print("Node type for untranslated SolSeg: {}".format(node_toktype))
             seg = SolSeg(self, indices, translation, stok_group, session=self.session,
-                         gname=None, delay_gen=delay_gen,
+                         gname=None, delay_gen=delay_gen, sfeats=sfeat_group[0],
                          space_before=space_before, merger_groups=None, is_punc=is_punc,
                          is_paren=is_paren)
             print("Segmento (no traducido) {}->{}: {}={}".format(start, end, stok_group, seg.translation))
@@ -2093,7 +2105,8 @@ class Solution:
         tt = self.get_ttrans_outputs()
         end_index = -1
         max_index = -1
-        tokens = self.sentence.tokens
+        sentence = self.sentence
+        tokens = sentence.tokens
         indices_covered = []
         # Token lists for parenthetical segments
         parentheticals = []
@@ -2109,8 +2122,10 @@ class Solution:
             if start > max_index+1:
                 # there's a gap between the farthest segment to the right and this one; make one or more untranslated segments
                 src_tokens = tokens[end_index+1:start]
+                src_nodes = [sentence.get_node_by_raw(index) for index in range(end_index+1, start)]
+                src_feats = [(s.analyses if s else None) for s in src_nodes]
                 self.get_untrans_segs(src_tokens, end_index, gname=gname, merger_groups=merger_groups,
-                                      delay_gen=delay_gen, indices_covered=indices_covered)
+                                      src_feats=src_feats, delay_gen=delay_gen, indices_covered=indices_covered)
             if start < max_index:
                 # There's a gap between the portions of the segment; this is a parenthetical segment within an outer one
                 late = True
@@ -2162,8 +2177,10 @@ class Solution:
         if max_index+1 < len(tokens):
             # Some word(s) at end not translated; use source forms
             src_tokens = tokens[max_index+1:len(tokens)]
+            src_nodes = [sentence.get_node_by_raw(index) for index in range(max_index+1, len(tokens))]
+            src_feats = [(s.analyses if s else None) for s in src_nodes]
             self.get_untrans_segs(src_tokens, max_index, gname=gname, merger_groups=merger_groups,
-                                  delay_gen=delay_gen, indices_covered=indices_covered)
+                                  src_feats=src_feats, delay_gen=delay_gen, indices_covered=indices_covered)
         # Check whether untranslated parentheticals have gotten segments
         for parenthetical in parentheticals:
             ptokens = [p[0] for p in parenthetical]
@@ -2304,7 +2321,7 @@ class Solution:
         return matches
 
     def match2superseg(self, match, verbosity=0):
-        """Given a match (from match()), create a new SuperSeg instance."""
+        """Given a match of a Join or Group instance, create a new SuperSeg instance."""
         join, seglist = match
         segs = [s[1] for s in seglist]
         positions = [s[0] for s in seglist]

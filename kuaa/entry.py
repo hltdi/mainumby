@@ -301,6 +301,10 @@ class Entry:
             raise(EntryError(s.format(trans, self.name)))
         transdict[trans]['c'] += count
 
+    def apply(self, obj, ambig=False, verbosity=0, terse=False):
+        """Apply this entry to a Sentence or Superseg."""
+        raise NotImplementedError()
+
 class Group(Entry):
     """Primitive multi-word expression. Default is a head with unlabeled dependencies
     to all other tokens and translations, including alignments, to one or more
@@ -461,6 +465,78 @@ class Group(Entry):
             string += "\n"
         #->amh $n[cs=acc] Tmd_v[as=smp,vc=smp] ; || 1, 0 ; 0==1 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg,ax:ax
         return string
+
+    def match_segments(self, segments, startindex, verbosity=1):
+        """Attempt to match a sequence of Segs, starting at start_index, returning the match or False."""
+        """Match this Join against segments in Solution starting with
+        position startindex."""
+        if verbosity:
+            print("Matching {} against {} starting from {}".format(self, segments, startindex))
+        matches = []
+        matched = True
+        patlength = len(self.tokens)
+        patindex = 0
+        segindex = startindex
+        while matched and patindex < patlength:
+            patelem = self.tokens[patindex]
+            patfeats = self.features[patindex]
+            segment = segments[segindex]
+            match = segment.match_group_tok(patelem, patfeats, verbosity=verbosity)
+            if match:
+                print(" {} matched {} with match {}".format(segment, self, match))
+                matches.append((segindex, segment, match))
+                segindex += 1
+                patindex += 1
+            else:
+                return False
+        if verbosity:
+            print("{} matched segments {} starting from {}".format(self, segments, startindex))
+        return self, matches
+
+    def apply(self, superseg, verbosity=1):
+        """Make changes specified in Join to segments matching it."""
+        # Feature agreement, change
+        segments = superseg.segments
+        for change in self.agree_changes:
+            seg1index, seg2index, feat1, feat2 = change
+            if verbosity:
+                print("  Must agree {} {} ; {} {}".format(seg1index, seg2index, feat1, feat2))
+            seg1 = segments[seg1index]
+            seg2 = segments[seg2index]
+            segfeats1 = seg1.get_thead_feats()
+            segfeats2 = seg2.get_thead_feats()
+            if verbosity:
+                print("  Seg1 {} feats {}, seg2 {} feats {}".format(seg1, segfeats1, seg2, segfeats2))
+        if self.targ_feats:
+            for segindex, addfeats in self.targ_feats:
+                # Add targfeats to feats in segindex Seg
+                segment = superseg.segments[segindex]
+                tfeats = segment.get_thead_feats()
+                print("Segment {}, thead {}, tfeats {}".format(segment, segment.thead, tfeats))
+                print("Adding features {} to targ features {}".format(addfeats.__repr__(), tfeats.__repr__()))
+                for ti, th in enumerate(segment.thead):
+#                    troot, tpos, tf = th
+                    tf = th[2]
+                    print("th {}".format(th))
+                    newtf = tf.unify_FS(addfeats)
+                    if newtf != 'fail':
+                        th[2] = newtf
+#                    segment.thead[ti] = troot, tpos, newtf
+                print("New thead {}".format(segment.thead))
+        if self.segment_order:
+            if verbosity:
+                print("  Swap {}".format(self.segment_order))
+            i1, i2 = self.segment_order
+            sso = superseg.order
+            sso[i1], sso[i2] = sso[i2], sso[i1]
+            to_delete = []
+            for index in sso:
+                if index not in self.segment_order:
+                    to_delete.append(index)
+            for d in to_delete:
+                sso.remove(d)
+            if verbosity:
+                print("  Indices swapped {}".format(sso))
 
     def match_nodes(self, snodes, head_sindex, verbosity=0):
         """Attempt to match the group tokens (and features) with tokens from a sentence,
@@ -1837,6 +1913,12 @@ class Join(Entry):
             i1, i2 = self.segment_order
             sso = superseg.order
             sso[i1], sso[i2] = sso[i2], sso[i1]
+            to_delete = []
+            for index in sso:
+                if index not in self.segment_order:
+                    to_delete.append(index)
+            for d in to_delete:
+                sso.remove(d)
             if verbosity:
                 print("  Indices swapped {}".format(sso))
 

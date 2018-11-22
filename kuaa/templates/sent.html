@@ -396,7 +396,7 @@ function Segment(html, segment, color, segindex) {
 	// Translation already recorded for this segment; clear instructions and show error message.
 	document.getElementById("instructions").innerHTML = "";
         document.getElementById("error").innerHTML = "¡Ya seleccionaste una traducción para " + segment + "!";
-        return false;        
+        return false;
     }
     // Otherwise display the segment's HTML
     // Give instructions for translation selection.
@@ -506,14 +506,17 @@ Usuario: <span class="username">{{ user.username }}</span>
 
 <h3>Instrucciones</h3>
 
-<p id="instructions" class="instructions">
+<div class='instruc'>
+<p id="instructions">
 {% if sentence %}
  Hac&eacute; clic sobre un segmento colorizado de la oración para ver abajo las
 opciones de traducción.
 {% else %}
-Hac&eacute; clic en "Próxima oración", o en "Salir" si has terminado la sesión.
+ Hac&eacute; clic en "Próxima oración", o en "Salir" si has terminado
+  la sesión.
 {% endif %}
 </p>
+</div>
 
 <p id="error" class="error">
 </p>

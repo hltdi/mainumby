@@ -511,6 +511,8 @@ class POS:
         if isinstance(fs, FeatStruct) and not fs.frozen():
             fs.freeze()
 #        print("Root {}, FS {}".format(root, fs.__repr__()))
+        if (root, fs) in self.new_gens:
+            return self.new_gens[(root, fs)]
         if (root, fs) not in self.gen_cached:
             return False
         else:
