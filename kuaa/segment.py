@@ -164,12 +164,19 @@ class Seg:
     def get_special(self, del_spec=False):
         """If SolSeg is special, return its category and the token as a tuple."""
         if self.special:
-            tok = self.get_untrans_token()
-            pre, form = tok.split('~')
+            if self.cleaned_trans:
+                # Already translated
+                token = self.get_shead_tokens()[0]
+                pre, form = token.split('~')
+            else:
+                tok = self.get_untrans_token()
+                pre, form = tok.split('~')
             if del_spec:
                 pre = pre[1:]
             return pre, form
         return None, None
+
+    # Matching Join and Group instances
 
     def match_join(self, join_elem, verbosity=0):
         """Does this SolSeg match a pattern element in a Join? join_elem
@@ -232,22 +239,25 @@ class Seg:
                 for feat in feats:
                     if verbosity:
                         print(" Matching group features {} with segment features {}".format(group_feats.__repr__(), feat.__repr__()))
-                    u = feat.u(group_feats)
+                    # strict feature forces True feature in group_feats to be explicit in feat
+                    u = feat.u(group_feats, strict=True)
                     if u == 'fail':
                         return False
                     else:
                         return u
         return True
 
-    def get_group_cands(self, all_groups=None):
+    def get_group_cands(self, all_groups=None, verbosity=0):
         """Get groups that could match this segment and surrounding segments."""
         tokens = self.get_tokens()
         all_groups = all_groups or self.source.groups
         if all_groups and tokens:
             groups = []
             for token in tokens:
-                groups1 = [(g, g.head_index) for g in all_groups.get(token)]
-                groups.extend(groups1)
+                groups1 = all_groups.get(token)
+                if groups1:
+                    groups1 = [(g, g.head_index) for g in groups1]
+                    groups.extend(groups1)
             return groups
             
     def generate(self, verbosity=0):
@@ -262,14 +272,18 @@ class Seg:
             output1 = []
             if verbosity:
                 print("  Generating {}".format(translation))
-            if special:
-                cleaned1, trans1 = self.translate_special(translation, False)
-                cleaned_trans.append(cleaned1)
-                continue
+#            if special:
+#                cleaned1, trans1 = self.translate_special(translation, False)
+#                cleaned_trans.append(cleaned1)
+#                continue
             for item in translation:
-#                if verbosity:
-#                    print("   Generating {}".format(item))
-                if isinstance(item, list):
+                if verbosity:
+                    print("   Generating {}".format(item))
+                if Entry.is_special(item):
+                    spec_trans = self.source.translate_special(item)
+                    if spec_trans:
+                        output1.append(Seg.clean_spec(spec_trans)) 
+                elif isinstance(item, list):
                     # We need to generate it
                     token, pos, feats = item
                     form = generator(token, feats, pos=pos)
@@ -544,6 +558,27 @@ class Seg:
 #        for h in self.html:
 #            print(" {}".format(h))
 
+    def translate_special(self, tokens, assign=True):
+        """Translate a 'special' set of tokens (containing a name, numeral or
+        other special token).
+        """
+        trans = []
+        cleaned_trans = []
+        for token in tokens:
+            if '%' in token:
+                spec_trans = self.source.translate_special(token)
+                if spec_trans:
+                    trans.append(spec_trans)
+                    cleaned_trans.append(Seg.clean_spec(spec_trans))
+                    continue
+                trans.append(token)
+                cleaned_trans.append(token)
+        if assign:
+            self.translation = [trans]
+            self.cleaned_trans = [cleaned_trans]
+        else:
+            return cleaned_trans, trans
+
     @staticmethod
     def remove_spec_pre(string):
         """Remove special prefixes, for example, '%ND~'."""
@@ -613,7 +648,7 @@ class SuperSeg(Seg):
             raw_tokens.append(segment.raw_token_str)
             token_str.append(segment.token_str)
             original_token_str.append(segment.original_token_str)
-            gname.append(segment.gname)
+            gname.append(segment.gname or '')
             if segment.merger_gnames:
                 self.merger_gnames.extend(segment.merger_gnames)
         self.gname = "++".join(gname)
@@ -648,7 +683,7 @@ class SolSeg(Seg):
                  tgroups=None, merger_groups=None, has_paren=False, is_paren=False,
                  head=None,
                  spec_indices=None, session=None, gname=None, is_punc=False):
-        print("Creating SolSeg for indices {}, translation {}, head {}, sfeats {}".format(indices, translation, head, sfeats))
+#        print("Creating SolSeg for indices {}, translation {}, head {}, sfeats {}".format(indices, translation, head, sfeats))
         Seg.__init__(self, solution)
         if head:
             self.shead_index, self.shead, self.scats = head
@@ -758,27 +793,6 @@ class SolSeg(Seg):
         """Create the SegRecord object for this SolSeg."""
         if sentence:
             return SegRecord(self, sentence=sentence.record, session=session)
-
-    def translate_special(self, tokens, assign=True):
-        """Translate a 'special' set of tokens (containing a name, numeral or
-        other special token).
-        """
-        trans = []
-        cleaned_trans = []
-        for token in tokens:
-            if '%' in token:
-                spec_trans = self.source.translate_special(token)
-                if spec_trans:
-                    trans.append(spec_trans)
-                    cleaned_trans.append(Seg.clean_spec(spec_trans))
-                    continue
-                trans.append(token)
-                cleaned_trans.append(token)
-        if assign:
-            self.translation = [trans]
-            self.cleaned_trans = [cleaned_trans]
-        else:
-            return cleaned_trans, trans
 
 class SNode:
     """Sentence token and its associated analyses and variables."""

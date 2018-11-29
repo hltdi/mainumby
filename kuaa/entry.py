@@ -468,8 +468,6 @@ class Group(Entry):
 
     def match_segments(self, segments, startindex, verbosity=1):
         """Attempt to match a sequence of Segs, starting at start_index, returning the match or False."""
-        """Match this Join against segments in Solution starting with
-        position startindex."""
         if verbosity:
             print("Matching {} against {} starting from {}".format(self, segments, startindex))
         matches = []
@@ -483,7 +481,8 @@ class Group(Entry):
             segment = segments[segindex]
             match = segment.match_group_tok(patelem, patfeats, verbosity=verbosity)
             if match:
-                print(" {} matched {} with match {}".format(segment, self, match))
+                if verbosity:
+                    print(" {} matched {} with match {}".format(segment, self, match))
                 matches.append((segindex, segment, match))
                 segindex += 1
                 patindex += 1
@@ -494,7 +493,7 @@ class Group(Entry):
         return self, matches
 
     def apply(self, superseg, verbosity=1):
-        """Make changes specified in Join to segments matching it."""
+        """Make changes specified in group to segments matching it."""
         # Feature agreement, change
         segments = superseg.segments
         for change in self.agree_changes:
@@ -707,7 +706,7 @@ class Group(Entry):
 
     @staticmethod
     def from_string(string, language, trans_strings=None, target=None, trans=False, n_src_tokens=1,
-                    tstrings=None, cat=''):
+                    tstrings=None, cat='', posindex=0):
         """Convert a group string and (if trans is False) possibly a set of translation group strings
         to one or more groups. [trans=True means this is for a target-language Group.]"""
 #        print("Creating group from {} and trans strings {} [trans={}]".format(string, trans_strings, trans))
@@ -877,7 +876,7 @@ class Group(Entry):
         if target and not trans:
             g.trans = tgroups
         if not existing_group:
-            language.add_group(g)
+            language.add_group(g, posindex=posindex, cat=cat)
         return g, trans_agrs, alignment, trans_count
 
     ## Methods for creating additional Groups and modifying existing Groups

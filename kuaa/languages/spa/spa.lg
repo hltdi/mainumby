@@ -7,6 +7,7 @@ postags:
   a::a|det
   n::n|
   v::v|
+grouppos: n,a,nm,misc;v
 namejoin: y,de
 classes:
 - $digito, un una dos tres cuatro cinco seis siete ocho nueve

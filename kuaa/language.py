@@ -61,9 +61,12 @@
 # -- Added possibility of phrases to be joined during sentence tokenization (about 500 for Spanish).
 # 2018.07.09
 # -- Added list of "exceptions" that can override the POS tagger if the lexicon disagrees with it.
+# 2018.11
+# -- Groups organized by POS sets so they can be searched at different times.
 
 from .entry import *
 from .utils import firsttrue
+from kuaa.morphology.utils import reduce_lists, firstindex
 from kuaa.morphology.morpho import Morphology, POS
 from kuaa.morphology.semiring import FSSet, TOP
 
@@ -165,7 +168,8 @@ class Language:
     # optional ,|. + at least one digit + optional [,.digit]s; note: allows expression to end with . or ,
     numeral = re.compile("[,.]?\d+[\d.,]*$")
 
-    def __init__(self, name, abbrev, use=ANALYSIS, groups=None, groupnames=None,
+    def __init__(self, name, abbrev, use=ANALYSIS, groups=None,
+#                 groupnames=None,
                  # A directory may be provided.
                  directory=None,
                  # When an external tagger is used, these are read in from the .lg file
@@ -176,6 +180,8 @@ class Language:
                  join=False,
                  # end-of-sentence characters
                  eos=EOS,
+                 # list of lists of POS tags for group grouping
+                 grouppos=None,
                  # Added from morphology/language
                  pos=None, cache=True,
                  postags=None, namejoin=None):
@@ -189,12 +195,15 @@ class Language:
         # Words that can join names
         self.namejoin = namejoin
         self.groups = groups or {}
+        # Groups organized by POS or other categories
+        self.grouppos = grouppos
+        self.posgroups = [{} for g in range(len(grouppos))] if grouppos else None
         # A dictionary of group attribute defaults for different head categories
         self.group_defaults = {}
         # Dictionary of roots/stems/tokens to group keys, e.g., 'drop': ['drop_n', 'drop_v']
         self.group_keys = {}
-        # Explicit groups to load instead of default
-        self.groupnames = groupnames
+#        # Explicit groups to load instead of default
+#        self.groupnames = groupnames
         # Dict of POS tag conversions
         self.postags = postags or {}
         # Candidate groups from training; added 2017.3.6
@@ -270,7 +279,7 @@ class Language:
             self.set_anal_cached()
         # Load groups now if not to be used for translation
         if use in (ANALYSIS,):
-            self.read_groups(files=groupnames)
+            self.read_groups()
         # Load POS tagger from NLTK or Spacy if called for for this language
 #        self.conversion = None
         if exttag:
@@ -574,13 +583,26 @@ class Language:
     def get_group_files(self, names=None):
         d = self.get_group_dir()
         if not names:
-            if self.morphology:
+            if self.grouppos:
+                names = reduce_lists(self.grouppos)
+            elif self.morphology:
                 # POS abbreviations
                 names = ['misc', 'nm'] + list(self.morphology.keys())
             else:
                 names = [self.abbrev]
-        paths = [os.path.join(d, name + '.grp') for name in names]
-        return [path for path in paths if os.path.exists(path)]
+        namepaths = [(name, os.path.join(d, name + '.grp')) for name in names]
+        return [(name, path) for name, path in namepaths if os.path.exists(path)]
+
+    def get_grouplist_files(self, names=None):
+        d = self.get_group_dir()
+        if self.grouppos:
+            # A list of lists of POS labels
+            namegroups = self.grouppos
+        else:
+            namegroups = [list(self.morphology.keys())]
+        namepaths = [[(name, os.path.join(d, name + '.grp')) for name in names] for names in namegroups]
+        # Doesn't check whether paths exist
+        return namepaths
 
     def get_cat_group_file(self, cat):
         """Get the path for the group file for cat."""
@@ -1613,77 +1635,88 @@ class Language:
         with open(path, 'w', encoding='utf8') as file:
             yaml.dump(self.to_dict(), file)
 
-    def read_groups(self, files=None, target=None, verbosity=0):
+    def read_group(self, gfile, gname=None, target=None,
+                   source_groups=None, target_groups=None, target_abbrev=None,
+                   grouppos=None, posindex=0, verbosity=0):
+        """Read in a single group type from a file with path gfile and name gname."""
+        with open(gfile, encoding='utf8') as file:
+            gname = gname or gfile.rpartition('/')[-1].split('.')[0]
+            groupdefaults = []
+            if verbosity:
+                print("  Leyendo grupos de tipo {}".format(gname))
+            # Groups separated by GROUP_SEP string
+            groups = file.read().split(GROUP_SEP)
+            transadd = ''
+            sourceadd = ''
+            # Preamble precedes first instance of GROUP_SEP
+            preamble = groups[0]
+            # Handle preamble ...
+            for line in preamble.split("\n"):
+                line = line.strip()
+                if not line or line[0] == '#':
+                    continue
+                if line[0] == '+':
+                    tp, x, addition = line.partition(' ')[2].partition(' ')
+                    if line[1] == 't':
+#                            print("Each group translation has {}: {}".format(tp, addition))
+                        transadd = tp, addition
+                        groupdefaults.append(transadd)
+                    else:
+                        sourceadd = addition
+                        groupdefaults.append(sourceadd)
+            if groupdefaults:
+                self.group_defaults[gname] = groupdefaults
+            for group_spec in groups[1:]:
+                group_trans = group_spec.split('\n')
+                n = 0
+                group_line = group_trans[n].strip()
+                while len(group_line) == 0 or group_line[0] == '#':
+                    # Skip comment lines
+                    n += 1
+                    group_line = group_trans[n].strip()
+                # A string starting with tokens and with other attributes separated by ;
+                source_group = group_line
+                # Not sure whether head should be used to speed up reading group from string?
+                source_groups.append(source_group)
+                translations = []
+                trans_strings = []
+                n += 1
+                if target:
+                    for t in group_trans[n:]:
+                        # Skip comment lines
+                        if len(t) > 0 and t[0] == '#':
+                            continue
+                        t = t.partition(TRANS_START)[2].strip()
+                        if t:
+                            t = t.strip()
+                            trans_strings.append(t)
+                            # Or use the Group method add_trans_default() for this.
+                            tlang, x, tgroup = t.strip().partition(' ')
+                            if transadd:
+                                tp, ad = transadd
+                                if tp not in tgroup:
+                                    tgroup += " " + ad
+                            if tlang == target_abbrev:
+                                translations.append(tgroup)
+                    target_groups.extend(translations)
+                # Creates the group and any target groups specified and adds them to self.groups
+                Group.from_string(source_group, self, translations, target=target, trans=False, tstrings=trans_strings,
+                                  cat=gname, posindex=posindex)
+
+    def read_groups(self, posnames=None, target=None, verbosity=0):
         """Read in groups from .grp files. If target is not None (must be a language), read in translation groups
         and cross-lingual features as well."""
         target_abbrev = target.abbrev if target else None
         source_groups = []
         target_groups = []
         print("Leyendo grupos léxicos para {}".format(self.name))
-        for gfile in self.get_group_files(files):
-            with open(gfile, encoding='utf8') as file:
-                grouptype = gfile.rpartition('/')[-1].split('.')[0]
-                groupdefaults = []
-                if verbosity:
-                    print("  Leyendo grupos de tipo {}".format(grouptype))
-                # Groups separated by GROUP_SEP string
-                groups = file.read().split(GROUP_SEP)
-                transadd = ''
-                sourceadd = ''
-                # Preamble precedes first instance of GROUP_SEP
-                preamble = groups[0]
-                # Handle preamble ...
-                for line in preamble.split("\n"):
-                    line = line.strip()
-                    if not line or line[0] == '#':
-                        continue
-                    if line[0] == '+':
-                        tp, x, addition = line.partition(' ')[2].partition(' ')
-                        if line[1] == 't':
-#                            print("Each group translation has {}: {}".format(tp, addition))
-                            transadd = tp, addition
-                            groupdefaults.append(transadd)
-                        else:
-                            sourceadd = addition
-                            groupdefaults.append(sourceadd)
-                if groupdefaults:
-                    self.group_defaults[grouptype] = groupdefaults
-                for group_spec in groups[1:]:
-                    group_trans = group_spec.split('\n')
-                    n = 0
-                    group_line = group_trans[n].strip()
-                    while len(group_line) == 0 or group_line[0] == '#':
-                        # Skip comment lines
-                        n += 1
-                        group_line = group_trans[n].strip()
-                    # A string starting with tokens and with other attributes separated by ;
-                    source_group = group_line
-                    # Not sure whether head should be used to speed up reading group from string?
-                    source_groups.append(source_group)
-                    translations = []
-                    trans_strings = []
-                    n += 1
-                    if target:
-                        for t in group_trans[n:]:
-                            # Skip comment lines
-                            if len(t) > 0 and t[0] == '#':
-                                continue
-                            t = t.partition(TRANS_START)[2].strip()
-                            if t:
-                                t = t.strip()
-                                trans_strings.append(t)
-                                # Or use the Group method add_trans_default() for this.
-                                tlang, x, tgroup = t.strip().partition(' ')
-                                if transadd:
-                                    tp, ad = transadd
-                                    if tp not in tgroup:
-                                        tgroup += " " + ad
-                                if tlang == target_abbrev:
-                                    translations.append(tgroup)
-                        target_groups.extend(translations)
-                    # Creates the group and any target groups specified and adds them to self.groups
-                    Group.from_string(source_group, self, translations, target=target, trans=False, tstrings=trans_strings,
-                                      cat=grouptype)
+        groupfiles = self.get_grouplist_files(posnames)
+#        print("Name/group paths {}".format(groupfiles))
+        for name, gfile in self.get_group_files(posnames):
+            posindex = firstindex(lambda x: name in x, self.grouppos) if self.grouppos else 0
+            self.read_group(gfile, gname=name, target=target, source_groups=source_groups,
+                            target_groups=target_groups, target_abbrev=target_abbrev,
+                            verbosity=verbosity, posindex=posindex)
 
         # Sort groups for each key by priority
         for key, groups in self.groups.items():
@@ -1750,6 +1783,9 @@ class Language:
         exttag = d.get('exttag')
         joins = d.get('join')
         namejoin = d.get('namejoin', '').split(',')
+        grouppos = d.get('grouppos')
+        if grouppos:
+            grouppos = [g.split(',') for g in grouppos.split(';')]
 #        print("Name join: {}".format(namejoin))
         conversion = None
         if exttag:
@@ -1771,7 +1807,7 @@ class Language:
         l = Language(d.get('name'), d.get('abbrev'), use=use, directory=directory,
                      exttag=exttag, conversion=conversion, postags=d.get('postags'),
                      join=joins, eos=d.get('eos', EOS), lemmas=d.get('lemmas'),
-                     namejoin=namejoin)
+                     namejoin=namejoin, grouppos=grouppos)
         translations = d.get('translations')
         if translations:
             for s, t in translations.items():
@@ -1899,7 +1935,7 @@ class Language:
                 return
         # Load groups for source language now
         if not loaded:
-            srclang.read_groups(files=groups, target=targlang)
+            srclang.read_groups(posnames=groups, target=targlang)
             srclang.read_ms(target=targlang)
             srclang.read_joins(target=targlang)
         return srclang, targlang
@@ -1922,8 +1958,7 @@ class Language:
                 return
         # Load groups for source language now
         if not loaded:
-            srclang.read_groups(files=groups)
-#            srclang.read_ms(target=targlang)
+            srclang.read_groups(posnames=groups)
         return srclang
         
     @staticmethod
@@ -1963,7 +1998,7 @@ class Language:
         else:
             return string
 
-    def add_group(self, group):
+    def add_group(self, group, cat=None, posindex=0):
         """Add group to dict, indexed by head."""
         head = group.head
         if head in self.groups:
@@ -1977,6 +2012,21 @@ class Language:
         else:
             self.group_keys[token] = {head}
         group.language = self
+        if self.grouppos:
+            groups = self.posgroups[posindex]
+            if head in groups:
+                groups[head].append(group)
+            else:
+                groups[head] = [group]
+#        if cat:
+#            if cat in self.posgroups:
+#                groups = self.posgroups[cat]
+#                if head in groups:
+#                    groups[head].append(group)
+#                else:
+#                    groups[head] = [group]
+#            else:
+#                self.posgroups[cat] = {head: [group]}
         self.changed = True
 
     ### Generation of word forms

@@ -451,7 +451,7 @@ class Document(list):
                                           target=target_language,
                                           session=self.session))
 
-    def initialize(self, verbose=False):
+    def initialize(self, constrain_groups=False, verbose=False):
         """Initialize all the sentences in the document. If biling, initialize in both languges."""
         print("Iniciando oraciones en documento")
         print("  Oraciones fuente ...", end='')
@@ -462,7 +462,7 @@ class Document(list):
                 print("Iniciando oración fuente {}".format(sentence))
             elif count % 10 == 0:
                 print("{}...".format(count), end='')
-            sentence.initialize(terse=True)
+            sentence.initialize(constrain_groups=constrain_groups, terse=True)
         if not verbose:
             print()
             print("  Inició {} oraciones".format(count))
@@ -475,7 +475,7 @@ class Document(list):
                     print("Iniciando oración meta {}".format(sentence))
                 elif count % 10 == 0:
                     print("{}...".format(count), end='')
-                sentence.initialize(terse=True)
+                sentence.initialize(constrain_groups=constrain_groups, terse=True)
             if not verbose:
                 print()
                 print("  Inició {} oraciones".format(count))
@@ -590,7 +590,7 @@ class Sentence:
         if verbosity:
             print("Created Sentence object {}".format(self))
         if init:
-            self.initialize()
+            self.initialize(constrain_groups=False)
 
     def set_id(self):
         self.id = Sentence.id
@@ -821,7 +821,7 @@ class Sentence:
             self.segment(token, index)
         self.clean()
 
-    def initialize(self, ambig=True, verbosity=0, terse=False):
+    def initialize(self, ambig=True, constrain_groups=False, verbosity=0, terse=False):
         """Things to do before running constraint satisfaction."""
         if verbosity:
             print("Initializing {}".format(self))
@@ -829,10 +829,11 @@ class Sentence:
         self.tokenize(verbosity=verbosity, ambig=ambig, terse=terse)
         # Tokenization could result in altsyns
         self.nodify(verbosity=verbosity)
-        self.lexicalize(verbosity=verbosity, terse=terse)
+        self.lexicalize(constrain_groups=constrain_groups, verbosity=verbosity, terse=terse)
         for s in self.altsyns:
             s.nodify(verbosity=verbosity)
-            s.lexicalize(verbosity=verbosity, terse=terse)
+            s.lexicalize(constrain_groups=constrain_groups,
+                         verbosity=verbosity, terse=terse)
         anygroups=False
         for s in [self] + self.altsyns:
             if not s.groups:
@@ -1031,7 +1032,28 @@ class Sentence:
     def split(self):
         """Split the raw sentence into words, separating off punctuation."""
 
-    def lexicalize(self, verbosity=0, terse=False):
+    def add_anal_to_keys(self, anal, keys):
+        """Add parts of an analyses to the set of keys for looking up groups."""
+        root = anal.get('root')
+        if root:
+            if root not in keys:
+                keys.add(root)
+            if '|' in root:
+                # An ambiguous root (ir|ser)
+                psuf = ''
+                r = root
+                if '_' in root:
+                    r, psuf = root.split('_')
+                    psuf = '_' + psuf
+                for rr in r.split('|'):
+                    keys.add(rr + psuf)
+        pos = anal.get('pos')
+        if pos and '_' not in root:
+            k = root + '_' + pos
+            if k not in keys:
+                keys.add(k)
+
+    def lexicalize(self, constrain_groups=False, verbosity=0, terse=False):
         """Find and instantiate all groups that are compatible with the tokens in the sentence."""
         if verbosity:
             print("Lexicalizing {}, terse={}".format(self, terse))
@@ -1053,30 +1075,13 @@ class Sentence:
                     # Is this still possible?
                     anals = [anals]
                 for a in anals:
-                    root = a.get('root')
-                    if root:
-                        if root not in keys:
-                            keys.add(root)
-                        if '|' in root:
-                            # An ambiguous root (ir|ser)
-                            psuf = ''
-                            r = root
-                            if '_' in root:
-                                r, psuf = root.split('_')
-                                psuf = '_' + psuf
-                            for rr in r.split('|'):
-                                keys.add(rr + psuf)
-
-                    pos = a.get('pos')
-                    if pos and '_' not in root:
-                        k = root + '_' + pos
-                        if k not in keys:
-                            keys.add(k)
+                    self.add_anal_to_keys(a, keys)
             # Look up candidate groups in lexicon
+            groups = self.language.posgroups[0] if constrain_groups else self.language.groups
             for k in keys:
-                if k in self.language.groups:
+                if k in groups:
                     # All the groups with key k
-                    for group in self.language.groups[k]:
+                    for group in groups[k]:
                         # Reject group if it doesn't have a translation in the target language
                         if self.target and not group.get_translations():
                             print("No translation for {}".format(group))
@@ -2042,27 +2047,37 @@ class Solution:
         included_tokens = []
         newsegs = []
         for stok, sfeats in zip(src_tokens, src_feats):
+#            print("stok {}, sfeats {}".format(stok, sfeats))
             if not stok:
                 # empty sentence final token
                 continue
-            if index in indices_covered:
+            if MorphoSyn.del_token(stok):
+                print("Deleted token {}".format(stok))
+                stoks.append(stok)
+                sfeatures.append(sfeats)
+                included_tokens.append(stok)
+            elif index in indices_covered:
                 if stoks:
                     stok_groups.append(stoks)
                     sfeat_groups.append(sfeatures)
                     stoks = []
                     sfeatures = []
             else:
-                # For now make one segment for each token
+#                print("Adding token {}, given tokens {}".format(stok, stoks))
+#                # Otherwise make one segment for each token
 #            elif stok[0] == '%' or self.source.is_punc(stok[0]):
                 # Special token or punctuation; it should have its own segment
+                stoks.append(stok)
+                sfeatures.append(sfeats)
+                included_tokens.append(stok)
                 if stoks:
                     stok_groups.append(stoks)
-                    sfeat_roups.append(sfeatures)
+                    sfeat_groups.append(sfeatures)
                     stoks = []
                     sfeatures = []
-                stok_groups.append([stok])
-                sfeat_groups.append([sfeats])
-                included_tokens.append(stok)
+#                stok_groups.append([stok])
+#                sfeat_groups.append([sfeats])
+#                included_tokens.append(stok)
 #            else:
 #                stoks.append(stok)
 #                sfeatures.append(sfeats)
@@ -2106,7 +2121,8 @@ class Solution:
         end_index = -1
         max_index = -1
         sentence = self.sentence
-        tokens = sentence.tokens
+        tokens = [a[0] for a in sentence.analyses]
+#            sentence.tokens
         indices_covered = []
         # Token lists for parenthetical segments
         parentheticals = []
@@ -2246,7 +2262,7 @@ class Solution:
 #                print("Initial trans for seg {}: {}".format(i, s[4]))
         return segments
 
-    ## Generation and joining following segmentation
+    ## Generation, joining, group matching following initial segmentation
 
     def join(self, iters=3, makesuper=True, generate=True, verbosity=1):
         """Iteratively match Join instances where possible, create supersegs for matches,
@@ -2330,6 +2346,28 @@ class Solution:
             print("CREATING SUPERSEG FOR {} AND {} in positions {}".format(segs, join, positions))
         # replace the joined segments in the solution with the superseg
         self.segments[positions[0]:positions[-1]+1] = [superseg]
+
+    def get_group_cands(self, groups=None, verbosity=1):
+        """Find candidates Group matches with solution Segs."""
+        if verbosity:
+            print("{} finding group candidates".format(self))
+        groups = groups or self.source.groups
+        cands = []
+        for index, segment in enumerate(self.segments):
+            cands1 = segment.get_group_cands(all_groups=groups, verbosity=verbosity)
+            cands.extend([(index, c) for c in cands1])
+        return cands
+
+    def match_group_cands(self, candidates, verbosity=0):
+        """Match group candidates along with indices against segments in the Solution,
+        returning matches as tuples: (group, [position, segment, features])."""
+        matches = []
+        segments = self.segments
+        for segindex, (group, index) in candidates:
+            matches1 = group.match_segments(segments, segindex, verbosity=verbosity)
+            if matches1:
+                matches.append(matches1)
+        return matches
 
     ## Final translation
     def get_translation(self):

@@ -2715,6 +2715,9 @@
 ** encontrar_v[-r,+fin] a $n ; ^ encontrar_v 0
 ->grn topa_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
 ->grn juhu_v[cat=a,-ojxpl] $n[caso=pe] ; || 0, -1, 1
+** encontrar_v[-r,+fin] ; ^ encontrar_v 0 ; #116
+->grn topa_v[cat=a] ; #45 ; ##8
+->grn juhu_v[cat=a] ; #400 ; ##34
 ** encontrar_v[+r,+fin] ; ^ encontrar_v 0 ; #32
 ->grn jejuhu_v[cat=a] ; #28 ; ##2
 ** encorvar_v[-r,+fin] una cosa recta ; ^ encorvar_v 0 ; #3

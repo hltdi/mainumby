@@ -102,10 +102,6 @@ def split_at(string, *positions):
 
 def every(predicate, seq):
     """True if every element of seq satisfies predicate.
-    >>> every(callable, [min, max])
-    1
-    >>> every(callable, [min, 3])
-    0
     """
     for x in seq:
         if not predicate(x): return False
@@ -113,14 +109,24 @@ def every(predicate, seq):
 
 def some(predicate, seq):
     """If some element x of seq satisfies predicate(x), return predicate(x).
-    >>> some(callable, [min, 3])
-    1
-    >>> some(callable, [2, 3])
-    0
     """
     for x in seq:
         px = predicate(x)
         if  px: return px
+
+#def first(predicate, seq):
+#    """Return the first element of seq that satisfies predicate."""
+#    for x in seq:
+#        px = predicate(x)
+#        if  px: return x
+
+def firstindex(predicate, seq):
+    """Return the index of the first element of seq that satisfies predicate,
+    None otherwise."""
+    for i, x in enumerate(seq):
+        px = predicate(x)
+        if  px: return i
+    return None
 
 def dict_partkey(dct, key):
     '''Value for a key that's contained in the dct key.  None if there is none.'''
