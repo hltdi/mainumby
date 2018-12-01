@@ -506,7 +506,7 @@ class Group(Entry):
             ttokfeats = tgroup.features
             tpos = tgroup.pos
             print(" Trans group {}, tokens {}, pos {}, tokfeats {}".format(tgroup, ttokens, tpos, ttokfeats))
-            if tfeats and 'align' in tfeats:
+#            if tfeats and 'align' in tfeats:
             for tfkey, tfvalue in tfeats.items():
                 print("  Constraint {}".format(tfkey))
                 print("    {}".format(tfvalue))
