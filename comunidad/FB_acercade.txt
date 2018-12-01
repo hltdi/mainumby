@@ -1,0 +1,3 @@
+Mainumby es una aplicación experimental que ayuda a traducir del castellano al guaraní. Mainumby se está desarrollando dentro del proyecto Procesamiento de Idiomas del Sur Global (PISUR), dirigido por Prof. Michael Gasser y con la colaboración de la Fundación Yvy Marãe'ỹ.
+Para acceder a la aplicación y obtener más información sobre el proyecto, ve a: http://plogs.soic.indiana.edu/mainumby/.
+Tenemos un grupo de Google para discusión sobre Mainumby y la traducción castellano-guaraní en general. Para sumarte al grupo, enviá un mensaje a gasser@indiana.edu.

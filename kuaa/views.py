@@ -95,17 +95,17 @@ def solve_and_segment(single=False):
     global SEGS
     global SEG_HTML
     SEGS, SEG_HTML = seg_trans(SENTENCE, SPA, GRN,
-                               single=single, delay_gen=True)
-    print("Solved segs: {}, html: {}".format(SEGS, SEG_HTML))
+                               single=single, delay_gen=True, join=False)
+#    print("Solved segs: {}, html: {}".format(SEGS, SEG_HTML))
     if single:
         global OF_HTML
         global OM1
         cap = SENTENCE.capitalized
-        print("Sentence capitalized? {}".format(cap))
+#        print("Sentence capitalized? {}".format(cap))
         OF_HTML = ''.join([s[-1] for s in SEG_HTML])
         OM1 = clean_sentence(' '.join([s[4] for s in SEG_HTML]), cap)
 #        print("OM1 {}".format(OM1))
-#        print("OM HTML {}".format(OF_HTML))
+#        print("OF HTML {}".format(OF_HTML))
 
 @app.route('/')
 def index():

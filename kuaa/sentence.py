@@ -2264,7 +2264,7 @@ class Solution:
 
     ## Generation, joining, group matching following initial segmentation
 
-    def join(self, iters=3, makesuper=True, generate=True, verbosity=1):
+    def join(self, iters=3, makesuper=True, generate=False, verbosity=1):
         """Iteratively match Join instances where possible, create supersegs for matches,
         and optionally finish by generating morphological surface forms for final segments."""
         iteration = 0
@@ -2347,11 +2347,18 @@ class Solution:
         # replace the joined segments in the solution with the superseg
         self.segments[positions[0]:positions[-1]+1] = [superseg]
 
-    def get_group_cands(self, groups=None, verbosity=1):
+    def match_groups(self, groupsid=1, verbosity=1):
+        cands = self.get_group_cands(groupsid=groupsid, verbosity=verbosity)
+        # Filter candidates here?
+        matches = self.match_group_cands(cands, verbosity=verbosity)
+        # And/or filter here?
+        return matches
+
+    def get_group_cands(self, groupsid=1, groups=None, verbosity=1):
         """Find candidates Group matches with solution Segs."""
         if verbosity:
             print("{} finding group candidates".format(self))
-        groups = groups or self.source.groups
+        groups = groups or self.source.posgroups[groupsid]
         cands = []
         for index, segment in enumerate(self.segments):
             cands1 = segment.get_group_cands(all_groups=groups, verbosity=verbosity)

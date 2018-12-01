@@ -493,49 +493,87 @@ class Group(Entry):
         return self, matches
 
     def apply(self, superseg, verbosity=1):
-        """Make changes specified in group to segments matching it."""
-        # Feature agreement, change
+        """Make changes specified in group to superseg containing segments matching it."""
+        if verbosity:
+            print("Applying {} to {}".format(self, superseg))
         segments = superseg.segments
-        for change in self.agree_changes:
-            seg1index, seg2index, feat1, feat2 = change
-            if verbosity:
-                print("  Must agree {} {} ; {} {}".format(seg1index, seg2index, feat1, feat2))
-            seg1 = segments[seg1index]
-            seg2 = segments[seg2index]
-            segfeats1 = seg1.get_thead_feats()
-            segfeats2 = seg2.get_thead_feats()
-            if verbosity:
-                print("  Seg1 {} feats {}, seg2 {} feats {}".format(seg1, segfeats1, seg2, segfeats2))
-        if self.targ_feats:
-            for segindex, addfeats in self.targ_feats:
-                # Add targfeats to feats in segindex Seg
-                segment = superseg.segments[segindex]
-                tfeats = segment.get_thead_feats()
-                print("Segment {}, thead {}, tfeats {}".format(segment, segment.thead, tfeats))
-                print("Adding features {} to targ features {}".format(addfeats.__repr__(), tfeats.__repr__()))
-                for ti, th in enumerate(segment.thead):
-#                    troot, tpos, tf = th
-                    tf = th[2]
-                    print("th {}".format(th))
-                    newtf = tf.unify_FS(addfeats)
-                    if newtf != 'fail':
-                        th[2] = newtf
-#                    segment.thead[ti] = troot, tpos, newtf
-                print("New thead {}".format(segment.thead))
-        if self.segment_order:
-            if verbosity:
-                print("  Swap {}".format(self.segment_order))
-            i1, i2 = self.segment_order
-            sso = superseg.order
-            sso[i1], sso[i2] = sso[i2], sso[i1]
-            to_delete = []
-            for index in sso:
-                if index not in self.segment_order:
-                    to_delete.append(index)
-            for d in to_delete:
-                sso.remove(d)
-            if verbosity:
-                print("  Indices swapped {}".format(sso))
+        # Add translations
+        translations = self.trans
+        # Once this is set, don't change it (assume all translations involve the same ordering)
+        ordered = False
+        for tgroup, tfeats in translations:
+            ttokens = tgroup.tokens
+            ttokfeats = tgroup.features
+            tpos = tgroup.pos
+            print(" Trans group {}, tokens {}, pos {}, tokfeats {}".format(tgroup, ttokens, tpos, ttokfeats))
+            if tfeats and 'align' in tfeats:
+            for tfkey, tfvalue in tfeats.items():
+                print("  Constraint {}".format(tfkey))
+                print("    {}".format(tfvalue))
+                if tfkey == 'align':
+                    if ordered:
+                        print("   Already ordered")
+                        continue
+                    to_delete = []
+                    sso = superseg.order
+                    print("   Ordering {} for superseg order {}".format(tfvalue, sso))
+                    sindex = 0
+                    for gindex in tfvalue:
+                        print("    sindex {}, gindex {}".format(sindex, gindex))
+                        if gindex < 0:
+                            # Delete this segment
+                            print("    deleting {}".format(segments[sindex]))
+                            to_delete.append(sindex)
+                        else:
+                            sindex += 1
+                    for deli in to_delete:
+                        sso.remove(deli)
+                    ordered = True
+                    print("    Updated superseg order {}".format(sso))
+                    
+        # Make source-target features agree
+        # Make target-target features agree
+        # Set order of segments (superseg.order)
+        # Delete segments with no position from superseg.order
+                    
+#        for change in self.agree_changes:
+#            seg1index, seg2index, feat1, feat2 = change
+#            if verbosity:
+#                print("  Must agree {} {} ; {} {}".format(seg1index, seg2index, feat1, feat2))
+#            seg1 = segments[seg1index]
+#            seg2 = segments[seg2index]
+#            segfeats1 = seg1.get_thead_feats()
+#            segfeats2 = seg2.get_thead_feats()
+#            if verbosity:
+#                print("  Seg1 {} feats {}, seg2 {} feats {}".format(seg1, segfeats1, seg2, segfeats2))
+#        if self.targ_feats:
+#            for segindex, addfeats in self.targ_feats:
+#                # Add targfeats to feats in segindex Seg
+#                segment = superseg.segments[segindex]
+#                tfeats = segment.get_thead_feats()
+#                print("Segment {}, thead {}, tfeats {}".format(segment, segment.thead, tfeats))
+#                print("Adding features {} to targ features {}".format(addfeats.__repr__(), tfeats.__repr__()))
+#                for ti, th in enumerate(segment.thead):
+#                    tf = th[2]
+#                    print("th {}".format(th))
+#                    newtf = tf.unify_FS(addfeats)
+#                    if newtf != 'fail':
+#                        th[2] = newtf
+#                print("New thead {}".format(segment.thead))
+#        if self.segment_order:
+#            if verbosity:
+#                print("  Swap {}".format(self.segment_order))
+#            i1, i2 = self.segment_order
+#            sso = superseg.order
+#            sso[i1], sso[i2] = sso[i2], sso[i1]
+#            to_delete = []
+#            for index in sso:
+#                if index not in self.segment_order:
+#                    to_delete.append(index)
+#            for d in to_delete:
+#                sso.remove(d)
+#            if verbosity:
+#                print("  Indices swapped {}".format(sso))
 
     def match_nodes(self, snodes, head_sindex, verbosity=0):
         """Attempt to match the group tokens (and features) with tokens from a sentence,

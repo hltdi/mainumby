@@ -277,8 +277,8 @@ class Seg:
 #                cleaned_trans.append(cleaned1)
 #                continue
             for item in translation:
-                if verbosity:
-                    print("   Generating {}".format(item))
+#                if verbosity:
+                print("   Generating {}".format(item))
                 if Entry.is_special(item):
                     spec_trans = self.source.translate_special(item)
                     if spec_trans:
@@ -636,8 +636,10 @@ class SuperSeg(Seg):
         self.tgroups = []
         for i in self.order:
             segment = self.segments[i]
+            print("Setting SuperSeg properties, segment {}".format(segment))
             if self.cleaned_trans:
                 self.cleaned_trans = [ct1 + ct2 for ct1 in self.cleaned_trans for ct2 in segment.cleaned_trans]
+#                self.cleaned_trans = [[ct1, ct2] for ct1 in self.cleaned_trans for ct2 in segment.cleaned_trans]
             else:
                 self.cleaned_trans = segment.cleaned_trans
             if self.tgroups:
@@ -652,11 +654,6 @@ class SuperSeg(Seg):
             if segment.merger_gnames:
                 self.merger_gnames.extend(segment.merger_gnames)
         self.gname = "++".join(gname)
-        # Assumes there are only two overt sub-segments
-#        seg1 = self.segments[self.order[0]]
-#        seg2 = self.segments[self.order[1]]
-#        self.tgroups = [tg1 + tg2 for tg1 in seg1.tgroups for tg2 in seg2.tgroups]
-#        self.cleaned_trans = [ct1 + ct2 for ct1 in seg1.cleaned_trans for ct2 in seg2.cleaned_trans]
         self.raw_token_str = ' '.join(raw_tokens)
         self.token_str = ' '.join(token_str)
         self.original_token_str = ' '.join(original_token_str)
@@ -738,7 +735,7 @@ class SolSeg(Seg):
         self.original_token_str = ' '.join(self.original_tokens)
         self.original_token_str = self.original_token_str.replace("←", "")
         # If there are special tokens in the source language, fix them here.
-        if '%' in self.token_str or '~' in self.token_str:
+        if '%' in self.token_str: # or '~' in self.token_str:
 #            print("Handling special item {}, delay_gen {}".format(self.token_str, delay_gen))
             # Create the source and target strings without special characters
             if not translation:
@@ -753,8 +750,11 @@ class SolSeg(Seg):
                 self.translate_special(translation or tokens)
             self.token_str = Seg.clean_spec(self.token_str)
             self.original_token_str = Seg.clean_spec(self.original_token_str)
+        if '~' in self.token_str:
+            self.token_str = self.token_str.replace('~', '')
+            self.original_token_str = self.original_token_str.replace('~', '')
         if not self.cleaned_trans:
-            self.cleaned_trans = self.translation
+            self.cleaned_trans = self.translation[:]
         # Join tokens in cleaned translation if necessary
         if not delay_gen:
             Seg.join_toks_in_strings(self.cleaned_trans)
