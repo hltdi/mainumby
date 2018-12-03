@@ -2341,7 +2341,8 @@ class Solution:
         join, seglist = match
         segs = [s[1] for s in seglist]
         positions = [s[0] for s in seglist]
-        superseg = SuperSeg(self, segs, join=join)
+        features = [s[2] for s in seglist]
+        superseg = SuperSeg(self, segs, features=features, join=join)
         if verbosity:
             print("CREATING SUPERSEG FOR {} AND {} in positions {}".format(segs, join, positions))
         # replace the joined segments in the solution with the superseg

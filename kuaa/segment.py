@@ -610,11 +610,13 @@ class SuperSeg(Seg):
     """SuperSegment: joins SolSeg instances into larger units, either via a Join rule
     or a Group."""
 
-    def __init__(self, solution, segments=None, name=None, join=None):
+    def __init__(self, solution, segments=None, features=None, name=None, join=None):
         Seg.__init__(self, solution)
         self.segments = segments
         self.name = name
         self.join = join
+        # If join is a group, this is a list of features (or True if there are none), one for seach segment
+        self.features = features
         self.order = list(range(len(segments)))
         self.head_seg = segments[join.head_index]
         self.shead = self.head_seg.shead
@@ -637,6 +639,7 @@ class SuperSeg(Seg):
         for i in self.order:
             segment = self.segments[i]
             print("Setting SuperSeg properties, segment {}".format(segment))
+            print(" Segment cleaned_trans: {}".format(segment.cleaned_trans))
             if self.cleaned_trans:
                 self.cleaned_trans = [ct1 + ct2 for ct1 in self.cleaned_trans for ct2 in segment.cleaned_trans]
 #                self.cleaned_trans = [[ct1, ct2] for ct1 in self.cleaned_trans for ct2 in segment.cleaned_trans]

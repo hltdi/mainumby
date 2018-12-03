@@ -329,9 +329,11 @@ class Group(Entry):
                     self.head_index = tokens.index(root)
             else:
                 self.head_index = head_index
+            self.root = root
         else:
             self.head = tokens[head_index]
             self.head_index = head_index
+            self.root = self.head
             
         name = name or Group.make_name(tokens)
         Entry.__init__(self, name, language, trans=trans, comment=comment)
@@ -496,40 +498,73 @@ class Group(Entry):
         """Make changes specified in group to superseg containing segments matching it."""
         if verbosity:
             print("Applying {} to {}".format(self, superseg))
+        hindex = self.head_index
         segments = superseg.segments
+        segfeatures = superseg.features
         # Add translations
         translations = self.trans
         # Once this is set, don't change it (assume all translations involve the same ordering)
         ordered = False
+        to_delete = []
         for tgroup, tfeats in translations:
+            troot = tgroup.root
             ttokens = tgroup.tokens
             ttokfeats = tgroup.features
             tpos = tgroup.pos
-            print(" Trans group {}, tokens {}, pos {}, tokfeats {}".format(tgroup, ttokens, tpos, ttokfeats))
+            print("Applying trans group {}, tokens {}, pos {}, tokfeats {}".format(tgroup, ttokens, tpos, ttokfeats))
 #            if tfeats and 'align' in tfeats:
-            for tfkey, tfvalue in tfeats.items():
-                print("  Constraint {}".format(tfkey))
-                print("    {}".format(tfvalue))
-                if tfkey == 'align':
-                    if ordered:
-                        print("   Already ordered")
-                        continue
-                    to_delete = []
-                    sso = superseg.order
-                    print("   Ordering {} for superseg order {}".format(tfvalue, sso))
-                    sindex = 0
-                    for gindex in tfvalue:
-                        print("    sindex {}, gindex {}".format(sindex, gindex))
-                        if gindex < 0:
-                            # Delete this segment
-                            print("    deleting {}".format(segments[sindex]))
-                            to_delete.append(sindex)
+            if 'align' in tfeats:
+                alignment = tfeats['align']
+            else:
+                alignment = superseg.order
+            if 'agr' in tfeats:
+                agr = dict([a for a in tfeats['agr'] if a])
+            else:
+                agr = None
+            for tindex, segfeat, (segindex, segment) in zip(alignment, segfeatures, enumerate(superseg.segments)):
+                print(" tindex {}, segindex {}, segment {}".format(tindex, segindex, segment))
+                if tindex < 0:
+                    if not ordered:
+                        to_delete.append(segindex)
+                        print("  Dropping segment {}".format(segindex))
+                        ordered = True
+                    continue
+                segtrans = segment.translation
+                segclean = segment.cleaned_trans
+                ttoken = ttokens[tindex]
+                tfeats = ttokfeats[tindex]
+                print("  Current translation {}, cleaned {}".format(segtrans, segclean))
+                print("  Current features {}".format(segfeat.__repr__()))
+                if segindex == hindex:
+                    agr1 = agr.get(segindex) if agr else None
+                    if agr1:
+                        print("   Making head features agree with group features")
+                        ufeats = segfeat.agree_FSS(tfeats, agr1)
+                    elif tfeats and segfeat:
+                        ufeats = segfeat.u(tfeats)
+                    else:
+                        ufeats = segfeat or tfeats
+                    # Use the root (token without _pos)
+                    new = [troot, tpos, ufeats]
+                    segtrans.append([new])
+                    segclean.append([new])
+                    print("   Updating head segment {}, new trans {}".format(segment, new))
+                else:
+                    segthead = segment.thead
+                    print("   Updating non-head segment {}, head {}, ttokfeats {}".format(segment, segthead, tfeats.__repr__()))
+                    for trans in segment.thead:
+                        # this should be a [token, pos, feats] list
+                        transfeats = trans[2]
+                        if transfeats and tfeats:
+                            ufeats = transfeats.u(tfeats)
                         else:
-                            sindex += 1
-                    for deli in to_delete:
-                        sso.remove(deli)
-                    ordered = True
-                    print("    Updated superseg order {}".format(sso))
+                            ufeats = transfeats or tfeats
+                        trans[2] = ufeats
+                    print("   Updated: {}".format(segment.thead))
+        if ordered:
+            for deli in to_delete:
+                superseg.order.remove(deli)
+            print("  Updated superseg order {}".format(superseg.order))
                     
         # Make source-target features agree
         # Make target-target features agree
