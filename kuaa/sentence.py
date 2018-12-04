@@ -576,7 +576,7 @@ class Sentence:
                              varselect=self.select_varval,
                              description='group selection', verbosity=verbosity)
         # Solutions found during parsing
-        self.solutions = []
+        self.segmentations = []
         # Outputs from tree translation
         self.trans_outputs = []
         # Complete translations
@@ -638,10 +638,10 @@ class Sentence:
                 token = token[:word_width-1] + '.'
             s += "{}".format(token).center(gap)
         print(s)
-        solutions = self.solutions if show_all_sols else self.solutions[:1]
-        for solution in solutions:
-            print("SOLUTION {}".format(solution.index))
-            solution.display(word_width=gap)
+        segmentations = self.segmentations if show_all_sols else self.segmentations[:1]
+        for segmentation in segmentations:
+            print("SEGMENTATION {}".format(segmentation.index))
+            segmentation.display(word_width=gap)
 
     ## Copying, for alternate syntactic representations
 
@@ -917,7 +917,7 @@ class Sentence:
             if verbosity:
                 print("  word {}, tag {}, token {}, anals {}".format(word, tag, token, anals))
             results1 = []
-            for anal in anals:
+            for aindex, anal in enumerate(anals):
                 anal_pos = None
                 features = anal.get('features')
                 if features:
@@ -931,12 +931,13 @@ class Sentence:
                         results1.append(anal)
                     else:
 #                        if verbosity:
-                        print("  tagger and analyzer disagree on {}/{} for {}".format(tag, anal_pos, anal))
                         if len(anals) == 1:
 #                            if verbosity:
+                            print("  tagger and analyzer disagree on {}/{} for {}".format(tag, anal_pos, anal))
                             print("   only 1 analysis, so accepting it")
                             results1.append(anal)
-                        else:
+                        elif aindex == 0:
+                            print("  tagger and analyzer disagree on {}/{} for {}".format(tag, anal_pos, anal))
                             root = anal.get('root')
                             if root in self.language.exceptions:
 #                                if verbosity:
@@ -945,6 +946,8 @@ class Sentence:
                             else:
 #                                if verbosity:
                                 print("    rejecting {}".format(anal))
+                        else:
+                            print("  rejecting non-preferred analysis {} by analyzer for {}".format(anal_pos, word))
                 elif tag:
                     if verbosity:
                         print("  no features for {}, using tagger POS {}".format(word, tag))
@@ -1077,17 +1080,22 @@ class Sentence:
                 for a in anals:
                     self.add_anal_to_keys(a, keys)
             # Look up candidate groups in lexicon
-            groups = self.language.posgroups[0] if constrain_groups else self.language.groups
+            # Use group groupings specified in constrain_groups (False or a list of ints) or
+            # all groupings
+            posgroups = self.language.posgroups
+            groupgroups = [posgroups[index] for index in constrain_groups] if constrain_groups else posgroups
+#            groups = self.language.posgroups[0] if constrain_groups else self.language.groups
             for k in keys:
-                if k in groups:
-                    # All the groups with key k
-                    for group in groups[k]:
-                        # Reject group if it doesn't have a translation in the target language
-                        if self.target and not group.get_translations():
-                            print("No translation for {}".format(group))
-                            continue
-                        candidates.append((node.index, k, group))
-                        node.group_cands.append(group)
+                for groups in groupgroups:
+                    if k in groups:
+                        # All the groups with key k
+                        for group in groups[k]:
+                            # Reject group if it doesn't have a translation in the target language
+                            if self.target and not group.get_translations():
+                                print("No translation for {}".format(group))
+                                continue
+                            candidates.append((node.index, k, group))
+                            node.group_cands.append(group)
         # Now filter candidates to see if all words are present in the sentence.
         # For each group, save a list of sentence token indices that correspond
         # to the group's words
@@ -1199,7 +1207,7 @@ class Sentence:
                     self.incompat_groups.append((ginst1, ginst2))
 
     def get_group_conflicts(self):
-        """Find group conflicts, lists of GInst indices, only one of which can be part of a solution."""
+        """Find group conflicts, lists of GInst indices, only one of which can be part of a segmentation."""
         s2g = {}
         for ginst in self.groups:
             slexi = ginst.sindices[0]
@@ -1240,23 +1248,24 @@ class Sentence:
             if ginst in dependencies:
                 ginst.dependencies = {g.index for g in dependencies[ginst]}
 
-    ## Solving: parsing and translation
+    ## Solving: translation and potentially also parsing
+    ## As of 2018.12, "solutions" are really initial "segmentations".
 
     def solve(self, translate=True, all_sols=False, all_trans=True, interactive=False,
-              max_sols=0, delay_gen=False, verbosity=0, tracevar=None):
-        """Generate solutions, for all analyses if all_sols is True and translations (if translate is True)."""
+              max_sols=0, verbosity=0, tracevar=None):
+        """Generate segmentations, for all analyses if all_sols is True and translations (if translate is True)."""
         self.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
-                    max_sols=max_sols, delay_gen=delay_gen, verbosity=verbosity, tracevar=tracevar)
-        if all_sols or (len(self.solutions) < max_sols):
+                    max_sols=max_sols, verbosity=verbosity, tracevar=tracevar)
+        if all_sols or (len(self.segmentations) < max_sols):
             for s in self.altsyns:
                 s.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
-                         max_sols=max_sols, delay_gen=delay_gen, verbosity=verbosity, tracevar=tracevar)
+                         max_sols=max_sols, verbosity=verbosity, tracevar=tracevar)
     
     def solve1(self, translate=True, all_sols=False, all_trans=True, interactive=False,
-               max_sols=0, delay_gen=False, verbosity=0, tracevar=None):
-        """Generate solutions and translations (if translate is true)."""
+               max_sols=0, verbosity=0, tracevar=None):
+        """Generate segmentations and translations (if translate is true)."""
         if not self.groups:
-            print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SOLUCIÓN POSIBLE".format(self))
+            print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SEGMENTACIÓN POSIBLE".format(self))
             return
         print("Resolviendo {}".format(self))
         ds = None
@@ -1267,24 +1276,24 @@ class Sentence:
             while proceed:
                 succeeding_state = next(generator)
                 ds = succeeding_state.dstore
-                solution = self.create_solution(dstore=ds, verbosity=verbosity)
+                segmentation = self.create_segmentation(dstore=ds, verbosity=verbosity)
                 if verbosity:
-                    print('FOUND ANALYSIS', solution)
+                    print('FOUND ANALYSIS', segmentation)
                 if translate and self.target:
                     # Translating
-                    translated = solution.translate(verbosity=verbosity, delay_gen=delay_gen,
+                    translated = segmentation.translate(verbosity=verbosity,
                                                     all_trans=all_trans, interactive=interactive)
                     if not translated:
-                        print("Translation failed; trying next solution!")
+                        print("Translation failed; trying next segmentation!")
                         continue
                     else:
-                        # Store the translation solution
-                        self.solutions.append(solution)
+                        # Store the translation segmentation
+                        self.segmentations.append(segmentation)
                 else:
-                    # Parsing; store the solution and display the parse
-                    self.solutions.append(solution)
+                    # Parsing; store the segmentation and display the parse
+                    self.segmentations.append(segmentation)
                     self.display(show_all_sols=False)
-                if max_sols and len(self.solutions) >= max_sols:
+                if max_sols and len(self.segmentations) >= max_sols:
                     proceed = False
                 if all_sols:
                     continue
@@ -1292,16 +1301,16 @@ class Sentence:
                     proceed = False
         except StopIteration:
             if verbosity:
-                print('No more solutions')
-        if not self.solutions:
+                print('No more segmentations')
+        if not self.segmentations:
             print("Last DS: {}".format(ds))
-            print("NINGUNAS SOLUCIONES encontradas para {}".format(self))
+            print("NINGUNAS SEGMENTACIONES encontradas para {}".format(self))
 
     def translate(self, sol_index=-1, all_trans=False, verbosity=0):
-        """Translate the solution with sol_index or all solutions if index is negative."""
-        solutions = self.solutions if sol_index < 0 else [self.solutions[sol_index]]
-        for solution in solutions:
-            solution.translate(all_trans=all_trans, verbosity=verbosity)
+        """Translate the segmentation with sol_index or all segmentations if index is negative."""
+        segmentations = self.segmentations if sol_index < 0 else [self.segmentations[sol_index]]
+        for segmentation in segmentations:
+            segmentation.translate(all_trans=all_trans, verbosity=verbosity)
 
     ## Create IVars and (set) Vars with sentence DS as root DS
 
@@ -1650,9 +1659,9 @@ class Sentence:
                     prefval = inpair[0]
                     return var, {prefval}, varundec - {prefval}
 
-    def create_solution(self, dstore=None, verbosity=0):
-        """Assuming essential variables are determined in a domain store, make a Solution object.
-        Adds solution to self.solutions and also returns the solution."""
+    def create_segmentation(self, dstore=None, verbosity=0):
+        """Assuming essential variables are determined in a domain store, make a Segmentation object.
+        Adds segmentation to self.segmentations and also returns the segmentation."""
         dstore = dstore or self.dstore
         # Get the indices of the selected groups
         groups = self.variables['groups'].get_value(dstore=dstore)
@@ -1662,7 +1671,7 @@ class Sentence:
         ginsts = [self.groups[g] for g in groupindices]
         s2gnodes = []
         # For each snode, find which gnodes are associated with it in this dstore. This becomes the value of
-        # the s2gnodes field in the solution created.
+        # the s2gnodes field in the segmentation created.
         for node in self.nodes:
             if node.index in covered_snodes:
                 gnodes = list(node.variables['gnodes'].get_value(dstore=dstore))
@@ -1703,31 +1712,31 @@ class Sentence:
         # Just keep the snode indices in each tree
         trees = [x[1][2] for x in trees]
         # Get the indices of the GNodes for each SNode
-        solution = Solution(self, ginsts, s2gnodes, len(self.solutions),
+        segmentation = Segmentation(self, ginsts, s2gnodes, len(self.segmentations),
                             trees=trees, dstore=dstore, session=self.session)
-        return solution
+        return segmentation
 
     ### Various ways of displaying translation outputs.
     
     def set_trans_outputs(self):
-        """Combine the tree trans outputs from all solutions, excluding repeated ones."""
-        if not self.solutions:
+        """Combine the tree trans outputs from all segmentations, excluding repeated ones."""
+        if not self.segmentations:
             return
-        for solution in self.solutions:
-            t1 = solution.get_ttrans_outputs()
+        for segmentation in self.segmentations:
+            t1 = segmentation.get_ttrans_outputs()
             for tt1 in t1:
                 if tt1 not in self.trans_outputs:
                     self.trans_outputs.append(tt1)
         self.trans_outputs.sort()
 
     def get_complete_trans(self, capfirst=True):
-        """Produce complete translations (list of lists of strings) from tree trans outputs for solutions, filling
+        """Produce complete translations (list of lists of strings) from tree trans outputs for segmentations, filling
         in gaps with source words where necessary."""
         if self.complete_trans:
             return self.complete_trans
         trans = []
-        for solution in self.solutions:
-            tt = solution.get_ttrans_outputs()
+        for segmentation in self.segmentations:
+            tt = segmentation.get_ttrans_outputs()
             tt_complete = []
             end_index = -1
             for indices, forms, x, y in tt:
@@ -1751,7 +1760,7 @@ class Sentence:
         return trans
 
     def get_html(self, single=False):
-        """Create HTML for a sentence with no solution."""
+        """Create HTML for a sentence with no segmentation."""
         tokens = ' '.join(self.tokens)
         tokens = SolSeg.clean_spec(tokens)
         if single:
@@ -1787,7 +1796,7 @@ class Sentence:
             return '|'.join([t.capitalize() for t in token.split('|')])
         return token.capitalize()
 
-class Solution:
+class Segmentation:
     
     """A non-conflicting set of groups for a sentence, at most one instance
     GNode for each sentence token, exactly one sentence token for each obligatory
@@ -1808,31 +1817,30 @@ class Solution:
         # A list of pairs for each snode: (gnodes, features)
         self.gnodes_feats = []
 ##        # List of Translation objects; multiple translations are possible
-##        # for a given solution because of multiple translations for groups
+##        # for a given segmentation because of multiple translations for groups
 ##        self.translations = []
-        # A list of TreeTrans objects making up this solution
+        # A list of TreeTrans objects making up this segmentation
         self.ttrans = None
         self.ttrans_outputs = None
-        # Variable domain store for solution state
+        # Variable domain store for segmentation state
         self.dstore = dstore
         # List of SolSegs, sentence segments with translations
         self.segments = []
         # Current session (need for creating SegRecord objects)
         self.session = session
-        print("SOLUCIÓN CREADA con dstore {} y ginsts {}".format(dstore, ginsts))
+        print("SEGMENTACIÓN CREADA con dstore {} y ginsts {}".format(dstore, ginsts))
 
     def __repr__(self):
         return "|< {} >|({})".format(self.sentence.raw, self.index)
 
     def display(self, word_width=10):
-        """Show solution groups (GInsts) in terminal."""
+        """Show segmentation groups (GInsts) in terminal."""
         for g in self.ginsts:
             g.display(word_width=word_width, s2gnodes=self.s2gnodes)
 
     ## Creating translations
     
-    def translate(self, verbosity=0, all_trans=False, interactive=False,
-                  delay_gen=False):
+    def translate(self, verbosity=0, all_trans=False, interactive=False):
         """Do everything you need to create the translation."""
         merged = self.merge_nodes(verbosity=verbosity)
         if not merged:
@@ -1840,11 +1848,10 @@ class Solution:
         for ginst in self.ginsts:
             if ginst.translations:
                 if verbosity:
-                    print("{} translations already set in other solution".format(ginst))
+                    print("{} translations already set in other segmentation".format(ginst))
             else:
                 ginst.set_translations(verbosity=verbosity)
-        self.make_translations(verbosity=verbosity, all_trans=all_trans, interactive=interactive,
-                               delay_gen=delay_gen)
+        self.make_translations(verbosity=verbosity, all_trans=all_trans, interactive=interactive)
         return True
 
     def merge_nodes(self, verbosity=0):
@@ -1911,8 +1918,7 @@ class Solution:
             self.gnodes_feats.append((gnodes, feats_unified))
         return True
 
-    def make_translations(self, verbosity=0, display=True, all_trans=False, interactive=False,
-                          delay_gen=False):
+    def make_translations(self, verbosity=0, display=True, all_trans=False, interactive=False):
         """Create a TreeTrans object for each GInst and tree. build() each top TreeTrans and
         realize translation. Whew."""
         if verbosity:
@@ -1928,7 +1934,7 @@ class Solution:
         ttindex = 0
         for tree, ginst in zip(self.trees, self.ginsts):
 #            print("Translating {} / {}".format(tree, ginst))
-            if ginst.treetrans and ginst.treetrans.top and ginst.treetrans.solution == self:
+            if ginst.treetrans and ginst.treetrans.top and ginst.treetrans.segmentation == self:
                 # There's a treetrans already and it's not the result of a merger,
                 # so just use it rather than creating a new one.
                 print("Not recreating treetrans for {}".format(ginst))
@@ -1995,12 +2001,11 @@ class Solution:
                     tgroups = [t[0] for t in tgroup_comb]
                     tnodes = [t[1] for t in tgroup_comb]
                     tt.build(tg_groups=tgroups, tg_tnodes=tnodes, verbosity=verbosity)
-                    tt.generate_words(delay=delay_gen)
+                    tt.generate_words()
                     tt.make_order_pairs(verbosity=verbosity)
                     tt.create_variables()
                     tt.create_constraints()
-                    tt.realize(all_trans=all_trans, interactive=interactive,
-                               delay_gen=delay_gen)
+                    tt.realize(all_trans=all_trans, interactive=interactive)
                     if all_trans:
                         continue
                     if not interactive or not input('SEARCH FOR ANOTHER TRANSLATION FOR {}? [yes/NO] '.format(tt)):
@@ -2008,7 +2013,7 @@ class Solution:
 
     def get_ttrans_outputs(self):
         """Return a list of (snode_indices, translation_strings, source group name, source merger groups, target targets, group head)
-        for the solution's tree translations. These are needed for the creation of SolSeg instances."""
+        for the segmentation's tree translations. These are needed for the creation of SolSeg instances."""
         if not self.ttrans_outputs:
             self.ttrans_outputs = []
             last_indices = [-1]
@@ -2036,7 +2041,7 @@ class Solution:
         return self.ttrans_outputs
 
     def get_untrans_segs(self, src_tokens, end_index, gname=None, merger_groups=None, indices_covered=None,
-                         src_feats=None, delay_gen=False, is_paren=False):
+                         src_feats=None, is_paren=False):
         '''Set one or more segments for a sequence of untranslatable tokens. Ignore indices that are already
          covered by translated segments.'''
         stok_groups = []
@@ -2104,7 +2109,7 @@ class Solution:
                 space_before = 0
 #            print("Node type for untranslated SolSeg: {}".format(node_toktype))
             seg = SolSeg(self, indices, translation, stok_group, session=self.session,
-                         gname=None, delay_gen=delay_gen, sfeats=sfeat_group[0],
+                         gname=None, sfeats=sfeat_group[0],
                          space_before=space_before, merger_groups=None, is_punc=is_punc,
                          is_paren=is_paren)
             print("Segmento (no traducido) {}->{}: {}={}".format(start, end, stok_group, seg.translation))
@@ -2113,8 +2118,8 @@ class Solution:
             i0 += len(stok_group)
         return newsegs
 
-    def get_segs(self, html=True, single=False, delay_gen=False):
-        """Set the segments (instances of SolSegment) for the solution, including their translations.
+    def get_segs(self, html=True, single=False):
+        """Set the segments (instances of SolSegment) for the segmentation, including their translations.
         THIS IS MESSY BECAUSE OF THE POSSIBILITY OF PARENTHETICALS AND GAPS.
         """
         tt = self.get_ttrans_outputs()
@@ -2141,7 +2146,7 @@ class Solution:
                 src_nodes = [sentence.get_node_by_raw(index) for index in range(end_index+1, start)]
                 src_feats = [(s.analyses if s else None) for s in src_nodes]
                 self.get_untrans_segs(src_tokens, end_index, gname=gname, merger_groups=merger_groups,
-                                      src_feats=src_feats, delay_gen=delay_gen, indices_covered=indices_covered)
+                                      src_feats=src_feats, indices_covered=indices_covered)
             if start < max_index:
                 # There's a gap between the portions of the segment; this is a parenthetical segment within an outer one
                 late = True
@@ -2171,7 +2176,7 @@ class Solution:
 #            print("Creating SolSeg with parenthetical {}, source tokens {}, head {}".format(parenthetical, src_tokens, thead))
             seg = SolSeg(self, raw_indices, forms, src_tokens, treetrans=treetrans,
                          session=self.session, gname=gname,
-                         tgroups=tgroups, merger_groups=merger_groups, delay_gen=delay_gen, head=thead,
+                         tgroups=tgroups, merger_groups=merger_groups, head=thead,
                          has_paren=[pre_paren, paren_record, post_paren] if parenthetical else None,
                          is_paren=late)
             if parenthetical:
@@ -2196,7 +2201,7 @@ class Solution:
             src_nodes = [sentence.get_node_by_raw(index) for index in range(max_index+1, len(tokens))]
             src_feats = [(s.analyses if s else None) for s in src_nodes]
             self.get_untrans_segs(src_tokens, max_index, gname=gname, merger_groups=merger_groups,
-                                  src_feats=src_feats, delay_gen=delay_gen, indices_covered=indices_covered)
+                                  src_feats=src_feats, indices_covered=indices_covered)
         # Check whether untranslated parentheticals have gotten segments
         for parenthetical in parentheticals:
             ptokens = [p[0] for p in parenthetical]
@@ -2213,7 +2218,7 @@ class Solution:
             if not found:
 #                print(" Creating untranslated segment")
                 newsegs = self.get_untrans_segs(ptokens, pindices[0]-1, indices_covered=indices_covered,
-                                                delay_gen=delay_gen, is_paren=True)
+                                                is_paren=True)
                 # hopefully only one of these
                 if newsegs and len(newsegs) > 0:
                     newseg = newsegs[0]
@@ -2224,11 +2229,11 @@ class Solution:
                             hp.paren_seg = newseg
         # Sort the segments by start indices in case they're not in order (because of parentheticals)
         self.segments.sort(key=lambda s: s.indices[0])
-        if html and not delay_gen:
+        if html:
             self.seg_html(single=single)
 
     def seg_html(self, single=False):
-        """Set the HTML for each of the segments in this solution."""
+        """Set the HTML for each of the segments in this segmentation."""
         for i, segment in enumerate(self.segments):
             if single:
                 segment.set_single_html(i)
@@ -2264,7 +2269,7 @@ class Solution:
 
     ## Generation, joining, group matching following initial segmentation
 
-    def join(self, iters=3, makesuper=True, generate=False, verbosity=1):
+    def join(self, iters=3, joingroups=None, makesuper=True, generate=False, verbosity=1):
         """Iteratively match Join instances where possible, create supersegs for matches,
         and optionally finish by generating morphological surface forms for final segments."""
         iteration = 0
@@ -2273,7 +2278,7 @@ class Solution:
         while matched and iteration < iters:
             print("MATCHING JOINS, ITERATION {}".format(iteration))
             print("Segments: {}".format(self.segments))
-            matches = self.match(verbosity=verbosity)
+            matches = self.match(joingroups=joingroups, verbosity=verbosity)
             if matches:
                 all_matches.extend(matches)
                 if makesuper:
@@ -2289,49 +2294,55 @@ class Solution:
         return all_matches
     
     def generate(self, verbosity=0):
-        """Generate forms within solution segments, when this is delayed
-        and so doesn't happen in TreeTranss.
-        """
+        """Generate forms within segmentation segments."""
         for segment in self.segments:
             segment.generate(verbosity=verbosity)
 
-    def match(self, verbosity=1):
-        """Try to match the sequence of SolSegs in this solution with the patterns
+    def match(self, joingroups=None, verbosity=1):
+        """Try to match the sequence of SolSegs in this segmentation with the patterns
         in all the Join instances, taking Join instances one at a time in order."""
         matches = []
         segments = self.segments
         sollength = len(segments)
         segstart = 0
         matches = []
-        for join in self.source.joins:
-            if verbosity:
-                print("Matching {}".format(join))
-            pattern = join.pattern
-            patlength = len(pattern)
-            endgap = sollength - patlength
-            segstart = 0
-            matches1 = []
-            while segstart < sollength - 1 and endgap - segstart >= 0:
-                match1 = join.match(segments, segstart, verbosity=verbosity)
-                if match1:
-                    if verbosity:
-                        print("  Matched at {}".format(segstart))
-                    # Check the conditions on the join
-                    match2 = join.match_conds(segments, segstart, verbosity=verbosity)
-                    if match2:
+        source_join_groups = self.source.join_groups
+        if joingroups:
+            # This should be None or a list of ints
+            joingroups = [source_join_groups[index] for index in joingroups]
+        else:
+            joingroups = source_join_groups
+        for joingroup in joingroups:
+            for join in joingroup:
+                if verbosity:
+                    print("Matching {}".format(join))
+                pattern = join.pattern
+                patlength = len(pattern)
+                endgap = sollength - patlength
+                segstart = 0
+                matches1 = []
+                while segstart < sollength - 1 and endgap - segstart >= 0:
+                    match1 = join.match(segments, segstart, verbosity=verbosity)
+                    if match1:
                         if verbosity:
-                            print("  Matched conds")
-                        matches1.append((join, match1))
-                        # Don't look for more matches from this position; move forward
-                        # by the length of the join - 1 (because we're moving forward
-                        # anyway at the end of this loop)
-                        segstart += patlength - 1
-                # Move forward
-                segstart += 1
-            if matches1:
-                # For now just match one Join
-                matches.extend(matches1)
-                break
+                            print("  Matched at {}".format(segstart))
+                        # Check the conditions on the join
+                        match2 = join.match_conds(segments, segstart, verbosity=verbosity)
+                        if match2:
+                            if verbosity:
+                                print("  Matched conds")
+                            matches1.append((join, match1))
+                            # Don't look for more matches from this position; move forward
+                            # by the length of the join - 1 (because we're moving forward
+                            # anyway at the end of this loop)
+                            segstart += patlength - 1
+                    # Move forward
+                    segstart += 1
+                if matches1:
+                    # For now just match one Join
+                    matches.extend(matches1)
+                    print("Found matches {}".format(matches))
+                    return matches
         if matches and verbosity:
             print("Found matches {}".format(matches))
         return matches
@@ -2345,10 +2356,13 @@ class Solution:
         superseg = SuperSeg(self, segs, features=features, join=join)
         if verbosity:
             print("CREATING SUPERSEG FOR {} AND {} in positions {}".format(segs, join, positions))
-        # replace the joined segments in the solution with the superseg
+        # replace the joined segments in the segmentation with the superseg
         self.segments[positions[0]:positions[-1]+1] = [superseg]
 
     def match_groups(self, groupsid=1, verbosity=1):
+        """Get candidate matches of groups with segmentation Segs and match them,
+        returning matches as list of pairs: (group [position, segment features]).
+        """
         cands = self.get_group_cands(groupsid=groupsid, verbosity=verbosity)
         # Filter candidates here?
         matches = self.match_group_cands(cands, verbosity=verbosity)
@@ -2356,25 +2370,55 @@ class Solution:
         return matches
 
     def get_group_cands(self, groupsid=1, groups=None, verbosity=1):
-        """Find candidates Group matches with solution Segs."""
+        """Find candidate Group matches with segmentation Segs."""
         if verbosity:
             print("{} finding group candidates".format(self))
         groups = groups or self.source.posgroups[groupsid]
         cands = []
+        sol_length = len(self.segments)
         for index, segment in enumerate(self.segments):
             cands1 = segment.get_group_cands(all_groups=groups, verbosity=verbosity)
-            cands.extend([(index, c) for c in cands1])
+            for cand1 in cands1:
+                group, head_index = cand1
+                start = index-head_index
+                end = start + len(group.tokens)
+#                print("Cand {}, start {}, end {}".format(group, start, end))
+                if end <= sol_length:
+                    indices = range(start, end)
+                    # Reject candidates that are too long for the sentence
+                    cands.append((index, indices, cand1))
         return cands
 
     def match_group_cands(self, candidates, verbosity=0):
-        """Match group candidates along with indices against segments in the Solution,
+        """Match group candidates along with indices against segments in the Segmentation,
+        filtering out shorter ones that overlap with longer ones,
         returning matches as tuples: (group, [position, segment, features])."""
         matches = []
         segments = self.segments
-        for segindex, (group, index) in candidates:
-            matches1 = group.match_segments(segments, segindex, verbosity=verbosity)
+        overlaps = []
+        for segindex, segindices, (group, head_index) in candidates:
+            matches1 = group.match_segments(segments, segindex - head_index, verbosity=verbosity)
             if matches1:
                 matches.append(matches1)
+                indices = set(segindices)
+                lapped = False
+                for overlap in overlaps:
+                    for i, m in overlap:
+                        if indices & i:
+                            overlap.append((indices, matches1))
+                            lapped = True
+                            break
+                if not lapped:
+                    overlaps.append([(indices, matches)])
+#        print("Cands1 {}".format(matches))
+#        print("overlaps {}".format(overlaps))
+        for overlap in overlaps:
+            # Sort overlaps by length of group/match
+            overlap.sort(key=lambda x: len(x[0]), reverse=True)
+            # We have to pick one of each of these; for now just the longest one
+            for indices, matches1 in overlap[1:]:
+                matches.remove(matches1)
+#        print("Cands2 {}".format(matches))
         return matches
 
     ## Final translation

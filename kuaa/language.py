@@ -168,7 +168,11 @@ class Language:
     # optional ,|. + at least one digit + optional [,.digit]s; note: allows expression to end with . or ,
     numeral = re.compile("[,.]?\d+[\d.,]*$")
 
-    def __init__(self, name, abbrev, use=ANALYSIS, groups=None,
+    # Regular expressions for join files
+    joingrp = re.compile('\s*>>\s*(.*)')
+
+    def __init__(self, name, abbrev, use=ANALYSIS,
+#                 groups=None,
 #                 groupnames=None,
                  # A directory may be provided.
                  directory=None,
@@ -194,10 +198,10 @@ class Language:
         self.join = join
         # Words that can join names
         self.namejoin = namejoin
-        self.groups = groups or {}
+#        self.groups = groups or {}
         # Groups organized by POS or other categories
         self.grouppos = grouppos
-        self.posgroups = [{} for g in range(len(grouppos))] if grouppos else None
+        self.posgroups = [{} for g in range(len(grouppos))] if grouppos else [{}]
         # A dictionary of group attribute defaults for different head categories
         self.group_defaults = {}
         # Dictionary of roots/stems/tokens to group keys, e.g., 'drop': ['drop_n', 'drop_v']
@@ -211,7 +215,7 @@ class Language:
         # Morphosyns
         self.ms = []
         # Joins
-        self.joins = []
+        self.join_groups = []
         self.eos = eos
         self.use = use
         # Dict of groups with names as keys
@@ -511,10 +515,10 @@ class Language:
         return string
 
     ### Getting and setting
-    def get_group(self, name, key=None):
+    def get_group(self, name, key=None, posindex=0):
         """Name if not None is a string representing the group's 'name'."""
         key = key or Group.get_key(name)
-        cands = self.groups.get(key)
+        cands = self.posgroups[posindex].get(key)
         if cands:
             return firsttrue(lambda c: c.name == name, cands)
         return None
@@ -1719,9 +1723,10 @@ class Language:
                             verbosity=verbosity, posindex=posindex)
 
         # Sort groups for each key by priority
-        for key, groups in self.groups.items():
-            if len(groups) > 1:
-                groups.sort(key=lambda g: g.priority(), reverse=True)
+        for groups in self.posgroups:
+            for key, groups1 in groups.items():
+                if len(groups1) > 1:
+                    groups1.sort(key=lambda g: g.priority(), reverse=True)
 
     def write_group_defaults(self, cat, stream):
         """Write the group defaults for category cat to stream."""
@@ -1758,6 +1763,7 @@ class Language:
     def read_joins(self, target=None, verbosity=0):
         """Read in Join patterns for target from a .jn file."""
         path = self.get_join_file(target.abbrev)
+        grouping = []
         try:
             with open(path, encoding='utf8') as f:
                 print("Leyendo patrones para juntar segmentos para {}".format(target))
@@ -1768,9 +1774,18 @@ class Language:
                     line = lines.pop().split('#')[0].strip()
                     # Ignore empty lines
                     if not line: continue
+                    grp = Language.joingrp.match(line)
+                    if grp:
+                        if grouping:
+                            self.join_groups.append(grouping)
+                            grouping = []
+                        continue
                     name, x, pattern = line.partition(JOIN_NAME_SEP)
                     join = Join(self, target, name=name.strip(), pattern=pattern.strip())
-                    self.joins.append(join)
+#                    self.joins.append(join)
+                    grouping.append(join)
+            # add last grouping
+            self.join_groups.append(grouping)
         except IOError:
             print('No such Join file as {}'.format(path))
 
@@ -2001,10 +2016,10 @@ class Language:
     def add_group(self, group, cat=None, posindex=0):
         """Add group to dict, indexed by head."""
         head = group.head
-        if head in self.groups:
-            self.groups[head].append(group)
-        else:
-            self.groups[head] = [group]
+#        if head in self.groups:
+#            self.groups[head].append(group)
+#        else:
+#            self.groups[head] = [group]
         self.groupnames[group.name] = group
         token = Language.get_grouptoken(head)
         if token in self.group_keys:
@@ -2012,12 +2027,11 @@ class Language:
         else:
             self.group_keys[token] = {head}
         group.language = self
-        if self.grouppos:
-            groups = self.posgroups[posindex]
-            if head in groups:
-                groups[head].append(group)
-            else:
-                groups[head] = [group]
+        groups = self.posgroups[posindex]
+        if head in groups:
+            groups[head].append(group)
+        else:
+            groups[head] = [group]
 #        if cat:
 #            if cat in self.posgroups:
 #                groups = self.posgroups[cat]
@@ -2063,7 +2077,7 @@ class Language:
                     output[oi] = self.syll_postproc(outp)
             return output
         else:
-            print("The root/feature combination {}:{} can't be generated for POS {}!".format(root, features.__repr__(), pos))
+            print("   The root/feature combination {}:{} can't be generated for POS {}!".format(root, features.__repr__(), pos))
             # Add * to mark this is a uninflected.
             root = self.char_postproc(root)
             return ['*' + root]

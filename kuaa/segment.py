@@ -96,12 +96,12 @@ class Seg:
     # Character indicating that tokens in translation string should be joined ("Carlos `-pe" -> "Carlos-pe")
     join_tok_char = "`"
 
-    def __init__(self, solution):
-        self.solution = solution
-        self.sentence = solution.sentence
-        self.source = solution.source
-        self.target = solution.target
-        self.solution = solution.sentence
+    def __init__(self, segmentation):
+        self.segmentation = segmentation
+        self.sentence = segmentation.sentence
+        self.source = segmentation.source
+        self.target = segmentation.target
+        self.segmentation = segmentation.sentence
         self.generated = False
         self.shead = None
         self.thead = None
@@ -261,8 +261,7 @@ class Seg:
             return groups
             
     def generate(self, verbosity=0):
-        """When generation is delayed (that is, it doesn't happen with TreeTrans instances),
-        it happens here in SolSeg."""
+        """Generate surface forms for segment."""
         if verbosity:
             print("Generating forms for segment {} with cleaned trans {} and raw token str {}".format(self, self.cleaned_trans, self.raw_token_str))
         generator = self.target.generate
@@ -362,7 +361,7 @@ class Seg:
         ntgroups = len(self.tgroups)
         multtrans = True
         for tindex, (t, tgroups) in enumerate(zip(self.cleaned_trans, self.tgroups)):
-            print("  tindex {}, t {}, tgroups {}".format(tindex, t, tgroups))
+#            print("  tindex {}, t {}, tgroups {}".format(tindex, t, tgroups))
             # Create all combinations of word sequences
             tg_expanded = []
             if self.special:
@@ -610,8 +609,8 @@ class SuperSeg(Seg):
     """SuperSegment: joins SolSeg instances into larger units, either via a Join rule
     or a Group."""
 
-    def __init__(self, solution, segments=None, features=None, name=None, join=None):
-        Seg.__init__(self, solution)
+    def __init__(self, segmentation, segments=None, features=None, name=None, join=None):
+        Seg.__init__(self, segmentation)
         self.segments = segments
         self.name = name
         self.join = join
@@ -674,17 +673,15 @@ class SuperSeg(Seg):
         self.join.apply(self, verbosity=verbosity)
 
 class SolSeg(Seg):
-    """Sentence solution segment, realization of a Group, possibly merged with another. Displayed in GUI."""
+    """Sentence segmentation segment, realization of a Group, possibly merged with another. Displayed in GUI."""
 
-    def __init__(self, solution, indices, translation, tokens, color=None, space_before=1,
+    def __init__(self, segmentation, indices, translation, tokens, color=None, space_before=1,
                  treetrans=None, sfeats=None,
-                 # Whether to delay generation
-                 delay_gen=False,
                  tgroups=None, merger_groups=None, has_paren=False, is_paren=False,
                  head=None,
                  spec_indices=None, session=None, gname=None, is_punc=False):
 #        print("Creating SolSeg for indices {}, translation {}, head {}, sfeats {}".format(indices, translation, head, sfeats))
-        Seg.__init__(self, solution)
+        Seg.__init__(self, segmentation)
         if head:
             self.shead_index, self.shead, self.scats = head
         elif sfeats:
@@ -698,8 +695,8 @@ class SolSeg(Seg):
             self.cats = None
         self.treetrans = treetrans
         # Whether morphological generation has applied
-        if not delay_gen:
-            self.generated = True
+#        if not delay_gen:
+#            self.generated = True
 #        self.thead = treetrans.outputs[0] if treetrans else None
         self.indices = indices
         self.space_before = space_before
@@ -743,14 +740,13 @@ class SolSeg(Seg):
             # Create the source and target strings without special characters
             if not translation:
                 self.special = True
-            if delay_gen:
-                if translation:
-                    self.cleaned_trans = [translation]
-                    self.translation = [translation]
-                else:
-                    self.cleaned_trans = [[tokens[0]]]
+            if translation:
+                self.cleaned_trans = [translation]
+                self.translation = [translation]
             else:
-                self.translate_special(translation or tokens)
+                self.cleaned_trans = [[tokens[0]]]
+#            else:
+#                self.translate_special(translation or tokens)
             self.token_str = Seg.clean_spec(self.token_str)
             self.original_token_str = Seg.clean_spec(self.original_token_str)
         if '~' in self.token_str:
@@ -759,8 +755,8 @@ class SolSeg(Seg):
         if not self.cleaned_trans:
             self.cleaned_trans = self.translation[:]
         # Join tokens in cleaned translation if necessary
-        if not delay_gen:
-            Seg.join_toks_in_strings(self.cleaned_trans)
+#        if not delay_gen:
+#            Seg.join_toks_in_strings(self.cleaned_trans)
         if treetrans:
             thead_indices = [g.head_index for g in treetrans.tgroups]
             self.thead = [o[i] for i, o in zip(thead_indices, self.cleaned_trans)]
@@ -777,11 +773,11 @@ class SolSeg(Seg):
         self.tgroups = tgroups or [[]] * len(self.translation)
         # Target-language group strings, ordered by choices; gets set in set_html()
         self.choice_tgroups = None
-        # The session associated with this solution segment
+        # The session associated with this segmentation segment
         self.session = session
         # Create a record for this segment if there's a session running and it's not punctuation
         if session and session.running and not self.source.is_punc(self.token_str):
-            self.record = self.make_record(session, solution.sentence)
+            self.record = self.make_record(session, segmentation.sentence)
         else:
             self.record = None
 #        print("Created {}, punctuation? {}, translation {}, cleaned {}".format(self, self.is_punc, self.translation, self.cleaned_trans))
@@ -1387,15 +1383,15 @@ class TNode:
 class TreeTrans:
     """Translation of a tree: a group or two or more groups joined by merged nodes."""
 
-    def __init__(self, solution, tree=None, ginst=None,
+    def __init__(self, segmentation, tree=None, ginst=None,
                  abs_gnode_dict=None, gnode_dict=None, group_attribs=None,
                  # Whether the tree has any abstract nodes (to merge with concrete nodes)
                  any_anode=False, index=0, top=False, verbosity=0):
-        # The solution generating this translation
-        self.solution = solution
-        self.source = solution.source
-        self.target = solution.target
-        self.sentence = solution.sentence
+        # The segmentation generating this translation
+        self.segmentation = segmentation
+        self.source = segmentation.source
+        self.target = segmentation.target
+        self.sentence = segmentation.sentence
         # Dict keeping information about each gnode; this dict is shared across different TreeTrans instances
         self.abs_gnode_dict = abs_gnode_dict
         self.gnode_dict = gnode_dict
@@ -1417,7 +1413,7 @@ class TreeTrans:
         snode_indices.sort()
         self.snode_indices = snode_indices
         self.snodes = [self.sentence.nodes[i] for i in snode_indices]
-        self.sol_gnodes_feats = [solution.gnodes_feats[i] for i in snode_indices]
+        self.sol_gnodes_feats = [segmentation.gnodes_feats[i] for i in snode_indices]
         # The GInst at the top of the tree
         self.ginst = ginst
         # Save this TreeTrans in the GInst
@@ -1500,7 +1496,7 @@ class TreeTrans:
             self.display(index)
 
     @staticmethod
-    def output_string(output, delay_gen=False):
+    def output_string(output):
         """Create an output string from a list."""
         out = []
         # False if there is a (root, pos, feats) tuple because generation
@@ -1514,7 +1510,7 @@ class TreeTrans:
                     generated = False
             else:
                 out.append('|'.join(word_list))
-        if not delay_gen or generated:
+        if generated:
             out = ' '.join(out)
         return out
 
@@ -1800,8 +1796,8 @@ class TreeTrans:
 #        print("  Result", result)
         return result
 
-    def generate_words(self, delay=False, verbosity=0):
-        """Do intra-group agreement constraints, and generate wordforms for each target node."""
+    def generate_words(self, verbosity=0):
+        """Do intra-group agreement constraints."""
         # Reinitialize nodes
 #        print("Generating words in {}, features {}".format(self, self.node_features))
         self.nodes = []
@@ -1829,7 +1825,7 @@ class TreeTrans:
                 agr_node1[1], agr_node2[1] = af1, af2
                 self.node_features[feat_index1][1] = af1
                 self.node_features[feat_index2][1] = af2
-        self.generate(delay=delay, verbosity=verbosity)
+        self.generate(verbosity=verbosity)
 #        generator = self.sentence.target.generate
 #        print("Nodes and features for generation: {}, {}".format(self.nodes, self.node_features))
 #        for token, features, index in self.node_features:
@@ -1851,7 +1847,7 @@ class TreeTrans:
 #                print("Generating target node {}: {}".format(index, output))
 #        print("Nodes after generation: {}".format(self.nodes))
 
-    def generate(self, delay=False, verbosity=0):
+    def generate(self, verbosity=0):
         generator = self.sentence.target.generate
 #        print("Nodes and features for generation: {}, {}".format(self.nodes, self.node_features))
         for token, features, index in self.node_features:
@@ -1866,12 +1862,12 @@ class TreeTrans:
                     token = self.target.syll_postproc(token)
                     output = [token]
 #                self.nodes.append([output, index])
-            elif delay:
+#            elif delay:
+            else:
                 output = [[root, pos, features]]
 #                self.nodes.append([(root, pos, features), index])
-            else:
-#                print("Generating {} : {} : {}".format(root, features.__repr__(), pos))
-                output = generator(root, features, pos=pos)
+#            else:
+#                output = generator(root, features, pos=pos)
             self.nodes.append([output, index])
             if verbosity:
                 print("Generating target node {}: {}".format(index, output))
@@ -1964,8 +1960,7 @@ class TreeTrans:
 #            # Convexity (projectivity)
 #            self.constraints.append(SetConvexity(tree))
 
-    def realize(self, verbosity=0, display=False, all_trans=False, interactive=False,
-                delay_gen=False):
+    def realize(self, verbosity=0, display=False, all_trans=False, interactive=False):
         """Run constraint satisfaction on the order and disjunction constraints,
         and convert variable values to sentence positions."""
 #        print("Realizing {}".format(self))
@@ -1989,8 +1984,7 @@ class TreeTrans:
                 output = [n[0] for n in node_pos]
                 self.outputs.append(output)
                 output_string = output
-#                if not delay_gen:
-                output_string = TreeTrans.output_string(output, delay_gen=delay_gen)
+                output_string = TreeTrans.output_string(output)
                 self.output_strings.append(output_string)
                 if display:
                     self.display(len(self.outputs)-1)

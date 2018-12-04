@@ -1331,7 +1331,6 @@
 ->grn ne_v ; #90
 ->grn rẽ_v
 ** hermoso_a ; ^ hermoso_a 0
-->grn tóko_n vera
 ->grn porã_v
 ** hervido_a ; ^ hervido_a 0
 ->grn mimói_v ; #9
@@ -2170,7 +2169,6 @@
 ->grn porasy_v
 ** perfecto_a ; ^ perfecto_a 0
 ->grn porã_v
-->grn tóko_n vera
 ** perjudicial_a ; ^ perjudicial_a 0
 ->grn mbyaiha_v
 ->grn kose_v
@@ -2704,7 +2702,6 @@
 ** sucesivo_a ; ^ sucesivo_a 0
 ->grn memegua_v
 ** sucio_a ; ^ sucio_a 0 ; #3
-->grn tajasu_v ; #35
 ->grn jare_v ; #64
 ->grn ky'a_v ; #20
 ** sudoroso_a ; ^ sudoroso_a 0

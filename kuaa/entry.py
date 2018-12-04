@@ -553,7 +553,8 @@ class Group(Entry):
                     segthead = segment.thead
                     print("   Updating non-head segment {}, head {}, ttokfeats {}".format(segment, segthead, tfeats.__repr__()))
                     for trans in segment.thead:
-                        # this should be a [token, pos, feats] list
+                        # trans should be a [token, pos, feats] list
+                        print("    trans: {}".format(trans))
                         transfeats = trans[2]
                         if transfeats and tfeats:
                             ufeats = transfeats.u(tfeats)
@@ -942,7 +943,7 @@ class Group(Entry):
         # Check to see whether a group with this name has already been created for language;
         # if so, use it
         gname = Group.make_name(name_toks)
-        existing_group = language.get_group(gname, key=head)
+        existing_group = language.get_group(gname, key=head, posindex=posindex)
         g = existing_group or Group(realtokens, head_index=head_index, head=head, features=features, agr=within_agrs,
                                     failif=failif, name=gname, count=count, string=string,
                                     trans_strings=tstrings, cat=cat, comment=comment, intervening=intervening)
@@ -1899,7 +1900,7 @@ class Join(Entry):
                 continue
 
     def match(self, segments, startindex=0, verbosity=0):
-        """Match this Join against segments in Solution starting with
+        """Match this Join against segments in Segmentation starting with
         position startindex."""
         matched = True
         pattern = self.pattern
@@ -1921,7 +1922,7 @@ class Join(Entry):
         return match1
 
     def match_conds(self, segments, startindex=0, verbosity=1):
-        """Match the conditions in this Join against segments in Solution
+        """Match the conditions in this Join against segments in Segmentation
         starting with position startindex."""
         for s1, s2, f1, f2 in self.agree_conditions:
             if verbosity:

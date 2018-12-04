@@ -831,8 +831,6 @@
 ->grn $n $v[pp=pe,rel=sjoj] ; || -1, 0, -1, 1 ; 1==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** a $n donde $v ; ^ a 0
 ->grn $n $v[pp=pe,rel=obl] ; || -1, 0, -1, 1 ; 1==0 n:n,poses:poses ; 3==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
-** a $n ; ^ a 0
-->grn $n[caso=pe] ; || -1, 0
 ** a $pro ; ^ a 0
 ->grn $pro[caso=pe] ; || -1, 0
 ### EN

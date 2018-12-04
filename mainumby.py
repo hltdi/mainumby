@@ -52,7 +52,7 @@ import kuaa
 ## Creación (y opcionalmente traducción) de oración simple y de documento.
 ## Por defecto, las palabras en segmentos no se generan morfológicamente.
 def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
-        single=False, translate=True, delay_gen=True, constrain_groups=False,
+        single=False, translate=True, constrain_groups=False, generate=False,
         verbosity=0):
     e, g = cargar()
     session = kuaa.start(e, g, user, create_memory=single)
@@ -65,22 +65,23 @@ def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
                  verbosity=verbosity)
     if solve or segment:
         s.solve(all_sols=ambig or max_sols > 1, max_sols=max_sols,
-                translate=translate, delay_gen=delay_gen)
-        if s.solutions:
+                translate=translate)
+        if s.segmentations:
             if translate and segment:
-                for sol in s.solutions:
-                    sol.get_segs(delay_gen=delay_gen)
-                solution = s.solutions[0]
-                for segment in solution.segments:
+                for seg in s.segmentations:
+                    if generate:
+                        seg.generate()
+                    seg.get_segs(html=generate)
+                segmentation = s.segmentations[0]
+                for segment in segmentation.segments:
                     print("{}: {}".format(segment, segment.cleaned_trans))
-                return solution
-            return s.solutions
+                return segmentation
+            return s.segmentations
     return s
 
 def ora1(sentence):
-    """A sentence prior to solution, segmentation, translation."""
-    return ora(sentence, solve=False, segment=False, single=True, translate=False,
-               delay_gen=True)
+    """A sentence prior to segmentation and translation."""
+    return ora(sentence, solve=False, segment=False, single=True, translate=False)
 
 ## Aprendizaje de nuevos grupos
 
@@ -101,14 +102,14 @@ def generate(language, stem, feats=None, pos='v'):
     return language.generate(stem, feats, pos)
 
 def solve1(sentence):
-    """Solve; print and return solutions."""
+    """Solve; print and return segmentations."""
     sentence.solve()
     output_sols(sentence)
-    return sentence.solutions
+    return sentence.segmentations
 
 def output_sols(sentence):
-    """Show target outputs for all solutions for sentence."""
-    for sol in sentence.solutions:
+    """Show target outputs for all segmentations for sentence."""
+    for sol in sentence.segmentations:
         for x in sol.get_ttrans_outputs():
             print(x)
 
@@ -155,11 +156,11 @@ def arch_doc(lengua, ruta, session=None, user=None, proc=False):
 ##    s.initialize(ambig=False)
 ##    if solve:
 ##        s.solve(all_sols=False)
-##        if s.solutions and segment:
-##            for sol in s.solutions:
+##        if s.segmentations and segment:
+##            for sol in s.segmentations:
 ##                sol.get_segs()
 ##        output_sols(s)
-##    return s.solutions[0]    
+##    return s.segmentations[0]    
 
 #def eg_bidoc(ruta1, ruta2, proc=True, reinit=False, user=None, docid=''):
 #    doc1 = eg_arch_doc(ruta1, user=user)
@@ -181,7 +182,7 @@ def cargar1(lang='spa'):
     return spa
 
 if __name__ == "__main__":
-    print("Tereg̃uahẽ porãite Mainumby-me, versión {}\n".format(__version__))
+    print("Tereg̃uahẽporãite Mainumby-pe, versión {}\n".format(__version__))
 #    kuaa.app.run(debug=True)
 
 ##def ui():
