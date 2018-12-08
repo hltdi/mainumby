@@ -95,7 +95,7 @@ def solve_and_segment(single=False):
     global SEGS
     global SEG_HTML
     SEGS, SEG_HTML = seg_trans(SENTENCE, SPA, GRN,
-                               single=single, delay_gen=True, join=False)
+                               single=single, join=False)
 #    print("Solved segs: {}, html: {}".format(SEGS, SEG_HTML))
     if single:
         global OF_HTML

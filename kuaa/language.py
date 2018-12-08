@@ -128,7 +128,7 @@ POSTPUNC_RE = re.compile(r'\s*postpunc.*?:\s*(.*)')
 ## Regex for checking for non-ascii characters
 ASCII_RE = re.compile(r'[a-zA-Z]')
 
-## Separtes Morphosyn name from pattern and other attributes
+## Separates Morphosyn name from pattern and other attributes
 MS_NAME_SEP = '::'
 JOIN_NAME_SEP = '::'
 
@@ -181,7 +181,8 @@ class Language:
                  # conversion: (POS_tag_conversion_dict, feature_conversion_dict)
                  exttag=False, conversion=False, lemmas=None,
                  # phrases to be joined during sentence tokenization
-                 join=False,
+#                 join=False,
+                 mwe=False,
                  # end-of-sentence characters
                  eos=EOS,
                  # list of lists of POS tags for group grouping
@@ -195,7 +196,7 @@ class Language:
         # Whether to load POS tagger for this language (from elsewhere)
         self.exttag = exttag
         # Phrases to join during sentence tokenization
-        self.join = join
+        self.mwe = mwe
         # Words that can join names
         self.namejoin = namejoin
 #        self.groups = groups or {}
@@ -528,6 +529,11 @@ class Language:
     @staticmethod
     def get_language_dir(abbrev):
         return os.path.join(LANGUAGE_DIR, abbrev)
+
+    @staticmethod
+    def get_mwe_file(lg_abbrev, name='1'):
+        d = Language.get_language_dir(lg_abbrev)
+        return os.path.join(os.path.join(d, 'lex'), name + ".mwe")
 
     def get_dir(self):
         """Where data for this language is kept."""
@@ -1760,6 +1766,21 @@ class Language:
         except IOError:
             print('No such MS file as {}'.format(path))
 
+    @staticmethod
+    def read_mwe(abbrev='spa', name='1', verbosity=0):
+        path = Language.get_mwe_file(abbrev, name=name)
+        mwes = []
+        try:
+            with open(path, encoding='utf8') as f:
+                for line in f:
+                    line = line.strip()
+                    if line:
+                        line = line.split(',')
+                        mwes.append((line[0].split('~'), line[1]))
+            return mwes
+        except IOError:
+            print("No such MWE file as {}".format(path))
+
     def read_joins(self, target=None, verbosity=0):
         """Read in Join patterns for target from a .jn file."""
         path = self.get_join_file(target.abbrev)
@@ -1799,6 +1820,8 @@ class Language:
         joins = d.get('join')
         namejoin = d.get('namejoin', '').split(',')
         grouppos = d.get('grouppos')
+        mwe = d.get('mwe')
+        abbrev = d.get('abbrev')
         if grouppos:
             grouppos = [g.split(',') for g in grouppos.split(';')]
 #        print("Name join: {}".format(namejoin))
@@ -1815,13 +1838,17 @@ class Language:
                     wrd = wrd_tag[1] if len(wrd_tag) == 2 else ''
                     new_feat_conv[(wrd, tag)] = (lemma, feats)
                 conversion = (d.get('pos'), new_feat_conv)
-        if joins:
+        if mwe:
+            mwe = Language.read_mwe(abbrev=abbrev, name=mwe)
+            mwe = Language.treeify(mwe)
+        elif joins:
             joins = [(x.split('~'), y) for x, y in joins]
-            joins = Language.treeify(joins)
+#            print("joins {}".format(joins))
+            mwe = Language.treeify(joins)
             
-        l = Language(d.get('name'), d.get('abbrev'), use=use, directory=directory,
+        l = Language(d.get('name'), abbrev, use=use, directory=directory,
                      exttag=exttag, conversion=conversion, postags=d.get('postags'),
-                     join=joins, eos=d.get('eos', EOS), lemmas=d.get('lemmas'),
+                     mwe=mwe, eos=d.get('eos', EOS), lemmas=d.get('lemmas'),
                      namejoin=namejoin, grouppos=grouppos)
         translations = d.get('translations')
         if translations:

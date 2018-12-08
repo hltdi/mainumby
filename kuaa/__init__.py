@@ -63,22 +63,21 @@ def load(source='spa', target='grn'):
     return kuaa.Language.load_trans(source, target)
 
 def seg_trans(sentence, source, target, session=None, single=False,
-              delay_gen=True, join=True, verbosity=0):
+              constrain_groups=None, join=True, verbosity=0):
     """Translate sentence and return marked-up sentence with segments colored.
-    So far only uses first solution."""
-    sentence.initialize(ambig=True, verbosity=verbosity)
+    So far only uses first segmentation."""
+    sentence.initialize(ambig=True, constrain_groups=constrain_groups, verbosity=verbosity)
     sentence.solve(translate=True, all_sols=False, all_trans=True, interactive=False,
-                   delay_gen=delay_gen, verbosity=verbosity)
-    if sentence.solutions:
-        solution = sentence.solutions[0]
-        solution.get_segs(single=single, delay_gen=delay_gen)
+                   verbosity=verbosity)
+    if sentence.segmentations:
+        segmentation = sentence.segmentations[0]
+        segmentation.get_segs(single=single, html=False)
         if join:
-            solution.join(generate=False)
-        if delay_gen:
-            solution.generate()
-            solution.seg_html(single=single)
-            solution.get_gui_segments(single=single)
-        return solution.segments, solution.get_gui_segments(single=single)
+            segmentation.join(generate=False)
+        segmentation.generate()
+        segmentation.seg_html(single=single)
+        segmentation.get_gui_segments(single=single)
+        return segmentation.segments, segmentation.get_gui_segments(single=single)
     else:
         return [], sentence.get_html(single=single)
 

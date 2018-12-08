@@ -506,21 +506,33 @@ class Group(Entry):
         # Once this is set, don't change it (assume all translations involve the same ordering)
         ordered = False
         to_delete = []
+        # Also assume all translation share number of translation tokens and S-T alignment
+        # Indices of translation tokens aligned with source tokens
+        ti_covered = []
+        # Indices of translation tokens.
+        tindices = None
+        # Indices of translation aligned with source positions
+        alignment = None
         for tgroup, tfeats in translations:
             troot = tgroup.root
             ttokens = tgroup.tokens
             ttokfeats = tgroup.features
             tpos = tgroup.pos
-            print("Applying trans group {}, tokens {}, pos {}, tokfeats {}".format(tgroup, ttokens, tpos, ttokfeats))
+            # Set this just once; assume it's the same for all translations
+            if not tindices:
+                tindices = range(len(ttokens))
 #            if tfeats and 'align' in tfeats:
-            if 'align' in tfeats:
-                alignment = tfeats['align']
-            else:
-                alignment = superseg.order
+            if not alignment:
+                # Only do this once
+                if 'align' in tfeats:
+                    alignment = tfeats['align']
+                else:
+                    alignment = superseg.order
             if 'agr' in tfeats:
                 agr = dict([a for a in tfeats['agr'] if a])
             else:
                 agr = None
+            print("Applying trans group {}, tokens {}, pos {}, tokfeats {}, alignment {}".format(tgroup, ttokens, tpos, ttokfeats, alignment))
             for tindex, segfeat, (segindex, segment) in zip(alignment, segfeatures, enumerate(superseg.segments)):
                 print(" tindex {}, segindex {}, segment {}".format(tindex, segindex, segment))
                 if tindex < 0:
@@ -529,8 +541,12 @@ class Group(Entry):
                         print("  Dropping segment {}".format(segindex))
                         ordered = True
                     continue
+                ti_covered.append(tindex)
                 segtrans = segment.translation
                 segclean = segment.cleaned_trans
+                if segment.thead is None:
+                    segment.thead = []
+                segthead = segment.thead
                 ttoken = ttokens[tindex]
                 tfeats = ttokfeats[tindex]
                 print("  Current translation {}, cleaned {}".format(segtrans, segclean))
@@ -548,68 +564,38 @@ class Group(Entry):
                     new = [troot, tpos, ufeats]
                     segtrans.append([new])
                     segclean.append([new])
-                    print("   Updating head segment {}, new trans {}".format(segment, new))
+                    segthead.append(new)
+                    print("   Updating head segment {}, new trans {}, cleaned {}".format(segment, new, segclean))
                 else:
-                    segthead = segment.thead
-                    print("   Updating non-head segment {}, head {}, ttokfeats {}".format(segment, segthead, tfeats.__repr__()))
-                    for trans in segment.thead:
-                        # trans should be a [token, pos, feats] list
-                        print("    trans: {}".format(trans))
-                        transfeats = trans[2]
-                        if transfeats and tfeats:
-                            ufeats = transfeats.u(tfeats)
-                        else:
-                            ufeats = transfeats or tfeats
-                        trans[2] = ufeats
-                    print("   Updated: {}".format(segment.thead))
-        if ordered:
-            for deli in to_delete:
-                superseg.order.remove(deli)
-            print("  Updated superseg order {}".format(superseg.order))
-                    
-        # Make source-target features agree
-        # Make target-target features agree
-        # Set order of segments (superseg.order)
-        # Delete segments with no position from superseg.order
-                    
-#        for change in self.agree_changes:
-#            seg1index, seg2index, feat1, feat2 = change
-#            if verbosity:
-#                print("  Must agree {} {} ; {} {}".format(seg1index, seg2index, feat1, feat2))
-#            seg1 = segments[seg1index]
-#            seg2 = segments[seg2index]
-#            segfeats1 = seg1.get_thead_feats()
-#            segfeats2 = seg2.get_thead_feats()
-#            if verbosity:
-#                print("  Seg1 {} feats {}, seg2 {} feats {}".format(seg1, segfeats1, seg2, segfeats2))
-#        if self.targ_feats:
-#            for segindex, addfeats in self.targ_feats:
-#                # Add targfeats to feats in segindex Seg
-#                segment = superseg.segments[segindex]
-#                tfeats = segment.get_thead_feats()
-#                print("Segment {}, thead {}, tfeats {}".format(segment, segment.thead, tfeats))
-#                print("Adding features {} to targ features {}".format(addfeats.__repr__(), tfeats.__repr__()))
-#                for ti, th in enumerate(segment.thead):
-#                    tf = th[2]
-#                    print("th {}".format(th))
-#                    newtf = tf.unify_FS(addfeats)
-#                    if newtf != 'fail':
-#                        th[2] = newtf
-#                print("New thead {}".format(segment.thead))
-#        if self.segment_order:
-#            if verbosity:
-#                print("  Swap {}".format(self.segment_order))
-#            i1, i2 = self.segment_order
+                    print("   Updating non-head segment {}, head {}, ttok {}, ttokfeats {}".format(segment, segthead, ttoken, tfeats.__repr__()))
+                    if not segthead:
+                        if ttoken:
+                            segtrans.append([ttoken])
+                            segclean.append([ttoken])
+                    else:
+                        for trans in segthead:
+                            # trans should be a [token, pos, feats] list
+                            print("    trans: {}".format(trans))
+                            transfeats = trans[2]
+                            if transfeats and tfeats:
+                                ufeats = transfeats.u(tfeats)
+                            else:
+                                ufeats = transfeats or tfeats
+                            trans[2] = ufeats
+                    print("   Updated: {}".format(segthead))
+            print("Done with translation, checking t indices: {}, covered: {}".format(tindices, ti_covered))
+        if alignment:
+            if verbosity:
+                print("  Setting indices {}".format(alignment))
+            superseg.order = alignment[:]
 #            sso = superseg.order
-#            sso[i1], sso[i2] = sso[i2], sso[i1]
 #            to_delete = []
-#            for index in sso:
-#                if index not in self.segment_order:
-#                    to_delete.append(index)
 #            for d in to_delete:
 #                sso.remove(d)
-#            if verbosity:
-#                print("  Indices swapped {}".format(sso))
+#        if ordered:
+#            for deli in to_delete:
+#                superseg.order.remove(deli)
+            print("  Updated superseg order {}".format(superseg.order))
 
     def match_nodes(self, snodes, head_sindex, verbosity=0):
         """Attempt to match the group tokens (and features) with tokens from a sentence,
@@ -1576,11 +1562,12 @@ class MorphoSyn(Entry):
         else:
             sroot, sfeats = sanal
             spos = None
+        stok = sroot.split('_')[0]
         ppos = pfeats.get('pos') if pfeats else None
         if verbosity > 1 or self.debug:
             s = "   Attempting to match pattern forms {} (strict? {}), pos {} and feats {} against sentence item root {}, pos {} and feats {}"
             print(s.format(pforms, strict, ppos, pfeats.__repr__(), sroot, spos, sfeats.__repr__()))
-        if not pforms or any([sroot == f for f in pforms]):
+        if not pforms or any([(sroot == f or stok == f) for f in pforms]):
             if verbosity > 1 or self.debug:
                 print("    Root matched")
                 print("    {} unifying {}/{} and {}/{}".format(self, sroot, sfeats.__repr__(), pforms, pfeats.__repr__()))

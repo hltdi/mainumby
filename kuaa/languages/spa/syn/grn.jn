@@ -4,6 +4,7 @@
 AN :: [pos=a] [pos=n] ; 0=?1 n:n; 0=?1 g:g ; >1 0 ; ^1
 NA :: [pos=n] [pos=a] ; 0=?1 n:n; 0=?1 g:g ; ^0
 QN :: %N [pos=n] ; ^1
+DN :: $dem [pos=n] ; ^1
 NdeN :: [pos=n] de [pos=n] ; ^0 ; >2 0 ; 0[poses=[+ext,pp=3]]
 NyN :: [pos=n] y [pos=n] ; ^0
 # predicatos

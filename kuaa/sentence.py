@@ -724,8 +724,8 @@ class Sentence:
         if spec_found:
             self.tokens = tokens
         # Join other phrases (stored in the tree self.language.join)
-        if self.language.join:
-            joined = Sentence.join_from_tree(self.tokens, self.language.join)
+        if self.language.mwe:
+            joined = Sentence.join_from_tree(self.tokens, self.language.mwe)
             self.tokens = joined
                 
     @staticmethod
@@ -952,6 +952,9 @@ class Sentence:
                     if verbosity:
                         print("  no features for {}, using tagger POS {}".format(word, tag))
                     anal['pos'] = tag
+                    tag1 = tag.split('.')[0]
+#                    print("Adding pos {} to anal {} root {} to {}".format(tag1, anal, anal.get('root'))
+                    anal['root'] = anal['root'] + '_' + tag1
                     results1.append(anal)
                 elif anal_pos:
                     if verbosity:
@@ -1085,6 +1088,7 @@ class Sentence:
             posgroups = self.language.posgroups
             groupgroups = [posgroups[index] for index in constrain_groups] if constrain_groups else posgroups
 #            groups = self.language.posgroups[0] if constrain_groups else self.language.groups
+#            print("Keys for group search {}".format(keys))
             for k in keys:
                 for groups in groupgroups:
                     if k in groups:
@@ -2174,8 +2178,11 @@ class Segmentation:
             else:
                 src_tokens = pre_paren
 #            print("Creating SolSeg with parenthetical {}, source tokens {}, head {}".format(parenthetical, src_tokens, thead))
+            src_nodes = [sentence.get_node_by_raw(index) for index in range(start, end+1)]
+            src_feats = [(s.analyses if s else None) for s in src_nodes]
+#            print("src feats {}".format(src_feats))
             seg = SolSeg(self, raw_indices, forms, src_tokens, treetrans=treetrans,
-                         session=self.session, gname=gname,
+                         session=self.session, gname=gname, sfeats=src_feats[0],
                          tgroups=tgroups, merger_groups=merger_groups, head=thead,
                          has_paren=[pre_paren, paren_record, post_paren] if parenthetical else None,
                          is_paren=late)
@@ -2359,14 +2366,15 @@ class Segmentation:
         # replace the joined segments in the segmentation with the superseg
         self.segments[positions[0]:positions[-1]+1] = [superseg]
 
-    def match_groups(self, groupsid=1, verbosity=1):
+    def match_groups(self, groupsid=1, create_ss=True, verbosity=1):
         """Get candidate matches of groups with segmentation Segs and match them,
         returning matches as list of pairs: (group [position, segment features]).
         """
         cands = self.get_group_cands(groupsid=groupsid, verbosity=verbosity)
-        # Filter candidates here?
         matches = self.match_group_cands(cands, verbosity=verbosity)
-        # And/or filter here?
+        if create_ss:
+            for match in matches:
+                self.match2superseg(match, verbosity=verbosity)
         return matches
 
     def get_group_cands(self, groupsid=1, groups=None, verbosity=1):

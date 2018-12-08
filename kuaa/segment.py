@@ -120,7 +120,12 @@ class Seg:
         self.merger_gnames = None
 
     def get_tokens(self):
-        return self.get_shead_tokens() or self.get_untrans_token() or [self.token_str]
+        toks = self.get_shead_tokens() or self.get_untrans_token() or [self.token_str]
+        to_add = []
+        for tok in toks:
+            if '_' in tok:
+                to_add.append(tok.split('_')[0])
+        return toks + to_add
 
     def get_untrans_token(self):
         """For untranslated segments, return the cleaned string."""
@@ -183,7 +188,7 @@ class Seg:
         is either a FSSet or a string."""
         if isinstance(join_elem, str):
             if verbosity:
-                print("Matching item {} with join elem {}".format(self, join_elem))
+                print("  Matching item {} with join elem {}".format(self, join_elem))
             # Match special type, category, or explicit token
             if '%' in join_elem:
                 # Match special type
@@ -196,6 +201,8 @@ class Seg:
                 return self.scats and join_elem in self.scats
             else:
                 toks = self.get_tokens()
+                if verbosity:
+                    print("    Tokens to match {}".format(toks))
                 return any([join_elem == tok for tok in toks]) and toks
         else:
             feats = self.get_shead_feats()
@@ -618,13 +625,13 @@ class SuperSeg(Seg):
         self.features = features
         self.order = list(range(len(segments)))
         self.head_seg = segments[join.head_index]
+        # This has to happen before head attributes are set
+        self.apply_changes()
         self.shead = self.head_seg.shead
         self.scats = self.head_seg.scats
         self.thead = self.head_seg.thead
         if self.head_seg.special:
             self.special = True
-        self.apply_changes()
-#        self.cleaned_trans = []
         ## Copy properties of sub-SolSegs
         self.record = self.segments[0].record
         raw_tokens = []
@@ -636,11 +643,14 @@ class SuperSeg(Seg):
         self.cleaned_trans = []
         self.tgroups = []
         for i in self.order:
+            if i < 0:
+                continue
             segment = self.segments[i]
-            print("Setting SuperSeg properties, segment {}".format(segment))
+            print("Setting SuperSeg properties, segment {}, current ct {}".format(segment, self.cleaned_trans))
             print(" Segment cleaned_trans: {}".format(segment.cleaned_trans))
             if self.cleaned_trans:
-                self.cleaned_trans = [ct1 + ct2 for ct1 in self.cleaned_trans for ct2 in segment.cleaned_trans]
+                if segment.cleaned_trans:
+                    self.cleaned_trans = [ct1 + ct2 for ct1 in self.cleaned_trans for ct2 in segment.cleaned_trans]
 #                self.cleaned_trans = [[ct1, ct2] for ct1 in self.cleaned_trans for ct2 in segment.cleaned_trans]
             else:
                 self.cleaned_trans = segment.cleaned_trans
@@ -692,7 +702,7 @@ class SolSeg(Seg):
         else:
             self.shead_index = -1
             self.shead = None
-            self.cats = None
+            self.scats = None
         self.treetrans = treetrans
         # Whether morphological generation has applied
 #        if not delay_gen:
@@ -733,7 +743,8 @@ class SolSeg(Seg):
         else:
             self.original_tokens = tokens
         self.original_token_str = ' '.join(self.original_tokens)
-        self.original_token_str = self.original_token_str.replace("←", "")
+        if self.original_token_str[0] == '~':
+            self.original_token_str = self.original_token_str[1:]
         # If there are special tokens in the source language, fix them here.
         if '%' in self.token_str: # or '~' in self.token_str:
 #            print("Handling special item {}, delay_gen {}".format(self.token_str, delay_gen))
@@ -749,9 +760,10 @@ class SolSeg(Seg):
 #                self.translate_special(translation or tokens)
             self.token_str = Seg.clean_spec(self.token_str)
             self.original_token_str = Seg.clean_spec(self.original_token_str)
-        if '~' in self.token_str:
-            self.token_str = self.token_str.replace('~', '')
-            self.original_token_str = self.original_token_str.replace('~', '')
+        if self.original_token_str[0] == '~':
+            self.original_token_str = self.original_token_str[1:]
+        if self.token_str[0] == '~':
+            self.token_str = self.token_str[1:]
         if not self.cleaned_trans:
             self.cleaned_trans = self.translation[:]
         # Join tokens in cleaned translation if necessary
@@ -1011,6 +1023,8 @@ class SNode:
             node_features = analysis.get('features')
             node_cats = analysis.get('cats', [])
             node_root = analysis.get('root', '')
+#            node_pos = analysis.get('pos', '')
+#            node_root_pos = node_root + '_' + node_pos if node_pos else None
             node_roots = None
             if verbosity > 1 or debug:
                 print("    Trying to match analysis: {}/{}/{} against group {}".format(node_root, node_cats, node_features.__repr__(), grp_item))

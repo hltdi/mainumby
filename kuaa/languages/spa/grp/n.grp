@@ -47419,8 +47419,6 @@
 ->grn ñemotĩ_n $v[rel=sjoj] ; || 0, -1, 1 ; 0==0 n:n,poses:poses ; 2==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** vergüenza_n ; ^ vergüenza_n 0
 ->grn ñemotĩ_n ; 0==0 n:n,poses:poses
-** tener_v[-r] vergüenza_n ; ^ vergüenza 1
-->grn tĩ_v[pos=v] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** verificación_n $pp $art que $v[-ipv] ; ^ verificación_n 0 ; (4,-1)
 ->grn ñemoañete_n $v[rel=obl] ; || 0, -1, -1, -1, 1 ; 0==0 n:n,poses:poses ; 4==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,po:po,no:no
 ** verificación_n $pp cual_n $v[-ipv] ; ^ verificación_n 0 ; (3,-1)
