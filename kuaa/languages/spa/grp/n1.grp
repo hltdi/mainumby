@@ -352,8 +352,6 @@
 ** compañero_n ; ^ compañero_n 0 ; #59
 ->grn irũ_n ; 0==0 n:n,poses:poses ; #338 ; ##22
 ->grn mitã_n ; 0==0 n:n,poses:poses ; #830 ; ##2
-** hacer_v[-r] compra_n[n=1] ; ^ compra_n 1
-->grn mba'ejogua_v[pos=v] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** compra_n ; ^ compra_n 0 ; #6
 ->grn mba'ejogua_n ; 0==0 n:n,poses:poses ; #2
 ->grn jejogua_n ; 0==0 n:n,poses:poses ; #3
@@ -623,7 +621,7 @@
 ->grn mba'asy_n ; 0==0 n:n,poses:poses ; #190 ; ##6
 ->grn <hasy_n ; 0==0 n:n,poses:poses ; #321 ; ##12
 ** tener_v[-r] duda_n ; ^ duda_n 1
-->grn kañy_v[pos=v] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn kañy_v[pos=v] ; ^ kañy_v 0 ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** duda_n ; ^ duda_n 0 ; #15
 ->grn moherã_n ; 0==0 n:n,poses:poses
 ->grn py'aheta_n ; 0==0 n:n,poses:poses ; #1
@@ -1032,7 +1030,7 @@
 ->grn mba'ekuéra_n ; 0==0 n:n,poses:poses ; #6
 ->grn <hymba_n ; 0==0 n:n,poses:poses ; #95 ; ##1
 ** tener_v[-r] hambre_n ; ^ hambre_n 1
-->grn ñembyahýi_v[cat=che] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ñembyahýi_v[cat=che] ; ^ ñembyahýi_v 0 ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** hambre_n común ; ^ hambre_n 0 ; #121
 ->grn karu_n aipeve ; 0==0 n:n,poses:poses
 ** hambre_n ; ^ hambre_n 0 ; #121
@@ -2113,7 +2111,7 @@
 ** sueño_n con mucho movimiento ; ^ sueño_n 0 ; #90
 ->grn keravai_n ; 0==0 n:n,poses:poses
 ** tener_v[-r] sueño_n ; ^ sueño_n 1
-->grn ropehýi_v[cat=che] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn ropehýi_v[cat=che] ; ^ ropehýi_v 0 ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** sueño_n florido ; ^ sueño_n 0 ; #90
 ->grn kerayvoty_n ; 0==0 n:n,poses:poses ; #6 ; ##8
 ** sueño_n frustrado ; ^ sueño_n 0 ; #90
@@ -2396,7 +2394,7 @@
 ** casa_n de gobierno ; ^ casa_n 0 ; #1293
 ->grn kuairóga_n ; 0==0 n:n,poses:poses
 ** tener_v[-r] casa_n ; ^ casa_n 1
-->grn <hóga_v[cat=che] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn <hóga_v[cat=che] ; ^ <hóga_v 0 ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** casa_n pequeña ; ^ casa_n 0 ; #1293
 ->grn kope_n ; 0==0 n:n,poses:poses
 ->grn tapỹi_n ; 0==0 n:n,poses:poses
@@ -4635,7 +4633,7 @@
 ** calmante_n ; ^ calmante_n 0
 ->grn mbopytu'uha_n ; 0==0 n:n,poses:poses
 ** tener_v[-r] calor_n ; ^ calor_n 1
-->grn mbyry'ái_v[cat=che] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn mbyry'ái_v[cat=che] ; ^ mbyry'ái_v 0 ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** calor_n interior ; ^ calor_n 0
 ->grn py'araku_n ; 0==0 n:n,poses:poses
 ** calor_n grande ; ^ calor_n 0
@@ -5002,7 +5000,7 @@
 ** carne_n no comestible ; ^ carne_n 0
 ->grn so'o_n ; 0==0 n:n,poses:poses
 ** tener_v[-r] carne_n ; ^ carne_n 1
-->grn so'o_v[cat=che] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn so'o_v[cat=che] ; ^ so'o_v 0 ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** carne_n picada ; ^ carne_n 0
 ->grn vaka'i_n ; 0==0 n:n,poses:poses
 ** carne_n sacada ; ^ carne_n 0
@@ -5959,7 +5957,7 @@
 ->grn mombe'upy_n ; 0==0 n:n,poses:poses ; #6
 ->grn ñemombe'u_n ; 0==0 n:n,poses:poses ; #37
 ** tener_v[-r] confianza_n ; ^ confianza_n 1
-->grn jerovia_v[pos=v] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn jerovia_v[pos=v] ; ^ jerovia_v 0 ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** confianza_n ; ^ confianza_n 0
 ->grn jerovia_n ; 0==0 n:n,poses:poses
 ->grn guata_n jerovia ; 0==0 n:n,poses:poses
@@ -9292,7 +9290,7 @@
 ** himno_n ; ^ himno_n 0
 ->grn momorãhéi_n ; 0==0 n:n,poses:poses
 ** tener_v[-r] hipo_n ; ^ hipo_n 1
-->grn jojói_v[cat=che] ; || 0, -1; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn jojói_v[cat=che] ; ^ jojói_v 0 ; || 0, -1; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** hipo_n ; ^ hipo_n 0
 ->grn jói_n ; 0==0 n:n,poses:poses
 ** hipocresía_n ; ^ hipocresía_n 0
@@ -13109,7 +13107,7 @@
 ** pie_n torcido o deforme ; ^ pie_n 0
 ->grn pychéke_n ; 0==0 n:n,poses:poses
 ** estar_v de pie_n ; ^ pie_n 2
-->grn ñembo'y_v[cat=a] ; || 0, -1, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,grd:grd,rel:rel
+->grn ñembo'y_v[cat=a] ; ^ ñembo'y_v 0 ; || 0, -1, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,grd:grd,rel:rel
 ** pie_n de monte ; ^ pie_n 0
 ->grn ka'aypy_n ; 0==0 n:n,poses:poses
 ** pie_n de página ; ^ pie_n 0
@@ -14897,7 +14895,7 @@
 ** sed_n de algo ; ^ sed_n 0
 ->grn py'ajuhéi_n ; 0==0 n:n,poses:poses
 ** tener_v[-r] sed_n ; ^ sed_n 1
-->grn y'uhéi_v[cat=che] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn y'uhéi_v[cat=che] ; ^ y'uhéi_v 0 ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** sedición_n ; ^ sedición_n 0 ; #2
 ->grn ñepu'ã_n ; 0==0 n:n,poses:poses ; #2
 ->grn churuchuchu_n ; 0==0 n:n,poses:poses ; #1
@@ -15327,9 +15325,9 @@
 ** suero_n ; ^ suero_n 0
 ->grn kambyrypy'a_n rykue ; 0==0 n:n,poses:poses
 ** tener_v[-r] mala suerte_n ; ^ suerte_n 2
-->grn pane_v[cat=che] ; || 0, -1, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn pane_v[cat=che] ; ^ pane_v 0 ; || 0, -1, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** tener_v[-r] suerte ; ^ suerte_n 1
-->grn po'a_v[cat=che] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn po'a_v[cat=che] ; ^ po'a_v 0 ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** suerte_n ; ^ suerte_n 0
 ->grn po'a_n ; 0==0 n:n,poses:poses
 ** sufijo_n ; ^ sufijo_n 0
@@ -15879,7 +15877,7 @@
 ** tos_n convulsa o ferina ; ^ tos_n 0
 ->grn hu'u_n puku ; 0==0 n:n,poses:poses
 ** tener_v[-r] tos_ ; ^ tos_n 1
-->grn hu'u_v[pos=v] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+->grn hu'u_v[pos=v] ; ^ hu'u_v 0 ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** tos_n catarral ; ^ tos_n 0
 ->grn hu'u_n parãrã ; 0==0 n:n,poses:poses
 ** tos_n seca ; ^ tos_n 0

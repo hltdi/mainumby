@@ -91,7 +91,7 @@
 ->grn pyryva_v
 ** alborotador_a ; ^ alborotador_a 0
 ->grn sarambi_n apoha
-** alegre_a[-perm] ; ^ alegre_a 1
+** alegre_a[-perm] ; ^ alegre_a 0
 ->grn vy'a_v[cat=a] ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,grd:grd,rel:rel
 ** alegre_a ; ^ alegre_a 0 ; #26
 ->grn <hory_v ; #76
@@ -1129,7 +1129,6 @@
 ** femenino_a ; ^ femenino_a 0
 ->grn kuña_n rehegua
 ** feo_a ; ^ feo_a 0 ; #5
-->grn mba'evai_v ; #109
 ->grn vai_v ; #284
 ** feroz_a ; ^ feroz_a 0
 ->grn ñarõ_v
@@ -1796,7 +1795,6 @@
 ** malicioso_a ; ^ malicioso_a 0
 ->grn aña_v
 ** malo_a ; ^ malo_a 0 ; #238
-->grn mba'evai_v ; #109
 ->grn vai_v ; #284
 ->grn meĝua_v ; #1
 ->grn aña_v ; #105
@@ -2176,7 +2174,6 @@
 ->grn opytáva_v
 ** pernicioso_a ; ^ pernicioso_a 0 ; #1
 ->grn mbyaiha_v
-->grn mba'evai_v ; #109
 ** perspicaz_a ; ^ perspicaz_a 0
 ->grn <hakua_v
 ** perverso_a ; ^ perverso_a 0
@@ -2533,11 +2530,9 @@
 ->grn ojekuaáva_v
 ** sabio_a ; ^ sabio_a 0 ; #146
 ->grn iñarandúva_v ; #10
-->grn mba'ekuaa_v ; #97
 ->grn mba'ekuaáva_v ; #4
 ->grn arandu_v ; #266
 ** sabroso_a ; ^ sabroso_a 0 ; #3
-->grn mba'ehe_v
 ->grn he_v ; #78
 ** sagaz_a ; ^ sagaz_a 0
 ->grn pohe_v
@@ -2552,8 +2547,6 @@
 ->grn <hesãi_v
 ** sangriento_a ; ^ sangriento_a 0
 ->grn <huguýva_v
-** sanguinario_a ; ^ sanguinario_a 0
-->grn mba'epochy_v
 ** sano_a ; ^ sano_a 0
 ->grn <hesãi_v
 ** santo_a ; ^ santo_a 0
@@ -2749,8 +2742,6 @@
 ->grn ate'ỹ_v
 ** tartamudo_a ; ^ tartamudo_a 0
 ->grn kũmbe_v
-** tembloroso_a ; ^ tembloroso_a 0
-->grn mba'eryrýi_v
 ** temeroso_a ; ^ temeroso_a 0 ; #11
 ->grn py'aju_v
 ->grn py'amirĩ_v ; #4
@@ -2854,7 +2845,6 @@
 ** trigésimo_a ; ^ trigésimo_a 0
 ->grn mbohapypaha_v
 ** triste_a ; ^ triste_a 0 ; #20
-->grn mba'embyasy_v ; #10
 ->grn <hovasy_v ; #10
 ->grn tindy_v ; #1
 ** trémulo_a ; ^ trémulo_a 0

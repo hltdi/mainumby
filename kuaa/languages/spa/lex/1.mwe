@@ -22,6 +22,7 @@ a~base~de, p
 a~cambio~de, p
 a~causa, p
 a~causa~de, p
+por~causa~de, p
 a~comienzos~de, p
 a~consecuencia~de, p
 a~consecuencias~de, p
@@ -90,6 +91,7 @@ del~orden~de, p
 delante~de, p
 dentro~de, p
 detrás~de, p
+atrás~de, p
 en~alusión~a, p
 en~atención~a, p
 en~ausencia~de, p
@@ -456,6 +458,7 @@ por~lo~tanto, r
 por~menos~que, r
 por~otra~parte, r
 por~otro~lado, r
+al~otro~lado~de, p
 por~si~acaso, r
 por~sorpresa, r
 por~supuesto, r
@@ -798,3 +801,6 @@ mucho~más, r
 ojalá~que~no, o
 parece~que, o
 claro~que~sí, o
+igual~a, p
+igual~que, p
+rumbo~a, p

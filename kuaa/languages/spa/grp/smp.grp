@@ -1013,11 +1013,11 @@
 ** como~éstos
 ->grn ãichagua
 ** por~la~mañana
-->grn pyharevekue ; || -1, -1, 0
+->grn pyharevekue
 ** por~la~noche
-->grn pyharekue ; || -1, -1, 0
+->grn pyharekue
 ** por~la~tarde
-->grn ka'arukue ; || -1, -1, 0
+->grn ka'arukue
 ** por~debajo
 ->grn guýre
 ** por~abajo

@@ -138,7 +138,7 @@ NEG_FEATS = re.compile("\s*!(\[.+\])(\(\d-\d\))$")
 FAILIF = re.compile("\s*!(.+)$")
 ## fail if category matches an item that otherwise fails
 #FAILIF_CAT = re.compile("\s*(!\$\w+)$")
-HEAD = re.compile("\s*\^\s*([~<'¿?¡!|\-\w]+)\s+(\d)\s*$")
+HEAD = re.compile("\s*\^\s*([$~<'¿?¡!|\-\w]+)\s+(\d)\s*$")
 # Within agreement spec
 # 1=3 n,p
 WITHIN_AGR = re.compile("\s*(\d)\s*=\s*(\d)\s*(.+)$")
@@ -317,6 +317,8 @@ class Group(Entry):
         # tokens is a list of strings
         # name may be specified explicitly or not
         # head is a string like 'guata' or 'guata_' or 'guata_v'
+        if "rehe|rupi" in tokens:
+            print("rehe group head {}, head_index {}".format(head, head_index))
         if head:
             self.head = head
             root, x, pos = head.partition('_')
@@ -416,6 +418,14 @@ class Group(Entry):
             return 0
         return sum([(len(fs) if fs else 0) for fs in self.features])
 
+    def get_avg_tlength(self):
+        """Mean length of translations."""
+        if self.trans:
+            tsum = sum([len(t.tokens) for t, feats in self.trans])
+            tsum /= len(self.trans)
+            return tsum
+        return 0
+
     # Serialization
 
     def to_dict(self):
@@ -479,7 +489,7 @@ class Group(Entry):
         segindex = startindex
         while matched and patindex < patlength:
             patelem = self.tokens[patindex]
-            patfeats = self.features[patindex]
+            patfeats = self.features[patindex] if self.features else None
             segment = segments[segindex]
             match = segment.match_group_tok(patelem, patfeats, verbosity=verbosity)
             if match:
@@ -493,6 +503,13 @@ class Group(Entry):
         if verbosity:
             print("{} matched segments {} starting from {}".format(self, segments, startindex))
         return self, matches
+
+    @staticmethod
+    def reverse_alignment(alignment, length):
+        """For a sequence of elements x of length length and an alignment associating positions in another sequence
+        y with positions in x, return a reverse alignment. Positions with no associated element in the other sequence
+        are represented by -1."""
+        return [(alignment.index(i) if i in alignment else -1) for i in range(length)]
 
     def apply(self, superseg, verbosity=1):
         """Make changes specified in group to superseg containing segments matching it."""
@@ -513,6 +530,8 @@ class Group(Entry):
         tindices = None
         # Indices of translation aligned with source positions
         alignment = None
+        # Indices of source segments aligned with translation positions
+        rev_alignment = None
         for tgroup, tfeats in translations:
             troot = tgroup.root
             ttokens = tgroup.tokens
@@ -528,17 +547,22 @@ class Group(Entry):
                     alignment = tfeats['align']
                 else:
                     alignment = superseg.order
+            rev_align = Group.reverse_alignment(alignment, len(tgroup.tokens))
             if 'agr' in tfeats:
                 agr = dict([a for a in tfeats['agr'] if a])
             else:
                 agr = None
-            print("Applying trans group {}, tokens {}, pos {}, tokfeats {}, alignment {}".format(tgroup, ttokens, tpos, ttokfeats, alignment))
+            if verbosity:
+                print(" Applying trans group {}, tokens {}, pos {}, tokfeats {}, align {}, rev align {}".format(tgroup, ttokens, tpos, ttokfeats, alignment, rev_align))
+            segorder = 0
             for tindex, segfeat, (segindex, segment) in zip(alignment, segfeatures, enumerate(superseg.segments)):
-                print(" tindex {}, segindex {}, segment {}".format(tindex, segindex, segment))
+                if verbosity:
+                    print("  tindex {}, segindex {}, segment {}".format(tindex, segindex, segment))
                 if tindex < 0:
                     if not ordered:
                         to_delete.append(segindex)
-                        print("  Dropping segment {}".format(segindex))
+                        if verbosity:
+                            print("   Dropping segment {}".format(segindex))
                         ordered = True
                     continue
                 ti_covered.append(tindex)
@@ -548,26 +572,37 @@ class Group(Entry):
                     segment.thead = []
                 segthead = segment.thead
                 ttoken = ttokens[tindex]
-                tfeats = ttokfeats[tindex]
-                print("  Current translation {}, cleaned {}".format(segtrans, segclean))
-                print("  Current features {}".format(segfeat.__repr__()))
+                tfeats = ttokfeats[tindex] if ttokfeats else None
+                if verbosity:
+                    print("    Current ttoken {}, tfeats {}".format(ttoken, tfeats))
+#                print("  Current translation {}, cleaned {}".format(segtrans, segclean))
+#                print("  Current features {}".format(segfeat.__repr__()))
                 if segindex == hindex:
+#                    if verbosity:
+#                        print("   Updating head segment {}, thead {}, troot {}, tpos {}".format(segment, segthead, troot, tpos))
                     agr1 = agr.get(segindex) if agr else None
                     if agr1:
-                        print("   Making head features agree with group features")
+#                        print("   Making head features agree with group features")
                         ufeats = segfeat.agree_FSS(tfeats, agr1)
                     elif tfeats and segfeat:
                         ufeats = segfeat.u(tfeats)
                     else:
                         ufeats = segfeat or tfeats
                     # Use the root (token without _pos)
-                    new = [troot, tpos, ufeats]
-                    segtrans.append([new])
-                    segclean.append([new])
-                    segthead.append(new)
-                    print("   Updating head segment {}, new trans {}, cleaned {}".format(segment, new, segclean))
+                    if not segthead:
+                        segtrans.append([ttoken])
+                        segclean.append([ttoken])
+                        segthead.append(ttoken)
+                    else:
+                        new = [troot, tpos, ufeats]
+                        segtrans.append([new])
+                        segclean.append([new])
+                        segthead.append(new)
+                    if verbosity:
+                        print("   Updating head segment {}, cleaned {}".format(segment, segclean))
                 else:
-                    print("   Updating non-head segment {}, head {}, ttok {}, ttokfeats {}".format(segment, segthead, ttoken, tfeats.__repr__()))
+                    if verbosity:
+                        print("   Updating non-head segment {}, head {}, ttok {}, ttokfeats {}".format(segment, segthead, ttoken, tfeats.__repr__()))
                     if not segthead:
                         if ttoken:
                             segtrans.append([ttoken])
@@ -575,27 +610,22 @@ class Group(Entry):
                     else:
                         for trans in segthead:
                             # trans should be a [token, pos, feats] list
-                            print("    trans: {}".format(trans))
+#                            print("    trans: {}".format(trans))
                             transfeats = trans[2]
                             if transfeats and tfeats:
                                 ufeats = transfeats.u(tfeats)
                             else:
                                 ufeats = transfeats or tfeats
                             trans[2] = ufeats
-                    print("   Updated: {}".format(segthead))
-            print("Done with translation, checking t indices: {}, covered: {}".format(tindices, ti_covered))
+                    if verbosity:
+                        print("   Updated: {}".format(segthead))
+#            print("Done with translation, checking t indices: {}, covered: {}".format(tindices, ti_covered))
         if alignment:
+#            if verbosity:
+#                print("  Setting indices {}".format(alignment))
+            superseg.order = rev_align
             if verbosity:
-                print("  Setting indices {}".format(alignment))
-            superseg.order = alignment[:]
-#            sso = superseg.order
-#            to_delete = []
-#            for d in to_delete:
-#                sso.remove(d)
-#        if ordered:
-#            for deli in to_delete:
-#                superseg.order.remove(deli)
-            print("  Updated superseg order {}".format(superseg.order))
+                print("  Updated superseg order {}".format(superseg.order))
 
     def match_nodes(self, snodes, head_sindex, verbosity=0):
         """Attempt to match the group tokens (and features) with tokens from a sentence,
@@ -766,7 +796,7 @@ class Group(Entry):
 
     @staticmethod
     def from_string(string, language, trans_strings=None, target=None, trans=False, n_src_tokens=1,
-                    tstrings=None, cat='', posindex=0):
+                    tstrings=None, cat='', posindex=0, shead_index=0):
         """Convert a group string and (if trans is False) possibly a set of translation group strings
         to one or more groups. [trans=True means this is for a target-language Group.]"""
 #        print("Creating group from {} and trans strings {} [trans={}]".format(string, trans_strings, trans))
@@ -860,6 +890,11 @@ class Group(Entry):
                     align = match.groups()[0]
                     for index in align.split(WITHIN_ATTRIB_SEP):
                         alignment.append(int(index))
+                    # use the alignment to set the trans group's head index from the source index
+                    if head_index < 0:
+                        head_index = alignment[shead_index]
+                        if head_index < 0 or 'rehe|rupi' in tokens:
+                            print("Set head index for {} to {} using alignment {} and shead index {}".format(tokens, head_index, alignment, shead_index))
                     continue
                 match = TRANS_COUNT.match(attrib)
                 if match:
@@ -911,14 +946,19 @@ class Group(Entry):
                     head_index = index
                     head = tok
         if not head:
-            # Still no head found; it's just the first token
-            head = tokens[0]
-            head_index = 0
+            if head_index >= 0:
+                head = tokens[head_index]
+            else:
+                # Still no head found; it's just the first token
+                head = tokens[0]
+                head_index = 0
         tgroups = None
         if target and trans_strings:
+            # Create target (translation) groups
             tgroups = []
             for tstring in trans_strings:
                 tgroup, tagr, alg, tc = Group.from_string(tstring, target, trans_strings=None, trans=True,
+                                                          shead_index=head_index,
                                                           n_src_tokens=len(realtokens))
                 tattribs = {'agr': tagr}
                 if alg:
@@ -930,12 +970,16 @@ class Group(Entry):
         # if so, use it
         gname = Group.make_name(name_toks)
         existing_group = language.get_group(gname, key=head, posindex=posindex)
+        if "rehe|rupi" in realtokens:
+            print("About to create rehe group with head {} and head_index {}".format(head, head_index))
         g = existing_group or Group(realtokens, head_index=head_index, head=head, features=features, agr=within_agrs,
                                     failif=failif, name=gname, count=count, string=string,
                                     trans_strings=tstrings, cat=cat, comment=comment, intervening=intervening)
         if target and not trans:
+            # Add translation to source group
             g.trans = tgroups
         if not existing_group:
+            # Add group to its language in the appropriate POS groups
             language.add_group(g, posindex=posindex, cat=cat)
         return g, trans_agrs, alignment, trans_count
 

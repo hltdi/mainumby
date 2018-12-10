@@ -131,7 +131,7 @@ cambio || cambio:[g=m,n=0,pos=n];;cambiar:[pos=v,+fin,p=1,n=0,tm=prs]
 camino || camino:[g=m,n=0,pos=n];;caminar:[pos=v,+fin,p=1,n=0,tm=prs]
 capa || capa:[g=f,n=0,pos=n];;capar:[pos=v,+fin,p=3,n=0,tm=prs]
 captura || captura:[g=f,n=0,pos=n];;capturar:[pos=v,+fin,p=3,n=0,tm=prs]
-cara || cara:[g=m,n=0,pos=n];;caro:[g=f,n=0,pos=a]
+cara || cara:[g=f,n=0,pos=n];;caro:[g=f,n=0,pos=a]
 caras || cara:[g=m,n=1,pos=n];;caro:[g=f,n=1,pos=a]
 carga || carga:[g=f,n=0,pos=n];;cargar:[pos=v,+fin,p=3,n=0,tm=prs]
 cargo || cargo:[g=m,n=0,pos=n];;cargar:[pos=v,+fin,p=1,n=0,tm=prs]
@@ -1091,7 +1091,7 @@ maestra || maestra:[g=f,n=0,pos=n]
 el || el:
 documento || documento:[g=m,n=0,pos=n]
 le || le:
-ayer || ayer:[g=m,n=0,pos=n]
+ayer || ayer:[pos=adv];;ayer:[g=m,n=0,pos=n]
 compartí || compartir:[+fin,n=0,p=1,pos=v,tm=prt];;compartir:[+fin,n=0,p=2,pos=v,tm=ipv]
 escribió || escribir:[+fin,n=0,p=3,pos=v,tm=prt]
 les || les:

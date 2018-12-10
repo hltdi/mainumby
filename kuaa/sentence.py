@@ -451,7 +451,7 @@ class Document(list):
                                           target=target_language,
                                           session=self.session))
 
-    def initialize(self, constrain_groups=False, verbose=False):
+    def initialize(self, constrain_groups=True, verbose=False):
         """Initialize all the sentences in the document. If biling, initialize in both languges."""
         print("Iniciando oraciones en documento")
         print("  Oraciones fuente ...", end='')
@@ -821,7 +821,7 @@ class Sentence:
             self.segment(token, index)
         self.clean()
 
-    def initialize(self, ambig=True, constrain_groups=False, verbosity=0, terse=False):
+    def initialize(self, ambig=True, constrain_groups=True, verbosity=0, terse=False):
         """Things to do before running constraint satisfaction."""
         if verbosity:
             print("Initializing {}".format(self))
@@ -1086,7 +1086,7 @@ class Sentence:
             # Use group groupings specified in constrain_groups (False or a list of ints) or
             # all groupings
             posgroups = self.language.posgroups
-            groupgroups = [posgroups[index] for index in constrain_groups] if constrain_groups else posgroups
+            groupgroups = [posgroups[0]] if constrain_groups else posgroups
 #            groups = self.language.posgroups[0] if constrain_groups else self.language.groups
 #            print("Keys for group search {}".format(keys))
             for k in keys:
@@ -2061,7 +2061,7 @@ class Segmentation:
                 # empty sentence final token
                 continue
             if MorphoSyn.del_token(stok):
-                print("Deleted token {}".format(stok))
+#                print("Deleted token {}".format(stok))
                 stoks.append(stok)
                 sfeatures.append(sfeats)
                 included_tokens.append(stok)
@@ -2360,7 +2360,7 @@ class Segmentation:
         segs = [s[1] for s in seglist]
         positions = [s[0] for s in seglist]
         features = [s[2] for s in seglist]
-        superseg = SuperSeg(self, segs, features=features, join=join)
+        superseg = SuperSeg(self, segs, features=features, join=join, verbosity=verbosity)
         if verbosity:
             print("CREATING SUPERSEG FOR {} AND {} in positions {}".format(segs, join, positions))
         # replace the joined segments in the segmentation with the superseg
@@ -2413,17 +2413,21 @@ class Segmentation:
                 for overlap in overlaps:
                     for i, m in overlap:
                         if indices & i:
-                            overlap.append((indices, matches1))
+                            if (indices, matches1) not in overlap:
+                                overlap.append((indices, matches1))
                             lapped = True
                             break
                 if not lapped:
-                    overlaps.append([(indices, matches)])
+                    overlaps.append([(indices, matches1)])
 #        print("Cands1 {}".format(matches))
 #        print("overlaps {}".format(overlaps))
         for overlap in overlaps:
-            # Sort overlaps by length of group/match
-            overlap.sort(key=lambda x: len(x[0]), reverse=True)
-            # We have to pick one of each of these; for now just the longest one
+            if verbosity:
+                print("Filtering overlap group: {}".format(overlap))
+            # Sort overlaps by length of group/match - average length of translations
+            overlap.sort(key=lambda x: len(x[0]) - x[1][0].get_avg_tlength(), reverse=True)
+            # We have to pick one of each of these; for now just the longest one, adjusted
+            # by the average length of translations (preferring shorter translations)
             for indices, matches1 in overlap[1:]:
                 matches.remove(matches1)
 #        print("Cands2 {}".format(matches))

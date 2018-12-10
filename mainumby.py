@@ -52,7 +52,7 @@ import kuaa
 ## Creación (y opcionalmente traducción) de oración simple y de documento.
 ## Por defecto, las palabras en segmentos no se generan morfológicamente.
 def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
-        single=False, translate=True, constrain_groups=False, generate=False,
+        single=False, translate=True, constrain_groups=True, generate=False,
         verbosity=0):
     e, g = cargar()
     session = kuaa.start(e, g, user, create_memory=single)
@@ -82,6 +82,13 @@ def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
 def ora1(sentence):
     """A sentence prior to segmentation and translation."""
     return ora(sentence, solve=False, segment=False, single=True, translate=False)
+
+## Oraciones para evalucación
+
+oraciones = \
+          ["Los pasajeros se murieron ayer.",
+           "Me acordé de ese hombre feo.",
+           "La profesora encontró a su marido en la calle."]
 
 ## Aprendizaje de nuevos grupos
 

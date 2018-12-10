@@ -1,6 +1,7 @@
 ## unidades sintácticas al nivel de la oración
 # nominales 1
 >> nom1
+AyA :: [pos=a] y [pos=a] ; ^0
 AN :: [pos=a] [pos=n] ; 0=?1 n:n; 0=?1 g:g ; >1 0 ; ^1
 NA :: [pos=n] [pos=a] ; 0=?1 n:n; 0=?1 g:g ; ^0
 QN :: %N [pos=n] ; ^1
@@ -11,7 +12,10 @@ NyN :: [pos=n] y [pos=n] ; ^0
 >> pred1
 VaO :: $vt a ; ^0 ; 0[-ojxpl]
 VO :: $vt [pos=n] ; ^0 ; 0[-ojxpl]
+AdvV :: $adv [pos=v] ; ^1
+VAdv :: [pos=v] $adv ; ^0
 # sujeto - verbo
+>> sujpred
 SV :: [pos=n] [pos=v] ; 0=?1 n:n ; 0=!1 n:ns ; ^1
 S[C]V :: %C [pos=v,n=0] ; ^1
 # nominales 2

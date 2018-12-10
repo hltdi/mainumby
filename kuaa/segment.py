@@ -201,7 +201,7 @@ class Seg:
                 return self.scats and join_elem in self.scats
             else:
                 toks = self.get_tokens()
-                if verbosity:
+                if verbosity > 1:
                     print("    Tokens to match {}".format(toks))
                 return any([join_elem == tok for tok in toks]) and toks
         else:
@@ -283,8 +283,8 @@ class Seg:
 #                cleaned_trans.append(cleaned1)
 #                continue
             for item in translation:
-#                if verbosity:
-                print("   Generating {}".format(item))
+                if verbosity:
+                    print("   Generating {}".format(item))
                 if Entry.is_special(item):
                     spec_trans = self.source.translate_special(item)
                     if spec_trans:
@@ -616,7 +616,7 @@ class SuperSeg(Seg):
     """SuperSegment: joins SolSeg instances into larger units, either via a Join rule
     or a Group."""
 
-    def __init__(self, segmentation, segments=None, features=None, name=None, join=None):
+    def __init__(self, segmentation, segments=None, features=None, name=None, join=None, verbosity=0):
         Seg.__init__(self, segmentation)
         self.segments = segments
         self.name = name
@@ -626,7 +626,7 @@ class SuperSeg(Seg):
         self.order = list(range(len(segments)))
         self.head_seg = segments[join.head_index]
         # This has to happen before head attributes are set
-        self.apply_changes()
+        self.apply_changes(verbosity=verbosity)
         self.shead = self.head_seg.shead
         self.scats = self.head_seg.scats
         self.thead = self.head_seg.thead
@@ -644,10 +644,12 @@ class SuperSeg(Seg):
         self.tgroups = []
         for i in self.order:
             if i < 0:
+                # This represents a target token with no corresponding source token
                 continue
             segment = self.segments[i]
-            print("Setting SuperSeg properties, segment {}, current ct {}".format(segment, self.cleaned_trans))
-            print(" Segment cleaned_trans: {}".format(segment.cleaned_trans))
+            if verbosity:
+                print("Setting SuperSeg properties, segment {}, current ct {}".format(segment, self.cleaned_trans))
+                print(" Segment cleaned_trans: {}".format(segment.cleaned_trans))
             if self.cleaned_trans:
                 if segment.cleaned_trans:
                     self.cleaned_trans = [ct1 + ct2 for ct1 in self.cleaned_trans for ct2 in segment.cleaned_trans]
@@ -692,9 +694,9 @@ class SolSeg(Seg):
                  spec_indices=None, session=None, gname=None, is_punc=False):
 #        print("Creating SolSeg for indices {}, translation {}, head {}, sfeats {}".format(indices, translation, head, sfeats))
         Seg.__init__(self, segmentation)
-        if head:
-            self.shead_index, self.shead, self.scats = head
-        elif sfeats:
+#        if head:
+#            self.shead_index, self.shead, self.scats = head
+        if sfeats:
             sfeat_dict = sfeats[0]
             self.shead_index = 0
             self.shead = [(sfeat_dict.get('root'), sfeat_dict.get('features'))]

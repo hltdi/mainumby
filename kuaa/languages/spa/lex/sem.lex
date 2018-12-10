@@ -1560,6 +1560,7 @@ avío_n $n
 axila_n $n
 axioma_n $n
 ayer_n $n
+ayer_adv $adv
 ayuda_n $n
 ayudante_n $n,$nprs
 ayudar_v $v,$vt
