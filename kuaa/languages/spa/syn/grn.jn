@@ -10,12 +10,13 @@ NdeN :: [pos=n] de [pos=n] ; ^0 ; >2 0 ; 0[poses=[+ext,pp=3]]
 NyN :: [pos=n] y [pos=n] ; ^0
 # predicatos
 >> pred1
-VaO :: $vt a ; ^0 ; 0[-ojxpl]
+VaN :: $vt a [pos=n] ; ^0 ; 0[-ojxpl] ; 2[caso=pe]
 VO :: $vt [pos=n] ; ^0 ; 0[-ojxpl]
 AdvV :: $adv [pos=v] ; ^1
 VAdv :: [pos=v] $adv ; ^0
 # sujeto - verbo
 >> sujpred
+VP :: [pos=v] $pp
 SV :: [pos=n] [pos=v] ; 0=?1 n:n ; 0=!1 n:ns ; ^1
 S[C]V :: %C [pos=v,n=0] ; ^1
 # nominales 2

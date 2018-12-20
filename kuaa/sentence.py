@@ -1087,7 +1087,6 @@ class Sentence:
             # all groupings
             posgroups = self.language.posgroups
             groupgroups = [posgroups[0]] if constrain_groups else posgroups
-#            groups = self.language.posgroups[0] if constrain_groups else self.language.groups
 #            print("Keys for group search {}".format(keys))
             for k in keys:
                 for groups in groupgroups:
@@ -1111,6 +1110,9 @@ class Sentence:
         cat_groups = []
         # Rejected category groups
         rejected = []
+        # Keep track of unambiguous groups associated with source ambiguous groups already included
+        # so they can be avoided
+        sambig_assocs = []
         for head_i, key, group in candidates:
             # Check whether there is already a match for this position, key, and group length
             # LATER HAVE A BETTER WAY OF CHOOSING A MATCH
@@ -1144,6 +1146,11 @@ class Sentence:
                 cat_groups.append((group, cat_snodes))
             # All candidate groups
             filtered1.append((group, head_i, snodes))
+            # If the new filtered group is source ambiguous (like ir|ser_v), add
+            # associated unambiguous groups to sambig_assocs.
+            if group.is_sambig():
+                sambig_assocs1 = self.language.sambig_groups[group]
+                sambig_assocs.extend(sambig_assocs1)
         if cat_groups:
             for cat_group, cat_snodes in cat_groups:
                 for cat_snode in cat_snodes:
@@ -1152,8 +1159,9 @@ class Sentence:
                         rejected.append(cat_group)
                         break
         for (group, head_i, snodes) in filtered1:
-            if group in rejected:
+            if group in rejected or group in sambig_assocs:
                 # This group was rejected because there was no match for its category token(s)
+                # or it was an unambigous associate of a source ambiguous group
                 continue
             # Create a GInst object and GNodes for each surviving group
             self.groups.append(GInst(group, self, head_i, snodes, group_index))

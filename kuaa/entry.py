@@ -311,14 +311,12 @@ class Group(Entry):
     other languages."""
 
     def __init__(self, tokens, head_index=-1, head='', language=None, name='',
-                 features=None, agr=None, trans=None, count=0, failif=None,
+                 features=None, agr=None, trans=None, count=0, failif=None, posindex=0,
                  string=None, trans_strings=None, cat='', comment='', intervening=None):
         """Either head_index or head (a string) must be specified."""
         # tokens is a list of strings
         # name may be specified explicitly or not
         # head is a string like 'guata' or 'guata_' or 'guata_v'
-        if "rehe|rupi" in tokens:
-            print("rehe group head {}, head_index {}".format(head, head_index))
         if head:
             self.head = head
             root, x, pos = head.partition('_')
@@ -336,9 +334,11 @@ class Group(Entry):
             self.head = tokens[head_index]
             self.head_index = head_index
             self.root = self.head
-            
+
         name = name or Group.make_name(tokens)
         Entry.__init__(self, name, language, trans=trans, comment=comment)
+        # Index of the POS group grouping that this group is part of
+        self.posindex = posindex
         # POS, 'misc', or other
         self.cat = cat
         # The string in a .grp file encoding this Group
@@ -396,6 +396,7 @@ class Group(Entry):
             string += "++{}".format(Group.make_node_name(groups[1][0], groups[1][1]))
         return string
 
+    @staticmethod
     def make_node_name(group, index):
         """Create a string name for a group node, given group name and index."""
         return "{}:{}".format(group.name, index)
@@ -405,6 +406,26 @@ class Group(Entry):
         Groups with more tokens and more features have priority."""
         featscore = .3 * sum([len(f) for f in self.features if f]) if self.features else 0.0
         return len(self.tokens) + featscore
+
+    ## Ambiguity
+
+    # Source ambiguity
+
+    def is_sambig(self):
+        """Is this a 'source ambiguous' group, like ir|ser_v?"""
+        return '|' in self.root
+
+    def match_non_head(self, group):
+        """Do the tokens in self match group's tokens, except for the head."""
+        if len(self.tokens) != len(group.tokens):
+            return False
+        head = self.head
+        for selftok, selffeats, othertok, otherfeats in zip(self.tokens, self.features, group.tokens, group.features):
+            if selffeats != otherfeats:
+                return False
+            if selftok != head and selftok != othertok:
+                return False
+        return True
 
     # Group properties
 
@@ -893,7 +914,7 @@ class Group(Entry):
                     # use the alignment to set the trans group's head index from the source index
                     if head_index < 0:
                         head_index = alignment[shead_index]
-                        if head_index < 0 or 'rehe|rupi' in tokens:
+                        if head_index < 0:
                             print("Set head index for {} to {} using alignment {} and shead index {}".format(tokens, head_index, alignment, shead_index))
                     continue
                 match = TRANS_COUNT.match(attrib)
@@ -970,10 +991,8 @@ class Group(Entry):
         # if so, use it
         gname = Group.make_name(name_toks)
         existing_group = language.get_group(gname, key=head, posindex=posindex)
-        if "rehe|rupi" in realtokens:
-            print("About to create rehe group with head {} and head_index {}".format(head, head_index))
         g = existing_group or Group(realtokens, head_index=head_index, head=head, features=features, agr=within_agrs,
-                                    failif=failif, name=gname, count=count, string=string,
+                                    failif=failif, name=gname, count=count, string=string, posindex=posindex,
                                     trans_strings=tstrings, cat=cat, comment=comment, intervening=intervening)
         if target and not trans:
             # Add translation to source group

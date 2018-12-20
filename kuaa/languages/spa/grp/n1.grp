@@ -1119,24 +1119,14 @@
 ->grn mombe'upy_n ; 0==0 n:n,poses:poses ; #6
 ->grn káso_n ; 0==0 n:n,poses:poses ; #30
 ->grn morangu_n ; 0==0 n:n,poses:poses ; #5
-** hombre_n del bosque no civilizado ; ^ hombre_n 0 ; #1755
-->grn ava_n ka'aguy ; 0==0 n:n,poses:poses ; #612 ; ##79
 ** hombre_n de conducta sosegada ; ^ hombre_n 0 ; #1755
 ->grn karai_n guasu ; 0==0 n:n,poses:poses
 ** hombre_n de la guerra ; ^ hombre_n 0 ; #1755
 ->grn avarini_n ; 0==0 n:n,poses:poses
-** hombre_n de piel blanca ; ^ hombre_n 0 ; #1755
-->grn piretĩ_n ; 0==0 n:n,poses:poses
 ** hombre_n de gran poder ; ^ hombre_n 0 ; #1755
 ->grn karai_n guasu ; 0==0 n:n,poses:poses
-** hombre_n grosero y vulgar ; ^ hombre_n 0 ; #1755
-->grn ava_n kachiãi ; 0==0 n:n,poses:poses ; #612 ; ##79
 ** hombre_n del campo ; ^ hombre_n 0 ; #1755
 ->grn okaragua_n ; 0==0 n:n,poses:poses
-** hombre_n sin ventura ; ^ hombre_n 0 ; #1755
-->grn avapane_n ; 0==0 n:n,poses:poses
-** perteneciente al hombre_n ; ^ hombre_n 2
-->grn kuimba'e_n rehegua ; 0==0 n:n,poses:poses ; #556 ; ##529
 ** hombre_n íntegro ; ^ hombre_n 0 ; #1755
 ->grn avaite_n ; 0==0 n:n,poses:poses
 ** hombre_n principal ; ^ hombre_n 0 ; #1755
@@ -1164,8 +1154,6 @@
 ->grn avaey_n ; 0==0 n:n,poses:poses
 ** hombre_n ; ^ hombre_n 0 ; #1755
 ->grn kuimba'e_n ; 0==0 n:n,poses:poses ; #556 ; ##529
-->grn yvypóra_n ; 0==0 n:n,poses:poses ; #167 ; ##333
-->grn ava_n ; 0==0 n:n,poses:poses ; #612 ; ##79
 ** horizonte_n ; ^ horizonte_n 0 ; #1
 ->grn ararapo_n ; 0==0 n:n,poses:poses ; #1
 ->grn arapaha_n ; 0==0 n:n,poses:poses ; #3

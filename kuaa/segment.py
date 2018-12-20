@@ -1055,13 +1055,19 @@ class SNode:
             else:
                 # Not a category, has to match the root
                 if node_roots:
+                    if verbosity > 1 or debug:
+                        print("      Checking node roots {}".format(node_roots))
                     m = firsttrue(lambda x: x == grp_item, node_roots)
                     if m:
                         node_root = m
-                    else:
+                    elif grp_item != node_root:
                         continue
+#                    else:
+#                        continue
                 elif grp_item != node_root:
                     continue
+            if verbosity > 1 or debug:
+                print("      Matched token")
             # Match features if there are any
             if node_features:
                 if grp_feats:

@@ -203,6 +203,9 @@ class Language:
         # Groups organized by POS or other categories
         self.grouppos = grouppos
         self.posgroups = [{} for g in range(len(grouppos))] if grouppos else [{}]
+        # Source-ambiguous groups (like ir|ser in Spanish), with associated unambiguous groups
+        # (like ser and ir).
+        self.sambig_groups = {}
         # A dictionary of group attribute defaults for different head categories
         self.group_defaults = {}
         # Dictionary of roots/stems/tokens to group keys, e.g., 'drop': ['drop_n', 'drop_v']
@@ -1645,9 +1648,9 @@ class Language:
         with open(path, 'w', encoding='utf8') as file:
             yaml.dump(self.to_dict(), file)
 
-    def read_group(self, gfile, gname=None, target=None,
-                   source_groups=None, target_groups=None, target_abbrev=None,
-                   grouppos=None, posindex=0, verbosity=0):
+    def read_posgroup(self, gfile, gname=None, target=None,
+                      source_groups=None, target_groups=None, target_abbrev=None,
+                      grouppos=None, posindex=0, verbosity=0):
         """Read in a single group type from a file with path gfile and name gname."""
         with open(gfile, encoding='utf8') as file:
             gname = gname or gfile.rpartition('/')[-1].split('.')[0]
@@ -1724,7 +1727,7 @@ class Language:
 #        print("Name/group paths {}".format(groupfiles))
         for name, gfile in self.get_group_files(posnames):
             posindex = firstindex(lambda x: name in x, self.grouppos) if self.grouppos else 0
-            self.read_group(gfile, gname=name, target=target, source_groups=source_groups,
+            self.read_posgroup(gfile, gname=name, target=target, source_groups=source_groups,
                             target_groups=target_groups, target_abbrev=target_abbrev,
                             verbosity=verbosity, posindex=posindex)
 
@@ -1733,6 +1736,9 @@ class Language:
             for key, groups1 in groups.items():
                 if len(groups1) > 1:
                     groups1.sort(key=lambda g: g.priority(), reverse=True)
+
+        # Add unambiguous groups to related source ambiguous groups
+        self.update_sambig_groups()
 
     def write_group_defaults(self, cat, stream):
         """Write the group defaults for category cat to stream."""
@@ -2059,16 +2065,27 @@ class Language:
             groups[head].append(group)
         else:
             groups[head] = [group]
-#        if cat:
-#            if cat in self.posgroups:
-#                groups = self.posgroups[cat]
-#                if head in groups:
-#                    groups[head].append(group)
-#                else:
-#                    groups[head] = [group]
-#            else:
-#                self.posgroups[cat] = {head: [group]}
+        # Create entry for source ambiguous groups
+        if group.is_sambig():
+            self.sambig_groups[group] = []
         self.changed = True
+
+    def update_sambig_groups(self):
+        """Once groups have been created, add related unambiguous groups for
+        each source ambiguous group, for example ir_v and ser_v for ir|ser_v."""
+        for sambig, unambig in self.sambig_groups.items():
+            root = sambig.root
+            pos = sambig.pos
+            posindex = sambig.posindex
+            if root and pos:
+                roots = root.split('|')
+                heads = [r + "_" + pos for r in roots]
+                for head in heads:
+                    groups = self.posgroups[posindex].get(head)
+                    if groups:
+                        match = firsttrue(lambda g: sambig.match_non_head(g), groups)
+                        if match:
+                            unambig.append(match)
 
     ### Generation of word forms
 
