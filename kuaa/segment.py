@@ -146,7 +146,16 @@ class Seg:
 
     def get_shead_pos(self):
         if self.shead:
-            return [f.get('pos') for f in self.get_shead_feats()]
+            pos = []
+            for h, f in self.shead:
+                if f:
+                    pos.append(f.get('pos'))
+                elif '_' in nh:
+                    pos.append(h.split('_')[-1])
+                else:
+                    pos.append(None)
+            return pos
+#            return [f.get('pos') for f in self.get_shead_feats()]
 
     def get_thead_roots(self):
         if not self.generated:

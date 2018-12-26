@@ -1294,7 +1294,7 @@ class Sentence:
                 if translate and self.target:
                     # Translating
                     translated = segmentation.translate(verbosity=verbosity,
-                                                    all_trans=all_trans, interactive=interactive)
+                                                        all_trans=all_trans, interactive=interactive)
                     if not translated:
                         print("Translation failed; trying next segmentation!")
                         continue
@@ -1497,6 +1497,8 @@ class Sentence:
         Variables are independent in determining score: change in variable value is added or subtracted to
         previous (parent) score; that is, there are no interactions among the variables in determining the score.
         If parent value and variable/value are given, just update on the basis of the variable.
+        2018.12.25: Added preference for groups with longer head names (e.g., mbo'ehára over mbo'e). Normalization
+        factor (.04) is totally arbitary.
         """
         score = 0.0
         if par_val and var_value:
@@ -1511,6 +1513,9 @@ class Sentence:
                 # Subtract the number of gnodes in the group that is the single member of the value set
                 group = self.groups[list(value)[0]]
                 score -= (group.ngnodes - 1) / 2.0
+                # Prefer groups with longer heads
+                head_length = len(group.head.gtoken)/25.0
+                score -= head_length
             elif typ == 'covered_snodes':
                 score -= 1
             elif typ == 'sn->gn':
@@ -1725,7 +1730,7 @@ class Sentence:
         trees = [x[1][2] for x in trees]
         # Get the indices of the GNodes for each SNode
         segmentation = Segmentation(self, ginsts, s2gnodes, len(self.segmentations),
-                            trees=trees, dstore=dstore, session=self.session)
+                                    trees=trees, dstore=dstore, session=self.session)
         return segmentation
 
     ### Various ways of displaying translation outputs.
@@ -1808,6 +1813,20 @@ class Sentence:
             return '|'.join([t.capitalize() for t in token.split('|')])
         return token.capitalize()
 
+    ## Analyzing the sentence without creating segments
+    def analyze(self, translate=True, verbosity=0):
+        """Analyze the sentence without creating Segs (or TreeTrans instances).
+        Match all Groups simultaneously, and do not apply any Joins.
+        Useful for bitext corpus processing."""
+        if verbosity:
+            print("Analizando {}".format(self))
+        self.initialize(ambig=False, constrain_groups=False, verbosity=verbosity)
+        self.solve(all_sols=False, translate=False, verbosity=verbosity)
+        if self.segmentations:
+            segmentation = self.segmentations[0]
+            segmentation.make_pseudosegs(translate=translate, verbosity=verbosity)
+            return segmentation
+
 class Segmentation:
     
     """A non-conflicting set of groups for a sentence, at most one instance
@@ -1840,6 +1859,8 @@ class Segmentation:
         self.segments = []
         # Current session (need for creating SegRecord objects)
         self.session = session
+        # Properties of selected groups, simpler than actual Segs
+        self.pseudosegs = None
         print("SEGMENTACIÓN CREADA con dstore {} y ginsts {}".format(dstore, ginsts))
 
     def __repr__(self):
@@ -2282,9 +2303,26 @@ class Segmentation:
 #                print("Initial trans for seg {}: {}".format(i, s[4]))
         return segments
 
+    ## Pseudosegs: simpler alternative to Segs
+
+    def make_pseudosegs(self, translate=True, verbosity=0):
+        """Create pseudoseg list from ginsts."""
+        if verbosity:
+            print(" Creando pseudosegmentos para {}".format(self))
+        self.pseudosegs = []
+        for ginst in self.ginsts:
+            if translate:
+                ginst.set_translations()
+                transgroups = [t[0] for t in ginst.translations]
+                transprops = [(g.head, g.features[g.head_index] if g.features else None) for g in transgroups]
+            else:
+                transprops = None
+            gh = ginst.head
+            self.pseudosegs.append((gh.gtoken, gh.features, transprops))
+
     ## Generation, joining, group matching following initial segmentation
 
-    def join(self, iters=3, joingroups=None, makesuper=True, generate=False, verbosity=1):
+    def join(self, iters=3, joingroupings=None, makesuper=True, generate=False, verbosity=1):
         """Iteratively match Join instances where possible, create supersegs for matches,
         and optionally finish by generating morphological surface forms for final segments."""
         iteration = 0
@@ -2293,7 +2331,7 @@ class Segmentation:
         while matched and iteration < iters:
             print("MATCHING JOINS, ITERATION {}".format(iteration))
             print("Segments: {}".format(self.segments))
-            matches = self.match(joingroups=joingroups, verbosity=verbosity)
+            matches = self.match(joingroupings=joingroupings, verbosity=verbosity)
             if matches:
                 all_matches.extend(matches)
                 if makesuper:
@@ -2313,7 +2351,7 @@ class Segmentation:
         for segment in self.segments:
             segment.generate(verbosity=verbosity)
 
-    def match(self, joingroups=None, verbosity=1):
+    def match(self, joingroupings=None, verbosity=1):
         """Try to match the sequence of SolSegs in this segmentation with the patterns
         in all the Join instances, taking Join instances one at a time in order."""
         matches = []
@@ -2321,13 +2359,13 @@ class Segmentation:
         sollength = len(segments)
         segstart = 0
         matches = []
-        source_join_groups = self.source.join_groups
-        if joingroups:
+        source_join_groupings = self.source.join_groupings
+        if joingroupings:
             # This should be None or a list of ints
-            joingroups = [source_join_groups[index] for index in joingroups]
+            joingroupings = [source_join_groupings[index] for index in joingroupings]
         else:
-            joingroups = source_join_groups
-        for joingroup in joingroups:
+            joingroupings = source_join_groupings
+        for joingroup in joingroupings:
             for join in joingroup:
                 if verbosity:
                     print("Matching {}".format(join))
@@ -2378,6 +2416,7 @@ class Segmentation:
         """Get candidate matches of groups with segmentation Segs and match them,
         returning matches as list of pairs: (group [position, segment features]).
         """
+        print("MATCHING GROUPS {}".format(groupsid))
         cands = self.get_group_cands(groupsid=groupsid, verbosity=verbosity)
         matches = self.match_group_cands(cands, verbosity=verbosity)
         if create_ss:
@@ -2441,6 +2480,25 @@ class Segmentation:
 #        print("Cands2 {}".format(matches))
         return matches
 
+    def process(self, generate=False, verbosity=0):
+        """Repeatedly try matching and applying Join instances and the Group instances from
+        Join and Group groupings, until there are no more, then optionally do morphological
+        generation."""
+        njoins = len(self.source.join_groupings)
+        nposgroups = len(self.source.posgroups)
+        j = 0
+        g = 1
+        while j < njoins or g < nposgroups:
+            if j < njoins:
+                self.join(joingroupings=[j], verbosity=verbosity)
+                j += 1
+            if g < nposgroups:
+                self.match_groups(groupsid=g, verbosity=verbosity)
+                g += 1
+        if generate:
+            self.generate()
+
     ## Final translation
     def get_translation(self):
         return [s.cleaned_trans for s in self.segments]
+

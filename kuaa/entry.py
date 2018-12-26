@@ -277,29 +277,21 @@ class Entry:
     ### Translations of entries
 
     def get_translations(self):
-        """Changed 2015.05.22. translations is not a list of group, dict pairs
-        for the target language, no lo>nger a dict with language abbrev keys."""
-        
-#        if self.trans is None:
-#            self.trans = {}
-#        if language not in self.trans and create:
-#            self.trans[language] = {}
-#        return self.trans.get(language)
         return self.trans
 
-    def add_trans(self, language, trans, count=1):
-        """Add translation to the translation dictionary for language,
-        initializing its count."""
-        transdict = self.get_translations(language, create=True)
-        transdict[trans] = {'c': count}
-
-    def update_trans(self, language, trans, count=1):
-        """Update the count of translation."""
-        transdict = self.get_translations(language)
-        if trans not in transdict:
-            s = "Attempting to update non-existent translation {} for {}"
-            raise(EntryError(s.format(trans, self.name)))
-        transdict[trans]['c'] += count
+#    def add_trans(self, language, trans, count=1):
+#        """Add translation to the translation dictionary for language,
+#        initializing its count."""
+#        transdict = self.get_translations(language, create=True)
+#        transdict[trans] = {'c': count}
+#
+#    def update_trans(self, language, trans, count=1):
+#        """Update the count of translation."""
+#        transdict = self.get_translations(language)
+#        if trans not in transdict:
+#            s = "Attempting to update non-existent translation {} for {}"
+#            raise(EntryError(s.format(trans, self.name)))
+#        transdict[trans]['c'] += count
 
     def apply(self, obj, ambig=False, verbosity=0, terse=False):
         """Apply this entry to a Sentence or Superseg."""

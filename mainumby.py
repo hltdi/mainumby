@@ -83,6 +83,35 @@ def ora1(sentence):
     """A sentence prior to segmentation and translation."""
     return ora(sentence, solve=False, segment=False, single=True, translate=False)
 
+def anal(sentence, verbosity=0):
+    """Analyze a Spanish sentence, checking all groups."""
+    e, g = cargar()
+    session = kuaa.start(e, g, None, create_memory=True)
+    d = kuaa.Document(e, g, sentence, True, single=True, session=session)
+    s = d[0]
+    return s.analyze(verbosity=verbosity)
+
+def g_anal(sentence, single=True, verbosity=0):
+    """Analyze a Guarani sentence, checking all groups."""
+    e, g = cargar(train=True)
+    session = kuaa.start(g, e, None, create_memory=single)
+    d = kuaa.Document(g, None, sentence, session=session, single=single)
+    if len(d) == 0:
+        print("Documento vacío")
+        return
+    s = d[0]
+    return s.analyze(translate=False, verbosity=verbosity)
+
+## Cargar castellano y guaraní. Devuelve las 2 lenguas.
+def cargar(train=False):
+    spa, grn = kuaa.Language.load_trans('spa', 'grn', train=train)
+    return spa, grn
+
+## Cargar una lengua, solo para análisis.
+def cargar1(lang='spa'):
+    spa = kuaa.Language.load_lang(lang)
+    return spa
+
 ## Oraciones para evalucación
 
 oraciones = \
@@ -177,16 +206,6 @@ def arch_doc(lengua, ruta, session=None, user=None, proc=False):
 
 def usuario(username):
     return kuaa.User.users.get(username)
-
-## Cargar castellano y guaraní. Devuelve las 2 lenguas.
-def cargar(train=False):
-    spa, grn = kuaa.Language.load_trans('spa', 'grn', train=train)
-    return spa, grn
-
-## Cargar una lengua, solo para análisis.
-def cargar1(lang='spa'):
-    spa = kuaa.Language.load_lang(lang)
-    return spa
 
 if __name__ == "__main__":
     print("Tereg̃uahẽporãite Mainumby-pe, versión {}\n".format(__version__))

@@ -150,8 +150,7 @@ HEAD_SEP = ';'
 EOS = '.!?'
 
 class Language:
-    """Dictionaries of words, lexemes, grammatical features, and
-    lexical classes."""
+    """Dictionaries of words, lexemes, grammatical features, and lexical classes."""
 
     class_char = '$'
     pattern_char = '/'
@@ -219,7 +218,7 @@ class Language:
         # Morphosyns
         self.ms = []
         # Joins
-        self.join_groups = []
+        self.join_groupings = []
         self.eos = eos
         self.use = use
         # Dict of groups with names as keys
@@ -460,36 +459,6 @@ class Language:
         if names:
             return names, 'C'
         return False
-
-#    def find_numeral(self, words):
-#        """Determines whether the list of words begins with a numeral, either in the form of digits or words.
-#        If it does, it returns the list of numeral tokens and whether the numeral is digits."""
-#        if isinstance(words, str):
-#            words = words.split()
-#        if Language.is_dig_numeral(words[0]):
-#            return [words[0]], True
-#        else:
-#            for name, pattern in self.get_num_patterns():
-#                pat_match = self.match_pattern(pattern, words)
-#                if pat_match:
-#                    numwords = pat_match[0]
-#                    return numwords, False
-#        return False
-
-#    def find_names(self, words):
-#        """Determines whether list of words begins with one or more names, returning the names
-#        in a list if so."""
-#        name = True
-#        names = []
-#        while name and words:
-#            word = words.pop(0)
-#            if word.istitle():
-#                names.append(word)
-#            elif names and word in self.namejoin and words and words[0].istitle():
-#                names.append(word)
-#            else:
-#                name = False
-#        return names
 
     def quit(self, cache=True):
         """Do stuff when the program exits. Only cache analyses and generation if there is a current
@@ -925,12 +894,6 @@ class Language:
                         a, u = c.split(':')
                         self.deaccent[a.strip()] = u.strip()
                     continue
-
-#                m = LG_NAME_RE.match(line)
-#                if m:
-#                    name = m.group(1).strip()
-#                    self.name = name
-#                    continue
 
                 m = PUNC_RE.match(line)
                 if m:
@@ -1804,7 +1767,7 @@ class Language:
                     grp = Language.joingrp.match(line)
                     if grp:
                         if grouping:
-                            self.join_groups.append(grouping)
+                            self.join_groupings.append(grouping)
                             grouping = []
                         continue
                     name, x, pattern = line.partition(JOIN_NAME_SEP)
@@ -1812,7 +1775,7 @@ class Language:
 #                    self.joins.append(join)
                     grouping.append(join)
             # add last grouping
-            self.join_groups.append(grouping)
+            self.join_groupings.append(grouping)
         except IOError:
             print('No such Join file as {}'.format(path))
 

@@ -1,7 +1,7 @@
 Venus_n $n,$nm
 WC_n $n
 Pedro $n,$nm,$nprs
-a $pp
+a_prp $pp
 abadejo_n $n
 abajar_v $v
 abalanzar_v $v,$vp
@@ -153,7 +153,7 @@ aceptación_n $n
 aceptar_v $v,$vt
 acequia_n $n
 acera_n $n
-acerca $adv
+acerca_adv $adv
 acercar_v $v,$vt,$vp
 acero_n $n
 acertar_v $v,$vt
@@ -263,7 +263,7 @@ acusar_v $v,$vt,$vp
 acuático_a $a
 acuífero_n $n
 acuñar_v $v
-acá $adv
+acá_adv $adv
 acólito_n $n
 acústica_n $n
 adaptabilidad_n $n
@@ -275,7 +275,7 @@ adelantamiento_n $n
 adelantar_v $v,$vt,$vi,$vp
 adelanto_n $n
 adelgazar_v $v,$vt
-además $adv
+además_adv $adv
 ademán_n $n
 adentrar_v $v,$vp
 adepto_n $n,$nprs
@@ -321,7 +321,7 @@ adobo_n $n
 adoctrinar_v $v,$vt
 adolescencia_n $n
 adolescente_n $n
-adónde $adv
+adónde_adv $adv
 adopción_n $n
 adoptar_v $v
 adoquín_n $n
@@ -495,7 +495,7 @@ ahuecar_v $v,$vt,$vp
 ahumado_a $a
 ahumar_v $v,$vt,$vi,$vp
 ahuyentar_v $v,$vt
-ahí $adv
+ahí_adv $adv
 ahínco_n $n
 ahíto_n $n
 airar_v $v,$vt,$vp
@@ -628,8 +628,8 @@ alivio_n $n
 aliñar_v $v,$vt
 aljibe_n $n
 allanar_v $v,$vt,$vp
-allá $adv
-allí $adv
+allá_adv $adv
+allí_adv $adv
 alma_n $n,$nprs
 almacenaje_n $n
 almacenamiento_n $n
@@ -873,7 +873,7 @@ ansiedad_n $n
 antagonismo_n $n
 antagonista_n $n
 ante_n $n
-ante $pp
+ante_prp $pp
 antebrazo_n $n
 antecedente_n $n
 anteceder_v $v,$vt
@@ -888,7 +888,7 @@ antepasado_n $n
 anteponer_v $v,$vt
 anterior_a $a
 anterioridad_n $n
-antes $adv
+antes_adv $adv
 antesala_n $n
 antibiótico_n $n
 anticipación_n $n
@@ -1091,7 +1091,7 @@ aquellos_det $a,$dem
 aquéllos $pro,$dem,$n
 aquello $pro,$dem,$n
 aquietar_v $v
-aquí $adv
+aquí_adv $adv
 ara_n $n
 arado_n $n
 arancel_n $n
@@ -1206,7 +1206,7 @@ arrepentir_v $v,$vp
 arrestar_v $v,$vt
 arresto_n $n
 arriar_v $v
-arriba $adv
+arriba_adv $adv
 arribar_v $v,$vi
 arrimar_v $v,$vt,$vp
 arrinconar_v $v,$vt,$vp
@@ -1354,7 +1354,7 @@ asunto_n $n
 asurar_v $v
 asustadizo_a $a
 asustar_v $v,$vt,$vp
-así $adv
+así_adv $adv
 atacar_v $v,$vt
 atado_n $n
 atado_a $a
@@ -1438,7 +1438,7 @@ atrocidad_n $n
 atrofiar_v $v
 atronar_v $v,$vt
 atropellar_v $v,$vt,$vp
-atrás $adv
+atrás_adv $adv
 atuendo_n $n
 aturdimiento_n $n
 aturdir_v $v,$vt,$vp
@@ -1597,7 +1597,7 @@ añico_n $n
 año_n $n,$dur
 añoranza_n $n
 añorar_v $v,$vt
-aún $adv
+aún_adv $adv
 baba_n $n
 babear_v $v
 babosa_n $n
@@ -1621,7 +1621,7 @@ bajeza_n $n
 bajista_n $n
 bajo_n $n
 bajo_a $a
-bajo $pp
+bajo_prp $pp
 bajón_n $n
 bala_n $n
 balance_n $n
@@ -1711,7 +1711,7 @@ basca_n $n
 bascular_v $v
 base_n $n
 bastante_a $a
-bastante $adv
+bastante_adv $adv
 bastardear_v $v
 bastardo_n $n
 bastidor_n $n
@@ -1799,7 +1799,7 @@ bidón_n $n
 bieldar_v $v
 bien_n $n
 bien_a $a
-bien $adv
+bien_adv $adv
 bienestar_n $n
 bienvenida_n $n
 bienvenido_a $a
@@ -3016,7 +3016,7 @@ comisionar_v $v,$vt
 comisión_n $n
 comitiva_n $n
 comité_n $n
-como $pp
+como_prp $pp
 comodidad_n $n
 compactar_v $v
 compacto_n $n
@@ -3103,7 +3103,7 @@ comunismo_n $n
 comunista_n $n
 comunión_n $n
 común_a $a
-con $pp
+con_prp $pp
 conato_n $n
 concatenar_v $v
 concebir_v $v
@@ -3669,7 +3669,7 @@ cuales_n $pro,$n
 cualidad_n $n
 cualificar_v $v
 cualquiera_n $n
-cuando $adv
+cuando_adv $adv
 cuanta_a $a
 cuantas_a $a
 cuanto_n $n
@@ -3771,7 +3771,7 @@ custodiar_v $v,$vt
 custodio_n $n
 cuál $pro
 cuáles $pro
-cuándo $adv
+cuándo_adv $adv
 cuánta_a $a
 cuántas_a $a
 cuánto_a $a
@@ -3840,7 +3840,7 @@ dato_n $n
 dañar_v $v,$vt,$vp
 dañino_a $a
 daño_n $n
-de $pp
+de_prp $pp
 deambular_v $v
 debacle_n $n
 debate_n $n
@@ -3991,7 +3991,7 @@ densidad_n $n
 denso_a $a
 dentar_v $v
 dentista_n $n
-dentro $adv
+dentro_adv $adv
 dentífrico_n $n
 denuncia_n $n
 denunciar_v $v
@@ -4216,7 +4216,7 @@ descubrir_v $v,$vt,$vp
 descuento_n $n
 descuidar_v $v,$vt,$vp
 descuido_n $n
-desde $pp
+desde_prp $pp
 desdecir_v $v
 desdeñar_v $v
 desdibujar_v $v
@@ -4474,7 +4474,7 @@ desprestigiar_v $v,$vt,$vp
 desprestigio_n $n
 despropósito_n $n
 despuntar_v $v,$vi,$vp
-después $adv
+después_adv $adv
 desquiciar_v $v
 desquite_n $n
 destacamento_n $n
@@ -4840,7 +4840,7 @@ donante_n $n,$nprs
 donar_v $v,$vt
 donativo_n $n
 doncella_n $n
-donde $adv
+donde_adv $adv
 dorada_n $n
 dorado_n $n
 dorar_v $v,$vt,$vp
@@ -4917,7 +4917,7 @@ díptico_n $n
 díscolo_a $a
 dócil_a $a
 dólar_n $n
-dónde $adv
+dónde_adv $adv
 dúo_n $n
 ebullición_n $n
 eccema_n $n
@@ -5176,7 +5176,7 @@ empuñar_v $v
 empírico_a $a
 emulación_n $n
 emulsionar_v $v
-en $pp
+en_prp $pp
 enajenación_n $n
 enajenar_v $v
 enaltecer_v $v,$vt,$vp
@@ -5240,7 +5240,7 @@ enchapar_v $v
 enchufe_n $n
 enciclopedia_n $n
 encierro_n $n
-encima $adv
+encima_adv $adv
 encimar_v $v,$vt,$vp
 encintar_v $v
 enclaustrar_v $v
@@ -5446,7 +5446,7 @@ entierro_n $n
 entintar_v $v
 entiznar_v $v
 entonar_v $v
-entonces $adv
+entonces_adv $adv
 entontecer_v $v
 entornado_a $a
 entornar_v $v,$vt
@@ -5458,7 +5458,7 @@ entrampar_v $v
 entrante_n $n
 entrar_v $v,$vi
 entraña_n $n
-entre $pp
+entre_prp $pp
 entreabierto_a $a
 entreabrir_v $v,$vt,$vp
 entredicho_n $n
@@ -7001,7 +7001,7 @@ hacha_n $n
 hachar_v $v
 hachear_v $v
 hachís_n $n
-hacia $pp
+hacia_prp $pp
 hacienda_n $n
 hacinamiento_n $n
 hacinar_v $v,$vt,$vp
@@ -7032,7 +7032,7 @@ harina_n $n
 hartar_v $v,$vt,$vp
 hartazgo_n $n
 harto_a $a
-hasta $pp
+hasta_prp $pp
 hastiar_v $v,$vt,$vp
 hastío_n $n
 haya_n $n
@@ -7254,6 +7254,7 @@ hostigar_v $v,$vt,$vi
 hostilidad_n $n
 hotel_n $n
 hotelero_n $n
+hoy_adv $adv
 hoyo_n $n
 hoyuelo_n $n
 hoz_n $n
@@ -7487,7 +7488,7 @@ inclinado_a $a
 inclinar_v $v,$vt,$vp
 incluir_v $v,$vt
 inclusión_n $n
-incluso $adv
+incluso_adv $adv
 incoherencia_n $n
 incoherente_a $a
 incoloro_a $a
@@ -9007,7 +9008,7 @@ miedo_n $n
 miedoso_a $a
 miel_n $n
 miembro_n $n
-mientras $adv
+mientras_adv $adv
 mierda_n $n
 mies_n $n
 miga_n $n
@@ -9309,12 +9310,12 @@ mutilar_v $v
 mutismo_n $n
 mutua_n $n
 mutualidad_n $n
-muy $adv
+muy_adv $adv
 muñeca_n $n
 máquina_n $n
 márketing_n $n
 mármol_n $n
-más $adv
+más_adv $adv
 máscara_n $n
 mástil_n $n
 máxima_n $n
@@ -9468,7 +9469,7 @@ niña_n $n
 niñera_n $n,$nprs
 niñez_n $n
 niño_n $n
-no $adv
+no_adv $adv
 noble_n $n
 noble_a $a
 nobleza_n $n
@@ -9931,7 +9932,7 @@ paquete_n $n
 paquetería_n $n
 paquistaní_n $n
 par_n $n
-para $pp
+para_prp $pp
 parabrisas_n $n
 paracaidismo_n $n
 paracaidista_n $n
@@ -10579,7 +10580,7 @@ popular_a $a
 popularidad_n $n
 popularizar_v $v,$vt,$vp
 poquísimo_a $a
-por $pp
+por_prp $pp
 porcelana_n $n
 porcentaje_n $n
 porcino_n $n
@@ -10783,7 +10784,7 @@ primate_n $n
 primavera_n $n
 primera_n $n
 primero_a $a
-primero $adv
+primero_adv $adv
 primicia_n $n
 primo_n $n,$nprs
 princesa_n $n
@@ -12436,7 +12437,7 @@ simulacro_n $n
 simulador_n $n
 simular_v $v,$vt
 simultaneidad_n $n
-sin $pp
+sin_prp $pp
 sinagoga_n $n
 sinceridad_n $n
 sincero_a $a
@@ -12488,7 +12489,7 @@ sobrante_n $n
 sobrante_a $a
 sobrar_v $v,$vi
 sobre_n $n
-sobre $pp
+sobre_prp $pp
 sobrecapitalizar_v $v
 sobrecarga_n $n
 sobrecargo_n $n
@@ -12534,7 +12535,7 @@ soga_n $n
 soja_n $n
 sojuzgar_v $v
 sol_n $n
-solamente $adv
+solamente_adv $adv
 solapa_n $n
 solapamiento_n $n
 solar_n $n
@@ -12566,7 +12567,7 @@ soliviantar_v $v
 sollozar_v $v,$vi
 solo_n $n
 solo_a $a
-solo $adv
+solo_adv $adv
 soltar_v $v,$vt,$vp
 soltera_n $n
 soltero_n $n
@@ -12859,7 +12860,7 @@ sémola_n $n
 séptimo_a $a
 séquito_n $n
 sésamo_n $n
-sí $adv
+sí_adv $adv
 sílaba_n $n
 símbolo_n $n
 símil_n $n
@@ -12920,7 +12921,7 @@ talón_n $n
 tamaño_n $n
 tambalear_v $v,$vp
 tambaleo_n $n
-también $adv
+también_adv $adv
 tambor_n $n
 tamborilear_v $v
 tamiz_n $n
@@ -13218,7 +13219,7 @@ tocado_n $n
 tocar_v $v,$vt
 tocino_n $n
 tocólogo_n $n
-todavía $adv
+todavía_adv $adv
 todo_a $a
 todopoderoso_a $a
 todoterreno_n $n
@@ -13388,7 +13389,7 @@ tranvía_n $n
 trapacear_v $v
 trapicheo_n $n
 trapo_n $n
-tras $pp
+tras_prp $pp
 trasatlántico_n $n
 trasbordo_n $n
 trascendencia_n $n
@@ -13856,7 +13857,7 @@ verdad_n $n
 verdadera_n $n
 verdadero_n $n
 verdadero_a $a
-verdaderamente $adv
+verdaderamente_adv $adv
 verde_n $n
 verde_a $a
 verdear_v $v

@@ -5,12 +5,12 @@
 ** a $pro ; ^ a 0
 ->grn $pro[caso=pe] ; ^ $pro 0 ; || -1, 0
 ** a $n ; ^ a 0
-->grn $n[caso=pe] ; ^ $pro 0 ; || -1, 0
+->grn $n[caso=pe] ; ^ $n 0 ; || -1, 0
 ** a %C ; ^ a 0
 ->grn %C `-pe ; || 1, 0
 # EN
 ** en $n ; ^ en 0
-->grn $n[caso=pe] ; ^ $pro 0 ; || -1, 0
+->grn $n[caso=pe] ; ^ $n 0 ; || -1, 0
 ** en $pro ; ^ en 0
 ->grn $pro[caso=pype] ; ^ $pro 0 ; || -1, 0
 ** en %C ; ^ en 0
@@ -81,7 +81,7 @@
 ->grn $n javeve ; || 1, 0
 # HASTA
 ** hasta $n ; ^ hasta 0
-->grn $n[caso=peve] ; ^ $pro 0 ; || -1, 0
+->grn $n[caso=peve] ; ^ $n 0 ; || -1, 0
 # DURANTE
 ** durante $n ; ^ durante 0
 ->grn $n aja; || 1, 0
