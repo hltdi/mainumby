@@ -2987,8 +2987,6 @@
 ->grn ta'y_n tendotára ; 0==0 n:n,poses:poses
 ** hijo_n adoptivo ; ^ hijo_n 0 ; #2327
 ->grn <hemimongakuaa_n ; 0==0 n:n,poses:poses
-** hijo_n[n=1] ; ^ hijo_n 0
-->grn akyrĩngue_n ; 0==0 n:n,poses:poses
 ** hijo_n ; ^ hijo_n 0 ; #2327
 ->grn mitã_n ; 0==0 n:n,poses:poses ; #830 ; ##94
 ->grn memby_n ; 0==0 n:n,poses:poses ; #258 ; ##207

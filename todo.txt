@@ -1,3 +1,54 @@
+2019 february
+separating translations into close and distant ones; alignment with roots (and without)
+defining closeness:
+	 alignment
+	 transformations
+analyzing distant translations
+
+transformations: types
+	combining/deleting ± adding features
+		I come -> come[s=1s]
+		my * house -> house[p=1s]
+		house that I bought -> house bought[s=1s,+relobj]
+	separating/adding
+		vengo -> I come
+		ቤቴ -> %[p=1s] ቤት
+		የገዛሁት ቤት -> %[+relobj] ገዛሁት ቤት -> %[+def] %[+relobj] ገዛሁት ቤት
+	agreement ± adding features
+		the big house -> the[g=f,n=s] big[g=f,n=s] house[g=f,n=s]
+		the house that I bought -> house that I bought[+def]
+	swapping
+		big house -> house big
+		the house that I bought -> that I bought[+def] house
+
+transformations: categories of data to elicit with minimal morphology
+	subject + verb
+	verb + DO
+	verb + IO
+	adp + noun
+	noun + obj RelCls
+	noun + sbj RelCls
+	noun + obl RelCls
+	poss + noun
+	neg + verb (different tenses)
+	interr + verb (different tenses)
+
+disambiguation: categories of data to elicit
+	TV + OBJ
+		take a shower
+	DV
+		DAT feel good
+		DAT recover
+		DAT like THM
+		DAT have THM
+	CV + COMP
+		say that CLS
+		tell DAT that CLS
+		ask DAT to V
+		ask DAT whether CLS
+	NCOMP
+		what/who//where/when/why/how CLS
+		
 2018 september
 how to handle verbs that are ambiguously trans/intrans like partir?
 analyses (post-MS?) should indicate transitivity, and there should then be separate groups

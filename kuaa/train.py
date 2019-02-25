@@ -2,11 +2,11 @@
 #
 ########################################################################
 #
-#   This file is part of the Mainumby project within the PLoGS metaproject
+#   This file is part of the Mainumby project within the PLoGS meta-project
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyleft 2017, 2018; PLoGS <gasser@indiana.edu>
+#   Copyleft 2017, 2018, 2019; PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -27,14 +27,82 @@
 # some morphology functions (more needed?)
 from .sentence import *
 
+class DisambigTrainer:
+    """Attempt to disambiguate groups with multiple translations."""
+
+    def __init__(self, source='spa', target='grn', verbosity=0):
+        if isinstance(source, str) and isinstance(target, str):
+            source, target = Language.load_trans(source, target, train=True)
+        self.source = source
+        self.target = target
+
+    def count_translations(self, file, transcounts=None, write=True):
+        """Count the translations in a bitext translation (pseudoseg) file, updating a current
+        tc dict if one is provided. Write the counts if write is true. Return the dict."""
+        ps_path = self.source.get_pseudoseg_file(file)
+        transcounts = transcounts or self.source.transcounts or {}
+        # translations may be lists; first convert to dicts
+        for source, translations in transcounts.items():
+            if isinstance(translations, list):
+                transcounts[source] = dict(translations)
+            else:
+                # Assume all translations counts are either lists or dicts
+                break
+        with open(ps_path, encoding='utf8') as file:
+            sourceline = True
+            while sourceline: 
+                sourceline = file.readline()
+                if not sourceline:
+                    break
+                targetline = file.readline()
+                sourceline = eval(sourceline)
+                targetline = eval(targetline)
+                # empty line
+                file.readline()
+                for head, translations in sourceline:
+                    found = []
+#                    if len(translations) < 2:
+#                        continue
+                    if '.' in head:
+                        # For now, ignore multi-word groups
+                        continue
+                    for translation in translations:
+                        if translation in targetline:
+                            found.append(translation)
+                    if found:
+                        # Record translations
+                        score = 1.0 / len(found)
+                        if head in transcounts:
+                            tc = transcounts[head]
+                        else:
+                            tc = {}
+                            transcounts[head] = tc
+                        for f in found:
+                            if f in tc:
+                                tc[f] += score
+                            else:
+                                tc[f] = score
+            if write:
+                tc_path = self.source.get_transcount_file(self.target.abbrev)
+                transcounts = list(transcounts.items())
+                transcounts.sort()
+                with open(tc_path, 'w', encoding='utf8') as file:
+                    for s_head, translations in transcounts:
+                        # Convert translation dict to sorted list
+                        translations = list(translations.items())
+                        translations.sort(key=lambda t: t[1], reverse=True)
+                        print("{} :: {}".format(s_head, translations), file=file)
+            else:
+                transcounts
+
 class Learner:
-    """Take source and target languages, and learn new groups based on
+    """Take source and target languages, and learn translations from corpora or new groups based on
     existing groups."""
 
     def __init__(self, source, target):
         self.source = source
         self.target = target
-        self.groups = source.groups
+#        self.groups = source.groups
         self.add_target_anal()
 
     def __repr__(self):
@@ -67,14 +135,14 @@ class Phrase:
     def analyze(self):
         return [self.language.anal_word(w) for w in self.words]
 
-class Trainer:
+class GroupTrainer:
     """Take a bilingual Document and the two associated languages, and learn
     new groups based on current groups."""
 
     # Maximum number of solutions to find for source sentences
     max_sols=3
 
-    def __init__(self, doc, verbose=False):
+    def __init__(self, doc, verbosity=0):
         self.doc = doc
         self.source = doc.language
         self.target = doc.target

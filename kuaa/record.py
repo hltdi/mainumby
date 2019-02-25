@@ -3,11 +3,11 @@
 #
 ########################################################################
 #
-#   This file is part of the Mainumby project within the PLoGS metaproject
+#   This file is part of the Mainumby project within the PLoGS meta-project
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyleft 2016, 2017, 2018 PLoGS <gasser@indiana.edu>
+#   Copyleft 2016, 2017, 2018, 2019 PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as

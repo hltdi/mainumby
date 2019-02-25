@@ -139,7 +139,7 @@ feats:
 #        intrans_caus_reflx (intransitivo causativo reflexivo) |
 #        intrans_caus_recip (intransitivo causativo recíproco)
 
-   grd (grado) = *None | ve | ete | eterei
+   grd (grado) = *None | ve | ete | eterei | mive | ive
 
   tmp (tmp_abs) = prs (pres) |
                   prt (pret) |
@@ -261,7 +261,7 @@ feats:
 
   caso = *None|pe|peve|gui|guive|re|vo|icha|ichagua|guy|guype|gua|pegua|ygua|ndi|pype|ypype|ari|vove|rendape
 
-  grd = *None | ve | ive | ete | eterei | rasa | etereirasa
+  grd = *None | ve | ive | mive | ete | eterei | rasa | etereirasa
  
 #  poses (poses) = *None | ext | int
   poses (poses) = pp = 0 | 3 | 2 | 1;

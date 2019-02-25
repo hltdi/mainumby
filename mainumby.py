@@ -8,7 +8,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyleft 2014, 2015, 2016, 2017, 2018; HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyleft 2014, 2015, 2016, 2017, 2018, 2019; HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -119,6 +119,69 @@ oraciones = \
            "Me acordé de ese hombre feo.",
            "La profesora encontró a su marido en la calle."]
 
+## Procesamiento de corpus.
+
+def biblia2():
+    """Lista de oraciones (bilingües) de la Biblia (separadas por tabulador)."""
+    with open("../Bitext/EsGn/Biblia/biblia_tab.txt", encoding='utf8') as file:
+        return file.readlines()
+
+def dgo():
+    with open("../Bitext/EsGn/DGO/dgo_id2_tab.txt", encoding='utf8') as file:
+        return file.readlines()
+
+##def split_biblia():
+##    """Assuming biblia_tab.txt is in good shape, write the Es and Gn sentences
+##    to separate files."""
+##    lines = biblia2()
+##    with open("../Bitext/EsGn/Biblia/biblia_tab_es.txt", 'w', encoding='utf8') as es:
+##        with open("../Bitext/EsGn/Biblia/biblia_tab_gn.txt", 'w', encoding='utf8') as gn:
+##            for line in lines:
+##                e, g = line.split('\t')
+##                print(e.strip(), file=es)
+##                print(g.strip(), file=gn)
+
+def biblia_ora(train=True):
+    """Lista de pares de oraciones (instancias de Sentence) de la Biblia."""
+    oras = biblia2()
+    e, g = cargar(train=train)
+    o1, o2 = kuaa.Document.proc_preseg(e, g, oras, biling=True)
+    return o1, o2
+
+def dgo_ora(train=True):
+    oras = dgo()
+    e, g = cargar(train=train)
+    o1, o2 = kuaa.Document.proc_preseg(e, g, oras, biling=True)
+    return o1, o2
+
+def bib_bitext_anal(start=5750, end=-1, n=250, write=True, filename="biblia1"):
+    """Separate Bible sentences, superficially analyze them, creating
+    pseudosegments, append these to file."""
+    o1, o2 = biblia_ora()
+    e = o1[0].language
+    if n:
+        end = start + n
+    elif end < 0:
+        end = len(o1)
+    print("Analizando pares de oraciones desde {} hasta {}".format(start, end))
+    a = kuaa.Sentence.bitext_anal(o1, o2, start=start, end=end)
+    if write:
+        kuaa.Sentence.write_pseudosegs(e, a, filename)
+
+def dgo_bitext_anal(start=0, end=-1, n=400, write=True, filename="dgo"):
+    """Separate DGO sentences, superficially analyze them, creating
+    pseudosegments, append these to file."""
+    o1, o2 = dgo_ora()
+    e = o1[0].language
+    if n:
+        end = start + n
+    elif end < 0:
+        end = len(o1)
+    print("Analizando pares de oraciones desde {} hasta {}".format(start, end))
+    a = kuaa.Sentence.bitext_anal(o1, o2, start=start, end=end)
+    if write:
+        kuaa.Sentence.write_pseudosegs(e, a, filename)
+
 ## Aprendizaje de nuevos grupos
 
 def aprender(source, target):
@@ -149,67 +212,51 @@ def output_sols(sentence):
         for x in sol.get_ttrans_outputs():
             print(x)
 
-def ley_bidoc(init=True, train=True):
-    d = eg_arch_doc("../LingData/EsGn/Corp/FromCarlos/ley4251_e0.txt",
-                    ruta_meta="../LingData/EsGn/Corp/FromCarlos/ley4251_g0.txt")
-    if init:
-        d.initialize()
-    if train:
-        trainer = kuaa.Trainer(d)
-        return trainer
-    return d
-
-def arch_doc(ruta, proc=True, reinit=False, user=None, session=None,
-                ruta_meta=None):
-    """Crear un documento del contenido de un archivo."""
-    e, g = cargar_eg(train=ruta_meta)
-    session = session or kuaa.start(e, g, user)
-    arch = open(ruta, encoding='utf8')
-    texto = arch.read()
-    if ruta_meta:
-        arch_meta = open(ruta_meta, encoding='utf8')
-        texto_meta = arch_meta.read()
-        d = kuaa.Document(e, g, texto, proc=proc, reinitid=reinit, session=session,
-                          biling=True, target_text=texto_meta)
-    else:
-        d = kuaa.Document(e, g, texto, proc=proc, reinitid=reinit, session=session)
-    return d
-
-def arch_doc(lengua, ruta, session=None, user=None, proc=False):
-    """Crear un documento del contenido de un archivo, solo para análisis."""
-    l = cargar(lengua)
-    session = session or kuaa.start(l, None, user)
-    arch = open(ruta, encoding='utf8')
-    texto = arch.read()
-    d = kuaa.Document(l, None, texto, proc=proc, session=session)
-    return d
-
-##def huesped("Vi al pobre huésped.", solve=True, user=None):
-##    e, g = cargar()
-##    session = kuaa.start(e, g, user)
-##    d = kuaa.Document(e, g, sentence, True, session=session)
-##    s = d[0]
-##    s.initialize(ambig=False)
-##    if solve:
-##        s.solve(all_sols=False)
-##        if s.segmentations and segment:
-##            for sol in s.segmentations:
-##                sol.get_segs()
-##        output_sols(s)
-##    return s.segmentations[0]    
-
-#def eg_bidoc(ruta1, ruta2, proc=True, reinit=False, user=None, docid=''):
-#    doc1 = eg_arch_doc(ruta1, user=user)
-#    doc2 = eg_arch_doc(ruta2, session=doc1.session, reinit=True)
-#    bidoc = kuaa.BiDoc(doc1, doc2, docid=docid)
-#    return bidoc
-
 def usuario(username):
     return kuaa.User.users.get(username)
 
 if __name__ == "__main__":
     print("Tereg̃uahẽporãite Mainumby-pe, versión {}\n".format(__version__))
 #    kuaa.app.run(debug=True)
+
+##def ley_bidoc(init=True, train=True):
+##    d = eg_arch_doc("../LingData/EsGn/Corp/FromCarlos/ley4251_e0.txt",
+##                    ruta_meta="../LingData/EsGn/Corp/FromCarlos/ley4251_g0.txt")
+##    if init:
+##        d.initialize()
+##    if train:
+##        trainer = kuaa.Trainer(d)
+##        return trainer
+##    return d
+
+##def bidoc(ruta="../Bitext/EsGn/Biblia/biblia_tab.txt"):
+##    e, g = cargar(train=True)
+##    d = kuaa.Document(e, g, text='', biling=True, path=ruta)
+##    return d
+##
+##def arch_doc2(ruta, proc=True, reinit=False, user=None, session=None, ruta_meta=None):
+##    """Crear un documento del contenido de un archivo."""
+##    e, g = cargar_eg(train=ruta_meta)
+##    session = session or kuaa.start(e, g, user)
+##    arch = open(ruta, encoding='utf8')
+##    texto = arch.read()
+##    if ruta_meta:
+##        arch_meta = open(ruta_meta, encoding='utf8')
+##        texto_meta = arch_meta.read()
+##        d = kuaa.Document(e, g, texto, proc=proc, reinitid=reinit, session=session,
+##                          biling=True, target_text=texto_meta)
+##    else:
+##        d = kuaa.Document(e, g, texto, proc=proc, reinitid=reinit, session=session)
+##    return d
+##
+##def arch_doc1(lengua, ruta, session=None, user=None, proc=False):
+##    """Crear un documento del contenido de un archivo, solo para análisis."""
+##    l = cargar(lengua)
+##    session = session or kuaa.start(l, None, user)
+##    arch = open(ruta, encoding='utf8')
+##    texto = arch.read()
+##    d = kuaa.Document(l, None, texto, proc=proc, session=session)
+##    return d
 
 ##def ui():
 ##    """Create a UI and two languages."""
@@ -275,6 +322,3 @@ if __name__ == "__main__":
 ##def trans():
 ##    # ~ se, V, ..., N
 ##    return kuaa.Pattern([(('~', {'se'}), (None, None)), {('p', 'v')}, 2, {('p', 'n')}])
-
-
-

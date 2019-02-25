@@ -1046,8 +1046,6 @@
 ->grn ojehúva_n ; 0==0 n:n,poses:poses ; #10
 ->grn añetegua_n ; 0==0 n:n,poses:poses ; #30 ; ##2
 ->grn apo_n ; 0==0 n:n,poses:poses ; #126 ; ##6
-** hijo_n pequeño de algunos mamíferos ; ^ hijo_n 0 ; #2327
-->grn ta'yrami_n ; 0==0 n:n,poses:poses
 ** hijo_n adoptivo del hombre ; ^ hijo_n 0 ; #2327
 ->grn ta'yra'ãnga_n ; 0==0 n:n,poses:poses
 ** hijo_n de la hermana ; ^ hijo_n 0 ; #2327
@@ -1068,13 +1066,11 @@
 ->grn añara'y_n ; 0==0 n:n,poses:poses
 ** hijo_n del diablo ; ^ hijo_n 0 ; #2327
 ->grn añamemby_n ; 0==0 n:n,poses:poses
-** hijo_n del indio ; ^ hijo_n 0 ; #2327
-->grn avara'y_n ; 0==0 n:n,poses:poses
 ** hijo_n del varón ; ^ hijo_n 0 ; #2327
 ->grn ra'y_n ; 0==0 n:n,poses:poses
 ** hijo_n de diablo ; ^ hijo_n 0 ; #2327
 ->grn añara'y_n ; 0==0 n:n,poses:poses
-** hijo_n legitimo ; ^ hijo_n 0 ; #2327
+** hijo_n legítimo ; ^ hijo_n 0 ; #2327
 ->grn mendare_n ra'y ; 0==0 n:n,poses:poses
 ** hijo_n mayor ; ^ hijo_n 0 ; #2327
 ->grn memby_n tenonde ; 0==0 n:n,poses:poses ; #258 ; ##207
@@ -1082,15 +1078,10 @@
 ->grn ta'y_n tendotára ; 0==0 n:n,poses:poses
 ** hijo_n adoptivo ; ^ hijo_n 0 ; #2327
 ->grn <hemimongakuaa_n ; 0==0 n:n,poses:poses
-** hijo_n[n=1] ; ^ hijo_n 0
-->grn akyrĩngue_n ; 0==0 n:n,poses:poses
 ** hijo_n ; ^ hijo_n 0 ; #2327
 ->grn mitã_n ; 0==0 n:n,poses:poses ; #830 ; ##94
 ->grn memby_n ; 0==0 n:n,poses:poses ; #258 ; ##207
-** hilo_n recio de algodón ; ^ hilo_n 0 ; #7
-->grn poyvi_n ; 0==0 n:n,poses:poses ; #48 ; ##3
-** hilo_n grueso de algodón ; ^ hilo_n 0 ; #7
-->grn inimbo_n poyvi ; 0==0 n:n,poses:poses
+->grn ra'y_n ; 0==0 n:n,poses:poses
 ** hilo_n de la vida ; ^ hilo_n 0 ; #7
 ->grn <hekovesã_n ; 0==0 n:n,poses:poses
 ** hilo_n de agua ; ^ hilo_n 0 ; #7
@@ -1119,8 +1110,6 @@
 ->grn mombe'upy_n ; 0==0 n:n,poses:poses ; #6
 ->grn káso_n ; 0==0 n:n,poses:poses ; #30
 ->grn morangu_n ; 0==0 n:n,poses:poses ; #5
-** hombre_n de conducta sosegada ; ^ hombre_n 0 ; #1755
-->grn karai_n guasu ; 0==0 n:n,poses:poses
 ** hombre_n de la guerra ; ^ hombre_n 0 ; #1755
 ->grn avarini_n ; 0==0 n:n,poses:poses
 ** hombre_n de gran poder ; ^ hombre_n 0 ; #1755
@@ -1160,8 +1149,6 @@
 ** humanidad_n ; ^ humanidad_n 0 ; #4
 ->grn taupaha_n ; 0==0 n:n,poses:poses
 ->grn <hekoasy_n ; 0==0 n:n,poses:poses
-** idioma_n de los españoles ; ^ idioma_n 0 ; #1
-->grn karaiñe'ẽ_n ; 0==0 n:n,poses:poses
 ** idioma_n propio ; ^ idioma_n 0 ; #1
 ->grn ayvutee_n ; 0==0 n:n,poses:poses
 ->grn ñe'ẽtee_n ; 0==0 n:n,poses:poses
@@ -1173,8 +1160,6 @@
 ->grn <hapicha_n ; 0==0 n:n,poses:poses ; #348
 ->grn ojoguáva_n ; 0==0 n:n,poses:poses ; #4
 ->grn ñaimo'ã_n ; 0==0 n:n,poses:poses ; #9
-** igualdad_n ante la ley ; ^ igualdad_n 0 ; #3
-->grn <hekojoja_n ; 0==0 n:n,poses:poses ; #50 ; ##1
 ** igualdad_n ; ^ igualdad_n 0 ; #3
 ->grn joja_n ; 0==0 n:n,poses:poses ; #46
 ->grn <heko_n mbohovái ; 0==0 n:n,poses:poses

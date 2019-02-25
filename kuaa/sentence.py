@@ -1,13 +1,12 @@
-#   
 #   Mainumby/Mit'mit'a: sentences and how to parse and translate them.
 #
 ########################################################################
 #
-#   This file is part of the HLTDI L^3 project
+#   This file is part of the PLoGS meta-project
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyleft 2014, 2015, 2016, 2017, 2018
+#   Copyleft 2014, 2015, 2016, 2017, 2018, 2019
 #      HLTDI and PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
@@ -150,7 +149,7 @@
 # 2018.07.09
 # -- Roots in language exceptions.lex file cause morphological analysis to take precedence over POS tagger (cuarto_n, cuarto_a).
 
-import copy, re, random, itertools
+import copy, re, random, itertools, os
 from .ui import *
 from .segment import *
 from .record import SentRecord
@@ -184,31 +183,41 @@ class Document(list):
     # separated punctuation, including some that might be separated by error
     punc_re = re.compile(r"([\-–—&=.,:;\"+<>/?!%$]{1,3})$")
     # word of one character
-    word1_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)(\w)([)\]}\"\'»”’*\-–—,:;=]*[?|.]?)$")
+    word1_re = re.compile(r"([(\[{¡¿\-–—\"\'«»“”‘`*=]*)(\w)([)\]}\"\'»”’*\-–—,:;=]*[?|.!]?)$")
     # word of more than one character: one beginning character, one end character, 0 or more within characters;
     # followed by possible punctuation and a possible footnote
-    word_re = re.compile(r"([(\[{¡¿\-–—\"\'«“‘`*=]*)([\w#@~’][\w\-/:;+.'`’~&=\|]*[\w’/º#.])([)\]}\"\'»”’*\-–—,:;=]*[.?!]?[\"\'»”’]?\d*)$")
+#    word_re = re.compile(r"([(\[{¡¿\-–—\"\'«»”“‘`*=]*)([\w#@~’][\w\-/:;+.'`’~&=\|]*[\w’/º#.])([)\]}\"\'»”’*\-–—,:;=]*[.?!]?[\)\"\'»”’…]{0,2}\d*)$")
+    word_re = re.compile(r"([(\[{¡¿\-–—\"\'«»”“‘`*=]*)([\w#@~’][\w\-/:;+.'`’~&=\|]*[\w’/º#.])([)\]}\"\'»”’*\-–—,:;=.?!)\"\'»”’…]{0,3}\d*)$")
+    word_lenient_re = re.compile(r"([(\[{¡¿\-–—\"\'«»”“‘`*=]*)([\w#@~’][\w\-/:;+.'`’~&=\|]*[\w’/º#.])([)\]}\"\'»”’*\-–—,:;=.?!)\"\'»”’…]*\d*)$")
     period_re = re.compile("([\w.\-/:;+.'`’~&=\|]+\.)([\d]*)$")
-    start_re = re.compile('[\-–—¿¡\'\"«“‘(\[]+$')
+    start_re = re.compile('[\-–—¿¡\'\"«»“‘(\[]+$')
     poss_end_re = re.compile('[")\]}]{0,2}[?!][)"\]]{0,2}')
     # 0-2 pre-end characters (like ")"), 1 end character (.?!), 0-3 post-end characters (like ")" or footnote digits)
     end_re = re.compile('[\"\'”’»)\]}]{0,2}[.?!][.)»”’\'\"\]\-–—\d]{0,3}')
 
-    def __init__(self, language=None, target=None, text='', target_text='',
-                 proc=True, session=None, biling=False,
-                 reinitid=False, docid='',
-                 single=False):
+    def __init__(self, language=None, target=None, text='', target_text='', path='',
+                 proc=True, session=None, biling=False, alternating=True,
+                 reinitid=False, docid='', single=False):
         self.set_id(reinitid=reinitid, docid=docid)
         self.language = language
         self.target = target
-        self.text = text
         self.session = session
+        if not text and path:
+            text = Document.get_text_from_file(path)
         # Intermediate representations: list of word-like tokens and ints representing types
         self.tokens = []
         list.__init__(self)
         # Texts in two languages
         self.biling = biling
-        self.target_text = target_text
+        if biling:
+            if alternating:
+                self.text, self.target_text = Document.biling_sep(text)
+            else:
+                self.target_text = target_text
+                self.text = text
+        else:
+            self.text = text
+            self.target_text = ''
         self.target_tokens = []
         self.target_sentences = []
         # Whether the input consists of a single "sentence", possibly without final punctuation
@@ -224,6 +233,48 @@ class Document(list):
             self.process()
 #        print("Created document with session {}".format(session))
 
+    ## Processing monolingual and bilingual corpora which are already segmented by sentence.
+    
+    @staticmethod
+    def proc_preseg(source, target, sentences, session=None, biling=False, sep="\t"):
+        """sentences is a list of presegmented sentence strings (or pairs of sentences
+        if biling is True). Creates a list of Document instances (or a pair of lists),
+        each consisting of a single Sentence instance."""
+        sents1 = []
+        sents2 = []
+        for sentence in sentences:
+            if biling:
+                s1, s2 = Document.doc2bisents(source, target, sentence, session=session)
+                sents1.append(s1)
+                sents2.append(s2)
+            else:
+                s = Document.doc2sent(source, target, sentence, session=session)
+                sents1.append(s)
+        if biling:
+            return sents1, sents2
+        return sents1
+
+    @staticmethod
+    def doc2sent(source, target, text, session=None):
+        """Given a text and source and target languages, return a Sentence instance (or None if this is not possible)."""
+        return Document(source, target, text, proc=True, session=session, single=True).to_sentence()
+
+    @staticmethod
+    def doc2bisents(source, target, text, session=None):
+#        if text.count("\t") > 1:
+#            print("{} has too many tabs".format(text))
+        # There could be an extra tab following the target sentence.
+        text1, text2 = text.split("\t")[:2]
+        return Document.doc2sent(source, target, text1, session=session), \
+          Document.doc2sent(target, None, text2, session=session)
+
+    def to_sentence(self):
+        """Return the single (or first) sentence in the Document if there is one."""
+        if len(self) > 0:
+            return self[0]
+
+    ###
+    
     def set_id(self, reinitid=False, docid=''):
         if docid:
             self.id = docid
@@ -235,6 +286,25 @@ class Document(list):
 
     def __repr__(self):
         return "D[ {} ]D".format(self.id)
+
+    @staticmethod
+    def biling_sep(pairs, join=True, sep="\t"):
+        """Separate a text with a pair of sentences on each line, separated by sep, into two lists
+        of sentences. If join is True, join the sentences in each list by newlines."""
+#        pairs = text.split("\n")
+        s, t = pairs[::2], pairs[1::2]
+        if join:
+            s, t = '\n'.join(s), '\n'.join(t)
+        return s, t
+
+    @staticmethod
+    def get_text_from_file(path):
+        """Read in the text from a file."""
+        try:
+            with open(path, encoding='utf8') as file:
+                return file.readlines()
+        except IOError:
+            print("¡Archivo no encontrado!")
 
     def preprocess(self):
         """Preprocess the document text.
@@ -255,7 +325,7 @@ class Document(list):
         or a special MDT one."""
         if target:
             language = self.target
-            text = self.target.text
+            text = self.target_text
             target_language = None
             sentence_list = self.target_sentences
         else:
@@ -303,7 +373,6 @@ class Document(list):
         suf = ''
         word = None
         for token in text_tokens:
-#            print("  Token {}".format(token))
             tok_subtype = 0
             word_tok = False
             number = False
@@ -325,13 +394,18 @@ class Document(list):
                         if match:
                             word_tok = True
                         else:
-                            match = Document.word_re.match(token)
+                            # Introduced new more lenient regex 2018.12.26 (replacing word_re)
+                            match = Document.word_lenient_re.match(token)
                             if match:
                                 word_tok = True
                             else:
                                 print("Something wrong: {} fails to be an acceptable token".format(token))
-                                return
-                pre, word, suf = match.groups()
+                                if not input("Accept it anyway? "):
+                                    return
+                if match:
+                    pre, word, suf = match.groups()
+                else:
+                    pre, word, suf = None, token, None
                 if pre:
                     tokens.append((pre, 0, 0))
                 # Check to see if word ends in . (and opposition footnote digits) and is not an abbreviation
@@ -487,11 +561,9 @@ class Document(list):
             return self[index], self.target_sentences[index]
 
 class Sentence:
-    """A sentence is a list of words (or other lexical tokens) that gets
-    assigned a set of variables and constraints that are run during
-    parsing or translation. Starts either with raw, tokens generated by
-    Document, or tokens already pre-tagged and pre-analyzed by an
-    off-the-shelf tagger.
+    """A sentence is a list of words (or other lexical tokens) that gets assigned a set of variables
+    and constraints that are run during parsing or translation. Starts either with raw, tokens generated
+    by Document, or tokens already pre-tagged and pre-analyzed by an off-the-shelf tagger.
     2017.4.19: toktypes and toksubtypes seem no longer useful.
     tokens is just a list of tokens now."""
 
@@ -642,6 +714,45 @@ class Sentence:
         for segmentation in segmentations:
             print("SEGMENTATION {}".format(segmentation.index))
             segmentation.display(word_width=gap)
+
+    ## Bilingual sentence pairs and analyses
+
+    @staticmethod
+    def biling_anal(source_sent, target_sent, verbosity=0):
+        sanal = source_sent.analyze(translate=True, verbosity=verbosity)
+        tanal = target_sent.analyze(translate=False, verbosity=verbosity)
+        return sanal, tanal
+
+    @staticmethod
+    def biling_anal1(source_sents, target_sents, index, verbosity=0):
+        return Sentence.biling_anal(source_sents[index], target_sents[index],
+                                    verbosity=verbosity)
+
+    @staticmethod
+    def bitext_anal(source_sents, target_sents, report_every=20, start=0, end=-1, verbosity=0):
+        result = []
+        if end < 0:
+            end = len(source_sents)
+        for i, (s, t) in enumerate(zip(source_sents[start:end], target_sents[start:end])):
+            if not s or not t:
+                print("Warning {} or {} is empty".format(s, t))
+                break
+            sanal, tanal = Sentence.biling_anal(s, t, verbosity=verbosity)
+            result.append((sanal, tanal))
+            if (i + 1) % report_every == 0:
+                print("{} pares de oraciones procesados".format(i + 1))
+        return result
+
+    @staticmethod
+    def write_pseudosegs(source, segpairs, filename, append=True):
+        path = source.get_pseudoseg_file(filename)
+        with open(path, 'a' if append else 'w', encoding='utf8') as file:
+            for seg1, seg2 in segpairs:
+                if seg1 and seg2:
+                    # Ignore pairs with no segmentations
+                    print(seg1.pseudosegs, file=file)
+                    print(seg2.pseudosegs, file=file)
+                    print(file=file)
 
     ## Copying, for alternate syntactic representations
 
@@ -821,7 +932,7 @@ class Sentence:
             self.segment(token, index)
         self.clean()
 
-    def initialize(self, ambig=True, constrain_groups=True, verbosity=0, terse=False):
+    def initialize(self, ambig=True, constrain_groups=True, verbosity=0, terse=True):
         """Things to do before running constraint satisfaction."""
         if verbosity:
             print("Initializing {}".format(self))
@@ -848,7 +959,7 @@ class Sentence:
         else:
             return True
 
-    def tokenize(self, ambig=True, verbosity=0, terse=False):
+    def tokenize(self, ambig=True, verbosity=0, terse=True):
         """Segment the sentence string into tokens, analyze them morphologically,
         and create a SNode object for each.
         2015.06.07: Save the analyzed tokens as well as nodes.
@@ -901,7 +1012,7 @@ class Sentence:
                 # (this happens in MorphoSyn)
                 if ms.apply(self, ambig=ambig, verbosity=verbosity, terse=terse):
                     scopy = self.altsyns[-1]
-                    if verbosity and not terse:
+                    if verbosity or not terse:
                         print("{} copied sentence: {}".format(ms, scopy))
                     # Attempt to apply succeeding morphosyns to copy if there is one
                     for ms1 in self.language.ms[mi+1:]:
@@ -930,24 +1041,25 @@ class Sentence:
                             print("  tagger and analyzer agree on {} for {}".format(tag, anal))
                         results1.append(anal)
                     else:
-#                        if verbosity:
                         if len(anals) == 1:
-#                            if verbosity:
-                            print("  tagger and analyzer disagree on {}/{} for {}".format(tag, anal_pos, anal))
-                            print("   only 1 analysis, so accepting it")
+                            if verbosity:
+                                print("  tagger and analyzer disagree on {}/{} for {}".format(tag, anal_pos, anal))
+                                print("   only 1 analysis, so accepting it")
                             results1.append(anal)
                         elif aindex == 0:
-                            print("  tagger and analyzer disagree on {}/{} for {}".format(tag, anal_pos, anal))
+                            if verbosity:
+                                print("  tagger and analyzer disagree on {}/{} for {}".format(tag, anal_pos, anal))
                             root = anal.get('root')
                             if root in self.language.exceptions:
-#                                if verbosity:
-                                print("  root {} is in exceptions, so using morphology".format(root))
+                                if verbosity:
+                                    print("  root {} is in exceptions, so using morphology".format(root))
                                 results1.append(anal)
                             else:
-#                                if verbosity:
-                                print("    rejecting {}".format(anal))
+                                if verbosity:
+                                    print("    rejecting {}".format(anal))
                         else:
-                            print("  rejecting non-preferred analysis {} by analyzer for {}".format(anal_pos, word))
+                            if verbosity:
+                                print("  rejecting non-preferred analysis {} by analyzer for {}".format(anal_pos, word))
                 elif tag:
                     if verbosity:
                         print("  no features for {}, using tagger POS {}".format(word, tag))
@@ -1059,7 +1171,7 @@ class Sentence:
             if k not in keys:
                 keys.add(k)
 
-    def lexicalize(self, constrain_groups=False, verbosity=0, terse=False):
+    def lexicalize(self, constrain_groups=False, verbosity=0, terse=True):
         """Find and instantiate all groups that are compatible with the tokens in the sentence."""
         if verbosity:
             print("Lexicalizing {}, terse={}".format(self, terse))
@@ -1116,12 +1228,12 @@ class Sentence:
         for head_i, key, group in candidates:
             # Check whether there is already a match for this position, key, and group length
             # LATER HAVE A BETTER WAY OF CHOOSING A MATCH
-            if verbosity or group.debug:
+            if verbosity > 1 or group.debug:
                 print("Checking candidate {} with head {} and key {}".format(group, head_i, key))
             matched_key = (head_i, key, len(group.tokens), group.get_nfeatures)
             if matched_key in matched_keys:
                 # Reject this match because there's already a comparable one
-                if verbosity or group.debug:
+                if verbosity > 1 or group.debug:
                     print("{} rejected because {} already found".format(group, matched_key))
                 continue
             # Matching snodes, along with root and unified features if any
@@ -1166,7 +1278,7 @@ class Sentence:
             # Create a GInst object and GNodes for each surviving group
             self.groups.append(GInst(group, self, head_i, snodes, group_index))
             group_index += 1
-        if not terse:
+        if not terse or verbosity:
             print("{} grupo(s) encontrado(s) para {}".format(len(self.groups), self))
             for g in self.groups:
                 print("  {}".format(g))
@@ -1264,22 +1376,24 @@ class Sentence:
     ## As of 2018.12, "solutions" are really initial "segmentations".
 
     def solve(self, translate=True, all_sols=False, all_trans=True, interactive=False,
-              max_sols=0, verbosity=0, tracevar=None):
+              max_sols=0, verbosity=0, tracevar=None, terse=True):
         """Generate segmentations, for all analyses if all_sols is True and translations (if translate is True)."""
         self.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
-                    max_sols=max_sols, verbosity=verbosity, tracevar=tracevar)
+                    max_sols=max_sols, verbosity=verbosity, tracevar=tracevar, terse=terse)
         if all_sols or (len(self.segmentations) < max_sols):
             for s in self.altsyns:
                 s.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
                          max_sols=max_sols, verbosity=verbosity, tracevar=tracevar)
     
     def solve1(self, translate=True, all_sols=False, all_trans=True, interactive=False,
-               max_sols=0, verbosity=0, tracevar=None):
+               max_sols=0, verbosity=0, tracevar=None, terse=True):
         """Generate segmentations and translations (if translate is true)."""
         if not self.groups:
-            print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SEGMENTACIÓN POSIBLE".format(self))
+            if not terse or verbosity:
+                print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SEGMENTACIÓN POSIBLE".format(self))
             return
-        print("Resolviendo {}".format(self))
+        if not terse or verbosity:
+            print("Resolviendo {}".format(self))
         ds = None
         generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity,
                                           tracevar=tracevar)
@@ -1296,7 +1410,8 @@ class Sentence:
                     translated = segmentation.translate(verbosity=verbosity,
                                                         all_trans=all_trans, interactive=interactive)
                     if not translated:
-                        print("Translation failed; trying next segmentation!")
+                        if not terse:
+                            print("Translation failed; trying next segmentation!")
                         continue
                     else:
                         # Store the translation segmentation
@@ -1304,7 +1419,8 @@ class Sentence:
                 else:
                     # Parsing; store the segmentation and display the parse
                     self.segmentations.append(segmentation)
-                    self.display(show_all_sols=False)
+                    if not terse:
+                        self.display(show_all_sols=False)
                 if max_sols and len(self.segmentations) >= max_sols:
                     proceed = False
                 if all_sols:
@@ -1315,8 +1431,9 @@ class Sentence:
             if verbosity:
                 print('No more segmentations')
         if not self.segmentations:
-            print("Last DS: {}".format(ds))
-            print("NINGUNAS SEGMENTACIONES encontradas para {}".format(self))
+            if not terse or verbosity:
+                print("Last DS: {}".format(ds))
+                print("NINGUNAS SEGMENTACIONES encontradas para {}".format(self))
 
     def translate(self, sol_index=-1, all_trans=False, verbosity=0):
         """Translate the segmentation with sol_index or all segmentations if index is negative."""
@@ -1834,7 +1951,8 @@ class Segmentation:
     GNode in a selected group. Created when a complete variable assignment
     is found for a sentence."""
 
-    def __init__(self, sentence, ginsts, s2gnodes, index, trees=None, dstore=None, session=None):
+    def __init__(self, sentence, ginsts, s2gnodes, index, trees=None, dstore=None, session=None,
+                 terse=True):
         self.sentence = sentence
         # Source language
         self.source = sentence.language
@@ -1861,7 +1979,8 @@ class Segmentation:
         self.session = session
         # Properties of selected groups, simpler than actual Segs
         self.pseudosegs = None
-        print("SEGMENTACIÓN CREADA con dstore {} y ginsts {}".format(dstore, ginsts))
+        if not terse:
+            print("SEGMENTACIÓN CREADA con dstore {} y ginsts {}".format(dstore, ginsts))
 
     def __repr__(self):
         return "|< {} >|({})".format(self.sentence.raw, self.index)
@@ -2311,14 +2430,21 @@ class Segmentation:
             print(" Creando pseudosegmentos para {}".format(self))
         self.pseudosegs = []
         for ginst in self.ginsts:
+            name = ginst.group.name
+#            gh = ginst.head
+#            tok = gh.token
+#            feats = gh.features
             if translate:
                 ginst.set_translations()
-                transgroups = [t[0] for t in ginst.translations]
-                transprops = [(g.head, g.features[g.head_index] if g.features else None) for g in transgroups]
+                transgroups = {t[0] for t in ginst.translations}
+#                transprops = [(g.head, g.features[g.head_index] if g.features else None) for g in transgroups]
+                transprops = [g.name for g in transgroups]
+#                ps = tok, feats, transprops
+                ps = name, transprops
             else:
-                transprops = None
-            gh = ginst.head
-            self.pseudosegs.append((gh.gtoken, gh.features, transprops))
+#                ps = tok, feats
+                ps = name
+            self.pseudosegs.append(ps)
 
     ## Generation, joining, group matching following initial segmentation
 

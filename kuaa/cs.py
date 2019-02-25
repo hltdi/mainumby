@@ -188,7 +188,7 @@ class Solver:
 #        print("{} lower {}, upper {}".format(variable, variable.get_lower(dstore=dstore), variable.get_upper(dstore=dstore)))
         if isinstance(variable, IVar):
             if verbosity:
-                print(' making constraints with values: {}, {}'.format(subset1, subset2))
+                print(' making member constraints for {} with values: {}, {}'.format(variable, subset1, subset2))
             return Member(variable, subset1, record=False), Member(variable, subset2, record=False)
         else:
             # For a set Var, add subset1 to the lower bound, subtract subset1
@@ -196,7 +196,7 @@ class Solver:
             v1 = variable.get_lower(dstore=dstore) | subset1
             v2 = variable.get_upper(dstore=dstore) - subset1
             if verbosity:
-                print(' making constraints with values: {}, {}'.format(v1, v2))
+                print(' making superset/subset constraints for {} with values: {}, {}'.format(variable, v1, v2))
             return Superset(variable, v1, record=False), Subset(variable, v2, record=False)
 
     def distribute(self, state=None, verbosity=0):
@@ -332,9 +332,8 @@ class SearchState:
                     awaken.remove(constraint)
 
             if state == Constraint.failed:
-#                if verbosity:
-                print("FAILED {}".format(constraint))
-#                failed.add(constraint)
+                if verbosity:
+                    print("FAILED {}".format(constraint))
                 return Constraint.failed
 
             # Check whether any of the changed vars cannot possibly be determined; if so,

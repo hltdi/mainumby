@@ -135,7 +135,7 @@ FORM_FEATS = re.compile("([$%~<'`^*¿?¡!|()\-\w̃]+)\s*((?:\[.+\])?)$")
 # !FS(#1-#2), representing a sequence of #1 to #2 negative FS matches
 NEG_FEATS = re.compile("\s*!(\[.+\])(\(\d-\d\))$")
 # fail if category or feature matches an item that otherwise fails (before cat token)
-FAILIF = re.compile("\s*!(.+)$")
+# FAILIF = re.compile("\s*!(.+)$")
 ## fail if category matches an item that otherwise fails
 #FAILIF_CAT = re.compile("\s*(!\$\w+)$")
 HEAD = re.compile("\s*\^\s*([$~<'¿?¡!|\-\w]+)\s+(\d)\s*$")
@@ -276,7 +276,7 @@ class Entry:
 
     ### Translations of entries
 
-    def get_translations(self):
+    def get_translations(self, limit=2):
         return self.trans
 
 #    def add_trans(self, language, trans, count=1):
@@ -419,6 +419,15 @@ class Group(Entry):
                 return False
         return True
 
+    def order_trans(self, tc_entry):
+        """Order the translations associated with the group by their counts in the corresponding
+        transcount entry."""
+        trans = self.trans
+        # Ignore the actual counts?
+        tc = [t[0] for t in tc_entry]
+        score = lambda t: tc.index(t) if t in tc else 10
+        trans.sort(key = lambda t: score(t[0].name))
+
     # Group properties
 
     def get_cat_indices(self):
@@ -465,28 +474,28 @@ class Group(Entry):
         """Convert the group to a string, writable to a file."""
         # First line:
         #   ** tokens ; ^ head head_index
-        tokens = []
-        feats = self.features
-        if feats and any(feats):
-            for tok, feat in zip(self.tokens, feats):
-                if feat:
-                    tokens.append("{}{}".format(tok, feat.__repr__()))
-                else:
-                    tokens.append(tok)
-        else:
-            tokens = self.tokens[:]
-        failif = self.failif
-        if failif:
-            failindex, failcats = failif
-            failcats = "!{}".format('|'.join(failcats))
-            tokens[failindex:failindex] = [failcats]
-        string = "** {} ; ^ {} {}\n".format(' '.join(tokens), self.head, self.head_index)
+        name = ' '.join(self.name.split('.'))
+#        tokens = []
+#        feats = self.features
+#        if feats and any(feats):
+#            for tok, feat in zip(self.tokens, feats):
+#                if feat:
+#                    tokens.append("{}{}".format(tok, feat.__repr__()))
+#                else:
+#                    tokens.append(tok)
+#        else:
+#            tokens = self.tokens[:]
+#        failif = self.failif
+#        if failif:
+#            failindex, failcats = failif
+#            failcats = "!{}".format('|'.join(failcats))
+#            tokens[failindex:failindex] = [failcats]
+        string = "** {} ; ^ {} {}\n".format(name, self.head, self.head_index)
         # Remaining lines:
         #   ->target tokens ; || k, l ; m==n s:t,s:t ; u=v w,x ; -X-
         for trans in self.trans:
             tgroup, tdict = trans
-            string += "->{} {}".format(tgroup.language.abbrev, ' '.join(tgroup.tokens))
-            
+            string += "->{} {}".format(tgroup.language.abbrev, tgroup.name)
             string += "\n"
         #->amh $n[cs=acc] Tmd_v[as=smp,vc=smp] ; || 1, 0 ; 0==1 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg,ax:ax
         return string
@@ -654,8 +663,8 @@ class Group(Entry):
             # Start of group is before beginning of sentence
             return False
         matcheddel = False
-        if self.failif:
-            failfrom, failspec = self.failif
+#        if self.failif:
+#            failfrom, failspec = self.failif
         for index, token in enumerate(self.tokens):
             # Whether there's a sentence node gap between this token and the last one that matched
             nodegap = 0
@@ -675,8 +684,8 @@ class Group(Entry):
             if verbosity > 1 or self.debug:
                 print(" Attempting to match {} in {}".format(token, self))
             tryfail = False
-            if self.failif and index >= failfrom:
-                tryfail = True
+#            if self.failif and index >= failfrom:
+#                tryfail = True
             matched = False
             # For each SNode starting with snindex...
             for node in snodes[snindex:]:
@@ -685,18 +694,18 @@ class Group(Entry):
                     print(fstring.format(node, index, nodegap, gapmax))
                 # If this snode is unknown, the group can't include it unless it's in a permitted gap
                 if node.is_unk() and gapmax == 0:
-                    if verbosity or self.debug:
+                    if verbosity > 1 or self.debug:
                         print("  Node is unknown!")
                     break
                 # Fail because gap is too long
                 if nodegap > gapmax:
                     break
-                # If there is a failif condition for the group and the position within the group is right,
-                # see if we should fail here
-                if tryfail:
-                    negm = node.neg_match(failspec, debug=self.debug, verbosity=verbosity)
-                    if negm:
-                        break
+#                # If there is a failif condition for the group and the position within the group is right,
+#                # see if we should fail here
+#                if tryfail:
+#                    negm = node.neg_match(failspec, debug=self.debug, verbosity=verbosity)
+#                    if negm:
+#                        break
                 snode_indices = node.raw_indices
                 snode_start, snode_end = snode_indices[0], snode_indices[-1]
                 leftdel = None
@@ -740,7 +749,7 @@ class Group(Entry):
                         node_match = node.match(token, feats, verbosity=node_verbosity)
                     if node_match == False:
                         # This has to match, so fail now
-                        if verbosity or self.debug:
+                        if verbosity > 1 or self.debug:
                             print("   {} failed to find match for head token {} with node {}".format(self, token, node))
                         return False
                     else:
@@ -803,7 +812,7 @@ class Group(Entry):
                 return False
             else:
                 match_snodes.append(match_snodes1)
-        if verbosity or self.debug:
+        if verbosity > 1 or self.debug:
             print("Group {}, s_indices {}".format(self, match_snodes))
         return match_snodes
 
@@ -826,7 +835,7 @@ class Group(Entry):
         head_index = -1
         head = None
         features = None
-        failif = None
+#        failif = None
         count = 0
 #        nogap = False
         intervening = None
@@ -926,20 +935,20 @@ class Group(Entry):
 #                negfeats, counts = negm.groups()
 #                print("Negative match: {}, {}".format(negfeats, counts))
 #                continue
-            m = FAILIF.match(token)
-            if m:
-                failif_spec = m.groups()[0]
-                # This could be a set of specs separated by '|'
-                failif_specs = failif_spec.split('|')
-                for findex, f_spec in enumerate(failif_specs):
-                    # This is either a category (beginning with '$') or POS (just a string)
-                    # or a feature structure
-                    if '[' in f_spec:
-                        # This is a feature structure that must fail to match
-                        f_spec = FeatStruct(f_spec)
-                        failif_specs[findex] = f_spec
-                failif = (index, failif_specs)
-                continue
+#            m = FAILIF.match(token)
+#            if m:
+#                failif_spec = m.groups()[0]
+#                # This could be a set of specs separated by '|'
+#                failif_specs = failif_spec.split('|')
+#                for findex, f_spec in enumerate(failif_specs):
+#                    # This is either a category (beginning with '$') or POS (just a string)
+#                    # or a feature structure
+#                    if '[' in f_spec:
+#                        # This is a feature structure that must fail to match
+#                        f_spec = FeatStruct(f_spec)
+#                        failif_specs[findex] = f_spec
+#                failif = (index, failif_specs)
+#                continue
             # separate features if any
             m = FORM_FEATS.match(token)
             if not m:
@@ -984,7 +993,8 @@ class Group(Entry):
         gname = Group.make_name(name_toks)
         existing_group = language.get_group(gname, key=head, posindex=posindex)
         g = existing_group or Group(realtokens, head_index=head_index, head=head, features=features, agr=within_agrs,
-                                    failif=failif, name=gname, count=count, string=string, posindex=posindex,
+#                                    failif=failif,
+                                    name=gname, count=count, string=string, posindex=posindex,
                                     trans_strings=tstrings, cat=cat, comment=comment, intervening=intervening)
         if target and not trans:
             # Add translation to source group
@@ -1101,8 +1111,8 @@ class MorphoSyn(Entry):
     """
 
     def __init__(self, language, name=None, pattern=None,
-                 del_indices=None, swap_indices=None, add_items=None, featmod=None, failif=None, agr=None,
-                 strict=None, expanded=False):
+                 del_indices=None, swap_indices=None, add_items=None, featmod=None,
+                 failif=None, agr=None, strict=None, expanded=False):
         """pattern and change are strings, which get expanded at initialization.
         direction = True is left-to-right matching, False right-to-left matching.
         """
@@ -1693,7 +1703,7 @@ class MorphoSyn(Entry):
 #                print("trg_feats {}, frozen? {}".format(trg_feats.__repr__(), trg_feats.frozen()))
                 # Because it may be mutated, use a copy of trg_feats
                 for src_feats in src_feats_list:
-                    if src_feats:
+                    if src_feats and trg_feats is not True:
                         # It might not be an FSSet, but needs to be for agree_FSS()
                         src_feats = FSSet(src_feats)
                         if verbosity > 1 or self.debug:
@@ -1728,6 +1738,9 @@ class MorphoSyn(Entry):
                     elem[1] = [fm_feats.copy()]
                 else:
                     for index, feats in enumerate(feats_list):
+                        if isinstance(feats, bool):
+                            # feats could be False or True
+                            continue
                         if index == anal_fail_index:
                             # The MS didn't match
                             if verbosity > 1 or self.debug:

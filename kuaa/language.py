@@ -7,7 +7,8 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyleft 2014, 2015, 2016, 2017, 2018; HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyleft 2014, 2015, 2016, 2017, 2018, 2018, 2019;
+#      HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -63,6 +64,10 @@
 # -- Added list of "exceptions" that can override the POS tagger if the lexicon disagrees with it.
 # 2018.11
 # -- Groups organized by POS sets so they can be searched at different times.
+# 2018.12
+# -- "data" directory for corpora and analyses (at least related to disambiguation).
+# 2018.1
+# -- Translation counts read in.
 
 from .entry import *
 from .utils import firsttrue
@@ -274,6 +279,8 @@ class Language:
         # List of abbreviations (needed for tokenization)
         self.abbrevs = []
         self.read_abbrevs()
+        # Translation counts
+        self.transcounts = {}
         # Segmentation dicts
         self.segs = {}
         self.rev_segs = {}
@@ -529,6 +536,16 @@ class Language:
         """Directory with group files."""
         return os.path.join(self.directory, 'grp')
 
+    def get_data_dir(self):
+        """Data directory: corpus and corpus analyses."""
+        return os.path.join(self.directory, 'data')
+
+    def get_pseudoseg_file(self, filename):
+        return os.path.join(self.get_data_dir(), filename + '.ps')
+
+    def get_transcount_file(self, language):
+        return os.path.join(self.get_data_dir(), language + '.tc')
+
     def get_ms_file(self, target_abbrev):
         d = self.get_syn_dir()
         return os.path.join(d, target_abbrev + '.ms')
@@ -550,11 +567,11 @@ class Language:
             name = 'sem'
         return os.path.join(d, name + '.lex')
 
-    def get_lemma_file(self, name=''):
-        d = self.get_lex_dir()
-        if name == True or not name:
-            name = 'lemmas'
-        return os.path.join(d, name + '.lex')
+#    def get_lemma_file(self, name=''):
+#        d = self.get_lex_dir()
+#        if name == True or not name:
+#            name = 'lemmas'
+#        return os.path.join(d, name + '.lex')
 
     def get_abbrev_file(self, name=''):
         d = self.get_lex_dir()
@@ -620,18 +637,12 @@ class Language:
             pass
 #            print("El archivo semántico {} no existe".format(file))
 
-    def read_lemmas(self):
-        """Read in word, lemmas pairs, returning a dict."""
-        lemmas = {}
-        file = self.get_lemma_file()
-        try:
-            with open(file, encoding='utf8') as f:
-                for line in f:
-                    word, lemma = line.strip().split()
-                    lemmas[word] = lemma
-        except IOError:
-            print("No lemma file found")
-        return lemmas
+    def read_transcounts(self, language):
+        with open(self.get_transcount_file(language), encoding='utf8') as file:
+            for line in file:
+                head, translations = line.split("::")
+                head = head.strip()
+                self.transcounts[head] = eval(translations)
 
     def get_cats(self, form):
 #        print("Getting cats for {}".format(form))
@@ -1675,7 +1686,7 @@ class Language:
                             if tlang == target_abbrev:
                                 translations.append(tgroup)
                     target_groups.extend(translations)
-                # Creates the group and any target groups specified and adds them to self.groups
+                # Creates the group and any target groups specified and adds them to the appropriate posgroups
                 Group.from_string(source_group, self, translations, target=target, trans=False, tstrings=trans_strings,
                                   cat=gname, posindex=posindex)
 
@@ -1946,9 +1957,10 @@ class Language:
                 return
         # Load groups for source language now
         if not loaded:
-            srclang.read_groups(posnames=groups, target=targlang)
             srclang.read_ms(target=targlang)
             srclang.read_joins(target=targlang)
+            srclang.read_transcounts(target)
+            srclang.read_groups(posnames=groups, target=targlang)
         return srclang, targlang
         
     @staticmethod

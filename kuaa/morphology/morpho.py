@@ -241,7 +241,7 @@ class Morphology(dict):
                     continue
                 self.sort_analyses1(analyses, pos, feat, values)
 
-    def sort_analyses1(self, analyses, pos, feat, values):
+    def sort_analyses1(self, analyses, pos, feat, values, verbosity=0):
         def anal_index(analysis):
             root, anal = analysis
             anal_pos = anal.get('pos', 'v')
@@ -251,7 +251,8 @@ class Morphology(dict):
                 value = anal.get(feat)
                 if value:
                     if value not in values:
-                        print("{} not in {}".format(value, values))
+                        if verbosity:
+                            print("sorting analyes: {} not in {}".format(value, values))
                         return 100
                     return values.index(value)
                 return 100

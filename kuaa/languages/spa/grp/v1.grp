@@ -52,24 +52,12 @@
 ** odiar_v[-r,+fin] ; ^ odiar_v 0 ; #44
 ->grn py'aro_v[cat=a] ; #16 ; ##1
 ->grn royrõ_v[cat=a] ; #3
-** decir_v[-r,+fin] locuras o disparates ; ^ decir_v 0 ; #4879
-->grn ñe'ẽrei_v[cat=a]
-** decir_v[-r,+fin] seguidamente alguna cosa ; ^ decir_v 0 ; #4879
-->grn mbojoakykue_v[cat=a]
-** decir_v[-r,+fin] cosas inconvenientes ; ^ decir_v 0 ; #4879
-->grn mbohái_v[cat=a]
-** decir_v[-r,+fin] palabras irrespetuosas ; ^ decir_v 0 ; #4879
-->grn ñe'ẽvai_v[cat=a]
 ** decir_v[-r,+fin] que sí ; ^ decir_v 0 ; #4879
 ->grn neĩ_v[cat=a]
 ->grn mohe'ẽ_v[cat=a]
 ->grn moneĩ_v[cat=a]
-** decir_v[-r,+fin] verdades dolorosas ; ^ decir_v 0 ; #4879
-->grn jotopa_v[cat=a]
 ** decir_v[-r,+fin] palabras insípidas ; ^ decir_v 0 ; #4879
 ->grn ñembohái_v[cat=a]
-** decir_v[-r,+fin] puro disparate ; ^ decir_v 0 ; #4879
-->grn mborea_v[cat=a]
 ** decir_v[-r,+fin] malas palabras ; ^ decir_v 0 ; #4879
 ->grn ñe'ẽvai_v[cat=a]
 ** decir_v[-r,+fin] zalamerías ; ^ decir_v 0 ; #4879
@@ -8827,6 +8815,8 @@
 ->grn javyky_v[cat=a]
 ** matar_v[-r,+fin] ; ^ matar_v 0
 ->grn juka_v[cat=a]
+** matar_v[+r,+fin] ; ^ matar_v 0
+->grn jejuka_v[cat=a]
 ** matear_v[-r,+fin] ; ^ matear_v 0
 ->grn kay'u_v[cat=a]
 ** matizar_v[-r,+fin] ; ^ matizar_v 0
