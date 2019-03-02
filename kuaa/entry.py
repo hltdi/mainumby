@@ -10,7 +10,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyleft 2014, 2015, 2016, 2017, 2018
+#   Copyleft 2014, 2015, 2016, 2017, 2018, 2019
 #      HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
@@ -419,14 +419,24 @@ class Group(Entry):
                 return False
         return True
 
-    def order_trans(self, tc_entry):
+    def get_tc_entry(self):
+        """Get the transcount entry for the heard item."""
+        return self.language.transcounts.get(self.name)
+
+    def order_trans(self, tc_entry=None):
         """Order the translations associated with the group by their counts in the corresponding
         transcount entry."""
-        trans = self.trans
-        # Ignore the actual counts?
-        tc = [t[0] for t in tc_entry]
-        score = lambda t: tc.index(t) if t in tc else 10
-        trans.sort(key = lambda t: score(t[0].name))
+        tc_entry = tc_entry or self.get_tc_entry()
+        if tc_entry:
+            trans = self.trans
+            if len(trans) == 1:
+                return False
+            score = lambda t: tc_entry.get(t, 0.0)
+            trans.sort(key = lambda t: score(t[0].name), reverse=True)
+            trans_strings = self.trans_strings
+            trans_strings.sort(key = lambda t: score(t.split(';')[0].strip().split()[1]), reverse=True)
+            return True
+        return False
 
     # Group properties
 
@@ -1068,8 +1078,9 @@ class Group(Entry):
                 group.write(file)
 
     @staticmethod
-    def rewrite_groups(language, cat, groups=None):
+    def rewrite_groups(language, cat, groups=None, position=0):
         """Overwrite the groups file for cat with groups."""
+        groups = groups or Group.get_cat_groups(language, cat, position)
         path = language.get_cat_group_file(cat)
         with open(path, 'w', encoding='utf8') as file:
             # First write the defaults for this category
@@ -1078,10 +1089,10 @@ class Group(Entry):
                 group.write(file)
 
     @staticmethod
-    def get_cat_groups(language, cat, filt=None):
+    def get_cat_groups(language, cat, position=0, filt=None):
         """Return all groups in language with category cat that satisfy filter function."""
         cat_groups = []
-        for groups in language.groups.values():
+        for groups in language.posgroups[position].values():
             for group in filter(filt, groups):
                 if group.cat == cat:
                     cat_groups.append(group)

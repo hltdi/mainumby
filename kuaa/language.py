@@ -1723,6 +1723,23 @@ class Language:
                 tp, addition = default
                 print("+t {} {}".format(tp, addition), file=stream)
 
+    def update_posgroups(self, write=False):
+        """Use transcounts file to order translations of all groups.
+        If write is True, rewrite the updated groups in the appropriate file."""
+        for pos, cats in enumerate(self.grouppos):
+            for cat in cats:
+                self.update_posgroup(pos=pos, cat=cat, write=write)
+
+    def update_posgroup(self, groups=None, pos=0, cat='v1', write=False):
+        """Use transcounts file to order translations of groups in cat.
+        If write is True, rewrite the updated groups in the appropriate file."""
+        groups = groups or Group.get_cat_groups(self, cat, pos)
+        ordered = False
+        for group in groups:
+            ordered = group.order_trans() or ordered
+        if write and ordered:
+            Group.rewrite_groups(self, cat, groups)
+
     def read_ms(self, target=None, verbosity=0):
         """Read in MorphoSyns for target from a .ms file. If target is not None (must be a language), read in translation groups
         and cross-lingual features as well."""
