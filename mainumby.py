@@ -42,6 +42,8 @@
 # 2018
 # -- Web app
 #    Joins and SuperSegs
+# 2019
+# -- Limited disambiguation
 
 __version__ = 2.0
 
@@ -49,10 +51,27 @@ import kuaa
 
 ## Atajos
 
+## Creación y traducción de oración simple.
+def proc(oracion, generate=True, verbosity=0):
+    e, g = cargar()
+    session = kuaa.start(e, g, user, create_memory=True)
+    d = kuaa.Document(e, g, oracion, True, single=True, session=session)
+    if len(d) == 0:
+        return
+    s = d[0]
+    s.initialize(ambig=False, constrain_groups=True, verbosity=verbosity)
+    s.solve(all_sols=False, constrain_groups=True, verbosity=verbosity)
+    if s.segmentations:
+        s.process(generate=generate, verbosity=verbosity)
+        if generate:
+            return s.get_translations()
+        else:
+            return s
+
 ## Creación (y opcionalmente traducción) de oración simple y de documento.
 ## Por defecto, las palabras en segmentos no se generan morfológicamente.
 def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
-        single=False, translate=True, constrain_groups=True, generate=False,
+        single=True, translate=True, constrain_groups=True, generate=False,
         verbosity=0):
     e, g = cargar()
     session = kuaa.start(e, g, user, create_memory=single)
@@ -69,9 +88,9 @@ def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
         if s.segmentations:
             if translate and segment:
                 for seg in s.segmentations:
+                    seg.get_segs(html=False, single=single)
                     if generate:
                         seg.generate()
-                    seg.get_segs(html=generate)
                 segmentation = s.segmentations[0]
                 for segment in segmentation.segments:
                     print("{}: {}".format(segment, segment.cleaned_trans))

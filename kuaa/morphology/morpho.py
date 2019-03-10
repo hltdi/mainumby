@@ -88,6 +88,10 @@ class Morphology(dict):
         """File with cached analyses."""
         return os.path.join(self.directory, 'cache')
 
+    def get_stat_dir(self):
+        """Files with root and feature counts."""
+        return os.path.join(self.directory, 'stat')
+
     def unset_fsts(self):
         return [posmorph.unset_fsts() for posmorph in self.values()]
 
@@ -310,6 +314,7 @@ class POS:
         # The string used as type in FSs
         self.type = '%' + pos
         self.language = language
+        self.morphology = language.morphology
         ## FSTs
         # Analysis FST
         self.anal_fst = None
@@ -360,6 +365,9 @@ class POS:
         self.gen_cached = {}
         # New generations since language loaded, each entry a (root FS) pair and a list of words
         self.new_gens = {}
+        # Frequency statistics for generation
+        self.root_freqs = None
+        self.feat_freqs = None
 
     def quit(self):
         """Save new_gens in gen_cache."""
@@ -478,6 +486,26 @@ class POS:
             file.close()
 #        else:
 #            print("No analyzed forms found for", self.pos)
+
+    def set_root_freqs(self):
+        """If there's a root statistics file for generation for this POS, load it."""
+        filename = self.pos + '_root_freqs.dct'
+        path = os.path.join(self.morphology.get_stat_dir(), filename)
+        try:
+            with open(path, encoding='utf-8') as roots:
+                self.root_freqs = eval(roots.read())
+        except IOError:
+            print('No generation root frequency file {} found for {}'.format(path, self.pos))
+
+    def set_feat_freqs(self):
+        """If there's a feat statistics file for generation for this POS, load it."""
+        filename = self.pos + '_feat_freqs.dct'
+        path = os.path.join(self.morphology.get_stat_dir(), filename)
+        try:
+            with open(path, encoding='utf-8') as feats:
+                self.feat_freqs = eval(feats.read())
+        except IOError:
+            print('No generation feature frequency file {} found for {}'.format(path, self.pos))
 
     def get_features(self):
         '''Get the dict of grammatical features and values, generating it if {}.'''
@@ -624,7 +652,7 @@ class POS:
     def gen(self, root, features=None, update_feats=None,
             guess=False, segment=False, fst=None, timeit=False, only_one=False, cache=True,
             # Return only word forms
-            only_words=True,
+            only_words=True, sort=True,
             trace=False):
         """Generate word from root and features."""
 #        print("Update feats {}, type {}".format(update_feats, type(update_feats)))
@@ -668,6 +696,9 @@ class POS:
 #        print("Updated features: {}".format(fsset.__repr__()))
         if fst:
             gens = fst.transduce(root, fsset, seg_units=self.language.seg_units, trace=trace, timeit=timeit)
+            if sort and len(gens) > 1 and self.feat_freqs:
+                gens = self.score_gen_output(root, gens)
+                gens.sort(key=lambda g: g[-1], reverse=True)
             if only_words:
                 gens = [g[0] for g in gens]
             if cache and gens:
@@ -933,3 +964,31 @@ class POS:
         '''Print name.'''
         return self.pos + '_morphology'
 
+    def score_gen_output(self, root, output):
+        """Given multiple outputs from gen(), score them on the features that distinguish
+        them."""
+        forms = [o[0] for o in output]
+        feats = [o[1] for o in output]
+        diffs = FSSet.compareFSS(feats)
+        root_scores = [0.0] * len(forms)
+        feat_scores = [0.0] * len(forms)
+        # root-feature frequencies
+        if self.root_freqs and root in self.root_freqs:
+            root_freqs = self.root_freqs[root]
+            for feat, values in diffs.items():
+                if feat in root_freqs:
+                    root_feat_freqs = root_freqs[feat]
+                    root_feat_values = [root_feat_freqs.get(value, 0.0) for value in values]
+                    root_scores = [(x + y) for x, y in zip(root_scores, root_feat_values)]
+        # total feature frequencies
+        if self.feat_freqs:
+            for feat, values in diffs.items():
+                if feat in self.feat_freqs:
+                    feat_freqs = self.feat_freqs[feat]
+                    feat_values = [feat_freqs.get(value, 0.0) for value in values]
+                    feat_scores = [(x + y) for x, y in zip(feat_scores, feat_values)]
+        # scale the feat_scores by the proportion of the total root_scores to the feat_scores
+        scaling = sum(root_scores)/sum(feat_scores)
+        scores = [(r + f * scaling) for r, f in zip(root_scores, feat_scores)]
+        # return the outputs with scores appended
+        return [o + [s] for o, s in zip(output, scores)]

@@ -1951,6 +1951,9 @@ class Segmentation:
     GNode in a selected group. Created when a complete variable assignment
     is found for a sentence."""
 
+    # Maximum number of group translations permitted
+    max_group_trans = 2
+
     def __init__(self, sentence, ginsts, s2gnodes, index, trees=None, dstore=None, session=None,
                  terse=True):
         self.sentence = sentence
@@ -2097,7 +2100,8 @@ class Segmentation:
                 is_top = not any([(tree < other_tree) for other_tree in self.trees])
                 group_attribs = []
                 any_anode = False
-                for tgroup, tgnodes, tnodes in ginst.translations:
+                # This is the first place we can limit the number of translations allowed
+                for tgroup, tgnodes, tnodes in ginst.translations[:Segmentation.max_group_trans]:
 #                    print("  tgroup {}, tgnodes {}, tnodes {}".format(tgroup, tgnodes, tnodes))
                     for tgnode, tokens, feats, agrs, t_index in tgnodes:
                         if tgnode.cat:

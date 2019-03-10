@@ -1979,7 +1979,8 @@ class Join(Entry):
             segment = segments[segindex]
             match2 = segment.match_join(patelem, verbosity=verbosity)
             if match2:
-                print(" {} matched {}".format(segment, self))
+                if verbosity:
+                    print(" {} matched {}".format(segment, self))
                 match1.append((segindex, segment, match2))
                 segindex += 1
                 patindex += 1

@@ -540,6 +540,11 @@ class Language:
         """Data directory: corpus and corpus analyses."""
         return os.path.join(self.directory, 'data')
 
+#    def get_stat_dir(self):
+#        """Statistics directory: root and feature frequencies
+#        for disambiguation. Also in Morphology."""
+#        return os.path.join(self.directory, 'stat')
+
     def get_pseudoseg_file(self, filename):
         return os.path.join(self.get_data_dir(), filename + '.ps')
 
@@ -1255,6 +1260,9 @@ class Language:
             # Load FST
             if generate:
                 posmorph.load_fst(generate=True, guess=guess, segment=segment, verbose=verbose)
+                # Load statistics for generation
+                posmorph.set_root_freqs()
+                posmorph.set_feat_freqs()
             if analyze:
                 posmorph.load_fst(generate=False, guess=guess, segment=segment, verbose=verbose)
             # Do others later
@@ -2103,7 +2111,7 @@ class Language:
             for posmorph in list(morf.values()):
                 output.extend(posmorph.gen(root, update_feats=features, guess=guess, only_words=True))
         if output:
-#            print(" output: {}".format(output))
+            print(" gen output: {}".format(output))
             # if there is a postprocessing dict, apply it
             if self.postproc:
                 self.char_postproc_list(output)

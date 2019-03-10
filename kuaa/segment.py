@@ -280,7 +280,7 @@ class Seg:
     def generate(self, verbosity=0):
         """Generate surface forms for segment."""
         if verbosity:
-            print("Generating forms for segment {} with cleaned trans {} and raw token str {}".format(self, self.cleaned_trans, self.raw_token_str))
+            print("Generating segment {} with cleaned trans {} and raw token str {}".format(self, self.cleaned_trans, self.raw_token_str))
         generator = self.target.generate
         special = '%' in self.raw_token_str or '~' in self.raw_token_str
         cleaned_trans = []
@@ -479,7 +479,7 @@ class Seg:
         tokens = self.token_str
         orig_tokens = self.original_token_str
         trans_choice_index = 0
-#        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
+        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
         # T Group strings associated with each choice
         choice_tgroups = []
         if self.is_punc:
@@ -755,8 +755,6 @@ class SolSeg(Seg):
         else:
             self.original_tokens = tokens
         self.original_token_str = ' '.join(self.original_tokens)
-        if self.original_token_str[0] == '~':
-            self.original_token_str = self.original_token_str[1:]
         # If there are special tokens in the source language, fix them here.
         if '%' in self.token_str: # or '~' in self.token_str:
 #            print("Handling special item {}, delay_gen {}".format(self.token_str, delay_gen))
@@ -772,10 +770,14 @@ class SolSeg(Seg):
 #                self.translate_special(translation or tokens)
             self.token_str = Seg.clean_spec(self.token_str)
             self.original_token_str = Seg.clean_spec(self.original_token_str)
-        if self.original_token_str[0] == '~':
-            self.original_token_str = self.original_token_str[1:]
-        if self.token_str[0] == '~':
-            self.token_str = self.token_str[1:]
+        if '~' in self.original_token_str:
+            self.original_token_str = self.original_token_str.replace('~', '')
+        if '~' in self.token_str:
+            self.token_str = self.token_str.replace('~', '')
+#        if self.original_token_str[0] == '~':
+#            self.original_token_str = self.original_token_str[1:]
+#        if self.token_str[0] == '~':
+#            self.token_str = self.token_str[1:]
         if not self.cleaned_trans:
             self.cleaned_trans = self.translation[:]
         # Join tokens in cleaned translation if necessary
