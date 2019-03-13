@@ -2,89 +2,20 @@
 <html lang="es">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
-
 </head>
 
 <body>
 
 <form action='' id='form' method="post">
 
-<table class="left">
-  <tr class="brown">
-    <td class="title">
-    <img class='banner' src="{{url_for('static',
-      filename='banner_logo.png')}}" alt="" width="300" height="52" />
-    </td>
+{% block menu %}{% endblock %}
 
-    <td class="title" style="width: 625px"></td>
+{% block body %}{% endblock %}
 
-    <td class="menu" style="width: 140px">
-      <div class='despleg-wrap'>
-      <button type="button" class="despleg" onclick="mostrarDespleg()">TRADUCIR ▾</button>
-      <div id="menudespleg" class="contenido-despleg">
-        <span class='opinic' onclick="traducir()">ORACIÓN</span>
-	<span class='opinic' onclick="documento()">DOCUMENTO</span>
-      </div>
-      </div>
-      </td>
-    <td class="menu" style="width: 160px">
-       <button class="menu" onclick="ingresar()">INICIAR SESIÓN</button></td>
-    <td class="menu" style="width: 140px"><a href="acerca">ACERCA DE</a></td>
-    <td class="menu" style="width: 135px"><a href="contacto">CONTACTO</a></td>
-
-  </tr>
-</table>
-
-<h1>Tereg̃uahẽporãite Mainumby-pe</h1>
-<div id="cargando">
-
-<p>
-Mainumby es una aplicación experimental que ayuda a traducir del
-  castellano al guaraní.
-  Se está desarrollando dentro del proyecto
-  <a href="http://homes.sice.indiana.edu/gasser/pisur.html">Procesamiento de Idiomas del Sur
-  Global (PISUR)</a>, dirigido por Prof. Michael Gasser, y desde diciembre 2018, se está evaluando y
-  extendiendo con colaboración de la <a
-  href="http://www.yvymaraey.org">Fundación Yvy Marãe'ỹ</a> en San
-  Lorenzo, Paraguay.
-<ul>
-  <li>
-Para usarlo para la traducción de una palabra, una frase, o una
-  oración simple, seleccioná ORACIÓN bajo TRADUCIR.</li>
-<li>Para la traducción de un documento, seleccioná DOCUMENTO bajo TRADUCIR.</li>
-<li>Para identificarte antes de usar el traductor, seleccioná INICIAR
-  SESIÓN.</li>
-</ul>
-
-<!--
-<p id='buttons'>
-  <input type="button" value="ORACIÓN" id="button" onclick="traducir()">
-  <input type="submit" value="DOCUMENTO" id="button" onclick="ingresar()">
-</p>
--->
-</form>
-
-</div>
-
-<script>
-function documento() {
-    cargando();
-    window.location.assign("doc");
-}
-function ingresar() {
-    form = document.getElementById("form");
-    form.action = "login";
-    form.submit();
-}
-function traducir() {
-    cargando();
-    form = document.getElementById("form");
-    form.action = "tra";
-    form.submit();
-}
-</script>
+{% block script %}{% endblock %}
 <script async="" src="{{url_for('static', filename='Misc.js')}}"></script>
 
 </body>

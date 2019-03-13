@@ -40,7 +40,7 @@
       </div>
       </td>
     <td class="menu" style="width: 160px">
-       <button class="menu" onclick="ingresar()">INICIAR SESIÓN</button></td>
+       <button class="menu" onclick="ingresar()">IDENTIFICARTE</button></td>
     <td class="menu" style="width: 140px"><a href="acerca">ACERCA DE</a></td>
     <td class="menu" style="width: 135px"><a href="contacto">CONTACTO</a></td>
 
@@ -72,7 +72,7 @@ function ingresar() {
 }
 function traducir() {
     form = document.getElementById("form");
-    document.getElementById("cargando").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
+    document.getElementById("cargando").innerHTML = "<p></p><span class='cargando'>Reiniciando sesión.<br />Cargando base de datos...</span><p></p>";
     form.action = "tra";
     form.submit();
 }

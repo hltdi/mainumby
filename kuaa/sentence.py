@@ -598,6 +598,8 @@ class Sentence:
             self.rawtokens = None
         self.toktypes = toktypes
         self.original = original
+        # Token segmentations: (token, segmentation, token_index)
+        self.toksegs = []
         # Set capitalization and final punctuation booleans
         if not self.original or self.original[0].isupper():
             self.capitalized = True
@@ -795,12 +797,14 @@ class Sentence:
     ## Initial processing
     
     def segment(self, token, tok_index, verbosity=0):
-        """Segment token if possible, replacing it in self.tokens with segmentation."""
+        """Segment token if possible, replacing it in self.tokens with segmentation.
+        Note that this has nothing to do with the class Segmentation."""
         segmentation = self.language.segs.get(token)
         if segmentation:
             self.tokens[tok_index:tok_index+1] = segmentation
             # Also increase the toktypes list
             self.toktypes[tok_index:tok_index+1] = [self.toktypes[tok_index], 1]
+            self.toksegs.append((token, segmentation, tok_index))
 
     def clean(self):
         """Apply the language-specific clean-up function to normalize orthography and punctuation."""
@@ -1376,17 +1380,17 @@ class Sentence:
     ## As of 2018.12, "solutions" are really initial "segmentations".
 
     def solve(self, translate=True, all_sols=False, all_trans=True, interactive=False,
-              max_sols=0, verbosity=0, tracevar=None, terse=True):
+              limit_trans=True, max_sols=0, verbosity=0, tracevar=None, terse=True):
         """Generate segmentations, for all analyses if all_sols is True and translations (if translate is True)."""
         self.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
-                    max_sols=max_sols, verbosity=verbosity, tracevar=tracevar, terse=terse)
+                    limit_trans=limit_trans, max_sols=max_sols, verbosity=verbosity, tracevar=tracevar, terse=terse)
         if all_sols or (len(self.segmentations) < max_sols):
             for s in self.altsyns:
                 s.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
-                         max_sols=max_sols, verbosity=verbosity, tracevar=tracevar)
+                         limit_trans=limit_trans, max_sols=max_sols, verbosity=verbosity, tracevar=tracevar)
     
     def solve1(self, translate=True, all_sols=False, all_trans=True, interactive=False,
-               max_sols=0, verbosity=0, tracevar=None, terse=True):
+               limit_trans=True, max_sols=0, verbosity=0, tracevar=None, terse=True):
         """Generate segmentations and translations (if translate is true)."""
         if not self.groups:
             if not terse or verbosity:
@@ -1407,7 +1411,7 @@ class Sentence:
                     print('FOUND ANALYSIS', segmentation)
                 if translate and self.target:
                     # Translating
-                    translated = segmentation.translate(verbosity=verbosity,
+                    translated = segmentation.translate(verbosity=verbosity, limit_trans=limit_trans,
                                                         all_trans=all_trans, interactive=interactive)
                     if not translated:
                         if not terse:
@@ -1435,11 +1439,11 @@ class Sentence:
                 print("Last DS: {}".format(ds))
                 print("NINGUNAS SEGMENTACIONES encontradas para {}".format(self))
 
-    def translate(self, sol_index=-1, all_trans=False, verbosity=0):
+    def translate(self, sol_index=-1, all_trans=False, limit_trans=True, verbosity=0):
         """Translate the segmentation with sol_index or all segmentations if index is negative."""
         segmentations = self.segmentations if sol_index < 0 else [self.segmentations[sol_index]]
         for segmentation in segmentations:
-            segmentation.translate(all_trans=all_trans, verbosity=verbosity)
+            segmentation.translate(all_trans=all_trans, limit_trans=limit_trans, verbosity=verbosity)
 
     ## Create IVars and (set) Vars with sentence DS as root DS
 
@@ -1896,7 +1900,7 @@ class Sentence:
     def get_html(self, single=False):
         """Create HTML for a sentence with no segmentation."""
         tokens = ' '.join(self.tokens)
-        tokens = SolSeg.clean_spec(tokens)
+        tokens = Segment.clean_spec(tokens)
         if single:
             # Create button
             trans_html = "<div class='desplegable'>"
@@ -1938,7 +1942,8 @@ class Sentence:
         if verbosity:
             print("Analizando {}".format(self))
         self.initialize(ambig=False, constrain_groups=False, verbosity=verbosity)
-        self.solve(all_sols=False, translate=False, verbosity=verbosity)
+        self.solve(all_sols=False, translate=False, verbosity=verbosity,
+                   limit_trans=False)
         if self.segmentations:
             segmentation = self.segmentations[0]
             segmentation.make_pseudosegs(translate=translate, verbosity=verbosity)
@@ -1976,7 +1981,7 @@ class Segmentation:
         self.ttrans_outputs = None
         # Variable domain store for segmentation state
         self.dstore = dstore
-        # List of SolSegs, sentence segments with translations
+        # List of Segments, sentence segments with translations
         self.segments = []
         # Current session (need for creating SegRecord objects)
         self.session = session
@@ -1995,7 +2000,8 @@ class Segmentation:
 
     ## Creating translations
     
-    def translate(self, verbosity=0, all_trans=False, interactive=False):
+    def translate(self, verbosity=0, all_trans=False, interactive=False,
+                  limit_trans=True):
         """Do everything you need to create the translation."""
         merged = self.merge_nodes(verbosity=verbosity)
         if not merged:
@@ -2006,7 +2012,8 @@ class Segmentation:
                     print("{} translations already set in other segmentation".format(ginst))
             else:
                 ginst.set_translations(verbosity=verbosity)
-        self.make_translations(verbosity=verbosity, all_trans=all_trans, interactive=interactive)
+        self.make_translations(verbosity=verbosity, all_trans=all_trans, interactive=interactive,
+                               limit_trans=limit_trans)
         return True
 
     def merge_nodes(self, verbosity=0):
@@ -2073,7 +2080,8 @@ class Segmentation:
             self.gnodes_feats.append((gnodes, feats_unified))
         return True
 
-    def make_translations(self, verbosity=0, display=True, all_trans=False, interactive=False):
+    def make_translations(self, verbosity=0, display=True, all_trans=False, interactive=False,
+                          limit_trans=True):
         """Create a TreeTrans object for each GInst and tree. build() each top TreeTrans and
         realize translation. Whew."""
         if verbosity:
@@ -2101,7 +2109,10 @@ class Segmentation:
                 group_attribs = []
                 any_anode = False
                 # This is the first place we can limit the number of translations allowed
-                for tgroup, tgnodes, tnodes in ginst.translations[:Segmentation.max_group_trans]:
+                ginsttrans = ginst.translations
+                if limit_trans:
+                    ginsttrans[:Segmentation.max_group_trans]
+                for tgroup, tgnodes, tnodes in ginsttrans:
 #                    print("  tgroup {}, tgnodes {}, tnodes {}".format(tgroup, tgnodes, tnodes))
                     for tgnode, tokens, feats, agrs, t_index in tgnodes:
                         if tgnode.cat:
@@ -2157,7 +2168,7 @@ class Segmentation:
                     tgroups = [t[0] for t in tgroup_comb]
                     tnodes = [t[1] for t in tgroup_comb]
                     tt.build(tg_groups=tgroups, tg_tnodes=tnodes, verbosity=verbosity)
-                    tt.generate_words()
+                    tt.generate_words(limit_forms=limit_trans)
                     tt.make_order_pairs(verbosity=verbosity)
                     tt.create_variables()
                     tt.create_constraints()
@@ -2169,7 +2180,7 @@ class Segmentation:
 
     def get_ttrans_outputs(self):
         """Return a list of (snode_indices, translation_strings, source group name, source merger groups, target targets, group head)
-        for the segmentation's tree translations. These are needed for the creation of SolSeg instances."""
+        for the segmentation's tree translations. These are needed for the creation of Segment instances."""
         if not self.ttrans_outputs:
             self.ttrans_outputs = []
             last_indices = [-1]
@@ -2263,8 +2274,8 @@ class Segmentation:
             space_before = 1
             if node_toktype == 2:
                 space_before = 0
-#            print("Node type for untranslated SolSeg: {}".format(node_toktype))
-            seg = SolSeg(self, indices, translation, stok_group, session=self.session,
+#            print("Node type for untranslated Segment: {}".format(node_toktype))
+            seg = Segment(self, indices, translation, stok_group, session=self.session,
                          gname=None, sfeats=sfeat_group[0],
                          space_before=space_before, merger_groups=None, is_punc=is_punc,
                          is_paren=is_paren)
@@ -2275,7 +2286,7 @@ class Segmentation:
         return newsegs
 
     def get_segs(self, html=True, single=False):
-        """Set the segments (instances of SolSegment) for the segmentation, including their translations.
+        """Set the segments (instances of Segment) for the segmentation, including their translations.
         THIS IS MESSY BECAUSE OF THE POSSIBILITY OF PARENTHETICALS AND GAPS.
         """
         tt = self.get_ttrans_outputs()
@@ -2329,11 +2340,11 @@ class Segmentation:
                 src_tokens = pre_paren + parenthetical + post_paren
             else:
                 src_tokens = pre_paren
-#            print("Creating SolSeg with parenthetical {}, source tokens {}, head {}".format(parenthetical, src_tokens, thead))
+#            print("Creating Segment with parenthetical {}, source tokens {}, head {}".format(parenthetical, src_tokens, thead))
             src_nodes = [sentence.get_node_by_raw(index) for index in range(start, end+1)]
             src_feats = [(s.analyses if s else None) for s in src_nodes]
 #            print("src feats {}".format(src_feats))
-            seg = SolSeg(self, raw_indices, forms, src_tokens, treetrans=treetrans,
+            seg = Segment(self, raw_indices, forms, src_tokens, treetrans=treetrans,
                          session=self.session, gname=gname, sfeats=src_feats[0],
                          tgroups=tgroups, merger_groups=merger_groups, head=thead,
                          has_paren=[pre_paren, paren_record, post_paren] if parenthetical else None,
@@ -2400,7 +2411,7 @@ class Segmentation:
                 segment.set_html(i)
 
     def get_gui_segments(self, single=False):
-        """These may differ from SolSegs because of intervening segments within outer segments."""
+        """These may differ from Segments because of intervening segments within outer segments."""
         segments = []
         enclosings = []
         parens = []
@@ -2473,16 +2484,16 @@ class Segmentation:
                 matched = False
             iteration += 1
         if generate:
-            self.generate(verbosity=verbosity)
+            self.generate(limit_forms=True, verbosity=verbosity)
         return all_matches
     
-    def generate(self, verbosity=0):
+    def generate(self, limit_forms=True, verbosity=0):
         """Generate forms within segmentation segments."""
         for segment in self.segments:
-            segment.generate(verbosity=verbosity)
+            segment.generate(limit_forms=limit_forms, verbosity=verbosity)
 
     def match(self, joingroupings=None, verbosity=1):
-        """Try to match the sequence of SolSegs in this segmentation with the patterns
+        """Try to match the sequence of Segments in this segmentation with the patterns
         in all the Join instances, taking Join instances one at a time in order."""
         matches = []
         segments = self.segments
@@ -2626,7 +2637,7 @@ class Segmentation:
                 self.match_groups(groupsid=g, verbosity=verbosity)
                 g += 1
         if generate:
-            self.generate()
+            self.generate(limit_forms=True)
 
     ## Final translation
     def get_translation(self):

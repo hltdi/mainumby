@@ -67,6 +67,8 @@
 # -- Lots of changes and fixes in SolSeg.
 # 2018.10.30
 # -- SuperSeg
+# 2019.3.12
+# -- Changed SolSeg to Segment.
 
 import itertools, copy, re
 from .cs import *
@@ -75,12 +77,16 @@ from .morphology.semiring import FSSet
 from .entry import Entry, Group
 from .record import SegRecord
 from .utils import *
+from kuaa.morphology.utils import reduce_lists
 
 class Seg:
     """Interface class for segments:
-    SolSeg, resulting from matching a group and possibly one or more merged groups under it
-    SuperSeg, resulting from joining two or more SolSegs.
+    Segment, resulting from matching a group and possibly one or more merged groups under it
+    SuperSeg, resulting from joining two or more Segments.
     """
+
+    # Maximum number of generated forms permitted, given a root and set of update features
+    max_gen_forms = 2
 
     # colors to display segments in interface
     tt_colors = ['blue', 'sienna', 'green',
@@ -108,7 +114,7 @@ class Seg:
         self.thead = None
         self.scats = None
         self.special = False
-        self.raw_token_str = ''
+        self.original_token_str = ''
         self.token_string = ''
         self.clean_trans = None
         self.html = []
@@ -119,6 +125,7 @@ class Seg:
         self.record = None
         self.gname = None
         self.merger_gnames = None
+        self.indices = None
 
     def get_tokens(self):
         toks = self.get_shead_tokens() or self.get_untrans_token() or [self.token_str]
@@ -132,7 +139,7 @@ class Seg:
         """For untranslated segments, return the cleaned string."""
         return self.cleaned_trans and self.cleaned_trans[0][0]
 
-    ## Head properties (used in joining SolSegs to form Supersegs)
+    ## Head properties (used in joining Segments to form Supersegs)
     def get_shead_tokens(self):
         if self.shead:
             return [(h[0] if isinstance(h, tuple) else h) for h in self.shead]
@@ -173,11 +180,11 @@ class Seg:
             if self.thead:
                 return [h[1] for h in self.thead]
 
-    def generate(self, verbosity=0):
+    def generate(self, limit_forms=True, verbosity=0):
         raise NotImplementedError()
 
     def get_special(self, del_spec=False):
-        """If SolSeg is special, return its category and the token as a tuple."""
+        """If Segment is special, return its category and the token as a tuple."""
         if self.special:
             if self.cleaned_trans:
                 # Already translated
@@ -194,7 +201,7 @@ class Seg:
     # Matching Join and Group instances
 
     def match_join(self, join_elem, verbosity=0):
-        """Does this SolSeg match a pattern element in a Join? join_elem
+        """Does this Segment match a pattern element in a Join? join_elem
         is either a FSSet or a string."""
         if isinstance(join_elem, str):
             if verbosity:
@@ -277,7 +284,7 @@ class Seg:
                     groups.extend(groups1)
             return groups
             
-    def generate(self, verbosity=0):
+    def generate(self, limit_forms=True, verbosity=0):
         """Generate surface forms for segment."""
         if verbosity:
             print("Generating segment {} with cleaned trans {} and raw token str {}".format(self, self.cleaned_trans, self.raw_token_str))
@@ -303,6 +310,9 @@ class Seg:
                     # We need to generate it
                     token, pos, feats = item
                     form = generator(token, feats, pos=pos)
+                    # Include only first max_gen_forms forms
+                    if limit_forms:
+                        form = form[:Seg.max_gen_forms]
                     form = '|'.join(form)
 #                    if verbosity:
 #                        print("      Generated form {}".format(form))
@@ -326,7 +336,8 @@ class Seg:
             self.source_html += "<span style='color:{};'> {} </span>".format(self.color, self.post_token_str)
         else:
             cap = index == 0 and self.sentence.capitalized
-            tokstr = self.token_str
+            tokstr = self.original_token_str
+#            tokstr = self.token_str
             if cap:
                 tokstr = tokstr[0].upper() + tokstr[1:]
             self.source_html = "<span style='color:{};'> {} </span>".format(self.color, tokstr)
@@ -353,7 +364,7 @@ class Seg:
         tokens = self.token_str
         orig_tokens = self.original_token_str
         trans_choice_index = 0
-        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
+#        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
         # T Group strings associated with each choice
         choice_tgroups = []
         # Currently selected translation
@@ -595,6 +606,20 @@ class Seg:
         else:
             return cleaned_trans, trans
 
+    def unseg_tokens(self):
+        """Rejoin tokens in original_token_str that were segmented when the Sentence was created."""
+        toksegs = self.sentence.toksegs
+        if toksegs:
+            remove = []
+            for triple in toksegs:
+                tok, seg, index = triple
+                if index in self.indices:
+                    # The tokseg is in this Seg; join it
+                    self.original_token_str = self.original_token_str.replace(' '.join(seg), tok)
+                    remove.append(triple)
+            for triple in remove:
+                toksegs.remove(triple)
+
     @staticmethod
     def remove_spec_pre(string):
         """Remove special prefixes, for example, '%ND~'."""
@@ -623,7 +648,7 @@ class Seg:
                     stringlists[i][j] = Seg.join_toks(string)
 
 class SuperSeg(Seg):
-    """SuperSegment: joins SolSeg instances into larger units, either via a Join rule
+    """SuperSegment: joins Segment instances into larger units, either via a Join rule
     or a Group."""
 
     def __init__(self, segmentation, segments=None, features=None, name=None, join=None, verbosity=0):
@@ -642,16 +667,24 @@ class SuperSeg(Seg):
         self.thead = self.head_seg.thead
         if self.head_seg.special:
             self.special = True
-        ## Copy properties of sub-SolSegs
+        ## Copy properties of sub-Segments
         self.record = self.segments[0].record
         raw_tokens = []
         token_str = []
-        original_token_str = []
+        # Indices are those of sub-Segments.
+        self.indices = reduce_lists([seg.indices for seg in segments])
+        self.indices.sort()
+#        original_token_str = []
         self.translation = []
         gname = []
         self.merger_gnames = []
         self.cleaned_trans = []
         self.tgroups = []
+        self.original_token_str = ' '.join([seg.original_token_str for seg in self.segments])
+        # Rejoin tokens segmented during Sentence creation
+        self.unseg_tokens()
+        print("Orig tokens: {}".format(self.original_token_str))
+#        print("Superseg: {}".format(self))
         for i in self.order:
             if i < 0:
                 # This represents a target token with no corresponding source token
@@ -663,24 +696,29 @@ class SuperSeg(Seg):
             if self.cleaned_trans:
                 if segment.cleaned_trans:
                     self.cleaned_trans = [ct1 + ct2 for ct1 in self.cleaned_trans for ct2 in segment.cleaned_trans]
-#                self.cleaned_trans = [[ct1, ct2] for ct1 in self.cleaned_trans for ct2 in segment.cleaned_trans]
             else:
                 self.cleaned_trans = segment.cleaned_trans
             if self.tgroups:
-                self.tgroups = [tg1 + tg2 for tg1 in self.tgroups for tg2 in segment.tgroups]
+                if segment.tgroups:
+                    # Segment may have no translation (e.g., "de")
+                    self.tgroups = [tg1 + tg2 for tg1 in self.tgroups for tg2 in segment.tgroups]
             else:
                 self.tgroups = segment.tgroups
             self.translation.append(segment.translation)
             raw_tokens.append(segment.raw_token_str)
             token_str.append(segment.token_str)
-            original_token_str.append(segment.original_token_str)
+#            original_token_str.append(segment.original_token_str)
+#            print("  Raw tokens {}".format(raw_tokens))
+#            print("  Token string {}".format(token_str))
+#            print("  Original token string {}".format(original_token_str))
             gname.append(segment.gname or '')
             if segment.merger_gnames:
                 self.merger_gnames.extend(segment.merger_gnames)
+#            print("  Segment {}, {}".format(i, self.tgroups))
         self.gname = "++".join(gname)
         self.raw_token_str = ' '.join(raw_tokens)
         self.token_str = ' '.join(token_str)
-        self.original_token_str = ' '.join(original_token_str)
+#        self.original_token_str = ' '.join(original_token_str)
 
     def __repr__(self):
         if self.name:
@@ -692,9 +730,10 @@ class SuperSeg(Seg):
 
     def apply_changes(self, verbosity=1):
         """Implement the changes to features and order specified in the Join or Group instance."""
+        print("Superseg {} applying changes".format(self))
         self.join.apply(self, verbosity=verbosity)
 
-class SolSeg(Seg):
+class Segment(Seg):
     """Sentence segmentation segment, realization of a Group, possibly merged with another. Displayed in GUI."""
 
     def __init__(self, segmentation, indices, translation, tokens, color=None, space_before=1,
@@ -702,7 +741,7 @@ class SolSeg(Seg):
                  tgroups=None, merger_groups=None, has_paren=False, is_paren=False,
                  head=None,
                  spec_indices=None, session=None, gname=None, is_punc=False):
-#        print("Creating SolSeg for indices {}, translation {}, head {}, sfeats {}".format(indices, translation, head, sfeats))
+#        print("Creating Segment for indices {}, translation {}, head {}, sfeats {}".format(indices, translation, head, sfeats))
         Seg.__init__(self, segmentation)
 #        if head:
 #            self.shead_index, self.shead, self.scats = head
@@ -739,7 +778,7 @@ class SolSeg(Seg):
         self.is_paren = is_paren
         self.token_str = ' '.join(tokens)
         self.raw_token_str = self.token_str[:]
-        # Later set this to the SolSeg instance that intervenes within this one
+        # Later set this to the Segment instance that intervenes within this one
         self.paren_seg = None
         # Stuff to do when there's a parenthetical segment within the segment
         if has_paren:
@@ -815,7 +854,7 @@ class SolSeg(Seg):
     ## Record
 
     def make_record(self, session=None, sentence=None):
-        """Create the SegRecord object for this SolSeg."""
+        """Create the SegRecord object for this Segment."""
         if sentence:
             return SegRecord(self, sentence=sentence.record, session=session)
 
@@ -1403,7 +1442,7 @@ class TNode:
 #        self.sentence = ginst.sentence
         self.index = index
 
-    def generate(self, verbosity=0):
+    def generate(self, limit_forms=True, verbosity=0):
         """Generate forms for the TNode."""
         print("Generating form for target token {} and features {}".format(self.token, self.features))
         if Entry.is_lexeme(self.token):
@@ -1830,7 +1869,7 @@ class TreeTrans:
 #        print("  Result", result)
         return result
 
-    def generate_words(self, verbosity=0):
+    def generate_words(self, limit_forms=True, verbosity=0):
         """Do intra-group agreement constraints."""
         # Reinitialize nodes
 #        print("Generating words in {}, features {}".format(self, self.node_features))
@@ -1859,7 +1898,7 @@ class TreeTrans:
                 agr_node1[1], agr_node2[1] = af1, af2
                 self.node_features[feat_index1][1] = af1
                 self.node_features[feat_index2][1] = af2
-        self.generate(verbosity=verbosity)
+        self.generate(limit_forms=limit_forms, verbosity=verbosity)
 #        generator = self.sentence.target.generate
 #        print("Nodes and features for generation: {}, {}".format(self.nodes, self.node_features))
 #        for token, features, index in self.node_features:
@@ -1881,7 +1920,7 @@ class TreeTrans:
 #                print("Generating target node {}: {}".format(index, output))
 #        print("Nodes after generation: {}".format(self.nodes))
 
-    def generate(self, verbosity=0):
+    def generate(self, limit_forms=True, verbosity=0):
         generator = self.sentence.target.generate
 #        print("Nodes and features for generation: {}, {}".format(self.nodes, self.node_features))
         for token, features, index in self.node_features:

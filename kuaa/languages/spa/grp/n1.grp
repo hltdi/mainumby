@@ -1448,7 +1448,6 @@
 ->grn mitãrusu_n ; 0==0 n:n,poses:poses
 ** niño_n ; ^ niño_n 0 ; #146
 ->grn mitã_n ; 0==0 n:n,poses:poses ; #830
-->grn mitã'i_n ; 0==0 n:n,poses:poses ; #24
 ** nombre_n de cosa ; ^ nombre_n 0
 ->grn mba'eréra_n ; 0==0 n:n,poses:poses
 ** nombre_n[poses=[+ext],n=0] ser_v ; ^ nombre_n 0

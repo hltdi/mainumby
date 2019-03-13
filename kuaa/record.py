@@ -509,14 +509,14 @@ class SegRecord:
         else:
             self.mergers = None
 #        print("Creating SegRecord for {} with gname {} and merger gnames {}".format(solseg, self.gname, self.mergers))
-        # List of tg groups, one for each choice in GUI (this could be taken from SolSeg)
+        # List of tg groups, one for each choice in GUI (this could be taken from Segment)
         self.choice_tgroups = None
         # tg group for selected translation
         self.tgroups = None
         # Add to parent SentRecord
         self.sentence.segments[self.tokens] = self
 #        self.sentence.seg_list.append(self)
-        # These get filled in during set_html() in SolSeg
+        # These get filled in during set_html() in Segment
         self.choices = []
         # Translation selected or provided by user
         self.seltrans = ''

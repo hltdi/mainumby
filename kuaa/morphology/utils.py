@@ -1,7 +1,7 @@
 """
 This file is part of MDT.
 
-    Copyleft 2015, 2016, 2017. HLTDI, PLoGS <gasser@indiana.edu>
+    Copyleft 2015, 2016, 2017, 2019. HLTDI, PLoGS <gasser@indiana.edu>
    
     Mainumby is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -57,6 +57,7 @@ def segment(word, units, correct=True):
                 res.append(ch)
                 pos += 1
     return res
+
 def reduce_lists(lists):
     '''Flatten a list of lists (doesn't mutate lists).'''
     return functools.reduce(lambda x, y: x + y, lists) if lists else []

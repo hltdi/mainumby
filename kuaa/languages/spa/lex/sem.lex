@@ -1178,7 +1178,7 @@ arrabal_n $n
 arraigar_v $v,$vt,$vi,$vp
 arraigo_n $n
 arramblar_v $v
-arrancar_v $v,$vi
+arrancar_v $v,$vi,$vex
 arranque_n $n
 arrasar_v $v,$vt,$vi
 arrastrar_v $v,$vt,$vp
@@ -6137,7 +6137,7 @@ extracto_n $n
 extradición_n $n
 extradir_v $v
 extraditar_v $v
-extraer_v $v,$vt
+extraer_v $v,$vt,$vex
 extranjero_n $n
 extranjero_a $a
 extraordinaria_n $n
@@ -11139,7 +11139,7 @@ quisquilloso_a $a
 quiste_n $n
 quitamanchas_n $n
 quitanieves_n $n
-quitar_v $v,$vt,$vp
+quitar_v $v,$vt,$vp,$vex
 quite_n $n
 quién $pro,$n
 qué $pro,$n
@@ -11784,7 +11784,7 @@ reticencia_n $n
 retina_n $n
 retirada_n $n
 retirado_a $a
-retirar_v $v,$vt,$vp
+retirar_v $v,$vt,$vp,$vex
 retiro_n $n
 reto_n $n
 retorcer_v $v,$vt,$vp
@@ -11911,7 +11911,7 @@ rizar_v $v,$vt,$vp
 rizo_n $n
 riña_n $n
 riñón_n $n
-robar_v $v,$vt
+robar_v $v,$vt,$vex
 roble_n $n
 robo_n $n
 robot_n $n,$nprs
@@ -12047,7 +12047,7 @@ sabotaje_n $n
 saboteador_n $n
 sabotear_v $v
 sabroso_a $a
-sacar_v $v,$vt,$vi
+sacar_v $v,$vt,$vi,$vex
 sacarina_n $n
 sacarosa_n $n
 sacerdote_n $n

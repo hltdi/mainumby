@@ -6,7 +6,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyleft 2015, 2016, 2017, 2018 HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyleft 2015, 2016, 2017, 2018, 2019 HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -63,20 +63,20 @@ def load(source='spa', target='grn'):
     return kuaa.Language.load_trans(source, target)
 
 def seg_trans(sentence, source, target, session=None, single=False,
-              constrain_groups=None, join=True, verbosity=0):
+              constrain_groups=None, process=True, verbosity=0):
     """Translate sentence and return marked-up sentence with segments colored.
     So far only uses first segmentation."""
     sentence.initialize(ambig=True, constrain_groups=constrain_groups, verbosity=verbosity)
     sentence.solve(translate=True, all_sols=False, all_trans=True, interactive=False,
-                   verbosity=verbosity)
+                   limit_trans=process, verbosity=verbosity)
     if sentence.segmentations:
         segmentation = sentence.segmentations[0]
         segmentation.get_segs(single=single, html=False)
-        if join:
-            segmentation.join(generate=False)
-        segmentation.generate()
+        if process:
+            segmentation.process(generate=False)
+        segmentation.generate(limit_forms=process)
         segmentation.seg_html(single=single)
-        segmentation.get_gui_segments(single=single)
+#        segmentation.get_gui_segments(single=single)
         return segmentation.segments, segmentation.get_gui_segments(single=single)
     else:
         return [], sentence.get_html(single=single)

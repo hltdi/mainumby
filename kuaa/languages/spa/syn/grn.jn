@@ -1,24 +1,28 @@
 ## unidades sintácticas al nivel de la oración
-# nominales 1
+## nominales 1
 >> nom1
 AyA :: [pos=a] y [pos=a] ; ^0
 AN :: [pos=a] [pos=n] ; 0=?1 n:n; 0=?1 g:g ; >1 0 ; ^1
 NA :: [pos=n] [pos=a] ; 0=?1 n:n; 0=?1 g:g ; ^0
 QN :: %N [pos=n] ; ^1
 DN :: $dem [pos=n] ; ^1
-NdeN :: [pos=n] de [pos=n] ; ^0 ; >2 0 ; 0[poses=[+ext,pp=3]]
 NyN :: [pos=n] y [pos=n] ; ^0
-# predicatos
+## predicatos
 >> pred1
+# minimal disambiguation of "de": -gui vs. possessive
+# transitive extractive verbs + "de": extraer, sacar, etc.
+VxNdeN :: $vex [pos=n] de [pos=n] ; ^0 ; 0[-ojxpl] ; 3[caso=gui]
+# possessive "de"
+NdeN :: [pos=n] de [pos=n] ; ^0 ; >2 0 ; 0[poses=[+ext,pp=3]]
 VaN :: $vt a [pos=n] ; ^0 ; 0[-ojxpl] ; 2[caso=pe]
 VO :: $vt [pos=n] ; ^0 ; 0[-ojxpl]
 AdvV :: $adv [pos=v] ; ^1
 VAdv :: [pos=v] $adv ; ^0
-# sujeto - verbo
+## sujeto - verbo
 >> sujpred
 VP :: [pos=v] $pp
 SV :: [pos=n] [pos=v] ; 0=?1 n:n ; 0=!1 n:ns ; ^1
 S[C]V :: %C [pos=v,n=0] ; ^1
-# nominales 2
+## nominales 2
 >> nom2
 NqV :: [pos=n] que [pos=v] ; ^0

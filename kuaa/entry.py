@@ -2,7 +2,7 @@
 #     Entry interface
 #     Group: basic lexical unit
 #     Morphosyn: pattern specifying source-to-target morphosyntactic transformation
-#     Join: pattern specifying joining sequence of SolSegs
+#     Join: pattern specifying joining sequence of Segments
 #
 ########################################################################
 #
@@ -112,7 +112,7 @@
 # 2018.08
 # -- Fixed ir/ser confusion in morphosyns (I think). So <ser_v adj> now matches "fue malo".
 # 2018.10
-# -- Join: patterns to join SolSegs into SuperSegs. Later share more in Entry (between
+# -- Join: patterns to join Segments into SuperSegs. Later share more in Entry (between
 #    Group, Morphosyn, Join).
 
 import copy, itertools
@@ -2036,17 +2036,17 @@ class Join(Entry):
                 # Add targfeats to feats in segindex Seg
                 segment = superseg.segments[segindex]
                 tfeats = segment.get_thead_feats()
-                print("Segment {}, thead {}, tfeats {}".format(segment, segment.thead, tfeats))
-                print("Adding features {} to targ features {}".format(addfeats.__repr__(), tfeats.__repr__()))
+                print("    Segment {}, thead {}, tfeats {}".format(segment, segment.thead, tfeats))
+                print("    Adding features {} to targ features {}".format(addfeats.__repr__(), tfeats.__repr__()))
                 for ti, th in enumerate(segment.thead):
 #                    troot, tpos, tf = th
                     tf = th[2]
-                    print("th {}".format(th))
+#                    print("th {}".format(th))
                     newtf = tf.unify_FS(addfeats)
                     if newtf != 'fail':
                         th[2] = newtf
 #                    segment.thead[ti] = troot, tpos, newtf
-                print("New thead {}".format(segment.thead))
+#                print("New thead {}".format(segment.thead))
         if self.segment_order:
             if verbosity:
                 print("  Swap {}".format(self.segment_order))

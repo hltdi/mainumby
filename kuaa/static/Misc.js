@@ -1,5 +1,5 @@
 function cargando() {
-    document.getElementById("cargando").innerHTML = "<p></p><span class='cargando'>Cargando base de datos (podría tardarse)...</span><p></p>";
+    document.getElementById("cargando").innerHTML = "<p></p><span class='cargando'>Iniciando sesión.<br/>Cargando base de datos (podría tardarse)...</span><p></p>";
 }
 /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
 function mostrarDespleg() {

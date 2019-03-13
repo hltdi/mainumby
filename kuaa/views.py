@@ -6,7 +6,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyleft 2015, 2016, 2017, 2018 HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyleft 2015, 2016, 2017, 2018, 2019 HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -95,7 +95,7 @@ def solve_and_segment(single=False):
     global SEGS
     global SEG_HTML
     SEGS, SEG_HTML = seg_trans(SENTENCE, SPA, GRN,
-                               single=single, join=False)
+                               single=single, process=True)
 #    print("Solved segs: {}, html: {}".format(SEGS, SEG_HTML))
     if single:
         global OF_HTML
@@ -107,15 +107,16 @@ def solve_and_segment(single=False):
 #        print("OM1 {}".format(OM1))
 #        print("OF HTML {}".format(OF_HTML))
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-#    print("In index...")
-    return redirect(url_for('base'))
+    print("In index...")
+    return render_template('index.html')
+#    return redirect(url_for('base'))
 
-@app.route('/base', methods=['GET', 'POST'])
-def base():
-#    print("In base...")
-    return render_template('base.html')
+#@app.route('/base', methods=['GET', 'POST'])
+#def base():
+##    print("In base...")
+#    return render_template('base.html')
 
 @app.route('/acerca', methods=['GET', 'POST'])
 def acerca():

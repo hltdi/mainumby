@@ -675,10 +675,10 @@ class Language:
                     form, seg = line.split('=')
                     form = form.strip()
                     seg = seg.strip()
-                    if self.use in [ANALYSIS, SOURCE]:
-                        self.segs[form] = seg.split()
-                    if self.use in [GENERATION, TARGET]:
-                        self.rev_segs[seg] = form
+#                    if self.use in [ANALYSIS, SOURCE]:
+                    self.segs[form] = seg.split()
+#                    if self.use in [GENERATION, TARGET]:
+                    self.rev_segs[seg] = form
         except IOError:
             pass
 #            print('El archivo de de segmentaciones {} no existe'.format(file))
@@ -2111,7 +2111,7 @@ class Language:
             for posmorph in list(morf.values()):
                 output.extend(posmorph.gen(root, update_feats=features, guess=guess, only_words=True))
         if output:
-            print(" gen output: {}".format(output))
+#            print(" gen output: {}".format(output))
             # if there is a postprocessing dict, apply it
             if self.postproc:
                 self.char_postproc_list(output)

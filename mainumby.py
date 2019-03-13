@@ -51,8 +51,9 @@ import kuaa
 
 ## Atajos
 
-## Creación y traducción de oración simple.
-def proc(oracion, generate=True, verbosity=0):
+## Creación y traducción de oración simple. Después de la segmentación inicial,
+## se combinan los segmentos, usando patrones gramaticales ("joins").
+def proc(oracion, html=False, user=None, verbosity=0):
     e, g = cargar()
     session = kuaa.start(e, g, user, create_memory=True)
     d = kuaa.Document(e, g, oracion, True, single=True, session=session)
@@ -60,13 +61,16 @@ def proc(oracion, generate=True, verbosity=0):
         return
     s = d[0]
     s.initialize(ambig=False, constrain_groups=True, verbosity=verbosity)
-    s.solve(all_sols=False, constrain_groups=True, verbosity=verbosity)
+    s.solve(all_sols=False, verbosity=verbosity)
     if s.segmentations:
-        s.process(generate=generate, verbosity=verbosity)
-        if generate:
-            return s.get_translations()
-        else:
-            return s
+        segmentation = s.segmentations[0]
+        print("Found segmentation {}".format(segmentation))
+        segmentation.get_segs(html=False, single=True)
+        segmentation.process(generate=False, verbosity=verbosity)
+        segmentation.generate(limit_forms=True)
+        if html:
+            segmentation.seg_html(single=True)
+        return segmentation
 
 ## Creación (y opcionalmente traducción) de oración simple y de documento.
 ## Por defecto, las palabras en segmentos no se generan morfológicamente.
@@ -80,8 +84,7 @@ def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
         print("Parece que falta puntuación final en el documento.")
         return
     s = d[0]
-    s.initialize(ambig=ambig, constrain_groups=constrain_groups,
-                 verbosity=verbosity)
+    s.initialize(ambig=ambig, constrain_groups=constrain_groups, verbosity=verbosity)
     if solve or segment:
         s.solve(all_sols=ambig or max_sols > 1, max_sols=max_sols,
                 translate=translate)

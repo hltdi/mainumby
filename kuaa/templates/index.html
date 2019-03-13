@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block menu %}
+<table class="left">
+  <tr class="brown">
+    <td class="title">
+    <img class='banner' src="{{url_for('static',
+      filename='banner_logo.png')}}" alt="" width="300" height="52" />
+    </td>
+
+    <td class="title" style="width: 625px"></td>
+
+    <td class="menu" style="width: 140px">
+      <div class='despleg-wrap'>
+      <button type="button" class="despleg" onclick="mostrarDespleg()">TRADUCIR ▾</button>
+      <div id="menudespleg" class="contenido-despleg">
+        <span class='opinic' onclick="traducir()">ORACIÓN</span>
+	<span class='opinic' onclick="documento()">DOCUMENTO</span>
+      </div>
+      </div>
+      </td>
+    <td class="menu" style="width: 160px">
+       <button class="menu" onclick="ingresar()">IDENTIFICARTE</button></td>
+    <td class="menu" style="width: 140px"><a href="acerca">ACERCA DE</a></td>
+    <td class="menu" style="width: 135px"><a href="contacto">CONTACTO</a></td>
+
+  </tr>
+</table>
+{% endblock %}
+
+{% block body %}
+<h1>Tereg̃uahẽporãite Mainumby-pe</h1>
+<div id="cargando">
+
+<p>
+Mainumby es una aplicación experimental que ayuda a traducir del
+  castellano al guaraní.
+  Se está desarrollando dentro del proyecto
+  <a href="http://homes.sice.indiana.edu/gasser/pisur.html">Procesamiento de Idiomas del Sur
+  Global (PISUR)</a>, dirigido por Prof. Michael Gasser.
+<!--  y desde diciembre 2018, se está evaluando y
+  extendiendo con colaboración de la <a
+  href="http://www.yvymaraey.org">Fundación Yvy Marãe'ỹ</a> en San
+  Lorenzo, Paraguay.
+-->
+<ul>
+  <li>
+Para usarlo para la traducción de una palabra, una frase, o una
+  oración simple, seleccioná ORACIÓN bajo TRADUCIR.</li>
+<li>Para la traducción de un documento, seleccioná DOCUMENTO bajo TRADUCIR.</li>
+<li>Para identificarte antes de usar el traductor, seleccioná IDENTIFICARTE.</li>
+</ul>
+
+</form>
+
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function documento() {
+    cargando();
+    window.location.assign("doc");
+}
+function ingresar() {
+    form = document.getElementById("form");
+    form.action = "login";
+    form.submit();
+}
+function traducir() {
+    cargando();
+    form = document.getElementById("form");
+    form.action = "tra";
+    form.submit();
+}
+</script>
+{% endblock %}

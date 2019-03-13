@@ -116,25 +116,13 @@ textarea#comment
     <td class="menuuser" style="width: 160px">{{ user }}</td>
     {% else %}
     <td class="menu" style="width: 160px">
-       <button class="menu" onclick="ingresar()">INICIAR SESIÓN</button>
+       <button class="menu" onclick="ingresar()">IDENTIFICARTE</button>
     </td>
     {% endif %}
     <td class="menu" style="width: 140px"><button class="menu"
       onclick="mostrarAyuda();">AYUDA</button></td>
     <td class="menu" style="width: 135px"><a href="contacto">CONTACTO</a></td>
 
-    <!--
-    <td class="title" style="width: 800px">
-    </td>
-
-    <td class="menu" style="width: 200px">
-      <input class="menu" type="submit" value="SALIR" name="salir" onclick="return alSalir();">
-    </td>
-
-    <td class="menu" style="width: 200px">
-      <button class="menu" onclick="mostrarAyuda();">AYUDA</button>
-    </td>
-    -->
     <input type="hidden" name="ayuda" value="">
     <input type="hidden" name="modo" value="ora">
 </tr>
@@ -208,7 +196,7 @@ Se dispone de <a href="https://archive.org/details/mainumby_201809">un video tut
     <td></td><td></td>
     <td>
       <span id="correccion" class="alternar" onclick="alternarCorreccion();">Desactivar corrección ortográfica automática.</span><br/>
-      <textarea class='ometa' id='textmeta' style='width: 600px'>{{trans1|safe}}</textarea>
+      <textarea class='ometa' id='textmeta' style='width: 100%'>{{trans1|safe}}</textarea>
     </td>
   </tr>
 
