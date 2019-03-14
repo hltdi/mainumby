@@ -18,6 +18,14 @@ body
         font-size: 14px;
 	font-family: verdana, geneva, arial, sans-serif;
 	background-color: #FFF;
+/*	display: inline-block; */
+}
+
+/* Center the body */
+div.body
+{
+    margin: 0 auto;
+    width: 1000px;
 }
 /*
 a:link { color: #4B2B17; text-decoration: underline}
@@ -39,6 +47,7 @@ h1
 	font-weight: bold;
 	color: #4B2B17;
 	background-color: #F5E754;
+	width: 99%;
 }
 h2
 {
@@ -106,6 +115,13 @@ div.instruc
    border: none;
    margin: none;
 }
+
+/*
+p
+{
+    width: 1000px;
+}
+*/
 
 p.instructions
 {
