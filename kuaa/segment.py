@@ -215,12 +215,18 @@ class Seg:
                 return pre == join_elem and tok
             elif '$' in join_elem:
                 # Match a category
+                # This fails if the segment doesn't have a translation
+                if not self.translation:
+                    return False
                 return self.scats and join_elem in self.scats
             else:
                 toks = self.get_tokens()
                 if verbosity > 1:
                     print("    Tokens to match {}".format(toks))
                 return any([join_elem == tok for tok in toks]) and toks
+        elif not self.translation:
+            # If group element has features, matching segment must have translation
+            return False
         else:
             feats = self.get_shead_feats()
 #            if verbosity:
@@ -240,6 +246,9 @@ class Seg:
         if verbosity:
             print("Matching item {} with group token {}".format(self, group_tok))
         if '$' in group_tok:
+            # segment has to have a translation to match a category
+            if not self.translation:
+                return False
             if not self.scats or group_tok not in self.scats:
                 return False
             elif self.get_shead_feats():

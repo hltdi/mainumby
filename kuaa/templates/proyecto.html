@@ -1,8 +1,6 @@
-<!doctype html>
-<html lang="es">
-<head>
-<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
+{% extends "base.html" %}
 
+{% block style %}
 <style type="text/css">
 table.example
 {
@@ -19,9 +17,9 @@ table.example tr td,th
     padding: 3px;
 }
 </style>
+{% endblock %}
 
-<title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní: Proyecto</title>
-
+{% block script %}
 <script>
 function ingresar() {
     form = document.getElementById("form");
@@ -35,26 +33,24 @@ function traducir() {
     form.submit();
 }
 </script>
+{% endblock %}
 
-</head>
-
-<body>
+{% block body %}
 
 <form action='login' id='form' method="post">
 
 <table class="left">
   <tr class="brown">
     <td class="title">
-    <a href="base">
+    <a href="/">
     <img class='banner' src="{{url_for('static',
-      filename='banner_logo.png')}}" alt="" width="300"
-      height="52" />
+      filename='banner_logo.png')}}" alt="" width="300" height="52" />
     </a>
     </td>
 
-    <td class="title" style="width: 625px"></td>
+    <td class="title" style="width: 50px"></td>
 
-    <td class="menu" style="width: 140px">
+    <td class="menu" style="width: 150px">
       <div class='despleg-wrap'>
       <button type="button" class="despleg" onclick="mostrarDespleg()">TRADUCIR ▾</button>
       <div id="menudespleg" class="contenido-despleg">
@@ -63,16 +59,13 @@ function traducir() {
       </div>
       </div>
     </td>
-    <td class="menu" style="width: 160px">
+    <td class="menu" style="width: 150px">
        <button class="menu" onclick="ingresar()">IDENTIFICARTE</button></td>
-    <td class="menu" style="width: 140px"><a href="acerca">ACERCA DE</a></td>
-    <td class="menu" style="width: 135px"><a href="contacto">CONTACTO</a></td>
-<!--
-    <td class="menu" style="width: 250px"><a href="contacto">CONTACTO</a></td>
-    <td class="menu" style="width: 250px"><input type="submit" value="INICIAR SESÍON" class="menu"></td>
--->
+    <td class="menu" style="width: 150px"><a href="acerca">ACERCA DE</a></td>
+    <td class="menu" style="width: 150px"><a href="contacto">CONTACTO</a></td>
   </tr>
-</table>  
+<tr>
+<td colspan='6' style="width: 1200px">
 
 <h1>Mainumby: el proyecto
   </h1>
@@ -362,8 +355,9 @@ Sept. 25-27, Bahir Dar, Etiopía.
 <hr/>
 
 </div>
-</form>
+</td>
+</tr>
+</table>
 
-<script async="" src="{{url_for('static', filename='Misc.js')}}"></script>
-</body>
-</html>
+</form>
+{% endblock %}

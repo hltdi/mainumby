@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
 
+{% block script %}
 <script>
 function ShowHelp() {
     var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=600,height=400");
@@ -22,19 +23,8 @@ function traducir() {
     form.action = "tra";
     form.submit();
 }
-/*
-function OnSalir() {
-    document.Form1.action = "fin"
-    document.Form1.target = "_self";     // Same window
-    document.Form1.submit();             // Submit the page
-    return true;
-}
-function loading() {
-    document.getElementById("loading").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
-    window.location.assign("doc");
-}
-*/
 </script>
+{% endblock %}
 
 <title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
 
@@ -42,18 +32,20 @@ function loading() {
 
 <body>
 
+{% block body %}
 <form name="Form1" id='form' method=POST>
 
 <table class="left">
-  <tr class='brown'>
-    <td class="title">
-    <img class='banner' src="{{url_for('static',
-      filename='banner_logo.png')}}" alt="" width="300px" height="52px" />
-    </td>
+ <tr class='brown'>
+   <td class="title">
+   <a href="/">
+   <img class='banner' src="{{url_for('static', filename='banner_logo.png')}}" alt="" width="300px" height="52px" />
+   </a>
+   </td>
 
-    <td class="title" style="width: 625px"></td>
+   <td class="title" style="width: 50px"></td>
 
-    <td class="menu" style="width: 140px">
+   <td class="menu" style="width: 150px">
       <div class='despleg-wrap'>
       <button type="button" class="despleg" onclick="mostrarDespleg()">TRADUCIR ▾</button>
       <div id="menudespleg" class="contenido-despleg">
@@ -62,18 +54,13 @@ function loading() {
       </div>
       </div>
       </td>
-    <td class="menuuser" style="width: 160px">{{ user }}</td>
-    <td class="menu" style="width: 140px"><a href="acerca">ACERCA DE</a></td>
-    <td class="menu" style="width: 135px"><a href="contacto">CONTACTO</a></td>
+   <td class="menuuser" style="width: 150px">{{ user }}</td>
+   <td class="menu" style="width: 150px"><a href="acerca">ACERCA DE</a></td>
+   <td class="menu" style="width: 150px"><a href="contacto">CONTACTO</a></td>
 
-<!--    <td style="width: 700px"></td>
-    <td class="menu" style="width: 250px"><input class="menu"
-      type="submit" value="SALIR" name="salir" onclick="return OnSalir();"></td>
-    <td class="menu" style="width: 250px"><button class="menu"
-      onclick="ShowHelp();">AYUDA</button></td>
--->
-  </tr>
-</table>
+</tr>
+<tr>
+<td colspan='6' style="width: 1200px">
 
 <h2>¡Cuenta creada! ¡Ingresaste como <span class="username">{{user}}</span>!</h2>
 <div id="cargando">
@@ -81,17 +68,11 @@ function loading() {
 Para continuar, seleccioná una de las opciones bajo el menú TRADUCIR.
 </p>
 </div>
+</td>
+</tr>
+</table>
 
-<!--
-<hr>
-
-<p>
-<button onclick="loading()" id="button">Continuar</button><br/>
-</p>
-
-<p id="loading">  </p>
-</form>
--->
+{% endblock %}
 
 <script async="" src="{{url_for('static', filename='Misc.js')}}"></script>
 </body>

@@ -1,8 +1,6 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
+{% extends "base.html" %}
 
+{% block script %}
 <script>
 function ShowHelp() {
     var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=600,height=400");
@@ -23,48 +21,24 @@ function traducir() {
     form.action = "tra";
     form.submit();
 }
-/*
-function OnSalir() {
-    document.Form1.action = "fin"
-    document.Form1.target = "_self";
-    document.Form1.submit();        
-    return true;
-}
-function loading() {
-    document.getElementById("loading").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
-    window.location.assign("doc");
-}
-*/
-function documento() {
-    cargando();
-    window.location.assign("doc");
-}
-function traducir() {
-    cargando();
-    form = document.getElementById("form");
-    form.action = "tra";
-    form.submit();
-}
 </script>
+{% endblock %}
 
-<title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
-
-</head>
-
-<body>
-
+{% block body %}
 <form name="Form1" id='form' method=POST>
 
 <table class="left">
   <tr class='brown'>
     <td class="title">
+      <a href='/'>
     <img class='banner' src="{{url_for('static',
       filename='banner_logo.png')}}" alt="" width="300px" height="52px" />
+      </a>
     </td>
 
-    <td class="title" style="width: 625px"></td>
+    <td class="title" style="width: 50px"></td>
 
-    <td class="menu" style="width: 140px">
+    <td class="menu" style="width: 150px">
       <div class='despleg-wrap'>
       <button type="button" class="despleg" onclick="mostrarDespleg()">TRADUCIR ▾</button>
       <div id="menudespleg" class="contenido-despleg">
@@ -73,14 +47,13 @@ function traducir() {
       </div>
       </div>
       </td>
-    <td class="menuuser" style="width: 160px">{{ user }}</td>
-    <td class="menu" style="width: 140px"><a href="acerca">ACERCA DE</a></td>
-    <td class="menu" style="width: 135px"><a href="contacto">CONTACTO</a></td>
+    <td class="menuuser" style="width: 150px">{{ user }}</td>
+    <td class="menu" style="width: 150px"><a href="acerca">ACERCA DE</a></td>
+    <td class="menu" style="width: 150px"><a href="contacto">CONTACTO</a></td>
   </tr>
-</table>
 
-</form>
-
+<tr>
+<td colspan='6' style="width: 1200px">
 <h4>
 ¡Ingresaste como <span class="username">{{ user }}</span>!
 </h4>
@@ -91,15 +64,10 @@ Para continuar, seleccioná una de las opciones bajo el menú TRADUCIR.
 </p>
 </div>
 
-<!--
-<hr>
+</td>
+</tr>
+</table>
 
-<p class="left" id="loading">
-<button onclick="loading()" id="button">Continuar</button><br/>
-</p>
--->
+</form>
 
-<script async="" src="{{url_for('static', filename='Misc.js')}}"></script>
-</body>
-
-</html>
+{% endblock %}

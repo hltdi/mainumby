@@ -1,8 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html>
-<head>
-<link rel="stylesheet" type=text/css href="{{url_for('static', filename='style.css')}}" />
+{% extends "base.html" %}
 
+{% block script %}
 <script>
 function ShowHelp() {
     var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=700,height=400");
@@ -30,21 +28,18 @@ function traducir() {
     window.location.assign("tra");
 }
 </script>
+{% endblock %}
 
-<title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
-
-</head>
-
-<body>
-
+{% block body %}
 <table class="left">
   <tr class='brown'>
     <td class="title">
-    <img class='banner' src="{{url_for('static',
-      filename='banner_logo.png')}}" alt="" width="300px" height="52px" />
+    <a href="/">
+    <img class='banner' src="{{url_for('static', filename='banner_logo.png')}}" alt="" width="300px" height="52px" />
+    </a>
     </td>
-   <td class="title" style="width: 625px">
-    <td class="menu" style="width: 140px">
+   <td class="title" style="width: 50px">
+    <td class="menu" style="width: 150px">
       <div class='despleg-wrap'>
       <button type="button" class="despleg" onclick="mostrarDespleg()">TRADUCIR ▾</button>
       <div id="menudespleg" class="contenido-despleg">
@@ -53,13 +48,14 @@ function traducir() {
       </div>
       </div>
       </td>
-    <td class="menufuzzy" style="width: 160px">INICIAR SESIÓN</td>
-    <td class="menu" style="width: 140px"><button class="menu"
+    <td class="menufuzzy" style="width: 150px">IDENTIFICARTE</td>
+    <td class="menu" style="width: 150px"><button class="menu"
       onclick="ShowHelp();">AYUDA</button></td>
-    <td class="menu" style="width: 135px"><a
+    <td class="menu" style="width: 150px"><a
       href="contacto">CONTACTO</a></td>
-  </tr>
-</table>
+    </tr>
+    <tr>
+<td colspan='6' style="width: 1200px">
 
 <h1>Creación de una cuenta</h1>
 
@@ -120,9 +116,8 @@ Error: ¡ten&eacute;s que introducir tu email!
 </form>
 
 </div>
+</td>
+</tr>
+</table>
 
-<script async="" src="{{url_for('static', filename='Misc.js')}}"></script>
-
-</body>
-
-</html>
+{% endblock %}

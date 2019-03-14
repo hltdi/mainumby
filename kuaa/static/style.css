@@ -354,9 +354,9 @@ input.text
         color: #4B2B17;
         font-family: "Verdana";
 	font-weight: bold;
-        font-size: 100%;
+        font-size: 110%;
 /*        align: center; */
-        width: 200px
+        width: 150px
 }
 #button:hover, #button:active, #mainbutton:hover, #mainbutton:active, #widebutton:hover, #narrowbutton:hover
 {
@@ -383,7 +383,7 @@ input.text
         font-family: "Verdana";
         font-size: 100%;
         align: center;
-        width: 250px;
+        width: 150px;
 }
 #narrowbutton
 {
@@ -401,7 +401,7 @@ input.text
         background-color: #F5E754;
         font-family: "Verdana";
         font-size: 100%;
-        width: 250px;
+        width: 150px;
         align: center;
 }
 #altbutton:hover

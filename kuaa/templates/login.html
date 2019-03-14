@@ -1,19 +1,17 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html>
-<head>
-<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
+{% extends "base.html" %}
 
+{% block style %}
 <style type="text/css">
-
 table.login
 {
     width: 70%;
     border: 0px;
     border-collapse: collapse;
-/*     border: 2px solid black; */
 }
 </style>
+{% endblock %}
 
+{% block script %}
 <script>
 function ShowHelp() {
     var helpWin = window.open("", "Mainumby: Ayuda", "titlebar=yes,scrollbars=yes,status=no,top=200,left=200,width=600,height=400");
@@ -40,15 +38,6 @@ function ShowHelp() {
 "de manera que nadie se aprovechará de tu conocimiento de los idiomas.</p>" +
 "</body></html>");
 }
-<!--
-function OnSalir()
-{
-    document.Form1.action = "fin"
-    document.Form1.target = "_self";     // Same window
-    document.Form1.submit();             // Submit the page
-    return true;
-}
--->
 function documento() {
     document.getElementById("cargando").innerHTML = "<span class='cargando'>Cargando base de datos (podría tardarse)...</span>";
     window.location.assign("doc");
@@ -69,25 +58,19 @@ function traducir() {
 //    form.submit();
 }
 </script>
+{% endblock %}
 
-<title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
-
-</head>
-
-<body>
-
+{% block body %}
 <table class="left">
   <tr class='brown'>
     <td class="title">
-    <a href="base">
-    <img class='banner' src="{{url_for('static',
-      filename='banner_logo.png')}}" alt="" width="300px"
-      height="52px" />
+    <a href="/">
+    <img class='banner' src="{{url_for('static', filename='banner_logo.png')}}" alt="" width="300px" height="52px" />
     </a>
     </td>
-    <td class="title" style="width: 625px"></td>
+    <td class="title" style="width: 50px"></td>
 
-    <td class="menu" style="width: 140px">
+    <td class="menu" style="width: 150px">
       <div class='despleg-wrap'>
       <button type="button" class="despleg" onclick="mostrarDespleg()">TRADUCIR ▾</button>
       <div id="menudespleg" class="contenido-despleg">
@@ -96,14 +79,14 @@ function traducir() {
       </div>
       </div>
       </td>
-    <td class="menufuzzy" style="width: 160px">IDENTIFICARTE</td>
-    <td class="menu" style="width: 140px"><button class="menu"
+    <td class="menufuzzy" style="width: 150px">IDENTIFICARTE</td>
+    <td class="menu" style="width: 150px"><button class="menu"
       onclick="ShowHelp();">AYUDA</button></td>
-    <td class="menu" style="width: 135px"><a href="contacto">CONTACTO</a></td>
+    <td class="menu" style="width: 150px"><a href="contacto">CONTACTO</a></td>
 
   </tr>
-</table>
-
+<tr>
+<td colspan='6' style="width: 1200px">
 <h1>Identificarte</h1>
 <div id="cargando">
 
@@ -151,8 +134,7 @@ favor introducí otro nombre o ingresá sin identificarte.
 </table>
 
 </div>
-
-<script async="" src="{{url_for('static', filename='Misc.js')}}"></script>
-</body>
-
-</html>
+</td>
+</tr>
+</table>
+{% endblock %}
