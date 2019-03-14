@@ -5,10 +5,17 @@ hummingbird yellow: #F5E754
 background brown: #4B2B17
 */
 
+html
+{
+     display: table;
+     margin-left: auto;
+     margin-right: auto;
+}
+
 body
 {
-	margin-left: 0pt;
-	margin-right: 0pt;
+	margin-left: auto;
+	margin-right: auto;
 	margin-top: 12pt;
 	margin-bottom: 12pt;
 	padding-left: 12pt;
@@ -18,14 +25,14 @@ body
         font-size: 14px;
 	font-family: verdana, geneva, arial, sans-serif;
 	background-color: #FFF;
-/*	display: inline-block; */
+        display: table-cell;
+/* 	display: inline-block; */
 }
 
 /* Center the body */
 div.body
 {
     margin: 0 auto;
-    width: 1000px;
 }
 /*
 a:link { color: #4B2B17; text-decoration: underline}
@@ -47,7 +54,6 @@ h1
 	font-weight: bold;
 	color: #4B2B17;
 	background-color: #F5E754;
-	width: 99%;
 }
 h2
 {

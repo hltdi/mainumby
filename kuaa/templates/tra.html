@@ -1,9 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type=text/css href="{{url_for('static', filename='style.css')}}" />
+{% extends "base.html" %}
 
+{% block style %}
 <style type="text/css">
 div#fuente
 {
@@ -42,8 +39,8 @@ textarea.ometa
     font-family: "Verdana";
     resize: none;
     font-size: 120%;
-    padding: 4px 4px;
-    margin: 10px 0px 6px 0px;
+    padding: 4px 0px 4px 4px;
+    margin: 6px 0px 6px 0px;
 }
 .btndesplegable {
     font-family: "Verdana";
@@ -88,12 +85,9 @@ textarea#comment
    height: 50px;
 }
 </style>
+{% endblock %}
 
-<title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní</title>
-
-</head>
-
-<body>
+{% block body %}
 
 <table class='left'>
 <form id='form' name="Form1" method=POST>
@@ -101,35 +95,33 @@ textarea#comment
 <tr class="brown">
     <td class="title">
     <a href="base">
-    <img class='banner' src="{{url_for('static',
-      filename='banner_logo.png')}}" alt="" width="300px"
+    <img class='banner' src="{{url_for('static', filename='banner_logo.png')}}" alt="" width="300px"
       height="52px" />
     </a>
     </td>
 
-    <td class="title" style="width: 625px"></td>
+    <td class="title" style="width: 50px"></td>
 
-    <td class="menu" style="width: 140px">
+    <td class="menu" style="width: 150px">
       <input class="menu" type="submit" value="SALIR" name="salir" onclick="return alSalir();">
     </td>
     {% if user %}
-    <td class="menuuser" style="width: 160px">{{ user }}</td>
+    <td class="menuuser" style="width: 150px">{{ user }}</td>
     {% else %}
-    <td class="menu" style="width: 160px">
+    <td class="menu" style="width: 150px">
        <button class="menu" onclick="ingresar()">IDENTIFICARTE</button>
     </td>
     {% endif %}
-    <td class="menu" style="width: 140px"><button class="menu"
+    <td class="menu" style="width: 150px"><button class="menu"
       onclick="mostrarAyuda();">AYUDA</button></td>
-    <td class="menu" style="width: 135px"><a href="contacto">CONTACTO</a></td>
+    <td class="menu" style="width: 150px"><a href="contacto">CONTACTO</a></td>
 
     <input type="hidden" name="ayuda" value="">
     <input type="hidden" name="modo" value="ora">
 </tr>
 </form>
-
-</table>
-
+<tr>
+<td colspan="6">
 <p id="error" class="error">
 </p>
 
@@ -142,11 +134,11 @@ Se dispone de <a href="https://archive.org/details/mainumby_201809">un video tut
 <table class='left'>
 
   <tr>
-    <td style="width: 600px">
+    <td style="width: 585px">
       <span class="lengua">Castellano</span>
     </td>
-    <td style="width: 25px"></td>
-    <td style="width: 600px">
+    <td style="width: 30px"></td>
+    <td style="width: 585px">
       <span class="lengua">Guaraní</span>
   </tr>
 
@@ -213,7 +205,8 @@ Se dispone de <a href="https://archive.org/details/mainumby_201809">un video tut
     </td>
   </tr>
   {% endif %}
-
+</td>
+</tr>
 </table>
 
 <form name="Form2" method=POST action='tra'>
@@ -225,6 +218,9 @@ Se dispone de <a href="https://archive.org/details/mainumby_201809">un video tut
 <input type="hidden" name="nocorr" value="">
 </form>
 
+{% endblock %}
+
+{% block script %}
 <script>
 document.getElementById("fuente").focus();
 
@@ -519,7 +515,4 @@ Si quer&eacute;s traducir un documento entero, ve en cambio a \
     document.Form1.ayuda.value = true;
 }
 </script>
-
-</body>
-
-</html>
+{% endblock %}

@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block menu %}
+{% block body %}
 <table class="left">
   <tr class="brown">
-    <td class="title">
+    <td>
     <img class='banner' src="{{url_for('static', filename='banner_logo.png')}}" alt="" width="300" height="52" />
     </td>
 
-    <td class="title" style="width: 100px"></td>
+    <td style="width: 50px"></td>
 
     <td class="menu" style="width: 150px">
       <div class='despleg-wrap'>
@@ -24,10 +24,9 @@
     <td class="menu" style="width: 150px"><a href="contacto">CONTACTO</a></td>
 
   </tr>
-</table>
-{% endblock %}
 
-{% block body %}
+  <tr>
+    <td colspan='6' style="width: 1200px">
 <h1>Tereg̃uahẽporãite Mainumby-pe</h1>
 <div id="cargando">
 
@@ -37,11 +36,10 @@ Mainumby es una aplicación experimental que ayuda a traducir del
   Se está desarrollando dentro del proyecto
   <a href="http://homes.sice.indiana.edu/gasser/pisur.html">Procesamiento de Idiomas del Sur
   Global (PISUR)</a>, dirigido por Prof. Michael Gasser.
-<!--  y desde diciembre 2018, se está evaluando y
-  extendiendo con colaboración de la <a
-  href="http://www.yvymaraey.org">Fundación Yvy Marãe'ỹ</a> en San
-  Lorenzo, Paraguay.
--->
+<!--  y desde diciembre 2018, se está evaluando y extendiendo con -->
+  <!--  colaboración de la <a -->
+  <!--  href="http://www.yvymaraey.org">Fundación Yvy Marãe'ỹ</a> en -->
+  <!--  San Lorenzo, Paraguay. -->
 <ul>
   <li>
 Para usarlo para la traducción de una palabra, una frase, o una
@@ -49,6 +47,9 @@ Para usarlo para la traducción de una palabra, una frase, o una
 <li>Para la traducción de un documento, seleccioná DOCUMENTO bajo TRADUCIR.</li>
 <li>Para identificarte antes de usar el traductor, seleccioná IDENTIFICARTE.</li>
 </ul>
+</td>
+</tr>
+</table>
 
 </form>
 
