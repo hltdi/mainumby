@@ -570,7 +570,7 @@ textarea.doc
     padding: none;
     margin: 0;
 }
-.despleg {
+button.despleg {
     position: relative;
     display: inline-block;
     background-color: #4B2B17;
@@ -583,7 +583,7 @@ textarea.doc
     cursor: pointer;
     border: 0;
 }
-.despleg:hover, .despleg:active, .despleg:focus
+button.despleg:hover, button.despleg:active, button.despleg:focus
 {
     color: #F5E754;
     border: 0;

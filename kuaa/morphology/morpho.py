@@ -988,7 +988,12 @@ class POS:
                     feat_values = [feat_freqs.get(value, 0.0) for value in values]
                     feat_scores = [(x + y) for x, y in zip(feat_scores, feat_values)]
         # scale the feat_scores by the proportion of the total root_scores to the feat_scores
-        scaling = sum(root_scores)/sum(feat_scores)
-        scores = [(r + f * scaling) for r, f in zip(root_scores, feat_scores)]
+        feat_sum = sum(feat_scores)
+        if feat_sum:
+            root_sum = sum(root_scores)
+            scaling = root_sum / feat_sum
+            scores = [(r + f * scaling) for r, f in zip(root_scores, feat_scores)]
+        else:
+            scores = root_scores
         # return the outputs with scores appended
         return [o + [s] for o, s in zip(output, scores)]

@@ -383,6 +383,9 @@ class Group(Entry):
         """Create a string name for one or two merged group nodes. Each is represented
         by a pair: (group_name, index).
         """
+        # groups could be a special token string
+        if isinstance(groups, str):
+            return groups
         string = Group.make_node_name(groups[0][0], groups[0][1])
         if len(groups) == 2:
             string += "++{}".format(Group.make_node_name(groups[1][0], groups[1][1]))
@@ -2036,8 +2039,8 @@ class Join(Entry):
                 # Add targfeats to feats in segindex Seg
                 segment = superseg.segments[segindex]
                 tfeats = segment.get_thead_feats()
-                print("    Segment {}, thead {}, tfeats {}".format(segment, segment.thead, tfeats))
-                print("    Adding features {} to targ features {}".format(addfeats.__repr__(), tfeats.__repr__()))
+#                print("    Segment {}, thead {}, tfeats {}".format(segment, segment.thead, tfeats))
+#                print("    Adding features {} to targ features {}".format(addfeats.__repr__(), tfeats.__repr__()))
                 for ti, th in enumerate(segment.thead):
 #                    troot, tpos, tf = th
                     tf = th[2]

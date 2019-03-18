@@ -298,7 +298,7 @@ class Seg:
         if verbosity:
             print("Generating segment {} with cleaned trans {} and raw token str {}".format(self, self.cleaned_trans, self.raw_token_str))
         generator = self.target.generate
-        special = '%' in self.raw_token_str or '~' in self.raw_token_str
+#        special = '%' in self.raw_token_str or '~' in self.raw_token_str
         cleaned_trans = []
         for translation in self.cleaned_trans:
             output1 = []
@@ -360,7 +360,7 @@ class Seg:
             return "<span style='color:{};'> {} </span>".format(self.color, self.token_str)
 
     def set_single_html(self, index, verbosity=0):
-        """Set the HTML markup for this segment as an colored segment in source and dropdown menu
+        """Set the HTML markup for this segment as a colored segment in source and dropdown menu
         in target, given its position in the sentence.
         """
         # Combine translations where possible
@@ -386,7 +386,7 @@ class Seg:
             trans1 = trans
             if '"' in trans:
                 trans = trans.replace('"', '\"')
-            transhtml += "<div class='btndesplegable' id='{}' style='cursor:default'>".format(boton)
+            transhtml += "<div class='despleg' id='{}' style='cursor:default'>".format(boton)
 #             draggable='true' ondragstart='drag(event);'>".format(boton)
             transhtml += trans
             transhtml += "</div>"
@@ -402,10 +402,12 @@ class Seg:
             # Create all combinations of word sequences
             tg_expanded = []
             if self.special:
+                print("    special")
                 trans = t[0]
                 tgcombs = [[(trans, '')]]
             else:
                 for tt, tg in zip(t, tgroups):
+#                    print("    tt {}, tg {}".format(tt, tg))
                     tg = Group.make_gpair_name(tg)
                     # Get rid of parentheses around optional elements
                     if '(' in tt:
@@ -437,13 +439,13 @@ class Seg:
                     trans1 = alttchoice
                     if not multtrans:
                         # Only translation; no dropdown menu
-                        transhtml += "<div class='btndesplegable' id='{}' ".format(boton)
+                        transhtml += "<div class='despleg' id='{}' ".format(boton)
                         transhtml += "style='background-color:{};cursor:grab' draggable='true' ondragstart='drag(event);'>{}</div>".format(self.color, alttchoice)
                     else:
                         # First translation of multiple translations; make dropdown menu
                         transhtml += '<div draggable="true" id="{}" ondragstart="drag(event);">'.format(wrap)
                         transhtml += '<div onclick="desplegar(' + "'{}')\"".format(despleg)
-                        transhtml += " id='{}' class='btndesplegable' style='background-color:{};cursor:context-menu'>{} ▾</div>".format(boton, self.color, alttchoice)
+                        transhtml += " id='{}' class='despleg' style='background-color:{};cursor:context-menu'>{} ▾</div>".format(boton, self.color, alttchoice)
                 else:
                     # Choice in menu under button
                     if trans_choice_index == 1:
@@ -457,7 +459,7 @@ class Seg:
             trans1 = orig_tokens
             # No translations suggested: button for translating as source
             multtrans = False
-            transhtml += "<div class='btndesplegable' id='{}'  style='cursor:grab' draggable='true' ondragstart='drag(event);'>".format(boton)
+            transhtml += "<div class='despleg' id='{}'  style='cursor:grab' draggable='true' ondragstart='drag(event);'>".format(boton)
             transhtml += orig_tokens
             transhtml += "</div>"
         if multtrans:
@@ -594,26 +596,26 @@ class Seg:
 #        for h in self.html:
 #            print(" {}".format(h))
 
-    def translate_special(self, tokens, assign=True):
-        """Translate a 'special' set of tokens (containing a name, numeral or
-        other special token).
-        """
-        trans = []
-        cleaned_trans = []
-        for token in tokens:
-            if '%' in token:
-                spec_trans = self.source.translate_special(token)
-                if spec_trans:
-                    trans.append(spec_trans)
-                    cleaned_trans.append(Seg.clean_spec(spec_trans))
-                    continue
-                trans.append(token)
-                cleaned_trans.append(token)
-        if assign:
-            self.translation = [trans]
-            self.cleaned_trans = [cleaned_trans]
-        else:
-            return cleaned_trans, trans
+#    def translate_special(self, tokens, assign=True):
+#        """Translate a 'special' set of tokens (containing a name, numeral or
+#        other special token).
+#        """
+#        trans = []
+#        cleaned_trans = []
+#        for token in tokens:
+#            if '%' in token:
+#                spec_trans = self.source.translate_special(token)
+#                if spec_trans:
+#                    trans.append(spec_trans)
+#                    cleaned_trans.append(Seg.clean_spec(spec_trans))
+#                    continue
+#                trans.append(token)
+#                cleaned_trans.append(token)
+#        if assign:
+#            self.translation = [trans]
+#            self.cleaned_trans = [cleaned_trans]
+#        else:
+#            return cleaned_trans, trans
 
     def unseg_tokens(self):
         """Rejoin tokens in original_token_str that were segmented when the Sentence was created."""
@@ -690,9 +692,9 @@ class SuperSeg(Seg):
         self.cleaned_trans = []
         self.tgroups = []
         self.original_token_str = ' '.join([seg.original_token_str for seg in self.segments])
-        # Rejoin tokens segmented during Sentence creation
+        # Rejoin source tokens segmented during Sentence creation
         self.unseg_tokens()
-        print("Orig tokens: {}".format(self.original_token_str))
+#        print("Orig tokens: {}".format(self.original_token_str))
 #        print("Superseg: {}".format(self))
         for i in self.order:
             if i < 0:
@@ -701,19 +703,22 @@ class SuperSeg(Seg):
             segment = self.segments[i]
             if verbosity:
                 print("Setting SuperSeg properties, segment {}, current ct {}".format(segment, self.cleaned_trans))
-                print(" Segment cleaned_trans: {}".format(segment.cleaned_trans))
+                print(" Segment cleaned_trans: {}, translation {}".format(segment.cleaned_trans, segment.translation))
             if self.cleaned_trans:
                 if segment.cleaned_trans:
                     self.cleaned_trans = [ct1 + ct2 for ct1 in self.cleaned_trans for ct2 in segment.cleaned_trans]
             else:
                 self.cleaned_trans = segment.cleaned_trans
+            print(" Segment {}, tgroups {}".format(segment, segment.tgroups))
             if self.tgroups:
                 if segment.tgroups:
                     # Segment may have no translation (e.g., "de")
                     self.tgroups = [tg1 + tg2 for tg1 in self.tgroups for tg2 in segment.tgroups]
             else:
                 self.tgroups = segment.tgroups
+            print("Segments {}, tgroups {}".format(i, self.tgroups))
             self.translation.append(segment.translation)
+#            print("Superseg cleaned_trans: {}, translation {}".format(self.cleaned_trans, self.translation))
             raw_tokens.append(segment.raw_token_str)
             token_str.append(segment.token_str)
 #            original_token_str.append(segment.original_token_str)
@@ -805,15 +810,15 @@ class Segment(Seg):
         self.original_token_str = ' '.join(self.original_tokens)
         # If there are special tokens in the source language, fix them here.
         if '%' in self.token_str: # or '~' in self.token_str:
-#            print("Handling special item {}, delay_gen {}".format(self.token_str, delay_gen))
+            print("Handling special item {}, translation {}".format(self.token_str, translation))
             # Create the source and target strings without special characters
-            if not translation:
-                self.special = True
             if translation:
                 self.cleaned_trans = [translation]
                 self.translation = [translation]
             else:
+                self.special = True
                 self.cleaned_trans = [[tokens[0]]]
+                tgroups = [[tokens[0]]]
 #            else:
 #                self.translate_special(translation or tokens)
             self.token_str = Seg.clean_spec(self.token_str)
@@ -844,7 +849,7 @@ class Segment(Seg):
         # Triples for each merger with the segment
         self.merger_gnames = merger_groups
         # Target-language groups
-        self.tgroups = tgroups or [[]] * len(self.translation)
+        self.tgroups = tgroups or [[]] * (len(self.translation) or 1)
         # Target-language group strings, ordered by choices; gets set in set_html()
         self.choice_tgroups = None
         # The session associated with this segmentation segment

@@ -42,7 +42,7 @@ textarea.ometa
     padding: 4px 0px 4px 4px;
     margin: 6px 0px 6px 0px;
 }
-.btndesplegable {
+div.despleg {
     font-family: "Verdana";
     background-color: #666666;
     color: white;
@@ -134,11 +134,11 @@ Se dispone de <a href="https://archive.org/details/mainumby_201809">un video tut
 <table class='left'>
 
   <tr>
-    <td style="width: 585px">
+    <td style="width: 590px">
       <span class="lengua">Castellano</span>
     </td>
-    <td style="width: 30px"></td>
-    <td style="width: 585px">
+    <td style="width: 20px"></td>
+    <td style="width: 590px">
       <span class="lengua">Guaraní</span>
   </tr>
 
@@ -164,7 +164,7 @@ Se dispone de <a href="https://archive.org/details/mainumby_201809">un video tut
     <td class='instruc'>
     {% if sentence %}
     <div class="instruc" id="instruc_fuente">Para traducir otra
-    oración, primero presioná 'Borrar'.</div><br />
+    oración, primero presioná 'Borrar' o hacé clic en el espacio de arriba.</div><br />
     <input type="button" value="Borrar" id="button" onclick="borrar()">
     {% else %}
     <div class="instruc" id="instruc_fuente">Escribí una palabra,
@@ -247,6 +247,12 @@ document.getElementById("textmeta").addEventListener("keyup", function(event) {
     }
 });
 
+document.getElementById("fuente").addEventListener("click", function(event) {
+    if (document.getElementById("textmeta").value) {
+        borrar();
+    }
+});
+
 function longFuente()
 {
     f = document.getElementById("fuente");
@@ -261,11 +267,17 @@ function longFuente()
 
 function alSalir()
 {
+    document.Form2.borrar.value = 'true';
+    document.Form2.ofuente.value = '';
     document.Form2.tfuente.value = "140%";
     document.Form1.action = "fin";
     document.Form1.target = "_self";     // Misma ventana
     document.Form1.submit();             // Enviar la página
     return true;
+}
+
+function borrarFuente() {
+    document.getElementById("fuente").innerHTML = "";
 }
 
 function borrar()
@@ -288,7 +300,6 @@ function registrar()
 {
     meta = document.getElementById("textmeta").value;
     document.Form2.ometa.value = meta;
-//    document.Form2.ofuente.value = fuente;
     document.Form2.borrar.value = 'true';
     document.Form2.registrar.value = 'true';
     document.Form2.tfuente.value = "140%";
@@ -370,21 +381,17 @@ function corregirGn() {
 
 function fuente() {
     f = document.getElementById("fuente").innerHTML;
+    // May contain <br>
+    f = f.replace(/<br>/g, "");
     return f;
 }
 
 function fuenteNuevaLinea() {
     f = fuente();
-    // May contain <br>
-    f = f.replace(/<br>/g, "");
     document.getElementById("fuente").innerHTML = f;
     document.Form2.ofuente.value = f;
     document.Form2.action = "tra";
     document.Form2.submit();
-}
-
-function borrarFuente() {
-    document.getElementById("fuente").innerHTML = "";
 }
 
 function cambiarMeta(button, choiceid) {
@@ -407,7 +414,7 @@ function desplegar(button) {
 /* Encuentra las traducciones de segmentos actualmente seleccionadas */
 function actualTra() {
     var trans = "";
-    var dropdowns = document.getElementsByClassName("btndesplegable");
+    var dropdowns = document.getElementsByClassName("despleg");
     var i;
     for (i = 0; i < dropdowns.length; i++) {
       var dropdown = dropdowns[i];
@@ -457,20 +464,6 @@ function drop(ev) {
     srcParent.appendChild(tgt);
     // Update the sentence in the ometa textbox
     actualTra();
-}
-
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-    if (!event.target.matches('.btndesplegable')) {
-	var dropdowns = document.getElementsByClassName("contenido-desplegable");
-	var i;
-	for (i = 0; i < dropdowns.length; i++) {
-	    var openDropdown = dropdowns[i];
-	    if (openDropdown.classList.contains('show')) {
-		openDropdown.classList.remove('show');
-	    }
-	}
-    }
 }
 
 function mostrarAyuda() {

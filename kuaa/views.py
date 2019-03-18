@@ -188,6 +188,8 @@ def tra():
     global DOC
     global SEG_HTML
     global OM1
+    global OF_HTML
+    global SESSION
     form = request.form
     of = None
     print("Form for tra: {}".format(form))
@@ -217,6 +219,11 @@ def tra():
                 print("NO SESSION SO NOTHING TO RECORD")
         return render_template('tra.html', sentence=None, ofuente=None, translation=None, punc=None,
                                user=username, mayus='', tfuente="140%")
+    if OF_HTML and SENTENCE:
+        # Sentence already translated; don't read in a new one until this one gets deleted.
+        return render_template('tra.html', sentence=OF_HTML, ofuente=form.get('ofuente', ''), translation=SEG_HTML, trans1=OM1,
+                                punc=SENTENCE.get_final_punc(), mayus=SENTENCE.capitalized, tfuente=form.get('tfuente', "140%"),
+                                user=username, nocorr=form.get('nocorr', ''))
     if not 'ofuente' in form:
         return render_template('tra.html', user=username, mayus='')
     if not DOC:
@@ -232,6 +239,7 @@ def tra():
     # Translate and segment the sentence, assigning SEGS
     solve_and_segment(single=True)
     tf = form.get('tfuente', "140%")
+    # Whether to do orthographic correction of target
     nocorr = form.get('nocorr', '')
 #    print("SENTENCE {}".format(SENTENCE))
 #    print("ofuente= {}".format(of))
