@@ -25,4 +25,4 @@ SV :: [pos=n] [pos=v] ; 0=?1 n:n ; 0=!1 n:ns ; ^1
 S[C]V :: %C [pos=v,n=0] ; ^1
 ## nominales 2
 >> nom2
-NqV :: [pos=n] que [pos=v] ; ^0
+NqV :: [pos=n] que [pos=v] ; ^0 ; 2[rel=sjoj]

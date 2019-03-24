@@ -1386,7 +1386,6 @@
 ->grn ku'a_n ; 0==0 n:n,poses:poses ; #42
 ** modelo_n ; ^ modelo_n 0 ; #5
 ->grn <hechaukarã_n ; 0==0 n:n,poses:poses
-->grn <hembiecharã_n ; 0==0 n:n,poses:poses
 ** molestia_n en los ojos ; ^ molestia_n 0 ; #6
 ->grn <hesako'õ_n ; 0==0 n:n,poses:poses ; #3
 ** molestia_n de ofenza ; ^ molestia_n 0 ; #6

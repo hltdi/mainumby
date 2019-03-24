@@ -86,7 +86,7 @@ class Seg:
     """
 
     # Maximum number of generated forms permitted, given a root and set of update features
-    max_gen_forms = 2
+    max_gen_forms = 3
 
     # colors to display segments in interface
     tt_colors = ['blue', 'sienna', 'green',
@@ -189,7 +189,8 @@ class Seg:
             if self.cleaned_trans:
                 # Already translated
                 token = self.get_shead_tokens()[0]
-                pre, form = token.split('~')
+                print("Translated special token {}, self {}".format(token, self))
+                pre, x, form = token.partition('~')
             else:
                 tok = self.get_untrans_token()
                 pre, form = tok.split('~')
@@ -346,7 +347,6 @@ class Seg:
         else:
             cap = index == 0 and self.sentence.capitalized
             tokstr = self.original_token_str
-#            tokstr = self.token_str
             if cap:
                 tokstr = tokstr[0].upper() + tokstr[1:]
             self.source_html = "<span style='color:{};'> {} </span>".format(self.color, tokstr)
@@ -402,7 +402,6 @@ class Seg:
             # Create all combinations of word sequences
             tg_expanded = []
             if self.special:
-                print("    special")
                 trans = t[0]
                 tgcombs = [[(trans, '')]]
             else:
@@ -455,7 +454,7 @@ class Seg:
                     transhtml += "\"{}\", \"{}\")'".format(boton, choiceid)
                     transhtml += ">{}</span><br/>".format(alttchoice)
                 trans_choice_index += 1
-        if not self.translation:
+        if not self.translation and not self.special:
             trans1 = orig_tokens
             # No translations suggested: button for translating as source
             multtrans = False
@@ -465,7 +464,7 @@ class Seg:
         if multtrans:
             transhtml += '</div></div>'
         transhtml += '</div>'
-        # Capitalize tokens if in first place        
+        # Capitalize tokens if in first place
         if index==0:
             capitalized = False
             if ' ' in tokens:
@@ -642,6 +641,10 @@ class Seg:
     def clean_spec(string):
         """Remove special prefixes and connecting characters."""
         string = Seg.remove_spec_pre(string)
+        # prefix ~
+        if string[0] == '~':
+            string = string[1:]
+        # connecting _ and ~
         string = string.replace('_', ' ').replace('~', ' ')
         return string
 
@@ -817,8 +820,9 @@ class Segment(Seg):
                 self.translation = [translation]
             else:
                 self.special = True
-                self.cleaned_trans = [[tokens[0]]]
-                tgroups = [[tokens[0]]]
+                spec_toks = [t for t in tokens if t[0] != '~']
+                self.cleaned_trans = [spec_toks]
+                tgroups = [spec_toks]
 #            else:
 #                self.translate_special(translation or tokens)
             self.token_str = Seg.clean_spec(self.token_str)
@@ -1850,7 +1854,7 @@ class TreeTrans:
             self.ttree.add(src_index)
             index = [(tnode.group, tnode.index)]
             feat_index = len(self.node_features)
-            node_features.append([tnode.token, features, index])
+            self.node_features.append([tnode.token, features, index])
 
     @staticmethod
     def get_root_POS(token):

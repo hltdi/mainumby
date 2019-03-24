@@ -1,33 +1,110 @@
 {% extends "base.html" %}
 
 {% block style %}
+
 <style type="text/css">
+
+.modo
+{
+    clear: left;
+    font-size: 120%;
+    margin-top: .75em;
+    margin-bottom: .35em;
+    background-color: #F5E754;
+    width: 1200px;
+}
+label
+{
+    display: inline-block;
+    position: relative;
+    background-color: #8DEDCD;
+    color: #4B2B17;
+    font-family: "Verdana";
+    font-size: 110%;
+    text-align: center;
+    padding: 2px;
+    width: 120px;
+    border-radius: 4px;
+    border-style: outset;
+    border-color: black;
+    border-width: 2px;
+    cursor: pointer;
+}
+label:hover, label:active
+{
+    background-color: #4B2B17;
+    color: #8DEDCD;
+}
+td.subir
+{
+    vertical-align: top;
+    font-size: 100%;
+}
+td.opciones
+{
+    font-size: 90%;
+    font-style: italic;
+    padding: 15px;
+}
+.envoltorio-subida {
+    position: relative;
+    font-size: 100%;
+}
+
+.btn-subir {
+    padding: 6px;
+    width: 30%;
+    position: absolute;
+    left: 0;
+    opacity: 0;
+}
+div.archivo {
+    padding: 8px;
+    background-color: LightGray;
+}
+span.archivo {
+    font-style: italic;
+    color: #4B2B17;
+}
+
 div#fuente
 {
     font-family: "Verdana";
-    font-size: {% if tfuente %} {{tfuente}} {% else %} 140% {% endif %};
-    font-weight: bold;
+    font-size: {% if tfuente %} {{tfuente}} {% else %} 120% {% endif %};
+    font-weight: {% if documento %}normal{% else %}bold{% endif %};
     resize: none;
     padding: 8px 8px;
-    margin: 6px 0;
+    margin: 6px 0px 0px;
+    box-sizing: border-box;
+    width: 100%;
+    height: {% if documento %}112pt{% else %}56pt{% endif %};
+    white-space: normal;
+    border: thin solid;
+    overflow-y: auto;
+}
+div#meta
+{
+    font-family: "Verdana";
+    font-size: {% if tfuente and not isdoc %} {{tfuente}} {% else %} 120% {% endif %};
+    resize: none;
+    padding: 8px 8px;
+    margin: 6px 0px 0px;
     box-sizing: border-box;
     width: 100%;
     height: 56pt;
     white-space: normal;
     border: thin solid;
 }
-div#meta
+div#doc
 {
-    font-family: "Verdana";
-    font-size: {% if tfuente %} {{tfuente}} {% else %} 140% {% endif %};
-    resize: none;
-    padding: 8px 8px;
-    margin: 6px 0;
-    box-sizing: border-box;
-    width: 100%;
-    height: 56pt;
-    white-space: normal;
-    border: thin solid;
+}
+div.oradoc
+{
+}
+div.oradoc:hover
+{
+    cursor: pointer;
+    font-weight: bold;
 }
 span.lengua
 {
@@ -53,17 +130,14 @@ div.despleg {
     margin: none;
     border: none;
 }
-
 .opcion {
     font-size: 100%;
     cursor: pointer;
 }
-
 .desplegable {
     position: relative;
     display: inline-block;
 }
-
 .contenido-desplegable {
     display: none;
     position: absolute;
@@ -74,22 +148,15 @@ div.despleg {
     box-shadow: 0px 8px 16px 8px rgba(0,0,0,0.4);
     z-index: 1;
 }
-
 .show {display: block;}
 
-textarea#comment
-{
-   font-family: "Verdana";
-   font-size: 100%;
-   width: 380px;
-   height: 50px;
-}
 </style>
 {% endblock %}
 
 {% block body %}
 
 <table class='left'>
+
 <form id='form' name="Form1" method=POST>
 
 <tr class="brown">
@@ -122,15 +189,52 @@ textarea#comment
 </form>
 <tr>
 <td colspan="6">
-<p id="error" class="error">
-</p>
 
-<h1>Traducción de palabras y oraciones</h1>
-
+<!--
+    <h1>Traducción de oraciones</h1>
 <p>
 Se dispone de <a href="https://archive.org/details/mainumby_201809">un video tutorial</a> sobre el uso de esta página.
 </p>
+-->
 
+<p id="error" class="error">
+</p>
+
+<form id="modo" name="Form0" method="post">
+<div class="modo">
+    <table>
+    <tr>
+    <td class='subir'>Traducción de </td>
+    <td class='opciones'>
+{% if doc %}
+    <input type="radio" name="modo" id="ora" value="oración" onchange="this.form.submit();">palabra/frase/oración<br/>
+    <input type="radio" name="modo" id="doc" value="documento" checked>documento
+{% else %}
+    <input type="radio" name="modo" id="ora" value="oración" checked>palabra/frase/oración<br/>
+    <input type="radio" name="modo" id="doc" value="documento" onchange="this.form.submit();">documento
+{% endif %}
+    </td>
+    </tr>
+    </table>
+</div>
+
+{% if doc and not documento %}
+<div class="envoltorio-subida" id="envoltorio-subida">
+  <span class='instructions'>
+  Subir un documento de tu computadora:
+  </span>
+  <label for="subido">
+  <div>Examinar...</div>
+  <input id='subido' type='file' class="btn-subir" onchange="archivoSubido();" name='subido'>
+  </label>
+</div>
+{% endif %}
+
+<input type="hidden" name="documento" value=''>
+
+</form>
+
+{% if documento or not doc %}
 <table class='left'>
 
   <tr>
@@ -144,7 +248,25 @@ Se dispone de <a href="https://archive.org/details/mainumby_201809">un video tut
 
   <tr>
     <td>
-    <div id='fuente' contenteditable="true">{% if sentence %}{{sentence|safe}}{% endif %}</div>
+    {% if documento %}
+    <div id='fuente' contenteditable="false">{{documento|safe}}</div>
+    {% elif oracion %}
+    <div id='fuente' contenteditable="true">{{oracion|safe}}</div>
+    {% else %}
+    <div id='fuente' contenteditable="true"></div>
+    {% endif %}<br class='instruc'/>
+
+    {% if oracion %}
+    <div class="instruc" id="instruc_fuente">Para traducir otra
+    oración, primero presioná 'Borrar' o hacé clic en el espacio de arriba.</div><br class='instruc'/>
+    <input type="button" value="Borrar" id="button" onclick="borrar()">
+    {% elif documento %}
+    <div class="instruc" id="instruc_fuente">Para seleccionar una oración para traducir,
+    hacé clic sobre la oración.</div>
+    {% elif not doc %}
+    <div class="instruc" id="instruc_fuente">Escribí una palabra,
+    frase, u oración, y luego presioná Intro/Enter para traducirla.</div>
+    {% endif %}
     </td>
 
     <td></td>
@@ -157,24 +279,7 @@ Se dispone de <a href="https://archive.org/details/mainumby_201809">un video tut
       {% endfor %}
     {% endif %}
     </div>
-    </td>
-  </tr>
-
-  <tr>
-    <td class='instruc'>
-    {% if sentence %}
-    <div class="instruc" id="instruc_fuente">Para traducir otra
-    oración, primero presioná 'Borrar' o hacé clic en el espacio de arriba.</div><br />
-    <input type="button" value="Borrar" id="button" onclick="borrar()">
-    {% else %}
-    <div class="instruc" id="instruc_fuente">Escribí una palabra,
-    frase, u oración, y luego presioná Intro/Enter para traducirla.</div>
-    {% endif %}
-    </td>
-
-    <td></td>
-
-    <td class='instruc'>
+    <br class='instruc'/>
     {% if trans1 %}
     <div class='instruc'>
     • Para segmentos marcados con "▾", pod&eacute;s seleccionar otra opción.<br />
@@ -183,39 +288,41 @@ Se dispone de <a href="https://archive.org/details/mainumby_201809">un video tut
     </td>
   </tr>
 
-  {% if trans1 %}
   <tr>
-    <td></td><td></td>
-    <td>
-      <span id="correccion" class="alternar" onclick="alternarCorreccion();">Desactivar corrección ortográfica automática.</span><br/>
-      <textarea class='ometa' id='textmeta' style='width: 100%'>{{trans1|safe}}</textarea>
-    </td>
-  </tr>
-
-  <tr>
-    <td></td><td></td>
     <td class='instruc'>
-      <div class="instruc" id="instruc_trad">• Si no estás satisfecho
-    con la traducción, pod&eacute;s editarla.<br />
+    </td>
+
+    <td></td>
+    <td>
+    {% if trans1 %}
+      <span id="correccion" class="alternar" onclick="alternarCorreccion();">Desactivar corrección ortográfica automática.</span><br/>
+    <textarea class='ometa' id='textmeta' style='width: 100%'>{{trans1|safe}}</textarea><br class='instruc' />
+    <div class="instruc" id="instruc_trad">• Si no estás satisfecho con la traducción, pod&eacute;s editarla.<br />
+    {% if isdoc %}
+        • Para incluir esta oración en la traducción del documento, presioná "Aceptar".<br />
+    {% endif %}
 	• Para copiar la traducción al portapapeles, presioná "Copiar".<br />
 	• Para registrar la traducción en la memoria de Mainumby, presioná "Registrar".
-      </div><br />
-      <input type="button" value="Copiar" id="button" onclick="copiar()">
-      <input type="button" value="Registrar" id="button" onclick="registrar();">
+    </div><br class='instruc'/>
+    {% if isdoc %}
+    <input type="button" value="Aceptar" id="button">
+    {% endif %}
+    <input type="button" value="Copiar" id="button" onclick="copiar()">
+    <input type="button" value="Registrar" id="button" onclick="registrar();">
+    {% endif %}
     </td>
   </tr>
-  {% endif %}
-</td>
-</tr>
-</table>
 
-</form>
+</table>
+{% endif %}
 
 <form name="Form2" method=POST action='tra'>
 <input type="hidden" name="ofuente" value="">
+<input type="hidden" name="oindex" value="0">
+<input type="hidden" name="isdoc" value=false>
 <input type="hidden" name="borrar" value=false>
 <input type="hidden" name="registrar" value=false>
-<input type="hidden" name="tfuente" value="140%">
+<input type="hidden" name="tfuente" value="120%">
 <input type="hidden" name="ometa" value="">
 <input type="hidden" name="nocorr" value="">
 </form>
@@ -269,7 +376,7 @@ function alSalir()
 {
     document.Form2.borrar.value = 'true';
     document.Form2.ofuente.value = '';
-    document.Form2.tfuente.value = "140%";
+    document.Form2.tfuente.value = "120%";
     document.Form1.action = "fin";
     document.Form1.target = "_self";     // Misma ventana
     document.Form1.submit();             // Enviar la página
@@ -284,7 +391,7 @@ function borrar()
 {
     document.Form2.borrar.value = 'true';
     document.Form2.ofuente.value = '';
-    document.Form2.tfuente.value = "140%";
+    document.Form2.tfuente.value = "120%";
     document.Form2.submit();
     return true;
 }
@@ -302,7 +409,7 @@ function registrar()
     document.Form2.ometa.value = meta;
     document.Form2.borrar.value = 'true';
     document.Form2.registrar.value = 'true';
-    document.Form2.tfuente.value = "140%";
+    document.Form2.tfuente.value = "120%";
     document.Form2.action = "tra";
     document.Form2.submit();
 }
@@ -405,13 +512,23 @@ function cambiarMeta(button, choiceid) {
     actualTra();
 }
 
+/* What happens when the user clicks on a sentence in the document window.*/
+function seleccionarOra(oraid, index) {
+    oracion = document.getElementById(oraid).innerHTML;
+    document.Form2.ofuente.value = oracion;
+    document.Form2.oindex.value = index;
+    document.Form2.tfuente.value = "90%";
+    document.Form2.isdoc.value = "true";
+    document.Form2.submit();
+}
+
 /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
 function desplegar(button) {
     element = document.getElementById(button);
     document.getElementById(button).classList.toggle("show");
 }
 
-/* Encuentra las traducciones de segmentos actualmente seleccionadas */
+/* Encuentra las traducciones de segmentos actualmente seleccionados */
 function actualTra() {
     var trans = "";
     var dropdowns = document.getElementsByClassName("despleg");
@@ -446,6 +563,46 @@ function alternarCorreccion() {
     }
 }
 
+// Buscar archivo subido y mostrar su nombre.
+function archivoSubido() {
+    borrarError();
+    var uploaded = document.getElementById("subido");
+    if (uploaded) {
+	var files = uploaded.files;
+	if (files) {
+	    var file = files[0];
+	    if (!file.type.match('text.*')) {
+		error("¡" + file.name + " no es un archivo de texto válido!");
+		return false;
+	    }
+	    mostrarArchivoSubido(file);
+	}
+    }
+    return true;
+}
+
+// Mostrar el nombre de un archivo subido y un botón para abrirlo.
+function mostrarArchivoSubido(file) {
+    var name = file.name;
+    var r = new FileReader();
+    r.onload = function(e) {
+	var target = e.target;
+	var contents = target.result;
+	document.Form0.documento.value = contents;
+    }
+    r.readAsText(file);
+    var html = "<div class='archivo'>Archivo <span class='archivo'>" + name +
+	"</span> subido. <button id='button' type='button' onclick='procDoc();'>Abrir</button></div>";
+    document.getElementById('envoltorio-subida').innerHTML = html;
+}
+
+// Leer el contenido de un archivo subido y guardarlo en la variable documento.
+function procDoc() {
+//    var text = document.Form0.documento.value;
+    document.Form0.submit();
+    return true;
+}
+
 /* Drag and drop translation buttons */
 function allowDrop(ev) {
     ev.preventDefault();
@@ -473,12 +630,12 @@ function mostrarAyuda() {
 <link rel="stylesheet" type=text/css href={{url_for("static", filename="style.css")}}/>\
 <title>Mainumby: Ayuda</title></head><body>\
 <h4 class="help">Ayuda para usar el traductor</h4>\
-<p class="help">En esta página se puede traducir palabras, frases, y oraciones simples. \
-Si quer&eacute;s traducir un documento entero, ve en cambio a \
-<a href="doc">esta página</a>. \
+<p class="help">En esta página se puede traducir palabras, frases, oraciones simples, \
+y documentos almacenados en archivos. \
 </p>\
 <h5 class="help">Instrucciones</h5>\
 <ol class="help">\
+  <li> \
   <li>Introducí una palabra, frase, u oración en el espacio a la izquierda.\
   </li>\
   <li>Presioná la tecla Intro/Enter.\

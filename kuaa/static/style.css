@@ -63,12 +63,6 @@ h2
 	margin-bottom: .35em;
 	background-color: #8DEDCD;
 }
-div.user
-{
-    font-size: 110%;
-    margin-top: .75em;
-    margin-bottom: .35em;
-}
 h3
 {
 	background-color: #F5E754;
@@ -84,23 +78,17 @@ h4
 	margin-top: .5em;
 	margin-bottom: .5em;
 }
+div.user
+{
+    font-size: 110%;
+    margin-top: .75em;
+    margin-bottom: .35em;
+}
 p
 {
 	margin-top: .5em;
 	margin-bottom: .5em;
         clear: left;
-}
-p.center
-{
-        margin-top: .5em;
-        margin-bottom: .5em;
-        text-align: center;
-}
-p.left
-{
-        margin-top: .5em;
-        margin-bottom: .5em;
-        text-align: left;
 }
 p.error
 {
@@ -119,7 +107,13 @@ div.instruc
    font-family: "Verdana";
    font-size: 90%;
    border: none;
-   margin: none;
+   margin: 0px;
+}
+br.instruc
+{
+    margin-top: 0px;
+    content: "";
+    display: block;
 }
 
 /*
@@ -129,9 +123,10 @@ p
 }
 */
 
-p.instructions
+.instructions
 {
     color: #00f;
+    font-size: 120%;
     font-style: italic;
 }
 table.center
@@ -346,7 +341,11 @@ input.text
         font-family: "Verdana";
         font-size: 110%;
 /*        align: center; */
-        width: 100px
+        width: 100px;
+	border-radius: 4px;
+	border-style: outset;
+	border-color: black;
+	border-width: 2px;
 }
 #mainbutton
 {
@@ -356,45 +355,17 @@ input.text
 	font-weight: bold;
         font-size: 110%;
 /*        align: center; */
-        width: 150px
+        width: 150px;
+	border-radius: 4px;
+	border-style: outset;
+	border-color: black;
+	border-width: 2px;
 }
-#button:hover, #button:active, #mainbutton:hover, #mainbutton:active, #widebutton:hover, #narrowbutton:hover
+#button:hover, #button:active, #mainbutton:hover, #mainbutton:active
 {
-/*        background-color: #8DFFEE; */
         background-color: #4B2B17;
         color: #8DEDCD;
 }
-#medbutton
-{
-        background-color: #00a;
-        color: #fff;
-        font-family: "Verdana";
-        font-size: 100%;
-        width: 30%
-}
-#medbutton:hover
-{
-        background-color: #00f;
-}
-#widebutton
-{
-        background-color: #8DEDCD;
-        color: #4B2B17;
-        font-family: "Verdana";
-        font-size: 100%;
-        align: center;
-        width: 150px;
-}
-#narrowbutton
-{
-        background-color: #8DEDCD;
-        color: #4B2B17;
-        font-family: "Verdana";
-        font-size: 100%;
-        align: center;
-        width: 100px;
-}
-
 #altbutton
 {
         color: #4B2B17;
@@ -403,24 +374,15 @@ input.text
         font-size: 100%;
         width: 150px;
         align: center;
+	border-radius: 4px;
+	border-style: outset;
+	border-color: black;
+	border-width: 2px;
 }
 #altbutton:hover
 {
         color: #F5E754;
         background-color: #4B2B17;
-/*        background-color: #FFFF33; */
-}
-#narrowlbbutton
-{
-        color: #00f;
-        font-family: "Verdana";
-        font-size: 100%;
-        width: 20%;
-        align: center;
-}
-#narrowlbbutton:hover
-{
-        background-color: #ccf;
 }
 table.center tr td.menu
 {

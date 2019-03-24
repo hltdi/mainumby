@@ -222,7 +222,7 @@ function ShowHelp() {
 "</p><p class='help'>" +
 "Una vez que est&eacute;s satisfecho con tu selección (o una " +
 "de las presentadas u otra que introdujiste) " +
-"hac&eacute; clic en 'Registrar frase' a la derecha de " +
+"hac&eacute; clic en 'Registrar' a la derecha de " +
 "'Frase'. " +
 "Enseguida aparece la frase que seleccionaste en el espacio " +
 "para la 'Oración entera' abajo. " +
@@ -234,7 +234,7 @@ function ShowHelp() {
 "traducción al seleccionar las frases castellanas para traducir " +
 "en el orden preferido. " +
 "Además pod&eacute;s colocar el cursor entre dos palabras en la " +
-"traducción guaraní de la oración antes de que hagas clic en 'Registrar frase' " +
+"traducción guaraní de la oración antes de que hagas clic en 'Registrar' " +
 "para indicar la posición de la frase. " +
 "</p><p class='help'>" +
 "Despu&eacute;s de que hayas traducido las frases en la oración " +
@@ -243,7 +243,7 @@ function ShowHelp() {
 "Si aún no estás satisfecho con la traducción, " +
 "pod&eacute;s editarla en ese espacio. " +
 "Una vez que est&eacute;s satisfecho con la traducción de la oración, " +
-"hac&eacute; clic en 'Registrar oración' a la derecha de " +
+"hac&eacute; clic en 'Registrar' a la derecha de " +
 "'Oración entera'. " +
 "Enseguida aparece la traducción al final " +
 "del espacio llamado 'Documento', " +
@@ -281,7 +281,7 @@ function OnRecordSent(raw, punc) {
     document.Form2.submit();
 }
 function OnRecordPhrase() {
-    // This is what happens when the "Registrar frase" button is clicked
+    // This is what happens when the "Registrar" button is clicked for Frase
     var sentval = document.getElementById("sentence").value;
     var segtrans = document.getElementById("segment").value;
     var segment = document.Form2.seg.value;
@@ -363,7 +363,7 @@ function OnRecordPhrase() {
     }
     // Give instructions for the next segment.
     document.getElementById("instructions").innerHTML = 'Si has terminado la traducción de la oración, \
-        hac&eacute; clic en "Registrar oración", si no, \
+        hac&eacute; clic en "Registrar", si no, \
         hac&eacute; clic sobre otro segmento colorizado de la oración castellana.';
     return true;
 }
@@ -401,10 +401,10 @@ function Segment(html, segment, color, segindex) {
     // Otherwise display the segment's HTML
     // Give instructions for translation selection.
     instructions = "O seleccioná una opción o introducí otra traducción en el espacio provisto. \
-    Despu&eacute;s hac&eacute; clic en 'Registrar frase'.";
+    Despu&eacute;s hac&eacute; clic en 'Registrar'.";
     if (document.getElementById("sentence").value) {
 	instructions += "\nSi querés insertar la frase entre palabras en \
-        la traducción de la oración, colocá el cursor en ese lugar antes de que selecciones 'Registrar frase'.";
+        la traducción de la oración, colocá el cursor en ese lugar antes de que selecciones 'Registrar'.";
     }
     document.getElementById("instructions").innerHTML = instructions;
     document.getElementById('segtra').innerHTML = formatted;
@@ -552,7 +552,7 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
   <tr class="transtitle">
     <th class="transtitle">Frase</th>
     <td class="transbutton">
-    <input type="button" id="button" name="freg" onclick="OnRecordPhrase();" value="Registrar frase">
+    <input type="button" id="button" name="freg" onclick="OnRecordPhrase();" value="Registrar">
     </td>
   </tr>
   <tr class="transtitle">
@@ -579,7 +579,7 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
     <th class="transtitle">Oración entera</th>
     <td class="transbutton">
       <input type="button" id="button" name="oreg"
-        onclick="OnRecordSent({{'%r'|format(raw)|e}}, {{'%r'|format(punc)|e}});" value="Registrar oración">
+        onclick="OnRecordSent({{'%r'|format(raw)|e}}, {{'%r'|format(punc)|e}});" value="Registrar">
     </td>
   </tr>  
   <tr class="trans">
@@ -627,13 +627,13 @@ onclick="Segment({{'%r'|format(seg[2])|e}}, {{'%r'|format(seg[0])|e}}, {{'%r'|fo
 <form name="Form3" id="text-options">
     <tr class="trans">
       <td>
-        <input type="submit" value="Guardar" id="narrowbutton"/>
+        <input type="submit" value="Guardar" id="button"/>
         <label>Nombre de archivo:<input type="text" class="filename" id="text-filename" placeholder="doc.txt" size="50"/></label>
       </td>
     </tr>
     <tr class="trans">
       <td>
-        <input type="button" id="narrowbutton" onclick="EmptyDoc();" value="Desechar"/>
+        <input type="button" id="button" onclick="EmptyDoc();" value="Desechar"/>
     </td>
   </tr>
 </form>  

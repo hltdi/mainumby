@@ -148,6 +148,8 @@
 # -- Got sentence initialization and solution to work with external tagger.
 # 2018.07.09
 # -- Roots in language exceptions.lex file cause morphological analysis to take precedence over POS tagger (cuarto_n, cuarto_a).
+# 2019.03.21
+# -- Docs can generate HTML for document-level GUI
 
 import copy, re, random, itertools, os
 from .ui import *
@@ -229,6 +231,9 @@ class Document(list):
         self.processed = False
         # Whether sentences in the document have been initialized
         self.initialized = False
+        # Markup for GUI
+        self.html = ''
+        self.html_list = ''
         if proc:
             self.process()
 #        print("Created document with session {}".format(session))
@@ -560,6 +565,33 @@ class Document(list):
         if self.biling:
             return self[index], self.target_sentences[index]
 
+    ### GUI
+    def set_html(self):
+        """Generate HTML for sentence display in GUI."""
+        html = "<div id='doc'>"
+        html_list = []
+        for index, sentence in enumerate(self):
+            shtml = ""
+            stext = sentence.original
+            ident = "ora{}".format(index)
+            shtml += "<div class='oradoc' id='{}' onclick='seleccionarOra(".format(ident)
+            shtml += "\"{}\", {})'".format(ident, index)
+            shtml += ">{}</div>".format(stext)
+            html_list.append(shtml)
+            html += shtml
+        html += "</div>"
+        self.html = html
+        self.html_list = html_list
+
+    def select_html(self, index, shtml):
+        """Replace the indexed element in html_list with one for the selected and translated
+        element."""
+        html = "<div id='doc'>"
+        html_list = self.html_list[:]
+        html_list[index] = shtml
+        html += "".join(html_list) + "</div>"
+        return html
+        
 class Sentence:
     """A sentence is a list of words (or other lexical tokens) that gets assigned a set of variables
     and constraints that are run during parsing or translation. Starts either with raw, tokens generated
@@ -2111,7 +2143,7 @@ class Segmentation:
                 # This is the first place we can limit the number of translations allowed
                 ginsttrans = ginst.translations
                 if limit_trans:
-                    ginsttrans[:Segmentation.max_group_trans]
+                    ginsttrans = ginsttrans[:Segmentation.max_group_trans]
                 for tgroup, tgnodes, tnodes in ginsttrans:
 #                    print("  tgroup {}, tgnodes {}, tnodes {}".format(tgroup, tgnodes, tnodes))
                     for tgnode, tokens, feats, agrs, t_index in tgnodes:

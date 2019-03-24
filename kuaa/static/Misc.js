@@ -7,6 +7,14 @@ function mostrarDespleg() {
     list = menu.classList;
     list.toggle("show");
 }
+function error(msg) {
+    document.getElementById("error").innerHTML = msg;
+}
+
+function borrarError(msg) {
+    document.getElementById("error").innerHTML = "";
+}
+
 // Close the dropdown if the user clicks outside of it
 window.onclick = function(event) {
     if (!event.target.matches('.despleg')) {

@@ -106,8 +106,10 @@ artdef/fs :: la[pos=det] [pos=n] ; // 0
 artdef/fs_adj :: la[pos=det] [pos=a,n=0] ; // 0
 artdef/mp :: los[pos=det] [pos=n] ; // 0
 artdef/mp_adj :: los[pos=det] [pos=a,n=1] ; // 0
+artdef/mp_num :: los[pos=det] %N ; // 0
 artdef/fp :: las[pos=det] [pos=n] ; // 0
 artdef/fp_adj :: las[pos=det] [pos=a,n=1] ; // 0
+artdef/fp_num :: las[pos=det] %N ; // 0
 
 ## preguntas
 pregunta :: ¿ [pos=v,+inter] ; // 0

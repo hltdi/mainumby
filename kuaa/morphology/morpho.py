@@ -495,7 +495,8 @@ class POS:
             with open(path, encoding='utf-8') as roots:
                 self.root_freqs = eval(roots.read())
         except IOError:
-            print('No generation root frequency file {} found for {}'.format(path, self.pos))
+            pass
+#            print('No generation root frequency file {} found for {}'.format(path, self.pos))
 
     def set_feat_freqs(self):
         """If there's a feat statistics file for generation for this POS, load it."""
@@ -505,7 +506,8 @@ class POS:
             with open(path, encoding='utf-8') as feats:
                 self.feat_freqs = eval(feats.read())
         except IOError:
-            print('No generation feature frequency file {} found for {}'.format(path, self.pos))
+            pass
+#            print('No generation feature frequency file {} found for {}'.format(path, self.pos))
 
     def get_features(self):
         '''Get the dict of grammatical features and values, generating it if {}.'''

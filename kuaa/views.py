@@ -2,7 +2,7 @@
 #
 ########################################################################
 #
-#   This file is part of the HLTDI L^3 project
+#   This file is part of the PLoGS project
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
@@ -42,81 +42,74 @@
 # -- Comments in sent, error message for empty Doc in doc.
 # 2018.07-08
 # -- New GT-like interface: tra.html; OF_HTML, OM1
+# 2019.03
+# -- GUI class holds variables that used to be global. The one
+#    global is the instance of GUI.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user, clean_sentence
+from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user, GUI
 
 # Global variables for views; probably a better way to do this...
-SESSION = SPA = GRN = DOC = SENTENCE = SEGS = SEG_HTML = USER = OF_HTML = OM1 = None
-SINDEX = 0
-USERS_INITIALIZED = False
+# SINDEX = 0
 
-def initialize():
-    global USERS_INITIALIZED
-    init_users()
-    USERS_INITIALIZED = True
+#def initialize():
+#    global USERS_INITIALIZED
+#    init_users()
+#    USERS_INITIALIZED = True
 
-def init_session(create_memory=False):
-    global SESSION
-    global GRN
-    global SPA
-    if not SPA:
-        load_languages()
+def init_session(create_memory=False, use_anon=False):
+    if not GUI.source:
+        load(gui=GUI)
+#        load_languages()
     # Load users and create session if there's a user
     # or if USE_ANON is True
-    if not SESSION:
-        SESSION = start(SPA, GRN, USER, create_memory=create_memory)
+    if not GUI.session:
+        start(GUI, use_anon=use_anon, create_memory=create_memory)
 
-def load_languages():
-    """Load Spanish and Guarani data."""
-    global GRN, SPA
-    SPA, GRN = load()
+#def load_languages():
+#    """Load Spanish and Guarani data."""
+#    GUI.source, GUI.target = load()
 
-def make_doc(text, single=False):
-    """Create a Document object from the text."""
-    global DOC
-    DOC = make_document(SPA, GRN, text, session=SESSION, single=single)
+#def make_doc(text, single=False, html=False):
+#    """Create a Document object from the text."""
+#    GUI.doc = make_document(GUI, text, session=GUI.session,
+#                            single=single, html=html)
 
-def get_sentence():
-    global SINDEX
-    global SENTENCE
-    global DOC
-#    print("SINDEX {}, len(DOC) {}".format(SINDEX, len(DOC)))
-    if SINDEX >= len(DOC):
-        SENTENCE = None
-        # Save DOC in database or translation cache here
-        DOC = None
-        SINDEX = 0
-        return
-    SENTENCE = DOC[SINDEX]
-    SINDEX += 1
+##def get_sentence():
+##    global SINDEX
+##    if SINDEX >= len(GUI.doc):
+##        GUI.sentence = None
+##        # Save GUI.doc in database or translation cache here
+##        GUI.doc = None
+##        SINDEX = 0
+##        return
+##    GUI.sentence = GUI.doc[SINDEX]
+##    SINDEX += 1
 
 def solve_and_segment(single=False):
-    global SEGS
-    global SEG_HTML
-    SEGS, SEG_HTML = seg_trans(SENTENCE, SPA, GRN,
-                               single=single, process=True)
+    GUI.segs, GUI.seg_html = seg_trans(GUI, single=single, process=True)
 #    print("Solved segs: {}, html: {}".format(SEGS, SEG_HTML))
     if single:
-        global OF_HTML
-        global OM1
-        cap = SENTENCE.capitalized
-#        print("Sentence capitalized? {}".format(cap))
-        OF_HTML = ''.join([s[-1] for s in SEG_HTML])
-        OM1 = clean_sentence(' '.join([s[4] for s in SEG_HTML]), cap)
-#        print("OM1 {}".format(OM1))
-#        print("OF HTML {}".format(OF_HTML))
+        GUI.init_sent()
+#        cap = GUI.sentence.capitalized
+#        GUI.of_html = ''.join([s[-1] for s in GUI.seg_html])
+#        GUI.om1 = clean_sentence(' '.join([s[4] for s in GUI.seg_html]), cap)
+
+def doc_solve_and_segment(index):
+    # Solve the current sentence
+    solve_and_segment(True)
+    # Update the document translation
+    GUI.update_doc(index)
+#    GUI.doc_html = GUI.doc.select_html(index, GUI.of_html)
+#    # List of translation HTML for sentences
+#    GUI.doc_om = [""] * len(GUI.doc)
+#    # List of accepted translation strings for sentences
+#    GUI.doc_t = [""] * len(GUI.doc)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     print("In index...")
     return render_template('index.html')
-#    return redirect(url_for('base'))
-
-#@app.route('/base', methods=['GET', 'POST'])
-#def base():
-##    print("In base...")
-#    return render_template('base.html')
 
 @app.route('/acerca', methods=['GET', 'POST'])
 def acerca():
@@ -125,11 +118,11 @@ def acerca():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    global USER
     form = request.form
 #    print("Form for login: {}".format(form))
-    if not USERS_INITIALIZED:
-        initialize()
+    if not GUI.users_initialized:
+        init_users(GUI)
+#        initialize()
     if request.method == 'POST' and 'login' in form:
         # Try to find user with username username
         username = form.get('username')
@@ -141,10 +134,9 @@ def login():
             print("Found user {}".format(user))
             password = form.get('password')
             if user.check_password(password):
-                USER = user
+                GUI.user = user
                 return render_template('logged.html', user=username)
             else:
-#                print("Password doesn't match")
                 return render_template('login.html', error='password')
     return render_template('login.html')
 
@@ -156,7 +148,6 @@ def logged():
 
 @app.route('/reg', methods=['GET', 'POST'])
 def reg():
-    global USER
     form = request.form
 #    print("Form for reg: {}".format(form))
     if request.method == 'POST' and 'username' in form:
@@ -171,7 +162,7 @@ def reg():
         else:
             user = create_user(form)
             print("Created user {}".format(user))
-            USER = user
+            GUI.user = user
             return render_template('acct.html', user=form.get('username'))
     return render_template('reg.html')
 
@@ -180,151 +171,147 @@ def acct():
 #    print("In acct...")
     return render_template('acct.html')
 
-# View for quick version of program that displays sentence and its translation in
-# side-by-side windows.
+# View for the window that does all the work.
 @app.route('/tra', methods=['GET', 'POST'])
 def tra():
-    global SENTENCE
-    global DOC
-    global SEG_HTML
-    global OM1
-    global OF_HTML
-    global SESSION
     form = request.form
     of = None
     print("Form for tra: {}".format(form))
-    if not SESSION:
+    if not GUI.session:
         print("Ninguna memoria")
         init_session(create_memory=True)
-    username = USER.username if USER else ''
-#   AYUDA
+    username = GUI.user.username if GUI.user else ''
 #    if 'ayuda' in form and form['ayuda'] == 'true':
 #        # Opened help window. Keep everything else as is.
-#        raw = SENTENCE.raw if SENTENCE else None
-#        document = form.get('UTraDoc', '')
-#        return render_template('sent.html', sentence=SEG_HTML, raw=raw, punc=punc,
-#                               document=document, user=USER)
+#        return render_template(...)
+    if 'modo' in form:
+        subir = form.get('modo') == 'documento'
+        if 'documento' in form and form['documento']:
+            # Text for new Document object
+            text = form['documento']
+            make_document(GUI, text, single=False, html=True)
+            doc_html = GUI.doc.html
+            print("Procesando texto {}".format(GUI.doc))
+            return render_template('tra.html', documento=doc_html, doc=True, tfuente="90%")
+        else:
+            return render_template('tra.html', doc=subir)
     if form.get('borrar') == 'true':
         sentrec = None
-        if SENTENCE:
-            sentrec = SENTENCE.record
-        DOC = SENTENCE = SEG_HTML = None
+        if GUI.sentence:
+            sentrec = GUI.sentence.record
+        GUI.seg_html = None
+        GUI.sentence = None
+        GUI.doc = None
         if form.get('registrar') == 'true':
-            if SESSION:
+            if GUI.session:
                 recordsrc = sentrec.raw
                 translation = form.get('ometa')
-                SESSION.record(sentrec, translation=translation)
-#                SESSION.record(SENTENCE.record, translation=translation, segtrans=segtrans, comments=comments)
+                GUI.session.record(sentrec, translation=translation)
             else:
                 print("NO SESSION SO NOTHING TO RECORD")
-        return render_template('tra.html', sentence=None, ofuente=None, translation=None, punc=None,
-                               user=username, mayus='', tfuente="140%")
-    if OF_HTML and SENTENCE:
+        return render_template('tra.html', oracion=None, ofuente=None, translation=None, punc=None,
+                               user=username, mayus='', tfuente="120%")
+    isdoc = form.get('isdoc') == 'true'
+
+    if not isdoc and GUI.of_html and GUI.sentence:
         # Sentence already translated; don't read in a new one until this one gets deleted.
-        return render_template('tra.html', sentence=OF_HTML, ofuente=form.get('ofuente', ''), translation=SEG_HTML, trans1=OM1,
-                                punc=SENTENCE.get_final_punc(), mayus=SENTENCE.capitalized, tfuente=form.get('tfuente', "140%"),
+        return render_template('tra.html', oracion=GUI.of_html, ofuente=form.get('ofuente', ''), translation=GUI.seg_html, trans1=GUI.om1,
+                                punc=GUI.sentence.get_final_punc(), mayus=GUI.sentence.capitalized, tfuente=form.get('tfuente', "120%"),
                                 user=username, nocorr=form.get('nocorr', ''))
     if not 'ofuente' in form:
         return render_template('tra.html', user=username, mayus='')
-    if not DOC:
+    if not GUI.doc:
         # Create a new document
         of = form['ofuente']
         print("Creando nueva oración de {}".format(of))
-        make_doc(of, single=True)
-        if len(DOC) == 0:
+        make_document(GUI, of, single=True, html=False)
+        if len(GUI.doc) == 0:
             print(" But document is empty.")
-            return render_template('tra.html', error=True, tfuente="140%", user=username)
-    # Get the sentence, the only one in DOC
-    SENTENCE = DOC[0]
-    # Translate and segment the sentence, assigning SEGS
-    solve_and_segment(single=True)
-    tf = form.get('tfuente', "140%")
+            return render_template('tra.html', error=True, tfuente="120%", user=username)
+    print("GOT TO HERE WITH isdoc={}, ofuente={}".format(isdoc, of))
+    oindex = int(form.get('oindex', 0))
+    # Get the sentence, the only one in GUI.doc
+    GUI.sentence = GUI.doc[oindex]
+    # Translate and segment the sentence, assigning GUI.segs
+    if isdoc:
+        doc_solve_and_segment(oindex)
+    else:
+        solve_and_segment(single=True)
+    tf = form.get('tfuente', "120%")
     # Whether to do orthographic correction of target
     nocorr = form.get('nocorr', '')
-#    print("SENTENCE {}".format(SENTENCE))
-#    print("ofuente= {}".format(of))
-#    print("trans1= {}".format(OM1))
-#    print("translation= {}".format(SEG_HTML))
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
-    punc = SENTENCE.get_final_punc()
-    return render_template('tra.html', sentence=OF_HTML, ofuente=of, translation=SEG_HTML, trans1=OM1,
-                           punc=punc, mayus=SENTENCE.capitalized, tfuente=tf, user=username, nocorr=nocorr)
+    punc = GUI.sentence.get_final_punc()
+    return render_template('tra.html', oracion=GUI.of_html, ofuente=of, translation=GUI.seg_html, trans1=GUI.om1, isdoc=isdoc,
+                           documento=GUI.doc_html, punc=punc, mayus=GUI.sentence.capitalized, tfuente=tf,
+                           user=username, nocorr=nocorr)
 
 # View for document entry
-@app.route('/doc', methods=['GET', 'POST'])
-def doc():
-    form = request.form
-#    print("Form for doc: {}".format(form))
-    # Initialize Session if there's a User and no Session
-    # and Spanish and Guarani if they're not loaded.
-    if not SESSION:
-#        print("Ninguna sesión")
-#        if not USER:
-#            print("Y ningún usuario")
-        init_session()
-#    print("Initialized session and languages")
-    return render_template('doc.html', user=USER)
+##@app.route('/doc', methods=['GET', 'POST'])
+##def doc():
+##    form = request.form
+##    # Initialize Session if there's a User and no Session
+##    # and Spanish and Guarani if they're not loaded.
+##    if not GUI.session:
+##        init_session()
+##    return render_template('doc.html', user=GUI.user)
 
 # View for displaying parsed sentence and sentence translation and
 # for recording translations selected/entered by user.
-@app.route('/sent', methods=['GET', 'POST'])
-def sent():
-    form = request.form
-    punc = SENTENCE.get_final_punc() if SENTENCE else None
-    print("Form for sent: {}".format(form))
-    if 'ayuda' in form and form['ayuda'] == 'true':
-        # Opened help window. Keep everything else as is.
-        raw = SENTENCE.raw if SENTENCE else None
-        document = form.get('UTraDoc', '')
-        return render_template('sent.html', sentence=SEG_HTML, raw=raw, punc=punc,
-                               document=document, user=USER)
-    if 'senttrans' in form:
-        # A sentence has been translated and the translation recorded.
-        # Really record the translation and the segment translations if any.
-        translation = form.get('senttrans')
-        segtrans = form.get('segtrans', '')
-        document = form.get('UTraDoc', '')
-        comments = form.get('UComment', '')
-        if SESSION:
-            SESSION.record(SENTENCE.record, translation=translation, segtrans=segtrans, comments=comments)
-        else:
-            print("NO SESSION SO NOTHING TO RECORD")
-        # Continue with the next sentence in the document or quit
-        return render_template('sent.html', user=USER, document=document)
-    if 'text' in form and not DOC:
-        # Create a new document
-        make_doc(form['text'])
-        if len(DOC) == 0:
-            return render_template('doc.html', user=USER, error=True)
-    # Get the next sentence in the document, assigning SENTENCE
-    get_sentence()
-    if not SENTENCE:
-        # No more sentences, return to doc.html for a new document
-        return render_template('doc.html', user=USER)
-    else:
-        # Translate and segment the sentence, assigning SEGS
-        solve_and_segment()
-        print("SEG HTML {}".format(SEG_HTML))
-    # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
-    punc = SENTENCE.get_final_punc()
-    return render_template('sent.html', sentence=SEG_HTML, raw=SENTENCE.original, document='',
-                           record=SENTENCE.record, punc=punc, user=USER)
+##@app.route('/sent', methods=['GET', 'POST'])
+##def sent():
+##    form = request.form
+##    punc = GUI.sentence.get_final_punc() if GUI.sentence else None
+##    print("Form for sent: {}".format(form))
+##    if 'ayuda' in form and form['ayuda'] == 'true':
+##        # Opened help window. Keep everything else as is.
+##        raw = GUI.sentence.raw if GUI.sentence else None
+##        document = form.get('UTraDoc', '')
+##        return render_template('sent.html', sentence=GUI.seg_html, raw=raw, punc=punc,
+##                               document=document, user=GUI.user)
+##    if 'senttrans' in form:
+##        # A sentence has been translated and the translation recorded.
+##        # Really record the translation and the segment translations if any.
+##        translation = form.get('senttrans')
+##        segtrans = form.get('segtrans', '')
+##        document = form.get('UTraDoc', '')
+##        comments = form.get('UComment', '')
+##        if GUI.session:
+##            GUI.session.record(GUI.sentence.record, translation=translation, segtrans=segtrans, comments=comments)
+##        else:
+##            print("NO SESSION SO NOTHING TO RECORD")
+##        # Continue with the next sentence in the document or quit
+##        return render_template('sent.html', user=GUI.user, document=document)
+##    if 'text' in form and not GUI.doc:
+##        # Create a new document
+##        make_doc(form['text'])
+##        if len(GUI.doc) == 0:
+##            return render_template('doc.html', user=GUI.user, error=True)
+##    # Get the next sentence in the document, assigning GUI.sentence
+##    get_sentence()
+##    if not GUI.sentence:
+##        # No more sentences, return to doc.html for a new document
+##        return render_template('doc.html', user=GUI.user)
+##    else:
+##        # Translate and segment the sentence, assigning GUI.segs
+##        solve_and_segment()
+##        print("SEG HTML {}".format(GUI.seg_html))
+##    # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
+##    punc = GUI.sentence.get_final_punc()
+##    return render_template('sent.html', sentence=GUI.seg_html, raw=GUI.sentence.original, document='',
+##                           record=GUI.sentence.record, punc=punc, user=GUI.user)
 
 @app.route('/fin', methods=['GET', 'POST'])
 def fin():
     form = request.form
 #    print("Form for fin: {}".format(form))
     modo = form.get('modo')
-    global SESSION
-    global DOC
-    global SENTENCE
-    global SEGS
-    global SEG_HTML
-    global USER
     global SINDEX
-    quit(SESSION)
-    SESSION = DOC = SENTENCE = SEGS = SEG_HTML = USER = None
+    quit(GUI.session)
+    GUI.session = GUI.doc = GUI.sentence = None
+    GUI.segs = GUI.seg_html = None
     SINDEX = 0
+    GUI.user = None
     return render_template('fin.html', modo=modo)
 
 @app.route('/proyecto')

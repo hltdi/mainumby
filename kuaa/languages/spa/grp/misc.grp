@@ -576,15 +576,15 @@
 ->grn ko'ã $n $a ; || 0, 2, 1
 # pronombre
 ** este ; ^ este 0
-->grn kóva_n
+->grn kóva_n[n=0]
 ** esta ; ^ esta 0
-->grn kóva_n
+->grn kóva
 ** esto; ^ esto 0
-->grn kóva_n
+->grn kóva_n[n=0]
 ** éste ; ^ éste 0
-->grn kóva_n
+->grn kóva_n[n=0]
 ** ésta; ^ ésta 0
-->grn kóva_n
+->grn kóva_n[n=0]
 ** estos ; ^ estos 0
 ->grn ko'ãva_n
 ** estas ; ^ estas 0
