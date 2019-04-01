@@ -111,6 +111,7 @@ class Seg:
         self.segmentation = segmentation.sentence
         self.generated = False
         self.shead = None
+        self.shead_index = -1
         self.thead = None
         self.scats = None
         self.special = False
@@ -128,18 +129,28 @@ class Seg:
         self.indices = None
 
     def get_tokens(self):
+        """Returns a set of all possible tokens for this segment."""
         toks = self.get_shead_tokens() or self.get_untrans_token() or [self.token_str]
+        raw = self.get_shead_raw()
+        if raw and raw not in toks:
+            toks.append(raw)
         to_add = []
         for tok in toks:
             if '_' in tok:
                 to_add.append(tok.split('_')[0])
-        return toks + to_add
+        return set(toks + to_add)
 
     def get_untrans_token(self):
         """For untranslated segments, return the cleaned string."""
         return self.cleaned_trans and self.cleaned_trans[0][0]
 
     ## Head properties (used in joining Segments to form Supersegs)
+
+    def get_shead_raw(self):
+        """The raw token for the source head."""
+        if self.shead and self.shead_index >= 0:
+            return self.tokens[self.shead_index]
+
     def get_shead_tokens(self):
         if self.shead:
             return [(h[0] if isinstance(h, tuple) else h) for h in self.shead]
@@ -189,7 +200,7 @@ class Seg:
             if self.cleaned_trans:
                 # Already translated
                 token = self.get_shead_tokens()[0]
-                print("Translated special token {}, self {}".format(token, self))
+#                print("Translated special token {}, self {}".format(token, self))
                 pre, x, form = token.partition('~')
             else:
                 tok = self.get_untrans_token()
@@ -258,7 +269,10 @@ class Seg:
                 return True
         elif '%' in group_tok:
             pre, tok = self.get_special()
-            if pre != group_tok:
+            if verbosity:
+                print(" Special prefix {}, token {}; group token {}".format(pre, tok, group_tok))
+            # Prefix could be more specific than group token, for example, %ND and %N
+            if not pre or not pre.startswith(group_tok):
                 return False
         else:
             toks = self.get_tokens()
@@ -282,16 +296,17 @@ class Seg:
         return True
 
     def get_group_cands(self, all_groups=None, verbosity=0):
-        """Get groups that could match this segment and surrounding segments."""
+        """Get groups that could match this segment and surrounding segments.
+        Returns a set to prevent duplicates."""
         tokens = self.get_tokens()
         all_groups = all_groups or self.source.groups
         if all_groups and tokens:
-            groups = []
+            groups = set()
             for token in tokens:
                 groups1 = all_groups.get(token)
                 if groups1:
                     groups1 = [(g, g.head_index) for g in groups1]
-                    groups.extend(groups1)
+                    groups.update(groups1)
             return groups
             
     def generate(self, limit_forms=True, verbosity=0):
@@ -341,30 +356,29 @@ class Seg:
 
     def set_source_html(self, index):
         if self.has_paren:
-            self.source_html = "<span style='color:{};'> {} </span>".format(self.color, self.pre_token_str)
+            self.source_html = "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.pre_token_str)
             self.source_html += "<span id=parenthetical> {} </span>".format(self.paren_token_str)
-            self.source_html += "<span style='color:{};'> {} </span>".format(self.color, self.post_token_str)
+            self.source_html += "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.post_token_str)
         else:
             cap = index == 0 and self.sentence.capitalized
             tokstr = self.original_token_str
             if cap:
                 tokstr = tokstr[0].upper() + tokstr[1:]
-            self.source_html = "<span style='color:{};'> {} </span>".format(self.color, tokstr)
+            self.source_html = "<span class='fuente' style='color:{};'> {} </span>".format(self.color, tokstr)
 
     def get_gui_source(self, paren_color='Silver'):
         if self.has_paren:
-            return ["<span style='color:{};'> {} </span>".format(self.color, self.pre_token_str),
-                    "<span style='color:{};'> {} </span>".format(paren_color, self.paren_token_str),
-                    "<span style='color:{};'> {} </span>".format(self.color, self.post_token_str)]
+            return ["<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.pre_token_str),
+                    "<span class='fuente' style='color:{};'> {} </span>".format(paren_color, self.paren_token_str),
+                    "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.post_token_str)]
         else:
-            return "<span style='color:{};'> {} </span>".format(self.color, self.token_str)
+            return "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.token_str)
 
     def set_single_html(self, index, verbosity=0):
         """Set the HTML markup for this segment as a colored segment in source and dropdown menu
         in target, given its position in the sentence.
         """
-        # Combine translations where possible
-        self.color = Seg.tt_notrans_color if not self.translation else Seg.tt_colors[index]
+        self.color = Seg.tt_notrans_color if (not self.translation and not self.special) else Seg.tt_colors[index]
         self.set_source_html(index)
         transhtml = "<div class='desplegable' ondrop='drop(event);' ondragover='allowDrop(event);'>"
         capitalized = False
@@ -666,6 +680,7 @@ class SuperSeg(Seg):
     or a Group."""
 
     def __init__(self, segmentation, segments=None, features=None, name=None, join=None, verbosity=0):
+#        print("Creating SuperSeg for {} with features {}".format(segments, features))
         Seg.__init__(self, segmentation)
         self.segments = segments
         self.name = name
@@ -712,14 +727,14 @@ class SuperSeg(Seg):
                     self.cleaned_trans = [ct1 + ct2 for ct1 in self.cleaned_trans for ct2 in segment.cleaned_trans]
             else:
                 self.cleaned_trans = segment.cleaned_trans
-            print(" Segment {}, tgroups {}".format(segment, segment.tgroups))
+#            print(" Segment {}, tgroups {}".format(segment, segment.tgroups))
             if self.tgroups:
                 if segment.tgroups:
                     # Segment may have no translation (e.g., "de")
                     self.tgroups = [tg1 + tg2 for tg1 in self.tgroups for tg2 in segment.tgroups]
             else:
                 self.tgroups = segment.tgroups
-            print("Segments {}, tgroups {}".format(i, self.tgroups))
+#            print("Segments {}, tgroups {}".format(i, self.tgroups))
             self.translation.append(segment.translation)
 #            print("Superseg cleaned_trans: {}, translation {}".format(self.cleaned_trans, self.translation))
             raw_tokens.append(segment.raw_token_str)
@@ -747,7 +762,7 @@ class SuperSeg(Seg):
 
     def apply_changes(self, verbosity=1):
         """Implement the changes to features and order specified in the Join or Group instance."""
-        print("Superseg {} applying changes".format(self))
+#        print("Superseg {} applying changes".format(self))
         self.join.apply(self, verbosity=verbosity)
 
 class Segment(Seg):
@@ -813,7 +828,7 @@ class Segment(Seg):
         self.original_token_str = ' '.join(self.original_tokens)
         # If there are special tokens in the source language, fix them here.
         if '%' in self.token_str: # or '~' in self.token_str:
-            print("Handling special item {}, translation {}".format(self.token_str, translation))
+            print("Handling special item {}, tokens {}, translation {}".format(self.token_str, tokens, translation))
             # Create the source and target strings without special characters
             if translation:
                 self.cleaned_trans = [translation]
@@ -831,15 +846,9 @@ class Segment(Seg):
             self.original_token_str = self.original_token_str.replace('~', '')
         if '~' in self.token_str:
             self.token_str = self.token_str.replace('~', '')
-#        if self.original_token_str[0] == '~':
-#            self.original_token_str = self.original_token_str[1:]
-#        if self.token_str[0] == '~':
-#            self.token_str = self.token_str[1:]
         if not self.cleaned_trans:
             self.cleaned_trans = self.translation[:]
         # Join tokens in cleaned translation if necessary
-#        if not delay_gen:
-#            Seg.join_toks_in_strings(self.cleaned_trans)
         if treetrans:
             thead_indices = [g.head_index for g in treetrans.tgroups]
             self.thead = [o[i] for i, o in zip(thead_indices, self.cleaned_trans)]
@@ -1887,7 +1896,7 @@ class TreeTrans:
 #        print("  Result", result)
         return result
 
-    def generate_words(self, limit_forms=True, verbosity=0):
+    def do_agreements(self, limit_forms=True, verbosity=0):
         """Do intra-group agreement constraints."""
         # Reinitialize nodes
 #        print("Generating words in {}, features {}".format(self, self.node_features))
@@ -1916,30 +1925,6 @@ class TreeTrans:
                 agr_node1[1], agr_node2[1] = af1, af2
                 self.node_features[feat_index1][1] = af1
                 self.node_features[feat_index2][1] = af2
-        self.generate(limit_forms=limit_forms, verbosity=verbosity)
-#        generator = self.sentence.target.generate
-#        print("Nodes and features for generation: {}, {}".format(self.nodes, self.node_features))
-#        for token, features, index in self.node_features:
-#            root, pos = TreeTrans.get_root_POS(token)
-#            if verbosity:
-#                print("  Token {}, features {}, index {}, root {}, pos {}".format(token, features.__repr__(), index, root, pos))
-#            output = [token]
-#            if not pos:
-#                # This word doesn't require generation, just postprocess and return it in a list
-#                if self.target.postsyll:
-#                    token = self.target.syll_postproc(token)
-#                    output = [token]
-#                self.nodes.append((output, index))
-#            else:
-##                print("Generating {} : {} : {}".format(root, features.__repr__(), pos))
-#                output = generator(root, features, pos=pos)
-#                self.nodes.append((output, index))
-#            if verbosity:
-#                print("Generating target node {}: {}".format(index, output))
-#        print("Nodes after generation: {}".format(self.nodes))
-
-    def generate(self, limit_forms=True, verbosity=0):
-        generator = self.sentence.target.generate
 #        print("Nodes and features for generation: {}, {}".format(self.nodes, self.node_features))
         for token, features, index in self.node_features:
             root, pos = TreeTrans.get_root_POS(token)
@@ -1947,21 +1932,14 @@ class TreeTrans:
                 print("  Token {}, features {}, index {}, root {}, pos {}".format(token, features.__repr__(), index, root, pos))
             output = [token]
             if not pos:
-                # This word doesn't require generation, just postprocess and return it in a list
-#                print("Generating {}: {}".format(index, output))
                 if self.target.postsyll:
                     token = self.target.syll_postproc(token)
                     output = [token]
-#                self.nodes.append([output, index])
-#            elif delay:
             else:
                 output = [[root, pos, features]]
-#                self.nodes.append([(root, pos, features), index])
-#            else:
-#                output = generator(root, features, pos=pos)
             self.nodes.append([output, index])
             if verbosity:
-                print("Generating target node {}: {}".format(index, output))
+                print("Target node {}: {}".format(index, output))
 
     def make_order_pairs(self, verbosity=0):
         """Convert group/index pairs to integer (index) order pairs.

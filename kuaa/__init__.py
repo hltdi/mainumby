@@ -30,7 +30,6 @@ from flask import Flask, url_for, render_template
 
 ## train imports sentence
 from .train import *
-from . import gui
 
 ## sentence imports ui, segment, record
 ### segment imports cs, utils, entry.Entry, entry.Group, record.SegRecord
@@ -66,7 +65,7 @@ def load(source='spa', target='grn', gui=None):
     gui.target = t
 
 def seg_trans(gui, session=None, single=False,
-              constrain_groups=None, process=True, verbosity=0):
+              constrain_groups=True, process=True, verbosity=0):
     """Translate sentence and return marked-up sentence with segments colored.
     So far only uses first segmentation."""
     sentence = gui.sentence
@@ -90,8 +89,6 @@ def seg_trans(gui, session=None, single=False,
 def make_document(gui, text, single=False, html=False):
     """Create a Mainumby Document object with the text."""
     session = gui.session
-    if single:
-        print("Making sentence from {}".format(gui.source))
     d = kuaa.Document(gui.source, gui.target, text, proc=True, session=session, single=single)
     if html:
         d.set_html()
@@ -114,6 +111,22 @@ def init_users(gui=None):
     User.read_all()
     if gui:
         gui.users_initialized = True
+
+def make_session(source, target, user, create_memory=False, use_anon=True):
+    User.read_all()
+    if isinstance(user, str):
+        # Get the user from their username
+        user = User.users.get(user)
+    if use_anon and not user:
+        user = User.get_anon()
+    username = ''
+    if user:
+        username = user.username
+    if create_memory:
+        session = kuaa.Memory.recreate(user=username)
+    elif user:
+        session = kuaa.Session(source=source, target=target, user=user)
+    return session
 
 def start(gui, use_anon=True, create_memory=False):
     """Initialize a run. Create a Session if there's a user, and we're not
@@ -152,9 +165,6 @@ def create_user(dct):
 #    if capitalize:
 #        string = string[0].upper() + string[1:]
 #    return string
-
-# Container for variables needed in views
-GUI = gui.GUI()
 
 # Import views. This has to appear after the app is created.
 import kuaa.views

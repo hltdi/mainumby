@@ -534,6 +534,8 @@ class Group(Entry):
                 segindex += 1
                 patindex += 1
             else:
+                if verbosity:
+                    print(" {} failed to match {} (match {})".format(segment, self, match))
                 return False
         if verbosity:
             print("{} matched segments {} starting from {}".format(self, segments, startindex))
@@ -552,7 +554,7 @@ class Group(Entry):
             print("Applying {} to {}".format(self, superseg))
         hindex = self.head_index
         segments = superseg.segments
-        segfeatures = superseg.features
+        supersegfeats = superseg.features
         # Add translations
         translations = self.trans
         # Once this is set, don't change it (assume all translations involve the same ordering)
@@ -567,6 +569,7 @@ class Group(Entry):
         alignment = None
         # Indices of source segments aligned with translation positions
         rev_alignment = None
+        # Target groups and features for each translation in group
         for tgroup, tfeats in translations:
             troot = tgroup.root
             ttokens = tgroup.tokens
@@ -583,14 +586,14 @@ class Group(Entry):
                 else:
                     alignment = superseg.order
             rev_align = Group.reverse_alignment(alignment, len(tgroup.tokens))
+            agr = None
             if 'agr' in tfeats:
                 agr = dict([a for a in tfeats['agr'] if a])
-            else:
-                agr = None
             if verbosity:
-                print(" Applying trans group {}, tokens {}, pos {}, tokfeats {}, align {}, rev align {}".format(tgroup, ttokens, tpos, ttokfeats, alignment, rev_align))
+                print(" Applying trans group {}, tokens {}, pos {}, tokfeats {}, align {}, agr {}".format(tgroup, ttokens, tpos, ttokfeats, alignment, agr))
             segorder = 0
-            for tindex, segfeat, (segindex, segment) in zip(alignment, segfeatures, enumerate(superseg.segments)):
+            for tindex, segfeat, (segindex, segment) in zip(alignment, supersegfeats, enumerate(superseg.segments)):
+                # tindex specifies the final, potentially reordered position
                 if verbosity:
                     print("  tindex {}, segindex {}, segment {}".format(tindex, segindex, segment))
                 if tindex < 0:
@@ -600,21 +603,21 @@ class Group(Entry):
                             print("   Dropping segment {}".format(segindex))
                         ordered = True
                     continue
+                ttoken = ttokens[tindex]
+                tfeats = ttokfeats[tindex] if ttokfeats else None
                 ti_covered.append(tindex)
-                segtrans = segment.translation
-                segclean = segment.cleaned_trans
+                newtrans = []
+#                segtrans = segment.translation
+#                segclean = segment.cleaned_trans
+                segspec = segment.special
                 if segment.thead is None:
                     segment.thead = []
                 segthead = segment.thead
-                ttoken = ttokens[tindex]
-                tfeats = ttokfeats[tindex] if ttokfeats else None
                 if verbosity:
-                    print("    Current ttoken {}, tfeats {}".format(ttoken, tfeats))
-#                print("  Current translation {}, cleaned {}".format(segtrans, segclean))
-#                print("  Current features {}".format(segfeat.__repr__()))
+                    print("    Current ttoken {}, tfeats {}, segcleaned {}".format(ttoken, tfeats, segment.cleaned_trans))
                 if segindex == hindex:
-#                    if verbosity:
-#                        print("   Updating head segment {}, thead {}, troot {}, tpos {}".format(segment, segthead, troot, tpos))
+                    if verbosity:
+                        print("   Updating head segment {}, thead {}, troot {}, ttok {}, tpos {}".format(segment, segthead, troot, ttoken, tpos))
                     agr1 = agr.get(segindex) if agr else None
                     if agr1:
 #                        print("   Making head features agree with group features")
@@ -625,24 +628,30 @@ class Group(Entry):
                         ufeats = segfeat or tfeats
                     # Use the root (token without _pos)
                     if not segthead:
-                        segtrans.append([ttoken])
-                        segclean.append([ttoken])
-                        segthead.append(ttoken)
+                        newtrans.append(ttoken)
+#                        print(" Appending ttoken {}".format(ttoken))
+#                        segtrans.append([ttoken])
+#                        segclean.append([ttoken])
+#                        segthead.append(ttoken)
                     else:
                         new = [troot, tpos, ufeats]
-                        segtrans.append([new])
-                        segclean.append([new])
-                        segthead.append(new)
+                        newtrans.append(new)
+#                        segtrans.append([new])
+#                        segclean.append([new])
+#                        segthead.append(new)
                     if verbosity:
-                        print("   Updating head segment {}, cleaned {}".format(segment, segclean))
+                        print("   Updating head segment {}, cleaned {}".format(segment, segment.cleaned_trans))
                 else:
                     if verbosity:
-                        print("   Updating non-head segment {}, head {}, ttok {}, ttokfeats {}".format(segment, segthead, ttoken, tfeats.__repr__()))
+                        print("   Updating non-head segment {}, head {}, ttok {}, ttokfeats {}, special? {}".format(segment, segthead, ttoken, tfeats.__repr__(), segspec))
                     if not segthead:
-                        if ttoken:
-                            segtrans.append([ttoken])
-                            segclean.append([ttoken])
+                        if ttoken and not segspec:
+                            newtrans.append(ttoken)
+                            # Only do this if segment is not special because ttoken, e.g., %N, would be redundant
+#                            segtrans.append([ttoken])
+#                            segclean.append([ttoken])
                     else:
+                        # Already a translation for this non-head element, but features may need to be updated.
                         for trans in segthead:
                             # trans should be a [token, pos, feats] list
 #                            print("    trans: {}".format(trans))
@@ -653,7 +662,15 @@ class Group(Entry):
                                 ufeats = transfeats or tfeats
                             trans[2] = ufeats
                     if verbosity:
-                        print("   Updated: {}".format(segthead))
+                        print("   Updated: {}, {}".format(segthead, segclean))
+                if newtrans:
+                    if verbosity:
+                        print("  New transations for segment {}: {}".format(segment, newtrans))
+                    segment.translation = [[t] for t in newtrans]
+                    segment.cleaned_trans = [[t] for t in newtrans]
+                    if segment.thead is None:
+                        segment.thead = []
+                    segment.thead = newtrans
 #            print("Done with translation, checking t indices: {}, covered: {}".format(tindices, ti_covered))
         if alignment:
 #            if verbosity:

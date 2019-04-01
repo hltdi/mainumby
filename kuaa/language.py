@@ -2107,6 +2107,9 @@ class Language:
             posmorph = morf[pos]
 #            print("Generating root {} with POS {} and features {}".format(root, pos, features.__repr__()))
             output = posmorph.gen(root, update_feats=features, guess=guess, only_words=True, cache=cache)
+        elif isinstance(features, bool):
+            # features may be True
+            return [root]
         else:
             for posmorph in list(morf.values()):
                 output.extend(posmorph.gen(root, update_feats=features, guess=guess, only_words=True))

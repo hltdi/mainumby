@@ -487,6 +487,7 @@ ahitar_v $v
 ahogar_v $v,$vt,$vp
 ahogo_n $n
 ahondar_v $v,$vt,$vp
+ahora_adv %adv
 ahorcar_v $v,$vt,$vp
 ahorquillar_v $v
 ahorrar_v $v,$vt,$vp

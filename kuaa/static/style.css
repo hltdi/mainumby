@@ -34,15 +34,6 @@ div.body
 {
     margin: 0 auto;
 }
-/*
-a:link { color: #4B2B17; text-decoration: underline}
-span.fuzzy a:link { color: #66BB66; }
-a:visited { color: #4B2B17 }
-span.fuzzy a:visited { color: #558855; }
-a:active { color: #000000; }
-a:hover { color: #338888; }
-span.fuzzy a:hover { background-color: #66FF66; color: #FFFFFF; }
-*/
 h1,h2,h3 { clear: left; }
 h1
 {
@@ -95,10 +86,6 @@ p.error
     color: #f00;
     font-style: italic;
 }
-td.instruc
-{
-   vertical-align: top;
-}
 div.instruc
 {
    vertical-align: top;
@@ -109,19 +96,23 @@ div.instruc
    border: none;
    margin: 0px;
 }
+
+td.instruc
+{
+   vertical-align: top;
+}
 br.instruc
 {
-    margin-top: 0px;
+    margin-top: 3px;
     content: "";
     display: block;
 }
-
-/*
-p
+br.sep
 {
-    width: 1000px;
+    margin-top: 10px;
+    content: "";
+    display: block;
 }
-*/
 
 .instructions
 {

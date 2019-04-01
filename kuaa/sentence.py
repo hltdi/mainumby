@@ -952,6 +952,7 @@ class Sentence:
                     if self.language.is_known(token.lower()):
                         self.tokens[index] = token.lower()
                     # Otherwise this is a name, so keep it capitalized
+#                    print("  Not really first word...")
                     first_word = False
             elif token.isupper():
                 # Lowercase words other than the first one if they're all uppercase
@@ -1223,6 +1224,7 @@ class Sentence:
             if index == 0:
                 # For first word in sentence, try both capitalized an uncapitalized versions.
                 keys.add(node.token.capitalize())
+#            print("Keys for {}: {}".format(node, keys))
             anals = node.analyses
             if anals:
                 if not isinstance(anals, list):
@@ -2200,7 +2202,8 @@ class Segmentation:
                     tgroups = [t[0] for t in tgroup_comb]
                     tnodes = [t[1] for t in tgroup_comb]
                     tt.build(tg_groups=tgroups, tg_tnodes=tnodes, verbosity=verbosity)
-                    tt.generate_words(limit_forms=limit_trans)
+                    # Used to be generate_words()
+                    tt.do_agreements(limit_forms=limit_trans)
                     tt.make_order_pairs(verbosity=verbosity)
                     tt.create_variables()
                     tt.create_constraints()
@@ -2582,6 +2585,7 @@ class Segmentation:
         superseg = SuperSeg(self, segs, features=features, join=join, verbosity=verbosity)
         if verbosity:
             print("CREATING SUPERSEG FOR {} AND {} in positions {}".format(segs, join, positions))
+            print("...replacing segment {} to segment {}".format(self.segments[positions[0]], self.segments[positions[-1]+1]))
         # replace the joined segments in the segmentation with the superseg
         self.segments[positions[0]:positions[-1]+1] = [superseg]
 
@@ -2592,6 +2596,8 @@ class Segmentation:
         print("MATCHING GROUPS {}".format(groupsid))
         cands = self.get_group_cands(groupsid=groupsid, verbosity=verbosity)
         matches = self.match_group_cands(cands, verbosity=verbosity)
+        # Reverse matches so later segments are replaced before earlier ones
+        matches.reverse()
         if create_ss:
             for match in matches:
                 self.match2superseg(match, verbosity=verbosity)
@@ -2610,7 +2616,6 @@ class Segmentation:
                 group, head_index = cand1
                 start = index-head_index
                 end = start + len(group.tokens)
-#                print("Cand {}, start {}, end {}".format(group, start, end))
                 if end <= sol_length:
                     indices = range(start, end)
                     # Reject candidates that are too long for the sentence

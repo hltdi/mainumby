@@ -55,7 +55,7 @@ import kuaa
 ## se combinan los segmentos, usando patrones gramaticales ("joins").
 def proc(oracion, html=False, user=None, verbosity=0):
     e, g = cargar()
-    session = kuaa.start(e, g, user, create_memory=True)
+    session = kuaa.make_session(e, g, user, create_memory=True)
     d = kuaa.Document(e, g, oracion, True, single=True, session=session)
     if len(d) == 0:
         return
@@ -64,7 +64,7 @@ def proc(oracion, html=False, user=None, verbosity=0):
     s.solve(all_sols=False, verbosity=verbosity)
     if s.segmentations:
         segmentation = s.segmentations[0]
-        print("Found segmentation {}".format(segmentation))
+        print("Segmentación encontrada: {}".format(segmentation))
         segmentation.get_segs(html=False, single=True)
         segmentation.process(generate=False, verbosity=verbosity)
         segmentation.generate(limit_forms=True)
@@ -78,7 +78,7 @@ def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
         single=True, translate=True, constrain_groups=True, generate=False,
         verbosity=0):
     e, g = cargar()
-    session = kuaa.start(e, g, user, create_memory=single)
+    session = kuaa.make_session(e, g, user, create_memory=single)
     d = kuaa.Document(e, g, sentence, True, single=single, session=session)
     if len(d) == 0:
         print("Parece que falta puntuación final en el documento.")
