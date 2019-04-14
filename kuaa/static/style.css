@@ -45,6 +45,7 @@ h1
 	font-weight: bold;
 	color: #4B2B17;
 	background-color: #F5E754;
+	padding: 4px;
 }
 h2
 {
@@ -53,6 +54,7 @@ h2
 	margin-top: .75em;
 	margin-bottom: .35em;
 	background-color: #8DEDCD;
+	padding: 4px;
 }
 h3
 {
@@ -61,6 +63,7 @@ h3
 	font-weight: bold;
 	margin-top: .5em;
 	margin-bottom: .5em;
+	padding: 4px;
 }
 h4
 {
@@ -68,6 +71,7 @@ h4
 	font-weight: bold;
 	margin-top: .5em;
 	margin-bottom: .5em;
+	padding: 4px;
 }
 div.user
 {
@@ -85,6 +89,7 @@ p.error
 {
     color: #f00;
     font-style: italic;
+    font-size: 110%;
 }
 div.instruc
 {
@@ -116,9 +121,9 @@ br.sep
 
 .instructions
 {
-    color: #00f;
-    font-size: 120%;
-    font-style: italic;
+/*    color: #00f; */
+    font-size: 100%;
+/*    font-style: italic; */
 }
 table.center
 {
@@ -276,11 +281,10 @@ span.username
     color: #F5E754;
 /*    font-style: italic; */
 }
-span.root
+span.level
 {
-   font-weight: bold;
-   color: #900;
-   border: thin solid;
+    font-weight: bold;
+    font-size: 100%;
 }
 span.sentence
 {
@@ -312,6 +316,11 @@ span.alternar:hover
     text-decoration: underline;
     cursor: pointer;
 }
+span.heading
+/* Generic headings */
+{
+    font-size: 110%;
+}
 input.text
 {
         font-family: "Verdana";
@@ -330,7 +339,7 @@ input.text
         background-color: #8DEDCD;
         color: #4B2B17;
         font-family: "Verdana";
-        font-size: 110%;
+        font-size: 100%;
 /*        align: center; */
         width: 100px;
 	border-radius: 4px;
@@ -344,7 +353,7 @@ input.text
         color: #4B2B17;
         font-family: "Verdana";
 	font-weight: bold;
-        font-size: 110%;
+        font-size: 100%;
 /*        align: center; */
         width: 150px;
 	border-radius: 4px;

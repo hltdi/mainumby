@@ -652,9 +652,10 @@ class Seg:
         return string
 
     @staticmethod
-    def clean_spec(string):
+    def clean_spec(string, specpre=True):
         """Remove special prefixes and connecting characters."""
-        string = Seg.remove_spec_pre(string)
+        if specpre:
+            string = Seg.remove_spec_pre(string)
         # prefix ~
         if string[0] == '~':
             string = string[1:]
@@ -719,22 +720,22 @@ class SuperSeg(Seg):
                 # This represents a target token with no corresponding source token
                 continue
             segment = self.segments[i]
-            if verbosity:
-                print("Setting SuperSeg properties, segment {}, current ct {}".format(segment, self.cleaned_trans))
-                print(" Segment cleaned_trans: {}, translation {}".format(segment.cleaned_trans, segment.translation))
+#            if verbosity:
+            print("Setting SuperSeg properties, segment {}, current ct {}".format(segment, self.cleaned_trans))
+            print(" Segment cleaned_trans: {}, translation {}".format(segment.cleaned_trans, segment.translation))
             if self.cleaned_trans:
                 if segment.cleaned_trans:
                     self.cleaned_trans = [ct1 + ct2 for ct1 in self.cleaned_trans for ct2 in segment.cleaned_trans]
             else:
                 self.cleaned_trans = segment.cleaned_trans
-#            print(" Segment {}, tgroups {}".format(segment, segment.tgroups))
+            print(" Segment {}, tgroups {}".format(segment, segment.tgroups))
             if self.tgroups:
                 if segment.tgroups:
                     # Segment may have no translation (e.g., "de")
                     self.tgroups = [tg1 + tg2 for tg1 in self.tgroups for tg2 in segment.tgroups]
             else:
                 self.tgroups = segment.tgroups
-#            print("Segments {}, tgroups {}".format(i, self.tgroups))
+            print("Segments {}, tgroups {}".format(i, self.tgroups))
             self.translation.append(segment.translation)
 #            print("Superseg cleaned_trans: {}, translation {}".format(self.cleaned_trans, self.translation))
             raw_tokens.append(segment.raw_token_str)
@@ -771,8 +772,7 @@ class Segment(Seg):
     def __init__(self, segmentation, indices, translation, tokens, color=None, space_before=1,
                  treetrans=None, sfeats=None,
                  tgroups=None, merger_groups=None, has_paren=False, is_paren=False,
-                 head=None,
-                 spec_indices=None, session=None, gname=None, is_punc=False):
+                 head=None, spec_indices=None, session=None, gname=None, is_punc=False):
 #        print("Creating Segment for indices {}, translation {}, head {}, sfeats {}".format(indices, translation, head, sfeats))
         Seg.__init__(self, segmentation)
 #        if head:
@@ -843,9 +843,9 @@ class Segment(Seg):
             self.token_str = Seg.clean_spec(self.token_str)
             self.original_token_str = Seg.clean_spec(self.original_token_str)
         if '~' in self.original_token_str:
-            self.original_token_str = self.original_token_str.replace('~', '')
+            self.original_token_str = Seg.clean_spec(self.original_token_str)
         if '~' in self.token_str:
-            self.token_str = self.token_str.replace('~', '')
+            self.token_str = Seg.clean_spec(self.token_str)
         if not self.cleaned_trans:
             self.cleaned_trans = self.translation[:]
         # Join tokens in cleaned translation if necessary
@@ -862,7 +862,7 @@ class Segment(Seg):
         # Triples for each merger with the segment
         self.merger_gnames = merger_groups
         # Target-language groups
-        self.tgroups = tgroups or [[]] * (len(self.translation) or 1)
+        self.tgroups = tgroups or [[""]] * (len(self.translation) or 1)
         # Target-language group strings, ordered by choices; gets set in set_html()
         self.choice_tgroups = None
         # The session associated with this segmentation segment

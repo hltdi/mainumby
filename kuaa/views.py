@@ -49,6 +49,7 @@
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
 from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user
 from . import gui
+from docx import Document
 
 # Global variable for the container holding all the gui-related variables that need to
 # persist between calls to render_template()
@@ -74,9 +75,10 @@ def init_session(create_memory=False, use_anon=False):
         start(GUI, use_anon=use_anon, create_memory=create_memory)
 
 def solve_and_segment(isdoc=False, index=0):
-    GUI.segs, GUI.seg_html = seg_trans(GUI, single=True, process=True)
+#    if GUI.
+    GUI.segs, GUI.tra_seg_html = seg_trans(GUI, single=True, process=True)
 #    print("Solved segs: {}, html: {}".format(SEGS, SEG_HTML))
-    GUI.init_sent()
+    GUI.init_sent(index)
     if isdoc:
         GUI.update_doc(index)
 
@@ -155,6 +157,7 @@ def acct():
 # View for the window that does all the work.
 @app.route('/tra', methods=['GET', 'POST'])
 def tra():
+    global GUI
     if not GUI:
         create_gui()
     form = request.form
@@ -162,40 +165,43 @@ def tra():
     if not GUI.session:
         print("Ninguna memoria")
         init_session(create_memory=True)
-    if 'ocultar' in form:
-        GUI.props['ocultar'] = form.get('ocultar') == 'true'
-    if 'nocorr' in form:
-        GUI.props['nocorr'] = form.get('nocorr') == 'true'
+    # Translating document?
+    isdoc = form.get('isdoc') == 'true'
+    GUI.set_props(form, ['ocultar', 'nocorr', 'isdoc'], ['tfuente'])
+#    if 'ocultar' in form:
+#        GUI.props['ocultar'] = form.get('ocultar') == 'true'
+#    if 'nocorr' in form:
+#        GUI.props['nocorr'] = form.get('nocorr') == 'true'
     username = GUI.user.username if GUI.user else ''
-#    if 'ayuda' in form and form['ayuda'] == 'true':
-#        # Opened help window. Keep everything else as is.
-#        return render_template(...)
+    if 'ayuda' in form and form['ayuda'] == 'true':
+        # Opened help window. Keep everything else as is.
+        return render_template('tra.html', doc=isdoc, documento=GUI.doc_html, props=GUI.props)
     if 'modo' in form:
+        if 'docx' in form and form['docx']:
+            file = form['docx']
+            print("ARCHIVO SUBIDO {}".format(file))
+            document = Document(file)
+#            GUI.props['tfuente'] = "90%"
+            return render_template('tra.html', doc=True, props=GUI.props)
         # Mode (sentence vs. document) has changed
         subir = form.get('modo') == 'documento'
         if 'documento' in form and form['documento']:
             make_document(GUI, form['documento'], single=False, html=True)
-            print("Procesando texto {}".format(GUI.doc))
-            return render_template('tra.html', documento=GUI.doc.html, doc=True,
-                                   tfuente="90%", props=GUI.props)
+            print("PROCESANDO TEXTO {}".format(GUI.doc))
+            return render_template('tra.html', documento=GUI.doc.html, doc=True, props=GUI.props)
         else:
+            GUI.clear()
+            if not subir:
+                GUI.props['tfuente'] = "120%"
             return render_template('tra.html', doc=subir, props=GUI.props)
     if form.get('borrar') == 'true':
+        print("BORRANDO")
         GUI.clear(form.get('registrar') == 'true', form.get('ometa'))
         # Start over with no current sentence or translation (translating sentence)
-        return render_template('tra.html', oracion=None, translation=None,
-                               user=username, tfuente="120%", props=GUI.props)
-    # Translating document?
-    isdoc = form.get('isdoc') == 'true'
-    GUI.props['isdoc'] = isdoc
-
-    if 'oindex' not in form and GUI.of_html and GUI.sentence:
-        print("SENTENCE ALREADY TRANSLATED")
-        # (translating sentence) Sentence already translated; don't read in a new one until this one gets deleted.
-        return render_template('tra.html', oracion=GUI.of_html, doc=isdoc,
-                               translation=GUI.seg_html, trans1=GUI.om1,
-                               tfuente=form.get('tfuente', "120%"),
+        GUI.props['tfuente'] = "120%"
+        return render_template('tra.html', oracion=None, tra_seg_html=None,
                                user=username, props=GUI.props)
+    GUI.props['isdoc'] = isdoc
     if not 'ofuente' in form:
         # No sentence entered or selected
         print("NO SENTENCE ENTERED")
@@ -206,30 +212,44 @@ def tra():
         make_document(GUI, form['ofuente'], single=True, html=False)
         if len(GUI.doc) == 0:
             print(" pero documento está vacío.")
-            return render_template('tra.html', error=True, tfuente="120%", user=username, doc=isdoc, props=GUI.props)
+#            GUI.props['tfuente'] = "120%"
+            return render_template('tra.html', error=True, user=username, doc=isdoc, props=GUI.props)
     oindex = int(form.get('oindex', 0))
-    print("GOT TO HERE WITH isdoc={}, ofuente={}, oindex={}".format(isdoc, form['ofuente'], oindex))
     if 'tacept' in form and form['tacept']:
         # A new translation to be added to the accepted sentence translations.
-        aceptado = GUI.accept_sent(oindex, form['tacept'])
-        return render_template('tra.html', oracion='', doc=True, translation='', trans1='', oindex=-1,
-                               documento=GUI.doc_html, tfuente="90%", aceptado=GUI.doc_trans_str,
+        print("ACCEPTING NEW TRANSLATION {}".format(form['tacept']))
+        GUI.accept_sent(oindex, form['tacept'])
+        aceptado = GUI.doc_tra_acep_str
+        return render_template('tra.html', oracion='', doc=True, tra_seg_html='', tra='', oindex=-1,
+                               documento=GUI.doc_html, aceptado=aceptado,
                                user=username, props=GUI.props)
-    if GUI.doc_trans[oindex]:
-        print("SENTENCE PREVIOUSLY SELECTED")
-        return render_template('tra.html', oracion=GUI.of_html, doc=isdoc,
-                               translation=GUI.seg_html, trans1=GUI.om1,
-                               documento=GUI.doc_html, tfuente="90%",
-                               user=username, props=GUI.props)
+    if GUI.doc_tra_acep[oindex]:
+        print("SENTENCE ALREADY ACCEPTED")
+        error = "¡Ya aceptaste esta traducción; por favor seleccioná otra oración para traducir!"
+        return render_template('tra.html', oracion='', doc=True, error=error, tra_seg_html='', tra='',
+                               aceptado=GUI.doc_tra_acep_str,
+                               documento=GUI.doc_html, user=username, props=GUI.props)
+    if GUI.doc_tra_html[oindex]:
+        # Find the previously generated translation
+        tra_seg_html = GUI.doc_tra_html[oindex]
+        tra = GUI.doc_tra[oindex]
+        # Highlight selected source sentence with segments
+        GUI.update_doc(oindex)
+        print("SENTENCE ALREADY TRANSLATED")
+        return render_template('tra.html', oracion=GUI.fue_seg_html, tra_seg_html=tra_seg_html, tra=tra,
+                               documento=GUI.doc_html, doc=True, oindex=oindex,
+                               aceptado=GUI.doc_tra_acep_str, user=username, props=GUI.props)
+    
     # Get the sentence, the only one in GUI.doc is isdoc is False.
     GUI.sentence = GUI.doc[oindex]
     print("CURRENT SENTENCE {}".format(GUI.sentence))
     # Translate and segment the sentence, assigning GUI.segs
     solve_and_segment(isdoc=isdoc, index=oindex)
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
-    return render_template('tra.html', oracion=GUI.of_html, translation=GUI.seg_html, trans1=GUI.om1,
-                           documento=GUI.doc_html, tfuente=form.get('tfuente', "120%"),
-                           taccept=GUI.get_accepted_t(), doc=isdoc, oindex=oindex,
+#    print("== About to render template with doc={}, documento={}, aceptado={}".format(isdoc, GUI.doc_html, GUI.doc_tra_acep_str))
+    return render_template('tra.html', oracion=GUI.fue_seg_html,
+                           tra_seg_html=GUI.tra_seg_html, tra=GUI.tra,
+                           documento=GUI.doc_html, doc=isdoc, oindex=oindex, aceptado=GUI.doc_tra_acep_str,
                            user=username, props=GUI.props)
 
 # View for document entry
@@ -253,7 +273,7 @@ def tra():
 ##        # Opened help window. Keep everything else as is.
 ##        raw = GUI.sentence.raw if GUI.sentence else None
 ##        document = form.get('UTraDoc', '')
-##        return render_template('sent.html', sentence=GUI.seg_html, raw=raw, punc=punc,
+##        return render_template('sent.html', sentence=GUI.tra_seg_html, raw=raw, punc=punc,
 ##                               document=document, user=GUI.user)
 ##    if 'senttrans' in form:
 ##        # A sentence has been translated and the translation recorded.
@@ -281,10 +301,10 @@ def tra():
 ##    else:
 ##        # Translate and segment the sentence, assigning GUI.segs
 ##        solve_and_segment()
-##        print("SEG HTML {}".format(GUI.seg_html))
+##        print("SEG HTML {}".format(GUI.tra_seg_html))
 ##    # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
 ##    punc = GUI.sentence.get_final_punc()
-##    return render_template('sent.html', sentence=GUI.seg_html, raw=GUI.sentence.original, document='',
+##    return render_template('sent.html', sentence=GUI.tra_seg_html, raw=GUI.sentence.original, document='',
 ##                           record=GUI.sentence.record, punc=punc, user=GUI.user)
 
 @app.route('/fin', methods=['GET', 'POST'])

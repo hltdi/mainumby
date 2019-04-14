@@ -20,8 +20,8 @@ var
 	, get_blob = function() {
 		return view.Blob;
 	}
-
-	, text = $("document")
+        // EDIT THIS LINE TO BE THE id OF THE FORM ELEMENT CONTAINING THE TEXT TO BE SAVED
+	, text = $("aceptado")
 	, text_options_form = $("text-options")
 	, text_filename = $("text-filename")
 ;

@@ -45,72 +45,117 @@ class GUI:
         self.doc_html = None
         # HTML for already selected sentences
         self.doc_select_html = None
-        self.doc_om = []
+        # Translation HTML for sentences
+        self.doc_tra_html = []
+        # Translation strings, not necessarily accepted
+        self.doc_tra = []
         # List of accepted translations of sentences in current doc
-        self.doc_trans = []
+        self.doc_tra_acep = []
         # String concatenating accepted sentences
-        self.doc_trans_str = ''
+        self.doc_tra_acep_str = ''
         # Index of current sentence
         self.sindex = -1
         # SENTENCE
         # The current sentence
         self.sentence = None
         # HTML for the current source sentence
-        self.of_html = None
-        # Current sentence's segments
+        self.fue_seg_html = None
+        # Current sentence's segments (NOT ACTUALLY USED FOR ANYTHING CURRENTLY)
         self.segs = None
         # HTML for current sentence's segments
-        self.seg_html = None
+        self.tra_seg_html = None
         # Translation of the current sentence
-        self.om1 = None
+        self.tra = None
         # TOGGLES: isdoc, nocorr, ocultar
         self.props = {}
+        # Default
+        self.props['tfuente'] = "120%"
 
     def init_doc(self):
-#        self.doc_html = self.doc.select_html(index, self.of_html)
+#        self.doc_html = self.doc.select_html(index, self.fue_seg_html)
+        nsent = len(self.doc)
         # List of translation HTML for sentences
-        self.doc_om = [""] * len(self.doc)
+        self.doc_tra_html = [""] * nsent
+        # List of translation strings for sentences
+        self.doc_tra = [""] * nsent
         # List of accepted translation strings for sentences
-        self.doc_trans = [""] * len(self.doc)
+        self.doc_tra_acep = [""] * nsent
         # List of seg HTML for any selected sentences
-        self.doc_select_html = [""] * len(self.doc)
+        self.doc_select_html = [""] * nsent
+        self.doc_html = self.doc.html
+        self.props['tfuente'] = "90%" if nsent > 1 else "120%"
+
+#    def get_accepted_t(self):
+#        # First re-instate doc_html
+#        self.doc_html = self.doc.html
+#        # Return a string containing all of the non-empty accepted translations.
+#        return "\n".join([t for t in self.doc_tra_acep if t])
+
+    def doc_unselect_sent(self):
+        # Revert to version of doc html with nothing segmented.
         self.doc_html = self.doc.html
 
-    def get_accepted_t(self):
-        return "\n".join([t for t in self.doc_trans if t])
-
     def update_doc(self, index):
-        self.doc_html = self.doc.select_html(index, self.of_html)
-        self.doc_select_html[index] = self.of_html
+        self.doc_html = self.doc.select_html(index, self.fue_seg_html)
+        self.doc_select_html[index] = self.fue_seg_html
         self.sindex = index
 
-    def accept_sent(self, index, trans):
-        # Update the accepted translations
-        self.doc_trans[index] = trans
-        # Return a string concatenating all accepted translations
-        self.doc_trans_str = "\n".join([t for t in self.doc_trans if t]).strip()
+#    def translate_sent(self, index, tsegs, thtml):
+#        self.segs = tsegs
+#        self.tra_seg_html = thtml
 
-    def init_sent(self):
+    def accept_sent(self, index, trans):
+        """What happens when a sentence translation is accepted."""
+        print("+++Adding accepted translation for position {}".format(index))
+        # Update the accepted translations
+        self.doc_tra_acep[index] = trans
+        print("+++New doctrans: {}".format(self.doc_tra_acep))
+        # Return a string concatenating all accepted translations
+        self.doc_tra_acep_str = "\n".join([t for t in self.doc_tra_acep if t]).strip()
+        self.doc_unselect_sent()
+        self.props['tfuente'] = "90%"
+
+    def init_sent(self, index):
+        """What happens after a sentence has been translated."""
         cap = self.sentence.capitalized
         self.props['cap'] = cap
         self.props['punc'] = self.sentence.get_final_punc()
-        self.of_html = ''.join([s[-1] for s in self.seg_html])
-        self.om1 = GUI.clean_sentence(' '.join([s[4] for s in self.seg_html]), cap)
+        self.fue_seg_html = ''.join([s[-1] for s in self.tra_seg_html])
+        self.tra = GUI.clean_sentence(' '.join([s[4] for s in self.tra_seg_html]), cap)
+        self.doc_tra_html[index] = self.tra_seg_html
+        self.doc_tra[index] = self.tra
 
     def clear(self, record=False, translation=''):
         sentrec = None
         if self.sentence:
             sentrec = self.sentence.record
-        self.seg_html = None
+        self.tra_seg_html = None
         self.sentence = None
         self.doc = None
+        self.doc_tra_acep = []
+        self.doc_tra_html = []
+        self.doc_tra = []
+        self.doc_tra_acep_str = ''
+        self.doc_html = ''
+        self.doc_select_html = []
         if record:
             # Record the sentence translation
             if self.session:
-                translation = form.get('ometa')
                 self.session.record(sentrec, translation=translation)
             else:
                 print("NO SESSION SO NOTHING TO RECORD")
+
+    def set_props(self, form, bool_props=None, props=None):
+        """Set the property values from the form dict. bool-props and props
+        are lists of prop strings."""
+        if bool_props:
+            for prop in bool_props:
+                if prop in form:
+                    self.props[prop] = form.get(prop) == 'true'
+        if props:
+            for prop in props:
+                if prop in form:
+                    self.props[prop] = form[prop]
 
     @staticmethod
     def clean_sentence(string, capitalize=True):

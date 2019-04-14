@@ -150,6 +150,8 @@
 # -- Roots in language exceptions.lex file cause morphological analysis to take precedence over POS tagger (cuarto_n, cuarto_a).
 # 2019.03.21
 # -- Docs can generate HTML for document-level GUI
+# 2019.04.08
+# -- Introduced ¶ for end of paragraph and titles.
 
 import copy, re, random, itertools, os
 from .ui import *
@@ -183,19 +185,18 @@ class Document(list):
     # digits with intermediate characters (.,=></), which must be followed by one or more digits
     number_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$£€]?[\d]+[\d,.=></+\-±/×÷≤≥]*[\d]+[%¢°º]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
     # separated punctuation, including some that might be separated by error
-    punc_re = re.compile(r"([\-–—&=.,:;\"+<>/?!%$]{1,3})$")
+    punc_re = re.compile(r"([\-–—&=.,:;\"+<>/?!%$¶]{1,3})$")
     # word of one character
     word1_re = re.compile(r"([(\[{¡¿\-–—\"\'«»“”‘`*=]*)(\w)([)\]}\"\'»”’*\-–—,:;=]*[?|.!]?)$")
     # word of more than one character: one beginning character, one end character, 0 or more within characters;
     # followed by possible punctuation and a possible footnote
-#    word_re = re.compile(r"([(\[{¡¿\-–—\"\'«»”“‘`*=]*)([\w#@~’][\w\-/:;+.'`’~&=\|]*[\w’/º#.])([)\]}\"\'»”’*\-–—,:;=]*[.?!]?[\)\"\'»”’…]{0,2}\d*)$")
-    word_re = re.compile(r"([(\[{¡¿\-–—\"\'«»”“‘`*=]*)([\w#@~’][\w\-/:;+.'`’~&=\|]*[\w’/º#.])([)\]}\"\'»”’*\-–—,:;=.?!)\"\'»”’…]{0,3}\d*)$")
-    word_lenient_re = re.compile(r"([(\[{¡¿\-–—\"\'«»”“‘`*=]*)([\w#@~’][\w\-/:;+.'`’~&=\|]*[\w’/º#.])([)\]}\"\'»”’*\-–—,:;=.?!)\"\'»”’…]*\d*)$")
-    period_re = re.compile("([\w.\-/:;+.'`’~&=\|]+\.)([\d]*)$")
+    word_re = re.compile(r"([(\[{¡¿\-–—\"\'«»”“‘`*=]*)([\w#@~’][\w\-/:;+.'`’~&=\|]*[\w’/º#.])([)\]}\"\'»”’*\-–—,:;=.?!)\"\'»”’…¶]{0,3}\d*)$")
+    word_lenient_re = re.compile(r"([(\[{¡¿\-–—\"\'«»”“‘`*=]*)([\w#@~’][\w\-/:;+.'`’~&=\|]*[\w’/º#.])([)\]}\"\'»”’*\-–—,:;=.?!)\"\'»”’…¶]*\d*)$")
+    period_re = re.compile("([\w.\-/:;+.'`’~&=\|¶]+\.)([\d]*)$")
     start_re = re.compile('[\-–—¿¡\'\"«»“‘(\[]+$')
     poss_end_re = re.compile('[")\]}]{0,2}[?!][)"\]]{0,2}')
     # 0-2 pre-end characters (like ")"), 1 end character (.?!), 0-3 post-end characters (like ")" or footnote digits)
-    end_re = re.compile('[\"\'”’»)\]}]{0,2}[.?!][.)»”’\'\"\]\-–—\d]{0,3}')
+    end_re = re.compile('[\"\'”’»)\]}]{0,2}[.?!¶][.)»”’\'\"\]\-–—¶\d]{0,3}')
 
     def __init__(self, language=None, target=None, text='', target_text='', path='',
                  proc=True, session=None, biling=False, alternating=True,
@@ -352,6 +353,7 @@ class Document(list):
                 sentence_list.append(sentence)
         else:
             self.tokenize(target=target, verbosity=verbosity)
+            print("Tokens: {}".format(self.tokens))
             if reinit:
                 Sentence.id = 0
             # Sentences are created here
@@ -366,10 +368,16 @@ class Document(list):
         text = self.target_text if target else self.text
         tokens = self.target_tokens if target else self.tokens
         language = self.target if target else self.language
+        # There might be whitespace before or after the text.
+        text = text.strip()
+        # Normalize different newline and CR characters.
+        text = text.replace("\r\n", "\n").replace("\r", "\n")
+        text = text.replace("\n\n", "¶\n")
         if verbosity:
             print("Tokenizing text {}".format(text))
         # Split at new lines ...
         text_lines = text.split("\n")
+        print("Lines of text: {}".format(text_lines))
         text_tokens = []
         # ... then at spaces.
         for line in text_lines:
@@ -474,7 +482,7 @@ class Document(list):
                     raw_token = token
                 else:
                     raw_token += token
-            # Check whether this is a sentence end
+            # Punctuation: check whether this is a sentence end
             elif Document.end_re.match(token):
                 if not current_sentence:
                     print("Something wrong: empty sentence: {}".format(tokens[:tokindex]))
