@@ -111,9 +111,28 @@ class GUI:
         self.doc_tra_acep[index] = trans
         print("+++New doctrans: {}".format(self.doc_tra_acep))
         # Return a string concatenating all accepted translations
-        self.doc_tra_acep_str = "\n".join([t for t in self.doc_tra_acep if t]).strip()
+        self.doc_tra_acep_str = self.stringify_doc_tra()
+#        "\n".join([t for t in self.doc_tra_acep if t]).strip()
         self.doc_unselect_sent()
         self.props['tfuente'] = "90%"
+
+    def stringify_doc_tra(self):
+        """Create a string representation of the currently accepted sentence translations.
+        Probably need to make the more efficient by saving series of consecutive sentences
+        that have already been stringified."""
+        string = ''
+        for sent_trans in self.doc_tra_acep:
+            if not sent_trans:
+                continue
+            if "¶" == sent_trans[-1]:
+#                print("Paragraph in {}".format(sent_trans))
+                # New paragraph after this sentence
+                # Replace the ¶ with a newline
+                sent_trans = sent_trans.replace("¶", "\n")
+            else:
+                sent_trans += " "
+            string += sent_trans
+        return string.strip()
 
     def init_sent(self, index):
         """What happens after a sentence has been translated."""
@@ -125,7 +144,8 @@ class GUI:
         self.doc_tra_html[index] = self.tra_seg_html
         self.doc_tra[index] = self.tra
 
-    def clear(self, record=False, translation=''):
+    def clear(self, record=False, translation='', isdoc=False):
+        """Clear all document and sentence variables."""
         sentrec = None
         if self.sentence:
             sentrec = self.sentence.record
@@ -138,6 +158,7 @@ class GUI:
         self.doc_tra_acep_str = ''
         self.doc_html = ''
         self.doc_select_html = []
+        self.props['tfuente'] = "90%" if isdoc else "120%"
         if record:
             # Record the sentence translation
             if self.session:

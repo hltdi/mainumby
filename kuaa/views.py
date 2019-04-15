@@ -184,16 +184,14 @@ def tra():
 #            GUI.props['tfuente'] = "90%"
             return render_template('tra.html', doc=True, props=GUI.props)
         # Mode (sentence vs. document) has changed
-        subir = form.get('modo') == 'documento'
+        isdoc = form.get('modo') == 'documento'
         if 'documento' in form and form['documento']:
             make_document(GUI, form['documento'], single=False, html=True)
             print("PROCESANDO TEXTO {}".format(GUI.doc))
             return render_template('tra.html', documento=GUI.doc.html, doc=True, props=GUI.props)
         else:
-            GUI.clear()
-            if not subir:
-                GUI.props['tfuente'] = "120%"
-            return render_template('tra.html', doc=subir, props=GUI.props)
+            GUI.clear(isdoc=isdoc)
+            return render_template('tra.html', doc=isdoc, props=GUI.props)
     if form.get('borrar') == 'true':
         print("BORRANDO")
         GUI.clear(form.get('registrar') == 'true', form.get('ometa'))
