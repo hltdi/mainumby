@@ -7,20 +7,26 @@ NA :: [pos=n] [pos=a] ; 0=?1 n:n; 0=?1 g:g ; ^0
 QN :: %N [pos=n] ; ^1
 DN :: $dem [pos=n] ; ^1
 NyN :: [pos=n] y [pos=n] ; ^0
+NNyN :: [pos=n] , [pos=n] y [pos=n] ; ^0
+NNNyN :: [pos=n] , [pos=n] , [pos=n] y [pos=n] ; ^0
 ## predicatos
 >> pred1
 # minimal disambiguation of "de": -gui vs. possessive
 # transitive extractive verbs + "de": extraer, sacar, etc.
 VxNdeN :: $vex [pos=n] de [pos=n] ; ^0 ; 0[-ojxpl] ; 3[caso=gui]
 # possessive "de"
-NdeN :: [pos=n] de [pos=n] ; ^0 ; >2 0 ; 0[poses=[+ext,pp=3]]
+NdeN :: [pos=n] de [pos=n] ; ^0 ; 0(-1) ; >2 0 ; 0[poses=[+ext,pp=3]]
+# transitive verbs with personal objects
 VaN :: $vt a [pos=n] ; ^0 ; 0[-ojxpl] ; 2[caso=pe]
-VO :: $vt [pos=n] ; ^0 ; 0[-ojxpl]
+# transitive verbs with impersonal objects
+VN :: $vt [pos=n] ; ^0 ; 0[-ojxpl]
 AdvV :: $adv [pos=v] ; ^1
 VAdv :: [pos=v] $adv ; ^0
 ## sujeto - verbo
 >> sujpred
-VP :: [pos=v] $pp
+NqSV :: [pos=n] que [pos=n] $vt ; ^0 ; 3[rel=sjoj] ; 3[-ojxpl] ; 2=?3 n:n ; 2=!3 n:ns
+PDqV :: [pos=n] $pp $det que [pos=v] ; ^0 ; 4[rel=obl]
+VP :: [pos=v] $pp ; 1() ; ^0
 SV :: [pos=n] [pos=v] ; 0=?1 n:n ; 0=!1 n:ns ; ^1
 S[C]V :: %C [pos=v,n=0] ; ^1
 ## nominales 2

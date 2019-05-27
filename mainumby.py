@@ -52,8 +52,30 @@ import kuaa
 ## Atajos
 
 ## Creación y traducción de oración simple. Después de la segmentación inicial,
+## se combinan los segmentos, usando patrones gramaticales ("joins") y grupos
+## adicionales.
+def tra(oracion, html=False, user=None, verbosity=0):
+    e, g = cargar()
+    session = kuaa.make_session(e, g, user, create_memory=True)
+    d = kuaa.Document(e, g, oracion, True, single=True, session=session)
+    if len(d) == 0:
+        return
+    s = d[0]
+    s.initialize(ambig=False, constrain_groups=True, verbosity=verbosity)
+    s.solve(all_sols=False, verbosity=verbosity)
+    if s.segmentations:
+        segmentation = s.segmentations[0]
+        print("Segmentación encontrada: {}".format(segmentation))
+        segmentation.get_segs(html=False, single=True)
+        segmentation.connect(generate=False, verbosity=verbosity)
+        segmentation.generate(limit_forms=True)
+        if html:
+            segmentation.seg_html(single=True)
+        return segmentation
+
+## Creación y traducción de oración simple. Después de la segmentación inicial,
 ## se combinan los segmentos, usando patrones gramaticales ("joins").
-def proc(oracion, html=False, user=None, verbosity=0):
+def tra1(oracion, html=False, user=None, verbosity=0):
     e, g = cargar()
     session = kuaa.make_session(e, g, user, create_memory=True)
     d = kuaa.Document(e, g, oracion, True, single=True, session=session)
@@ -136,10 +158,18 @@ def cargar1(lang='spa'):
 
 ## Oraciones para evalucación
 
-oraciones = \
-          ["Los pasajeros se murieron ayer.",
-           "Me acordé de ese hombre feo.",
-           "La profesora encontró a su marido en la calle."]
+O = \
+  ["El hombre que fue hasta la ciudad.",
+   "El hombre vio a la mujer.",
+   "El buen gato duerme.",
+   "El gato negro duerme.",
+   "Los pasajeros se murieron ayer.",
+   "Me acordé de ese hombre feo.",
+   "La profesora encontró a su marido en la calle."]
+
+O1 = \
+   ["La economía de Paraguay se caracteriza por la predominancia de los sectores agroganaderos, comerciales y de servicios.",
+    "La economía paraguaya es la décimo cuarta economía de América Latina en términos de producto interno bruto (PIB) nominal."]
 
 ## Procesamiento de corpus.
 
@@ -241,55 +271,6 @@ if __name__ == "__main__":
     print("Tereg̃uahẽporãite Mainumby-pe, versión {}\n".format(__version__))
 #    kuaa.app.run(debug=True)
 
-##def ley_bidoc(init=True, train=True):
-##    d = eg_arch_doc("../LingData/EsGn/Corp/FromCarlos/ley4251_e0.txt",
-##                    ruta_meta="../LingData/EsGn/Corp/FromCarlos/ley4251_g0.txt")
-##    if init:
-##        d.initialize()
-##    if train:
-##        trainer = kuaa.Trainer(d)
-##        return trainer
-##    return d
-
-##def bidoc(ruta="../Bitext/EsGn/Biblia/biblia_tab.txt"):
-##    e, g = cargar(train=True)
-##    d = kuaa.Document(e, g, text='', biling=True, path=ruta)
-##    return d
-##
-##def arch_doc2(ruta, proc=True, reinit=False, user=None, session=None, ruta_meta=None):
-##    """Crear un documento del contenido de un archivo."""
-##    e, g = cargar_eg(train=ruta_meta)
-##    session = session or kuaa.start(e, g, user)
-##    arch = open(ruta, encoding='utf8')
-##    texto = arch.read()
-##    if ruta_meta:
-##        arch_meta = open(ruta_meta, encoding='utf8')
-##        texto_meta = arch_meta.read()
-##        d = kuaa.Document(e, g, texto, proc=proc, reinitid=reinit, session=session,
-##                          biling=True, target_text=texto_meta)
-##    else:
-##        d = kuaa.Document(e, g, texto, proc=proc, reinitid=reinit, session=session)
-##    return d
-##
-##def arch_doc1(lengua, ruta, session=None, user=None, proc=False):
-##    """Crear un documento del contenido de un archivo, solo para análisis."""
-##    l = cargar(lengua)
-##    session = session or kuaa.start(l, None, user)
-##    arch = open(ruta, encoding='utf8')
-##    texto = arch.read()
-##    d = kuaa.Document(l, None, texto, proc=proc, session=session)
-##    return d
-
-##def ui():
-##    """Create a UI and two languages."""
-##    u = kuaa.UI()
-##    e, s = kuaa.Language("English", 'eng'), kuaa.Language("español", 'spa')
-##    return u, e, s
-
-## OLD STUFF: Spanish, English, Amharic, Oromo
-# Profiling
-#import cProfile
-#import pstats
 
 ### Corpora and patterns
 

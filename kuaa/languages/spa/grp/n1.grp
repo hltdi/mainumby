@@ -1349,7 +1349,6 @@
 ->grn pere_n ; 0==0 n:n,poses:poses ; #5
 ->grn <hechaukaha_n ; 0==0 n:n,poses:poses ; #7
 ** marzo_n ; ^ marzo_n 0 ; #1
-->grn jasypo_n ; 0==0 n:n,poses:poses ; #34
 ->grn jasyapy_n ; 0==0 n:n,poses:poses ; #18
 ** mañana_n tempranita ; ^ mañana_n 0 ; #186
 ->grn pyharevete_n ; 0==0 n:n,poses:poses
@@ -1710,8 +1709,6 @@
 ** producto_n elaborado ; ^ producto_n 0 ; #12
 ->grn mba'erepy_n apopyre ; 0==0 n:n,poses:poses
 ** producto_n ; ^ producto_n 0 ; #12
-->grn ome'ẽva_n ; 0==0 n:n,poses:poses ; #24
-->grn osẽva_n ; 0==0 n:n,poses:poses ; #16
 ->grn mbokatukue_n ; 0==0 n:n,poses:poses
 ** promesa_n ; ^ promesa_n 0 ; #48
 ->grn kuave'ẽmby_n ; 0==0 n:n,poses:poses
@@ -6258,6 +6255,9 @@
 ->grn <hogarysýi_n ; 0==0 n:n,poses:poses
 ** cuadrilátero_n ; ^ cuadrilátero_n 0
 ->grn hakã_n irundýva ; 0==0 n:n,poses:poses
+** cuadro_n ; ^ cuadro_n 0
+->grn <ha'ãngarenda_n ; ^ <ha'ãngarenda_n 0
+hakã_n irundýva ; 0==0 n:n,poses:poses
 ** cuajada_n ; ^ cuajada_n 0
 ->grn mba'erypy'a_n ; 0==0 n:n,poses:poses
 ** cuajado_n ; ^ cuajado_n 0
@@ -16780,3 +16780,51 @@
 ->grn kyre'ỹ_v[cat=che] ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** cita_n ; ^ cita_n 0 ; #2
 ->grn juecha_n ; 0==0 n:n,poses:poses
+** el día_n[n=0] %N de enero ; ^ día 1
+->grn ára_n[n=0] %N jasyteĩ ; || -1, 0, 1, -1, 2
+** el %N de enero ; ^ enero 3
+->grn ára_n[n=0] %N jasyteĩ ; || -1, 1, -1, 2
+** el día_n[n=0] %N de febrero ; ^ día 1
+->grn ára_n[n=0] %N jasykõi ; || -1, 0, 1, -1, 2
+** el %N de febrero ; ^ febrero 3
+->grn ára_n[n=0] %N jasykõi ; || -1, 1, -1, 2
+** el día_n[n=0] %N de marzo ; ^ día 1
+->grn ára_n[n=0] %N jasyapy ; || -1, 0, 1, -1, 2
+** el %N de marzo ; ^ marzo 3
+->grn ára_n[n=0] %N jasyapy ; || -1, 1, -1, 2
+** el día_n[n=0] %N de abril ; ^ día 1
+->grn ára_n[n=0] %N jasyrundy ; || -1, 0, 1, -1, 2
+** el %N de abril ; ^ abril 3
+->grn ára_n[n=0] %N jasyrundy ; || -1, 1, -1, 2
+** el día_n[n=0] %N de mayo ; ^ día 1
+->grn ára_n[n=0] %N jasypo ; || -1, 0, 1, -1, 2
+** el %N de mayo ; ^ mayo 3
+->grn ára_n[n=0] %N jasypo ; || -1, 1, -1, 2
+** el día_n[n=0] %N de junio ; ^ día 1
+->grn ára_n[n=0] %N jasypoteĩ ; || -1, 0, 1, -1, 2
+** el %N de junio ; ^ junio 3
+->grn ára_n[n=0] %N jasypoteĩ ; || -1, 1, -1, 2
+** el día_n[n=0] %N de julio ; ^ día 1
+->grn ára_n[n=0] %N jasypokõi ; || -1, 0, 1, -1, 2
+** el %N de julio ; ^ julio 3
+->grn ára_n[n=0] %N jasypokõi ; || -1, 1, -1, 2
+** el día_n[n=0] %N de agosto ; ^ día 1
+->grn ára_n[n=0] %N jasypoapy ; || -1, 0, 1, -1, 2
+** el %N de agosto ; ^ agosto 3
+->grn ára_n[n=0] %N jasypoapy ; || -1, 1, -1, 2
+** el día_n[n=0] %N de septiembre ; ^ día 1
+->grn ára_n[n=0] %N jasyporundy ; || -1, 0, 1, -1, 2
+** el %N de septiembre ; ^ septiembre 3
+->grn ára_n[n=0] %N jasyporundy ; || -1, 1, -1, 2
+** el día_n[n=0] %N de octubre ; ^ día 1
+->grn ára_n[n=0] %N jasypa ; || -1, 0, 1, -1, 2
+** el %N de octubre ; ^ octubre 3
+->grn ára_n[n=0] %N jasypa ; || -1, 1, -1, 2
+** el día_n[n=0] %N de noviembre ; ^ día 1
+->grn ára_n[n=0] %N jasypateĩ ; || -1, 0, 1, -1, 2
+** el %N de noviembre ; ^ noviembre 3
+->grn ára_n[n=0] %N jasypateĩ ; || -1, 1, -1, 2
+** el día_n[n=0] %N de diciembre ; ^ día 1
+->grn ára_n[n=0] %N jasypakõi ; || -1, 0, 1, -1, 2
+** el %N de diciembre ; ^ diciembre 3
+->grn ára_n[n=0] %N jasypakõi ; || -1, 1, -1, 2

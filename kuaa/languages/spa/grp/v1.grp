@@ -2895,8 +2895,6 @@
 ** introducir_v[-r,+fin] ; ^ introducir_v 0 ; #22
 ->grn moinge_v[cat=a] ; #70
 ->grn mbohyru_v[cat=a] ; #20
-** ir_v[-r,+fin] detrás de algo ; ^ ir_v 0
-->grn <hapykuéri_v[cat=a]
 ** ir_v[+r,+oi] la palabra ; ^ ir_v 0
 ->grn ñe'ẽho_v[cat=a]
 ** ir_v[-r,+fin] con chisme ; ^ ir_v 0
@@ -2905,8 +2903,6 @@
 ->grn mba'ejogua_v[cat=a]
 ** ir_v[-r,+fin] al fondo ; ^ ir_v 0
 ->grn guapy_v[cat=a]
-** ir_v[-r,+fin] en masa ; ^ ir_v 0
-->grn hua'ĩ_v[cat=a]
 ** ir_v[-r,+fin] al encuentro ; ^ ir_v 0
 ->grn <huĝuaitĩ_v[cat=a]
 ** ir_v[-r,+fin] y venir ; ^ ir_v 0
@@ -2919,8 +2915,6 @@
 ->grn ñemoha'eño_v[cat=a]
 ** ir_v[-r,+fin] rápido ; ^ ir_v 0
 ->grn ñembopya'e_v[cat=a]
-** ir_v[-r,+fin] velozmente ; ^ ir_v 0
-->grn myandy_v[cat=a]
 ** ir_v[-r,+fin] ; ^ ir_v 0
 ->grn ha_v[cat=a] ; #3121
 ** ir_v[+r,+fin] ; ^ ir_v 0 ; #240

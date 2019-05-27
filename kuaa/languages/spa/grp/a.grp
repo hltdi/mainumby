@@ -521,7 +521,7 @@
 ->grn mba'ekuaáva_v
 ** conocido_a ; ^ conocido_a 0 ; #77
 ->grn ojekuaáva
-->grn kuaáva_v
+->grn kuaáva
 ** consagrado_a ; ^ consagrado_a 0
 ->grn mongaraipyre_v
 ** consanguíneo_a ; ^ consanguíneo_a 0
@@ -2958,13 +2958,10 @@
 ->grn <hovyju_v
 ** verde_a oscuro ; ^ verde_a 0 ; #20
 ->grn <hovyũ_v
-** verde_a intenso ; ^ verde_a 0 ; #20
-->grn <hovyũ_v
 ** verde_a claro ; ^ verde_a 0 ; #20
 ->grn <hovykãngy_v
 ** verde_a ; ^ verde_a 0 ; #20
 ->grn peky_v ; #1
-->grn ky_v ; #72
 ->grn kyrỹi_v ; #13
 ->grn <hovy_v ; #42
 ** verdoso_a ; ^ verdoso_a 0

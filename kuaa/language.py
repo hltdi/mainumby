@@ -1457,7 +1457,7 @@ class Language:
                   # Whether to normalize orthography before analysis
                   clean=True,
                   verbosity=0):
-        '''Analyze a single word, trying all existing POSs, both lexical and guesser FSTs.'''
+        '''Morphologically analyze a single word, trying all existing POSs, both lexical and guesser FSTs.'''
         # First make sure the analysis FSTs are loaded for this language
         if self.use in (GENERATION, TARGET):
             print("No se ha cargado el analizador para {}".format(self))
@@ -1488,8 +1488,8 @@ class Language:
         # Try stripping off suffixes
         suff_anal = self.strip_suffixes(form, incl_suf=incl_suf, pretty=pretty)
         if suff_anal:
-            if verbosity:
-                print("Suff anal {}".format(suff_anal))
+#            if verbosity:
+            print("Suff anal {}".format(suff_anal))
             analyses.extend(suff_anal)
             if cache and not pretty:
                 to_cache.extend(suff_anal)
@@ -1762,8 +1762,8 @@ class Language:
                     line = lines.pop().split('#')[0].strip()
                     # Ignore empty lines
                     if not line: continue
-                    name, x, pattern = line.partition(MS_NAME_SEP)
-                    morphosyn = MorphoSyn(self, name=name.strip(), pattern=pattern.strip())
+                    name, x, tokens = line.partition(MS_NAME_SEP)
+                    morphosyn = MorphoSyn(self, name=name.strip(), tokens=tokens.strip())
                     self.ms.append(morphosyn)
                     # If there are optional Morphosyns associated with this Morphosyn add them too.
                     if morphosyn.optional_ms:
@@ -1806,8 +1806,8 @@ class Language:
                             self.join_groupings.append(grouping)
                             grouping = []
                         continue
-                    name, x, pattern = line.partition(JOIN_NAME_SEP)
-                    join = Join(self, target, name=name.strip(), pattern=pattern.strip())
+                    name, x, tokens = line.partition(JOIN_NAME_SEP)
+                    join = Join(self, target, name=name.strip(), tokens=tokens.strip())
 #                    self.joins.append(join)
                     grouping.append(join)
             # add last grouping
@@ -2100,16 +2100,16 @@ class Language:
         is_not_roman = not roman
         morf = self.morphology
         output = []
-        if pos:
+        if isinstance(features, (bool, str)):
+            # features may be True and (for some reason) the string 'fail'
+            return [root]
+        elif pos:
             if pos not in morf:
                 print("POS {} not in morphology {}".format(pos, morf))
                 return [root]
             posmorph = morf[pos]
 #            print("Generating root {} with POS {} and features {}".format(root, pos, features.__repr__()))
             output = posmorph.gen(root, update_feats=features, guess=guess, only_words=True, cache=cache)
-        elif isinstance(features, bool):
-            # features may be True
-            return [root]
         else:
             for posmorph in list(morf.values()):
                 output.extend(posmorph.gen(root, update_feats=features, guess=guess, only_words=True))

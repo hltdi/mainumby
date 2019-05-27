@@ -157,6 +157,7 @@ import copy, re, random, itertools, os
 from .ui import *
 from .segment import *
 from .record import SentRecord
+from .entry import Token
 from .utils import remove_control_characters, firsttrue
 
 class Document(list):
@@ -353,7 +354,7 @@ class Document(list):
                 sentence_list.append(sentence)
         else:
             self.tokenize(target=target, verbosity=verbosity)
-            print("Tokens: {}".format(self.tokens))
+#            print("Tokens: {}".format(self.tokens))
             if reinit:
                 Sentence.id = 0
             # Sentences are created here
@@ -377,7 +378,7 @@ class Document(list):
             print("Tokenizing text {}".format(text))
         # Split at new lines ...
         text_lines = text.split("\n")
-        print("Lines of text: {}".format(text_lines))
+#        print("Lines of text: {}".format(text_lines))
         text_tokens = []
         # ... then at spaces.
         for line in text_lines:
@@ -632,6 +633,7 @@ class Sentence:
                 self.rawtokens = tokens[:]
             else:
                 self.rawtokens = rawtokens
+#            self.instantiate_tokens(tokens)
         else:
             self.raw = raw
             self.tokens = None
@@ -865,9 +867,7 @@ class Sentence:
         # Handle numeral word sequences
         while tok_position < len(self.tokens):
             spec = self.language.find_special(self.tokens[tok_position:])
-#            num = self.language.find_numeral(self.tokens[tok_position:])
             if spec:
-#                print("SPEC {}".format(spec))
                 newtokens, prefix = spec
                 spec_found = True
                 prefix = "%{}~".format(prefix)
@@ -954,17 +954,21 @@ class Sentence:
         """
         first_word = True
         for index, token in enumerate(self.tokens):
+#            tok = self.toks[index]
+#            tokname = tok.name
             if first_word:
                 first_char = token[0]
                 if not self.language.is_punc(first_char):
                     if self.language.is_known(token.lower()):
                         self.tokens[index] = token.lower()
+#                        tok.name = tokname.lower()
                     # Otherwise this is a name, so keep it capitalized
 #                    print("  Not really first word...")
                     first_word = False
             elif token.isupper():
                 # Lowercase words other than the first one if they're all uppercase
                 self.tokens[index] = token.lower()
+#                tok.name = tokname.lower()
 
     def preprocess(self, verbosity=0):
         """Segment contractions, join numerals, lowercase first word, normalize orthography and punctuation.
@@ -976,6 +980,13 @@ class Sentence:
         for index, token in zip(range(len(self.tokens)-1, -1, -1), self.tokens[-1::-1]):
             self.segment(token, index)
         self.clean()
+
+    def instantiate_tokens(self):
+        """Create SentToken instances for Sentence tokens."""
+        self.toks = []
+        for token in self.tokens:
+            prefix, name = Token.split_token(token)
+            self.toks.append(SentToken(name, prefix, self, punc=self.language.is_punc(name)))
 
     def initialize(self, ambig=True, constrain_groups=True, verbosity=0, terse=True):
         """Things to do before running constraint satisfaction."""
@@ -1025,6 +1036,7 @@ class Sentence:
             # sentence was created.
             if self.analyses:
                 self.lowercase()
+                self.instantiate_tokens()
             else:
                 tagged = None
                 # Split at spaces by default.
@@ -1032,6 +1044,7 @@ class Sentence:
                     self.tokens = self.raw.split()
                 # Lowercase capitalized words, segment contractions, join numerals and other fixed sequences.
                 self.preprocess()
+                self.instantiate_tokens()
                 # Do morphological analysis (added 2015.06.07)
                 # 2017.03.09: cleaning done in preprocess() so don't do it here.
                 # 2017.04.21: do this only if it hasn't already happened in an external tagger
@@ -1039,16 +1052,17 @@ class Sentence:
                 if self.tagger and not self.tagger.tokenizer:
                     # Use the POS tagger here
                     tagged = self.tagger.tag(self.tokens)
-#                print("Tagged: {}".format(tagged))
                 # Still need to figure out how to integrated tagged results and morphological analyses
                 if not self.tagger or self.tagger.morph:
-                    analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
+                    analyses = self.morph_anal()
+#                    [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
 #                    print("Analyzed {}: {}".format(self.tokens, analyses))
                     if self.tagger:
                         # Merge results of tagging and morphological analysis
                         self.analyses = self.merge_POS(tagged, analyses)
                     else:
-                        self.analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
+                        self.analyses = analyses
+#                        self.analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
                     # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
             if verbosity:
                 print("Running Morphosyns for {} on {}".format(self.language, self))
@@ -1062,6 +1076,18 @@ class Sentence:
                     # Attempt to apply succeeding morphosyns to copy if there is one
                     for ms1 in self.language.ms[mi+1:]:
                         ms1.apply(scopy, ambig=ambig, verbosity=verbosity, terse=terse)
+
+    def morph_anal(self):
+        """Morphological analysis of the tokens in the sentence."""
+        analyses = []
+        for tok in self.toks:
+            tokstring = tok.fullname
+            if tok.special or tok.punc or not tokstring:
+                # Don't bother to analyze it
+                analyses.append([tokstring, [{'root': tokstring, 'features': ''}]])
+            else:
+                analyses.append([tokstring, self.language.anal_word(tokstring, clean=False)])
+        return analyses
 
     def merge_POS(self, tagged, analyzed, verbosity=0):
         """Merge the output of an external tagger and the L3Morpho analyzer. Use the tagger to
@@ -1127,15 +1153,18 @@ class Sentence:
     def nodify(self, incl_del=False, verbosity=0):
         """Create nodes for sentence.
         2015.10.17: Split off from tokenize().
+        2019.05.25: Added Token instances.
         """
         self.nodes = []
         index = 0
         del_indices = {}
         toktype = 1
-        for tokindex, (rawtok, (token, anals)) in enumerate(zip(self.tokens, self.analyses)):
+        tokobjs = []
+        for tokindex, (tokobj, rawtok, (token, anals)) in enumerate(zip(self.toks, self.tokens, self.analyses)):
             if self.toktypes:
                 toktype = self.toktypes[tokindex]
-            if not incl_del and MorphoSyn.del_token(token):
+            tokobjs.append(tokobj)
+            if not incl_del and Token.del_token(token):
                 # Ignore elements deleted by MorphoSyns
                 if anals and 'target' in anals[0]:
                     target_index = tokindex + anals[0]['target']
@@ -1143,7 +1172,7 @@ class Sentence:
                     # Find the next element that's not deleted; that's the target
                     dist = 1
                     for tok, an in self.analyses[tokindex + 1:]:
-                        if not MorphoSyn.del_token(tok):
+                        if not Token.del_token(tok):
                             break
                         else:
                             dist += 1
@@ -1175,7 +1204,8 @@ class Sentence:
                         anal['pos'] = pos
                 raw_indices = del_indices.get(tokindex, [])
                 raw_indices.append(tokindex)
-                self.nodes.append(SNode(token, index, anals, self, raw_indices, rawtoken=rawtok, toktype=toktype))
+                self.nodes.append(SNode(token, index, anals, self, raw_indices, toks=tokobjs, tok=tokobj, rawtoken=rawtok, toktype=toktype))
+                tokobjs = []
                 index += 1
             else:
                 # No analysis, just use the raw string
@@ -1188,7 +1218,8 @@ class Sentence:
                     anals = [{'cats': ['$nm']}]
                 else:
                     anals = None
-                self.nodes.append(SNode(token, index, anals, self, [tokindex], rawtoken=rawtok, toktype=toktype))
+                self.nodes.append(SNode(token, index, anals, self, [tokindex], rawtoken=rawtok, tok=tokobj, toktype=toktype))
+                tokobjs = []
                 incorp_indices = []
                 index += 1
 
@@ -1226,13 +1257,15 @@ class Sentence:
         candidates = []
         for index, node in enumerate(self.nodes):
             # Get keys into lexicon for this node
-            keys = {node.token}
-            if node.rawtoken:
-                keys.add(node.rawtoken)
-            if index == 0:
-                # For first word in sentence, try both capitalized an uncapitalized versions.
-                keys.add(node.token.capitalize())
+            keys = node.tok.get_keys(index)
+#            keys = {node.token}
+#            if node.rawtoken:
+#                keys.add(node.rawtoken)
+#            if index == 0:
+#                # For first word in sentence, try both capitalized an uncapitalized versions.
+#                keys.add(node.token.capitalize())
 #            print("Keys for {}: {}".format(node, keys))
+            # Add root key
             anals = node.analyses
             if anals:
                 if not isinstance(anals, list):
@@ -1257,6 +1290,7 @@ class Sentence:
                                 continue
                             candidates.append((node.index, k, group))
                             node.group_cands.append(group)
+#        print("Candidates {}".format(candidates))
         # Now filter candidates to see if all words are present in the sentence.
         # For each group, save a list of sentence token indices that correspond
         # to the group's words
@@ -1287,11 +1321,9 @@ class Sentence:
                 print("Matching group {}".format(group))
             snodes = group.match_nodes(self.nodes, head_i, verbosity=verbosity)
             if not snodes:
-                if group.debug:
-                    print("Group {} failed to match".format(group))
                 # This group is out
                 if verbosity > 1 or group.debug:
-                    print("Failed to match")
+                    print("Group {} failed to match".format(group))
                 continue
             matched_keys.append(matched_key)
             if verbosity > 1 or group.debug:
@@ -2152,10 +2184,11 @@ class Segmentation:
                 any_anode = False
                 # This is the first place we can limit the number of translations allowed
                 ginsttrans = ginst.translations
+#                print("ginst translations: {}".format(ginsttrans))
                 if limit_trans:
                     ginsttrans = ginsttrans[:Segmentation.max_group_trans]
                 for tgroup, tgnodes, tnodes in ginsttrans:
-#                    print("  tgroup {}, tgnodes {}, tnodes {}".format(tgroup, tgnodes, tnodes))
+#                    print("Forming group_attribs: tgroup {}, tgnodes {}, tnodes {}".format(tgroup, tgnodes, tnodes))
                     for tgnode, tokens, feats, agrs, t_index in tgnodes:
                         if tgnode.cat:
                             any_anode = True
@@ -2203,10 +2236,11 @@ class Segmentation:
                 # Find all combinations of the target groups involved in this TT (at any level)
                 tgroup_combs = allcombs(tt.all_tgroups)
                 if verbosity:
-                    print(" TT group combs")
+#                    print(" TT group combs")
                     for tgc in tgroup_combs:
                         print("  {}".format(tgc))
                 for tgroup_comb in tgroup_combs:
+#                    print("tgroup_comb {}".format(tgroup_comb))
                     tgroups = [t[0] for t in tgroup_comb]
                     tnodes = [t[1] for t in tgroup_comb]
                     tt.build(tg_groups=tgroups, tg_tnodes=tnodes, verbosity=verbosity)
@@ -2222,7 +2256,7 @@ class Segmentation:
                         break
 
     def get_ttrans_outputs(self):
-        """Return a list of (snode_indices, translation_strings, source group name, source merger groups, target targets, group head)
+        """Return a list of (treetrans, snode_indices, (thindex, ttoken, tcats))
         for the segmentation's tree translations. These are needed for the creation of Segment instances."""
         if not self.ttrans_outputs:
             self.ttrans_outputs = []
@@ -2230,16 +2264,18 @@ class Segmentation:
             for tt in self.treetranss:
                 if not tt.output_strings:
                     continue
-#                trggroups = tt.ordered_tgroups
                 indices = tt.snode_indices
                 thead = tt.ginst.head
                 thindex = thead.index
                 tfeats = thead.snode_anal
                 ttoken = tfeats[0] or [thead.token]
-                tcats = tt.snodes[thindex].cats
+                tsnode = tt.snodes[thindex]
+                ttok = tsnode.tok
+                tcats = tsnode.cats
+#                print("TT {}, ttok {}".format(tt, ttok))
 #                print("TT {}: head {}, index {}, feats {}, cats {}".format(tt, thead, thindex, tfeats, tcats))
                 # WHY [0]??
-                head = (thindex, ttoken, tcats)
+                head = (thindex, ttoken, tcats, ttok)
                 raw_indices = []
                 for index in indices:
                     node = self.sentence.nodes[index]
@@ -2251,58 +2287,54 @@ class Segmentation:
         return self.ttrans_outputs
 
     def get_untrans_segs(self, src_tokens, end_index, gname=None, merger_groups=None, indices_covered=None,
-                         src_feats=None, is_paren=False):
+                         src_feats=None, src_toks=None, is_paren=False):
         '''Set one or more segments for a sequence of untranslatable tokens. Ignore indices that are already
          covered by translated segments.'''
         stok_groups = []
         sfeat_groups = []
         stoks = []
+        stokheads = []
         sfeatures = []
         index = end_index + 1
         included_tokens = []
         newsegs = []
-        for stok, sfeats in zip(src_tokens, src_feats):
-#            print("stok {}, sfeats {}".format(stok, sfeats))
-            if not stok:
+        if not src_toks:
+            src_toks = [None] * len(src_tokens)
+        for stoken, stok, sfeats in zip(src_tokens, src_toks, src_feats):
+#            print("stoken {}, stok {}, sfeats {}".format(stoken, stok, sfeats))
+            if not stoken:
                 # empty sentence final token
                 continue
-            if MorphoSyn.del_token(stok):
-#                print("Deleted token {}".format(stok))
-                stoks.append(stok)
+            if Token.del_token(stoken):
+#                print("Deleted token {}".format(stoken))
+                stoks.append(stoken)
                 sfeatures.append(sfeats)
-                included_tokens.append(stok)
+                included_tokens.append(stoken)
             elif index in indices_covered:
                 if stoks:
                     stok_groups.append(stoks)
                     sfeat_groups.append(sfeatures)
+                    stokheads.append(stok)
                     stoks = []
                     sfeatures = []
             else:
-#                print("Adding token {}, given tokens {}".format(stok, stoks))
-#                # Otherwise make one segment for each token
-#            elif stok[0] == '%' or self.source.is_punc(stok[0]):
                 # Special token or punctuation; it should have its own segment
-                stoks.append(stok)
+                stoks.append(stoken)
                 sfeatures.append(sfeats)
-                included_tokens.append(stok)
+                included_tokens.append(stoken)
                 if stoks:
                     stok_groups.append(stoks)
                     sfeat_groups.append(sfeatures)
+                    stokheads.append(stok)
                     stoks = []
                     sfeatures = []
-#                stok_groups.append([stok])
-#                sfeat_groups.append([sfeats])
-#                included_tokens.append(stok)
-#            else:
-#                stoks.append(stok)
-#                sfeatures.append(sfeats)
-#                included_tokens.append(stok)
             index += 1
         if stoks:
             stok_groups.append(stoks)
             sfeat_groups.append(sfeatures)
+            stokheads.append(stok)
         i0 = end_index+1
-        for stok_group, sfeat_group in zip(stok_groups, sfeat_groups):
+        for stok_group, sfeat_group, stokhead in zip(stok_groups, sfeat_groups, stokheads):
 #            print("stok_group {}".format(stok_group))
             is_punc = len(stok_group) == 1 and self.source.is_punc(stok_group[0])
             if is_punc:
@@ -2319,10 +2351,10 @@ class Segmentation:
                 space_before = 0
 #            print("Node type for untranslated Segment: {}".format(node_toktype))
             seg = Segment(self, indices, translation, stok_group, session=self.session,
-                         gname=None, sfeats=sfeat_group[0],
-                         space_before=space_before, merger_groups=None, is_punc=is_punc,
-                         is_paren=is_paren)
-            print("Segmento (no traducido) {}->{}: {}={}".format(start, end, stok_group, seg.translation))
+                          gname=None, sfeats=sfeat_group[0], tok=stokhead,
+                          space_before=space_before, merger_groups=None, is_punc=is_punc,
+                          is_paren=is_paren)
+            print("Segmento (no traducido) {}->{}: {}={} ({})".format(start, end, stok_group, seg.translation, seg.head_tok))
             self.segments.append(seg)
             newsegs.append(seg)
             i0 += len(stok_group)
@@ -2345,6 +2377,7 @@ class Segmentation:
         has_parens = []
         for treetrans, raw_indices, thead in tt:
             forms = treetrans.output_strings
+#            print("Forms for segment: {}".format(forms))
             gname = treetrans.ginst.group.name
             merger_groups = treetrans.get_merger_groups()
             tgroups = treetrans.ordered_tgroups
@@ -2355,8 +2388,9 @@ class Segmentation:
                 src_tokens = tokens[end_index+1:start]
                 src_nodes = [sentence.get_node_by_raw(index) for index in range(end_index+1, start)]
                 src_feats = [(s.analyses if s else None) for s in src_nodes]
+                src_toks = [s.tok for s in src_nodes]
                 self.get_untrans_segs(src_tokens, end_index, gname=gname, merger_groups=merger_groups,
-                                      src_feats=src_feats, indices_covered=indices_covered)
+                                      src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered)
             if start < max_index:
                 # There's a gap between the portions of the segment; this is a parenthetical segment within an outer one
                 late = True
@@ -2386,12 +2420,12 @@ class Segmentation:
 #            print("Creating Segment with parenthetical {}, source tokens {}, head {}".format(parenthetical, src_tokens, thead))
             src_nodes = [sentence.get_node_by_raw(index) for index in range(start, end+1)]
             src_feats = [(s.analyses if s else None) for s in src_nodes]
-#            print("src feats {}".format(src_feats))
+#            print("  src nodes {}; src feats {}".format(src_nodes, src_feats))
             seg = Segment(self, raw_indices, forms, src_tokens, treetrans=treetrans,
-                         session=self.session, gname=gname, sfeats=src_feats[0],
-                         tgroups=tgroups, merger_groups=merger_groups, head=thead,
-                         has_paren=[pre_paren, paren_record, post_paren] if parenthetical else None,
-                         is_paren=late)
+                          session=self.session, gname=gname, sfeats=src_feats[0],
+                          tgroups=tgroups, merger_groups=merger_groups, head=thead, tok=thead[-1],
+                          has_paren=[pre_paren, paren_record, post_paren] if parenthetical else None,
+                          is_paren=late)
             if parenthetical:
                 has_parens.append(seg)
             if late:
@@ -2402,7 +2436,7 @@ class Segmentation:
                     if pindices == hp_pindices:
 #                        print(" Found matching enclosing segment {}".format(hp))
                         hp.paren_seg = seg
-            print("Segmento (traducido) {}->{}: {}={}".format(start, end, src_tokens, seg.translation))
+            print("Segmento (traducido) {}->{}: {}={} ({}); {}".format(start, end, src_tokens, seg.translation, seg.head_tok, seg.cleaned_trans))
             self.segments.append(seg)
             indices_covered.extend(raw_indices)
 #            print(" Indices covered: {}".format(indices_covered))
@@ -2413,8 +2447,9 @@ class Segmentation:
             src_tokens = tokens[max_index+1:len(tokens)]
             src_nodes = [sentence.get_node_by_raw(index) for index in range(max_index+1, len(tokens))]
             src_feats = [(s.analyses if s else None) for s in src_nodes]
+            src_toks = [s.tok for s in src_nodes]
             self.get_untrans_segs(src_tokens, max_index, gname=gname, merger_groups=merger_groups,
-                                  src_feats=src_feats, indices_covered=indices_covered)
+                                  src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered)
         # Check whether untranslated parentheticals have gotten segments
         for parenthetical in parentheticals:
             ptokens = [p[0] for p in parenthetical]
@@ -2506,43 +2541,74 @@ class Segmentation:
 
     ## Generation, joining, group matching following initial segmentation
 
-    def join(self, iters=3, joingroupings=None, makesuper=True, generate=False, verbosity=1):
+    def connect(self, iters=6, generate=True, only1=True, verbosity=1):
+        """Iteratively match Join and Group instances where possible, create supersegs for
+        matches, and optionally finish by generateing morphological surface forms for
+        final segments."""
+        iteration = 0
+        matched = True
+        all_matches = []
+        nsegments = len([s for s in self.segments if not s.is_punc])
+        while matched and iteration < iters and nsegments > 1:
+            print("BUSCANDO COINCIDENCIAS CON JOINS Y GROUPS, ITERACIÓN {}".format(iteration))
+            print(" Segmentos: {}".format(self.segments))
+            matches = self.match_joins(verbosity=0)
+            matches.extend(self.match_groups(make_super=False, resolve=False, verbosity=verbosity))
+#            matches = join_matches + group_matches
+            if matches:
+                print(" Encontró coincidencias {}".format(matches))
+                if len(matches) > 1:
+                    Match.resolve(matches, verbosity=verbosity)
+                    print(" Resueltas a {}".format(matches))
+                if only1:
+                    match = matches[0]
+                    self.match2superseg(match, verbosity=verbosity)
+                    all_matches.append(match)
+                else:
+                    self.matches2supersegs(matches, verbosity=verbosity)
+                    all_matches.extend(matches)
+            else:
+                matched = False
+            iteration += 1
+            nsegments = len([s for s in self.segments if not s.is_punc])
+        if generate:
+            self.generate(limit_forms=True, verbosity=verbosity)
+        return all_matches
+
+    def join(self, iters=6, joingroupings=None, makesuper=True, generate=False, verbosity=1):
         """Iteratively match Join instances where possible, create supersegs for matches,
         and optionally finish by generating morphological surface forms for final segments."""
         iteration = 0
         matched = True
         all_matches = []
         while matched and iteration < iters:
-            print("MATCHING JOINS, ITERATION {}".format(iteration))
-            print("Segments: {}".format(self.segments))
-            matches = self.match(joingroupings=joingroupings, verbosity=verbosity)
+#            if verbosity:
+            print("MATCHING JOINS IN GROUPINGS {}, ITERATION {}".format(joingroupings, iteration))
+            print(" Segments: {}".format(self.segments))
+            matches = self.match_joins(joingroupings=joingroupings, verbosity=0)
             if matches:
+                print(" Found matches {}".format(matches))
+                if len(matches) > 1:
+                    Match.resolve(matches)
+                    print(" Resolved to {}".format(matches))
                 all_matches.extend(matches)
                 if makesuper:
-                    # Make supersegs in reverse order of matches
-                    # because segment indices change each time a new one is created
-                    for match in reversed(matches):
-                        self.match2superseg(match, verbosity=verbosity)
+                    self.matches2supersegs(matches, verbosity=verbosity)
             else:
+                print(" Ningunas coincidencias encontradas")
                 matched = False
             iteration += 1
         if generate:
             self.generate(limit_forms=True, verbosity=verbosity)
         return all_matches
     
-    def generate(self, limit_forms=True, verbosity=0):
-        """Generate forms within segmentation segments."""
-        for segment in self.segments:
-            segment.generate(limit_forms=limit_forms, verbosity=verbosity)
-
-    def match(self, joingroupings=None, verbosity=1):
+    def match_joins(self, joingroupings=None, verbosity=0):
         """Try to match the sequence of Segments in this segmentation with the patterns
         in all the Join instances, taking Join instances one at a time in order."""
         matches = []
         segments = self.segments
         sollength = len(segments)
         segstart = 0
-        matches = []
         source_join_groupings = self.source.join_groupings
         if joingroupings:
             # This should be None or a list of ints
@@ -2550,25 +2616,28 @@ class Segmentation:
         else:
             joingroupings = source_join_groupings
         for joingroup in joingroupings:
+            if verbosity:
+                print(" Match joins in grouping {}".format(joingroup))
             for join in joingroup:
-                if verbosity:
+                if verbosity > 1:
                     print("Matching {}".format(join))
-                pattern = join.pattern
-                patlength = len(pattern)
+                tokens = join.tokens
+                patlength = len(tokens)
                 endgap = sollength - patlength
                 segstart = 0
                 matches1 = []
                 while segstart < sollength - 1 and endgap - segstart >= 0:
                     match1 = join.match(segments, segstart, verbosity=verbosity)
                     if match1:
-                        if verbosity:
+                        if verbosity > 1:
                             print("  Matched at {}".format(segstart))
                         # Check the conditions on the join
                         match2 = join.match_conds(segments, segstart, verbosity=verbosity)
                         if match2:
-                            if verbosity:
+                            if verbosity > 1:
                                 print("  Matched conds")
-                            matches1.append((join, match1))
+#                            matches1.append((join, match1))
+                            matches1.append(Match(join, match1))
                             # Don't look for more matches from this position; move forward
                             # by the length of the join - 1 (because we're moving forward
                             # anyway at the end of this loop)
@@ -2576,39 +2645,21 @@ class Segmentation:
                     # Move forward
                     segstart += 1
                 if matches1:
-                    # For now just match one Join
                     matches.extend(matches1)
-                    print("Found matches {}".format(matches))
-                    return matches
         if matches and verbosity:
-            print("Found matches {}".format(matches))
+            print(" Found join matches {}".format(matches))
         return matches
 
-    def match2superseg(self, match, verbosity=0):
-        """Given a match of a Join or Group instance, create a new SuperSeg instance."""
-        join, seglist = match
-        segs = [s[1] for s in seglist]
-        positions = [s[0] for s in seglist]
-        features = [s[2] for s in seglist]
-        superseg = SuperSeg(self, segs, features=features, join=join, verbosity=verbosity)
-        if verbosity:
-            print("CREATING SUPERSEG FOR {} AND {} in positions {}".format(segs, join, positions))
-            print("...replacing segment {} to segment {}".format(self.segments[positions[0]], self.segments[positions[-1]+1]))
-        # replace the joined segments in the segmentation with the superseg
-        self.segments[positions[0]:positions[-1]+1] = [superseg]
-
-    def match_groups(self, groupsid=1, create_ss=True, verbosity=1):
+    def match_groups(self, groupsid=1, make_super=True, resolve=True, verbosity=1):
         """Get candidate matches of groups with segmentation Segs and match them,
-        returning matches as list of pairs: (group [position, segment features]).
+        returning matches as Match instances.
         """
-        print("MATCHING GROUPS {}".format(groupsid))
+#        print("MATCHING GROUPS {}".format(groupsid))
+#        print(" Segments: {}".format(self.segments))
         cands = self.get_group_cands(groupsid=groupsid, verbosity=verbosity)
-        matches = self.match_group_cands(cands, verbosity=verbosity)
-        # Reverse matches so later segments are replaced before earlier ones
-        matches.reverse()
-        if create_ss:
-            for match in matches:
-                self.match2superseg(match, verbosity=verbosity)
+        matches = self.match_group_cands(cands, resolve=resolve, verbosity=verbosity)
+        if make_super:
+            self.matches2supersegs(matches, verbosity=verbosity)
         return matches
 
     def get_group_cands(self, groupsid=1, groups=None, verbosity=1):
@@ -2630,41 +2681,58 @@ class Segmentation:
                     cands.append((index, indices, cand1))
         return cands
 
-    def match_group_cands(self, candidates, verbosity=0):
+    def match_group_cands(self, candidates, resolve=True, verbosity=0):
         """Match group candidates along with indices against segments in the Segmentation,
         filtering out shorter ones that overlap with longer ones,
         returning matches as tuples: (group, [position, segment, features])."""
         matches = []
         segments = self.segments
-        overlaps = []
         for segindex, segindices, (group, head_index) in candidates:
             matches1 = group.match_segments(segments, segindex - head_index, verbosity=verbosity)
             if matches1:
                 matches.append(matches1)
-                indices = set(segindices)
-                lapped = False
-                for overlap in overlaps:
-                    for i, m in overlap:
-                        if indices & i:
-                            if (indices, matches1) not in overlap:
-                                overlap.append((indices, matches1))
-                            lapped = True
-                            break
-                if not lapped:
-                    overlaps.append([(indices, matches1)])
-#        print("Cands1 {}".format(matches))
-#        print("overlaps {}".format(overlaps))
-        for overlap in overlaps:
+        if matches:
             if verbosity:
-                print("Filtering overlap group: {}".format(overlap))
-            # Sort overlaps by length of group/match - average length of translations
-            overlap.sort(key=lambda x: len(x[0]) - x[1][0].get_avg_tlength(), reverse=True)
-            # We have to pick one of each of these; for now just the longest one, adjusted
-            # by the average length of translations (preferring shorter translations)
-            for indices, matches1 in overlap[1:]:
-                matches.remove(matches1)
-#        print("Cands2 {}".format(matches))
+                print(" Found group matches {}".format(matches))
+            if resolve:
+                Match.resolve(matches)
+                if verbosity:
+                    print(" Resolved to {}".format(matches))
+        elif verbosity:
+            print(" No matches found")
         return matches
+
+    def matches2supersegs(self, matches, verbosity=0):
+        """Given a list of matches of a Join or Group instances, create new Superseg instances."""
+        # First sort the matches from last to first, to prevent indices from changing before
+        # a new Superseg is introduced.
+        if len(matches) > 1:
+            Match.sort_by_position(matches)
+        for match in matches:
+            self.match2superseg(match, verbosity=verbosity)
+
+    def match2superseg(self, match, verbosity=0):
+        """Given a match of a Join or Group instance, create a new SuperSeg instance."""
+        if isinstance(match, Match):
+            join, seglist = match.entry, match.matched
+        else:
+            join, seglist = match
+        segs = [s[1] for s in seglist]
+        positions = [s[0] for s in seglist]
+        features = [s[2] for s in seglist]
+        superseg = SuperSeg(self, segs, features=features, join=join, verbosity=verbosity)
+#        if verbosity:
+        print("CREANDO SUPERSEG PARA {} Y {} en posiciones {}".format(segs, join, positions))
+#        print("...reemplazando segmento {} a segmento {}".format(self.segments[positions[0]], self.segments[positions[-1]+1]))
+#            print("CREATING SUPERSEG FOR {} AND {} in positions {}".format(segs, join, positions))
+#            print("...replacing segment {} to segment {}".format(self.segments[positions[0]], self.segments[positions[-1]+1]))
+        # replace the joined segments in the segmentation with the superseg
+        self.segments[positions[0]:positions[-1]+1] = [superseg]
+
+    def generate(self, limit_forms=True, verbosity=0):
+        """Generate forms within segmentation segments."""
+        for segment in self.segments:
+            segment.generate(limit_forms=limit_forms, verbosity=verbosity)
 
     def process(self, generate=False, verbosity=0):
         """Repeatedly try matching and applying Join instances and the Group instances from
@@ -2676,7 +2744,7 @@ class Segmentation:
         g = 1
         while j < njoins or g < nposgroups:
             if j < njoins:
-                self.join(joingroupings=[j], verbosity=verbosity)
+                self.join(joingroupings=None, verbosity=verbosity)
                 j += 1
             if g < nposgroups:
                 self.match_groups(groupsid=g, verbosity=verbosity)

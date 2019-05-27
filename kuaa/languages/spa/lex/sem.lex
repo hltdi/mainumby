@@ -4990,6 +4990,7 @@ ejercicio_n $n
 ejercitar_v $v,$vt,$vp
 ejército_n $n
 el $art
+el_det $det
 elaboración_n $n
 elaborar_v $v
 elasticidad_n $n

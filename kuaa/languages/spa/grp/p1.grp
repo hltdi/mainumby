@@ -1,6 +1,8 @@
 # DE
-** de $pro ; ^ de 0
+** de_prp $pro ; ^ de_prp 0
 ->grn $pro[caso=gui] ; ^ $pro 0 ; || -1, 0
+** de_prp $n ; ^ de_prp 0
+->grn $n[caso=gui] ; ^ $n 0 ; || -1, 0
 # A
 ** a $pro ; ^ a 0
 ->grn $pro[caso=pe] ; ^ $pro 0 ; || -1, 0
@@ -63,14 +65,14 @@
 ** hacia %C ; ^ hacia 0
 ->grn %C gotyo ; || 1, 0
 # DESDE
-** desde $n ; ^ desde 0
+** desde_prp $n ; ^ desde_prp 0
 ->grn $n[caso=gui] ; ^ $n 0 ; || -1, 0
 ->grn $n[caso=guive] ; ^ $n 0 ; || -1, 0
-** desde hace %N $dur ; ^ desde 0
+** desde_prp hace %N $dur ; ^ desde_prp 0
 ->grn ojapóma %N $dur ; || 0, -1, 1, 2
-** desde %C ; ^ desde 0
+** desde_prp %C ; ^ desde_prp 0
 ->grn %C guive ; || 1, 0
-** desde %ND ; ^ desde 0
+** desde_prp %ND ; ^ desde_prp 0
 ->grn %ND guive ; || 1, 0
 # ENTRE
 ** entre $n ; ^ entre 0
@@ -80,7 +82,7 @@
 ** según $n ; ^ según 0
 ->grn $n javeve ; || 1, 0
 # HASTA
-** hasta $n ; ^ hasta 0
+** hasta_prp $n ; ^ hasta_prp 0
 ->grn $n[caso=peve] ; ^ $n 0 ; || -1, 0
 # DURANTE
 ** durante $n ; ^ durante 0
