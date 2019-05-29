@@ -500,14 +500,14 @@ class SegRecord:
         self.translation = solseg.translation
         self.tokens = solseg.token_str
         self.gname = solseg.gname
-        mergers = solseg.merger_gnames
-        if mergers:
-            m = ''
-            for gi, ci, name in mergers:
-                m += "{}:{}:{}".format(name, gi, ci)
-            self.mergers = m
-        else:
-            self.mergers = None
+#        mergers = solseg.merger_gnames
+#        if mergers:
+#            m = ''
+#            for gi, ci, name in mergers:
+#                m += "{}:{}:{}".format(name, gi, ci)
+#            self.mergers = m
+#        else:
+#            self.mergers = None
 #        print("Creating SegRecord for {} with gname {} and merger gnames {}".format(solseg, self.gname, self.mergers))
         # List of tg groups, one for each choice in GUI (this could be taken from Segment)
         self.choice_tgroups = None
@@ -538,8 +538,8 @@ class SegRecord:
             d['src'] = self.tokens
             if self.gname:
                 d['gname'] = self.gname
-                if self.mergers:
-                    d['mrg'] = self.mergers
+#                if self.mergers:
+#                    d['mrg'] = self.mergers
             d['resp'] = self.response_code
             d['trg'] = self.seltrans
             if self.tgroups:

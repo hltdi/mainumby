@@ -68,6 +68,9 @@
 # -- "data" directory for corpora and analyses (at least related to disambiguation).
 # 2018.1
 # -- Translation counts read in.
+# 2019
+# -- Reorganized groups a bit. There are two two types in the list: 'lexical' ones
+#    and 'lexical+syntactic' ones.
 
 from .entry import *
 from .utils import firsttrue
@@ -190,7 +193,7 @@ class Language:
                  # end-of-sentence characters
                  eos=EOS,
                  # list of lists of POS tags for group grouping
-                 grouppos=None,
+                 groupcats=None,
                  # Added from morphology/language
                  pos=None, cache=True,
                  postags=None, namejoin=None):
@@ -204,9 +207,10 @@ class Language:
         # Words that can join names
         self.namejoin = namejoin
 #        self.groups = groups or {}
-        # Groups organized by POS or other categories
-        self.grouppos = grouppos
-        self.posgroups = [{} for g in range(len(grouppos))] if grouppos else [{}]
+        # Groups organized by POS or other categories; used to create a list of group dicts for
+        # each sublist in groupcats; by default (always?) there are two sublists
+        self.groupcats = groupcats
+        self.groups = [{} for g in range(len(groupcats))] if groupcats else [{}]
         # Source-ambiguous groups (like ir|ser in Spanish), with associated unambiguous groups
         # (like ser and ir).
         self.sambig_groups = {}
@@ -498,10 +502,21 @@ class Language:
     def get_group(self, name, key=None, posindex=0):
         """Name if not None is a string representing the group's 'name'."""
         key = key or Group.get_key(name)
-        cands = self.posgroups[posindex].get(key)
+        cands = self.groups[posindex].get(key)
         if cands:
             return firsttrue(lambda c: c.name == name, cands)
         return None
+
+    # Simple (purely lexical) and complex (lexical + syntactic) groups
+    def get_simple_groups(self):
+        return self.groups[0]
+
+    get_lex_groups = get_simple_groups
+
+    def get_complex_groups(self):
+        return self.groups[1]
+
+    get_syn_groups = get_complex_groups
 
     ### Directories and files
     
@@ -587,8 +602,8 @@ class Language:
     def get_group_files(self, names=None):
         d = self.get_group_dir()
         if not names:
-            if self.grouppos:
-                names = reduce_lists(self.grouppos)
+            if self.groupcats:
+                names = reduce_lists(self.groupcats)
             elif self.morphology:
                 # POS abbreviations
                 names = ['misc', 'nm'] + list(self.morphology.keys())
@@ -599,9 +614,9 @@ class Language:
 
     def get_grouplist_files(self, names=None):
         d = self.get_group_dir()
-        if self.grouppos:
+        if self.groupcats:
             # A list of lists of POS labels
-            namegroups = self.grouppos
+            namegroups = self.groupcats
         else:
             namegroups = [list(self.morphology.keys())]
         namepaths = [[(name, os.path.join(d, name + '.grp')) for name in names] for names in namegroups]
@@ -1630,9 +1645,9 @@ class Language:
         with open(path, 'w', encoding='utf8') as file:
             yaml.dump(self.to_dict(), file)
 
-    def read_posgroup(self, gfile, gname=None, target=None,
-                      source_groups=None, target_groups=None, target_abbrev=None,
-                      grouppos=None, posindex=0, verbosity=0):
+    def read_group(self, gfile, gname=None, target=None,
+                   source_groups=None, target_groups=None, target_abbrev=None,
+                   groupcats=None, posindex=0, verbosity=0):
         """Read in a single group type from a file with path gfile and name gname."""
         with open(gfile, encoding='utf8') as file:
             gname = gname or gfile.rpartition('/')[-1].split('.')[0]
@@ -1694,7 +1709,7 @@ class Language:
                             if tlang == target_abbrev:
                                 translations.append(tgroup)
                     target_groups.extend(translations)
-                # Creates the group and any target groups specified and adds them to the appropriate posgroups
+                # Creates the group and any target groups specified and adds them to the appropriate groups
                 Group.from_string(source_group, self, translations, target=target, trans=False, tstrings=trans_strings,
                                   cat=gname, posindex=posindex)
 
@@ -1704,17 +1719,17 @@ class Language:
         target_abbrev = target.abbrev if target else None
         source_groups = []
         target_groups = []
-        print("Leyendo grupos léxicos para {}".format(self.name))
+        print("Leyendo grupos léxicos para {}".format(self))
         groupfiles = self.get_grouplist_files(posnames)
 #        print("Name/group paths {}".format(groupfiles))
         for name, gfile in self.get_group_files(posnames):
-            posindex = firstindex(lambda x: name in x, self.grouppos) if self.grouppos else 0
-            self.read_posgroup(gfile, gname=name, target=target, source_groups=source_groups,
+            posindex = firstindex(lambda x: name in x, self.groupcats) if self.groupcats else 0
+            self.read_group(gfile, gname=name, target=target, source_groups=source_groups,
                             target_groups=target_groups, target_abbrev=target_abbrev,
                             verbosity=verbosity, posindex=posindex)
 
         # Sort groups for each key by priority
-        for groups in self.posgroups:
+        for groups in self.groups:
             for key, groups1 in groups.items():
                 if len(groups1) > 1:
                     groups1.sort(key=lambda g: g.priority(), reverse=True)
@@ -1731,14 +1746,14 @@ class Language:
                 tp, addition = default
                 print("+t {} {}".format(tp, addition), file=stream)
 
-    def update_posgroups(self, write=False):
+    def update_groups(self, write=False):
         """Use transcounts file to order translations of all groups.
         If write is True, rewrite the updated groups in the appropriate file."""
-        for pos, cats in enumerate(self.grouppos):
+        for pos, cats in enumerate(self.groupcats):
             for cat in cats:
-                self.update_posgroup(pos=pos, cat=cat, write=write)
+                self.update_group(pos=pos, cat=cat, write=write)
 
-    def update_posgroup(self, groups=None, pos=0, cat='v1', write=False):
+    def update_group(self, groups=None, pos=0, cat='v1', write=False):
         """Use transcounts file to order translations of groups in cat.
         If write is True, rewrite the updated groups in the appropriate file."""
         groups = groups or Group.get_cat_groups(self, cat, pos)
@@ -1824,11 +1839,11 @@ class Language:
         exttag = d.get('exttag')
         joins = d.get('join')
         namejoin = d.get('namejoin', '').split(',')
-        grouppos = d.get('grouppos')
+        groupcats = d.get('groups') # d.get('groupcats')
         mwe = d.get('mwe')
         abbrev = d.get('abbrev')
-        if grouppos:
-            grouppos = [g.split(',') for g in grouppos.split(';')]
+        if groupcats:
+            groupcats = [g.split(',') for g in groupcats.split(';')]
 #        print("Name join: {}".format(namejoin))
         conversion = None
         if exttag:
@@ -1854,7 +1869,7 @@ class Language:
         l = Language(d.get('name'), abbrev, use=use, directory=directory,
                      exttag=exttag, conversion=conversion, postags=d.get('postags'),
                      mwe=mwe, eos=d.get('eos', EOS), lemmas=d.get('lemmas'),
-                     namejoin=namejoin, grouppos=grouppos)
+                     namejoin=namejoin, groupcats=groupcats)
         translations = d.get('translations')
         if translations:
             for s, t in translations.items():
@@ -2060,7 +2075,7 @@ class Language:
         else:
             self.group_keys[token] = {head}
         group.language = self
-        groups = self.posgroups[posindex]
+        groups = self.groups[posindex]
         if head in groups:
             groups[head].append(group)
         else:
@@ -2081,7 +2096,7 @@ class Language:
                 roots = root.split('|')
                 heads = [r + "_" + pos for r in roots]
                 for head in heads:
-                    groups = self.posgroups[posindex].get(head)
+                    groups = self.groups[posindex].get(head)
                     if groups:
                         match = firsttrue(lambda g: sambig.match_non_head(g), groups)
                         if match:

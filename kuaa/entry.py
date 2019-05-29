@@ -814,7 +814,7 @@ class Group(Entry):
                         if Token.is_special(token):
                             token = node.token
                         match_snodes1.append((node.index, node_match, token, True))
-                        if Group.is_cat(token):
+                        if Token.is_cat(token):
                             last_cat = True
                         else:
                             last_cat = False
@@ -1109,7 +1109,7 @@ class Group(Entry):
     def get_cat_groups(language, cat, position=0, filt=None):
         """Return all groups in language with category cat that satisfy filter function."""
         cat_groups = []
-        for groups in language.posgroups[position].values():
+        for groups in language.groups[position].values():
             for group in filter(filt, groups):
                 if group.cat == cat:
                     cat_groups.append(group)

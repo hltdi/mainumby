@@ -64,21 +64,20 @@ def load(source='spa', target='grn', gui=None):
     gui.source = s
     gui.target = t
 
-def seg_trans(gui, session=None, single=False,
-              constrain_groups=True, process=True, verbosity=0):
+def seg_trans(gui, session=None, single=False, process=True, verbosity=0):
     """Translate sentence and return marked-up sentence with segments colored.
     So far only uses first segmentation."""
     sentence = gui.sentence
     source = gui.source
     target = gui.target
-    sentence.initialize(ambig=True, constrain_groups=constrain_groups, verbosity=verbosity)
+    sentence.initialize(ambig=True, verbosity=verbosity)
     sentence.solve(translate=True, all_sols=False, all_trans=True, interactive=False,
                    limit_trans=process, verbosity=verbosity)
     if sentence.segmentations:
         segmentation = sentence.segmentations[0]
         segmentation.get_segs(single=single, html=False)
         if process:
-            segmentation.process(generate=False)
+            segmentation.connect(generate=False)
         segmentation.generate(limit_forms=process)
         segmentation.seg_html(single=single)
 #        segmentation.get_gui_segments(single=single)

@@ -62,7 +62,6 @@ class Solver:
         self.constraints = constraints
         # Used in solver's printname
         self.description = description
-        # Solver (state) that generated this one
         # A function that assigns values to states
         self.evaluator = evaluator
         # A function that selects a variable and splits its values, given a list of undetermined variables and a dstore

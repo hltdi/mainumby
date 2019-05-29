@@ -29,11 +29,11 @@
 ->grn mbojepota_v[cat=a]
 ** ver_v[-r,+fin] de repente ; ^ ver_v 0
 ->grn <hesaho_v[cat=che]
-** ver_v[-r,+fin] por casualidad ; ^ ver_v 0
+** ver_v[-r,+fin] por~casualidad ; ^ ver_v 0
 ->grn <hesaho_v[cat=che]
 ** ver_v[+r,+fin] en anormalidad ; ^ ver_v 0
 ->grn <hechavai_v[cat=a]
-** ver_v[+r,+fin] a menudo ; ^ ver_v 0
+** ver_v[+r,+fin] a~menudo ; ^ ver_v 0
 ->grn joechapy'ỹi_v[cat=a]
 ** ver_v[+r,+fin] con trabas ; ^ ver_v 0
 ->grn ñemosã_v[cat=a]
@@ -4384,7 +4384,7 @@
 ->grn mboja'o_v[cat=a]
 ** repetir_v[-r,+fin] la comida ; ^ repetir_v 0
 ->grn vira_v[cat=a]
-** repetir_v[-r,+fin] a menudo ; ^ repetir_v 0
+** repetir_v[-r,+fin] a~menudo ; ^ repetir_v 0
 ->grn mopy'ỹi_v[cat=a]
 ** repetir_v[-r,+fin] ; ^ repetir_v 0
 ->grn jo'a_v[cat=a]

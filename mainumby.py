@@ -61,7 +61,7 @@ def tra(oracion, html=False, user=None, verbosity=0):
     if len(d) == 0:
         return
     s = d[0]
-    s.initialize(ambig=False, constrain_groups=True, verbosity=verbosity)
+    s.initialize(ambig=False, verbosity=verbosity)
     s.solve(all_sols=False, verbosity=verbosity)
     if s.segmentations:
         segmentation = s.segmentations[0]
@@ -82,7 +82,7 @@ def tra1(oracion, html=False, user=None, verbosity=0):
     if len(d) == 0:
         return
     s = d[0]
-    s.initialize(ambig=False, constrain_groups=True, verbosity=verbosity)
+    s.initialize(ambig=False, verbosity=verbosity)
     s.solve(all_sols=False, verbosity=verbosity)
     if s.segmentations:
         segmentation = s.segmentations[0]
@@ -97,8 +97,7 @@ def tra1(oracion, html=False, user=None, verbosity=0):
 ## Creación (y opcionalmente traducción) de oración simple y de documento.
 ## Por defecto, las palabras en segmentos no se generan morfológicamente.
 def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
-        single=True, translate=True, constrain_groups=True, generate=False,
-        verbosity=0):
+        single=True, translate=True, generate=False, verbosity=0):
     e, g = cargar()
     session = kuaa.make_session(e, g, user, create_memory=single)
     d = kuaa.Document(e, g, sentence, True, single=single, session=session)
@@ -106,7 +105,7 @@ def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
         print("Parece que falta puntuación final en el documento.")
         return
     s = d[0]
-    s.initialize(ambig=ambig, constrain_groups=constrain_groups, verbosity=verbosity)
+    s.initialize(ambig=ambig, verbosity=verbosity)
     if solve or segment:
         s.solve(all_sols=ambig or max_sols > 1, max_sols=max_sols,
                 translate=translate)

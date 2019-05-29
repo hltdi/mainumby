@@ -152,6 +152,8 @@
 # -- Docs can generate HTML for document-level GUI
 # 2019.04.08
 # -- Introduced ¶ for end of paragraph and titles.
+# 2019.05.27
+# -- Lexicalization always looks at simple (lexical) groups only.
 
 import copy, re, random, itertools, os
 from .ui import *
@@ -706,7 +708,7 @@ class Sentence:
         if verbosity:
             print("Created Sentence object {}".format(self))
         if init:
-            self.initialize(constrain_groups=False)
+            self.initialize()
 
     def set_id(self):
         self.id = Sentence.id
@@ -988,7 +990,7 @@ class Sentence:
             prefix, name = Token.split_token(token)
             self.toks.append(SentToken(name, prefix, self, punc=self.language.is_punc(name)))
 
-    def initialize(self, ambig=True, constrain_groups=True, verbosity=0, terse=True):
+    def initialize(self, ambig=True, verbosity=0, terse=True):
         """Things to do before running constraint satisfaction."""
         if verbosity:
             print("Initializing {}".format(self))
@@ -996,11 +998,10 @@ class Sentence:
         self.tokenize(verbosity=verbosity, ambig=ambig, terse=terse)
         # Tokenization could result in altsyns
         self.nodify(verbosity=verbosity)
-        self.lexicalize(constrain_groups=constrain_groups, verbosity=verbosity, terse=terse)
+        self.lexicalize(verbosity=verbosity, terse=terse)
         for s in self.altsyns:
             s.nodify(verbosity=verbosity)
-            s.lexicalize(constrain_groups=constrain_groups,
-                         verbosity=verbosity, terse=terse)
+            s.lexicalize(verbosity=verbosity, terse=terse)
         anygroups=False
         for s in [self] + self.altsyns:
             if not s.groups:
@@ -1247,7 +1248,7 @@ class Sentence:
             if k not in keys:
                 keys.add(k)
 
-    def lexicalize(self, constrain_groups=False, verbosity=0, terse=True):
+    def lexicalize(self, verbosity=0, terse=True):
         """Find and instantiate all groups that are compatible with the tokens in the sentence."""
         if verbosity:
             print("Lexicalizing {}, terse={}".format(self, terse))
@@ -1274,22 +1275,24 @@ class Sentence:
                 for a in anals:
                     self.add_anal_to_keys(a, keys)
             # Look up candidate groups in lexicon
-            # Use group groupings specified in constrain_groups (False or a list of ints) or
-            # all groupings
-            posgroups = self.language.posgroups
-            groupgroups = [posgroups[0]] if constrain_groups else posgroups
+            # Use simple (lexical) groups
+#            # Use group groupings specified in constrain_groups (False or a list of ints) or
+#            # all groupings
+#            groups2 = self.language.groups
+            groups = self.language.groups[0]
+#            groupgroups = [groups2[0]] if constrain_groups else groups2
 #            print("Keys for group search {}".format(keys))
             for k in keys:
-                for groups in groupgroups:
-                    if k in groups:
-                        # All the groups with key k
-                        for group in groups[k]:
-                            # Reject group if it doesn't have a translation in the target language
-                            if self.target and not group.get_translations():
-                                print("No translation for {}".format(group))
-                                continue
-                            candidates.append((node.index, k, group))
-                            node.group_cands.append(group)
+#                for groups in groupgroups:
+                if k in groups:
+                    # All the groups with key k
+                    for group in groups[k]:
+                        # Reject group if it doesn't have a translation in the target language
+                        if self.target and not group.get_translations():
+                            print("No translation for {}".format(group))
+                            continue
+                        candidates.append((node.index, k, group))
+                        node.group_cands.append(group)
 #        print("Candidates {}".format(candidates))
         # Now filter candidates to see if all words are present in the sentence.
         # For each group, save a list of sentence token indices that correspond
@@ -1630,8 +1633,7 @@ class Sentence:
         s2gn = [s.variables['gnodes'] for s in self.nodes]
         snode_mainvars = [DetVar("sn{}".format(snode.index), {snode.index}) for snode in self.nodes]
         snode_gnode_union_constraint = ComplexUnionSelection(selvar=self.variables['covered_snodes'],
-                                                             selvars=s2gn,
-                                                             seqvars=gn2s,
+                                                             selvars=s2gn, seqvars=gn2s,
                                                              mainvars=snode_mainvars)
         self.constraints.append(snode_gnode_union_constraint)
         # Union of all gnodes used snodes is all gnodes used
@@ -2286,7 +2288,9 @@ class Segmentation:
                 last_indices = raw_indices
         return self.ttrans_outputs
 
-    def get_untrans_segs(self, src_tokens, end_index, gname=None, merger_groups=None, indices_covered=None,
+    def get_untrans_segs(self, src_tokens, end_index, gname=None,
+#                         merger_groups=None,
+                         indices_covered=None,
                          src_feats=None, src_toks=None, is_paren=False):
         '''Set one or more segments for a sequence of untranslatable tokens. Ignore indices that are already
          covered by translated segments.'''
@@ -2352,8 +2356,9 @@ class Segmentation:
 #            print("Node type for untranslated Segment: {}".format(node_toktype))
             seg = Segment(self, indices, translation, stok_group, session=self.session,
                           gname=None, sfeats=sfeat_group[0], tok=stokhead,
-                          space_before=space_before, merger_groups=None, is_punc=is_punc,
-                          is_paren=is_paren)
+                          space_before=space_before,
+#                          merger_groups=None,
+                          is_punc=is_punc, is_paren=is_paren)
             print("Segmento (no traducido) {}->{}: {}={} ({})".format(start, end, stok_group, seg.translation, seg.head_tok))
             self.segments.append(seg)
             newsegs.append(seg)
@@ -2379,7 +2384,7 @@ class Segmentation:
             forms = treetrans.output_strings
 #            print("Forms for segment: {}".format(forms))
             gname = treetrans.ginst.group.name
-            merger_groups = treetrans.get_merger_groups()
+#            merger_groups = treetrans.get_merger_groups()
             tgroups = treetrans.ordered_tgroups
             late = False
             start, end = raw_indices[0], raw_indices[-1]
@@ -2389,7 +2394,8 @@ class Segmentation:
                 src_nodes = [sentence.get_node_by_raw(index) for index in range(end_index+1, start)]
                 src_feats = [(s.analyses if s else None) for s in src_nodes]
                 src_toks = [s.tok for s in src_nodes]
-                self.get_untrans_segs(src_tokens, end_index, gname=gname, merger_groups=merger_groups,
+                self.get_untrans_segs(src_tokens, end_index, gname=gname,
+#                                      merger_groups=merger_groups,
                                       src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered)
             if start < max_index:
                 # There's a gap between the portions of the segment; this is a parenthetical segment within an outer one
@@ -2423,7 +2429,8 @@ class Segmentation:
 #            print("  src nodes {}; src feats {}".format(src_nodes, src_feats))
             seg = Segment(self, raw_indices, forms, src_tokens, treetrans=treetrans,
                           session=self.session, gname=gname, sfeats=src_feats[0],
-                          tgroups=tgroups, merger_groups=merger_groups, head=thead, tok=thead[-1],
+                          tgroups=tgroups, head=thead, tok=thead[-1],
+#                          merger_groups=merger_groups
                           has_paren=[pre_paren, paren_record, post_paren] if parenthetical else None,
                           is_paren=late)
             if parenthetical:
@@ -2448,7 +2455,8 @@ class Segmentation:
             src_nodes = [sentence.get_node_by_raw(index) for index in range(max_index+1, len(tokens))]
             src_feats = [(s.analyses if s else None) for s in src_nodes]
             src_toks = [s.tok for s in src_nodes]
-            self.get_untrans_segs(src_tokens, max_index, gname=gname, merger_groups=merger_groups,
+            self.get_untrans_segs(src_tokens, max_index, gname=gname,
+#                                  merger_groups=merger_groups,
                                   src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered)
         # Check whether untranslated parentheticals have gotten segments
         for parenthetical in parentheticals:
@@ -2666,7 +2674,7 @@ class Segmentation:
         """Find candidate Group matches with segmentation Segs."""
         if verbosity:
             print("{} finding group candidates".format(self))
-        groups = groups or self.source.posgroups[groupsid]
+        groups = groups or self.source.groups[groupsid]
         cands = []
         sol_length = len(self.segments)
         for index, segment in enumerate(self.segments):
@@ -2739,14 +2747,14 @@ class Segmentation:
         Join and Group groupings, until there are no more, then optionally do morphological
         generation."""
         njoins = len(self.source.join_groupings)
-        nposgroups = len(self.source.posgroups)
+        ngroups2 = len(self.source.groups)
         j = 0
         g = 1
-        while j < njoins or g < nposgroups:
+        while j < njoins or g < ngroups2:
             if j < njoins:
                 self.join(joingroupings=None, verbosity=verbosity)
                 j += 1
-            if g < nposgroups:
+            if g < ngroups2:
                 self.match_groups(groupsid=g, verbosity=verbosity)
                 g += 1
         if generate:
