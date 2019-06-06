@@ -1378,7 +1378,6 @@ class GInst:
                         tindex, stagr = agr
                         targ_index = tindex
 #                        print(" s2t_dict agrs {}, tindex {}, stagr {}".format(agrs, tindex, stagr))
-#                    agrs = s2t_dict['agr'][targ_index]
                         agrs = stagr
                 if gnode.special:
                     spec_trans = self.source.translate_special(gn_token)
@@ -1458,6 +1457,7 @@ class TNode:
 #        self.sentence = ginst.sentence
         self.index = index
         self.ginst = ginst
+#        print(" Creating TNode for {}, features {}, group {}, index {}".format(token, features, group, index))
 
 #    def generate(self, limit_forms=True, verbosity=0):
 #        """Generate forms for the TNode."""
@@ -1541,6 +1541,7 @@ class TreeTrans:
         self.cache = {}
         if verbosity:
             print("Created TreeTrans {}".format(self))
+            print("  Gnode dict: {}".format(self.gnode_dict))
             print("  Indices: {}, tgroups {}, tnodes {}".format(self.tree, self.tgroups, self.tnodes))
             print("  Sol gnodes feats: {}".format(self.sol_gnodes_feats))
 
@@ -1797,7 +1798,7 @@ class TreeTrans:
                 gnode_tuple_list = self.gnode_dict[gnode]
                 gnode_tuple = firsttrue(lambda x: x[0] in tg_groups, gnode_tuple_list)
                 if verbosity > 1:
-                    print("   gnode_tuple: {}".format(gnode_tuple))
+                    print("   gnode_tuple: {}, list {}".format(gnode_tuple, gnode_tuple_list))
                 if not gnode_tuple:
                     print("Something wrong")
                 cache_key = self.make_cache_key(gnode_tuple, None)
@@ -1814,6 +1815,7 @@ class TreeTrans:
                         t_indices.append((tgroup, t_index))
                     else:
                         t_indices = [(tgroup, 0)]
+#                    print("tgroup {}, token {}, targ_feats {}, t_indices {}".format(tgroup, token, targ_feats, t_indices))
                     # Make target and source features agree as required
                     targ_feats = self.merge_agr_feats(agrs, targ_feats, features, verbosity=verbosity)
                     self.record_ind_feats(token=token, tnode_index=tnode_index, t_indices=t_indices,
