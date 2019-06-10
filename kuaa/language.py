@@ -109,6 +109,8 @@ ABBREV_RE = re.compile(r'\s*ab.*?:\s*(.*)')
 # Term translations
 # tr...:
 TRANS_RE = re.compile(r'\s*tr.*?:\s*(.*)')
+# Default feature agreements for different categories
+DFLTAGRS_RE = re.compile(r'\s*dfltagrs*?:\s*(.*)')
 # Beginning of feature-value list
 FEATS_RE = re.compile(r'\s*feat.*?:\s*(.*)')
 # Feature-value pair
@@ -260,6 +262,8 @@ class Language:
         self.punc = None
         # Character and character sequences representing orthographic units
         self.seg_units = None
+        # Default feature agreements for POS categories
+        self.dfltagrs = {}
         # dict of POS: fst lists
         self.morphology = Morphology()
         self.morphology.directory = self.get_dir()
@@ -843,6 +847,7 @@ class Language:
 #            lines = contents.split('\n')
 
             seg = []
+            dfltagrs = []
             postsyll = []
             abbrev = {}
             fv_abbrev = {}
@@ -888,6 +893,12 @@ class Language:
                 if m:
                     current = 'seg'
                     seg = m.group(1).split()
+                    continue
+
+                # Beginning of default feature agreements
+                m = DFLTAGRS_RE.match(line)
+                if m:
+                    current = 'dfltagrs'
                     continue
 
                 m = VOWEL_RE.match(line)
@@ -1123,6 +1134,9 @@ class Language:
                 elif current == 'seg':
                     seg.extend(line.strip().split())
 
+                elif current == 'dfltagrs':
+                    dfltagrs.append(line.strip().split('::'))
+
                 elif current == 'pos':
                     pos.extend(line.strip().split())
 
@@ -1153,6 +1167,10 @@ class Language:
                 # Make the seg_units list, [chars, char_dict], expected for transduction,
                 # composition, etc.
                 self.seg_units = Language.make_seg_units(seg)
+
+            if dfltagrs:
+                for pos, agrs in dfltagrs:
+                    self.dfltagrs[pos] = agrs
 
         if self.pos and not self.morphology:
 #            print("Creating morphology...")
@@ -1888,7 +1906,9 @@ class Language:
     @staticmethod
     def read(path, use=ANALYSIS, directory=None, verbosity=0):
         """Create a Language from the contents of a file, a dict that must be then converted to a Language.
-        2017.4.18: Stopped using YAML."""
+        2017.4.18: Stopped using YAML.
+        2019: Probably should go back to YAML because it pretty much is already.
+        """
         dct = {}
         key = '' 
         subdct = {}

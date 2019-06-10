@@ -276,7 +276,7 @@
 ** afinar_v[-r,+fin] un hilo ; ^ afinar_v 0 ; #2
 ->grn mbopo'i_v[cat=a]
 ** afinar_v[-r,+fin] ; ^ afinar_v 0 ; #2
-->grn ñatõi_v[cat=a] ; #7
+->grn <ñatõi_v[cat=a] ; #7
 ->grn mbojoja_v[cat=a] ; #12
 ** afirmar_v[+r,+fin] en el suelo ; ^ afirmar_v 0
 ->grn jepytaso_v[cat=a]
@@ -374,7 +374,7 @@
 ** alargar_v[-r,+fin] ; ^ alargar_v 0
 ->grn mbopuku_v[cat=a]
 ** alarmar_v[-r,+fin] ; ^ alarmar_v 0
-->grn ñatõi_v[cat=a]
+->grn <ñatõi_v[cat=a]
 ** alcanzar_v[-r,+fin] ; ^ alcanzar_v 0 ; #64
 ->grn <hupyty_v[cat=a] ; #27
 ->grn ĝuahẽ_v[cat=a] ; #357
@@ -796,7 +796,7 @@
 ** beber_v[-r,+fin] bebida alcohólica ; ^ beber_v 0 ; #248
 ->grn mokõ_v[cat=a]
 ** beber_v[-r,+fin] un sorbo ; ^ beber_v 0 ; #248
-->grn ñatõi_v[cat=a]
+->grn <ñatõi_v[cat=a]
 ** beber_v[-r,+fin] agua ; ^ beber_v 0 ; #248
 ->grn y'u_v[cat=a] ; #35
 ** beber_v[-r,+fin] ; ^ beber_v 0 ; #248
@@ -2628,7 +2628,7 @@
 ** golpear_v[-r,+fin] violentamente ; ^ golpear_v 0 ; #34
 ->grn myandy_v[cat=a]
 ** golpear_v[-r,+fin] suavemente ; ^ golpear_v 0 ; #34
-->grn ñatõi_v[cat=a]
+->grn <ñatõi_v[cat=a]
 ** golpear_v[-r,+fin] ; ^ golpear_v 0 ; #34
 ->grn nupã_v[subcat=i] ; #40
 ->grn mbota_v[cat=a] ; #62
@@ -2812,7 +2812,7 @@
 ** incitar_v[-r,+fin] a una acción ; ^ incitar_v 0 ; #8
 ->grn mbotuli_v[cat=a]
 ** incitar_v[-r,+fin] ; ^ incitar_v 0 ; #8
-->grn ñatõi_v[cat=a] ; #7
+->grn <ñatõi_v[cat=a] ; #7
 ->grn ñe'ẽreity_v[cat=a] ; #5
 ** inclinar_v[-r,+fin] la cabeza ; ^ inclinar_v 0 ; #34
 ->grn ñakãity_v[cat=a]
@@ -3010,11 +3010,11 @@
 ->grn ñemoakãky'o_v[cat=a]
 ->grn ñemyakãky'o_v[cat=a]
 ** lavar_v[+r,+fin] la ropa ; ^ lavar_v 0
-->grn jaojohéi_v[cat=a]
+->grn <jaojohéi_v[cat=a]
 ** lavar_v[+r,+fin] la boca ; ^ lavar_v 0
 ->grn jejuruhéi_v[cat=a]
 ** lavar_v[-r,+fin] la ropa ; ^ lavar_v 0
-->grn jaojohéi_v[cat=a]
+->grn <jaojohéi_v[cat=a]
 ** lavar_v[+r,+fin] las manos ; ^ lavar_v 0
 ->grn jepohéi_v[cat=a]
 ** lavar_v[+oi] los pies ; ^ lavar_v 0
@@ -3850,7 +3850,7 @@
 ->grn mbyaruru_v[cat=a]
 ->grn mboaruru_v[cat=a]
 ** poner_v[-r,+fin] en guardia ; ^ poner_v 0
-->grn ñatõi_v[cat=a]
+->grn <ñatõi_v[cat=a]
 ** poner_v[+r,+fin] en movimiento ; ^ poner_v 0
 ->grn ñemýi_v[cat=a]
 ->grn ku'e_v[cat=a]
@@ -4138,7 +4138,7 @@
 ** punzar_v[-r,+fin] con espinas ; ^ punzar_v 0 ; #1
 ->grn kutu_v[subcat=i]
 ** punzar_v[-r,+fin] ; ^ punzar_v 0 ; #1
-->grn ñatõi_v[cat=a] ; #7
+->grn <ñatõi_v[cat=a] ; #7
 ->grn jopi_v[cat=a] ; #11
 ** quebrantar_v[+r,+fin] ; ^ quebrantar_v 0
 ->grn py'apy_v[subcat=i] ; #36
@@ -5538,7 +5538,7 @@
 ->grn mondo_v[cat=a] ; #60
 ->grn mbojei_v[cat=a]
 ** alertar_v[-r,+fin] ; ^ alertar_v 0
-->grn ñatõi_v[cat=a]
+->grn <ñatõi_v[cat=a]
 ** aletear_v[-r,+fin] ; ^ aletear_v 0
 ->grn pepe_v[cat=a] ; #3
 ->grn perere_v[cat=a] ; #7
@@ -6072,7 +6072,7 @@
 ** azular_v[-r,+fin] ; ^ azular_v 0
 ->grn mbohovy_v[cat=a]
 ** azuzar_v[-r,+fin] ; ^ azuzar_v 0
-->grn ñatõi_v[cat=a] ; #7
+->grn <ñatõi_v[cat=a] ; #7
 ->grn moñarõ_v[cat=a]
 ->grn moaña_v[cat=a]
 ** añejar_v[+r,+fin] ; ^ añejar_v 0
@@ -8349,7 +8349,7 @@
 ** hilvanar_v[-r,+fin] ; ^ hilvanar_v 0
 ->grn mbovyvy_v[cat=a]
 ** hincar_v[-r,+fin] ; ^ hincar_v 0 ; #5
-->grn ñatõi_v[cat=a] ; #7
+->grn <ñatõi_v[cat=a] ; #7
 ->grn moñesũ_v[cat=a]
 ->grn kutu_v[subcat=i] ; #58
 ** hinchar_v[+r,+fin] ; ^ hinchar_v 0 ; #1
@@ -10169,7 +10169,7 @@
 ** tatuar_v[-r,+fin] ; ^ tatuar_v 0
 ->grn mopini_v[cat=a]
 ** tañer_v[-r,+fin] ; ^ tañer_v 0
-->grn ñatõi_v[cat=a]
+->grn <ñatõi_v[cat=a]
 ** tejer_v[-r,+fin] ; ^ tejer_v 0 ; #13
 ->grn pyaha_v[subcat=i] ; #8
 ->grn ñopẽ_v[cat=a] ; #1
@@ -10178,7 +10178,7 @@
 ->grn ryrýi_v[cat=a] ; #10
 ->grn susũ_v[cat=a] ; #5
 ** templar_v[-r,+fin] ; ^ templar_v 0 ; #72
-->grn ñatõi_v[cat=a] ; #7
+->grn <ñatõi_v[cat=a] ; #7
 ->grn mbopiro'y_v[cat=a] ; #12
 ** tender_v[+r,+fin] ; ^ tender_v 0 ; #4
 ->grn ñemyasãi_v[cat=a] ; #1
@@ -11553,9 +11553,9 @@
 ->grn ñeha'ã_v[cat=a]
 ** pulsar_v[-r,+fin]
 ->grn mbopu_v[cat=a]
-->grn ñatõi_v[cat=a]
+->grn <ñatõi_v[cat=a]
 ** puntear_v[-r,+fin]
-->grn ñatõi_v[cat=a]
+->grn <ñatõi_v[cat=a]
 ->grn motenonde_v[cat=a]
 ** purgar_v[-r,+fin]
 ->grn mopotĩ_v[cat=a]
@@ -12324,3 +12324,724 @@
 ->grn <hecha_v[cat=a] añetépa ; || 0
 ** zapatear_v[-r,+fin]
 ->grn mbota_v[cat=a] sapatúpe ; || 0
+** pretender_v[-r,+fin] ser ; ^ pretender_v 0
+->grn iko_v[cat=a,asp=[+vol]] ; ^ iko_v 0 ; || 0,-1
+** abrir_v[+r,+fin] la flor ; ^ abrir_v 0
+->grn jera_v[cat=a] ; ^ jera_v 0 ; || 0,-1,-1
+** abrir_v[-r,+fin] la boca ; ^ abrir_v 0
+->grn jejurupe'a_v[cat=a] ; ^ jejurupe'a_v 0 ; || 0,-1,-1
+** abrir_v[-r,+fin] la puerta ; ^ abrir_v 0
+->grn pe'a_v[subcat=i] okẽ ; ^ pe'a_v 0 ; || 0,-1,-1
+** abrir_v[-r,+fin] las piernas ; ^ abrir_v 0
+->grn jepyjái_v[cat=a] ; ^ jepyjái_v 0 ; || 0,-1,-1
+->grn <hakambyjái_v[cat=a] ; ^ <hakambyjái_v 0 ; || 0,-1,-1
+** abrir_v[-r,+fin] los ojos ; ^ abrir_v 0
+->grn <hesape'a_v[cat=a] ; ^ <hesape'a_v 0 ; || 0,-1,-1
+->grn jesape'a_v[cat=a] ; ^ jesape'a_v 0 ; || 0,-1,-1
+** abrir_v[-r,+fin] y cerrar de ojos ; ^ abrir_v 0
+->grn <hesapirĩ_v[cat=a] ; ^ <hesapirĩ_v 0 ; || 0,-1,-1,-1,-1
+** acabar_v[+r,+fin] el agua ; ^ acabar_v 0
+->grn ypa_v[cat=a] ; ^ ypa_v 0 ; || 0,-1,-1
+** achicharrar_v[-r,+fin] el sol ; ^ achicharrar_v 0
+->grn tini_v[cat=a] ; ^ tini_v 0 ; || 0,-1,-1
+** aclarar_v[-r,+fin] el día ; ^ aclarar_v 0
+->grn ko'ẽmba_v[cat=che] ; ^ ko'ẽmba_v 0 ; || 0,-1,-1
+** adquirir_v[-r,+fin] envergadura ; ^ adquirir_v 0
+->grn <hovana_v[cat=a] ; ^ <hovana_v 0 ; || 0,-1
+** afinar_v[-r,+fin] instrumento musical ; ^ afinar_v 0
+->grn <ñatõi_v[cat=a] ; ^ <ñatõi_v 0 ; || 0,-1,-1
+->grn <ñatõi_v[cat=a] ; ^ <ñatõi_v 0 ; || 0,-1,-1
+** afirmar_v[-r,+fin] con la cabeza ; ^ afirmar_v 0
+->grn <ñakãity_v[cat=a] ; ^ <ñakãity_v 0 ; || 0,-1,-1,-1
+** afirmar_v[-r,+fin] los pies ; ^ afirmar_v 0
+->grn jepytaso_v[cat=a] ; ^ jepytaso_v 0 ; || 0,-1,-1
+** agachar_v[-r,+fin] el cuerpo ; ^ agachar_v 0
+->grn jayvy_v[cat=a] ; ^ jayvy_v 0 ; || 0,-1,-1
+** agitar_v[-r,+fin] líquido ; ^ agitar_v 0
+->grn mbokuchu_v[cat=a] ; ^ mbokuchu_v 0 ; || 0,-1
+** agotar_v[-r,+fin] el líquido ; ^ agotar_v 0
+->grn mbohypa_v[cat=a] ; ^ mbohypa_v 0 ; || 0,-1,-1
+** agregar_v[-r,+fin] agua ; ^ agregar_v 0
+->grn mbohykue_v[cat=a] ; ^ mbohykue_v 0 ; || 0,-1
+** alargar_v[-r,+fin] la mano ; ^ alargar_v 0
+->grn pojái_v[cat=che] ; ^ pojái_v 0 ; || 0,-1,-1
+** alcanzar_v[+r,+fin] mutuamente ; ^ alcanzar_v 0
+->grn jupyty_v[cat=a] ; ^ jupyty_v 0 ; || 0,-1
+** allanar_v[-r,+fin] domicilio ; ^ allanar_v 0
+->grn sururu_v[cat=a] ógape ; ^ sururu_v 0 ; || 0,-1
+** alzar_v[+r,+fin] la ropa ; ^ alzar_v 0
+->grn jepepi_v[cat=a] ; ^ jepepi_v 0 ; || 0,-1,-1
+** alzar_v[-r,+fin] la cabeza ; ^ alzar_v 0
+->grn <ñakãupi_v[cat=a] ; ^ <ñakãupi_v 0 ; || 0,-1,-1
+** alzar_v[-r,+fin] los ojos ; ^ alzar_v 0
+->grn jesaupi_v[cat=a] ; ^ jesaupi_v 0 ; || 0,-1,-1
+** andar_v[-r,+fin] de puntillas ; ^ andar_v 0
+->grn guata_v[cat=a] pysãtĩre ; ^ guata_v 0 ; || 0,-1,-1
+** andar_v[-r,+fin] en~cuatro~patas ; ^ andar_v 0
+->grn poñy_v[cat=a] ; ^ poñy_v 0 ; || 0,-1
+** andar_v[-r,+fin] sin rumbo ; ^ andar_v 0
+->grn tavahu_v[cat=a] ; ^ tavahu_v 0 ; || 0,-1,-1
+** andar_v[-r,+fin] viento en popa ; ^ andar_v 0
+->grn yvytu_v[cat=a] ; ^ yvytu_v 0 ; || 0,-1,-1,-1
+** arrimar_v[-r,+fin] la mano ; ^ arrimar_v 0
+->grn poja_v[cat=che] ; ^ poja_v 0 ; || 0,-1,-1
+** arrimar_v[-r,+fin] tierra ; ^ arrimar_v 0
+->grn <japyaty_v[cat=a] ; ^ <japyaty_v 0 ; || 0,-1
+** asomar_v[-r,+fin] el sol ; ^ asomar_v 0
+->grn kuarahy ñapysẽ_v[cat=a] ; ^ ñapysẽ_v 1 ; || 1,-1,0 ; 0==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
+** aspirar_v[-r,+fin] a tener ; ^ aspirar_v 0
+->grn pota_v[subcat=i] ; ^ pota_v 0 ; || 0,-1,-1
+** atar_v[-r,+fin] de manos ; ^ atar_v 0
+->grn pokua_v[subcat=i] ; ^ pokua_v 0 ; || 0,-1,-1
+** atar_v[-r,+fin] de pies ; ^ atar_v 0
+->grn pykua_v[subcat=i] ; ^ pykua_v 0 ; || 0,-1,-1
+** atizar_v[-r,+fin] el fuego ; ^ atizar_v 0
+->grn <hatapyña_v[cat=a] ; ^ <hatapyña_v 0 ; || 0,-1,-1
+** bajar_v[+r,+fin] la cabeza ; ^ bajar_v 0
+->grn <ñakãyvy_v[cat=a] ; ^ <ñakãyvy_v 0 ; || 0,-1,-1
+** bajar_v[-r,+fin] precio ; ^ bajar_v 0
+->grn mboguejy_v[cat=a] ; ^ mboguejy_v 0 ; || 0,-1
+** beber_v[-r,+fin] mate ; ^ beber_v 0
+->grn kay'u_v[cat=a] ; ^ kay'u_v 0 ; || 0,-1
+** besar_v[-r,+fin] en la boca ; ^ besar_v 0
+->grn jurupyte_v[cat=a] ; ^ jurupyte_v 0 ; || 0,-1,-1,-1
+** brotar_v[-r,+fin] agua ; ^ brotar_v 0
+->grn sẽ_v[cat=a] y ; ^ sẽ_v 0 ; || 0,-1
+** buscar_v[-r,+fin] camino ; ^ buscar_v 0
+->grn <hapereka_v[cat=a] ; ^ <hapereka_v 0 ; || 0,-1
+** caber_v[-r,+fin] la mano ; ^ caber_v 0
+->grn poja_v[cat=che] ; ^ poja_v 0 ; || 0,-1,-1
+** caer_v[+r,+fin] de bruces ; ^ caer_v 0
+->grn ñetinga_v[cat=a] ; ^ ñetinga_v 0 ; || 0,-1,-1
+** caer_v[-r,+fin] bien ; ^ caer_v 0
+->grn 'a_v[cat=a] porã ; ^ 'a_v 0 ; || 0,-1
+** caer_v[-r,+fin] de~bruces ; ^ caer_v 0
+->grn ñetĩnga_v[cat=a] ; ^ ñetĩnga_v 0 ; || 0,-1
+->grn ñeakãtĩparo_v[cat=a] ; ^ ñeakãtĩparo_v 0 ; || 0,-1
+** calentar_v[-r,+fin] el sol ; ^ calentar_v 0
+->grn tini_v[cat=a] ; ^ tini_v 0 ; || 0,-1,-1
+** cantar_v[-r,+fin] a coro ; ^ cantar_v 0
+->grn purahéi_v[cat=a] joa ; ^ purahéi_v 0 ; || 0,-1,-1
+** cantar_v[-r,+fin] el gallo ; ^ cantar_v 0
+->grn tokoro'o_v[cat=a] ; ^ tokoro'o_v 0 ; || 0,-1,-1
+** cantar_v[-r,+fin] el grillo ; ^ cantar_v 0
+->grn chini_v[cat=a] ; ^ chini_v 0 ; || 0,-1,-1
+** cantar_v[-r,+fin] en dúo ; ^ cantar_v 0
+->grn purahéi_v[cat=a] joyvy ; ^ purahéi_v 0 ; || 0,-1,-1
+** cantar_v[-r,+fin] los pájaros ; ^ cantar_v 0
+->grn ñe'ẽ_v[cat=a] ; ^ ñe'ẽ_v 0 ; || 0,-1,-1
+->grn ñe'ẽpurahéi_v[cat=a] ; ^ ñe'ẽpurahéi_v 0 ; || 0,-1,-1
+** carecer_v[-r,+fin] de ; ^ carecer_v 0
+->grn kotevẽ_v[subcat=i] ; ^ kotevẽ_v 0 ; || 0,-1
+** causar_v[-r,+fin] escozor ; ^ causar_v 0
+->grn mbojy_v[cat=a] ; ^ mbojy_v 0 ; || 0,-1
+** cerrar_v[-r,+fin] la puerta ; ^ cerrar_v 0
+->grn mboty_v[cat=a] okẽ ; ^ mboty_v 0 ; || 0,-1,-1
+** cerrar_v[-r,+fin] los ojos ; ^ cerrar_v 0
+->grn sapymi_v[cat=a] ; ^ sapymi_v 0 ; || 0,-1,-1
+** cerrar_v[-r,+fin] los ojos ; ^ cerrar_v 0
+->grn sapymi_v[cat=a] ; ^ sapymi_v 0 ; || 0,-1,-1
+** ceñir_v[-r,+fin] la cintura ; ^ ceñir_v 0
+->grn ku'akua_v[cat=a] ; ^ ku'akua_v 0 ; || 0,-1,-1
+** comer_v[-r,+fin] poco ; ^ comer_v 0
+->grn karu'i_v[cat=a] ; ^ karu'i_v 0 ; || 0,-1
+** comprar_v[-r,+fin] para vender ; ^ comprar_v 0
+->grn <ñakopia_v[cat=a] ; ^ <ñakopia_v 0 ; || 0,-1,-1
+** condenar_v[-r,+fin] al infierno ; ^ condenar_v 0
+->grn mondo_v[cat=a] añaretãme ; ^ mondo_v 0 ; || 0,-1,-1
+** contraer_v[-r,+fin] matrimonio ; ^ contraer_v 0
+->grn menda_v[cat=a] ; ^ menda_v 0 ; || 0,-1
+** correr_v[-r,+fin] la voz ; ^ correr_v 0
+->grn <herakuã_v[cat=a] ; ^ <herakuã_v 0 ; || 0,-1,-1
+** correr_v[-r,+fin] líquido ; ^ correr_v 0
+->grn syry_v[cat=a] ; ^ syry_v 0 ; || 0,-1
+** cortar_v[-r,+fin] el cabello ; ^ cortar_v 0
+->grn ñapĩ_v[cat=a] ; ^ ñapĩ_v 0 ; || 0,-1,-1
+** cortar_v[-r,+fin] el pelo ; ^ cortar_v 0
+->grn ñapĩ_v[cat=a] ; ^ ñapĩ_v 0 ; || 0,-1,-1
+->grn <hague'o_v[cat=a] ; ^ <hague'o_v 0 ; || 0,-1,-1
+->grn <haguekytĩ_v[cat=a] ; ^ <haguekytĩ_v 0 ; || 0,-1,-1
+** cortar_v[-r,+fin] la cabeza ; ^ cortar_v 0
+->grn <ñakã'o_v[cat=a] ; ^ <ñakã'o_v 0 ; || 0,-1,-1
+** cortar_v[-r,+fin] leña ; ^ cortar_v 0
+->grn jepe'ava_v[cat=a] ; ^ jepe'ava_v 0 ; || 0,-1
+** cortar_v[-r,+fin] racimos ; ^ cortar_v 0
+->grn jaryvo_v[cat=a] ; ^ jaryvo_v 0 ; || 0,-1
+** cuajar_v[-r,+fin] un líquido ; ^ cuajar_v 0
+->grn rypy'a_v[cat=a] ; ^ rypy'a_v 0 ; || 0,-1,-1
+** cubrir_v[-r,+fin] con ; ^ cubrir_v 0
+->grn jaty_v[cat=a] ; ^ jaty_v 0 ; || 0,-1
+** cubrir_v[-r,+fin] con tierra ; ^ cubrir_v 0
+->grn jaty_v[cat=a] ; ^ jaty_v 0 ; || 0,-1,-1
+->grn <japyaty_v[cat=a] ; ^ <japyaty_v 0 ; || 0,-1,-1
+** cubrir_v[-r,+fin] los ojos ; ^ cubrir_v 0
+->grn <hesamo'ã_v[cat=a] ; ^ <hesamo'ã_v 0 ; || 0,-1,-1
+** dar_v[+r,+fin] tono ; ^ dar_v 0
+->grn ñemboheko_v[cat=a] ; ^ ñemboheko_v 0 ; || 0,-1
+** dar_v[-r,+fin] a luz ; ^ dar_v 0
+->grn memby_v[cat=a] ; ^ memby_v 0 ; || 0,-1,-1
+->grn jedesouliga_v[cat=a] ; ^ jedesouliga_v 0 ; || 0,-1,-1
+** dar_v[-r,+fin] abasto ; ^ dar_v 0
+->grn katujejapo_v[cat=a] ; ^ katujejapo_v 0 ; || 0,-1
+** dar_v[-r,+fin] de comer ; ^ dar_v 0
+->grn mongaru_v[cat=a] ; ^ mongaru_v 0 ; || 0,-1,-1
+** dar_v[-r,+fin] el pecho ; ^ dar_v 0
+->grn mokambu_v[cat=a] ; ^ mokambu_v 0 ; || 0,-1,-1
+** dar_v[-r,+fin] el pésame ; ^ dar_v 0
+->grn rombyasy_v[cat=a] ; ^ rombyasy_v 0 ; || 0,-1,-1
+** dar_v[-r,+fin] en préstamo ; ^ dar_v 0
+->grn poruka_v[subcat=i] ; ^ poruka_v 0 ; || 0,-1,-1
+** dar_v[-r,+fin] fin ; ^ dar_v 0
+->grn <japopa_v[cat=a] ; ^ <japopa_v 0 ; || 0,-1
+** dar_v[-r,+fin] la palabra ; ^ dar_v 0
+->grn ñe'ẽme'ẽ_v[cat=a] ; ^ ñe'ẽme'ẽ_v 0 ; || 0,-1,-1
+** dar_v[-r,+fin] palmada ; ^ dar_v 0
+->grn pete_v[cat=a] ; ^ pete_v 0 ; || 0,-1
+** dar_v[-r,+fin] sombra ; ^ dar_v 0
+->grn mo'ã_v[cat=a] ; ^ mo'ã_v 0 ; || 0,-1
+** dar_v[-r,+fin] un mal paso ; ^ dar_v 0
+->grn <hapeavy_v[cat=a] ; ^ <hapeavy_v 0 ; || 0,-1,-1,-1
+->grn <hekoavy_v[cat=a] ; ^ <hekoavy_v 0 ; || 0,-1,-1,-1
+** dar_v[-r,+fin] vida ; ^ dar_v 0
+->grn moingove_v[cat=a] ; ^ moingove_v 0 ; || 0,-1
+** dar_v[-r,+fin] vuelco el corazón ; ^ dar_v 0
+->grn py'atytýi_v[cat=che] ; ^ py'atytýi_v 0 ; || 0,-1,-1,-1
+** defraudar_v[-r,+fin] bienes ; ^ defraudar_v 0
+->grn monda_v[cat=a] ; ^ monda_v 0 ; || 0,-1
+** dejar_v[-r,+fin] de lado ; ^ dejar_v 0
+->grn mboyke_v[cat=a] ; ^ mboyke_v 0 ; || 0,-1,-1
+** dejar_v[-r,+fin] en la calle ; ^ dejar_v 0
+->grn moperõ_v[cat=a] ; ^ moperõ_v 0 ; || 0,-1,-1,-1
+** desbordar_v[-r,+fin] el cauce ; ^ desbordar_v 0
+->grn sẽ_v[cat=a] ysyry ; ^ sẽ_v 0 ; || 0,-1,-1
+** desenvainar_v[-r,+fin] la semilla ; ^ desenvainar_v 0
+->grn joka_v[cat=a] ; ^ joka_v 0 ; || 0,-1,-1
+** deshacer_v[+r,+fin] en pedacitos ; ^ deshacer_v 0
+->grn ñemongu'i_v[cat=a] ; ^ ñemongu'i_v 0 ; || 0,-1,-1
+** despertar_v[+r,+fin] por~la~mañana ; ^ despertar_v 0
+->grn ko'ẽ_v[cat=che] ; ^ ko'ẽ_v 0 ; || 0,-1
+** despojar_v[-r,+fin] de todo ; ^ despojar_v 0
+->grn moperõ_v[cat=a] ; ^ moperõ_v 0 ; || 0,-1,-1
+** desprender_v[+r,+fin] de ; ^ desprender_v 0
+->grn me'ẽ_v[cat=a] ; ^ me'ẽ_v 0 ; || 0,-1
+** destapar_v[+r,+fin] el vestido ; ^ destapar_v 0
+->grn pepi_v[subcat=i] ; ^ pepi_v 0 ; || 0,-1,-1
+** echar_v[-r,+fin] tierra ; ^ echar_v 0
+->grn jaty_v[cat=a] ; ^ jaty_v 0 ; || 0,-1
+** ejecutar_v[-r,+fin] instrumento musical ; ^ ejecutar_v 0
+->grn mbopu_v[cat=a] ; ^ mbopu_v 0 ; || 0,-1,-1
+** empeorar_v[-r,+fin] la salud ; ^ empeorar_v 0
+->grn <hasyve_v[cat=a] ; ^ <hasyve_v 0 ; || 0,-1,-1
+** empujar_v[-r,+fin] el pecho ; ^ empujar_v 0
+->grn py'amyaña_v[subcat=i] ; ^ py'amyaña_v 0 ; || 0,-1,-1
+** encender_v[-r,+fin] fuego ; ^ encender_v 0
+->grn jatapy_v[cat=a] ; ^ jatapy_v 0 ; || 0,-1
+->grn myendy_v[cat=a] ; ^ myendy_v 0 ; || 0,-1
+** encender_v[-r,+fin] la vela ; ^ encender_v 0
+->grn myataindy_v[cat=a] ; ^ myataindy_v 0 ; || 0,-1,-1
+** encorvar_v[-r,+fin] para atrás ; ^ encorvar_v 0
+->grn jepepy_v[cat=a] ; ^ jepepy_v 0 ; || 0,-1,-1
+** enhebrar_v[-r,+fin] la aguja ; ^ enhebrar_v 0
+->grn jumosã_v[cat=a] ; ^ jumosã_v 0 ; || 0,-1,-1
+** entornar_v[-r,+fin] los ojos ; ^ entornar_v 0
+->grn jesapymi_v[cat=a] ; ^ jesapymi_v 0 ; || 0,-1,-1
+** entrar_v[-r,+fin] con violencia ; ^ entrar_v 0
+->grn jasururu_v[cat=a] ; ^ jasururu_v 0 ; || 0,-1,-1
+** entrar_v[-r,+fin] con ímpetu ; ^ entrar_v 0
+->grn sororo_v[cat=a] ; ^ sororo_v 0 ; || 0,-1,-1
+** entrar_v[-r,+fin] sin permiso ; ^ entrar_v 0
+->grn jasuru_v[cat=a] ; ^ jasuru_v 0 ; || 0,-1,-1
+->grn jasururu_v[cat=a] ; ^ jasururu_v 0 ; || 0,-1,-1
+** entreabrir_v[+r,+fin] la flor ; ^ entreabrir_v 0
+->grn yvotyjera_v[cat=a] ; ^ yvotyjera_v 0 ; || 0,-1,-1
+** errar_v[-r,+fin] el camino ; ^ errar_v 0
+->grn ñedesatina_v[cat=a] ; ^ ñedesatina_v 0 ; || 0,-1,-1
+** eructar_v[-r,+fin] fétido ; ^ eructar_v 0
+->grn urẽ_v[cat=a] ; ^ urẽ_v 0 ; || 0,-1
+** escapar_v[-r,+fin] de entre las manos ; ^ escapar_v 0
+->grn poeja_v[cat=a] ; ^ poeja_v 0 ; || 0,-1,-1,-1,-1
+->grn poguyrõ_v[cat=a] ; ^ poguyrõ_v 0 ; || 0,-1,-1,-1,-1
+** escarbar_v[-r,+fin] la tierra ; ^ escarbar_v 0
+->grn yvyjo'o_v[cat=a] ; ^ yvyjo'o_v 0 ; || 0,-1,-1
+->grn yvykarãi_v[cat=a] ; ^ yvykarãi_v 0 ; || 0,-1,-1
+->grn jo'o_v[cat=a] yvy ; ^ jo'o_v 0 ; || 0,-1,-1
+->grn jetypeka_v[cat=a] ; ^ jetypeka_v 0 ; || 0,-1,-1
+** esperar_v[-r,+fin] en el camino ; ^ esperar_v 0
+->grn <hapera'arõ_v[cat=a] ; ^ <hapera'arõ_v 0 ; || 0,-1,-1,-1
+** estancar_v[-r,+fin] agua ; ^ estancar_v 0
+->grn yno'õ_v[cat=a] ; ^ yno'õ_v 0 ; || 0,-1
+** estar_v[-r,+fin] de pie ; ^ estar_v 0
+->grn ñembo'y_v[cat=a] ; ^ ñembo'y_v 0 ; || 0,-1,-1
+** estar_v[-r,+fin] por ; ^ estar_v 0
+->grn pota_v[subcat=i] ; ^ pota_v 0 ; || 0,-1
+** estar_v[-r,+fin] sin dinero ; ^ estar_v 0
+->grn so_v[cat=a] ; ^ so_v 0 ; || 0,-1,-1
+** estirar_v[-r,+fin] el cuello ; ^ estirar_v 0
+->grn jejuvyso_v[cat=a] ; ^ jejuvyso_v 0 ; || 0,-1,-1
+** estrechar_v[-r,+fin] entre los brazos ; ^ estrechar_v 0
+->grn <ñañuã_v[cat=a] ; ^ <ñañuã_v 0 ; || 0,-1,-1,-1
+->grn <ñañuã_v[cat=a] ; ^ <ñañuã_v 0 ; || 0,-1,-1,-1
+** evacuar_v[-r,+fin] el intestino ; ^ evacuar_v 0
+->grn kaka_v[cat=a] ; ^ kaka_v 0 ; || 0,-1,-1
+->grn poti_v[cat=a] ; ^ poti_v 0 ; || 0,-1,-1
+** extender_v[-r,+fin] la mano ; ^ extender_v 0
+->grn pojái_v[cat=che] ; ^ pojái_v 0 ; || 0,-1,-1
+** extender_v[-r,+fin] la mano por ; ^ extender_v 0
+->grn pojái_v[cat=che] ; ^ pojái_v 0 ; || 0,-1,-1,-1
+** extender_v[-r,+fin] la vista ; ^ extender_v 0
+->grn jesapyso_v[cat=a] ; ^ jesapyso_v 0 ; || 0,-1,-1
+** faltar_v[-r,+fin] dinero ; ^ faltar_v 0
+->grn so_v[cat=a] ; ^ so_v 0 ; || 0,-1
+** figurar_v[-r,+fin] entre ; ^ figurar_v 0
+->grn ime_v[cat=a] apytépe ; ^ ime_v 0 ; || 0,-1
+** ganar_v[+r,+fin] la vida ; ^ ganar_v 0
+->grn jeporeka_v[cat=a] ; ^ jeporeka_v 0 ; || 0,-1,-1
+** ganar_v[-r,+fin] dinero ; ^ ganar_v 0
+->grn mbyaty_v[cat=a] viru ; ^ mbyaty_v 0 ; || 0,-1
+** golpear_v[+r,+fin] la cabeza ; ^ golpear_v 0
+->grn ñakãmbota_v[cat=a] ; ^ ñakãmbota_v 0 ; || 0,-1,-1
+** golpear_v[+r,+fin] la nariz ; ^ golpear_v 0
+->grn ñetinga_v[cat=a] ; ^ ñetinga_v 0 ; || 0,-1,-1
+** golpear_v[-r,+fin] con la mano ; ^ golpear_v 0
+->grn japete_v[cat=a] ; ^ japete_v 0 ; || 0,-1,-1,-1
+** golpear_v[-r,+fin] la cara ; ^ golpear_v 0
+->grn <hovaka_v[cat=a] ; ^ <hovaka_v 0 ; || 0,-1,-1
+** golpear_v[-r,+fin] ropa lavada ; ^ golpear_v 0
+->grn patuka_v[cat=a] ; ^ patuka_v 0 ; || 0,-1,-1
+** hacer_v[+r,+fin] conocer ; ^ hacer_v 0
+->grn jekuaauka_v[cat=a] ; ^ jekuaauka_v 0 ; || 0,-1
+** hacer_v[+r,+fin] de ; ^ hacer_v 0
+->grn pojái_v[cat=che] ; ^ pojái_v 0 ; || 0,-1
+** hacer_v[+r,+fin] de casa ; ^ hacer_v 0
+->grn jogapo_v[cat=a] ; ^ jogapo_v 0 ; || 0,-1,-1
+** hacer_v[+r,+fin] el dormido ; ^ hacer_v 0
+->grn ñemonge_v[cat=a] ; ^ ñemonge_v 0 ; || 0,-1,-1
+** hacer_v[+r,+fin] el sonso ; ^ hacer_v 0
+->grn ñembotavy_v[cat=a] ; ^ ñembotavy_v 0 ; || 0,-1,-1
+** hacer_v[+r,+fin] sentir ; ^ hacer_v 0
+->grn ñeñanduka_v[cat=a] ; ^ ñeñanduka_v 0 ; || 0,-1
+** hacer_v[+r,+fin] ver ; ^ hacer_v 0
+->grn jechauka_v[cat=a] ; ^ jechauka_v 0 ; || 0,-1
+** hacer_v[-r,+fin] amanecer ; ^ hacer_v 0
+->grn moko'ẽ_v[cat=a] ; ^ moko'ẽ_v 0 ; || 0,-1
+** hacer_v[-r,+fin] andar ; ^ hacer_v 0
+->grn mboguata_v[cat=a] ; ^ mboguata_v 0 ; || 0,-1
+** hacer_v[-r,+fin] calor ; ^ hacer_v 0
+->grn <haku_v[cat=che] ; ^ <haku_v 0 ; || 0,-1
+** hacer_v[-r,+fin] crecer ; ^ hacer_v 0
+->grn mongakuaa_v[cat=a] ; ^ mongakuaa_v 0 ; || 0,-1
+** hacer_v[-r,+fin] descansar ; ^ hacer_v 0
+->grn mombytu'u_v[cat=a] ; ^ mombytu'u_v 0 ; || 0,-1
+** hacer_v[-r,+fin] diferencia ; ^ hacer_v 0
+->grn moingoe_v[cat=a] ; ^ moingoe_v 0 ; || 0,-1
+** hacer_v[-r,+fin] dormir ; ^ hacer_v 0
+->grn monge_v[cat=a] ; ^ monge_v 0 ; || 0,-1
+** hacer_v[-r,+fin] explotar ; ^ hacer_v 0
+->grn mombu_v[cat=a] ; ^ mombu_v 0 ; || 0,-1
+** hacer_v[-r,+fin] fiestas ; ^ hacer_v 0
+->grn <hecha_v[cat=a] ramo ; ^ <hecha_v 0 ; || 0,-1
+** hacer_v[-r,+fin] llegar ; ^ hacer_v 0
+->grn roĝuahẽ_v[cat=a] ; ^ roĝuahẽ_v 0 ; || 0,-1
+->grn moĝuahẽ_v[cat=a] ; ^ moĝuahẽ_v 0 ; || 0,-1
+** hacer_v[-r,+fin] llorar ; ^ hacer_v 0
+->grn rojahe'o_v[cat=a] ; ^ rojahe'o_v 0 ; || 0,-1
+->grn myasẽ_v[cat=a] ; ^ myasẽ_v 0 ; || 0,-1
+** hacer_v[-r,+fin] llover ; ^ hacer_v 0
+->grn mongy_v[cat=a] ; ^ mongy_v 0 ; || 0,-1
+** hacer_v[-r,+fin] nido ; ^ hacer_v 0
+->grn <haitypo_v[cat=a] ; ^ <haitypo_v 0 ; || 0,-1
+->grn jaitypo_v[cat=a] ; ^ jaitypo_v 0 ; || 0,-1
+** hacer_v[-r,+fin] pasar ; ^ hacer_v 0
+->grn mbohasa_v[cat=a] ; ^ mbohasa_v 0 ; || 0,-1
+->grn mbogua_v[cat=a] ; ^ mbogua_v 0 ; || 0,-1
+->grn japyhara_v[cat=a] ; ^ japyhara_v 0 ; || 0,-1
+** hacer_v[-r,+fin] pedacitos ; ^ hacer_v 0
+->grn mongu'i_v[cat=a] ; ^ mongu'i_v 0 ; || 0,-1
+** hacer_v[-r,+fin] pipí ; ^ hacer_v 0
+->grn kuaru_v[cat=a] ; ^ kuaru_v 0 ; || 0,-1
+** hacer_v[-r,+fin] rebotar ; ^ hacer_v 0
+->grn mbojevy_v[cat=a] ; ^ mbojevy_v 0 ; || 0,-1
+** hacer_v[-r,+fin] ruido ; ^ hacer_v 0
+->grn <hyapu_v[cat=a] ; ^ <hyapu_v 0 ; || 0,-1
+->grn guarara_v[cat=a] ; ^ guarara_v 0 ; || 0,-1
+->grn pororo_v[cat=a] ; ^ pororo_v 0 ; || 0,-1
+->grn gualala_v[cat=a] ; ^ gualala_v 0 ; || 0,-1
+** hacer_v[-r,+fin] saber ; ^ hacer_v 0
+->grn kuaauka_v[cat=a] ; ^ kuaauka_v 0 ; || 0,-1
+** hacer_v[-r,+fin] salir ; ^ hacer_v 0
+->grn mosẽ_v[cat=a] ; ^ mosẽ_v 0 ; || 0,-1
+** hacer_v[-r,+fin] sentir ; ^ hacer_v 0
+->grn <ñanduka_v[cat=a] ; ^ <ñanduka_v 0 ; || 0,-1
+** hacer_v[-r,+fin] seña con la cabeza ; ^ hacer_v 0
+->grn <ñakãity_v[cat=a] ; ^ <ñakãity_v 0 ; || 0,-1,-1,-1,-1
+** hacer_v[-r,+fin] seña con la mano ; ^ hacer_v 0
+->grn jepoyru_v[cat=a] ; ^ jepoyru_v 0 ; || 0,-1,-1,-1,-1
+** hacer_v[-r,+fin] sombra ; ^ hacer_v 0
+->grn mo'ã_v[cat=a] ; ^ mo'ã_v 0 ; || 0,-1
+** hacer_v[-r,+fin] un pastel ; ^ hacer_v 0
+->grn <javy_v[cat=a] tuicha ; ^ <javy_v 0 ; || 0,-1,-1
+->grn <japo_v[cat=a] vai ; ^ <japo_v 0 ; || 0,-1,-1
+** hacer_v[-r,+fin] venir ; ^ hacer_v 0
+->grn mbou_v[cat=a] ; ^ mbou_v 0 ; || 0,-1
+** hacer_v[-r,+fin] volver ; ^ hacer_v 0
+->grn rojere_v[cat=a] ; ^ rojere_v 0 ; || 0,-1
+** hacer_v[-r,+fin] zancadilla ; ^ hacer_v 0
+->grn kupypa'ã_v[cat=a] ; ^ kupypa'ã_v 0 ; || 0,-1
+->grn kupylia_v[cat=a] ; ^ kupylia_v 0 ; || 0,-1
+** hincar_v[+r,+fin] de~rodillas ; ^ hincar_v 0
+->grn ñesũ_v[cat=a] ; ^ ñesũ_v 0 ; || 0,-1
+->grn ñesũpehẽ_v[cat=a] ; ^ ñesũpehẽ_v 0 ; || 0,-1
+** hundir_v[+r,+fin] en el lodo ; ^ hundir_v 0
+->grn japasuru_v[cat=a] ; ^ japasuru_v 0 ; || 0,-1,-1,-1
+** hundir_v[-r,+fin] en el agua ; ^ hundir_v 0
+->grn mboyguy_v[cat=a] ; ^ mboyguy_v 0 ; || 0,-1,-1,-1
+->grn moñapymi_v[cat=a] ; ^ moñapymi_v 0 ; || 0,-1,-1,-1
+** invitar_v[-r,+fin] a comer ; ^ invitar_v 0
+->grn kõvida_v[cat=a] ; ^ kõvida_v 0 ; || 0,-1,-1
+** ir_v[-r,+fin] de cuerpo ; ^ ir_v 0
+->grn kaka_v[cat=a] ; ^ kaka_v 0 ; || 0,-1,-1
+->grn poti_v[cat=a] ; ^ poti_v 0 ; || 0,-1,-1
+** ir_v[-r,+fin] juntos ; ^ ir_v 0
+->grn jogueraha_v[cat=a] ; ^ jogueraha_v 0 ; || 0,-1
+** irritar_v[+r,+fin] la piel ; ^ irritar_v 0
+->grn jy_v[cat=a] ; ^ jy_v 0 ; || 0,-1,-1
+** irritar_v[-r,+fin] los ojos ; ^ irritar_v 0
+->grn resako'õ_v[cat=a] ; ^ resako'õ_v 0 ; || 0,-1,-1
+** labrar_v[-r,+fin] la tierra ; ^ labrar_v 0
+->grn yvy mondoro_v[cat=a] ; ^ mondoro_v 1 ; || 1,-1,0 ; 0==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
+->grn yvyjo'o_v[cat=a] ; ^ yvyjo'o_v 0 ; || 0,-1,-1
+** largar_v[-r,+fin] pedo ; ^ largar_v 0
+->grn pyno_v[cat=a] ; ^ pyno_v 0 ; || 0,-1
+** latir_v[-r,+fin] el corazón ; ^ latir_v 0
+->grn py'aperere_v[subcat=i] ; ^ py'aperere_v 0 ; || 0,-1,-1
+** latir_v[-r,+fin] la sien ; ^ latir_v 0
+->grn aty_v[cat=che] mymýi ; ^ aty_v 0 ; || 0,-1,-1
+** lavar_v[+r,+fin] la cabeza ; ^ lavar_v 0
+->grn <ñakãky'o_v[cat=a] ; ^ <ñakãky'o_v 0 ; || 0,-1,-1
+->grn <ñakãjohéi_v[cat=a] ; ^ <ñakãjohéi_v 0 ; || 0,-1,-1
+** lavar_v[+r,+fin] la cara ; ^ lavar_v 0
+->grn jovahéi_v[cat=a] ; ^ jovahéi_v 0 ; || 0,-1,-1
+** lavar_v[+r,+fin] las mano ; ^ lavar_v 0
+->grn jepohéi_v[cat=a] ; ^ jepohéi_v 0 ; || 0,-1,-1
+** lavar_v[-r,+fin] las manos ; ^ lavar_v 0
+->grn pohéi_v[subcat=i] ; ^ pohéi_v 0 ; || 0,-1,-1
+** lavar_v[-r,+fin] los pies ; ^ lavar_v 0
+->grn pyhéi_v[subcat=i] ; ^ pyhéi_v 0 ; || 0,-1,-1
+** levantar_v[-r,+fin] el vestido ; ^ levantar_v 0
+->grn pepi_v[subcat=i] ; ^ pepi_v 0 ; || 0,-1,-1
+** levantar_v[-r,+fin] la cabeza ; ^ levantar_v 0
+->grn <ñakãrapu'ã_v[cat=a] ; ^ <ñakãrapu'ã_v 0 ; || 0,-1,-1
+->grn <ñakãupi_v[cat=a] ; ^ <ñakãupi_v 0 ; || 0,-1,-1
+** levantar_v[-r,+fin] la vista ; ^ levantar_v 0
+->grn jesaupi_v[cat=a] ; ^ jesaupi_v 0 ; || 0,-1,-1
+** levantar_v[-r,+fin] las mano ; ^ levantar_v 0
+->grn jepoupi_v[cat=a] ; ^ jepoupi_v 0 ; || 0,-1,-1
+** levantar_v[-r,+fin] tierra andando ; ^ levantar_v 0
+->grn pykúi_v[subcat=i] ; ^ pykúi_v 0 ; || 0,-1,-1
+** limitar_v[-r,+fin] con ; ^ limitar_v 0
+->grn ja_v[cat=a] ; ^ ja_v 0 ; || 0,-1
+** limpiar_v[+r,+fin] el trasero ; ^ limpiar_v 0
+->grn ñepindýi_v[cat=a] ; ^ ñepindýi_v 0 ; || 0,-1,-1
+** limpiar_v[-r,+fin] el algodón ; ^ limpiar_v 0
+->grn <hesa'ỹijo_v[cat=a] ; ^ <hesa'ỹijo_v 0 ; || 0,-1,-1
+** llamar_v[-r,+fin] a la puerta ; ^ llamar_v 0
+->grn mbota_v[cat=a] okẽ ; ^ mbota_v 0 ; || 0,-1,-1,-1
+** llamar_v[-r,+fin] con la mano ; ^ llamar_v 0
+->grn jepoity_v[cat=a] ; ^ jepoity_v 0 ; || 0,-1,-1,-1
+** llevar_v[-r,+fin] caminando ; ^ llevar_v 0
+->grn roguata_v[cat=a] ; ^ roguata_v 0 ; || 0,-1
+->grn mboguata_v[cat=a] ; ^ mboguata_v 0 ; || 0,-1
+** marear_v[+r,+fin] con bebida ; ^ marear_v 0
+->grn piguy_v[cat=a] ; ^ piguy_v 0 ; || 0,-1,-1
+** meter_v[-r,+fin] la mano ; ^ meter_v 0
+->grn po'ẽ_v[cat=a] ; ^ po'ẽ_v 0 ; || 0,-1,-1
+** morir_v[+r,+fin] de risa ; ^ morir_v 0
+->grn py'amano_v[cat=che] ; ^ py'amano_v 0 ; || 0,-1,-1
+** mostrar_v[-r,+fin] los dientes ; ^ mostrar_v 0
+->grn <hãimbiti_v[cat=a] ; ^ <hãimbiti_v 0 ; || 0,-1,-1
+** mover_v[+r,+fin] algo dentro de un recipiente ; ^ mover_v 0
+->grn kuchu_v[cat=a] ; ^ kuchu_v 0 ; || 0,-1,-1,-1,-1,-1
+** mover_v[-r,+fin] la cara ; ^ mover_v 0
+->grn jerova_v[cat=a] ; ^ jerova_v 0 ; || 0,-1,-1
+** murmurar_v[-r,+fin] el agua ; ^ murmurar_v 0
+->grn ngululu_v[cat=a] ; ^ ngululu_v 0 ; || 0,-1,-1
+** palpitar_v[-r,+fin] el corazón ; ^ palpitar_v 0
+->grn py'aperere_v[subcat=i] ; ^ py'aperere_v 0 ; || 0,-1,-1
+** parar_v[+r,+fin] en punta de pies ; ^ parar_v 0
+->grn ñepyta'ã_v[cat=a] ; ^ ñepyta'ã_v 0 ; || 0,-1,-1,-1,-1
+** parar_v[+r,+fin] en puntas de pie ; ^ parar_v 0
+->grn jepytaka_v[cat=a] ; ^ jepytaka_v 0 ; || 0,-1,-1,-1,-1
+** parar_v[-r,+fin] de llover ; ^ parar_v 0
+->grn pi_v[cat=a] ; ^ pi_v 0 ; || 0,-1,-1
+** parecer_v[-r,+fin] que ; ^ parecer_v 0
+->grn pipo_v[cat=a] ; ^ pipo_v 0 ; || 0,-1
+->grn po_v[cat=a] ; ^ po_v 0 ; || 0,-1
+->grn nipo_v[cat=a] ; ^ nipo_v 0 ; || 0,-1
+** pedir_v[-r,+fin] la bendición ; ^ pedir_v 0
+->grn tupãnói_v[cat=a] ; ^ tupãnói_v 0 ; || 0,-1,-1
+** pegar_v[-r,+fin] con la mano ; ^ pegar_v 0
+->grn popete_v[cat=a] ; ^ popete_v 0 ; || 0,-1,-1,-1
+** pegar_v[-r,+fin] fuego ; ^ pegar_v 0
+->grn myendy_v[cat=a] ; ^ myendy_v 0 ; || 0,-1
+** pegar_v[-r,+fin] un tiro ; ^ pegar_v 0
+->grn mbokapu_v[cat=a] ; ^ mbokapu_v 0 ; || 0,-1,-1
+** pelar_v[+r,+fin] el prepucio ; ^ pelar_v 0
+->grn japiro_v[cat=a] ; ^ japiro_v 0 ; || 0,-1,-1
+** pelar_v[-r,+fin] el prepucio ; ^ pelar_v 0
+->grn japiro_v[cat=a] ; ^ japiro_v 0 ; || 0,-1,-1
+** pelar_v[-r,+fin] la piel ; ^ pelar_v 0
+->grn pire'o_v[subcat=i] ; ^ pire'o_v 0 ; || 0,-1,-1
+->grn pe'o_v[subcat=i] ; ^ pe'o_v 0 ; || 0,-1,-1
+** pelar_v[-r,+fin] las hojas ; ^ pelar_v 0
+->grn <hogue'o_v[cat=a] ; ^ <hogue'o_v 0 ; || 0,-1,-1
+** pellizcar_v[-r,+fin] la comida ; ^ pellizcar_v 0
+->grn ñapi'ũ_v[cat=a] ; ^ ñapi'ũ_v 0 ; || 0,-1,-1
+** pensar_v[-r,+fin] mal ; ^ pensar_v 0
+->grn ñemoangai_v[cat=a] ; ^ ñemoangai_v 0 ; || 0,-1
+** perder_v[-r,+fin] agua ; ^ perder_v 0
+->grn yga_v[cat=a] ; ^ yga_v 0 ; || 0,-1
+** perder_v[-r,+fin] la razón ; ^ perder_v 0
+->grn ñembotarova_v[cat=a] ; ^ ñembotarova_v 0 ; || 0,-1,-1
+** perjudicar_v[-r,+fin] gravemente ; ^ perjudicar_v 0
+->grn degrasia_v[cat=a] ; ^ degrasia_v 0 ; || 0,-1
+** pisar_v[-r,+fin] en mortero ; ^ pisar_v 0
+->grn ñembiso_v[cat=a] ; ^ ñembiso_v 0 ; || 0,-1,-1
+** poner_v[+r,+fin] de pie ; ^ poner_v 0
+->grn ñembo'y_v[cat=a] ; ^ ñembo'y_v 0 ; || 0,-1,-1
+->grn pu'ã_v[cat=a] ; ^ pu'ã_v 0 ; || 0,-1,-1
+->grn ñepu'ã_v[cat=a] ; ^ ñepu'ã_v 0 ; || 0,-1,-1
+** poner_v[+r,+fin] de puntillas ; ^ poner_v 0
+->grn ñepyta'ã_v[cat=a] ; ^ ñepyta'ã_v 0 ; || 0,-1,-1
+** poner_v[+r,+fin] delante ; ^ poner_v 0
+->grn ñemotenonde_v[cat=a] ; ^ ñemotenonde_v 0 ; || 0,-1
+->grn <henonde'a_v[cat=a] ; ^ <henonde'a_v 0 ; || 0,-1
+** poner_v[+r,+fin] el sol ; ^ poner_v 0
+->grn ike_v[cat=a] kuarahy ; ^ ike_v 0 ; || 0,-1,-1
+** poner_v[+r,+fin] en jarras ; ^ poner_v 0
+->grn jeku'ako_v[cat=a] ; ^ jeku'ako_v 0 ; || 0,-1,-1
+** poner_v[+r,+fin] enfrente ; ^ poner_v 0
+->grn ñembohovake_v[cat=a] ; ^ ñembohovake_v 0 ; || 0,-1
+** poner_v[-r,+fin] acostado ; ^ poner_v 0
+->grn moñeno_v[cat=a] ; ^ moñeno_v 0 ; || 0,-1
+** poner_v[-r,+fin] aparte ; ^ poner_v 0
+->grn moingoe_v[cat=a] ; ^ moingoe_v 0 ; || 0,-1
+** poner_v[-r,+fin] boca abajo ; ^ poner_v 0
+->grn mbovapy_v[cat=a] ; ^ mbovapy_v 0 ; || 0,-1,-1
+** poner_v[-r,+fin] boca arriba ; ^ poner_v 0
+->grn mbovayva_v[cat=a] ; ^ mbovayva_v 0 ; || 0,-1,-1
+** poner_v[-r,+fin] de bruces ; ^ poner_v 0
+->grn mbovapy_v[cat=a] ; ^ mbovapy_v 0 ; || 0,-1,-1
+** poner_v[-r,+fin] de relieve ; ^ poner_v 0
+->grn <hechauka_v[cat=a] ; ^ <hechauka_v 0 ; || 0,-1,-1
+** poner_v[-r,+fin] de~pie ; ^ poner_v 0
+->grn mopu'ã_v[cat=a] ; ^ mopu'ã_v 0 ; || 0,-1
+** poner_v[-r,+fin] en fila ; ^ poner_v 0
+->grn mboysýi_v[cat=a] ; ^ mboysýi_v 0 ; || 0,-1,-1
+** poner_v[-r,+fin] en hilera ; ^ poner_v 0
+->grn mbohysýi_v[cat=a] ; ^ mbohysýi_v 0 ; || 0,-1,-1
+** poner_v[-r,+fin] en medio de ; ^ poner_v 0
+->grn mopa'ũ_v[cat=a] ; ^ mopa'ũ_v 0 ; || 0,-1,-1,-1
+** poner_v[-r,+fin] en orden ; ^ poner_v 0
+->grn myatyrõ_v[cat=a] ; ^ myatyrõ_v 0 ; || 0,-1,-1
+** poner_v[-r,+fin] en su lugar ; ^ poner_v 0
+->grn mohenda_v[cat=a] ; ^ mohenda_v 0 ; || 0,-1,-1,-1
+** poner_v[-r,+fin] huevo ; ^ poner_v 0
+->grn mbo'a_v[cat=a] ; ^ mbo'a_v 0 ; || 0,-1
+** poner_v[-r,+fin] la cama ; ^ poner_v 0
+->grn <hupapo_v[cat=a] ; ^ <hupapo_v 0 ; || 0,-1,-1
+** poner_v[-r,+fin] mala cara ; ^ poner_v 0
+->grn <hovapoi_v[cat=a] ; ^ <hovapoi_v 0 ; || 0,-1,-1
+** poner_v[-r,+fin] nombre ; ^ poner_v 0
+->grn <hero_v[cat=a] ; ^ <hero_v 0 ; || 0,-1
+->grn mbohero_v[cat=a] ; ^ mbohero_v 0 ; || 0,-1
+** poner_v[-r,+fin] precio ; ^ poner_v 0
+->grn mbohepy_v[cat=a] ; ^ mbohepy_v 0 ; || 0,-1
+** poner_v[-r,+fin] sobrenombre ; ^ poner_v 0
+->grn mbohero_v[cat=a] ; ^ mbohero_v 0 ; || 0,-1
+** poner_v[-r,+fin] uno debajo de otro ; ^ poner_v 0
+->grn mbojoguy_v[cat=a] ; ^ mbojoguy_v 0 ; || 0,-1,-1,-1,-1
+** poner_v[-r,+fin] uno encima de otro ; ^ poner_v 0
+->grn mbojo'a_v[cat=a] ; ^ mbojo'a_v 0 ; || 0,-1,-1,-1,-1
+** poner_v[-r,+fin] yugo ; ^ poner_v 0
+->grn mboapiryta_v[cat=a] ; ^ mboapiryta_v 0 ; || 0,-1
+** preparar_v[-r,+fin] la cama ; ^ preparar_v 0
+->grn <hupapo_v[cat=a] ; ^ <hupapo_v 0 ; || 0,-1,-1
+** procurar_v[+r,+fin] lo necesario ; ^ procurar_v 0
+->grn jeheka_v[cat=a] ; ^ jeheka_v 0 ; || 0,-1,-1
+** pronunciar_v[-r,+fin] gangoso ; ^ pronunciar_v 0
+->grn tĩñe'ẽ_v[cat=a] ; ^ tĩñe'ẽ_v 0 ; || 0,-1
+** pronunciar_v[-r,+fin] un discurso ; ^ pronunciar_v 0
+->grn ñemoñe'ẽ_v[cat=a] ; ^ ñemoñe'ẽ_v 0 ; || 0,-1,-1
+->grn jejuru'o_v[cat=a] ; ^ jejuru'o_v 0 ; || 0,-1,-1
+** prorrumpir_v[-r,+fin] en gritos ; ^ prorrumpir_v 0
+->grn sapukái_v[cat=a] sapy'a ; ^ sapukái_v 0 ; || 0,-1,-1
+** quedar_v[+r,+fin] bien ; ^ quedar_v 0
+->grn 'a_v[cat=a] porã ; ^ 'a_v 0 ; || 0,-1
+** quedar_v[+r,+fin] mal ; ^ quedar_v 0
+->grn 'a_v[cat=a] vai ; ^ 'a_v 0 ; || 0,-1
+** quedar_v[+r,+fin] mal parado ; ^ quedar_v 0
+->grn jecha_v[cat=a] tesaparápe ; ^ jecha_v 0 ; || 0,-1,-1
+** quitar_v[+r,+fin] la ropa ; ^ quitar_v 0
+->grn ñemboi_v[cat=a] ; ^ ñemboi_v 0 ; || 0,-1,-1
+** quitar_v[-r,+fin] de raíz ; ^ quitar_v 0
+->grn <hapo'o_v[cat=a] ; ^ <hapo'o_v 0 ; || 0,-1,-1
+** quitar_v[-r,+fin] el pecho ; ^ quitar_v 0
+->grn kambu'o_v[cat=a] ; ^ kambu'o_v 0 ; || 0,-1,-1
+->grn mombo'o_v[cat=a] ; ^ mombo'o_v 0 ; || 0,-1,-1
+** quitar_v[-r,+fin] la vaina ; ^ quitar_v 0
+->grn joka_v[cat=a] ; ^ joka_v 0 ; || 0,-1,-1
+->grn <hyru'o_v[cat=a] ; ^ <hyru'o_v 0 ; || 0,-1,-1
+** rascar_v[+r,+fin] la cabeza ; ^ rascar_v 0
+->grn <ñakãpire'ỹi_v[cat=a] ; ^ <ñakãpire'ỹi_v 0 ; || 0,-1,-1
+** rayar_v[-r,+fin] el día ; ^ rayar_v 0
+->grn ko'ẽ_v[cat=che] ; ^ ko'ẽ_v 0 ; || 0,-1,-1
+** rechinar_v[-r,+fin] los dientes ; ^ rechinar_v 0
+->grn rãi tarara_v[cat=a] ; ^ tarara_v 1 ; || 1,-1,0 ; 0==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
+** recibir_v[-r,+fin] en préstamo ; ^ recibir_v 0
+->grn poru_v[subcat=i] ; ^ poru_v 0 ; || 0,-1,-1
+** recoger_v[-r,+fin] fruta ; ^ recoger_v 0
+->grn po'o_v[subcat=i] yva ; ^ po'o_v 0 ; || 0,-1
+** recoger_v[-r,+fin] leña ; ^ recoger_v 0
+->grn jepe'ava_v[cat=a] ; ^ jepe'ava_v 0 ; || 0,-1
+** redoblar_v[-r,+fin] las campanas ; ^ redoblar_v 0
+->grn mbopu_v[cat=a] mano ; ^ mbopu_v 0 ; || 0,-1,-1
+** refregar_v[+r,+fin] las manos ; ^ refregar_v 0
+->grn jepokyty_v[cat=a] ; ^ jepokyty_v 0 ; || 0,-1,-1
+** resistir_v[-r,+fin] la enfermedad ; ^ resistir_v 0
+->grn <hosã_v[cat=a] ; ^ <hosã_v 0 ; || 0,-1,-1
+** restregar_v[-r,+fin] las manos ; ^ restregar_v 0
+->grn pokyty_v[cat=a] ; ^ pokyty_v 0 ; || 0,-1,-1
+** retener_v[-r,+fin] en la memoria ; ^ retener_v 0
+->grn mandu'a_v[cat=che] ; ^ mandu'a_v 0 ; || 0,-1,-1,-1
+** revolver_v[-r,+fin] el fuego ; ^ revolver_v 0
+->grn <hatapyinga_v[cat=a] ; ^ <hatapyinga_v 0 ; || 0,-1,-1
+** revolver_v[-r,+fin] la tierra ; ^ revolver_v 0
+->grn jyvyka_v[cat=a] ; ^ jyvyka_v 0 ; || 0,-1,-1
+** romper_v[+r,+fin] en pedacitos ; ^ romper_v 0
+->grn ku'i_v[cat=che] ; ^ ku'i_v 0 ; || 0,-1,-1
+** romper_v[+r,+fin] la cabeza ; ^ romper_v 0
+->grn <ñakãjoka_v[cat=a] ; ^ <ñakãjoka_v 0 ; || 0,-1,-1
+** rugir_v[-r,+fin] el viento ; ^ rugir_v 0
+->grn pyambu_v[cat=a] yvytu ; ^ pyambu_v 0 ; || 0,-1,-1
+->grn yvytu_v[cat=a] jepyvu ; ^ yvytu_v 0 ; || 0,-1,-1
+** saber_v[-r,+fin] hacer ; ^ saber_v 0
+->grn <japokuaa_v[cat=a] ; ^ <japokuaa_v 0 ; || 0,-1
+** sacar_v[-r,+fin] agua ; ^ sacar_v 0
+->grn y jara_v[cat=a] ; ^ jara_v 1 ; || 1,0 ; 0==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
+** sacar_v[-r,+fin] espina ; ^ sacar_v 0
+->grn ñuatĩ'o_v[cat=a] ; ^ ñuatĩ'o_v 0 ; || 0,-1
+** sacar_v[-r,+fin] fibra ; ^ sacar_v 0
+->grn hyvi_v[cat=a] ; ^ hyvi_v 0 ; || 0,-1
+** sacar_v[-r,+fin] jugo ; ^ sacar_v 0
+->grn <hykue'o_v[cat=a] ; ^ <hykue'o_v 0 ; || 0,-1
+** sacar_v[-r,+fin] la cáscara ; ^ sacar_v 0
+->grn pe'o_v[subcat=i] ; ^ pe'o_v 0 ; || 0,-1,-1
+** sacar_v[-r,+fin] pedazo ; ^ sacar_v 0
+->grn pe'o_v[subcat=i] ; ^ pe'o_v 0 ; || 0,-1
+** sacar_v[-r,+fin] pique ; ^ sacar_v 0
+->grn tũ'o_v[cat=a] ; ^ tũ'o_v 0 ; || 0,-1
+** sacar_v[-r,+fin] semilla ; ^ sacar_v 0
+->grn <ha'ỹi'o_v[cat=a] ; ^ <ha'ỹi'o_v 0 ; || 0,-1
+->grn <hesa'ỹi'o_v[cat=a] ; ^ <hesa'ỹi'o_v 0 ; || 0,-1
+** salir_v[-r,+fin] al paso ; ^ salir_v 0
+->grn <huvaitĩ_v[cat=a] ; ^ <huvaitĩ_v 0 ; || 0,-1,-1
+->grn <hapejoko_v[cat=a] ; ^ <hapejoko_v 0 ; || 0,-1,-1
+** salir_v[-r,+fin] el sol ; ^ salir_v 0
+->grn ñapysẽ_v[cat=a] kuarahy ; ^ ñapysẽ_v 0 ; || 0,-1,-1
+** salir_v[-r,+fin] la luna ; ^ salir_v 0
+->grn jasy ñapysẽ_v[cat=a] ; ^ ñapysẽ_v 1 ; || 1,-1,0 ; 0==1 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
+** saltar_v[-r,+fin] obstáculo ; ^ saltar_v 0
+->grn japyhara_v[cat=a] ; ^ japyhara_v 0 ; || 0,-1
+** saludar_v[-r,+fin] con la mano ; ^ saludar_v 0
+->grn jepoity_v[cat=a] ; ^ jepoity_v 0 ; || 0,-1,-1,-1
+** seguir_v[-r,+fin] la pista ; ^ seguir_v 0
+->grn <ha_v[cat=a] hapykuéri ; ^ <ha_v 0 ; || 0,-1,-1
+** sembrar_v[-r,+fin] al voleo ; ^ sembrar_v 0
+->grn mosarambi_v[cat=a] yvytúre ; ^ mosarambi_v 0 ; || 0,-1,-1
+** sentar_v[+r,+fin] en cuclillas ; ^ sentar_v 0
+->grn jetu'u_v[cat=a] ; ^ jetu'u_v 0 ; || 0,-1,-1
+->grn ñemoakambyjái_v[cat=a] ; ^ ñemoakambyjái_v 0 ; || 0,-1,-1
+** sentar_v[-r,+fin] la comida o bebida ; ^ sentar_v 0
+->grn guapy_v[cat=a] ; ^ guapy_v 0 ; || 0,-1,-1,-1,-1
+** servir_v[+r,+fin] de ; ^ servir_v 0
+->grn poru_v[subcat=i] ; ^ poru_v 0 ; || 0,-1
+->grn jeko_v[cat=a] ; ^ jeko_v 0 ; || 0,-1
+->grn jevale_v[cat=a] ; ^ jevale_v 0 ; || 0,-1
+** soltar_v[-r,+fin] la risa ; ^ soltar_v 0
+->grn pukapo_v[cat=a] ; ^ pukapo_v 0 ; || 0,-1,-1
+->grn pukasoro_v[cat=a] ; ^ pukasoro_v 0 ; || 0,-1,-1
+** sonar_v[+r,+fin] la nariz ; ^ sonar_v 0
+->grn ñambyvo_v[cat=a] ; ^ ñambyvo_v 0 ; || 0,-1,-1
+** sonar_v[-r,+fin] la nariz ; ^ sonar_v 0
+->grn ñambyvo_v[cat=a] ; ^ ñambyvo_v 0 ; || 0,-1,-1
+** sonar_v[-r,+fin] un cascabel ; ^ sonar_v 0
+->grn chini_v[cat=a] ; ^ chini_v 0 ; || 0,-1,-1
+** subir_v[-r,+fin] precio ; ^ subir_v 0
+->grn mbojupi_v[cat=a] ; ^ mbojupi_v 0 ; || 0,-1
+** tapar_v[+r,+fin] la nariz ; ^ tapar_v 0
+->grn tĩpa'ã_v[cat=a] ; ^ tĩpa'ã_v 0 ; || 0,-1,-1
+** tapar_v[-r,+fin] con tierra ; ^ tapar_v 0
+->grn jaty_v[cat=a] ; ^ jaty_v 0 ; || 0,-1,-1
+** tapar_v[-r,+fin] los ojos ; ^ tapar_v 0
+->grn <hesapytĩ_v[cat=a] ; ^ <hesapytĩ_v 0 ; || 0,-1,-1
+** tender_v[-r,+fin] la mano ; ^ tender_v 0
+->grn pojái_v[cat=che] ; ^ pojái_v 0 ; || 0,-1,-1
+** tener_v[-r,+fin] en~nada ; ^ tener_v 0
+->grn momba'e'ỹ_v[cat=a] ; ^ momba'e'ỹ_v 0 ; || 0,-1
+** tener_v[-r,+fin] hijos ; ^ tener_v 0
+->grn memby_v[cat=a] ; ^ memby_v 0 ; || 0,-1
+** tirar_v[-r,+fin] un tiro ; ^ tirar_v 0
+->grn mbokapu_v[cat=a] ; ^ mbokapu_v 0 ; || 0,-1,-1
+->grn kapu_v[cat=a] ; ^ kapu_v 0 ; || 0,-1,-1
+->grn <japi_v[cat=a] ; ^ <japi_v 0 ; || 0,-1,-1
+->grn <japi_v[cat=a] ; ^ <japi_v 0 ; || 0,-1,-1
+->grn <ha'ã_v[cat=a] ; ^ <ha'ã_v 0 ; || 0,-1,-1
+** tocar_v[-r,+fin] instrumento musical ; ^ tocar_v 0
+->grn <ñatõi_v[cat=a] ; ^ <ñatõi_v 0 ; || 0,-1,-1
+->grn mbopu_v[cat=a] ; ^ mbopu_v 0 ; || 0,-1,-1
+** tomar_v[+r,+fin] las mano ; ^ tomar_v 0
+->grn jepopyhy_v[cat=a] ; ^ jepopyhy_v 0 ; || 0,-1,-1
+** tomar_v[+r,+fin] las manos ; ^ tomar_v 0
+->grn jepopyhy_v[cat=a] ; ^ jepopyhy_v 0 ; || 0,-1,-1
+** tomar_v[-r,+fin] a pecho ; ^ tomar_v 0
+->grn jepy'apy_v[cat=a] ; ^ jepy'apy_v 0 ; || 0,-1,-1
+** tomar_v[-r,+fin] agua ; ^ tomar_v 0
+->grn y'u_v[cat=a] ; ^ y'u_v 0 ; || 0,-1
+** tomar_v[-r,+fin] alimento líquido o sólido ; ^ tomar_v 0
+->grn 'u_v[cat=a] ; ^ 'u_v 0 ; || 0,-1,-1,-1,-1
+** tomar_v[-r,+fin] el pecho ; ^ tomar_v 0
+->grn kambu_v[cat=a] ; ^ kambu_v 0 ; || 0,-1,-1
+** tomar_v[-r,+fin] mate ; ^ tomar_v 0
+->grn ka'ay'u_v[cat=a] ; ^ ka'ay'u_v 0 ; || 0,-1
+->grn kay'u_v[cat=a] ; ^ kay'u_v 0 ; || 0,-1
+** tomar_v[-r,+fin] prestado ; ^ tomar_v 0
+->grn poru_v[subcat=i] ; ^ poru_v 0 ; || 0,-1
+->grn puru_v[cat=a] ; ^ puru_v 0 ; || 0,-1
+->grn mba'epuru_v[cat=a] ; ^ mba'epuru_v 0 ; || 0,-1
+** torcer_v[+r,+fin] el cuello ; ^ torcer_v 0
+->grn jajuvoka_v[cat=a] ; ^ jajuvoka_v 0 ; || 0,-1,-1
+** tratar_v[-r,+fin] de ; ^ tratar_v 0
+->grn ñeha'ã_v[cat=a] ; ^ ñeha'ã_v 0 ; || 0,-1
+->grn <ha'ã_v[cat=a] ; ^ <ha'ã_v 0 ; || 0,-1
+->grn ña'ã_v[cat=a] ; ^ ña'ã_v 0 ; || 0,-1
+->grn ñepia'ã_v[cat=a] ; ^ ñepia'ã_v 0 ; || 0,-1
+** vendar_v[-r,+fin] los ojos ; ^ vendar_v 0
+->grn <hesapytĩ_v[cat=a] ; ^ <hesapytĩ_v 0 ; || 0,-1,-1
+** venir_v[-r,+fin] juntos ; ^ venir_v 0
+->grn jogueru_v[cat=a] ; ^ jogueru_v 0 ; || 0,-1
+** venir_v[-r,+fin] varios ; ^ venir_v 0
+->grn hua'i_v[cat=a] ; ^ hua'i_v 0 ; || 0,-1
+** ver_v[-r,+fin] por~casualidad ; ^ ver_v 0
+->grn <hesaho_v[cat=che] ; ^ <hesaho_v 0 ; || 0,-1
+** volver_v[-r,+fin] boca abajo ; ^ volver_v 0
+->grn mbovapy_v[cat=a] ; ^ mbovapy_v 0 ; || 0,-1,-1
+** volver_v[-r,+fin] boca arriba ; ^ volver_v 0
+->grn mbovayva_v[cat=a] ; ^ mbovayva_v 0 ; || 0,-1,-1
+** volver_v[-r,+fin] la cabeza ; ^ volver_v 0
+->grn jovayva_v[cat=a] ; ^ jovayva_v 0 ; || 0,-1,-1
+** volver_v[-r,+fin] los ojos abajo ; ^ volver_v 0
+->grn jesayvy_v[cat=a] ; ^ jesayvy_v 0 ; || 0,-1,-1,-1
+** volver_v[-r,+fin] los ojos arriba ; ^ volver_v 0
+->grn jesaupi_v[cat=a] ; ^ jesaupi_v 0 ; || 0,-1,-1,-1
+** zurcar_v[-r,+fin] el agua ; ^ zurcar_v 0
+->grn ymondoro_v[cat=a] ; ^ ymondoro_v 0 ; || 0,-1,-1

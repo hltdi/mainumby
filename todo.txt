@@ -1,3 +1,14 @@
+2019 june
+handling cases where Grn noun corresponds to a Spa verb:
+** portar_$prnl
+portar bien -> reko porã;rembiapo porã;;0
+portar mal -> reko vai;rembiapo vai;;0
+
+handling double pronominal verbs like
+ocurrirsele (a uno)  -> ike akãme
+olvidarsele (a uno)
+perdersele (a uno)
+
 2019 february
 separating translations into close and distant ones; alignment with roots (and without)
 defining closeness:
