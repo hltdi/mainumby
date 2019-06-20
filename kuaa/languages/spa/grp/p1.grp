@@ -153,11 +153,13 @@
 ->grn $n rupi ; || 1, 0
 ** por~causa~de $n ; ^ por~causa~de 0
 ->grn $n haguére ; || 1, 0
-** en compañía de $n ; ^ compañía 1
+** en~compañía~de $n ; ^ en~compañía~de 0
 ->grn $n ndive ; || -1, 1, -1, 0
 ** a~pesar~de $n ; ^ a~pesar~de 0
 ->grn $n jepe ; || 1, 0
 ** al~lado~de $n ; ^ al~lado~de 0
+->grn $n pýri ; || 1, 0
+** a~costa~de $n ; ^ a~costa~de 0
 ->grn $n pýri ; || 1, 0
 ** proveniente de $n ; ^ proveniente 0
 ->grn $n pegua ; || 1, -1, 0
@@ -188,3 +190,10 @@
 ->grn heseguakuéra
 ** rumbo~a $n ; ^ rumbo~a 0
 ->grn $n gotyo ; || 1, 0
+# AGREGADOS 19.6.2019
+** en~torno~a $n ; ^ en~torno~a 0
+->grn $n rupi ; || 1, 0
+->grn $n jerére ; || 1, 0
+** frente~a $n ; ^ frente~a 0
+->grn $n rovake ; || 1, 0
+->grn $n rovái ; || 1, 0

@@ -359,6 +359,7 @@ en~blanco, r
 en~boga, r
 en~breve, r
 en~broma, r
+en~busca~de, p
 en~cabeza, r
 en~cambio, r
 en~cierto~modo, r
@@ -457,6 +458,7 @@ por~lo~tanto, r
 por~menos~que, r
 por~otra~parte, r
 por~otro~lado, r
+al~otro~lado, r
 al~otro~lado~de, p
 por~si~acaso, r
 por~sorpresa, r
@@ -470,8 +472,8 @@ rara~vez, r
 si~bien~se~mira, r
 sin~duda, r
 sin~embargo, r
-sin~embargp, r
 sin~lugar~a~dudas, r
+sin~fin, r
 sobre~todo, r
 sí~que, r
 tal~cual, r
@@ -572,6 +574,7 @@ como~si, r
 como~éstos, r
 por~la~mañana, r
 por~la~noche, r
+de~noche, r
 por~la~tarde, r
 por~debajo, r
 por~abajo, r
@@ -653,8 +656,10 @@ con~certeza, r
 sin~cesar, r
 de~cualquier~clase, r
 de~esta~clase, r
+de~esa~clase, r
 de~la~misma~clase, r
 de~ninguna~clase, r
+de~qué~clase, r
 de~todas~clases, r
 de~contrabando, r
 lo~contrario, r
@@ -698,6 +703,8 @@ sin~mal, r
 sin~mancha, r
 de~cualquier~manera, r
 de~esta~manera, r
+de~esa~manera, r
+de~aquella~manera, r
 de~mala~manera, r
 de~ninguna~manera, r
 de~todas~maneras, r
@@ -713,6 +720,7 @@ en~el~pasado, r
 perteneciente~a, p
 de~a~pie, r
 de~pie, r
+a~pie, r
 pie~por~tierra, r
 muy~poco, r
 por~poco, r
@@ -753,6 +761,7 @@ unos~con~otros, r
 los~unos~a~los~otros, r
 en~verdad, r
 en~el~ínterin, r
+arco~iris, n
 por~qué, r
 qué~cosa, n
 que~sea~así, o
@@ -795,6 +804,7 @@ claro~que~sí, o
 igual~a, p
 igual~que, p
 rumbo~a, p
+a~todo~trance, r
 América~Latina, n
 América~del~Sur, n
 América~Central, n

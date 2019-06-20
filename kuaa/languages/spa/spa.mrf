@@ -16,6 +16,7 @@ deaccent: á:a, é:e, í:i, ó:o, ú:u
 dfltagrs:
   v::n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
   a::n:ns,p:ps,tm:tmp,asp:asp,neg:neg,grd:grd,rel:rel,pos:pos,inter:inter
+  n::n:n,poses:poses
 
 feats:
 

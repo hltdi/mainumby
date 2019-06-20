@@ -277,8 +277,7 @@
 ** caso_n frecuente ; ^ caso_n 0 ; #19
 ->grn jehukatu_n ; 0==0 n:n,poses:poses
 ** caso_n ; ^ caso_n 0 ; #19
-->grn ojehúva_n ; 0==0 n:n,poses:poses ; #10
-->grn jehu_n ; 0==0 n:n,poses:poses ; #104
+->grn jehu_v[asp=[+va]]
 ** castigo_n ; ^ castigo_n 0 ; #74
 ->grn jejokua_n ; 0==0 n:n,poses:poses ; #5
 ->grn mbarakaja_n kupy ; 0==0 n:n,poses:poses
@@ -338,7 +337,6 @@
 ->grn ñepyrũ_n ; 0==0 n:n,poses:poses ; #173
 ->grn ypy_n ; 0==0 n:n,poses:poses ; #122
 ** comparación_n ; ^ comparación_n 0 ; #3
-->grn mbojojáva_n ; 0==0 n:n,poses:poses
 ->grn ñe'ẽnga_n ; 0==0 n:n,poses:poses ; #12
 ->grn ñembojoja_n ; 0==0 n:n,poses:poses
 ** compañero_n de rezo ; ^ compañero_n 0 ; #59
@@ -1016,7 +1014,7 @@
 ** habitante_n del paraíso ; ^ habitante_n 0 ; #108
 ->grn yvagapóra_n ; 0==0 n:n,poses:poses
 ** habitante_n ; ^ habitante_n 0 ; #108
-->grn oikovéva_n ; 0==0 n:n,poses:poses ; #4
+->grn oikovéva_n
 ->grn tavagua_n ; 0==0 n:n,poses:poses ; #1
 ->grn yvypóra_n ; 0==0 n:n,poses:poses ; #167
 ** habla_n ; ^ habla_n 0 ; #78
@@ -1039,7 +1037,7 @@
 ->grn mba'éicharei_n ; 0==0 n:n,poses:poses
 ** hecho_n ; ^ hecho_n 0 ; #592
 ->grn <hembiasa_n ; 0==0 n:n,poses:poses ; #49
-->grn ojehúva_n ; 0==0 n:n,poses:poses ; #10
+->grn ojehúva_n
 ->grn añetegua_n ; 0==0 n:n,poses:poses ; #30
 ->grn apo_n ; 0==0 n:n,poses:poses ; #126
 ** hijo_n adoptivo del hombre ; ^ hijo_n 0 ; #2327
@@ -1154,7 +1152,7 @@
 ->grn tupão_n ; 0==0 n:n,poses:poses ; #74
 ** igual_n ; ^ igual_n 0 ; #29
 ->grn <hapicha_n ; 0==0 n:n,poses:poses ; #348
-->grn ojoguáva_n ; 0==0 n:n,poses:poses ; #4
+->grn jogua_v[asp=[+va]]
 ->grn ñaimo'ã_n ; 0==0 n:n,poses:poses ; #9
 ** igualdad_n ; ^ igualdad_n 0 ; #3
 ->grn joja_n ; 0==0 n:n,poses:poses ; #46
@@ -1483,7 +1481,6 @@
 ->grn <hesaraireíva_n ; 0==0 n:n,poses:poses
 ** olvido_n ; ^ olvido_n 0 ; #3
 ->grn <hesarái_n ; 0==0 n:n,poses:poses ; #61
-->grn mandu'ave'ỹ_n ; 0==0 n:n,poses:poses
 ** oportunidad_n ; ^ oportunidad_n 0 ; #10
 ->grn <hekopete_n ; 0==0 n:n,poses:poses
 ->grn ja_n ; 0==0 n:n,poses:poses ; #766
@@ -1516,7 +1513,7 @@
 ** padre_n ; ^ padre_n 0 ; #850
 ->grn ru_n ; 0==0 n:n,poses:poses ; #1049
 ** pago_n ; ^ pago_n 0 ; #15
-->grn <hepyme'ẽva_n ; 0==0 n:n,poses:poses
+->grn <hepyme'ẽ_n[+adj] ; 0==0 n:n,poses:poses
 ->grn mboekoviaha_n ; 0==0 n:n,poses:poses
 ->grn <hepyme'ẽ_n ; 0==0 n:n,poses:poses ; #50
 ** participación_n ; ^ participación_n 0 ; #2
@@ -6257,7 +6254,6 @@
 ->grn hakã_n irundýva ; 0==0 n:n,poses:poses
 ** cuadro_n ; ^ cuadro_n 0
 ->grn <ha'ãngarenda_n ; ^ <ha'ãngarenda_n 0
-hakã_n irundýva ; 0==0 n:n,poses:poses
 ** cuajada_n ; ^ cuajada_n 0
 ->grn mba'erypy'a_n ; 0==0 n:n,poses:poses
 ** cuajado_n ; ^ cuajado_n 0
@@ -16828,3 +16824,997 @@ hakã_n irundýva ; 0==0 n:n,poses:poses
 ->grn ára_n[n=0] %N jasypakõi ; || -1, 0, 1, -1, 2
 ** el %N de diciembre ; ^ diciembre 3
 ->grn ára_n[n=0] %N jasypakõi ; || -1, 1, -1, 2
+** a golpe_n[n=1] ; ^ golpe_n 1
+->grn ñenupãme_n ; ^ ñenupãme_n 0 ; || -1, 0
+** a la grupa_n ; ^ grupa_n 2
+->grn apýri_n ; ^ apýri_n 0 ; || -1, -1, 0
+** a la vista_n ; ^ vista_n 2
+->grn tovaképe_n ; ^ tovaképe_n 0 ; || -1, -1, 0
+** a la zaga_n ; ^ zaga_n 2
+->grn tapykuépe_n ; ^ tapykuépe_n 0 ; || -1, -1, 0
+->grn tapykuéri_n ; ^ tapykuéri_n 0 ; || -1, -1, 0
+** a merced_n de ; ^ merced_n 1
+->grn poguýpe_n ; ^ poguýpe_n 0 ; || -1, 0, -1
+** a nado_n ; ^ nado_n 1
+->grn hoytápe_n ; ^ hoytápe_n 0 ; || -1, 0
+** a rajatabla_n ; ^ rajatabla_n 1
+->grn pya'e_n ; ^ pya'e_n 0 ; || -1, 0
+->grn oĩháicha_n ; ^ oĩháicha_n 0 ; || -1, 0
+** a su turno_n ; ^ turno_n 2
+->grn háma_n ; ^ háma_n 0 ; || -1, -1, 0
+** abandono_n colectivo ; ^ abandono_n 0
+->grn jahapa_n ; ^ jahapa_n 0 ; || 0, -1
+->grn piã_n ; ^ piã_n 0 ; || 0, -1
+** abandono_n mutuo ; ^ abandono_n 0
+->grn jueja_n ; ^ jueja_n 0 ; || 0, -1
+** acento_n tónico ; ^ acento_n 0
+->grn muanduhe_n ; ^ muanduhe_n 0 ; || 0, -1
+** acidez de estómago_n ; ^ estómago_n 2
+->grn py'ahái_n ; ^ py'ahái_n 0 ; || -1, -1, 0
+** acompañamiento_n de comida ; ^ acompañamiento_n 0
+->grn týra_n ; ^ týra_n 0 ; || 0, -1, -1
+** afrecho de mandioca_n ; ^ mandioca_n 2
+->grn typyraty_n ; ^ typyraty_n 0 ; || -1, -1, 0
+** afrecho de maíz_n ; ^ maíz_n 2
+->grn rora_n ; ^ rora_n 0 ; || -1, -1, 0
+** afrecho_n de mandioca ; ^ afrecho_n 0
+->grn typyraty_n ; ^ typyraty_n 0 ; || 0, -1, -1
+** afán_n de poseer ; ^ afán_n 0
+->grn taryrýi_n ; ^ taryrýi_n 0 ; || 0, -1, -1
+** agente_n de policía ; ^ agente_n 0
+->grn tahachi_n ; ^ tahachi_n 0 ; || 0, -1, -1
+** agua_n caliente ; ^ agua_n 0
+->grn ytaku_n ; ^ ytaku_n 0 ; || 0, -1
+** agua_n caliente ; ^ agua_n 0
+->grn ytaku_n ; ^ ytaku_n 0 ; || 0, -1
+** agua_n de lluvia ; ^ agua_n 0
+->grn amandykyre_n ; ^ amandykyre_n 0 ; || 0, -1, -1
+** agua_n salada ; ^ agua_n 0
+->grn jukyry_n ; ^ jukyry_n 0 ; || 0, -1
+** agudeza_n visual ; ^ agudeza_n 0
+->grn tesapyso_n ; ^ tesapyso_n 0 ; || 0, -1
+** al cuello_n ; ^ cuello_n 1
+->grn ajúri_n ; ^ ajúri_n 0 ; || -1, 0
+** al derecho_n ; ^ derecho_n 1
+->grn terekuávo_n ; ^ terekuávo_n 0 ; || -1, 0
+** al frente_n ; ^ frente_n 1
+->grn továi_n ; ^ továi_n 0 ; || -1, 0
+** al punto_n de ; ^ punto_n 1
+->grn jave_n ; ^ jave_n 0 ; || -1, 0, -1
+** alabanza_n interesada ; ^ alabanza_n 0
+->grn kele'e_n ; ^ kele'e_n 0 ; || 0, -1
+** albóndiga_n de maíz ; ^ albóndiga_n 0
+->grn vori_n ; ^ vori_n 0 ; || 0, -1, -1
+->grn vorivori_n ; ^ vorivori_n 0 ; || 0, -1, -1
+** alfombra de cuero_n ; ^ cuero_n 2
+->grn karóna_n ; ^ karóna_n 0 ; || -1, -1, 0
+** alfombra_n de cuero ; ^ alfombra_n 0
+->grn karóna_n ; ^ karóna_n 0 ; || 0, -1, -1
+** alimento_n que acompaña ; ^ alimento_n 0
+->grn týra_n ; ^ týra_n 0 ; || 0, -1, -1
+** alma de difunto_n ; ^ difunto_n 2
+->grn angue_n ; ^ angue_n 0 ; || -1, -1, 0
+** alma_n de difunto ; ^ alma_n 0
+->grn angue_n ; ^ angue_n 0 ; || 0, -1, -1
+** almohadilla_n para la cabeza ; ^ almohadilla_n 0
+->grn apyterao_n ; ^ apyterao_n 0 ; || 0, -1, -1, -1
+** alumna_n de la escuela ; ^ alumna_n 0
+->grn ekueléra_n ; ^ ekueléra_n 0 ; || 0, -1, -1, -1
+** alumno_n de la escuela ; ^ alumno_n 0
+->grn ekueléro_n ; ^ ekueléro_n 0 ; || 0, -1, -1, -1
+** ama de casa_n ; ^ casa_n 2
+->grn machu_n ; ^ machu_n 0 ; || -1, -1, 0
+** ama_n de casa ; ^ ama_n 0
+->grn machu_n ; ^ machu_n 0 ; || 0, -1, -1
+** amor_n mutuo ; ^ amor_n 0
+->grn joayhu_n ; ^ joayhu_n 0 ; || 0, -1
+** animal_n doméstico ; ^ animal_n 0
+->grn mymba_n ; ^ mymba_n 0 ; || 0, -1
+** aparición de ultratumba_n ; ^ ultratumba_n 2
+->grn póra_n ; ^ póra_n 0 ; || -1, -1, 0
+** apretón_n de manos ; ^ apretón_n 0
+->grn pojopy_n ; ^ pojopy_n 0 ; || 0, -1, -1
+** apunte_n en papel ; ^ apunte_n 0
+->grn jehaipyre_n ; ^ jehaipyre_n 0 ; || 0, -1, -1
+** arcilla_n blanca ; ^ arcilla_n 0
+->grn tujutĩ_n ; ^ tujutĩ_n 0 ; || 0, -1
+** arma de fuego_n ; ^ fuego_n 2
+->grn mboka_n ; ^ mboka_n 0 ; || -1, -1, 0
+** arma_n blanca ; ^ arma_n 0
+->grn kyse_n ; ^ kyse_n 0 ; || 0, -1
+** arma_n de fuego ; ^ arma_n 0
+->grn mboka_n ; ^ mboka_n 0 ; || 0, -1, -1
+** aullido_n de perro ; ^ aullido_n 0
+->grn guahu_n ; ^ guahu_n 0 ; || 0, -1, -1
+** ausencia de dolor_n ; ^ dolor_n 2
+->grn tasy'ỹ_n ; ^ tasy'ỹ_n 0 ; || -1, -1, 0
+** ayuda_n mutua ; ^ ayuda_n 0
+->grn mínga_n ; ^ mínga_n 0 ; || 0, -1
+** baja estatura_n ; ^ estatura_n 1
+->grn karapakue_n ; ^ karapakue_n 0 ; || -1, 0
+** bala_n perdida ; ^ bala_n 0
+->grn saijovy_n ; ^ saijovy_n 0 ; || 0, -1
+** barba_n de maíz ; ^ barba_n 0
+->grn atĩ_n ; ^ atĩ_n 0 ; || 0, -1, -1
+** barbas de maíz_n ; ^ maíz_n 2
+->grn atĩ_n ; ^ atĩ_n 0 ; || -1, -1, 0
+** barrio_n marginal ; ^ barrio_n 0
+->grn añaretã'i_n ; ^ añaretã'i_n 0 ; || 0, -1
+** bicho_n de luz ; ^ bicho_n 0
+->grn muã_n ; ^ muã_n 0 ; || 0, -1, -1
+->grn ysoindy_n ; ^ ysoindy_n 0 ; || 0, -1, -1
+** boca_n abajo ; ^ boca_n 0
+->grn ovapývo_n ; ^ ovapývo_n 0 ; || 0, -1
+** boca_n arriba ; ^ boca_n 0
+->grn ovayvávo_n ; ^ ovayvávo_n 0 ; || 0, -1
+** boca_n torcida ; ^ boca_n 0
+->grn jurupari_n ; ^ jurupari_n 0 ; || 0, -1
+** borde_n saliente ; ^ borde_n 0
+->grn pepo_n ; ^ pepo_n 0 ; || 0, -1
+** bosque_n grande ; ^ bosque_n 0
+->grn ka'aguasu_n ; ^ ka'aguasu_n 0 ; || 0, -1
+** bosque_n pequeño ; ^ bosque_n 0
+->grn jai_n ; ^ jai_n 0 ; || 0, -1
+** buen cocinero_n ; ^ cocinero_n 1
+->grn pohe_n ; ^ pohe_n 0 ; || -1, 0
+** buen humor_n ; ^ humor_n 1
+->grn tetia'e_n ; ^ tetia'e_n 0 ; || -1, 0
+->grn pireporã_n ; ^ pireporã_n 0 ; || -1, 0
+** buen talante_n ; ^ talante_n 1
+->grn pireporã_n ; ^ pireporã_n 0 ; || -1, 0
+** buena cocinera_n ; ^ cocinera_n 1
+->grn pohe_n ; ^ pohe_n 0 ; || -1, 0
+** buena conducta_n ; ^ conducta_n 1
+->grn tekoporã_n ; ^ tekoporã_n 0 ; || -1, 0
+** buena pronunciación_n ; ^ pronunciación_n 1
+->grn kũjera_n ; ^ kũjera_n 0 ; || -1, 0
+** buena vista_n ; ^ vista_n 1
+->grn tesapyso_n ; ^ tesapyso_n 0 ; || -1, 0
+->grn sapyso_n ; ^ sapyso_n 0 ; || -1, 0
+** caballo_n padre ; ^ caballo_n 0
+->grn kohúdo_n ; ^ kohúdo_n 0 ; || 0, -1
+** cabello_n canoso ; ^ cabello_n 0
+->grn akãtĩ_n ; ^ akãtĩ_n 0 ; || 0, -1
+** cabello_n encrespado ; ^ cabello_n 0
+->grn akãpicha'ĩ_n ; ^ akãpicha'ĩ_n 0 ; || 0, -1
+** cabello_n enrulado ; ^ cabello_n 0
+->grn akãpicha'ĩ_n ; ^ akãpicha'ĩ_n 0 ; || 0, -1
+** cabriola_n del caballo ; ^ cabriola_n 0
+->grn ñembogua_n ; ^ ñembogua_n 0 ; || 0, -1, -1
+->grn jehekýi_n ; ^ jehekýi_n 0 ; || 0, -1, -1
+** calentura_n libidinosa ; ^ calentura_n 0
+->grn takuchi_n ; ^ takuchi_n 0 ; || 0, -1
+** calor del sol_n ; ^ sol_n 2
+->grn tini_n ; ^ tini_n 0 ; || -1, -1, 0
+** calor_n interior ; ^ calor_n 0
+->grn py'araku_n ; ^ py'araku_n 0 ; || 0, -1
+** camino_n abandonado ; ^ camino_n 0
+->grn tapekue_n ; ^ tapekue_n 0 ; || 0, -1
+** campo_n de cultivo ; ^ campo_n 0
+->grn kokue_n ; ^ kokue_n 0 ; || 0, -1, -1
+->grn kóga_n ; ^ kóga_n 0 ; || 0, -1, -1
+** canción de cuna_n ; ^ cuna_n 2
+->grn tororerore_n ; ^ tororerore_n 0 ; || -1, -1, 0
+** canción_n de cuna ; ^ canción_n 0
+->grn torore_n ; ^ torore_n 0 ; || 0, -1, -1
+->grn tororerore_n ; ^ tororerore_n 0 ; || 0, -1, -1
+** canto del gallo_n ; ^ gallo_n 2
+->grn tokoro'o_n ; ^ tokoro'o_n 0 ; || -1, -1, 0
+** canto_n del gallo ; ^ canto_n 0
+->grn tokoro'o_n ; ^ tokoro'o_n 0 ; || 0, -1, -1
+** cara_n de una cosa ; ^ cara_n 0
+->grn terekua_n ; ^ terekua_n 0 ; || 0, -1, -1, -1
+** casa_n abandonada ; ^ casa_n 0
+->grn tapere_n ; ^ tapere_n 0 ; || 0, -1
+** caída_n de agua ; ^ caída_n 0
+->grn ytu_n ; ^ ytu_n 0 ; || 0, -1, -1
+->grn ytororõ_n ; ^ ytororõ_n 0 ; || 0, -1, -1
+** caña_n de azúcar ; ^ caña_n 0
+->grn takuare'ẽ_n ; ^ takuare'ẽ_n 0 ; || 0, -1, -1
+** caña_n dulce ; ^ caña_n 0
+->grn takuare'ẽ_n ; ^ takuare'ẽ_n 0 ; || 0, -1
+** celo_n sexual ; ^ celo_n 0
+->grn taku_n ; ^ taku_n 0 ; || 0, -1
+->grn taguyrõ_n ; ^ taguyrõ_n 0 ; || 0, -1
+->grn takuchi_n ; ^ takuchi_n 0 ; || 0, -1
+** cerdo_n montés ; ^ cerdo_n 0
+->grn tajasu_n ; ^ tajasu_n 0 ; || 0, -1
+->grn tagua_n ; ^ tagua_n 0 ; || 0, -1
+** chancho_n silvestre ; ^ chancho_n 0
+->grn tajasu_n ; ^ tajasu_n 0 ; || 0, -1
+->grn tajykatĩ_n ; ^ tajykatĩ_n 0 ; || 0, -1
+->grn ta'ytetu_n ; ^ ta'ytetu_n 0 ; || 0, -1
+** ciudad_n capital ; ^ ciudad_n 0
+->grn tavusu_n ; ^ tavusu_n 0 ; || 0, -1
+** claridad_n de luna ; ^ claridad_n 0
+->grn ñasaindy_n ; ^ ñasaindy_n 0 ; || 0, -1, -1
+** color naranja_n ; ^ naranja_n 1
+->grn pytã'yju_n ; ^ pytã'yju_n 0 ; || -1, 0
+** comerciante_n ambulante ; ^ comerciante_n 0
+->grn makatéro_n ; ^ makatéro_n 0 ; || 0, -1
+** como juego_n ; ^ juego_n 1
+->grn gua'u_n ; ^ gua'u_n 0 ; || -1, 0
+** conejillo_n de indias ; ^ conejillo_n 0
+->grn apere'a_n ; ^ apere'a_n 0 ; || 0, -1, -1
+** consonante_n glotal sorda ; ^ consonante_n 0
+->grn puso_n ; ^ puso_n 0 ; || 0, -1, -1
+** copa_n de árbol ; ^ copa_n 0
+->grn tu'ã_n ; ^ tu'ã_n 0 ; || 0, -1, -1
+->grn rakã_n ; ^ rakã_n 0 ; || 0, -1, -1
+** corneta de cuerno_n ; ^ cuerno_n 2
+->grn turu_n ; ^ turu_n 0 ; || -1, -1, 0
+** corriente_n de agua ; ^ corriente_n 0
+->grn ysyry_n ; ^ ysyry_n 0 ; || 0, -1, -1
+** corriente_n eléctrica ; ^ corriente_n 0
+->grn syryndy_n ; ^ syryndy_n 0 ; || 0, -1
+** corte_n de pelo ; ^ corte_n 0
+->grn taguekytĩ_n ; ^ taguekytĩ_n 0 ; || 0, -1, -1
+** cosa_n deseada ; ^ cosa_n 0
+->grn tembipota_n ; ^ tembipota_n 0 ; || 0, -1
+** cosa_n sin importancia ; ^ cosa_n 0
+->grn mba'erei_n ; ^ mba'erei_n 0 ; || 0, -1, -1
+** crema_n de almidón ; ^ crema_n 0
+->grn kandial_n ; ^ kandial_n 0 ; || 0, -1, -1
+** cuartel de policía_n ; ^ policía_n 2
+->grn tahachio_n ; ^ tahachio_n 0 ; || -1, -1, 0
+** cuello_n duro ; ^ cuello_n 0
+->grn ajuratã_n ; ^ ajuratã_n 0 ; || 0, -1
+** cuenca del ojo_n ; ^ ojo_n 2
+->grn tesakua_n ; ^ tesakua_n 0 ; || -1, -1, 0
+** cuero de vaca_n ; ^ vaca_n 2
+->grn vakapi_n ; ^ vakapi_n 0 ; || -1, -1, 0
+** cuero_n cabelludo ; ^ cuero_n 0
+->grn api_n ; ^ api_n 0 ; || 0, -1
+** cuero_n vacuno ; ^ cuero_n 0
+->grn vakapi_n ; ^ vakapi_n 0 ; || 0, -1
+** cuesta_n abajo ; ^ cuesta_n 0
+->grn yvyguejy_n ; ^ yvyguejy_n 0 ; || 0, -1
+** cuesta_n arriba ; ^ cuesta_n 0
+->grn yvypu'ã_n ; ^ yvypu'ã_n 0 ; || 0, -1
+** de baja ralea_n ; ^ ralea_n 2
+->grn kachiãi_n ; ^ kachiãi_n 0 ; || -1, -1, 0
+** de color_n[n=1] ; ^ color_n 1
+->grn para_n ; ^ para_n 0 ; || -1, 0
+** de corta edad_n ; ^ edad_n 2
+->grn mitã_n ; ^ mitã_n 0 ; || -1, -1, 0
+** de costado_n ; ^ costado_n 1
+->grn ykévo_n ; ^ ykévo_n 0 ; || -1, 0
+** de doble cara_n ; ^ cara_n 2
+->grn tovamokõi_n ; ^ tovamokõi_n 0 ; || -1, -1, 0
+** de esa calidad_n ; ^ calidad_n 2
+->grn upeichagua_n ; ^ upeichagua_n 0 ; || -1, -1, 0
+** de hoja_n caduca ; ^ hoja_n 1
+->grn hoguekúi_n ; ^ hoguekúi_n 0 ; || -1, 0, -1
+** de lengua_n torpe ; ^ lengua_n 1
+->grn kumbe_n ; ^ kumbe_n 0 ; || -1, 0, -1
+** de nariz_n ; ^ nariz_n 1
+->grn otĩo_n ; ^ otĩo_n 0 ; || -1, 0
+** de otra manera_n ; ^ manera_n 2
+->grn ambuéicha_n ; ^ ambuéicha_n 0 ; || -1, -1, 0
+** de poca importancia_n ; ^ importancia_n 2
+->grn karape_n ; ^ karape_n 0 ; || -1, -1, 0
+** de poco valor_n ; ^ valor_n 2
+->grn chu'i_n ; ^ chu'i_n 0 ; || -1, -1, 0
+** de qué calidad_n ; ^ calidad_n 2
+->grn mba'eichagua_n ; ^ mba'eichagua_n 0 ; || -1, -1, 0
+** de qué modo_n ; ^ modo_n 2
+->grn mba'eichaite_n ; ^ mba'eichaite_n 0 ; || -1, -1, 0
+** de rato_n en rato ; ^ rato_n 1
+->grn sapy'apy'a_n ; ^ sapy'apy'a_n 0 ; || -1, 0, -1, -1
+** de sopetón_n ; ^ sopetón_n 1
+->grn sapy'a_n ; ^ sapy'a_n 0 ; || -1, 0
+->grn vokói_n ; ^ vokói_n 0 ; || -1, 0
+->grn vokóike_n ; ^ vokóike_n 0 ; || -1, 0
+** de tal laya_n ; ^ laya_n 2
+->grn ichagua_n ; ^ ichagua_n 0 ; || -1, -1, 0
+** de temple_n duro ; ^ temple_n 1
+->grn ro'o'atã_n ; ^ ro'o'atã_n 0 ; || -1, 0, -1
+** de toda clase_n ; ^ clase_n 2
+->grn opaichagua_n ; ^ opaichagua_n 0 ; || -1, -1, 0
+->grn para_n ; ^ para_n 0 ; || -1, -1, 0
+** de través_n ; ^ través_n 1
+->grn oykévo_n ; ^ oykévo_n 0 ; || -1, 0
+** de un trago_n ; ^ trago_n 2
+->grn syrykúpe_n ; ^ syrykúpe_n 0 ; || -1, -1, 0
+** de una vez_n ; ^ vez_n 2
+->grn mandi_n ; ^ mandi_n 0 ; || -1, -1, 0
+** declaración_n de amor ; ^ declaración_n 0
+->grn ñemongeta_n ; ^ ñemongeta_n 0 ; || 0, -1, -1
+** dedo de la mano_n ; ^ mano_n 3
+->grn kuã_n ; ^ kuã_n 0 ; || -1, -1, -1, 0
+** dedo del pie_n ; ^ pie_n 2
+->grn pysã_n ; ^ pysã_n 0 ; || -1, -1, 0
+** dedo_n de la mano ; ^ dedo_n 0
+->grn kuã_n ; ^ kuã_n 0 ; || 0, -1, -1, -1
+** dedo_n del pie ; ^ dedo_n 0
+->grn pysã_n ; ^ pysã_n 0 ; || 0, -1, -1
+** dedo_n mayor ; ^ dedo_n 0
+->grn kuámbyte_n ; ^ kuámbyte_n 0 ; || 0, -1
+** dedo_n meñique ; ^ dedo_n 0
+->grn kuã'i_n ; ^ kuã'i_n 0 ; || 0, -1
+** dedo_n pulgar de la mano ; ^ dedo_n 0
+->grn kuãngusu_n ; ^ kuãngusu_n 0 ; || 0, -1, -1, -1, -1
+** dedo_n índice ; ^ dedo_n 0
+->grn kuãmbo'e_n ; ^ kuãmbo'e_n 0 ; || 0, -1
+** defecto_n físico ; ^ defecto_n 0
+->grn meguã_n ; ^ meguã_n 0 ; || 0, -1
+** del mismo modo_n ; ^ modo_n 2
+->grn peteĩcha_n ; ^ peteĩcha_n 0 ; || -1, -1, 0
+** depósito_n de basura ; ^ depósito_n 0
+->grn ytyapy_n ; ^ ytyapy_n 0 ; || 0, -1, -1
+** deseo_n de beber ; ^ deseo_n 0
+->grn y'uhéi_n ; ^ y'uhéi_n 0 ; || 0, -1, -1
+** deseo_n de comer ; ^ deseo_n 0
+->grn use_n ; ^ use_n 0 ; || 0, -1, -1
+->grn ñembyahýi_n ; ^ ñembyahýi_n 0 ; || 0, -1, -1
+** deseo_n de dormir ; ^ deseo_n 0
+->grn ropehýi_n ; ^ ropehýi_n 0 ; || 0, -1, -1
+** dolor de cuello_n ; ^ cuello_n 2
+->grn ajuratã_n ; ^ ajuratã_n 0 ; || -1, -1, 0
+** dolor_n de cabeza ; ^ dolor_n 0
+->grn akãrasy_n ; ^ akãrasy_n 0 ; || 0, -1, -1
+** dolor_n de estómago ; ^ dolor_n 0
+->grn py'arasy_n ; ^ py'arasy_n 0 ; || 0, -1, -1
+** dolor_n de muelas ; ^ dolor_n 0
+->grn tãirasy_n ; ^ tãirasy_n 0 ; || 0, -1, -1
+** dolor_n de vientre ; ^ dolor_n 0
+->grn tyerasy_n ; ^ tyerasy_n 0 ; || 0, -1, -1
+** dorso_n de la mano ; ^ dorso_n 0
+->grn po'ape_n ; ^ po'ape_n 0 ; || 0, -1, -1, -1
+** durante la noche_n ; ^ noche_n 2
+->grn pyharekue_n ; ^ pyharekue_n 0 ; || -1, -1, 0
+** duro de oído_n ; ^ oído_n 2
+->grn apysape_n ; ^ apysape_n 0 ; || -1, -1, 0
+** día_n de hoy ; ^ día_n 0
+->grn etedia_n ; ^ etedia_n 0 ; || 0, -1, -1
+** día_n de mañana ; ^ día_n 0
+->grn ko'ẽrõ_n ; ^ ko'ẽrõ_n 0 ; || 0, -1, -1
+->grn ko'ẽramo_n ; ^ ko'ẽramo_n 0 ; || 0, -1, -1
+** ejecutor_n de música ; ^ ejecutor_n 0
+->grn mbopuhára_n ; ^ mbopuhára_n 0 ; || 0, -1, -1
+->grn ñatõihára_n ; ^ ñatõihára_n 0 ; || 0, -1, -1
+** el menor_n ; ^ menor_n 1
+->grn michĩveteve_n ; ^ michĩveteve_n 0 ; || -1, 0
+** embarcación_n mayor ; ^ embarcación_n 0
+->grn ygarata_n ; ^ ygarata_n 0 ; || 0, -1
+** en anca_n[n=1] ; ^ anca_n 1
+->grn pýri_n ; ^ pýri_n 0 ; || -1, 0
+** en apuro_n[n=1] ; ^ apuro_n 1
+->grn tesaparápe_n ; ^ tesaparápe_n 0 ; || -1, 0
+** en casa_n ; ^ casa_n 1
+->grn kyvõ_n ; ^ kyvõ_n 0 ; || -1, 0
+** en cuclillas_n ; ^ cuclillas_n 1
+->grn takambyjái_n ; ^ takambyjái_n 0 ; || -1, 0
+** en decúbito_n dorsal ; ^ decúbito_n 1
+->grn ovayvávo_n ; ^ ovayvávo_n 0 ; || -1, 0, -1
+** en decúbito_n ventral ; ^ decúbito_n 1
+->grn ovapývo_n ; ^ ovapývo_n 0 ; || -1, 0, -1
+** en dúo_n ; ^ dúo_n 1
+->grn joyvýpe_n ; ^ joyvýpe_n 0 ; || -1, 0
+** en el campo_n ; ^ campo_n 2
+->grn okápe_n ; ^ okápe_n 0 ; || -1, -1, 0
+** en el momento_n ; ^ momento_n 2
+->grn javete_n ; ^ javete_n 0 ; || -1, -1, 0
+** en el momento_n de que ; ^ momento_n 2
+->grn vo_n ; ^ vo_n 0 ; || -1, -1, 0, -1, -1
+->grn vu_n ; ^ vu_n 0 ; || -1, -1, 0, -1, -1
+->grn kuévo_n ; ^ kuévo_n 0 ; || -1, -1, 0, -1, -1
+->grn nguévo_n ; ^ nguévo_n 0 ; || -1, -1, 0, -1, -1
+** en el seno_n de ; ^ seno_n 2
+->grn apytépe_n ; ^ apytépe_n 0 ; || -1, -1, 0, -1
+->grn pype_n ; ^ pype_n 0 ; || -1, -1, 0, -1
+** en ese instante_n ; ^ instante_n 2
+->grn upévo_n ; ^ upévo_n 0 ; || -1, -1, 0
+** en ese momento_n ; ^ momento_n 2
+->grn upekuévo_n ; ^ upekuévo_n 0 ; || -1, -1, 0
+** en la misma cama_n ; ^ cama_n 3
+->grn pohéi_n ; ^ pohéi_n 0 ; || -1, -1, -1, 0
+** en poder_n de ; ^ poder_n 1
+->grn poguýpe_n ; ^ poguýpe_n 0 ; || -1, 0, -1
+** en presencia_n de ; ^ presencia_n 1
+->grn rovake_n ; ^ rovake_n 0 ; || -1, 0, -1
+** espacio_n intermedio ; ^ espacio_n 0
+->grn pa'ũ_n ; ^ pa'ũ_n 0 ; || 0, -1
+** esposo_n de la hija ; ^ esposo_n 0
+->grn tajyme_n ; ^ tajyme_n 0 ; || 0, -1, -1, -1
+** estómago_n de aves ; ^ estómago_n 0
+->grn takara'a_n ; ^ takara'a_n 0 ; || 0, -1, -1
+** falta de visión_n ; ^ visión_n 2
+->grn techa'ỹ_n ; ^ techa'ỹ_n 0 ; || -1, -1, 0
+** fin del mundo_n ; ^ mundo_n 2
+->grn arakañy_n ; ^ arakañy_n 0 ; || -1, -1, 0
+** fin_n de los tiempos ; ^ fin_n 0
+->grn arapaha_n ; ^ arapaha_n 0 ; || 0, -1, -1, -1
+** fin_n del mundo ; ^ fin_n 0
+->grn arakañy_n ; ^ arakañy_n 0 ; || 0, -1, -1
+** flor de ceibo_n ; ^ ceibo_n 2
+->grn anai_n ; ^ anai_n 0 ; || -1, -1, 0
+** fosa_n nasal ; ^ fosa_n 0
+->grn tĩgua_n ; ^ tĩgua_n 0 ; || 0, -1
+->grn tĩguára_n ; ^ tĩguára_n 0 ; || 0, -1
+** frente_n abultada ; ^ frente_n 0
+->grn syvakandu_n ; ^ syvakandu_n 0 ; || 0, -1
+->grn syva'ita_n ; ^ syva'ita_n 0 ; || 0, -1
+** fuera de vista_n ; ^ vista_n 2
+->grn tesa'ãme_n ; ^ tesa'ãme_n 0 ; || -1, -1, 0
+** gajo_n de árbol ; ^ gajo_n 0
+->grn yvyrarakã_n ; ^ yvyrarakã_n 0 ; || 0, -1, -1
+** ganas de defecar ; ^ ganas 0
+->grn repotihýi_n ; ^ repotihýi_n 0 ; || 0, -1, -1
+->grn rekakahýi_n ; ^ rekakahýi_n 0 ; || 0, -1, -1
+** ganas de mear ; ^ ganas 0
+->grn kuaruhýi_n ; ^ kuaruhýi_n 0 ; || 0, -1, -1
+->grn tyahýi_n ; ^ tyahýi_n 0 ; || 0, -1, -1
+** ganas de orinar ; ^ ganas 0
+->grn kuaruhýi_n ; ^ kuaruhýi_n 0 ; || 0, -1, -1
+->grn tyahýi_n ; ^ tyahýi_n 0 ; || 0, -1, -1
+** ganas de vomitar ; ^ ganas 0
+->grn py'avai_n ; ^ py'avai_n 0 ; || 0, -1, -1
+->grn py'ajere_n ; ^ py'ajere_n 0 ; || 0, -1, -1
+** garza_n blanca ; ^ garza_n 0
+->grn guyratĩ_n ; ^ guyratĩ_n 0 ; || 0, -1
+** garza_n mora ; ^ garza_n 0
+->grn mbaguari_n ; ^ mbaguari_n 0 ; || 0, -1
+** gato_n montés ; ^ gato_n 0
+->grn jaguarete'i_n ; ^ jaguarete'i_n 0 ; || 0, -1
+->grn jaguarundi_n ; ^ jaguarundi_n 0 ; || 0, -1
+** globo_n del ojo ; ^ globo_n 0
+->grn tesa'ỹi_n ; ^ tesa'ỹi_n 0 ; || 0, -1, -1
+** glóbulo_n rojo ; ^ glóbulo_n 0
+->grn tuguypytã'i_n ; ^ tuguypytã'i_n 0 ; || 0, -1
+** golpe_n con los dedos ; ^ golpe_n 0
+->grn chipĩu_n ; ^ chipĩu_n 0 ; || 0, -1, -1, -1
+** golpe_n de la mano ; ^ golpe_n 0
+->grn popete_n ; ^ popete_n 0 ; || 0, -1, -1, -1
+** golpe_n de puño ; ^ golpe_n 0
+->grn tóngo_n ; ^ tóngo_n 0 ; || 0, -1, -1
+** golpe_n en la cabeza ; ^ golpe_n 0
+->grn akãpete_n ; ^ akãpete_n 0 ; || 0, -1, -1, -1
+->grn pitukãi_n ; ^ pitukãi_n 0 ; || 0, -1, -1, -1
+->grn túke_n ; ^ túke_n 0 ; || 0, -1, -1, -1
+** gota_n de lluvia ; ^ gota_n 0
+->grn amandykyre_n ; ^ amandykyre_n 0 ; || 0, -1, -1
+** grado_n escolar ; ^ grado_n 0
+->grn mbo'esyry_n ; ^ mbo'esyry_n 0 ; || 0, -1
+** grano_n de la cara ; ^ grano_n 0
+->grn jari'i_n ; ^ jari'i_n 0 ; || 0, -1, -1, -1
+** habitante_n de la casa ; ^ habitante_n 0
+->grn ogaygua_n ; ^ ogaygua_n 0 ; || 0, -1, -1, -1
+** hacha_n de combate ; ^ hacha_n 0
+->grn akangua_n ; ^ akangua_n 0 ; || 0, -1, -1
+** harina_n de maíz ; ^ harina_n 0
+->grn hu'itĩ_n ; ^ hu'itĩ_n 0 ; || 0, -1, -1
+** hermana menor_n ; ^ menor_n 1
+->grn kypy'y_n ; ^ kypy'y_n 0 ; || -1, 0
+** hermana_n del varón ; ^ hermana_n 0
+->grn <heindy_n ; ^ <heindy_n 0 ; || 0, -1, -1
+** hermana_n mayor de la mujer ; ^ hermana_n 0
+->grn ryke_n ; ^ ryke_n 0 ; || 0, -1, -1, -1, -1
+** hermana_n menor de la mujer ; ^ hermana_n 0
+->grn kypy'y_n ; ^ kypy'y_n 0 ; || 0, -1, -1, -1, -1
+** hermano menor_n ; ^ menor_n 1
+->grn ryvy_n ; ^ ryvy_n 0 ; || -1, 0
+** hermano_n de la mujer ; ^ hermano_n 0
+->grn kyvy_n ; ^ kyvy_n 0 ; || 0, -1, -1, -1
+** hermano_n mayor del varón ; ^ hermano_n 0
+->grn ryke'y_n ; ^ ryke'y_n 0 ; || 0, -1, -1, -1
+** hermano_n menor del varón ; ^ hermano_n 0
+->grn ryvy_n ; ^ ryvy_n 0 ; || 0, -1, -1, -1
+** hernia_n inguinal ; ^ hernia_n 0
+->grn takope_n ; ^ takope_n 0 ; || 0, -1
+** hierba_n espinosa ; ^ hierba_n 0
+->grn kapiatĩ_n ; ^ kapiatĩ_n 0 ; || 0, -1
+** hijastra_n de la mujer ; ^ hijastra_n 0
+->grn membyanga_n ; ^ membyanga_n 0 ; || 0, -1, -1, -1
+** hijastra_n del hombre ; ^ hijastra_n 0
+->grn tajyranga_n ; ^ tajyranga_n 0 ; || 0, -1, -1
+** hijastro_n de la mujer ; ^ hijastro_n 0
+->grn membyanga_n ; ^ membyanga_n 0 ; || 0, -1, -1, -1
+** hijastro_n del hombre ; ^ hijastro_n 0
+->grn ta'yranga_n ; ^ ta'yranga_n 0 ; || 0, -1, -1
+** hijo_n de la mujer ; ^ hijo_n 0
+->grn memby_n ; ^ memby_n 0 ; || 0, -1, -1, -1
+** hijo_n del hombre ; ^ hijo_n 0
+->grn ra'y_n ; ^ ra'y_n 0 ; || 0, -1, -1
+** hilera_n de plantación ; ^ hilera_n 0
+->grn líño_n ; ^ líño_n 0 ; || 0, -1, -1
+** hinchazón de ojo_n ; ^ ojo_n 2
+->grn saruru_n ; ^ saruru_n 0 ; || -1, -1, 0
+** hombre_n campesino ; ^ hombre_n 0
+->grn arriéro_n ; ^ arriéro_n 0 ; || 0, -1
+** hombre_n viejo ; ^ hombre_n 0
+->grn tuja_n ; ^ tuja_n 0 ; || 0, -1
+->grn lekaja_n ; ^ lekaja_n 0 ; || 0, -1
+->grn lepiju_n ; ^ lepiju_n 0 ; || 0, -1
+** hongo_n cutáneo ; ^ hongo_n 0
+->grn uñe_n ; ^ uñe_n 0 ; || 0, -1
+** hora de la siesta_n ; ^ siesta_n 3
+->grn asaje_n ; ^ asaje_n 0 ; || -1, -1, -1, 0
+** hormiga león_n ; ^ león_n 1
+->grn kyvukyvu_n ; ^ kyvukyvu_n 0 ; || -1, 0
+** hormiga_n blanca ; ^ hormiga_n 0
+->grn kupi'i_n ; ^ kupi'i_n 0 ; || 0, -1
+** hormiga_n cortadora ; ^ hormiga_n 0
+->grn akekẽ_n ; ^ akekẽ_n 0 ; || 0, -1
+->grn ysau_n ; ^ ysau_n 0 ; || 0, -1
+** hueso_n de la pata ; ^ hueso_n 0
+->grn sakarõ_n ; ^ sakarõ_n 0 ; || 0, -1, -1, -1
+** idioma_n español ; ^ idioma_n 0
+->grn karaiñe'ẽ_n ; ^ karaiñe'ẽ_n 0 ; || 0, -1
+** idioma_n guaraní ; ^ idioma_n 0
+->grn avañe'ẽ_n ; ^ avañe'ẽ_n 0 ; || 0, -1
+->grn guarani_n ; ^ guarani_n 0 ; || 0, -1
+** igual_n que él ; ^ igual_n 0
+->grn hesegua_n ; ^ hesegua_n 0 ; || 0, -1, -1, -1
+** igual_n que ella ; ^ igual_n 0
+->grn hesegua_n ; ^ hesegua_n 0 ; || 0, -1, -1, -1
+** infusión_n de yerba mate ; ^ infusión_n 0
+->grn ka'ay_n ; ^ ka'ay_n 0 ; || 0, -1, -1, -1
+->grn ka'ary_n ; ^ ka'ary_n 0 ; || 0, -1, -1, -1
+->grn terere_n ; ^ terere_n 0 ; || 0, -1, -1, -1
+** instrumento_n musical ; ^ instrumento_n 0
+->grn tembipu_n ; ^ tembipu_n 0 ; || 0, -1
+** inteligencia_n mutua ; ^ inteligencia_n 0
+->grn jokupyty_n ; ^ jokupyty_n 0 ; || 0, -1
+** interior de la casa_n ; ^ casa_n 3
+->grn ogapy_n ; ^ ogapy_n 0 ; || -1, -1, -1, 0
+** interior del país_n ; ^ país_n 2
+->grn tetãpy_n ; ^ tetãpy_n 0 ; || -1, -1, 0
+** interior del vientre_n ; ^ vientre_n 2
+->grn tyepy_n ; ^ tyepy_n 0 ; || -1, -1, 0
+** interior_n de la pieza ; ^ interior_n 0
+->grn kotypy_n ; ^ kotypy_n 0 ; || 0, -1, -1, -1
+** irritación_n de la piel ; ^ irritación_n 0
+->grn joha_n ; ^ joha_n 0 ; || 0, -1, -1, -1
+** juego_n de escondite ; ^ juego_n 0
+->grn koréko_n ; ^ koréko_n 0 ; || 0, -1, -1
+** jugo_n de caña de azúcar ; ^ jugo_n 0
+->grn mósto_n ; ^ mósto_n 0 ; || 0, -1, -1, -1, -1
+** labio_n partido ; ^ labio_n 0
+->grn tembevo_n ; ^ tembevo_n 0 ; || 0, -1
+** lado_n derecho ; ^ lado_n 0
+->grn terekua_n ; ^ terekua_n 0 ; || 0, -1
+->grn akatúa_n ; ^ akatúa_n 0 ; || 0, -1
+** lado_n izquierdo ; ^ lado_n 0
+->grn asu_n ; ^ asu_n 0 ; || 0, -1
+** ladrido_n de perro ; ^ ladrido_n 0
+->grn ñarõ_n ; ^ ñarõ_n 0 ; || 0, -1, -1
+** larva de mosquito_n ; ^ mosquito_n 2
+->grn ysokamby_n ; ^ ysokamby_n 0 ; || -1, -1, 0
+** larva_n de mosquito ; ^ larva_n 0
+->grn ysokamby_n ; ^ ysokamby_n 0 ; || 0, -1, -1
+** latido_n del corazón ; ^ latido_n 0
+->grn py'atytýi_n ; ^ py'atytýi_n 0 ; || 0, -1, -1
+->grn py'aperere_n ; ^ py'aperere_n 0 ; || 0, -1, -1
+** león_n americano ; ^ león_n 0
+->grn púma_n ; ^ púma_n 0 ; || 0, -1
+** libertad_n restringida ; ^ libertad_n 0
+->grn sãmbuku_n ; ^ sãmbuku_n 0 ; || 0, -1
+** llaga_n de la boca ; ^ llaga_n 0
+->grn kupía_n ; ^ kupía_n 0 ; || 0, -1, -1, -1
+** lluvia_n torrencial ; ^ lluvia_n 0
+->grn amangurusu_n ; ^ amangurusu_n 0 ; || 0, -1
+** lombriz solitario_n ; ^ solitario_n 1
+->grn sevo'i_n ; ^ sevo'i_n 0 ; || -1, 0
+** lugar_n de nacimiento ; ^ lugar_n 0
+->grn válle_n ; ^ válle_n 0 ; || 0, -1, -1
+->grn mamogua_n ; ^ mamogua_n 0 ; || 0, -1, -1
+** luna_n menguante ; ^ luna_n 0
+->grn jasypaha_n ; ^ jasypaha_n 0 ; || 0, -1
+->grn jasyho_n ; ^ jasyho_n 0 ; || 0, -1
+** luz_n de las estrellas ; ^ luz_n 0
+->grn jasyrata_n ; ^ jasyrata_n 0 ; || 0, -1, -1, -1
+** luz_n de luna ; ^ luz_n 0
+->grn ñasaindy_n ; ^ ñasaindy_n 0 ; || 0, -1, -1
+** luz_n mortecina ; ^ luz_n 0
+->grn sapike_n ; ^ sapike_n 0 ; || 0, -1
+** mal aliento_n ; ^ aliento_n 1
+->grn jurune_n ; ^ jurune_n 0 ; || -1, 0
+** mal de cadera_n ; ^ cadera_n 2
+->grn tumby'a_n ; ^ tumby'a_n 0 ; || -1, -1, 0
+** mal humor_n ; ^ humor_n 1
+->grn pirevai_n ; ^ pirevai_n 0 ; || -1, 0
+** mal talante_n ; ^ talante_n 1
+->grn pirevai_n ; ^ pirevai_n 0 ; || -1, 0
+** mal tiempo_n ; ^ tiempo_n 1
+->grn arai_n ; ^ arai_n 0 ; || -1, 0
+** mala conducta_n ; ^ conducta_n 1
+->grn tekovai_n ; ^ tekovai_n 0 ; || -1, 0
+** mala pronunciación_n ; ^ pronunciación_n 1
+->grn kũ'atã_n ; ^ kũ'atã_n 0 ; || -1, 0
+** mala suerte_n ; ^ suerte_n 1
+->grn pane_n ; ^ pane_n 0 ; || -1, 0
+->grn po'a'ỹ_n ; ^ po'a'ỹ_n 0 ; || -1, 0
+** mandioca_n seca al sol ; ^ mandioca_n 0
+->grn popĩ_n ; ^ popĩ_n 0 ; || 0, -1, -1, -1
+** mango_n de mortero ; ^ mango_n 0
+->grn soka_n ; ^ soka_n 0 ; || 0, -1, -1
+->grn avatisoka_n ; ^ avatisoka_n 0 ; || 0, -1, -1
+** mango_n de utensilio ; ^ mango_n 0
+->grn ýva_n ; ^ ýva_n 0 ; || 0, -1, -1
+->grn jyva_n ; ^ jyva_n 0 ; || 0, -1, -1
+->grn y_n ; ^ y_n 0 ; || 0, -1, -1
+** mano_n de mortero ; ^ mano_n 0
+->grn avatisoka_n ; ^ avatisoka_n 0 ; || 0, -1, -1
+** mano_n derecha ; ^ mano_n 0
+->grn akatúa_n ; ^ akatúa_n 0 ; || 0, -1
+** mano_n izquierda ; ^ mano_n 0
+->grn asu_n ; ^ asu_n 0 ; || 0, -1
+** medio_n de comunicación ; ^ medio_n 0
+->grn momaranduha_n ; ^ momaranduha_n 0 ; || 0, -1, -1
+** medios de comunicación_n ; ^ comunicación_n 2
+->grn momaranduha_n ; ^ momaranduha_n 0 ; || -1, -1, 0
+** miel_n de abeja ; ^ miel_n 0
+->grn eirete_n ; ^ eirete_n 0 ; || 0, -1, -1
+** mina de sal_n ; ^ sal_n 2
+->grn jukyty_n ; ^ jukyty_n 0 ; || -1, -1, 0
+** morador_n del monte ; ^ morador_n 0
+->grn ka'aguypóra_n ; ^ ka'aguypóra_n 0 ; || 0, -1, -1
+** mucho tiempo_n ; ^ tiempo_n 1
+->grn are_n ; ^ are_n 0 ; || -1, 0
+** muela_n del juicio ; ^ muela_n 0
+->grn tãigue'a_n ; ^ tãigue'a_n 0 ; || 0, -1, -1
+** mujer_n joven ; ^ mujer_n 0
+->grn kuñataĩ_n ; ^ kuñataĩ_n 0 ; || 0, -1
+** mujer_n vieja ; ^ mujer_n 0
+->grn guaiguĩ_n ; ^ guaiguĩ_n 0 ; || 0, -1
+** murmullo_n de agua ; ^ murmullo_n 0
+->grn yrasẽ_n ; ^ yrasẽ_n 0 ; || 0, -1, -1
+** murmullo_n de corriente ; ^ murmullo_n 0
+->grn ngululu_n ; ^ ngululu_n 0 ; || 0, -1, -1
+** médico_n indígena ; ^ médico_n 0
+->grn paje_n ; ^ paje_n 0 ; || 0, -1
+** músculo_n del brazo ; ^ músculo_n 0
+->grn mbarakaja_n ; ^ mbarakaja_n 0 ; || 0, -1, -1
+** músculo_n del brazo ; ^ músculo_n 0
+->grn mbarakaja_n ; ^ mbarakaja_n 0 ; || 0, -1, -1
+** nacimiento_n de arroyo ; ^ nacimiento_n 0
+->grn akã_n ; ^ akã_n 0 ; || 0, -1, -1
+** naranja_n agria ; ^ naranja_n 0
+->grn apepu_n ; ^ apepu_n 0 ; || 0, -1
+** natural del país_n ; ^ país_n 2
+->grn tetãygua_n ; ^ tetãygua_n 0 ; || -1, -1, 0
+** nido de pájaro_n ; ^ pájaro_n 2
+->grn taity_n ; ^ taity_n 0 ; || -1, -1, 0
+** ninfa del yerba_n ; ^ yerba_n 2
+->grn ka'apóra_n ; ^ ka'apóra_n 0 ; || -1, -1, 0
+->grn ka'ajarýi_n ; ^ ka'ajarýi_n 0 ; || -1, -1, 0
+** no sin razón_n ; ^ razón_n 2
+->grn ndareíri_n ; ^ ndareíri_n 0 ; || -1, -1, 0
+** nuera_n de hombre ; ^ nuera_n 0
+->grn ra'ytaty_n ; ^ ra'ytaty_n 0 ; || 0, -1, -1
+** nuera_n de mujer ; ^ nuera_n 0
+->grn membytaty_n ; ^ membytaty_n 0 ; || 0, -1, -1
+** néctar_n de flores ; ^ néctar_n 0
+->grn yvotyry_n ; ^ yvotyry_n 0 ; || 0, -1, -1
+** obrero_n del yerbal ; ^ obrero_n 0
+->grn mensu_n ; ^ mensu_n 0 ; || 0, -1, -1
+** ojo de lince_n ; ^ lince_n 2
+->grn tesapyso_n ; ^ tesapyso_n 0 ; || -1, -1, 0
+** ojo_n[n=1] negros ; ^ ojo_n 0
+->grn tesaũ_n ; ^ tesaũ_n 0 ; || 0, -1
+** ojo_n[n=1] saltones ; ^ ojo_n 0
+->grn sakandu_n ; ^ sakandu_n 0 ; || 0, -1
+->grn hesapo_n ; ^ hesapo_n 0 ; || 0, -1
+** ojo_n[n=1] trasparentes ; ^ ojo_n 0
+->grn tesatĩ_n ; ^ tesatĩ_n 0 ; || 0, -1
+** olor_n fuerte ; ^ olor_n 0
+->grn katĩ_n ; ^ katĩ_n 0 ; || 0, -1
+** oso_n hormiguero ; ^ oso_n 0
+->grn jurumi_n ; ^ jurumi_n 0 ; || 0, -1
+->grn kũmbirĩ_n ; ^ kũmbirĩ_n 0 ; || 0, -1
+->grn kaguare_n ; ^ kaguare_n 0 ; || 0, -1
+** pabellón_n del oído ; ^ pabellón_n 0
+->grn nambi_n ; ^ nambi_n 0 ; || 0, -1, -1
+** paladar_n perforado ; ^ paladar_n 0
+->grn forĩfo_n ; ^ forĩfo_n 0 ; || 0, -1
+** palma_n de la mano ; ^ palma_n 0
+->grn popyte_n ; ^ popyte_n 0 ; || 0, -1, -1, -1
+** palo_n borracho ; ^ palo_n 0
+->grn samu'ũ_n ; ^ samu'ũ_n 0 ; || 0, -1
+** palo_n de mortero ; ^ palo_n 0
+->grn soka_n ; ^ soka_n 0 ; || 0, -1, -1
+->grn avatisoka_n ; ^ avatisoka_n 0 ; || 0, -1, -1
+** palpitación_n del corazón ; ^ palpitación_n 0
+->grn py'apopo_n ; ^ py'apopo_n 0 ; || 0, -1, -1
+->grn py'aperere_n ; ^ py'aperere_n 0 ; || 0, -1, -1
+** pan_n de almidón y queso ; ^ pan_n 0
+->grn chipa_n ; ^ chipa_n 0 ; || 0, -1, -1, -1, -1
+->grn mbeju_n ; ^ mbeju_n 0 ; || 0, -1, -1, -1, -1
+** papa_n dulce ; ^ papa_n 0
+->grn jety_n ; ^ jety_n 0 ; || 0, -1
+** papel_n escrito ; ^ papel_n 0
+->grn kuatiañe'ẽ_n ; ^ kuatiañe'ẽ_n 0 ; || 0, -1
+** paraje_n abandonado ; ^ paraje_n 0
+->grn tapere_n ; ^ tapere_n 0 ; || 0, -1
+** parcialidad_n indígena ; ^ parcialidad_n 0
+->grn te'ýi_n ; ^ te'ýi_n 0 ; || 0, -1
+** parte_n inferior ; ^ parte_n 0
+->grn guy_n ; ^ guy_n 0 ; || 0, -1
+** pasado_n mañana ; ^ pasado_n 0
+->grn ko'ẽambuérõ_n ; ^ ko'ẽambuérõ_n 0 ; || 0, -1
+->grn ko'ẽambuéramo_n ; ^ ko'ẽambuéramo_n 0 ; || 0, -1
+** pata_n[n=1] arriba ; ^ pata_n 0
+->grn oguévo_n ; ^ oguévo_n 0 ; || 0, -1
+** pelado al ras_n ; ^ ras_n 2
+->grn perõite_n ; ^ perõite_n 0 ; || -1, -1, 0
+** pelea_n a trompadas ; ^ pelea_n 0
+->grn soki_n ; ^ soki_n 0 ; || 0, -1, -1
+** pelo_n de la barba ; ^ pelo_n 0
+->grn tendyya_n ; ^ tendyya_n 0 ; || 0, -1, -1, -1
+** pelo_n largo ; ^ pelo_n 0
+->grn avuku_n ; ^ avuku_n 0 ; || 0, -1
+** pelota_n de cuero ; ^ pelota_n 0
+->grn vakapipopo_n ; ^ vakapipopo_n 0 ; || 0, -1, -1
+** pez_n dorado ; ^ pez_n 0
+->grn piraju_n ; ^ piraju_n 0 ; || 0, -1
+** pie_n lleno de piques ; ^ pie_n 0
+->grn pychãi_n ; ^ pychãi_n 0 ; || 0, -1, -1, -1
+** piedra_n de afilar ; ^ piedra_n 0
+->grn itaky_n ; ^ itaky_n 0 ; || 0, -1, -1
+** piel de chancho_n ; ^ chancho_n 2
+->grn kurepi_n ; ^ kurepi_n 0 ; || -1, -1, 0
+** piel_n de cerdo ; ^ piel_n 0
+->grn kurepi_n ; ^ kurepi_n 0 ; || 0, -1, -1
+** piel_n de vaca ; ^ piel_n 0
+->grn vakapi_n ; ^ vakapi_n 0 ; || 0, -1, -1
+** piojo_n de aves ; ^ piojo_n 0
+->grn mymýi_n ; ^ mymýi_n 0 ; || 0, -1, -1
+** piojo_n de la ropa ; ^ piojo_n 0
+->grn ñamokyrã_n ; ^ ñamokyrã_n 0 ; || 0, -1, -1, -1
+** piojo_n de vello ; ^ piojo_n 0
+->grn kype_n ; ^ kype_n 0 ; || 0, -1, -1
+** pista_n de baile ; ^ pista_n 0
+->grn jerokyha_n ; ^ jerokyha_n 0 ; || 0, -1, -1
+** pista_n de carrera ; ^ pista_n 0
+->grn ñeñaniha_n ; ^ ñeñaniha_n 0 ; || 0, -1, -1
+** plantación_n de yerba mate ; ^ plantación_n 2
+->grn ka'aty_n ; ^ ka'aty_n 0 ; || 0, -1, -1, -1
+** poca cosa_n ; ^ cosa_n 1
+->grn vyrorei_n ; ^ vyrorei_n 0 ; || -1, 0
+** polenta de calabaza_n ; ^ calabaza_n 2
+->grn kiveve_n ; ^ kiveve_n 0 ; || -1, -1, 0
+** polenta_n de calabaza ; ^ polenta_n 0
+->grn kiveve_n ; ^ kiveve_n 0 ; || 0, -1, -1
+** poner los cuerno_n[n=1] ; ^ cuerno_n 2
+->grn moakãratĩ_n ; ^ moakãratĩ_n 0 ; || -1, -1, 0
+** por ese motivo_n ; ^ motivo_n 2
+->grn upéare_n ; ^ upéare_n 0 ; || -1, -1, 0
+** por tierra_n ; ^ tierra_n 1
+->grn yvýrupi_n ; ^ yvýrupi_n 0 ; || -1, 0
+->grn yvýpe_n ; ^ yvýpe_n 0 ; || -1, 0
+** postre_n de queso y calabaza ; ^ postre_n 0
+->grn kiveve_n ; ^ kiveve_n 0 ; || 0, -1, -1, -1, -1
+** precipitación_n pluvial ; ^ precipitación_n 0
+->grn ama_n ; ^ ama_n 0 ; || 0, -1
+** prenda_n de vestir ; ^ prenda_n 0
+->grn ao_n ; ^ ao_n 0 ; || 0, -1, -1
+** producto_n agrícola ; ^ producto_n 0
+->grn temitỹngue_n ; ^ temitỹngue_n 0 ; || 0, -1
+->grn kóga'a_n ; ^ kóga'a_n 0 ; || 0, -1
+** provisión_n para el viaje ; ^ provisión_n 0
+->grn avío_n ; ^ avío_n 0 ; || 0, -1, -1, -1
+->grn matúla_n ; ^ matúla_n 0 ; || 0, -1, -1, -1
+** puesta_n de huevos ; ^ puesta_n 0
+->grn ñembo'a_n ; ^ ñembo'a_n 0 ; || 0, -1, -1
+** pulga_n que entra bajo la piel ; ^ pulga_n 0
+->grn tũ_n ; ^ tũ_n 0 ; || 0, -1, -1, -1, -1, -1
+** punta del pie_n ; ^ pie_n 2
+->grn pytĩ_n ; ^ pytĩ_n 0 ; || -1, -1, 0
+** punta_n del pie ; ^ punta_n 0
+->grn pytĩ_n ; ^ pytĩ_n 0 ; || 0, -1, -1
+** punto_n culminante ; ^ punto_n 0
+->grn hu'ã_n ; ^ hu'ã_n 0 ; || 0, -1
+** pus de llaga_n ; ^ llaga_n 2
+->grn aupa_n ; ^ aupa_n 0 ; || -1, -1, 0
+** pájaro cantor_n ; ^ cantor_n 1
+->grn korochire_n ; ^ korochire_n 0 ; || -1, 0
+->grn guyraũ_n ; ^ guyraũ_n 0 ; || -1, 0
+->grn luilui_n ; ^ luilui_n 0 ; || -1, 0
+->grn havía_n ; ^ havía_n 0 ; || -1, 0
+** pájaro_n blanco ; ^ pájaro_n 0
+->grn guyratĩ_n ; ^ guyratĩ_n 0 ; || 0, -1
+** pájaro_n carpintero ; ^ pájaro_n 0
+->grn ypekũ_n ; ^ ypekũ_n 0 ; || 0, -1
+** qué barbaridad_n ; ^ barbaridad_n 1
+->grn aihuepéte_n ; ^ aihuepéte_n 0 ; || -1, 0
+** qué maravilla_n ; ^ maravilla_n 1
+->grn aihuepéte_n ; ^ aihuepéte_n 0 ; || -1, 0
+** rata_n de agua ; ^ rata_n 0
+->grn kyja_n ; ^ kyja_n 0 ; || 0, -1, -1
+** raíz de planta_n ; ^ raíz_n 0
+->grn tapo_n ; ^ tapo_n 0 ; || 0, -1, -1
+** recipiente_n para agua ; ^ recipiente_n 0
+->grn ygua_n ; ^ ygua_n 0 ; || 0, -1, -1
+** reja_n de arado ; ^ reja_n 0
+->grn jo'oha_n ; ^ jo'oha_n 0 ; || 0, -1, -1
+** relato_n cómico ; ^ relato_n 0
+->grn pukarã_n ; ^ pukarã_n 0 ; || 0, -1
+** remolino_n de agua ; ^ remolino_n 0
+->grn yjere_n ; ^ yjere_n 0 ; || 0, -1, -1
+** residuo de miel_n ; ^ miel_n 2
+->grn guarápo_n ; ^ guarápo_n 0 ; || -1, -1, 0
+** residuo de tabaco_n ; ^ tabaco_n 2
+->grn guarápo_n ; ^ guarápo_n 0 ; || -1, -1, 0
+** resistencia_n a enfermedades ; ^ resistencia_n 0
+->grn tosã_n ; ^ tosã_n 0 ; || 0, -1, -1
+** respiración_n fatigosa ; ^ respiración_n 0
+->grn timbu_n ; ^ timbu_n 0 ; || 0, -1
+** resplandor_n de luna ; ^ resplandor_n 0
+->grn ñasaindy_n ; ^ ñasaindy_n 0 ; || 0, -1, -1
+** resto_n[n=1] mortales ; ^ resto_n 0
+->grn tetekue_n ; ^ tetekue_n 0 ; || 0, -1
+** revés de la mano_n ; ^ mano_n 3
+->grn poape_n ; ^ poape_n 0 ; || -1, -1, -1, 0
+** ropa_n nueva ; ^ ropa_n 0
+->grn okaichipa_n ; ^ okaichipa_n 0 ; || 0, -1
+** roseta_n de maíz ; ^ roseta_n 0
+->grn pororo_n ; ^ pororo_n 0 ; || 0, -1, -1
+** rositas de harina_n ; ^ harina_n 2
+->grn pororo_n ; ^ pororo_n 0 ; || -1, -1, 0
+** ruido de paso_n[n=1] ; ^ paso_n 2
+->grn pyambu_n ; ^ pyambu_n 0 ; || -1, -1, 0
+** ruido_n de agua que cae ; ^ ruido_n 0
+->grn chororo_n ; ^ chororo_n 0 ; || 0, -1, -1, -1, -1
+** ruido_n de agua que corre ; ^ ruido_n 0
+->grn guilili_n ; ^ guilili_n 0 ; || 0, -1, -1, -1, -1
+** ruido_n de cascada ; ^ ruido_n 0
+->grn tororõ_n ; ^ tororõ_n 0 ; || 0, -1, -1
+** ruido_n de hueso ; ^ ruido_n 0
+->grn pururũ_n ; ^ pururũ_n 0 ; || 0, -1, -1
+** ruido_n de lata ; ^ ruido_n 0
+->grn pararã_n ; ^ pararã_n 0 ; || 0, -1, -1
+** ruido_n de pasos ; ^ ruido_n 0
+->grn pyambu_n ; ^ pyambu_n 0 ; || 0, -1, -1
+** ruido_n de rueda de carro ; ^ ruido_n 0
+->grn chiã_n ; ^ chiã_n 0 ; || 0, -1, -1, -1, -1
+** ruido_n de tambor ; ^ ruido_n 0
+->grn perere_n ; ^ perere_n 0 ; || 0, -1, -1
+** ruido_n grande ; ^ ruido_n 0
+->grn sununu_n ; ^ sununu_n 0 ; || 0, -1
+** ruido_n tenue ; ^ ruido_n 0
+->grn chirirĩ_n ; ^ chirirĩ_n 0 ; || 0, -1
+** ráfaga_n de ametralladora ; ^ ráfaga_n 0
+->grn piripipi_n ; ^ piripipi_n 0 ; || 0, -1, -1
+** sacerdote_n indígena ; ^ sacerdote_n 0
+->grn paje_n ; ^ paje_n 0 ; || 0, -1
+** sala_n de clase ; ^ sala_n 0
+->grn mbo'ehakoty_n ; ^ mbo'ehakoty_n 0 ; || 0, -1, -1
+** salto_n de agua ; ^ salto_n 0
+->grn ytu_n ; ^ ytu_n 0 ; || 0, -1, -1
+->grn ytororõ_n ; ^ ytororõ_n 0 ; || 0, -1, -1
+** salto_n mortal ; ^ salto_n 0
+->grn ñeakãtĩparo_n ; ^ ñeakãtĩparo_n 0 ; || 0, -1
+** salón_n de baile ; ^ salón_n 0
+->grn jerokyha_n ; ^ jerokyha_n 0 ; || 0, -1, -1
+** savia_n lechosa ; ^ savia_n 0
+->grn kambysy_n ; ^ kambysy_n 0 ; || 0, -1
+** sensación de muerte_n ; ^ muerte_n 2
+->grn py'aropu_n ; ^ py'aropu_n 0 ; || -1, -1, 0
+** signo_n de exclamación ; ^ signo_n 0
+->grn kyndýi_n ; ^ kyndýi_n 0 ; || 0, -1, -1
+** signo_n de interrogación ; ^ signo_n 0
+->grn kyporandu_n ; ^ kyporandu_n 0 ; || 0, -1, -1
+** silla_n de montar ; ^ silla_n 0
+->grn apéro_n ; ^ apéro_n 0 ; || 0, -1, -1
+** sin cola_n ; ^ cola_n 1
+->grn guevi_n ; ^ guevi_n 0 ; || -1, 0
+->grn koli_n ; ^ koli_n 0 ; || -1, 0
+** sin gracia_n ; ^ gracia_n 1
+->grn ay_n ; ^ ay_n 0 ; || -1, 0
+** sin importancia_n ; ^ importancia_n 1
+->grn rei_n ; ^ rei_n 0 ; || -1, 0
+** sin motivo_n ; ^ motivo_n 1
+->grn reí_n ; ^ reí_n 0 ; || -1, 0
+** sin ocupación_n ; ^ ocupación_n 1
+->grn tekorei_n ; ^ tekorei_n 0 ; || -1, 0
+** sin par_n ; ^ par_n 1
+->grn jojaha'ỹ_n ; ^ jojaha'ỹ_n 0 ; || -1, 0
+** sin sabor_n ; ^ sabor_n 1
+->grn he'ỹ_n ; ^ he'ỹ_n 0 ; || -1, 0
+->grn ay_n ; ^ ay_n 0 ; || -1, 0
+** sombrero_n con visera ; ^ sombrero_n 0
+->grn jóki_n ; ^ jóki_n 0 ; || 0, -1, -1
+** sonido_n de agua que gotea ; ^ sonido_n 0
+->grn guelele_n ; ^ guelele_n 0 ; || 0, -1, -1, -1, -1
+** su propia patria_n ; ^ patria_n 2
+->grn oguetã_n ; ^ oguetã_n 0 ; || -1, -1, 0
+** suegra_n de la mujer ; ^ suegra_n 0
+->grn mendy_n ; ^ mendy_n 0 ; || 0, -1, -1, -1
+** suegra_n del varón ; ^ suegra_n 0
+->grn taicho_n ; ^ taicho_n 0 ; || 0, -1, -1
+** suelo_n blando ; ^ suelo_n 0
+->grn apasusũ_n ; ^ apasusũ_n 0 ; || 0, -1
+** sustantivo_n compuesto ; ^ sustantivo_n 0
+->grn teroeta_n ; ^ teroeta_n 0 ; || 0, -1
+** sustantivo_n simple ; ^ sustantivo_n 0
+->grn teroteĩ_n ; ^ teroteĩ_n 0 ; || 0, -1
+** tabaco_n mascado ; ^ tabaco_n 0
+->grn náko_n ; ^ náko_n 0 ; || 0, -1
+** tela_n delgada ; ^ tela_n 0
+->grn aopo'i_n ; ^ aopo'i_n 0 ; || 0, -1
+** tendón_n de ; ^ tendón_n 0
+->grn aquiles_n ; ^ aquiles_n 0 ; || 0, -1
+** tiempo_n lluvioso ; ^ tiempo_n 0
+->grn amandy_n ; ^ amandy_n 0 ; || 0, -1
+** tigre_n americano ; ^ tigre_n 0
+->grn jaguarete_n ; ^ jaguarete_n 0 ; || 0, -1
+** tipo_n de ; ^ tipo_n 0
+->grn lája_n ; ^ lája_n 0 ; || 0, -1
+** tomar refección_n ; ^ refección_n 1
+->grn ñemboapyte_n ; ^ ñemboapyte_n 0 ; || -1, 0
+** torrente_n de agua ; ^ torrente_n 0
+->grn ysyry_n ; ^ ysyry_n 0 ; || 0, -1, -1
+** travesía_n de río ; ^ travesía_n 0
+->grn yhasa_n ; ^ yhasa_n 0 ; || 0, -1, -1
+->grn ysapa_n ; ^ ysapa_n 0 ; || 0, -1, -1
+** travesía_n del monte ; ^ travesía_n 0
+->grn ka'asapa_n ; ^ ka'asapa_n 0 ; || 0, -1, -1
+** trenza_n de cuero ; ^ trenza_n 0
+->grn korõ_n ; ^ korõ_n 0 ; || 0, -1, -1
+** trompa_n de elefante ; ^ trompa_n 0
+->grn tĩmbuku_n ; ^ tĩmbuku_n 0 ; || 0, -1, -1
+** tía_n materna ; ^ tía_n 0
+->grn sy'y_n ; ^ sy'y_n 0 ; || 0, -1
+** tío_n materno ; ^ tío_n 0
+->grn tuty_n ; ^ tuty_n 0 ; || 0, -1
+** tío_n paterno ; ^ tío_n 0
+->grn tuvy_n ; ^ tuvy_n 0 ; || 0, -1
+** uña del pie_n ; ^ pie_n 2
+->grn pysãpe_n ; ^ pysãpe_n 0 ; || -1, -1, 0
+** uña_n del pie ; ^ uña_n 0
+->grn pysãpe_n ; ^ pysãpe_n 0 ; || 0, -1, -1
+** vaina_n de simiente ; ^ vaina_n 0
+->grn tope_n ; ^ tope_n 0 ; || 0, -1, -1
+** vaina_n tierna ; ^ vaina_n 0
+->grn topeky_n ; ^ topeky_n 0 ; || 0, -1
+** vapor_n de agua ; ^ vapor_n 0
+->grn tatatina_n ; ^ tatatina_n 0 ; || 0, -1, -1
+** vasija_n de barro cocido ; ^ vasija_n 0
+->grn kambuchi_n ; ^ kambuchi_n 0 ; || 0, -1, -1, -1
+->grn ña'ẽ_n ; ^ ña'ẽ_n 0 ; || 0, -1, -1, -1
+** vaso_n de noche ; ^ vaso_n 0
+->grn tyryru_n ; ^ tyryru_n 0 ; || 0, -1, -1
+** vela_n de cera ; ^ vela_n 0
+->grn araity_n ; ^ araity_n 0 ; || 0, -1, -1
+** velo_n del paladar ; ^ velo_n 0
+->grn apekũ_n ; ^ apekũ_n 0 ; || 0, -1, -1
+** vendedor_n ambulante ; ^ vendedor_n 0
+->grn makatéro_n ; ^ makatéro_n 0 ; || 0, -1
+** villa_n miseria ; ^ villa_n 0
+->grn añaretã'i_n ; ^ añaretã'i_n 0 ; || 0, -1
+** visitante_n molesto ; ^ visitante_n 0
+->grn tevija_n ; ^ tevija_n 0 ; || 0, -1
+** voces de animal_n ; ^ animal_n 2
+->grn ne'ẽ_n ; ^ ne'ẽ_n 0 ; || -1, -1, 0
+** voz_n gruesa ; ^ voz_n 0
+->grn ñe'ẽngusu_n ; ^ ñe'ẽngusu_n 0 ; || 0, -1
+** voz_n nasal ; ^ voz_n 0
+->grn tĩñe'ẽ_n ; ^ tĩñe'ẽ_n 0 ; || 0, -1
+->grn forĩfo_n ; ^ forĩfo_n 0 ; || 0, -1
+** víbora_n constrictora ; ^ víbora_n 0
+->grn kuriju_n ; ^ kuriju_n 0 ; || 0, -1
+->grn mboijagua_n ; ^ mboijagua_n 0 ; || 0, -1
+** víbora_n de cascabel ; ^ víbora_n 0
+->grn mboichini_n ; ^ mboichini_n 0 ; || 0, -1, -1
+** víbora_n de coral ; ^ víbora_n 0
+->grn mboichumbe_n ; ^ mboichumbe_n 0 ; || 0, -1, -1
+** víbora_n de la cruz ; ^ víbora_n 0
+->grn kyryryo_n ; ^ kyryryo_n 0 ; || 0, -1, -1, -1
+** víbora_n venenosa ; ^ víbora_n 0
+->grn jarara_n ; ^ jarara_n 0 ; || 0, -1
+** yacimiento_n de lodo ; ^ yacimiento_n 0
+->grn ñay'ũngua_n ; ^ ñay'ũngua_n 0 ; || 0, -1, -1
+** yema_n del dedo ; ^ yema_n 0
+->grn kuãpy_n ; ^ kuãpy_n 0 ; || 0, -1, -1
+** yerba_n canchada ; ^ yerba_n 0
+->grn mborovire_n ; ^ mborovire_n 0 ; || 0, -1
+** yerba_n mate ; ^ yerba_n 0
+->grn ka'a_n ; ^ ka'a_n 0 ; || 0, -1
+** zumbido_n de oído ; ^ zumbido_n 0
+->grn apysakuañe'ẽ_n ; ^ apysakuañe'ẽ_n 0 ; || 0, -1, -1
+** órbita_n del ojo ; ^ órbita_n 0
+->grn tesakua_n ; ^ tesakua_n 0 ; || 0, -1, -1
+** órgano_n interno de animal ; ^ órgano_n 0
+->grn chúra_n ; ^ chúra_n 0 ; || 0, -1, -1, -1
+->grn achúra_n ; ^ achúra_n 0 ; || 0, -1, -1, -1
