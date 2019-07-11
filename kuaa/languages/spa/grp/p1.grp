@@ -19,7 +19,7 @@
 ->grn %C `-pe ; || 1, 0
 # CON
 ** con $pro ; ^ con 0
-->grn $pro[caso=ndi] ; ^ $pro 0 ; || -1, 0
+->grn $pro[caso=ndi] ; ^ $pro 0 ; || -1, 0 ; 1==0 n:n
 ** con $n ; ^ con 0
 ->grn $n ndive ; || 1, 0
 ** con %C ; ^ con 0

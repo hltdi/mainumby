@@ -23,9 +23,9 @@
 ->grn ore_n[n=1]
 ->grn ñande_n[n=1]
 ** él
-->grn ha'e_n
+->grn ha'e_n[n=0]
 ** ella
-->grn ha'e_n
+->grn ha'e_n[n=0]
 ** ellos
 ->grn ha'e_n[n=1]
 ** ellas
@@ -202,6 +202,8 @@
 ->grn mba'éiko
 ** conmigo
 ->grn chendive
+** contigo
+->grn nendive
 ** consigo
 ->grn ondive
 ** detrás

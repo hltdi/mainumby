@@ -1489,6 +1489,8 @@ def unify_dicts(x, y, strict=False, verbose=False):
     for k in set(x.keys()) | set(y.keys()):
         # Check all of the keys of x and y
         x_val, y_val = x.get(k, 'nil'), y.get(k, 'nil')
+        if verbose:
+            print("For key {}, x value {}, y value {}".format(k, x_val, y_val))
         if strict and x_val == 'nil' and y_val is not False:
             # (x_val == 'nil' or y_val == 'nil'):
             return 'fail'

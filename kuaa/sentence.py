@@ -158,7 +158,7 @@
 import copy, re, random, itertools, os
 from .ui import *
 from .segment import *
-from .record import SentRecord
+from .record import SentRecord, Session
 from .entry import Token
 from .utils import remove_control_characters, firsttrue
 
@@ -616,7 +616,7 @@ class Sentence:
     # colors to display sentence (TreeTrans) segments in interface
     tt_colors = ['red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple']
 
-    def __init__(self, raw='', language=None, tokens=None, rawtokens=None,
+    def __init__(self, raw='', language=None, tokens=None, rawtokens=None, toks=None,
                  # the (restored) original string
                  original='',
                  toktypes=None, toksubtypes=None,
@@ -640,6 +640,7 @@ class Sentence:
             self.raw = raw
             self.tokens = None
             self.rawtokens = None
+        self.toks = toks
         self.toktypes = toktypes
         self.original = original
         # Token segmentations: (token, segmentation, token_index)
@@ -761,6 +762,17 @@ class Sentence:
             print("SEGMENTATION {}".format(segmentation.index))
             segmentation.display(word_width=gap)
 
+    ## Initializing and solving a Sentence, created from a string if not already initialized
+    @staticmethod
+    def solve_sentence(sourceL, targetL, sentence=None, text='', session=None,
+                       max_sols=2, translate=True, verbosity=0):
+        if not sentence:
+            d = Document(sourceL, targetL, text, True, single=True, session=session)
+        sentence = d[0]
+        sentence.initialize(ambig=False, verbosity=verbosity)
+        sentence.solve(all_sols=max_sols > 1, max_sols=max_sols, translate=translate, verbosity=verbosity)
+        return sentence
+
     ## Bilingual sentence pairs and analyses
 
     @staticmethod
@@ -811,6 +823,7 @@ class Sentence:
                      tokens=self.tokens[:], rawtokens=self.rawtokens[:],
                      # toktypes=self.toktypes[:], toksubtypes= self.toksubtypes[:],
                      language=self.language, target=self.target, parent=self,
+                     toks=self.toks[:],
                      analyses=copy.deepcopy(self.analyses))
         if skip:
 #            print("Skipping {} in copy of {}".format(skip, self))
@@ -1067,6 +1080,7 @@ class Sentence:
                     # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
             if verbosity:
                 print("Running Morphosyns for {} on {}".format(self.language, self))
+#            print("Toks: {}".format(self.toks))
             for mi, ms in enumerate(self.language.ms):
                 # If ms applies and is "ambiguous", create a new copy of the sentence and add to altsyns
                 # (this happens in MorphoSyn)
@@ -1192,6 +1206,7 @@ class Sentence:
                 for anal in anals:
                     root = anal['root']   # there has to be one of these
                     cats = self.language.get_cats(root)
+#                    print("Cats for {}: {}".format(root, cats))
                     if cats:
                         anal['cats'] = cats
                     features = anal['features']
@@ -1459,12 +1474,17 @@ class Sentence:
     def solve(self, translate=True, all_sols=False, all_trans=True, interactive=False,
               limit_trans=True, max_sols=0, verbosity=0, tracevar=None, terse=True):
         """Generate segmentations, for all analyses if all_sols is True and translations (if translate is True)."""
+        if not terse:
+            print("RESOLVIENDO oración principal {}".format(self))
         self.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
                     limit_trans=limit_trans, max_sols=max_sols, verbosity=verbosity, tracevar=tracevar, terse=terse)
         if all_sols or (len(self.segmentations) < max_sols):
             for s in self.altsyns:
+                if not terse:
+                    print("RESOLVIENDO oración alternativa {}".format(s))
                 s.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
-                         limit_trans=limit_trans, max_sols=max_sols, verbosity=verbosity, tracevar=tracevar)
+                         limit_trans=limit_trans, max_sols=max_sols, verbosity=verbosity, tracevar=tracevar,
+                         terse=terse)
     
     def solve1(self, translate=True, all_sols=False, all_trans=True, interactive=False,
                limit_trans=True, max_sols=0, verbosity=0, tracevar=None, terse=True):
@@ -1474,7 +1494,7 @@ class Sentence:
                 print("NINGUNOS GRUPOS encontrados para {}, así que NO HAY SEGMENTACIÓN POSIBLE".format(self))
             return
         if not terse or verbosity:
-            print("Resolviendo {}".format(self))
+            print(" Resolviendo {}".format(self))
         ds = None
         generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity,
                                           tracevar=tracevar)
@@ -1484,8 +1504,6 @@ class Sentence:
                 succeeding_state = next(generator)
                 ds = succeeding_state.dstore
                 segmentation = self.create_segmentation(dstore=ds, verbosity=verbosity)
-                if verbosity:
-                    print('FOUND ANALYSIS', segmentation)
                 if translate and self.target:
                     # Translating
                     translated = segmentation.translate(verbosity=verbosity, limit_trans=limit_trans,
@@ -1892,10 +1910,14 @@ class Sentence:
             else:
                 gnodes = []
             s2gnodes.append(gnodes)
-        if verbosity:
-            print("groups for {}: {}".format(self, groups))
-            print("ginsts for {}: {}".format(self, ginsts))
-            print("covered nodes for {}: {}".format(self, covered_snodes))
+#        if verbosity:
+#        print("groups for {}: {}".format(self, groups))
+        ncovered = len(covered_snodes)
+        nuncovered = len(self.nodes) - ncovered
+        ngroups = len(ginsts)
+        score = ngroups + nuncovered
+#        print("  ginsts: {}".format(ginsts))
+#          if verbosity:
         # Create trees for each group
         tree_attribs = {}
         for snindex, sg in enumerate(s2gnodes):
@@ -1927,8 +1949,42 @@ class Sentence:
         trees = [x[1][2] for x in trees]
         # Get the indices of the GNodes for each SNode
         segmentation = Segmentation(self, ginsts, s2gnodes, len(self.segmentations),
-                                    trees=trees, dstore=dstore, session=self.session)
+                                    trees=trees, dstore=dstore, session=self.session,
+                                    score=score)
+        print('FOUND SEGMENTATION {} for {}'.format(segmentation, self))
+#        print("  score: # groups {}, # uncovered {}".format(ngroups, nuncovered))
         return segmentation
+
+    def get_all_segmentations(self, translate=True, generate=True,
+                              connect=False, html=False, verbosity=0):
+        """After a sentence has been translated and segmented, collect all the
+        segmentations, including those resulting from altsyn sentences."""
+        segmentations = []
+        if self.segmentations:
+            segmentations.extend(self.segmentations)
+        if self.altsyns:
+            for sa in self.altsyns:
+                if sa.segmentations:
+                    segmentations.extend(sa.segmentations)
+        if segmentations:
+            Segmentation.rank(segmentations)
+            if connect:
+                # Match joins and further groups only for best segmentation
+                segmentations = segmentations[:1]
+            if translate:
+                for seg in segmentations:
+                    seg.get_segs(html=False, single=True)
+                    if connect:
+                        seg.connect(generate=False, verbosity=verbosity)
+                    if generate:
+                        seg.generate()
+                        if html:
+                            seg.seg_html(single=True)
+            for sindex, segmentation in enumerate(segmentations):
+                print("SEGMENTACIÓN {}".format(sindex))
+                for segment in segmentation.segments:
+                    print("{}: {}".format(segment, segment.cleaned_trans))
+            return segmentations
 
     ### Various ways of displaying translation outputs.
     
@@ -2036,7 +2092,7 @@ class Segmentation:
     max_group_trans = 2
 
     def __init__(self, sentence, ginsts, s2gnodes, index, trees=None, dstore=None, session=None,
-                 terse=True):
+                 score=0, terse=True):
         self.sentence = sentence
         # Source language
         self.source = sentence.language
@@ -2063,18 +2119,26 @@ class Segmentation:
         self.session = session
         # Properties of selected groups, simpler than actual Segs
         self.pseudosegs = None
+        # Score based on number of groups and sentences nodes covered (lower is better)
+        self.score = score
         if not terse:
             print("SEGMENTACIÓN CREADA con dstore {} y ginsts {}".format(dstore, ginsts))
 
     def __repr__(self):
-        return "|< {} >|({})".format(self.sentence.raw, self.index)
+        return "|< {} >|({}.{})".format(self.sentence.raw, self.sentence.id, self.index)
 
     def display(self, word_width=10):
         """Show segmentation groups (GInsts) in terminal."""
         for g in self.ginsts:
             g.display(word_width=word_width, s2gnodes=self.s2gnodes)
 
+    ## Ranking segmentations
+    @staticmethod
+    def rank(segmentations):
+        segmentations.sort(key=lambda s: s.score)
+
     ## Creating translations
+
     
     def translate(self, verbosity=0, all_trans=False, interactive=False,
                   limit_trans=True):
@@ -2190,7 +2254,7 @@ class Segmentation:
                 if limit_trans:
                     ginsttrans = ginsttrans[:Segmentation.max_group_trans]
                 for tgroup, tgnodes, tnodes in ginsttrans:
-#                    print("Forming group_attribs: tgroup {}, tgnodes {}, tnodes {}".format(tgroup, tgnodes, tnodes))
+#                    print(" Forming group_attribs: tgroup {}, tgnodes {}, tnodes {}".format(tgroup, tgnodes, tnodes))
                     for tgnode, tokens, feats, agrs, t_index in tgnodes:
                         if tgnode.cat:
                             any_anode = True
@@ -2238,7 +2302,7 @@ class Segmentation:
                 # Find all combinations of the target groups involved in this TT (at any level)
                 tgroup_combs = allcombs(tt.all_tgroups)
                 if verbosity:
-#                    print(" TT group combs")
+                    print(" TT group combs")
                     for tgc in tgroup_combs:
                         print("  {}".format(tgc))
                 for tgroup_comb in tgroup_combs:

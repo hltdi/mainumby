@@ -5022,10 +5022,10 @@ elite_n $n
 elitismo_n $n
 elitista_n $n
 elixir_n $n
-ella $pro,$n
-ellas $pro,$n
-ello $pro,$n
-ellos $pro,$n
+ella_n $pro
+ellas_n $pro
+ello_n $pro
+ellos_n $pro
 elocuencia_n $n
 elocuente_a $a
 elogiar_v $v,$vt
@@ -7950,6 +7950,7 @@ inútil_n $n
 inútil_a $a
 ionizar_v $v
 ir_v $v,$vt,$vi,$vp
+ir|ser_v $v
 ira_n $n
 iraní_n $n
 iraquí_n $n
@@ -9328,7 +9329,7 @@ médula_n $n
 mérito_n $n
 método_n $n
 métrica_n $n
-mí $pro,$n
+mí_n $pro
 mías $pro,$n
 mímica_n $n
 mínimo_n $n
@@ -9500,9 +9501,9 @@ noroeste_n $n
 norte_n $n
 norteamericano_n $n
 noruego_n $n
-nos $pro_oj
-nosotras $pro,$n
-nosotros $pro,$n
+nos_n $pro_oj
+nosotras_n $pro
+nosotros_n $pro
 nostalgia_n $n
 nostálgico_a $a
 nota_n $n
@@ -13140,7 +13141,7 @@ teñido_n $n
 teñir_v $v,$vt,$vp
 teólogo_n $n
 teórico_n $n
-ti $pro,$n
+ti_n $pro,$n
 tibia_n $n
 tibieza_n $n
 tibio_a $a
@@ -13609,7 +13610,7 @@ tópico_n $n
 tórax_n $n
 tórtola_n $n
 tótem_n $n
-tú $pro,$n
+tú_n $pro
 túnel_n $n
 túnica_n $n
 ubicación_n $n
@@ -14063,9 +14064,9 @@ vomitar_v $v,$vt
 vomito_n $n
 voracidad_n $n
 vorágine_n $n
-vos $pro,$n
-vosotras $pro,$n
-vosotros $pro,$n
+vos $pro
+vosotras_n $pro
+vosotros_n $pro
 votación_n $n
 votante_n $n
 votar_v $v
@@ -14118,7 +14119,7 @@ yerro_n $n
 yerto_a $a
 yesca_n $n
 yeso_n $n
-yo $pro,$n
+yo_n $pro,$n
 yodo_n $n
 yoga_n $n
 yogur_n $n
@@ -14209,7 +14210,7 @@ zócalo_n $n
 áspero_a $a
 átomo_n $n
 égida_n $n
-él $pro,$n
+él_n $pro
 élite_n $n
 énfasis_n $n
 época_n $n

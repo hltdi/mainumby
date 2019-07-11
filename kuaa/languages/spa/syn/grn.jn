@@ -27,8 +27,9 @@ VAdv :: [pos=v] $adv ; ^0
 NqSV :: [pos=n] que [pos=n] $vt ; ^0 ; 3[rel=sjoj] ; 3[-ojxpl] ; 2=?3 n:n ; 2=!3 n:ns
 PDqV :: [pos=n] $pp $det que [pos=v] ; ^0 ; 4[rel=obl]
 VP :: [pos=v] $pp ; 1() ; ^0
-SV :: [pos=n] [pos=v] ; 0=?1 n:n ; 0=!1 n:ns ; ^1
+SV :: &n &v ; 0=?1 n:n ; 0=!1 n:ns ; ^1
 S[C]V :: %C [pos=v,n=0] ; ^1
 ## nominales 2
 >> nom2
-NqV :: [pos=n] que [pos=v] ; ^0 ; 2[rel=sjoj]
+NqV :: &n que &v ; ^0 ; 2[rel=sjoj]
+

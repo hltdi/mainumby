@@ -1,0 +1,36 @@
+## TIEMPO
+** cuando $v[tmp=sbj] ; ^ cuando 0
+->grn $v[tmp=prs,pp=ramo] ; ^ $v 0 ; || -1, 0
+** cuando $v[tmp=prt] ; ^ cuando 0
+->grn $v[pp=ramo] ; ^ $v 0 ; || -1, 0
+** después~de~que $v ; ^ después~de~que 0
+->grn $v rupi ; ^ rupi 1 ; || 1, 0
+** después~que $v ; ^ después~que 0
+->grn $v rupi ; ^ rupi 1 ; || 1, 0
+** antes~de~que $v ; ^ antes~de~que 0
+->grn $v mboyve ; ^ mboyve 1 ; || 1, 0
+** antes~que $v ; ^ antes~que 0
+->grn $v mboyve ; ^ mboyve 1 ; || 1, 0
+** desde~que $v ; ^ desde~que 0
+->grn $v guive ; ^ guive 1 ; || 1, 0
+** hasta~que $v ; ^ hasta~que 0
+->grn $v peve ; ^ peve 1 ; || 1, 0
+** mientras $v ; ^ mientras 0
+->grn $v aja ; ^ aja 1 ; || 1, 0
+** mientras~que $v ; ^ mientras~que 0
+->grn $v aja ; ^ aja 1 ; || 1, 0
+## RAZÓN
+** porque $v ; ^ porque 0
+->grn $v[pp=gui] ; ^ $v 0 ; || -1, 0
+## SEMEJANZA
+** como $v ; ^ como 0
+->grn $v[pp=icha] ; ^ $v 0 ; || -1, 0
+# OBJETIVO
+** para $v ; ^ para 0
+->grn $v[tmp=prs] haĝua ; ^ haĝua 1 ; || 1, 0
+** para~que $v ; ^ para~que 0
+->grn $v[tmp=prs] haĝua ; ^ haĝua 1 ; || 1, 0
+# SIN QUE (needs -'ỹre verb suffix)
+# SEGÚN
+** según $v ; ^ según 0
+->grn $v javeve ; ^ javeve 1 ; || 1, 0

@@ -74,7 +74,7 @@ import itertools, copy, re
 from .cs import *
 from .morphology.semiring import FSSet
 # needed for a few static methods
-from .entry import Group, Token
+from .entry import Group, Token, JoinToken
 from .record import SegRecord
 from .utils import *
 from kuaa.morphology.utils import reduce_lists
@@ -171,16 +171,15 @@ class Seg:
 
     def get_shead_pos(self):
         if self.shead:
-            pos = []
-            for h, f in self.shead:
+            pos = set()
+            for h, f, p in self.shead:
+                if p:
+                    pos.add(p)
                 if f:
-                    pos.append(f.get('pos'))
+                    pos.add(f.get('pos'))
                 elif '_' in h:
-                    pos.append(h.split('_')[-1])
-                else:
-                    pos.append(None)
+                    pos.add(h.split('_')[-1])
             return pos
-#            return [f.get('pos') for f in self.get_shead_feats()]
 
     def get_thead_roots(self):
         if not self.generated:
@@ -221,18 +220,24 @@ class Seg:
     def has_child(self):
         print("Error: has_child not defined for {}".format(self))
 
-    def match_join(self, join_elem, verbosity=0):
+    def match_join(self, join_elem, join_pos, verbosity=0):
         """Does this Segment match a pattern element in a Join? join_elem
         is either a FSSet or a string."""
+        if verbosity:
+            print("  Matching item {} with join elem {} and pos {}".format(self, join_elem, join_pos))
+        if join_pos:
+            # If there's a POS for the join, it must be matched
+            if JoinToken.match_pos(join_pos, self.get_shead_pos()):
+                return True
+            else:
+                return False
         if isinstance(join_elem, str):
-            if verbosity:
-                print("  Matching item {} with join elem {}".format(self, join_elem))
             # Match special type, category, or explicit token
-            if '%' in join_elem:
+            if Token.spec_char in join_elem:
                 # Match special type
                 pre, tok = self.get_special()
                 return pre == join_elem and tok
-            elif '$' in join_elem:
+            elif Token.cat_char in join_elem:
                 # Match a category
                 # This should fail SOMETIMES when there's no translation
                 # DISTINGUISH THESE CASES WITH A CODE LIKE $$
@@ -258,15 +263,18 @@ class Seg:
     def match_group_tok(self, group_tok, group_feats, verbosity=1):
         """Does this Seg match pattern elem and features from a Group?"""
         if verbosity:
-            print("Matching item {} with group token {}".format(self, group_tok))
+            print(" Matching item {} with group token {}".format(self, group_tok))
         if '$' in group_tok:
+#            print("{} matching group tok {}".format(self, group_tok))
+#            print("scats {}".format(self.scats))
+#            print("shead_feats {}".format(self.get_shead_feats()))
             # segment has to have a translation to match a category
             if not self.translation:
                 return False
             if not self.scats or group_tok not in self.scats:
                 return False
             elif self.get_shead_feats():
-                return self.get_shead_feats()[0]
+                return self.get_shead_feats()[0] or True
             else:
                 return True
         elif Token.is_special(group_tok):
@@ -284,7 +292,8 @@ class Seg:
             toks = self.get_tokens()
 #            if verbosity:
 #                print(" Matching group token {} with segment tokens {}".format(group_tok, toks))
-            if not any([group_tok == tok for tok in toks]):
+            if not any([group_tok == tok for tok in toks]) or isinstance(self, SuperSeg):
+                # Explicit string in group can't match a SuperSeg
                 return False
             if not group_feats:
                 return True
@@ -313,6 +322,8 @@ class Seg:
                 if groups1:
                     groups1 = [(g, g.head_index) for g in groups1]
                     groups.update(groups1)
+            if verbosity and groups:
+                print("  Found candidates {} for {}".format(groups, self))
             return groups
             
     def generate(self, limit_forms=True, verbosity=0):
@@ -646,7 +657,7 @@ class Seg:
         if string[0] == '~':
             string = string[1:]
         # connecting _ and ~
-        string = string.replace('_', ' ').replace('~', ' ')
+        string = string.replace('  ', ' ').replace('_', ' ').replace('~', ' ')
         return string
 
     @staticmethod
@@ -757,14 +768,13 @@ class Segment(Seg):
     def __init__(self, segmentation, indices, translation, tokens, color=None, space_before=1,
                  treetrans=None, sfeats=None,
                  tgroups=None, has_paren=False, is_paren=False,
-#                 merger_groups=None, 
                  head=None, tok=None, spec_indices=None, session=None, gname=None, is_punc=False):
 #        print("Creating Segment for indices {}, translation {}, head {}, sfeats {}".format(indices, translation, head, sfeats))
         Seg.__init__(self, segmentation)
         if sfeats:
             sfeat_dict = sfeats[0]
             self.shead_index = 0
-            self.shead = [(sfeat_dict.get('root'), sfeat_dict.get('features'))]
+            self.shead = [(sfeat_dict.get('root'), sfeat_dict.get('features'), sfeat_dict.get('pos'))]
             self.scats = sfeat_dict.get('cats', set())
         else:
             self.shead_index = -1

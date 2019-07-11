@@ -321,7 +321,7 @@ class Language:
                              analyze=use in (ANALYSIS, SOURCE, TRAIN),
                              segment=False, guess=False, verbose=False)
 #        print("Lengua {} creada".format(self))
-
+    
     @staticmethod
     def is_dig_numeral(string):
         if Language.numeral.match(string):

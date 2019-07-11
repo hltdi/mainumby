@@ -535,7 +535,7 @@ class Group(Entry):
 
     def match_segments(self, segments, startindex, verbosity=1):
         """Attempt to match a sequence of Segs, starting at start_index, returning the match or False."""
-        if verbosity:
+        if verbosity or self.debug:
             print("Matching {} against {} starting from {}".format(self, segments, startindex))
         matches = []
         matched = True
@@ -548,16 +548,16 @@ class Group(Entry):
             segment = segments[segindex]
             match = segment.match_group_tok(patelem, patfeats, verbosity=verbosity)
             if match:
-                if verbosity:
+                if verbosity or self.debug:
                     print(" {} matched {} with match {}".format(segment, self, match))
                 matches.append((segindex, segment, match))
                 segindex += 1
                 patindex += 1
             else:
-                if verbosity:
+                if verbosity or self.debug:
                     print(" {} failed to match {} (match {})".format(segment, self, match))
                 return False
-        if verbosity:
+        if verbosity or self.debug:
             print("{} matched segments {} starting from {}".format(self, segments, startindex))
         return Match(self, matches)
 
@@ -607,7 +607,7 @@ class Group(Entry):
             rev_align = Group.reverse_alignment(alignment, len(tgroup.tokens))
             agr = None
             if 'agr' in tfeats:
-                agr = dict([a for a in tfeats['agr'] if a])
+                agr = tfeats['agr']
             if verbosity:
                 print(" Applying trans group {}, tokens {}, pos {}, tokfeats {}, align {}, agr {}".format(tgroup, ttokens, tpos, ttokfeats, alignment, agr))
             segorder = 0
@@ -630,16 +630,22 @@ class Group(Entry):
                 if segment.thead is None:
                     segment.thead = []
                 segthead = segment.thead
+                if agr:
+                    agr1 = agr[segindex]
+                    if agr1:
+                        if agr1[0] == tindex:
+                            agr1 = agr1[1]
                 if verbosity:
                     print("    Current ttoken {}, tfeats {}, segcleaned {}".format(ttoken, tfeats, segment.cleaned_trans))
                 if segindex == hindex:
                     if verbosity:
                         print("   Updating head segment {}, thead {}, troot {}, ttok {}, tpos {}".format(segment, segthead, troot, ttoken, tpos))
-                    agr1 = agr.get(segindex) if agr else None
-                    if agr1:
-                        ufeats = segfeat.agree_FSS(tfeats, agr1)
-                    elif tfeats and segfeat:
-                        ufeats = segfeat.u(tfeats)
+#                    agr1 = agr[segindex] if agr else None
+                    if isinstance(segfeat, FSSet):
+                        if agr1:
+                            ufeats = segfeat.agree_FSS(tfeats, agr1)
+                        elif tfeats:
+                            ufeats = segfeat.u(tfeats)
                     else:
                         ufeats = segfeat or tfeats
                     # Use the root (token without _pos)
@@ -652,7 +658,7 @@ class Group(Entry):
                         print("   Updating head segment {}, cleaned {}".format(segment, segment.cleaned_trans))
                 else:
                     if verbosity:
-                        print("   Updating non-head segment {}, head {}, ttok {}, ttokfeats {}, special? {}".format(segment, segthead, ttoken, tfeats.__repr__(), segspec))
+                        print("   Updating non-head segment {}, head {}, ttok {}, ttokfeats {}, segfeat , agr {}".format(segment, segthead, ttoken, tfeats.__repr__(), segfeat.__repr__(), agr1))
                     if not segthead:
                         if ttoken and not segspec:
                             newtrans.append(ttoken)
@@ -663,9 +669,9 @@ class Group(Entry):
                                 continue
                             # trans should be a [token, pos, feats] list
                             transfeats = trans[2]
-#                            print("Trans {}, tfeats {}".format(trans, tfeats))
                             if transfeats and tfeats:
-                                ufeats = transfeats.u(tfeats)
+#                                print("transfeats {} and tfeats {}".format(transfeats.__repr__(), tfeats.__repr__()))
+                                ufeats = transfeats.agree_with(tfeats)
                             else:
                                 ufeats = transfeats or tfeats
                             trans[2] = ufeats
@@ -956,8 +962,8 @@ class Group(Entry):
                     # use the alignment to set the trans group's head index from the source index
                     if head_index < 0:
                         head_index = alignment[shead_index]
-                        if head_index < 0:
-                            print("Set head index for {} to {} using alignment {} and shead index {}".format(tokens, head_index, alignment, shead_index))
+#                        if head_index < 0:
+#                            print("Set head index for {} to {} using alignment {} and shead index {}".format(tokens, head_index, alignment, shead_index))
                     continue
                 match = TRANS_COUNT.match(attrib)
                 if match:
@@ -1471,8 +1477,10 @@ class MorphoSyn(Entry):
                                 print("Failing analysis has priority; swapping original sentence and copy")
                             # The analysis that fails has priority, so make the one that implements the morphosyn the altsyn
                             s = copy
+                            toks = s.toks[start:end]
                 # %%
                 if verbosity or self.debug:
+                    print("Now applying MS to sentence {}".format(s))
                     print("Appending {}, {}, {}, {} to morphosyns".format(self, start, end, anal_fail_index))
                 s.morphosyns.append((self, start, end, anal_fail_index))
                 # Change either the sentence or the latest altsyn copy
@@ -1681,6 +1689,8 @@ class MorphoSyn(Entry):
                     else:
                         return True
                 elif neg:
+                    if verbosity > 1 or self.debug:
+                        print("    Neg match succeeded")
                     return True
                 else:
                     return False
@@ -1775,11 +1785,11 @@ class MorphoSyn(Entry):
                         if isinstance(feats, bool):
                             # feats could be False or True
                             continue
-                        if index == anal_fail_index:
-                            # The MS didn't match
-                            if verbosity > 1 or self.debug:
-                                print("   Analysis {} fails to match MS!".format(index))
-                            continue
+#                        if index == anal_fail_index:
+#                            # The MS didn't match
+#                            if verbosity > 1 or self.debug:
+#                                print("   Analysis {}, features {} fails to match MS!".format(index, feats))
+#                            continue
                         if verbosity > 1 or self.debug:
                             if isinstance(feats, FeatStruct):
                                 print("      Feats {}, frozen? {}".format(feats.__repr__(), feats.frozen()))
@@ -1792,11 +1802,12 @@ class MorphoSyn(Entry):
         Works by mutating sentence elements (tokens and analyses).
         """
         if verbosity > 1 or self.debug:
-            print(" Inserting match {}/{} {}".format(start, end, m_elements))
+            print(" Inserting match {}/{} {} in sentence {}".format(start, end, m_elements, sentence))
         # start and end are indices within the sentence; some may have been
         # ignored within the pattern during matching
         m_index = 0
         s_index = start
+        negindices = self.neg_matches
         for s_elem in sentence.analyses[start:end]:
             s_token = s_elem[0]
             if Token.del_token(s_token):
@@ -1804,6 +1815,10 @@ class MorphoSyn(Entry):
                 # Skip this sentence element; don't increment m_index
                 continue
             m_elem = m_elements[m_index]
+            if m_index in negindices:
+                if verbosity > 1 or self.debug:
+                    print(" Negative match: m_elem {}, s_elem {}, m_index {}".format(m_elem, s_elem, m_index))
+                continue
             m_index += 1
             # Replace the token (could have ~ now)
             s_elem[0] = m_elem[0]
@@ -1827,7 +1842,7 @@ class MorphoSyn(Entry):
                     else:
                         s_feats = s_anal['features']
                         if self.debug:
-                            print("  m_feats {} (type {}), s_feats {}".format(m_feats, type(m_feats), s_feats.__repr__()))
+                            print("  m_feats {}, s_feats {}".format(m_feats, s_feats.__repr__()))
                         if s_feats != m_feats:
                             # Replace sentence features with match features if something
                             # has changed
@@ -1901,10 +1916,9 @@ class Join(Entry):
     max_depth = 8
 
     def __init__(self, source, target, name=None, tokens=None, expanded=False):
-        Entry.__init__(self, name, source)
         self.target = target
-        self.name = name
         self.tokens = tokens
+        Entry.__init__(self, name, source)
         self.agree_conditions = []
         self.agree_changes = []
         self.targ_feats = []
@@ -1929,11 +1943,17 @@ class Join(Entry):
         # split the string into tokens
         tokens = tokens.split(Join.attrib_sep)
         # Actual pattern
-        for token in tokens[0].strip().split():
+        pattern = tokens[0].strip().split()
+        self.pos = [None] * len(pattern)
+        for index, token in enumerate(pattern):
             if "[" in token:
                 # Feature specification
                 # Make it into a FSSet
                 token = FSSet(token)
+                self.tokens.append(token)
+            elif token[0] == Token.pos_char:
+                # POS token: &n, &v, &a, etc.
+                self.pos[index] = token[1:]
                 self.tokens.append(token)
             else:
                 # Special token: %C, %N
@@ -2034,6 +2054,7 @@ class Join(Entry):
         position startindex."""
         matched = True
         tokens = self.tokens
+        patpos = self.pos
         patlength = len(tokens)
         patindex = 0
         segindex = startindex
@@ -2042,6 +2063,7 @@ class Join(Entry):
             print(" {} matching segments {}".format(self, segments[startindex:]))
         while matched and patindex < patlength:
             patelem = tokens[patindex]
+            patpos1 = patpos[patindex]
             segment = segments[segindex]
             if patindex in self.depth_constraints:
                 dmin, dmax = self.depth_constraints[patindex]
@@ -2051,7 +2073,7 @@ class Join(Entry):
 #                if not segment.has_child():
 #                    # Join requires a child for the segment, but it doesn't have one
 #                    return False
-            match2 = segment.match_join(patelem, verbosity=verbosity)
+            match2 = segment.match_join(patelem, patpos1, verbosity=verbosity)
             if match2:
                 if verbosity or self.debug:
                     print(" {} matched {} in {}".format(segment, patelem, self))
@@ -2077,6 +2099,8 @@ class Join(Entry):
             if verbosity or self.debug:
                 print("    Features {} and {} must match on {} and {}".format(segfeats1, segfeats2, f1, f2))
             for feats1 in segfeats1:
+                if not feats1:
+                    continue
                 v1 = feats1.get(f1)
                 # Allow match when one or the other feature has no value for the feature
                 if v1 == None:
@@ -2320,11 +2344,12 @@ class Match:
         matches.sort(key=lambda m: m.entry.get_weight())
 
 class Token:
-    """Word or punctuation or category within a sentence or entry."""
+    """Word or punctuation or category or POS within a sentence or entry."""
 
     spec_char = '%'
     cat_char = '$'
     set_char = '$$'
+    pos_char = '&'
     spec_sep_char = '~'
     del_char = '~'
 
@@ -2359,6 +2384,11 @@ class Token:
     def is_set(token):
         """Is this the name of a set (implemented as a category)?"""
         return Token.set_char in token
+
+    @staticmethod
+    def is_pos(token):
+        """Is this the name of a POS?"""
+        return token[0] == Token.pos_char
 
     @staticmethod
     def special_prefix(token, check=False):
@@ -2398,7 +2428,7 @@ class SentToken(Token):
 
     def __init__(self, name='', prefix='', parent=None, punc=False):
         Token.__init__(self, name=name, prefix=prefix, parent=parent)
-        if '%' in prefix:
+        if Token.spec_char in prefix:
             self.special = True
             self.raw_prefix = prefix[1:]
         else:
@@ -2429,6 +2459,48 @@ class SentToken(Token):
             # First word in sentence
             keys.add(self.name.capitalize())
         return keys
+
+class JoinToken(Token):
+    """Token in join."""
+
+    def __init__(self, name='', prefix='', parent=None, punc=False):
+        Token.__init__(self, name=name, prefix=prefix, parent=parent)
+        self.raw_prefix = prefix
+        self.special = False
+        self.pos = False
+        self.cat = False
+        if Token.spec_char in prefix:
+            self.special = True
+            self.raw_prefix = prefix[1:]
+        elif Token.pos_char in prefix:
+            self.pos = True
+        elif Token.cat_char in prefix:
+            self.cat = True
+        self.in_sentence = False
+        self.in_entry = True
+        self.set = False
+        self.punc = punc
+        self.delete = False
+
+    def __repr__(self):
+        prechar = "<"
+        postchar = ">"
+        if self.prefix:
+            return prechar + self.prefix + Token.spec_sep_char + self.name + postchar
+        else:
+            return prechar + self.name + postchar
+
+    @staticmethod
+    def match_pos(join_pos, seg_poss):
+        """Does Join element POS match at least one of segment POSs?"""
+#        print("Does joinpos {} match segposs {}".format(join_pos, seg_poss))
+        for seg_pos in seg_poss:
+            # seg_pos may include a sub_pos
+            if '.' in seg_pos:
+                seg_pos = seg_pos.split('.')[0]
+            if join_pos == seg_pos:
+                return True
+        return False
 
 ##class IntervalTree:
 ##    """Implementation of interval trees, from brentp: https://bpbio.blogspot.com/2008/11/python-interval-tree.html.
@@ -2480,4 +2552,3 @@ class EntryError(Exception):
 
     def __str__(self):
         return repr(self.value)
-    

@@ -58,15 +58,39 @@ app.config.from_object(__name__)
 ## Whether to create a session for the anonymous user when user doesn't log in.
 # USE_ANON = True
 
+### Funciones que se llaman en views.py al realizar la interfaz.
+
+def start(gui, use_anon=True, create_memory=False):
+    """Iniciar una ejecución. Crear una sesión si hay un usuario y si no
+    se está usando una Memory."""
+
+#    print("Starting {}, {}, {}".format(source, target, user))
+    # Read in current users so that we can find the current user and
+    # check for username overlap if a new account is created
+    User.read_all()
+    if isinstance(gui.user, str):
+        # Get the user from their username
+        gui.user = User.users.get(user)
+    if use_anon and not gui.user:
+        gui.user = User.get_anon()
+    username = ''
+    if gui.user:
+        username = gui.user.username
+    if create_memory:
+        gui.session = kuaa.Memory.recreate(user=username)
+    elif user:
+        gui.session = kuaa.Session(source=gui.source, target=gui.target, user=user)
+
 def load(source='spa', target='grn', gui=None):
-    """Load source and target languages for translation."""
+    """Cargar lenguas fuente y meta para traducción."""
     s, t = kuaa.Language.load_trans(source, target)
-    gui.source = s
-    gui.target = t
+    if gui:
+        gui.source = s
+        gui.target = t
 
 def seg_trans(gui, session=None, single=False, process=True, verbosity=0):
-    """Translate sentence and return marked-up sentence with segments colored.
-    So far only uses first segmentation."""
+    """Traducir oración (accesible en gui) y devuelve la oración marcada (HTML) con
+    segmentos coloreados."""
     sentence = gui.sentence
     source = gui.source
     target = gui.target
@@ -84,6 +108,39 @@ def seg_trans(gui, session=None, single=False, process=True, verbosity=0):
         return segmentation.segments, segmentation.get_gui_segments(single=single)
     else:
         return [], sentence.get_html(single=single)
+
+## Creación y traducción de oración simple fuera de la interfaz web.
+
+def es_gn(oracion, html=False, user=None, max_sols=2, verbosity=0):
+    """Traducir una oración del castellano al guaraní."""
+    e, g = Language.load_trans('spa', 'grn', train=False)
+    session = make_session(e, g, user, create_memory=True)
+    d = Document(e, g, oracion, True, single=True, session=session)
+    s = d[0]
+    s.initialize(ambig=False, verbosity=verbosity)
+    s.solve(all_sols=max_sols > 1, max_sols=max_sols, verbosity=verbosity)
+    if s.segmentations:
+        segmentation = s.segmentations[0]
+        print("Segmentación encontrada: {}".format(segmentation))
+        segmentation.get_segs(html=False, single=True)
+        segmentation.connect(generate=False, verbosity=verbosity)
+        segmentation.generate(limit_forms=True)
+        if html:
+            segmentation.seg_html(single=True)
+        return segmentation
+
+def oración(text, user=None, max_sols=2, translate=True,
+            connect=False, generate=False, html=False, verbosity=0):
+    """Analizar y talvez también traducir una oración del castellano al guaraní."""
+    e, g = Language.load_trans('spa', 'grn', train=False)
+    session = make_session(e, g, user, create_memory=True)
+    s = Sentence.solve_sentence(e, g, text=text, session=session, max_sols=max_sols,
+                                translate=translate, verbosity=verbosity)
+    segmentations = s.get_all_segmentations(translate=translate, generate=generate,
+                                            connect=connect, html=html)
+    if segmentations:
+        return segmentations
+    return s
 
 def make_document(gui, text, single=False, html=False):
     """Create a Mainumby Document object with the text."""
@@ -126,26 +183,6 @@ def make_session(source, target, user, create_memory=False, use_anon=True):
     elif user:
         session = kuaa.Session(source=source, target=target, user=user)
     return session
-
-def start(gui, use_anon=True, create_memory=False):
-    """Initialize a run. Create a Session if there's a user, and we're not
-    using a Memory."""
-#    print("Starting {}, {}, {}".format(source, target, user))
-    # Read in current users so that we can find the current user and
-    # check for username overlap if a new account is created
-    User.read_all()
-    if isinstance(gui.user, str):
-        # Get the user from their username
-        gui.user = User.users.get(user)
-    if use_anon and not gui.user:
-        gui.user = User.get_anon()
-    username = ''
-    if gui.user:
-        username = gui.user.username
-    if create_memory:
-        gui.session = kuaa.Memory.recreate(user=username)
-    elif user:
-        gui.session = kuaa.Session(source=gui.source, target=gui.target, user=user)
 
 def get_user(username):
     """Find the user with username username."""

@@ -2,7 +2,7 @@
 #
 #   This file is part of the MDT project.
 #
-#   Copyleft 2014, 2016, 2017, 2018; HLTDI, PLoGS <gasser@indiana.edu>
+#   Copyleft 2014, 2016, 2017, 2018, 2019; HLTDI, PLoGS <gasser@indiana.edu>
 #   
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -90,12 +90,12 @@ class FSSet(set):
             fsset.remove(fs)
         return fsset
 
-    def u(self, f, strict=False):
+    def u(self, f, strict=False, verbose=False):
         """Unify this FSSet with either another FSSet or a FeatStruct."""
         if isinstance(f, FSSet):
             return self.unify(f)
         else:
-            return self.unify_FS(f, strict=strict)
+            return self.unify_FS(f, strict=strict, verbose=verbose)
 
     def unify(self, fs2):
         """Unify this FSSet with another one."""
@@ -163,6 +163,16 @@ class FSSet(set):
                             vals.append((targ_feat, u))
             for f, v in vals:
                 target[f] = v
+
+    def agree_with(self, source, force=False):
+        """Force self (actually return a changed copy) to agree with source (a FeatStruct)."""
+        fss = set()
+        for srcfeat, srcval in source.items():
+            for fs in list(self):
+                fs = FeatStruct.force_set(fs, srcfeat, srcval)
+                fs.freeze()
+                fss.add(fs)
+        return FSSet(fss)
 
     def agree_FSS(self, target, agrs, force=False, freeze=True):
         """Return an FSSet consisting of a copy of target agreeing on agrs features for each FeatStruct in self."""

@@ -54,6 +54,7 @@ import kuaa
 ## Creación y traducción de oración simple. Después de la segmentación inicial,
 ## se combinan los segmentos, usando patrones gramaticales ("joins") y grupos
 ## adicionales.
+
 def tra(oracion, html=False, user=None, verbosity=0):
     e, g = cargar()
     session = kuaa.make_session(e, g, user, create_memory=True)
@@ -109,17 +110,25 @@ def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
     if solve or segment:
         s.solve(all_sols=ambig or max_sols > 1, max_sols=max_sols,
                 translate=translate)
+        segmentations = []
         if s.segmentations:
+            segmentations.extend(s.segmentations)
+        if s.altsyns:
+            for sa in s.altsyns:
+                if sa.segmentations:
+                    segmentations.extend(sa.segmentations)
+        if segmentations:
+            kuaa.Segmentation.rank(segmentations)
             if translate and segment:
-                for seg in s.segmentations:
+                for seg in segmentations:
                     seg.get_segs(html=False, single=single)
                     if generate:
                         seg.generate()
-                segmentation = s.segmentations[0]
+            for sindex, segmentation in enumerate(segmentations):
+                print("SEGMENTATION {}".format(sindex))
                 for segment in segmentation.segments:
                     print("{}: {}".format(segment, segment.cleaned_trans))
-                return segmentation
-            return s.segmentations
+            return segmentations
     return s
 
 def ora1(sentence):

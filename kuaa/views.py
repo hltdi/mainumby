@@ -68,25 +68,17 @@ def end_gui():
 def init_session(create_memory=False, use_anon=False):
     if not GUI.source:
         load(gui=GUI)
-#        load_languages()
     # Load users and create session if there's a user
     # or if USE_ANON is True
     if not GUI.session:
         start(GUI, use_anon=use_anon, create_memory=create_memory)
 
 def solve_and_segment(isdoc=False, index=0):
-#    if GUI.
     GUI.segs, GUI.tra_seg_html = seg_trans(GUI, single=True, process=True)
 #    print("Solved segs: {}, html: {}".format(SEGS, SEG_HTML))
     GUI.init_sent(index)
     if isdoc:
         GUI.update_doc(index)
-
-#def doc_solve_and_segment(index):
-#    # Solve the current sentence
-#    solve_and_segment(True)
-#    # Update the document translation
-#    GUI.update_doc(index)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
