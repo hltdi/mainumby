@@ -767,8 +767,9 @@ class Sentence:
     def solve_sentence(sourceL, targetL, sentence=None, text='', session=None,
                        max_sols=2, translate=True, verbosity=0):
         if not sentence:
-            d = Document(sourceL, targetL, text, True, single=True, session=session)
-        sentence = d[0]
+            d = Document(language=sourceL, target=targetL, text=text, proc=True,
+                         single=True, session=session)
+            sentence = d[0]
         sentence.initialize(ambig=False, verbosity=verbosity)
         sentence.solve(all_sols=max_sols > 1, max_sols=max_sols, translate=translate, verbosity=verbosity)
         return sentence
@@ -1975,10 +1976,14 @@ class Sentence:
                 for seg in segmentations:
                     seg.get_segs(html=False, single=True)
                     if connect:
+                        # Search for Segment matches with Join and Group instances
+                        # and connect Segments if found
                         seg.connect(generate=False, verbosity=verbosity)
                     if generate:
+                        # Realize target morphology
                         seg.generate()
                         if html:
+                            # Generate the HTML for the GUI
                             seg.seg_html(single=True)
             for sindex, segmentation in enumerate(segmentations):
                 print("SEGMENTACIÓN {}".format(sindex))

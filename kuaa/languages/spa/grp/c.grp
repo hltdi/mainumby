@@ -19,6 +19,9 @@
 ->grn $v aja ; ^ aja 1 ; || 1, 0
 ** mientras~que $v ; ^ mientras~que 0
 ->grn $v aja ; ^ aja 1 ; || 1, 0
+## CONDICIÓN (también hay que incluir casos con subjuntivo...)
+** si $v ; ^ si 0
+->grn $v[pp=ramo] ; ^ $v 0 ; || -1, 0
 ## RAZÓN
 ** porque $v ; ^ porque 0
 ->grn $v[pp=gui] ; ^ $v 0 ; || -1, 0

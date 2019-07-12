@@ -2091,7 +2091,6 @@
 ->grn <hóga_n ahoja ; 0==0 n:n,poses:poses
 ** tema_n ; ^ tema_n 0 ; #40
 ->grn ñe'ẽrã_n ; 0==0 n:n,poses:poses ; #8
-->grn mbo'epyrã_n ; 0==0 n:n,poses:poses
 ** testimonio_n ; ^ testimonio_n 0 ; #146
 ->grn <hechaukaha_n ; 0==0 n:n,poses:poses ; #7
 ** tierra_n sin mal ; ^ tierra_n 0 ; #1883
@@ -7054,7 +7053,7 @@
 ** domicilio_n ; ^ domicilio_n 0
 ->grn <hóga_n ; 0==0 n:n,poses:poses
 ** domingo_n ; ^ domingo_n 0
-->grn arateĩ_n ; 0==0 n:n,poses:poses ; #23
+->grn arateĩ_n[n=0] ; 0==0 n:n,poses:poses ; #23
 ** doméstico_n ; ^ doméstico_n 0
 ->grn <hogaygua_n ; 0==0 n:n,poses:poses
 ** donación_n ; ^ donación_n 0
@@ -10391,7 +10390,7 @@
 ** lunes_n indeseado ; ^ lunes_n 0
 ->grn lunero_n ; 0==0 n:n,poses:poses
 ** lunes_n ; ^ lunes_n 0
-->grn arakõi_n ; 0==0 n:n,poses:poses
+->grn arakõi_n[n=0] ; 0==0 n:n,poses:poses
 ** lustrabotas_n ; ^ lustrabotas_n 0
 ->grn tambovera_n ; 0==0 n:n,poses:poses
 ** lustre_n ; ^ lustre_n 0
@@ -10781,7 +10780,7 @@
 ** marrón_n anaranjado ; ^ marrón_n 0
 ->grn yvysa'y_n ; 0==0 n:n,poses:poses
 ** martes_n ; ^ martes_n 0
-->grn araapy_n ; 0==0 n:n,poses:poses
+->grn araapy_n[n=0] ; 0==0 n:n,poses:poses
 ** martillo_n ; ^ martillo_n 0
 ->grn mbotaha_n ; 0==0 n:n,poses:poses
 ** masa_n grande de piedra ; ^ masa_n 0
@@ -15231,7 +15230,7 @@
 ** sutura_n ; ^ sutura_n 0
 ->grn ñembovyvy_n ; 0==0 n:n,poses:poses
 ** sábado_n ; ^ sábado_n 0
-->grn arapokõi_n ; 0==0 n:n,poses:poses
+->grn arapokõi_n[n=0] ; 0==0 n:n,poses:poses
 ** sábana_n ; ^ sábana_n 0
 ->grn savana_n ; 0==0 n:n,poses:poses
 ** sílaba_n ; ^ sílaba_n 0
@@ -16373,7 +16372,7 @@
 ->grn py'a_n ; 0==0 n:n,poses:poses ; #86
 ->grn <hye_n ; 0==0 n:n,poses:poses ; #125
 ** viernes_n ; ^ viernes_n 0
-->grn arapoteĩ_n ; 0==0 n:n,poses:poses
+->grn arapoteĩ_n[n=0] ; 0==0 n:n,poses:poses
 ** vigilante_n ; ^ vigilante_n 0 ; #2
 ->grn <huguái_n ; 0==0 n:n,poses:poses ; #34
 ->grn mboka_n ; 0==0 n:n,poses:poses ; #78

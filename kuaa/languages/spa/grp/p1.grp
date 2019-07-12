@@ -57,6 +57,20 @@
 ->grn hese'ỹ
 ** sin ellas ; ^ sin 0
 ->grn hese'ỹ
+** sin mí ; ^ sin 0
+->grn hese'ỹ
+** sin vos ; ^ sin 0
+->grn hese'ỹ
+** sin nosotros ; ^ sin 0
+->grn hese'ỹ
+** sin nosotras ; ^ sin 0
+->grn hese'ỹ
+** sin ustedes ; ^ sin 0
+->grn hese'ỹ
+** sin $n ; ^ sin 0
+->grn $n 'ỹrehe ; || 1, 0
+** sin $pro ; ^ sin 0
+->grn $pro 'ỹrehe ; || 1, 0
 ** sin %C ; ^ sin 0
 ->grn %C 'ỹrehe ; || 1, 0
 # HACIA

@@ -91,54 +91,46 @@ def load(source='spa', target='grn', gui=None):
 def seg_trans(gui, session=None, single=False, process=True, verbosity=0):
     """Traducir oración (accesible en gui) y devuelve la oración marcada (HTML) con
     segmentos coloreados."""
-    sentence = gui.sentence
-    source = gui.source
-    target = gui.target
-    sentence.initialize(ambig=True, verbosity=verbosity)
-    sentence.solve(translate=True, all_sols=False, all_trans=True, interactive=False,
-                   limit_trans=process, verbosity=verbosity)
-    if sentence.segmentations:
-        segmentation = sentence.segmentations[0]
-        segmentation.get_segs(single=single, html=False)
-        if process:
-            segmentation.connect(generate=False)
-        segmentation.generate(limit_forms=process)
-        segmentation.seg_html(single=single)
-#        segmentation.get_gui_segments(single=single)
-        return segmentation.segments, segmentation.get_gui_segments(single=single)
-    else:
-        return [], sentence.get_html(single=single)
+    return oración(sentence=gui.sentence, src=gui.source, targ=gui.target, session=gui.session,
+                   html=True, verbosity=verbosity)
+#    sentence = gui.sentence
+#    source = gui.source
+#    target = gui.target
+#    sentence.initialize(ambig=True, verbosity=verbosity)
+#    sentence.solve(translate=True, all_sols=False, all_trans=True, interactive=False,
+#                   limit_trans=process, verbosity=verbosity)
+#    if sentence.segmentations:
+#        segmentation = sentence.segmentations[0]
+#        segmentation.get_segs(single=single, html=False)
+#        if process:
+#            segmentation.connect(generate=False)
+#        segmentation.generate(limit_forms=process)
+#        segmentation.seg_html(single=single)
+#        return segmentation.segments, segmentation.get_gui_segments(single=single)
+#    else:
+#        return [], sentence.get_html(single=single)
 
 ## Creación y traducción de oración simple fuera de la interfaz web.
 
-def es_gn(oracion, html=False, user=None, max_sols=2, verbosity=0):
-    """Traducir una oración del castellano al guaraní."""
-    e, g = Language.load_trans('spa', 'grn', train=False)
-    session = make_session(e, g, user, create_memory=True)
-    d = Document(e, g, oracion, True, single=True, session=session)
-    s = d[0]
-    s.initialize(ambig=False, verbosity=verbosity)
-    s.solve(all_sols=max_sols > 1, max_sols=max_sols, verbosity=verbosity)
-    if s.segmentations:
-        segmentation = s.segmentations[0]
-        print("Segmentación encontrada: {}".format(segmentation))
-        segmentation.get_segs(html=False, single=True)
-        segmentation.connect(generate=False, verbosity=verbosity)
-        segmentation.generate(limit_forms=True)
-        if html:
-            segmentation.seg_html(single=True)
-        return segmentation
-
-def oración(text, user=None, max_sols=2, translate=True,
-            connect=False, generate=False, html=False, verbosity=0):
+def oración(text='', src=None, targ=None, user=None, session=None, sentence=None,
+            max_sols=2, translate=True, connect=True, generate=True, html=False,
+            verbosity=0):
     """Analizar y talvez también traducir una oración del castellano al guaraní."""
-    e, g = Language.load_trans('spa', 'grn', train=False)
-    session = make_session(e, g, user, create_memory=True)
-    s = Sentence.solve_sentence(e, g, text=text, session=session, max_sols=max_sols,
+    if not src and not targ:
+        src, targ = Language.load_trans('spa', 'grn', train=False)
+    if not session:
+        session = make_session(src, targ, user, create_memory=True)
+    s = Sentence.solve_sentence(src, targ, text=text, session=session, sentence=sentence,
+                                max_sols=max_sols,
                                 translate=translate, verbosity=verbosity)
     segmentations = s.get_all_segmentations(translate=translate, generate=generate,
                                             connect=connect, html=html)
-    if segmentations:
+    if html:
+        if segmentations:
+            segmentation = segmentations[0]
+            return segmentation.segments, segmentation.get_gui_segments(single=True)
+        return [], s.get_html(single=True)
+    elif segmentations:
         return segmentations
     return s
 

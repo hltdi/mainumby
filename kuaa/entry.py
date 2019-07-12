@@ -595,6 +595,8 @@ class Group(Entry):
             ttokens = tgroup.tokens
             ttokfeats = tgroup.features
             tpos = tgroup.pos
+            nsegs = len(superseg.segments)
+            nttoks = len(ttokens)
             # Set this just once; assume it's the same for all translations
             if not tindices:
                 tindices = range(len(ttokens))
@@ -603,7 +605,11 @@ class Group(Entry):
                 if 'align' in tfeats:
                     alignment = tfeats['align']
                 else:
-                    alignment = superseg.order
+                    alignment = superseg.order[:]
+                    if nttoks != nsegs:
+                        # Mismatch in number of tokens; change some final positions to -1
+                        for index in range(nsegs - nttoks):
+                            alignment[-(index+1)] = -1
             rev_align = Group.reverse_alignment(alignment, len(tgroup.tokens))
             agr = None
             if 'agr' in tfeats:

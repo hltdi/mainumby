@@ -56,85 +56,16 @@ import kuaa
 ## adicionales.
 
 def tra(oracion, html=False, user=None, verbosity=0):
-    e, g = cargar()
-    session = kuaa.make_session(e, g, user, create_memory=True)
-    d = kuaa.Document(e, g, oracion, True, single=True, session=session)
-    if len(d) == 0:
-        return
-    s = d[0]
-    s.initialize(ambig=False, verbosity=verbosity)
-    s.solve(all_sols=False, verbosity=verbosity)
-    if s.segmentations:
-        segmentation = s.segmentations[0]
-        print("Segmentación encontrada: {}".format(segmentation))
-        segmentation.get_segs(html=False, single=True)
-        segmentation.connect(generate=False, verbosity=verbosity)
-        segmentation.generate(limit_forms=True)
-        if html:
-            segmentation.seg_html(single=True)
-        return segmentation
-
-## Creación y traducción de oración simple. Después de la segmentación inicial,
-## se combinan los segmentos, usando patrones gramaticales ("joins").
-def tra1(oracion, html=False, user=None, verbosity=0):
-    e, g = cargar()
-    session = kuaa.make_session(e, g, user, create_memory=True)
-    d = kuaa.Document(e, g, oracion, True, single=True, session=session)
-    if len(d) == 0:
-        return
-    s = d[0]
-    s.initialize(ambig=False, verbosity=verbosity)
-    s.solve(all_sols=False, verbosity=verbosity)
-    if s.segmentations:
-        segmentation = s.segmentations[0]
-        print("Segmentación encontrada: {}".format(segmentation))
-        segmentation.get_segs(html=False, single=True)
-        segmentation.process(generate=False, verbosity=verbosity)
-        segmentation.generate(limit_forms=True)
-        if html:
-            segmentation.seg_html(single=True)
-        return segmentation
+    return ora(oracion, user=user, max_sols=2, translate=True,
+               connect=True, generate=True, html=html, verbosity=verbosity)
 
 ## Creación (y opcionalmente traducción) de oración simple y de documento.
-## Por defecto, las palabras en segmentos no se generan morfológicamente.
-def ora(sentence, ambig=False, solve=True, user=None, segment=True, max_sols=1,
-        single=True, translate=True, generate=False, verbosity=0):
-    e, g = cargar()
-    session = kuaa.make_session(e, g, user, create_memory=single)
-    d = kuaa.Document(e, g, sentence, True, single=single, session=session)
-    if len(d) == 0:
-        print("Parece que falta puntuación final en el documento.")
-        return
-    s = d[0]
-    s.initialize(ambig=ambig, verbosity=verbosity)
-    if solve or segment:
-        s.solve(all_sols=ambig or max_sols > 1, max_sols=max_sols,
-                translate=translate)
-        segmentations = []
-        if s.segmentations:
-            segmentations.extend(s.segmentations)
-        if s.altsyns:
-            for sa in s.altsyns:
-                if sa.segmentations:
-                    segmentations.extend(sa.segmentations)
-        if segmentations:
-            kuaa.Segmentation.rank(segmentations)
-            if translate and segment:
-                for seg in segmentations:
-                    seg.get_segs(html=False, single=single)
-                    if generate:
-                        seg.generate()
-            for sindex, segmentation in enumerate(segmentations):
-                print("SEGMENTATION {}".format(sindex))
-                for segment in segmentation.segments:
-                    print("{}: {}".format(segment, segment.cleaned_trans))
-            return segmentations
-    return s
 
-def ora1(sentence):
-    """A sentence prior to segmentation and translation."""
-    return ora(sentence, solve=False, segment=False, single=True, translate=False)
-
+def ora(text, user=None, max_sols=2, translate=True,
+        connect=True, generate=False, html=False, verbosity=0):
+    return kuaa.oración(text, user=user, max_sols=max_sols, translate=translate,
+                        connect=connect, generate=generate, html=html,
+                        verbosity=verbosity)
 def anal(sentence, verbosity=0):
     """Analyze a Spanish sentence, checking all groups."""
     e, g = cargar()

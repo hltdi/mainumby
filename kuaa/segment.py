@@ -86,7 +86,7 @@ class Seg:
     """
 
     # Maximum number of generated forms permitted, given a root and set of update features
-    max_gen_forms = 3
+    max_gen_forms = 4
 
     # colors to display segments in interface
     tt_colors = ['blue', 'sienna', 'green',
