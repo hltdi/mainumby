@@ -44,6 +44,7 @@
 #    Joins and SuperSegs
 # 2019
 # -- Limited disambiguation
+# -- Simplified shortcut functions by including much of them in __init__.py
 
 __version__ = 2.0
 
@@ -66,13 +67,10 @@ def ora(text, user=None, max_sols=2, translate=True,
     return kuaa.oración(text, user=user, max_sols=max_sols, translate=translate,
                         connect=connect, generate=generate, html=html,
                         verbosity=verbosity)
-def anal(sentence, verbosity=0):
-    """Analyze a Spanish sentence, checking all groups."""
-    e, g = cargar()
-    session = kuaa.start(e, g, None, create_memory=True)
-    d = kuaa.Document(e, g, sentence, True, single=True, session=session)
-    s = d[0]
-    return s.analyze(verbosity=verbosity)
+
+def anal(sentence, user=None, verbosity=0):
+    """Analizar una oración castellana."""
+    return kuaa.oración(sentence, user=user, translate=False, verbosity=verbosity)
 
 def g_anal(sentence, single=True, verbosity=0):
     """Analyze a Guarani sentence, checking all groups."""

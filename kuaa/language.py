@@ -460,12 +460,15 @@ class Language:
                 return numwords, 'N'
         # Try to find a sequence of name words
         name = True
+#        # MWE names are not special
+#        if Document.mwe_sep in name:
+#            name = False
         names = []
         while name and words:
             word = words.pop(0)
-            if word.istitle():
+            if len(word) > 0 and word[0].isupper():
                 names.append(word)
-            elif names and word in self.namejoin and words and words[0].istitle():
+            elif names and word in self.namejoin and words and words[0][0].isupper():
                 # Namejoin token, like 'y'
                 names.append(word)
             else:

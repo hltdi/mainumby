@@ -174,6 +174,8 @@ class Document(list):
     markers = [('\"', '\"'), ("(", ")"), ("{", "}")]
     wordsplit = ['—']
 
+    mwe_sep = '~'
+
     ## regular expressions for matching tokens
     # adjoining punctuation (except .)
     # before: ([{¡¿"*'`«“‘-–—=
@@ -877,6 +879,10 @@ class Sentence:
 
     def join_lex(self, verbosity=0):
         """Combine tokens into units for numerals and names."""
+        # Join words in MWE phrases (stored in the tree self.language.mwe)
+        if self.language.mwe:
+            joined = Sentence.join_from_tree(self.tokens, self.language.mwe)
+            self.tokens = joined
         tokens = []
         tok_position = 0
         spec_found = False
@@ -894,10 +900,6 @@ class Sentence:
                 tok_position += 1
         if spec_found:
             self.tokens = tokens
-        # Join other phrases (stored in the tree self.language.join)
-        if self.language.mwe:
-            joined = Sentence.join_from_tree(self.tokens, self.language.mwe)
-            self.tokens = joined
                 
     @staticmethod
     def join_from_tree(tokens, tree, position=0, subtree=None, result=None, to_join=None, previous_end=None):
@@ -920,14 +922,14 @@ class Sentence:
         if to_join is None:
             to_join = []
         next_token = tokens[position]
-#        print("Result: {}, position: {}, next_token: {}, current subtree: {}, previous end: {}".format(result, position, next_token, subtree, previous_end))
+#        print("Result: {}, position: {}, next_token: {}, previous end: {}".format(result, position, next_token, previous_end))
         if next_token in subtree:
             new_subtree = subtree[next_token]
 #            print(" In subtree, new subtree: {}".format(new_subtree))
             to_join.append(next_token)
             if '' in new_subtree:
                 # End of subtree is one option
-                new_token = '~'.join(to_join)
+                new_token = Document.mwe_sep.join(to_join)
                 if len(new_subtree) > 1:
                     # But there are other longer options
 #                    print(" End of subtree one option but not only one")
@@ -972,6 +974,10 @@ class Sentence:
         for index, token in enumerate(self.tokens):
 #            tok = self.toks[index]
 #            tokname = tok.name
+            if Document.mwe_sep in token:
+                # Don't change case in MWE
+                first_word = False
+                continue
             if first_word:
                 first_char = token[0]
                 if not self.language.is_punc(first_char):
@@ -990,8 +996,8 @@ class Sentence:
         """Segment contractions, join numerals, lowercase first word, normalize orthography and punctuation.
         Must follow word tokenization.
         Segmentation can add to the number of tokens in the sentence."""
-        self.lowercase()
         self.join_lex()
+        self.lowercase()
         # Examine tokens in reverse order because segment() might change the number
         for index, token in zip(range(len(self.tokens)-1, -1, -1), self.tokens[-1::-1]):
             self.segment(token, index)
