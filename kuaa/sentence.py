@@ -888,7 +888,7 @@ class Sentence:
         spec_found = False
         # Handle numeral word sequences
         while tok_position < len(self.tokens):
-            spec = self.language.find_special(self.tokens[tok_position:])
+            spec = self.language.find_special(self.tokens[tok_position:], tok_position)
             if spec:
                 newtokens, prefix = spec
                 spec_found = True
@@ -972,6 +972,7 @@ class Sentence:
         """
         first_word = True
         for index, token in enumerate(self.tokens):
+#            print("Token {}".format(token))
 #            tok = self.toks[index]
 #            tokname = tok.name
             if Document.mwe_sep in token:
@@ -982,6 +983,7 @@ class Sentence:
                 first_char = token[0]
                 if not self.language.is_punc(first_char):
                     if self.language.is_known(token.lower()):
+#                        print("First token lower {}".format(token))
                         self.tokens[index] = token.lower()
 #                        tok.name = tokname.lower()
                     # Otherwise this is a name, so keep it capitalized
@@ -2624,7 +2626,7 @@ class Segmentation:
 
     ## Generation, joining, group matching following initial segmentation
 
-    def connect(self, iters=6, generate=True, only1=True, verbosity=1):
+    def connect(self, iters=15, generate=True, only1=True, verbosity=1):
         """Iteratively match Join and Group instances where possible, create supersegs for
         matches, and optionally finish by generateing morphological surface forms for
         final segments."""

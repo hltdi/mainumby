@@ -3489,7 +3489,6 @@
 ** arroz_n con leche ; ^ arroz_n 0
 ->grn kamby_n arro ; 0==0 n:n,poses:poses
 ** arroz_n ; ^ arroz_n 0
-->grn arro_n ; 0==0 n:n,poses:poses ; #39
 ->grn avati'i_n ; 0==0 n:n,poses:poses
 ** arruga_n ; ^ arruga_n 0
 ->grn cha'ĩ_n ; 0==0 n:n,poses:poses

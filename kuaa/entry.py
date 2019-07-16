@@ -2142,11 +2142,12 @@ class Join(Entry):
                 # Add targfeats to feats in segindex Seg
                 segment = superseg.segments[segindex]
                 tfeats = segment.get_thead_feats()
-                for ti, th in enumerate(segment.thead):
-                    tf = th[2]
-                    newtf = tf.unify_FS(addfeats)
-                    if newtf != 'fail':
-                        th[2] = newtf
+                if segment.thead:
+                    for ti, th in enumerate(segment.thead):
+                        tf = th[2]
+                        newtf = tf.unify_FS(addfeats)
+                        if newtf != 'fail':
+                            th[2] = newtf
         if self.segment_order:
             if verbosity or self.debug:
                 print("  Swap {}".format(self.segment_order))
@@ -2198,6 +2199,19 @@ class Match:
         if len(matches) > 1:
             if verbosity:
                 print(" Resolving conflicts within {}".format(matches))
+            # First eliminate all matches that are covered by others
+            Match.sort_by_length(matches)
+            eliminated = []
+            new_matches = [matches[0]]
+            for match in matches[1:]:
+                if any([m.contains_match(match) for m in new_matches]):
+                    eliminated.append(match)
+                else:
+                    new_matches.append(match)
+            for elim in eliminated:
+                matches.remove(elim)
+            if len(matches) == 1:
+                return
             # Find mother-daughter relationships among matches, eliminating
             # all but daughters that are not mothers (leaves of tree).
             tree = Match.get_mother_daughter_tree(matches, verbosity=verbosity)
@@ -2234,6 +2248,12 @@ class Match:
         f1, l1 = self.first, self.last
         f2, l2 = other.first, other.last
         return f2 <= f1 <= l2 or f2 <= l1 <= l2
+
+    def contains_match(self, other):
+        """Does this Match contain the other?"""
+        f1, l1 = self.first, self.last
+        f2, l2 = other.first, other.last
+        return f1 <= f2 <= l2 < l1 or f1 < f2 <= l2 <= l1
 
     def overlap_prefer(self, other):
         if self.entry.specificity() > other.entry.specificity():

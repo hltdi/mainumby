@@ -439,7 +439,7 @@ class Language:
             return True
         return False
 
-    def find_special(self, words):
+    def find_special(self, words, position):
         """Determines whether the list of words begins with a 'special' sequence, either
           a numeral, either in the form of digits or words, or
           a name, consisting of one or more capitalized words, possibly joined by
@@ -467,13 +467,19 @@ class Language:
         while name and words:
             word = words.pop(0)
             if len(word) > 0 and word[0].isupper():
-                names.append(word)
+                if position == 0:
+                    if self.is_known(word.lower()):
+                        name = False
+                        break
+                    else:
+                        names.append(word)
             elif names and word in self.namejoin and words and words[0][0].isupper():
                 # Namejoin token, like 'y'
                 names.append(word)
             else:
                 # End of name sequence
                 name = False
+            position += 1
         if names:
             return names, 'C'
         return False
