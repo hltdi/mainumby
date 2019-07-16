@@ -2626,7 +2626,7 @@ class Segmentation:
 
     ## Generation, joining, group matching following initial segmentation
 
-    def connect(self, iters=15, generate=True, only1=True, verbosity=1):
+    def connect(self, iters=15, generate=True, only1=False, verbosity=1):
         """Iteratively match Join and Group instances where possible, create supersegs for
         matches, and optionally finish by generateing morphological surface forms for
         final segments."""

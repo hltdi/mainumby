@@ -226,8 +226,8 @@ class Seg:
         if verbosity:
             print("  Matching item {} with join elem {} and pos {}".format(self, join_elem, join_pos))
         if join_pos:
-            # If there's a POS for the join, it must be matched
-            if JoinToken.match_pos(join_pos, self.get_shead_pos()):
+            # If there's a POS for the join, it must be matched (there must also be a translation)
+            if self.translation and JoinToken.match_pos(join_pos, self.get_shead_pos()):
                 return True
             else:
                 return False
