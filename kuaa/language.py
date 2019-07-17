@@ -531,6 +531,29 @@ class Language:
 
     get_syn_groups = get_complex_groups
 
+    def get_from_MWEs(self, tokens, mwes=None):
+        """If list of tokens is in tree, return the leaf (its POS). Otherwise return False."""
+        if not mwes:
+            mwes = self.mwe
+        if not tokens:
+            return False
+        next_token = tokens.pop(0)
+        if next_token in mwes:
+            new_mwes = mwes[next_token]
+            if '' in new_mwes:
+                # End of tree is one possibility; return POS if this is the end of tokens
+                if not tokens:
+                    return new_mwes['']
+                elif len(new_mwes) > 1:
+                    # There are other longer options though
+                    return self.get_from_MWEs(tokens, new_mwes)
+                else:
+                    return False
+            else:
+                return self.get_from_MWEs(tokens, new_mwes)
+        else:
+            return False
+
     ### Directories and files
     
     @staticmethod
@@ -1823,7 +1846,7 @@ class Language:
                     line = line.strip()
                     if line:
                         line = line.split(',')
-                        mwes.append((line[0].split('~'), line[1]))
+                        mwes.append((line[0].split(Entry.mwe_sep), line[1].strip()))
             return mwes
         except IOError:
             print("No such MWE file as {}".format(path))
@@ -2104,6 +2127,7 @@ class Language:
         else:
             self.group_keys[token] = {head}
         group.language = self
+        group.set_pos()
         groups = self.groups[posindex]
         if head in groups:
             groups[head].append(group)

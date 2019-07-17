@@ -1210,6 +1210,7 @@ class GInst:
         # The GNode that is the head of this GInst
         if ghead_index > len(self.nodes) - 1:
             print("Problem instantiating {} for {}; head index {}".format(group, self.nodes, ghead_index))
+        self.ghead_index = ghead_index
         self.head = self.nodes[ghead_index]
         # Dict of variables specific to this group
         self.variables = {}

@@ -174,8 +174,6 @@ class Document(list):
     markers = [('\"', '\"'), ("(", ")"), ("{", "}")]
     wordsplit = ['—']
 
-    mwe_sep = '~'
-
     ## regular expressions for matching tokens
     # adjoining punctuation (except .)
     # before: ([{¡¿"*'`«“‘-–—=
@@ -901,7 +899,7 @@ class Sentence:
                 tok_position += 1
         if spec_found:
             self.tokens = tokens
-                
+
     @staticmethod
     def join_from_tree(tokens, tree, position=0, subtree=None, result=None, to_join=None, previous_end=None):
         """Return tokens list with any sub-sequence joined with _ if found in tree.
@@ -930,7 +928,7 @@ class Sentence:
             to_join.append(next_token)
             if '' in new_subtree:
                 # End of subtree is one option
-                new_token = Document.mwe_sep.join(to_join)
+                new_token = Entry.mwe_sep.join(to_join)
                 if len(new_subtree) > 1:
                     # But there are other longer options
 #                    print(" End of subtree one option but not only one")
@@ -982,7 +980,7 @@ class Sentence:
 #            print("Token {}".format(token))
 #            tok = self.toks[index]
 #            tokname = tok.name
-            if Document.mwe_sep in token:
+            if Entry.mwe_sep in token:
                 # Don't change case in MWE
                 first_word = False
                 continue
@@ -1221,6 +1219,10 @@ class Sentence:
                     anals = [anals]
                 for anal in anals:
                     root = anal['root']   # there has to be one of these
+                    if Entry.mwe_sep in root:
+                        pos = self.language.get_from_MWEs(root.split(Entry.mwe_sep))
+                        if pos:
+                            anal['pos'] = pos
                     cats = self.language.get_cats(root)
 #                    print("Cats for {}: {}".format(root, cats))
                     if cats:
@@ -2469,6 +2471,8 @@ class Segmentation:
             forms = treetrans.output_strings
 #            print("Forms for segment: {}".format(forms))
             gname = treetrans.ginst.group.name
+            head_index = treetrans.ginst.ghead_index
+#            print("TT {}, GInst {}, head index {}".format(treetrans, treetrans.ginst, treetrans.ginst.ghead_index))
 #            merger_groups = treetrans.get_merger_groups()
             tgroups = treetrans.ordered_tgroups
             late = False
@@ -2513,7 +2517,7 @@ class Segmentation:
             src_feats = [(s.analyses if s else None) for s in src_nodes]
 #            print("  src nodes {}; src feats {}".format(src_nodes, src_feats))
             seg = Segment(self, raw_indices, forms, src_tokens, treetrans=treetrans,
-                          session=self.session, gname=gname, sfeats=src_feats[0],
+                          session=self.session, gname=gname, sfeats=src_feats[head_index],
                           tgroups=tgroups, head=thead, tok=thead[-1],
 #                          merger_groups=merger_groups
                           has_paren=[pre_paren, paren_record, post_paren] if parenthetical else None,

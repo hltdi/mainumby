@@ -191,6 +191,8 @@ class Entry:
 
     ID = 1
     dflt_dep = 'dflt'
+    # also appears in Document
+    mwe_sep = '~'
     
     def __init__(self, name, language, id=0, trans=None, comment='', pos=''):
         """Initialize name and basic features: language, trans, count, id."""
@@ -394,6 +396,14 @@ class Group(Entry):
     def __repr__(self):
         """Print name."""
         return '{}:{}'.format(self.name, self.id)
+
+    def set_pos(self):
+        """Has to happen after instantiation because language is not set there."""
+        if not self.pos:
+            if Entry.mwe_sep in self.head:
+                pos = self.language.get_from_MWEs(self.head.split(Entry.mwe_sep))
+                if pos:
+                    self.pos = pos
 
     @staticmethod
     def make_name(tokens):
