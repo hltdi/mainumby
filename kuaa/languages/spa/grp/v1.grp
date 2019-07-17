@@ -1,6 +1,8 @@
 +t == ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
 ** poder_v[-r,+fin] ; ^ poder_v 0 ; // irregular
 ->grn katu_v[cat=che] ; 0==0 neg:neg,rel:rel
+** poder_v[+r,+fin] ; ^ poder_v 0 ; // irregular
+->grn katu_v[cat=che] ; 0==0 neg:neg,rel:rel
 ** haber_v[-r,+fin] en abundancia ; ^ haber_v 0
 ->grn mumu_v[cat=a]
 ** haber_v[-r,p=3,n=0,-neg] ; ^ haber_v 0 ; // irregular
@@ -2706,6 +2708,8 @@
 ** hablar_v[-r,+fin] ; ^ hablar_v 0 ; #776
 ->grn ñe'ẽ_v[cat=a] ; #1544
 ->grn ñemongeta_v[cat=a] ; #52
+** hablar_v[+r,+fin] ; ^ hablar_v 0
+->grn ñeñe'ẽ_v[cat=a]
 ** halagar_v[-r,+fin] de palabras ; ^ halagar_v 0 ; #2
 ->grn mbojuruhe'ẽ_v[cat=a]
 ** halagar_v[+r,+fin] ; ^ halagar_v 0
@@ -8844,10 +8848,11 @@
 ** mofar_v[+r,+fin] ; ^ mofar_v 0
 ->grn ñembohory_v[cat=a]
 ** moler_v[-r,+fin] ; ^ moler_v 0 ; #13
-->grn myangu'i_v[cat=a] ; #6
 ->grn mongu'i_v[cat=a] ; #32
 ->grn joso_v[cat=a] ; #60
-->grn ñembiso_v[cat=a] ; #4
+** moler_v[+r,+fin] ; ^ moler_v 0 ; #13
+->grn ñemongu'i_v[cat=a] ; #32
+->grn jejoso_v[cat=a] ; #60
 ** molestar_v[+r,+fin] ; ^ molestar_v 0 ; #1
 ->grn jepicha_v[cat=a] ; #4
 ->grn ñemyangekói_v[cat=a]

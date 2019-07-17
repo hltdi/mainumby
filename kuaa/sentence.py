@@ -417,9 +417,10 @@ class Document(list):
                             if match:
                                 word_tok = True
                             else:
-                                print("Something wrong: {} fails to be an acceptable token".format(token))
-                                if not input("Accept it anyway? "):
-                                    return
+                                print("Something wrong: {} fails to be an acceptable token; accepting it anyway".format(token))
+                                word_tok = True
+#                                if not input("Accept it anyway? "):
+#                                    return
                 if match:
                     pre, word, suf = match.groups()
                 else:
@@ -944,6 +945,12 @@ class Sentence:
                 # More tokens need to be found
                 return Sentence.join_from_tree(tokens, tree, position=position+1, subtree=new_subtree,
                                                result=result, to_join=to_join, previous_end=previous_end)
+        elif position == 0 and next_token[0].isupper() and next_token.lower() in subtree:
+            next_token = next_token.lower()
+            new_subtree = subtree[next_token]
+            to_join.append(next_token)
+            return Sentence.join_from_tree(tokens, tree, position=position+1, subtree=new_subtree,
+                                           result=result, to_join=to_join, previous_end=previous_end)
         else:
             # Fail
             if previous_end:

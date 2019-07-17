@@ -14818,6 +14818,8 @@
 ->grn yvypóra_n ; 0==0 n:n,poses:poses
 ** ser_n ; ^ ser_n 0
 ->grn <heko_n ; 0==0 n:n,poses:poses
+** ser_n humano ; ^ ser_n 0
+->grn yvypóra_n ; 0==0 n:n,poses:poses
 ** serenata_n ; ^ serenata_n 0
 ->grn kerambipu_n ; 0==0 n:n,poses:poses
 ** serenidad_n ; ^ serenidad_n 0 ; #1

@@ -570,7 +570,7 @@ class Group(Entry):
 
     def apply(self, superseg, verbosity=1):
         """Make changes specified in group to superseg containing segments matching it."""
-        if verbosity:
+        if verbosity or self.debug:
             print("Applying {} to {}".format(self, superseg))
         hindex = self.head_index
         segments = superseg.segments
@@ -614,13 +614,14 @@ class Group(Entry):
             agr = None
             if 'agr' in tfeats:
                 agr = tfeats['agr']
-            if verbosity:
-                print(" Applying trans group {}, tokens {}, pos {}, tokfeats {}, align {}, agr {}".format(tgroup, ttokens, tpos, ttokfeats, alignment, agr))
+            if verbosity or self.debug:
+                print(" Applying trans group {}, tokens {}, pos {}, tokfeats {}".format(tgroup, ttokens, tpos, ttokfeats))
+                print("   align {}, agr {}".format(alignment, agr))
             segorder = 0
             for tindex, segfeat, (segindex, segment) in zip(alignment, supersegfeats, enumerate(superseg.segments)):
                 # tindex specifies the final, potentially reordered position
-                if verbosity:
-                    print("  tindex {}, segindex {}, segment {}".format(tindex, segindex, segment))
+                if verbosity or self.debug:
+                    print("   tindex {}, segindex {}, segment {}".format(tindex, segindex, segment))
                 if tindex < 0:
                     if not ordered:
                         to_delete.append(segindex)
@@ -641,10 +642,10 @@ class Group(Entry):
                     if agr1:
                         if agr1[0] == tindex:
                             agr1 = agr1[1]
-                if verbosity:
-                    print("    Current ttoken {}, tfeats {}, segcleaned {}".format(ttoken, tfeats, segment.cleaned_trans))
+                if verbosity or self.debug:
+                    print("   Current ttoken {}, tfeats {}, segcleaned {}".format(ttoken, tfeats.__repr__(), segment.cleaned_trans))
                 if segindex == hindex:
-                    if verbosity:
+                    if verbosity or self.debug:
                         print("   Updating head segment {}, thead {}, troot {}, ttok {}, tpos {}".format(segment, segthead, troot, ttoken, tpos))
 #                    agr1 = agr[segindex] if agr else None
                     if isinstance(segfeat, FSSet):
@@ -660,11 +661,11 @@ class Group(Entry):
                     else:
                         new = [troot, tpos, ufeats]
                         newtrans.append(new)
-                    if verbosity:
+                    if verbosity or self.debug:
                         print("   Updating head segment {}, cleaned {}".format(segment, segment.cleaned_trans))
                 else:
-                    if verbosity:
-                        print("   Updating non-head segment {}, head {}, ttok {}, ttokfeats {}, segfeat , agr {}".format(segment, segthead, ttoken, tfeats.__repr__(), segfeat.__repr__(), agr1))
+                    if verbosity or self.debug:
+                        print("   Updating non-head segment {}, head {}, ttok {}, ttokfeats {}, segfeat {}, agr {}".format(segment, segthead, ttoken, tfeats.__repr__(), segfeat.__repr__(), agr1))
                     if not segthead:
                         if ttoken and not segspec:
                             newtrans.append(ttoken)
@@ -675,17 +676,17 @@ class Group(Entry):
                                 continue
                             # trans should be a [token, pos, feats] list
                             transfeats = trans[2]
+                            if isinstance(transfeats, FeatStruct):
+                                transfeats = FSSet(transfeats)
                             if transfeats and tfeats:
 #                                print("transfeats {} and tfeats {}".format(transfeats.__repr__(), tfeats.__repr__()))
                                 ufeats = transfeats.agree_with(tfeats)
                             else:
                                 ufeats = transfeats or tfeats
                             trans[2] = ufeats
-                    if verbosity:
-                        print("   Updated: {}, {}".format(segthead, segclean))
                 if newtrans:
-                    if verbosity:
-                        print("  New transations for segment {}: {}".format(segment, newtrans))
+                    if verbosity or self.debug:
+                        print("  New translations for segment {}: {}".format(segment, newtrans))
                     segment.translation = [[t] for t in newtrans]
                     segment.cleaned_trans = [[t] for t in newtrans]
                     if segment.thead is None:
@@ -693,7 +694,7 @@ class Group(Entry):
                     segment.thead = newtrans
         if alignment:
             superseg.order = rev_align
-            if verbosity:
+            if verbosity or self.debug:
                 print("  Updated superseg order {}".format(superseg.order))
 
     def match_nodes(self, snodes, head_sindex, verbosity=0):
@@ -1756,7 +1757,7 @@ class MorphoSyn(Entry):
                         src_feats = FSSet(src_feats)
                         if verbosity > 1 or self.debug:
                             print("    Agreeing: {}, {}".format(src_feats.__repr__(), trg_feats.__repr__()))
-                            print("    Types: source {}, target {}".format(type(src_feats), type(trg_feats)))
+#                            print("    Types: source {}, target {}".format(type(src_feats), type(trg_feats)))
                         # source features could be False
                         # Force target to agree with source on feature pairs
                         trg_feats_list[tf_index] = src_feats.agree_FSS(trg_feats, feats, force=True)

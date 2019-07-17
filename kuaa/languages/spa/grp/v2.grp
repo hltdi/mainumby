@@ -1,5 +1,5 @@
 ** poder_v[+r,+fin] $v ; ^ poder_v 0 ; // irregular
-->grn katu_v[cat=che] $v[+r] ; 1==1 n:ns,p:ps,tm:tmp,asp:asp ; 0==0 neg:neg,rel:rel
+->grn katu_v[cat=che,voz=smp,-rflx] $v[voz=reflx] ; || 0, 1 ; 0==0 neg:neg,rel:rel ; 1==1 n:ns,p:ps,tm:tmp,asp:asp
 ** querer_v[-r,+fin] que $v[tm=sbp] ; ^ querer_v 0 ; // + cláusula subjuntiva
 ->grn pota_v[subcat=i] $v[tmp=prs] ; || 0, -1, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,inter:inter ; 2==1 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,pp:pp
 ** seguir_v[-r,+fin] $v ; ^ seguir_v 0 ; // v has copied tns and sbj pers+num in morphosyns
