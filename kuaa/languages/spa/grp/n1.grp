@@ -14814,8 +14814,6 @@
 ->grn ama'ỹ_n ; 0==0 n:n,poses:poses
 ** ser_n[n=1] primitivos ; ^ ser_n 0
 ->grn mba'e_n ypy ; 0==0 n:n,poses:poses
-** ser_n humano ; ^ ser_n 0
-->grn yvypóra_n ; 0==0 n:n,poses:poses
 ** ser_n ; ^ ser_n 0
 ->grn <heko_n ; 0==0 n:n,poses:poses
 ** ser_n humano ; ^ ser_n 0

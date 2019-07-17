@@ -778,7 +778,7 @@
 ** únicamente
 ->grn mante
 ** uno
-->grn máva
+->grn peteĩ
 ** unánimemente
 ->grn oñoñe'ẽme
 ** velozmente
@@ -1557,10 +1557,12 @@
 ->grn jerére
 ->grn rupi
 ** arco~iris
-->grn ararokái_n
-->grn jy'y_n
-->grn júi_n
+->grn ararokái_n[n=0]
+->grn jy'y_n[n=0]
+->grn júi_n[n=0]
 ** de~qué~clase
 ->grn mba'eichagua
 ** por~último
 ->grn ipahápe
+** el~ser~humano
+->grn yvypóra

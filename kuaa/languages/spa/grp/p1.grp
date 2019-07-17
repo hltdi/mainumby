@@ -82,8 +82,8 @@
 ** desde_prp $n ; ^ desde_prp 0
 ->grn $n[caso=gui] ; ^ $n 0 ; || -1, 0
 ->grn $n[caso=guive] ; ^ $n 0 ; || -1, 0
-** desde_prp hace %N $dur ; ^ desde_prp 0
-->grn ojapóma %N $dur ; || 0, -1, 1, 2
+** desde~hace %N $dur ; ^ desde~hace 0
+->grn ojapóma %N $dur ; || 0, 1, 2
 ** desde_prp %C ; ^ desde_prp 0
 ->grn %C guive ; || 1, 0
 ** desde_prp %ND ; ^ desde_prp 0

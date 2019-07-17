@@ -2355,6 +2355,7 @@ class Segmentation:
                 thindex = thead.index
                 tfeats = thead.snode_anal
                 ttoken = tfeats[0] or [thead.token]
+#                print("tt {}, thead {}, ttoken {}, snodes {}".format(tt, thead, ttoken, tt.snodes))
                 tsnode = tt.snodes[thindex]
                 ttok = tsnode.tok
                 tcats = tsnode.cats
