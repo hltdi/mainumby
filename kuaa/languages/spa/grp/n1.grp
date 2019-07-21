@@ -17179,8 +17179,6 @@
 ->grn pýri_n ; ^ pýri_n 0 ; || -1, 0
 ** en apuro_n[n=1] ; ^ apuro_n 1
 ->grn tesaparápe_n ; ^ tesaparápe_n 0 ; || -1, 0
-** en casa_n ; ^ casa_n 1
-->grn kyvõ_n ; ^ kyvõ_n 0 ; || -1, 0
 ** en cuclillas_n ; ^ cuclillas_n 1
 ->grn takambyjái_n ; ^ takambyjái_n 0 ; || -1, 0
 ** en decúbito_n dorsal ; ^ decúbito_n 1

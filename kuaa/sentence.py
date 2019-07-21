@@ -2461,7 +2461,6 @@ class Segmentation:
         max_index = -1
         sentence = self.sentence
         tokens = [a[0] for a in sentence.analyses]
-#            sentence.tokens
         indices_covered = []
         # Token lists for parenthetical segments
         parentheticals = []
@@ -2469,11 +2468,8 @@ class Segmentation:
         has_parens = []
         for treetrans, raw_indices, thead in tt:
             forms = treetrans.output_strings
-#            print("Forms for segment: {}".format(forms))
             gname = treetrans.ginst.group.name
             head_index = treetrans.ginst.ghead_index
-#            print("TT {}, GInst {}, head index {}".format(treetrans, treetrans.ginst, treetrans.ginst.ghead_index))
-#            merger_groups = treetrans.get_merger_groups()
             tgroups = treetrans.ordered_tgroups
             late = False
             start, end = raw_indices[0], raw_indices[-1]
@@ -2484,7 +2480,6 @@ class Segmentation:
                 src_feats = [(s.analyses if s else None) for s in src_nodes]
                 src_toks = [s.tok for s in src_nodes]
                 self.get_untrans_segs(src_tokens, end_index, gname=gname,
-#                                      merger_groups=merger_groups,
                                       src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered)
             if start < max_index:
                 # There's a gap between the portions of the segment; this is a parenthetical segment within an outer one
@@ -2505,6 +2500,8 @@ class Segmentation:
                     else:
                         pre_paren.append(token)
                 else:
+                    # Add to parenthetical
+                    print("Adding {} to parenthetical".format(token))
                     parenthetical.append(token)
                     paren_record.append((token, tokindex))
             if parenthetical:
@@ -2512,30 +2509,24 @@ class Segmentation:
                 src_tokens = pre_paren + parenthetical + post_paren
             else:
                 src_tokens = pre_paren
-#            print("Creating Segment with parenthetical {}, source tokens {}, head {}".format(parenthetical, src_tokens, thead))
             src_nodes = [sentence.get_node_by_raw(index) for index in range(start, end+1)]
             src_feats = [(s.analyses if s else None) for s in src_nodes]
-#            print("  src nodes {}; src feats {}".format(src_nodes, src_feats))
             seg = Segment(self, raw_indices, forms, src_tokens, treetrans=treetrans,
                           session=self.session, gname=gname, sfeats=src_feats[head_index],
                           tgroups=tgroups, head=thead, tok=thead[-1],
-#                          merger_groups=merger_groups
                           has_paren=[pre_paren, paren_record, post_paren] if parenthetical else None,
                           is_paren=late)
             if parenthetical:
                 has_parens.append(seg)
             if late:
                 pindices = seg.indices
-#                print("Looking for enclosing segment for parenthetical {} with tokens {} and indices {}".format(seg, ptokens, pindices))
                 for hp in has_parens:
                     hp_pindices = hp.paren_indices
                     if pindices == hp_pindices:
-#                        print(" Found matching enclosing segment {}".format(hp))
                         hp.paren_seg = seg
             print("Segmento (traducido) {}->{}: {}={} ({}); {}".format(start, end, src_tokens, seg.translation, seg.head_tok, seg.cleaned_trans))
             self.segments.append(seg)
             indices_covered.extend(raw_indices)
-#            print(" Indices covered: {}".format(indices_covered))
             max_index = max(max_index, end)
             end_index = end
         if max_index+1 < len(tokens):
@@ -2545,23 +2536,19 @@ class Segmentation:
             src_feats = [(s.analyses if s else None) for s in src_nodes]
             src_toks = [s.tok for s in src_nodes]
             self.get_untrans_segs(src_tokens, max_index, gname=gname,
-#                                  merger_groups=merger_groups,
                                   src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered)
         # Check whether untranslated parentheticals have gotten segments
         for parenthetical in parentheticals:
             ptokens = [p[0] for p in parenthetical]
             pindices = [p[1] for p in parenthetical]
-#            print("Checking parenthetical: {}, {}".format(ptokens, pindices))
             found = False
             i = 0
             while not found and i < len(self.segments):
                 segment = self.segments[i]
                 if segment.tokens == ptokens and segment.indices == pindices:
-#                    print(" Segmento {} ya creado".format(segment))
                     found = True
                 i += 1
             if not found:
-#                print(" Creating untranslated segment")
                 newsegs = self.get_untrans_segs(ptokens, pindices[0]-1, indices_covered=indices_covered,
                                                 is_paren=True)
                 # hopefully only one of these
@@ -2570,7 +2557,6 @@ class Segmentation:
                     pindices = newseg.indices
                     for hp in has_parens:
                         if pindices == hp.paren_indices:
-#                            print(" Found matching enclosing segment for untrans segment {}".format(newseg))
                             hp.paren_seg = newseg
         # Sort the segments by start indices in case they're not in order (because of parentheticals)
         self.segments.sort(key=lambda s: s.indices[0])

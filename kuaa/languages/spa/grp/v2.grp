@@ -12,3 +12,9 @@
 ->grn ñembohory_v[cat=a] $n rehe ; || 0, 2, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
 ** burlar_v[+r,+fin] de $pro; ^ burlar_v 0
 ->grn ñembohory_v[cat=a] $pro[caso=re] ; || 0, -1, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+** recordar_v[-r,po=3,no=0] ; ^ recordar_v 0
+->grn mandu'a_v[cat=che] hese ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+** recordar_v[-r,po=3,no=1] ; ^ recordar_v 0
+->grn mandu'a_v[cat=che] hesekuéra ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+** recordar_v[-r,po=3,no=0] $n ; ^ recordar_v 0
+->grn mandu'a_v[cat=che] $n rehe ; || 0, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter

@@ -4282,10 +4282,6 @@
 ->grn jepovyvy_v[cat=a]
 ** reconocer_v[-r,+fin] ; ^ reconocer_v 0 ; #63
 ->grn <hechakuaa_v[cat=a]
-** recordar_v[-r,po=3,no=0] ; ^ recordar_v 0
-->grn mandu'a_v[cat=che] (hese) ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
-** recordar_v[-r,po=3,no=1] ; ^ recordar_v 0
-->grn mandu'a_v[cat=che] (hesekuéra) ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
 ** recordar_v[-r,po=1,no=0] ; ^ recordar_v 0
 ->grn mandu'a_v[cat=che] cherehe ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
 ** recordar_v[-r,po=2,no=0] ; ^ recordar_v 0

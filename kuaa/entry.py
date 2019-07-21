@@ -2247,6 +2247,9 @@ class Match:
             if verbosity and eliminated:
                 print(" Eliminating other overlapping matches: {}".format(eliminated))
             for elim in eliminated:
+                if elim not in matches:
+                    print("==>For some reason {} is no longer in {}".format(elim, matches))
+                    continue
                 matches.remove(elim)
             if len(matches) > 1:
                 # Sort in case we're only picking the first one to realize
