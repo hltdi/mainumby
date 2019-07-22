@@ -125,8 +125,8 @@ class Seg:
         self.html = []
         self.source_html = None
         # parentheses
-        self.has_paren = False
-        self.is_paren = False
+#        self.has_paren = False
+#        self.is_paren = False
         # punctuation
         self.is_punc = False
         self.record = None
@@ -373,24 +373,24 @@ class Seg:
     ## Web app
 
     def set_source_html(self, index):
-        if self.has_paren:
-            self.source_html = "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.pre_token_str)
-            self.source_html += "<span id=parenthetical> {} </span>".format(self.paren_token_str)
-            self.source_html += "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.post_token_str)
-        else:
-            cap = index == 0 and self.sentence.capitalized
-            tokstr = self.original_token_str
-            if cap:
-                tokstr = tokstr[0].upper() + tokstr[1:]
-            self.source_html = "<span class='fuente' style='color:{};'> {} </span>".format(self.color, tokstr)
+#        if self.has_paren:
+#            self.source_html = "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.pre_token_str)
+#            self.source_html += "<span id=parenthetical> {} </span>".format(self.paren_token_str)
+#            self.source_html += "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.post_token_str)
+#        else:
+        cap = index == 0 and self.sentence.capitalized
+        tokstr = self.original_token_str
+        if cap:
+            tokstr = tokstr[0].upper() + tokstr[1:]
+        self.source_html = "<span class='fuente' style='color:{};'> {} </span>".format(self.color, tokstr)
 
     def get_gui_source(self, paren_color='Silver'):
-        if self.has_paren:
-            return ["<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.pre_token_str),
-                    "<span class='fuente' style='color:{};'> {} </span>".format(paren_color, self.paren_token_str),
-                    "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.post_token_str)]
-        else:
-            return "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.token_str)
+#        if self.has_paren:
+#            return ["<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.pre_token_str),
+#                    "<span class='fuente' style='color:{};'> {} </span>".format(paren_color, self.paren_token_str),
+#                    "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.post_token_str)]
+#        else:
+        return "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.token_str)
 
     def set_single_html(self, index, verbosity=0):
         """Set the HTML markup for this segment as a colored segment in source and dropdown menu
@@ -766,8 +766,7 @@ class Segment(Seg):
     """Sentence segmentation segment, realization of a Group, possibly merged with another. Displayed in GUI."""
 
     def __init__(self, segmentation, indices, translation, tokens, color=None, space_before=1,
-                 treetrans=None, sfeats=None,
-                 tgroups=None, has_paren=False, is_paren=False,
+                 treetrans=None, sfeats=None, tgroups=None,
                  head=None, tok=None, spec_indices=None, session=None, gname=None, is_punc=False):
 #        print("Creating Segment for indices {}, translation {}, head {}, sfeats {}".format(indices, translation, head, sfeats))
         Seg.__init__(self, segmentation)
@@ -792,27 +791,27 @@ class Segment(Seg):
         self.translation = [(t.split() if isinstance(t, str) else t) for t in translation]
         self.cleaned_trans = None
         self.tokens = tokens
-        # Pre-parenthetical, parenthetical, post-parenthetical portions
-        self.has_paren = has_paren
-        # Whether this an unattached segment within another segment
-        self.is_paren = is_paren
+#        # Pre-parenthetical, parenthetical, post-parenthetical portions
+#        self.has_paren = has_paren
+#        # Whether this an unattached segment within another segment
+#        self.is_paren = is_paren
         self.token_str = ' '.join(tokens)
         self.raw_token_str = self.token_str[:]
-        # Later set this to the Segment instance that intervenes within this one
-        self.paren_seg = None
-        # Stuff to do when there's a parenthetical segment within the segment
-        if has_paren:
-            pre, paren, post = has_paren
-            self.paren_tokens = [p[0] for p in paren]
-            self.paren_indices = [p[1] for p in paren]
-            self.original_tokens = pre + post
-            self.pre_token_str = ' '.join(pre)
-            self.paren_token_str = ' '.join(self.paren_tokens)
-            # There could be special tokens in the parenthetical part
-            self.paren_token_str = Seg.clean_spec(self.paren_token_str)
-            self.post_token_str = ' '.join(post)
-        else:
-            self.original_tokens = tokens
+#        # Later set this to the Segment instance that intervenes within this one
+#        self.paren_seg = None
+#        # Stuff to do when there's a parenthetical segment within the segment
+#        if has_paren:
+#            pre, paren, post = has_paren
+#            self.paren_tokens = [p[0] for p in paren]
+#            self.paren_indices = [p[1] for p in paren]
+#            self.original_tokens = pre + post
+#            self.pre_token_str = ' '.join(pre)
+#            self.paren_token_str = ' '.join(self.paren_tokens)
+#            # There could be special tokens in the parenthetical part
+#            self.paren_token_str = Seg.clean_spec(self.paren_token_str)
+#            self.post_token_str = ' '.join(post)
+#        else:
+        self.original_tokens = tokens
         self.original_token_str = ' '.join(self.original_tokens)
         # If there are special tokens in the source language, fix them here.
 #        if '%' in self.token_str: # or '~' in self.token_str:
@@ -882,15 +881,14 @@ class Segment(Seg):
 class SNode:
     """Sentence token and its associated analyses and variables."""
 
-    def __init__(self, token, index, analyses, sentence, raw_indices,
-                 toks=None, tok=None, rawtoken=None, toktype=1): #, del_indices=None):
-#        print("Creating SNode with args {}, {}, {}, {}".format(token, index, analyses, sentence))
+    def __init__(self, index, analyses, sentence, raw_indices,
+                 toks=None, tok=None, toktype=1): #, del_indices=None):
         # Raw form in sentence (possibly result of segmentation)
-        self.token = token
+        self.token = tok.fullname
         # Token type (used to distinguish prefix from suffix punctuation.
         self.toktype = toktype
         # Original form of this node's token (may be capitalized)
-        self.rawtoken = rawtoken
+#        self.rawtoken = rawtoken
         # Token objects
         self.toks = toks
         # Head Token object
@@ -931,7 +929,7 @@ class SNode:
         self.translations = []
         ## Groups found during candidate search
         self.group_cands = []
-#        print("SNode {} created, with analyses: {}".format(self, self.analyses))
+#        print("Created SNode with tok {}, token {}, analyses {}".format(self.tok, self.token, self.analyses))
 
     def __repr__(self):
         """Print name."""

@@ -1777,7 +1777,7 @@ class MorphoSyn(Entry):
                         break
         if self.del_indices:
             for i, j in self.del_indices:
-                elements[i][0] = '~' + elements[i][0]
+                elements[i][0] = Token.del_char + elements[i][0]
                 if tokens:
                     tokens[i].delete = True
                 if j != -1:
@@ -2484,10 +2484,10 @@ class SentToken(Token):
     def __repr__(self):
         prechar = "<"
         postchar = ">"
-        if self.prefix:
-            return prechar + self.prefix + Token.spec_sep_char + self.name + postchar
-        else:
-            return prechar + self.name + postchar
+#        if self.prefix:
+#            return prechar + self.fullname + postchar
+#        else:
+        return prechar + self.fullname + postchar
 
     def get_keys(self, index=0):
         """Keys for finding group candidates."""

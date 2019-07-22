@@ -389,32 +389,40 @@ class Document(list):
         suf = ''
         word = None
         for token in text_tokens:
+            # Token is a string separated by whitespace from others.
+            # Classify token
             tok_subtype = 0
             word_tok = False
             number = False
             punctuation = False
             match = Document.punc_re.match(token)
             if match:
+                # token is punctuation
                 tok_subtype = 1
                 pre = ''; suf = ''; word = match.groups()[0]
             else:
                 match = Document.number1_re.match(token)
                 if match:
+                    # token is a number
                     tok_subtype = 2
                 else:
                     match = Document.number_re.match(token)
                     if match:
+                        # token is a number
                         tok_subtype = 2
                     else:
                         match = Document.word1_re.match(token)
                         if match:
+                            # token is a word
                             word_tok = True
                         else:
                             # Introduced new more lenient regex 2018.12.26 (replacing word_re)
                             match = Document.word_lenient_re.match(token)
                             if match:
+                                # token is word
                                 word_tok = True
                             else:
+                                # token is unclassifiable; call it a word anyway
                                 print("Something wrong: {} fails to be an acceptable token; accepting it anyway".format(token))
                                 word_tok = True
 #                                if not input("Accept it anyway? "):
@@ -636,7 +644,6 @@ class Sentence:
                 self.rawtokens = tokens[:]
             else:
                 self.rawtokens = rawtokens
-#            self.instantiate_tokens(tokens)
         else:
             self.raw = raw
             self.tokens = None
@@ -1189,11 +1196,12 @@ class Sentence:
         del_indices = {}
         toktype = 1
         tokobjs = []
-        for tokindex, (tokobj, rawtok, (token, anals)) in enumerate(zip(self.toks, self.tokens, self.analyses)):
+        for tokindex, (tokobj, anals) in enumerate(zip(self.toks, [a[1] for a in self.analyses])):
+            fulltok = tokobj.fullname
             if self.toktypes:
                 toktype = self.toktypes[tokindex]
             tokobjs.append(tokobj)
-            if not incl_del and Token.del_token(token):
+            if not incl_del and tokobj.delete:
                 # Ignore elements deleted by MorphoSyns
                 if anals and 'target' in anals[0]:
                     target_index = tokindex + anals[0]['target']
@@ -1238,21 +1246,21 @@ class Sentence:
                         anal['pos'] = pos
                 raw_indices = del_indices.get(tokindex, [])
                 raw_indices.append(tokindex)
-                self.nodes.append(SNode(token, index, anals, self, raw_indices, toks=tokobjs, tok=tokobj, rawtoken=rawtok, toktype=toktype))
+                self.nodes.append(SNode(index, anals, self, raw_indices, toks=tokobjs, tok=tokobj, toktype=toktype))
                 tokobjs = []
                 index += 1
             else:
                 # No analysis, just use the raw string
                 # First check for categories
-                cats = self.language.get_cats(token)
+                cats = self.language.get_cats(fulltok)
                 if cats:
                     anals = [{'cats': cats}]
-                elif token.istitle():
+                elif fulltok.istitle():
                     # If token is capitalized, it's a name.
                     anals = [{'cats': ['$nm']}]
                 else:
                     anals = None
-                self.nodes.append(SNode(token, index, anals, self, [tokindex], rawtoken=rawtok, tok=tokobj, toktype=toktype))
+                self.nodes.append(SNode(index, anals, self, [tokindex], tok=tokobj, toktype=toktype))
                 tokobjs = []
                 incorp_indices = []
                 index += 1
@@ -2462,16 +2470,16 @@ class Segmentation:
         sentence = self.sentence
         tokens = [a[0] for a in sentence.analyses]
         indices_covered = []
-        # Token lists for parenthetical segments
-        parentheticals = []
+#        # Token lists for parenthetical segments
+#        parentheticals = []
         # Segments containing parentheticals
-        has_parens = []
+#        has_parens = []
         for treetrans, raw_indices, thead in tt:
             forms = treetrans.output_strings
             gname = treetrans.ginst.group.name
             head_index = treetrans.ginst.ghead_index
             tgroups = treetrans.ordered_tgroups
-            late = False
+#            late = False
             start, end = raw_indices[0], raw_indices[-1]
             if start > max_index+1:
                 # there's a gap between the farthest segment to the right and this one; make one or more untranslated segments
@@ -2481,49 +2489,47 @@ class Segmentation:
                 src_toks = [s.tok for s in src_nodes]
                 self.get_untrans_segs(src_tokens, end_index, gname=gname,
                                       src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered)
-            if start < max_index:
-                # There's a gap between the portions of the segment; this is a parenthetical segment within an outer one
-                late = True
+#            if start < max_index:
+#                # There's a gap between the portions of the segment; this is a parenthetical segment within an outer one
+#                late = True
             # There may be gaps in the source tokens for a group; fill these with (...tokens...)
             src_tokens = []
-            parenthetical = []
+#            parenthetical = []
             pre_paren = []
-            post_paren = []
-            paren_record = []
+#            post_paren = []
+#            paren_record = []
             for tokindex in range(start, end+1):
                 token = tokens[tokindex]
                 if tokindex in raw_indices:
                     # A token in the group
                     # First check whether there is a parenthetical before this
-                    if parenthetical:
-                        post_paren.append(token)
-                    else:
-                        pre_paren.append(token)
+#                    if parenthetical:
+#                        post_paren.append(token)
+#                    else:
+                    pre_paren.append(token)
                 else:
                     # Add to parenthetical
-                    print("Adding {} to parenthetical".format(token))
-                    parenthetical.append(token)
-                    paren_record.append((token, tokindex))
-            if parenthetical:
-                parentheticals.append(paren_record)
-                src_tokens = pre_paren + parenthetical + post_paren
-            else:
-                src_tokens = pre_paren
+                    print("Something wrong with position {}, should be in {}".format(tokindex, raw_indices))
+#                    parenthetical.append(token)
+#                    paren_record.append((token, tokindex))
+#            if parenthetical:
+#                parentheticals.append(paren_record)
+#                src_tokens = pre_paren + parenthetical + post_paren
+#            else:
+            src_tokens = pre_paren
             src_nodes = [sentence.get_node_by_raw(index) for index in range(start, end+1)]
             src_feats = [(s.analyses if s else None) for s in src_nodes]
             seg = Segment(self, raw_indices, forms, src_tokens, treetrans=treetrans,
                           session=self.session, gname=gname, sfeats=src_feats[head_index],
-                          tgroups=tgroups, head=thead, tok=thead[-1],
-                          has_paren=[pre_paren, paren_record, post_paren] if parenthetical else None,
-                          is_paren=late)
-            if parenthetical:
-                has_parens.append(seg)
-            if late:
-                pindices = seg.indices
-                for hp in has_parens:
-                    hp_pindices = hp.paren_indices
-                    if pindices == hp_pindices:
-                        hp.paren_seg = seg
+                          tgroups=tgroups, head=thead, tok=thead[-1])
+#            if parenthetical:
+#                has_parens.append(seg)
+#            if late:
+#                pindices = seg.indices
+#                for hp in has_parens:
+#                    hp_pindices = hp.paren_indices
+#                    if pindices == hp_pindices:
+#                        hp.paren_seg = seg
             print("Segmento (traducido) {}->{}: {}={} ({}); {}".format(start, end, src_tokens, seg.translation, seg.head_tok, seg.cleaned_trans))
             self.segments.append(seg)
             indices_covered.extend(raw_indices)
@@ -2537,27 +2543,27 @@ class Segmentation:
             src_toks = [s.tok for s in src_nodes]
             self.get_untrans_segs(src_tokens, max_index, gname=gname,
                                   src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered)
-        # Check whether untranslated parentheticals have gotten segments
-        for parenthetical in parentheticals:
-            ptokens = [p[0] for p in parenthetical]
-            pindices = [p[1] for p in parenthetical]
-            found = False
-            i = 0
-            while not found and i < len(self.segments):
-                segment = self.segments[i]
-                if segment.tokens == ptokens and segment.indices == pindices:
-                    found = True
-                i += 1
-            if not found:
-                newsegs = self.get_untrans_segs(ptokens, pindices[0]-1, indices_covered=indices_covered,
-                                                is_paren=True)
-                # hopefully only one of these
-                if newsegs and len(newsegs) > 0:
-                    newseg = newsegs[0]
-                    pindices = newseg.indices
-                    for hp in has_parens:
-                        if pindices == hp.paren_indices:
-                            hp.paren_seg = newseg
+#        # Check whether untranslated parentheticals have gotten segments
+#        for parenthetical in parentheticals:
+#            ptokens = [p[0] for p in parenthetical]
+#            pindices = [p[1] for p in parenthetical]
+#            found = False
+#            i = 0
+#            while not found and i < len(self.segments):
+#                segment = self.segments[i]
+#                if segment.tokens == ptokens and segment.indices == pindices:
+#                    found = True
+#                i += 1
+#            if not found:
+#                newsegs = self.get_untrans_segs(ptokens, pindices[0]-1, indices_covered=indices_covered,
+#                                                is_paren=True)
+#                # hopefully only one of these
+#                if newsegs and len(newsegs) > 0:
+#                    newseg = newsegs[0]
+#                    pindices = newseg.indices
+##                    for hp in has_parens:
+##                        if pindices == hp.paren_indices:
+##                            hp.paren_seg = newseg
         # Sort the segments by start indices in case they're not in order (because of parentheticals)
         self.segments.sort(key=lambda s: s.indices[0])
         if html:
@@ -2572,31 +2578,29 @@ class Segmentation:
                 segment.set_html(i)
 
     def get_gui_segments(self, single=False):
-        """These may differ from Segments because of intervening segments within outer segments."""
-        segments = []
-        enclosings = []
-        parens = []
-        for segment in self.segments:
-            if segment.has_paren:
-                paren_seg = segment.paren_seg
-                if single:
-                    tokens, color, html, index, trans1, src_html = segment.html
-                    ptokens, pcolor, phtml, pindex, trans1, psrc = paren_seg.html
-                else:
-                    tokens, color, html, index, src_html = segment.html
-                    ptokens, pcolor, phtml, pindex, psrc = paren_seg.html
-                gui_src = segment.get_gui_source(pcolor)
-                preseg = tokens, color, html, index, gui_src[0]
-                parenseg = ptokens, pcolor, phtml, pindex, gui_src[1]
-                postseg = tokens, color, html, index, gui_src[2]
-#                print("Adding gui segments for {}".format(gui_src))
-                segments.extend([preseg, parenseg, postseg])
-            elif not segment.is_paren:
-                segments.append(segment.html)
-#        if single:
-#            for i, s in enumerate(segments):
-#                print("Initial trans for seg {}: {}".format(i, s[4]))
-        return segments
+        """HTML for Segments in this Segmentation."""
+        return [segment.html for segment in self.segments]
+#        """These may differ from Segments because of intervening segments within outer segments."""
+#        segments = []
+#        enclosings = []
+#        parens = []
+#        for segment in self.segments:
+#            if segment.has_paren:
+#                paren_seg = segment.paren_seg
+#                if single:
+#                    tokens, color, html, index, trans1, src_html = segment.html
+#                    ptokens, pcolor, phtml, pindex, trans1, psrc = paren_seg.html
+#                else:
+#                    tokens, color, html, index, src_html = segment.html
+#                    ptokens, pcolor, phtml, pindex, psrc = paren_seg.html
+#                gui_src = segment.get_gui_source(pcolor)
+#                preseg = tokens, color, html, index, gui_src[0]
+#                parenseg = ptokens, pcolor, phtml, pindex, gui_src[1]
+#                postseg = tokens, color, html, index, gui_src[2]
+#                segments.extend([preseg, parenseg, postseg])
+#            elif not segment.is_paren:
+#            segments.append(segment.html)
+#        return segments
 
     ## Pseudosegs: simpler alternative to Segs
 

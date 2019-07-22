@@ -473,9 +473,14 @@ class Language:
                         break
                     else:
                         names.append(word)
-            elif names and word in self.namejoin and words and words[0][0].isupper():
-                # Namejoin token, like 'y'
+                else:
+                    names.append(word)
+            elif names and word in self.namejoin and any([w[0].isupper() for w in words]):
+                # Namejoin token, like 'y'; can only precede some capitalized word
                 names.append(word)
+#            elif word == ',' and any([w == 'y' for w in words]):
+#                # , separating series of names
+#                names.append(word)
             else:
                 # End of name sequence
                 name = False
