@@ -389,6 +389,7 @@ div.despleg {
 <input type="hidden" name="ometa" value="">
 <input type="hidden" name="nocorr" value="">
 <input type="hidden" name="ocultar" value={% if props.ocultar %}"true"{% else %}"false"{% endif %}>
+<input type="hidden" name="docscrolltop" value=0>
 </form>
 
 {% endblock %}
@@ -405,6 +406,13 @@ div.despleg {
 <script async="" src="{{url_for('static', filename='SaveDoc.js')}}"></script>
 {% endif %}
 
+{% if docscrolltop %}
+// Hacer que la posición vertical en la barra de desplazamiento del espacio "fuente" permanezca.
+<script>
+document.getElementById("fuente").scrollTop = {{docscrolltop}};
+</script>
+{% endif %}
+ 
 <script>
 document.getElementById("fuente").focus();
 
@@ -436,6 +444,13 @@ document.getElementById("fuente").addEventListener("click", function(event) {
     }
 });
 {% endif %}
+
+function getDocScrollTop()
+{
+    var doc = document.getElementById("fuente");
+    var y = doc.scrollTop;
+    return y;
+}
 
 function longFuente()
 {
@@ -603,7 +618,10 @@ function cambiarMeta(button, choiceid) {
 
 /* What happens when the user clicks on a sentence in the document window.*/
 function seleccionarOra(oraid, index) {
-    oracion = document.getElementById(oraid).innerHTML;
+    var oracion = document.getElementById(oraid).innerHTML;
+    var scrolltop = getDocScrollTop();
+    document.Form2.docscrolltop.value = scrolltop;
+//    alert("Scrolltop " + scrolltop);
     document.Form2.ofuente.value = oracion;
     document.Form2.oindex.value = index;
     document.Form2.tfuente.value = "90%";

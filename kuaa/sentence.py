@@ -2386,7 +2386,7 @@ class Segmentation:
     def get_untrans_segs(self, src_tokens, end_index, gname=None,
 #                         merger_groups=None,
                          indices_covered=None,
-                         src_feats=None, src_toks=None, is_paren=False):
+                         src_feats=None, src_toks=None):
         '''Set one or more segments for a sequence of untranslatable tokens. Ignore indices that are already
          covered by translated segments.'''
         stok_groups = []
@@ -2453,7 +2453,7 @@ class Segmentation:
                           gname=None, sfeats=sfeat_group[0], tok=stokhead,
                           space_before=space_before,
 #                          merger_groups=None,
-                          is_punc=is_punc, is_paren=is_paren)
+                          is_punc=is_punc)
             print("Segmento (no traducido) {}->{}: {}={} ({})".format(start, end, stok_group, seg.translation, seg.head_tok))
             self.segments.append(seg)
             newsegs.append(seg)

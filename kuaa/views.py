@@ -230,16 +230,18 @@ def tra():
                                documento=GUI.doc_html, doc=True, oindex=oindex,
                                aceptado=GUI.doc_tra_acep_str, user=username, props=GUI.props)
     
-    # Get the sentence, the only one in GUI.doc is isdoc is False.
+    # Get the sentence, the only one in GUI.doc if isdoc is False.
     GUI.sentence = GUI.doc[oindex]
     print("CURRENT SENTENCE {}".format(GUI.sentence))
     # Translate and segment the sentence, assigning GUI.segs
     solve_and_segment(isdoc=isdoc, index=oindex)
+    docscrolltop = form.get('docscrolltop', 0)
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
 #    print("== About to render template with doc={}, documento={}, aceptado={}".format(isdoc, GUI.doc_html, GUI.doc_tra_acep_str))
     return render_template('tra.html', oracion=GUI.fue_seg_html,
                            tra_seg_html=GUI.tra_seg_html, tra=GUI.tra,
-                           documento=GUI.doc_html, doc=isdoc, oindex=oindex, aceptado=GUI.doc_tra_acep_str,
+                           documento=GUI.doc_html, doc=isdoc, oindex=oindex,
+                           aceptado=GUI.doc_tra_acep_str, docscrolltop=docscrolltop,
                            user=username, props=GUI.props)
 
 # View for document entry
