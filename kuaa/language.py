@@ -181,16 +181,14 @@ class Language:
     joingrp = re.compile('\s*>>\s*(.*)')
 
     def __init__(self, name, abbrev, use=ANALYSIS,
-#                 groups=None,
-#                 groupnames=None,
                  # A directory may be provided.
                  directory=None,
                  # When an external tagger is used, these are read in from the .lg file
                  # exttag: source|spec
                  # conversion: (POS_tag_conversion_dict, feature_conversion_dict)
-                 exttag=False, conversion=False, lemmas=None,
+                 exttag=False, conversion=False,
+#                 lemmas=None,
                  # phrases to be joined during sentence tokenization
-#                 join=False,
                  mwe=False,
                  # end-of-sentence characters
                  eos=EOS,
@@ -208,7 +206,6 @@ class Language:
         self.mwe = mwe
         # Words that can join names
         self.namejoin = namejoin
-#        self.groups = groups or {}
         # Groups organized by POS or other categories; used to create a list of group dicts for
         # each sublist in groupcats; by default (always?) there are two sublists
         self.groupcats = groupcats
@@ -220,8 +217,6 @@ class Language:
         self.group_defaults = {}
         # Dictionary of roots/stems/tokens to group keys, e.g., 'drop': ['drop_n', 'drop_v']
         self.group_keys = {}
-#        # Explicit groups to load instead of default
-#        self.groupnames = groupnames
         # Dict of POS tag conversions
         self.postags = postags or {}
         # Candidate groups from training; added 2017.3.6
@@ -303,16 +298,15 @@ class Language:
         if use in (ANALYSIS,):
             self.read_groups()
         # Load POS tagger from NLTK or Spacy if called for for this language
-#        self.conversion = None
         if exttag:
             print("Cargando etiquetadora external...")
             source, arg = exttag.split("|")
             import kuaa.tag as tag
-            if lemmas:
-                lemmas = self.read_lemmas()
-#                print("Read lemmas")
+#            if lemmas:
+#                lemmas = self.read_lemmas()
             self.tagger = tag.get_tagger(source, arg, self.abbrev,
-                                         conversion=conversion, lemmas=lemmas,
+                                         conversion=conversion,
+#                                         lemmas=lemmas,
                                          eos=self.eos)
         else:
             self.tagger = None
@@ -334,10 +328,6 @@ class Language:
             if Language.is_dig_numeral(string[1:]):
                 return True
         return False
-
-#    @staticmethod
-#    def is_name(string):
-#        """Is this a special, capitalized token?"""
 
     @staticmethod
     def is_class(string):
@@ -428,9 +418,7 @@ class Language:
     def is_known(self, token):
         """Is the lowercase token a known word, either because it is in the list of known words or can be analyzed
         by the morphological analyzer?"""
-#        print("Checking {}".format(token))
         if token in self.words:
-#            print(" known")
             return True
         anal = self.anal_word(token)
         if anal[0].get('features'):
@@ -460,17 +448,22 @@ class Language:
                 return numwords, 'N'
         # Try to find a sequence of name words
         name = True
-#        # MWE names are not special
-#        if Document.mwe_sep in name:
-#            name = False
         names = []
         while name and words:
             word = words.pop(0)
-#            print("Token {}, position {}, names {}".format(word, position, names))
             if SentToken.is_name_token(word):
-#            if len(word) > 0 and word[0].isupper() and (len(word) > 1 or not word.isupper()):
+                lowered = word.lower()
                 if first:
-                    if self.is_known(word.lower()):
+                    # Name-like token in first position
+                    if self.is_known(lowered):
+                        name = False
+                        break
+                    else:
+                        names.append(word)
+                elif words[-1] == '' and not names:
+                    # Name-like token not in first position and no end punctuation
+                    # and no previous special words
+                    if self.is_known(lowered):
                         name = False
                         break
                     else:
@@ -480,15 +473,10 @@ class Language:
             elif names and word in self.namejoin and any([SentToken.is_name_token(w) for w in words]):
                 # Namejoin token, like 'y'; can only precede some capitalized word
                 names.append(word)
-#            elif word == ',' and any([w == 'y' for w in words]):
-#                # , separating series of names
-#                names.append(word)
             else:
                 # End of name sequence
                 name = False
                 break
-#            if position > 0 or not self.is_punc(word):
-#                position += 1
         if names:
             return names, 'C'
         return False
@@ -496,8 +484,6 @@ class Language:
     def quit(self, cache=True):
         """Do stuff when the program exits. Only cache analyses and generation if there is a current
         session/user."""
-#        if cache and self.use in (ANALYSIS, SOURCE, TRAIN):
-#            self.write_cache()
         if cache and self.use in (GENERATION, TARGET, TRAIN):
             for pos in self.morphology.values():
                 pos.quit()
@@ -600,11 +586,6 @@ class Language:
         """Data directory: corpus and corpus analyses."""
         return os.path.join(self.directory, 'data')
 
-#    def get_stat_dir(self):
-#        """Statistics directory: root and feature frequencies
-#        for disambiguation. Also in Morphology."""
-#        return os.path.join(self.directory, 'stat')
-
     def get_pseudoseg_file(self, filename):
         return os.path.join(self.get_data_dir(), filename + '.ps')
 
@@ -623,7 +604,6 @@ class Language:
         d = self.get_cache_dir()
         if name == True or not name:
             name = self.abbrev
-#        name = name or self.abbrev
         return os.path.join(d, name + '.cch')
 
     def get_sem_file(self, name=''):
@@ -631,12 +611,6 @@ class Language:
         if name == True or not name:
             name = 'sem'
         return os.path.join(d, name + '.lex')
-
-#    def get_lemma_file(self, name=''):
-#        d = self.get_lex_dir()
-#        if name == True or not name:
-#            name = 'lemmas'
-#        return os.path.join(d, name + '.lex')
 
     def get_abbrev_file(self, name=''):
         d = self.get_lex_dir()
@@ -700,7 +674,6 @@ class Language:
                     self.words.append(form.split('_')[0])
         except IOError:
             pass
-#            print("El archivo semántico {} no existe".format(file))
 
     def read_transcounts(self, language):
         with open(self.get_transcount_file(language), encoding='utf8') as file:
@@ -710,7 +683,6 @@ class Language:
                 self.transcounts[head] = eval(translations)
 
     def get_cats(self, form):
-#        print("Getting cats for {}".format(form))
         return self.cats.get(form, [])
 
     def read_abbrevs(self):
@@ -722,7 +694,6 @@ class Language:
                     self.abbrevs.append(line.strip())
         except IOError:
             pass
-#            print("El archivo de abreviaturas {} no existe".format(file))
 
     def read_segs(self):
         """Read in segmentations from seg file."""
@@ -735,13 +706,10 @@ class Language:
                     form, seg = line.split('=')
                     form = form.strip()
                     seg = seg.strip()
-#                    if self.use in [ANALYSIS, SOURCE]:
                     self.segs[form] = seg.split()
-#                    if self.use in [GENERATION, TARGET]:
                     self.rev_segs[seg] = form
         except IOError:
             pass
-#            print('El archivo de de segmentaciones {} no existe'.format(file))
 
     def write_cache(self, name=''):
         """Write a dictionary of cached entries to a cache file."""
@@ -754,9 +722,6 @@ class Language:
                         # The word is unanalyzed
                         print("{} || {}:".format(word, word), file=out)
                     # analyses is a list of root, fs pairs
-#                    if len(analyses) == 1 and analyses[0][0] == word and not analyses[0][1]:
-#                        # The word is unanalyzed
-#                        print("{}:[]".format(word), file=out)
                     else:
                         anals = ["{}:{}".format(r, f.__repr__() if f else '') for r, f in analyses]
                         anals = ';;'.join(anals)
@@ -770,7 +735,6 @@ class Language:
         cache = self.get_cache_file(name=name)
         try:
             with open(cache, encoding='utf8') as f:
-#                print("Leyendo archivo almacenado")
                 for line in f:
                     split_line = line.strip().split(" || ")
                     word, analyses = split_line
@@ -782,7 +746,6 @@ class Language:
                     for r, a in anals:
                         if expand:
                             a = FSSet(a)
-#                            a = FeatStruct(a, freeze=True)
                         alist.append({'root': r, 'features': a})
                     if not expand:
                         # Put False at the front of the list to show that it hasn't been expanded
@@ -800,12 +763,10 @@ class Language:
                 feat = entry.get('features')
                 if feat:
                     entry['features'] = FSSet.parse(entry['features'])
-#                    FeatStruct(entry['features'], freeze=True)
                     pos = entry['features'].get('pos', '')
                     entry['root'] = Language.make_root(entry['root'], pos)
             self.cached[word] = entries[1:]
             return copy.deepcopy(entries[1:])
-#        print("Found cached entry 2, {}: {}".format(word, entries))
         return copy.deepcopy(entries)
 
     ## Functions for creating and search word trees (for phrases that are joined in tokenizing).
@@ -865,9 +826,7 @@ class Language:
     def load_exceptions(self):
         path = os.path.join(self.get_lex_dir(), "excep.lex")
         if not os.path.exists(path):
-#            print("No existe archivo de excepciones para {}".format(self.name))
             return
-#        print("Cargando excepciones lexicales")
         with open(path, encoding='utf8') as exc:
             for line in exc:
                 if not line or '#' in line:
@@ -885,7 +844,6 @@ class Language:
         with open(path, encoding='utf8') as data:
             contents = data.read()
             lines = contents.split('\n')[::-1]
-#            lines = contents.split('\n')
 
             seg = []
             dfltagrs = []
@@ -1035,7 +993,6 @@ class Language:
                         pos = pos.strip()
                         fullp = fullp.strip()
                         self.pos.append(pos)
-#                        print("Reading features for {}".format(pos))
                         current_feats = []
                         current_abbrev = {}
                         current_fv_abbrev = []
@@ -1056,7 +1013,6 @@ class Language:
                     m = ABBREV_RE.match(line)
                     if m:
                         abb_sig = m.group(1).strip()
-#                        print(" Current abbrev {}, adding {}".format(current_abbrev, abb_sig))
                         if '=' in abb_sig:
                             abb, sig = abb_sig.split('=')
                             current_abbrev[abb.strip()] = sig.strip()
@@ -1169,9 +1125,6 @@ class Language:
                             current_feats.append((current_feat, v))
                             current_value_string = ''
 
-#                       # Handle other cases later
-#                        continue
-
                 elif current == 'seg':
                     seg.extend(line.strip().split())
 
@@ -1187,12 +1140,9 @@ class Language:
                 elif current == 'trans':
                     wd, gls = line.strip().split('=')
                     # Add to the global TDict
-#                    print('Need to add {}: {} to global TDict'.format(wd.strip(), gls.strip()))
-#                    Language.T.add(wd.strip(), gls.strip(), self.abbrev)
 
                 else:
                     print("Warning: can't interpret line in .mrf file: {}".format(line))
-#                    raise ValueError("bad line: {}".format(line))
 
             if postsyll:
                 # Make postsyll pairs into a dict
@@ -1214,9 +1164,7 @@ class Language:
                     self.dfltagrs[pos] = agrs
 
         if self.pos and not self.morphology:
-#            print("Creating morphology...")
             for p in self.pos:
-#                print(" Creating {}".format(p))
                 self.morphology[p] = POS(p, self, fullname=fullpos[p])
                 self.morphology[p].abbrevs = abbrev[p]
                 self.morphology[p].fv_abbrevs = fv_abbrev[p]
@@ -1329,7 +1277,6 @@ class Language:
             # Load pre-analyzed words if any
             posmorph.set_analyzed()
             if generate:
-#                posmorph.make_generated()
                 posmorph.read_gen_cache()
             # Load FST
             if generate:
@@ -1399,7 +1346,6 @@ class Language:
                     if m:
                         patname = m.group(1)
                         regex = m.group(2)
-#                        print("Pattern {} with regex {}".format(patname, regex))
                         patterns[patname] = re.compile(regex)
                         continue
                     m = Language.POS.match(line)
@@ -1410,7 +1356,6 @@ class Language:
                     if m:
                         gname = m.group(1)
                         fs = m.group(2)
-#                        print("Grammar pattern {} with FS {}".format(fname, fs))
                         grams[gname] = FSSet.parse(fs)
                         continue
                     m = Language.function.match(line)
@@ -1562,7 +1507,6 @@ class Language:
         # Try stripping off suffixes
         suff_anal = self.strip_suffixes(form, incl_suf=incl_suf, pretty=pretty)
         if suff_anal:
-#            if verbosity:
             print("Suff anal {}".format(suff_anal))
             analyses.extend(suff_anal)
             if cache and not pretty:
@@ -1585,7 +1529,6 @@ class Language:
                             analysis = POS.analyze(form, segment=segment,
                                                    to_dict=to_dict, sep_anals=False, pretty=pretty)
                             if analysis:
-#                                print("word {}, analysis: {}".format(word, analysis))
                                 analyses.extend(analysis)
                                 if cache and not pretty:
                                     to_cache.extend(analysis)
@@ -1605,7 +1548,6 @@ class Language:
             self.add_new_anal(word, to_cache)
 
         if not analyses:
-#            print("No analyses for {}".format(word))
             return [{'root': word, 'features': ''}]
 
         # Sort the analyses by feature-value ranking
@@ -1626,7 +1568,6 @@ class Language:
     def make_root(root, pos):
         """Add the _ expected for roots."""
         if '_' not in root:
-#        if root[-1] != '_':
             root = root + '_' + pos
         return root
 
@@ -1690,11 +1631,6 @@ class Language:
             for head, v in self.groups.items():
                 groups[head] = [g.to_dict() for g in v]
             d['groups'] = groups
-#        if self.forms:
-#            forms = {}
-#            for k, v in self.forms.items():
-#                # v is an fv dict or a list of fv dicts
-#                forms[k] = v
         return d
 
     def write(self, directory, filename=''):
@@ -1727,7 +1663,6 @@ class Language:
                 if line[0] == '+':
                     tp, x, addition = line.partition(' ')[2].partition(' ')
                     if line[1] == 't':
-#                            print("Each group translation has {}: {}".format(tp, addition))
                         transadd = tp, addition
                         groupdefaults.append(transadd)
                     else:
@@ -1780,7 +1715,6 @@ class Language:
         target_groups = []
         print("Leyendo grupos léxicos para {}".format(self))
         groupfiles = self.get_grouplist_files(posnames)
-#        print("Name/group paths {}".format(groupfiles))
         for name, gfile in self.get_group_files(posnames):
             posindex = firstindex(lambda x: name in x, self.groupcats) if self.groupcats else 0
             self.read_group(gfile, gname=name, target=target, source_groups=source_groups,
@@ -1882,7 +1816,6 @@ class Language:
                         continue
                     name, x, tokens = line.partition(JOIN_NAME_SEP)
                     join = Join(self, target, name=name.strip(), tokens=tokens.strip())
-#                    self.joins.append(join)
                     grouping.append(join)
             # add last grouping
             self.join_groupings.append(grouping)
@@ -1892,9 +1825,6 @@ class Language:
     @staticmethod
     def from_dict(d, reverse=True, use=ANALYSIS, directory=None):
         """Convert a dict (loaded from a file) to a Language object."""
-#        print("Language dict")
-#        for k, v in d.items():
-#            print("{}: {}".format(k, v))
         exttag = d.get('exttag')
         joins = d.get('join')
         namejoin = d.get('namejoin', '').split(',')
@@ -1903,7 +1833,6 @@ class Language:
         abbrev = d.get('abbrev')
         if groupcats:
             groupcats = [g.split(',') for g in groupcats.split(';')]
-#        print("Name join: {}".format(namejoin))
         conversion = None
         if exttag:
             # External tagger, so also look for conversion dictionaries for tags
@@ -1922,12 +1851,12 @@ class Language:
             mwe = Language.treeify(mwe)
         elif joins:
             joins = [(x.split('~'), y) for x, y in joins]
-#            print("joins {}".format(joins))
             mwe = Language.treeify(joins)
             
         l = Language(d.get('name'), abbrev, use=use, directory=directory,
                      exttag=exttag, conversion=conversion, postags=d.get('postags'),
-                     mwe=mwe, eos=d.get('eos', EOS), lemmas=d.get('lemmas'),
+                     mwe=mwe, eos=d.get('eos', EOS),
+#                     lemmas=d.get('lemmas'),
                      namejoin=namejoin, groupcats=groupcats)
         translations = d.get('translations')
         if translations:
@@ -2029,7 +1958,6 @@ class Language:
             if verbosity:
                 print("  Adding sublist {} to {}".format(sublist, key))
             dct[key] = ls
-#            dct = yaml.load(file)
         return Language.from_dict(dct, use=use, directory=directory)
 
     @staticmethod
@@ -2125,10 +2053,6 @@ class Language:
     def add_group(self, group, cat=None, posindex=0):
         """Add group to dict, indexed by head."""
         head = group.head
-#        if head in self.groups:
-#            self.groups[head].append(group)
-#        else:
-#            self.groups[head] = [group]
         self.groupnames[group.name] = group
         token = Language.get_grouptoken(head)
         if token in self.group_keys:
@@ -2185,13 +2109,11 @@ class Language:
                 print("POS {} not in morphology {}".format(pos, morf))
                 return [root]
             posmorph = morf[pos]
-#            print("Generating root {} with POS {} and features {}".format(root, pos, features.__repr__()))
             output = posmorph.gen(root, update_feats=features, guess=guess, only_words=True, cache=cache)
         else:
             for posmorph in list(morf.values()):
                 output.extend(posmorph.gen(root, update_feats=features, guess=guess, only_words=True))
         if output:
-#            print(" gen output: {}".format(output))
             # if there is a postprocessing dict, apply it
             if self.postproc:
                 self.char_postproc_list(output)

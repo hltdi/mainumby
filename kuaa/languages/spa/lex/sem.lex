@@ -3813,6 +3813,7 @@ cólico_n $n
 cómic_n $n
 cómico_n $n
 cómico_a $a
+cómo_adv $adv
 cómoda_n $n
 cómodo_a $a
 cómplice_n $n

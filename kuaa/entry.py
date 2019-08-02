@@ -2454,13 +2454,10 @@ class Token:
     @staticmethod
     def special_prefix(token, check=False):
         """If this is a special token, return its prefix (what precedes ~)."""
-        if not check:
-            return Token.split_token(token)
+        if not check or Token.is_special(token):
+            return Token.split_token(token)[0]
         return ''
-#        if not check or Token.is_special(token):
-#            return token.split('~')[0]
-#        return ''
-
+            
     @staticmethod
     def del_token(token):
         return token and token[0] == Token.del_char

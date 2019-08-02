@@ -985,6 +985,7 @@ class Sentence:
         2018.02.15: do this only for the first word, unless a word is uppercase.
         Still need to figure out what to do for words that are capitalized by convention within
         sentences, for example, at the beginning of quotations.
+        2019: more adjustments...
         """
         first_word = True
         for index, token in enumerate(self.tokens):
@@ -995,22 +996,26 @@ class Sentence:
                 # Don't change case in MWE
                 first_word = False
                 continue
+            lowered = token.lower()
             if first_word:
                 first_char = token[0]
                 if not self.language.is_punc(first_char):
 #                    print("First word {}".format(token))
-                    if self.language.is_known(token.lower()):
+                    if self.language.is_known(lowered):
 #                        print("First token lower {}".format(token))
-                        self.tokens[index] = token.lower()
+                        self.tokens[index] = lowered
 #                        tok.name = tokname.lower()
                     # Otherwise this is a name, so keep it capitalized
 #                    print("  Not really first word...")
                     first_word = False
 #                else:
 #                    print("First token is punctuation {}".format(token))
+            elif token.istitle():
+                if self.language.is_known(lowered):
+                    self.tokens[index] = lowered
             elif token.isupper():
                 # Lowercase words other than the first one if they're all uppercase
-                self.tokens[index] = token.lower()
+                self.tokens[index] = lowered
 #                tok.name = tokname.lower()
 
     def preprocess(self, verbosity=0):
