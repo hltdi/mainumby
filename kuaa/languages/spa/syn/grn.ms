@@ -102,6 +102,7 @@ artdef/ms :: el[pos=det] [pos=n] ; // 0
 artdef/nom_m :: el[pos=det] %C ; // 0
 artdef/nom_f :: la[pos=det] %C ; // 0
 artdef/ms_adj :: el[pos=det] [pos=a,n=0] ; // 0
+artdev/neut_adj :: lo[pos=det] [pos=a,n=0] ; // 0
 artdef/fs :: la[pos=det] [pos=n] ; // 0
 artdef/fs_adj :: la[pos=det] [pos=a,n=0] ; // 0
 artdef/mp :: los[pos=det] [pos=n] ; // 0

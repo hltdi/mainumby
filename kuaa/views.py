@@ -51,8 +51,9 @@ from kuaa import app, make_document, load, seg_trans, quit, start, init_users, g
 from . import gui
 from docx import Document
 
-# Global variable for the container holding all the gui-related variables that need to
+# Global variable and basic functions for the container holding all the gui-related variables that need to
 # persist between calls to render_template()
+
 GUI = None
 
 def create_gui():
@@ -73,8 +74,11 @@ def init_session(create_memory=False, use_anon=False):
     if not GUI.session:
         start(GUI, use_anon=use_anon, create_memory=create_memory)
 
+# Attempt to translate the currently selected sentence,
+# assigning segmentation and HTML for the translation segmentation visualization
+# in GUI
 def solve_and_segment(isdoc=False, index=0):
-    GUI.segs, GUI.tra_seg_html = seg_trans(GUI, single=True, process=True)
+    GUI.segs, GUI.tra_seg_html = seg_trans(GUI, process=True)
 #    print("Solved segs: {}, html: {}".format(SEGS, SEG_HTML))
     GUI.init_sent(index)
     if isdoc:
@@ -146,7 +150,7 @@ def acct():
 #    print("In acct...")
     return render_template('acct.html')
 
-# View for the window that does all the work.
+# View for the window that does all the work. Whew.
 @app.route('/tra', methods=['GET', 'POST'])
 def tra():
     global GUI
@@ -205,6 +209,7 @@ def tra():
 #            GUI.props['tfuente'] = "120%"
             return render_template('tra.html', error=True, user=username, doc=isdoc, props=GUI.props)
     oindex = int(form.get('oindex', 0))
+    docscrolltop = form.get('docscrolltop', 0)
     if 'tacept' in form and form['tacept']:
         # A new translation to be added to the accepted sentence translations.
         print("ACCEPTING NEW TRANSLATION {}".format(form['tacept']))
@@ -217,17 +222,17 @@ def tra():
         print("SENTENCE ALREADY ACCEPTED")
         error = "¡Ya aceptaste esta traducción; por favor seleccioná otra oración para traducir!"
         return render_template('tra.html', oracion='', doc=True, error=error, tra_seg_html='', tra='',
-                               aceptado=GUI.doc_tra_acep_str,
+                               aceptado=GUI.doc_tra_acep_str, docscrolltop=docscrolltop,
                                documento=GUI.doc_html, user=username, props=GUI.props)
     if GUI.doc_tra_html[oindex]:
         # Find the previously generated translation
         tra_seg_html = GUI.doc_tra_html[oindex]
         tra = GUI.doc_tra[oindex]
         # Highlight selected source sentence with segments
-        GUI.update_doc(oindex)
-        print("SENTENCE ALREADY TRANSLATED")
+        GUI.update_doc(oindex, repeat=True)
+        print("SENTENCE at {} ALREADY TRANSLATED".format(oindex))
         return render_template('tra.html', oracion=GUI.fue_seg_html, tra_seg_html=tra_seg_html, tra=tra,
-                               documento=GUI.doc_html, doc=True, oindex=oindex,
+                               documento=GUI.doc_html, doc=True, oindex=oindex, docscrolltop=docscrolltop,
                                aceptado=GUI.doc_tra_acep_str, user=username, props=GUI.props)
     
     # Get the sentence, the only one in GUI.doc if isdoc is False.
@@ -235,69 +240,12 @@ def tra():
     print("CURRENT SENTENCE {}".format(GUI.sentence))
     # Translate and segment the sentence, assigning GUI.segs
     solve_and_segment(isdoc=isdoc, index=oindex)
-    docscrolltop = form.get('docscrolltop', 0)
     # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
 #    print("== About to render template with doc={}, documento={}, aceptado={}".format(isdoc, GUI.doc_html, GUI.doc_tra_acep_str))
-    return render_template('tra.html', oracion=GUI.fue_seg_html,
-                           tra_seg_html=GUI.tra_seg_html, tra=GUI.tra,
+    return render_template('tra.html', oracion=GUI.fue_seg_html, tra_seg_html=GUI.tra_seg_html, tra=GUI.tra,
                            documento=GUI.doc_html, doc=isdoc, oindex=oindex,
                            aceptado=GUI.doc_tra_acep_str, docscrolltop=docscrolltop,
                            user=username, props=GUI.props)
-
-# View for document entry
-##@app.route('/doc', methods=['GET', 'POST'])
-##def doc():
-##    form = request.form
-##    # Initialize Session if there's a User and no Session
-##    # and Spanish and Guarani if they're not loaded.
-##    if not GUI.session:
-##        init_session()
-##    return render_template('doc.html', user=GUI.user)
-
-# View for displaying parsed sentence and sentence translation and
-# for recording translations selected/entered by user.
-##@app.route('/sent', methods=['GET', 'POST'])
-##def sent():
-##    form = request.form
-##    punc = GUI.sentence.get_final_punc() if GUI.sentence else None
-##    print("Form for sent: {}".format(form))
-##    if 'ayuda' in form and form['ayuda'] == 'true':
-##        # Opened help window. Keep everything else as is.
-##        raw = GUI.sentence.raw if GUI.sentence else None
-##        document = form.get('UTraDoc', '')
-##        return render_template('sent.html', sentence=GUI.tra_seg_html, raw=raw, punc=punc,
-##                               document=document, user=GUI.user)
-##    if 'senttrans' in form:
-##        # A sentence has been translated and the translation recorded.
-##        # Really record the translation and the segment translations if any.
-##        translation = form.get('senttrans')
-##        segtrans = form.get('segtrans', '')
-##        document = form.get('UTraDoc', '')
-##        comments = form.get('UComment', '')
-##        if GUI.session:
-##            GUI.session.record(GUI.sentence.record, translation=translation, segtrans=segtrans, comments=comments)
-##        else:
-##            print("NO SESSION SO NOTHING TO RECORD")
-##        # Continue with the next sentence in the document or quit
-##        return render_template('sent.html', user=GUI.user, document=document)
-##    if 'text' in form and not GUI.doc:
-##        # Create a new document
-##        make_doc(form['text'])
-##        if len(GUI.doc) == 0:
-##            return render_template('doc.html', user=GUI.user, error=True)
-##    # Get the next sentence in the document, assigning GUI.sentence
-##    get_sentence()
-##    if not GUI.sentence:
-##        # No more sentences, return to doc.html for a new document
-##        return render_template('doc.html', user=GUI.user)
-##    else:
-##        # Translate and segment the sentence, assigning GUI.segs
-##        solve_and_segment()
-##        print("SEG HTML {}".format(GUI.tra_seg_html))
-##    # Pass the sentence segmentation, the raw sentence, and the final punctuation to the page
-##    punc = GUI.sentence.get_final_punc()
-##    return render_template('sent.html', sentence=GUI.tra_seg_html, raw=GUI.sentence.original, document='',
-##                           record=GUI.sentence.record, punc=punc, user=GUI.user)
 
 @app.route('/fin', methods=['GET', 'POST'])
 def fin():

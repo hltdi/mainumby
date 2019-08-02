@@ -69,6 +69,8 @@
 # -- SuperSeg
 # 2019.3.12
 # -- Changed SolSeg to Segment.
+# 2019.5-
+# -- Add Seg super-class at some point.
 
 import itertools, copy, re
 from .cs import *
@@ -87,6 +89,9 @@ class Seg:
 
     # Maximum number of generated forms permitted, given a root and set of update features
     max_gen_forms = 4
+
+    # Maximum number of leaf Segments in Seg
+    max_segments = 8
 
     # colors to display segments in interface
     tt_colors = ['blue', 'sienna', 'green',
@@ -150,6 +155,10 @@ class Seg:
         """For untranslated segments, return the cleaned string."""
         return self.cleaned_trans and self.cleaned_trans[0][0]
 
+    def count_segments(self):
+        """Return the number of leaf Segments."""
+        print("Warning: count_segments() not defined for this Seg instance.")
+
     ## Head properties (used in joining Segments to form Supersegs)
 
     def get_shead_raw(self):
@@ -175,7 +184,7 @@ class Seg:
             for h, f, p in self.shead:
                 if p:
                     pos.add(p)
-                if f:
+                if f and not isinstance(f, bool):
                     pos.add(f.get('pos'))
                 elif '_' in h:
                     pos.add(h.split('_')[-1])
@@ -351,6 +360,7 @@ class Seg:
                     # Include only first max_gen_forms forms
                     if limit_forms:
                         form = form[:Seg.max_gen_forms]
+                    # If there are multiple gen outputs, separate by |
                     form = '|'.join(form)
 #                    if verbosity:
 #                        print("      Generated form {}".format(form))
@@ -359,8 +369,11 @@ class Seg:
                 else:
                     output1.append(item)
             cleaned_trans.append(output1)
-            if verbosity:
-                print("  Cleaned: {}".format(cleaned_trans))
+        if verbosity:
+            print("  Cleaned: {}".format(cleaned_trans))
+        # Sort so that failed generations come last
+        cleaned_trans.sort(key=lambda o: any([Token.is_ungen(oo) for oo in o]))
+#        print("Sorted cleaned_trans {}".format(cleaned_trans))
         Seg.join_toks_in_strings(cleaned_trans)
         self.cleaned_trans = cleaned_trans
         self.generated = True
@@ -396,7 +409,7 @@ class Seg:
         """Set the HTML markup for this segment as a colored segment in source and dropdown menu
         in target, given its position in the sentence.
         """
-        self.color = Seg.tt_notrans_color if (not self.translation and not self.special) else Seg.tt_colors[index]
+        self.color = Seg.tt_notrans_color if self.is_punc or (not self.translation and not self.special) else Seg.tt_colors[index]
         self.set_source_html(index)
         transhtml = "<div class='desplegable' ondrop='drop(event);' ondragover='allowDrop(event);'>"
         capitalized = False
@@ -461,7 +474,7 @@ class Seg:
             for tcindex, (tchoice, tcgroups) in enumerate(zip(tgforms, tggroups)):
                 tchoice = tchoice.replace('_', ' ')
                 alttchoice = tchoice.replace("'", "’")
-                alttchoice = alttchoice.replace(" ", "&nbsp;")
+#                alttchoice = alttchoice.replace(" ", "&nbsp;")
                 # ID for the current choice item
                 choiceid = 'opcion{}.{}'.format(index, trans_choice_index)
                 choice_tgroups.append(tcgroups)
@@ -493,6 +506,7 @@ class Seg:
             transhtml += "<div class='despleg' id='{}'  style='cursor:grab' draggable='true' ondragstart='drag(event);'>".format(boton)
             transhtml += orig_tokens
             transhtml += "</div>"
+#        print("multtrans {} for html {}".format(multtrans, self.cleaned_trans))
         if multtrans:
             transhtml += '</div></div>'
         transhtml += '</div>'
@@ -518,114 +532,108 @@ class Seg:
             self.record.choice_tgroups = choice_tgroups
         self.html = (orig_tokens, self.color, transhtml, index, trans1, self.source_html)
 
-    def set_html(self, index, verbosity=0):
-        """Set the HTML markup for this segment, given its position in the sentence,
-        Do postprocessing on phrases joined by '_' or special tokens (numerals).
-        """
-        # Combine translations where possible
-        self.color = Seg.tt_notrans_color if not self.translation else Seg.tt_colors[index]
-        self.set_source_html(index)
-        transhtml = '<table>'
-        capitalized = False
-        choice_list = self.record.choices if self.record else None
-        # Final source segment output
-        tokens = self.token_str
-        orig_tokens = self.original_token_str
-        trans_choice_index = 0
-        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
-        # T Group strings associated with each choice
-        choice_tgroups = []
-        if self.is_punc:
-            trans = self.translation[0][0]
-            if '"' in trans:
-                trans = trans.replace('"', '\"')
-            transhtml += "<tr><td class='transchoice'>"
-            transhtml += '<br/><input type="radio" name="choice" id={} value="{}" checked>{}</td>'.format(trans, trans, trans)
-            transhtml += '</tr>'
-            transhtml += '</table>'
-            self.html = (tokens, self.color, transhtml, index, self.source_html)
-            return
-        for tindex, (t, tgroups) in enumerate(zip(self.cleaned_trans, self.tgroups)):
-            # Create all combinations of word sequences
-            tg_expanded = []
-            if self.special:
-                trans = t[0]
-                tgcombs = [[(trans, '')]]
-            else:
-                for tt, tg in zip(t, tgroups):
-                    tg = Group.make_gpair_name(tg)
-                    # Get rid of parentheses around optional elements
-                    if '(' in tt:
-                        tt = ['', tt[1:-1]]
-                    else:
-                        tt = tt.split('|')
-                    # Add tg group string to each choice
-                    tg_expanded.append([(ttt, tg) for ttt in tt])
-                tgcombs = allcombs(tg_expanded)
-            tgcombs.sort()
-            tgforms = []
-            tggroups = []
-            for ttg in tgcombs:
-                # "if tttg[0]" prevents '' from being treated as a token
-                tgforms.append(' '.join([tttg[0] for tttg in ttg if tttg[0]]))
-                tggroups.append("||".join([tttg[1] for tttg in ttg if tttg[0]]))
-            # A single translation of the source segment
-            transhtml += '<tr>'
-            transhtml += "<td class='transchoice'>"
-            html_choices = []
-            for tcindex, (tchoice, tcgroups) in enumerate(zip(tgforms, tggroups)):
-                tchoice = tchoice.replace('_', ' ')
-                choice_tgroups.append(tcgroups)
-#                print("  Choice {}: {} (groups: {})".format(trans_choice_index, tchoice, tcgroups))
-                if tindex == 0 and tcindex == 0:
-                    html_choices.append('<input type="radio" name="choice" id="{}" value="{}" checked>{}'.format(tchoice, tchoice, tchoice))
-                else:
-                    html_choices.append('<input type="radio" name="choice" id="{}" value="{}">{}'.format(tchoice, tchoice, tchoice))
-                trans_choice_index += 1
-            transhtml += "<br/>".join(html_choices)
-            if len(tgcombs) > 1:
-                transhtml += "<hr>"
-            transhtml += "</td>"
-#            if self.record:
-#                choice_list.append(tchoice)
-            transhtml += '</tr>'
-        if self.translation and self.translation[0]:
-            if verbosity:
-                print("Translation {}, clean trans {}".format(self.translation, self.cleaned_trans))
-            if self.cleaned_trans[0][0] != tokens:
-                # Add other translation button
-                # Button to translate as source language
-                transhtml += '<tr><td class="source">'
-                transhtml += '<input type="radio" name="choice" id="{}" value="{}">{}</td></tr>'.format(orig_tokens, orig_tokens, orig_tokens)
-        else:
-            # No translations suggested: checkbox for translating as source (only option)
-            transhtml += '<tr><td class="source">'
-            transhtml += '<input type="checkbox" name="choice" id="{}" value="{}" checked>{}</td></tr>'.format(orig_tokens, orig_tokens, orig_tokens)
-        transhtml += '</table>'
-        # Capitalize tokens if in first place        
-        if index==0:
-            capitalized = False
-            if ' ' in tokens:
-                toks = []
-                tok_list = tokens.split()
-                for tok in tok_list:
-                    if capitalized:
-                        toks.append(tok)
-                    elif self.source.is_punc(tok):
-                        toks.append(tok)
-                    else:
-                        toks.append(tok.capitalize())
-                        capitalized = True
-                tokens = ' '.join(toks)
-            else:
-                tokens = tokens.capitalize()
-        self.choice_tgroups = choice_tgroups
-        if self.record:
-            self.record.choice_tgroups = choice_tgroups
-        self.html = (orig_tokens, self.color, transhtml, index, self.source_html)
-#        print("HTML for {}".format(self))
-#        for h in self.html:
-#            print(" {}".format(h))
+##    def set_html(self, index, verbosity=0):
+##        """Set the HTML markup for this segment, given its position in the sentence,
+##        Do postprocessing on phrases joined by '_' or special tokens (numerals).
+##        """
+##        # Combine translations where possible
+##        self.color = Seg.tt_notrans_color if not self.translation else Seg.tt_colors[index]
+##        self.set_source_html(index)
+##        transhtml = '<table>'
+##        capitalized = False
+##        choice_list = self.record.choices if self.record else None
+##        # Final source segment output
+##        tokens = self.token_str
+##        orig_tokens = self.original_token_str
+##        trans_choice_index = 0
+##        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
+##        # T Group strings associated with each choice
+##        choice_tgroups = []
+##        if self.is_punc:
+##            trans = self.translation[0][0]
+##            if '"' in trans:
+##                trans = trans.replace('"', '\"')
+##            transhtml += "<tr><td class='transchoice'>"
+##            transhtml += '<br/><input type="radio" name="choice" id={} value="{}" checked>{}</td>'.format(trans, trans, trans)
+##            transhtml += '</tr>'
+##            transhtml += '</table>'
+##            self.html = (tokens, self.color, transhtml, index, self.source_html)
+##            return
+##        for tindex, (t, tgroups) in enumerate(zip(self.cleaned_trans, self.tgroups)):
+##            # Create all combinations of word sequences
+##            tg_expanded = []
+##            if self.special:
+##                trans = t[0]
+##                tgcombs = [[(trans, '')]]
+##            else:
+##                for tt, tg in zip(t, tgroups):
+##                    tg = Group.make_gpair_name(tg)
+##                    # Get rid of parentheses around optional elements
+##                    if '(' in tt:
+##                        tt = ['', tt[1:-1]]
+##                    else:
+##                        tt = tt.split('|')
+##                    # Add tg group string to each choice
+##                    tg_expanded.append([(ttt, tg) for ttt in tt])
+##                tgcombs = allcombs(tg_expanded)
+##            tgcombs.sort()
+##            tgforms = []
+##            tggroups = []
+##            for ttg in tgcombs:
+##                # "if tttg[0]" prevents '' from being treated as a token
+##                tgforms.append(' '.join([tttg[0] for tttg in ttg if tttg[0]]))
+##                tggroups.append("||".join([tttg[1] for tttg in ttg if tttg[0]]))
+##            # A single translation of the source segment
+##            transhtml += '<tr>'
+##            transhtml += "<td class='transchoice'>"
+##            html_choices = []
+##            for tcindex, (tchoice, tcgroups) in enumerate(zip(tgforms, tggroups)):
+##                tchoice = tchoice.replace('_', ' ')
+##                choice_tgroups.append(tcgroups)
+##                if tindex == 0 and tcindex == 0:
+##                    html_choices.append('<input type="radio" name="choice" id="{}" value="{}" checked>{}'.format(tchoice, tchoice, tchoice))
+##                else:
+##                    html_choices.append('<input type="radio" name="choice" id="{}" value="{}">{}'.format(tchoice, tchoice, tchoice))
+##                trans_choice_index += 1
+##            transhtml += "<br/>".join(html_choices)
+##            if len(tgcombs) > 1:
+##                transhtml += "<hr>"
+##            transhtml += "</td>"
+##            transhtml += '</tr>'
+##        if self.translation and self.translation[0]:
+##            if verbosity:
+##                print("Translation {}, clean trans {}".format(self.translation, self.cleaned_trans))
+##            if self.cleaned_trans[0][0] != tokens:
+##                # Add other translation button
+##                # Button to translate as source language
+##                transhtml += '<tr><td class="source">'
+##                transhtml += '<input type="radio" name="choice" id="{}" value="{}">{}</td></tr>'.format(orig_tokens, orig_tokens, orig_tokens)
+##        else:
+##            # No translations suggested: checkbox for translating as source (only option)
+##            transhtml += '<tr><td class="source">'
+##            transhtml += '<input type="checkbox" name="choice" id="{}" value="{}" checked>{}</td></tr>'.format(orig_tokens, orig_tokens, orig_tokens)
+##        transhtml += '</table>'
+##        # Capitalize tokens if in first place        
+##        if index==0:
+##            capitalized = False
+##            if ' ' in tokens:
+##                toks = []
+##                tok_list = tokens.split()
+##                for tok in tok_list:
+##                    if capitalized:
+##                        toks.append(tok)
+##                    elif self.source.is_punc(tok):
+##                        toks.append(tok)
+##                    else:
+##                        toks.append(tok.capitalize())
+##                        capitalized = True
+##                tokens = ' '.join(toks)
+##            else:
+##                tokens = tokens.capitalize()
+##        self.choice_tgroups = choice_tgroups
+##        if self.record:
+##            self.record.choice_tgroups = choice_tgroups
+##        self.html = (orig_tokens, self.color, transhtml, index, self.source_html)
 
     def unseg_tokens(self):
         """Rejoin tokens in original_token_str that were segmented when the Sentence was created."""
@@ -757,6 +765,10 @@ class SuperSeg(Seg):
         d += max([segment.depth for segment in self.segments])
         return d
 
+    def count_segments(self):
+        """Return the number of leaf Segments."""
+        return sum([segment.count_segments() for segment in self.segments])
+
     def apply_changes(self, verbosity=1):
         """Implement the changes to features and order specified in the Join or Group instance."""
 #        print("Superseg {} applying changes".format(self))
@@ -866,6 +878,10 @@ class Segment(Seg):
         """Print name."""
         return ">>{}<<".format(self.token_str)
 
+    def count_segments(self):
+        """Return the number of leaf Segments."""
+        return 1
+
     ## Record
 
     def make_record(self, session=None, sentence=None):
@@ -903,7 +919,7 @@ class SNode:
         if analyses and not isinstance(analyses, list):
             analyses = [analyses]
         if not analyses:
-            analyses = [{'root': token}]
+            analyses = [{'root': self.token}]
         self.analyses = analyses
         # Back pointer to sentence
         self.sentence = sentence

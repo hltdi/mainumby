@@ -1417,6 +1417,8 @@
 ->grn marã_v
 ** impoluto_a ; ^ impoluto_a 0
 ->grn ãngaipa'ỹ_v
+** importante_a ; ^ importante_a 0
+->grn guasu_v
 ** impotente_a ; ^ impotente_a 0
 ->grn <hemboatã'ỹva_v
 ** imprescindible_a ; ^ imprescindible_a 0
@@ -3072,7 +3074,6 @@
 ** al último_a ; ^ último 1
 ->grn ipahápe
 ** único_a ; ^ único_a 0 ; #27
-->grn añoite_v ; #20
 ->grn ha'eño_v ; #23
 ->grn peteĩnte_v ; #6
 ->grn año_v ; #21

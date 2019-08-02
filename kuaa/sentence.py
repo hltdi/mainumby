@@ -542,7 +542,6 @@ class Document(list):
             sentences = [current_sentence]
         # Make Sentence objects for each list of tokens and types
         for sentence, rawsent in zip(sentences, raw_sentences):
-#            print("Sentence: {}".format(sentence))
             sentence_list.append(Sentence(language=language,
                                           tokens=[t[0] for t in sentence],
                                           toktypes=[t[1] for t in sentence],
@@ -892,18 +891,23 @@ class Sentence:
         tokens = []
         tok_position = 0
         spec_found = False
-        # Handle numeral word sequences
+        # Handle numeral and name word sequences
+        first = True
         while tok_position < len(self.tokens):
-            spec = self.language.find_special(self.tokens[tok_position:], tok_position)
+            spec = self.language.find_special(self.tokens[tok_position:], tok_position, first=first)
             if spec:
                 newtokens, prefix = spec
                 spec_found = True
                 prefix = "%{}~".format(prefix)
                 tokens.append(prefix + '~'.join(newtokens))
                 tok_position += len(newtokens)
+                first = False
             else:
-                tokens.append(self.tokens[tok_position])
+                token = self.tokens[tok_position]
+                tokens.append(token)
                 tok_position += 1
+                if first and not self.language.is_punc(token):
+                    first = False
         if spec_found:
             self.tokens = tokens
 
@@ -984,7 +988,7 @@ class Sentence:
         """
         first_word = True
         for index, token in enumerate(self.tokens):
-#            print("Token {}".format(token))
+#            print("Token {}, index {}".format(token, index))
 #            tok = self.toks[index]
 #            tokname = tok.name
             if Entry.mwe_sep in token:
@@ -994,6 +998,7 @@ class Sentence:
             if first_word:
                 first_char = token[0]
                 if not self.language.is_punc(first_char):
+#                    print("First word {}".format(token))
                     if self.language.is_known(token.lower()):
 #                        print("First token lower {}".format(token))
                         self.tokens[index] = token.lower()
@@ -1001,6 +1006,8 @@ class Sentence:
                     # Otherwise this is a name, so keep it capitalized
 #                    print("  Not really first word...")
                     first_word = False
+#                else:
+#                    print("First token is punctuation {}".format(token))
             elif token.isupper():
                 # Lowercase words other than the first one if they're all uppercase
                 self.tokens[index] = token.lower()
@@ -1977,7 +1984,7 @@ class Sentence:
         segmentation = Segmentation(self, ginsts, s2gnodes, len(self.segmentations),
                                     trees=trees, dstore=dstore, session=self.session,
                                     score=score)
-        print('FOUND SEGMENTATION {} for {}'.format(segmentation, self))
+        print('SE ENCONTRÓ SEGMENTACIÓN {} para {}'.format(segmentation, self))
 #        print("  score: # groups {}, # uncovered {}".format(ngroups, nuncovered))
         return segmentation
 
@@ -2059,24 +2066,24 @@ class Sentence:
         self.complete_trans = trans
         return trans
 
-    def get_html(self, single=False):
+    def get_html(self):
         """Create HTML for a sentence with no segmentation."""
         tokens = ' '.join(self.tokens)
         tokens = Segment.clean_spec(tokens)
-        if single:
-            # Create button
-            trans_html = "<div class='desplegable'>"
-            trans_html += "<button class='btndesplegable'>"
-            trans_html += tokens
-            trans_html += "</button>"
-            trans_html += '</div>'
-            source_html = "<span style='color:Silver;'> {} </span>".format(tokens)
-        else:
-            trans_html = "<table>"
-            trans_html += '<tr><td class="source">'
-            trans_html += '<input type="radio" name="choice" id="{}" value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
-            trans_html += '</table>'
-            source_html = "<span style='color:Silver;'> {} </span>".format(tokens)
+#        if single:
+        # Create button
+        trans_html = "<div class='desplegable'>"
+        trans_html += "<div class='despleg'>"
+        trans_html += tokens
+        trans_html += "</div>"
+        trans_html += '</div>'
+        source_html = "<span style='color:Silver;'> {} </span>".format(tokens)
+#        else:
+#            trans_html = "<table>"
+#            trans_html += '<tr><td class="source">'
+#            trans_html += '<input type="radio" name="choice" id="{}" value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
+#            trans_html += '</table>'
+#            source_html = "<span style='color:Silver;'> {} </span>".format(tokens)
         return [(self.raw, "Silver", trans_html, 0, tokens, source_html)]
 
     def verbatim(self, node):
@@ -2577,7 +2584,7 @@ class Segmentation:
             else:
                 segment.set_html(i)
 
-    def get_gui_segments(self, single=False):
+    def get_gui_segments(self):
         """HTML for Segments in this Segmentation."""
         return [segment.html for segment in self.segments]
 #        """These may differ from Segments because of intervening segments within outer segments."""
@@ -2714,7 +2721,7 @@ class Segmentation:
                 segstart = 0
                 matches1 = []
                 while segstart < sollength - 1 and endgap - segstart >= 0:
-                    match1 = join.match(segments, segstart, verbosity=verbosity)
+                    match1 = join.match(segments, segstart, seglimit=Seg.max_segments, verbosity=verbosity)
                     if match1:
                         if verbosity > 1:
                             print("  Matched at {}".format(segstart))
@@ -2775,7 +2782,8 @@ class Segmentation:
         matches = []
         segments = self.segments
         for segindex, segindices, (group, head_index) in candidates:
-            matches1 = group.match_segments(segments, segindex - head_index, verbosity=verbosity)
+            matches1 = group.match_segments(segments, segindex - head_index, seglimit=Seg.max_segments,
+                                            verbosity=verbosity)
             if matches1:
                 matches.append(matches1)
         if matches:

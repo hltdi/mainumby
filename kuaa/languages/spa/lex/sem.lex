@@ -10617,6 +10617,7 @@ poseer_v $v,$vt
 posesión_n $n
 posibilidad_n $n
 posible_a $a
+posiblemente_adv $adv
 posicionar_v $v
 posición_n $n
 positiva_n $n
@@ -10812,6 +10813,8 @@ privilegio_n $n
 pro_n $n
 proa_n $n
 probabilidad_n $n
+probable_a $a
+probablemente_adv $adv
 probar_v $v,$vt,$vp
 problema_n $n
 problemático_a $a
@@ -11144,6 +11147,7 @@ quitamanchas_n $n
 quitanieves_n $n
 quitar_v $v,$vt,$vp,$vex
 quite_n $n
+quizás_adv $adv
 quién $pro,$n
 qué $pro,$n
 química_n $n

@@ -103,7 +103,7 @@ span.fuente
 div#meta
 {
     font-family: "Verdana";
-    font-size: {% if props.tfuente and not props.isdoc %} {{props.tfuente}} {% else %} 120% {% endif %};
+    font-size: {% if props.tfuente and not props.isdoc %} {{props.tfuente}} {% else %} 100% {% endif %};
     resize: none;
     padding: 8px 0px 8px 8px;
 /*     margin: 6px 0px 0px; */
@@ -124,7 +124,7 @@ div.oradoc
 div.oradoc:hover
 {
     cursor: pointer;
-    font-weight: bold;
+    background-color: #8DEDCD;
 }
 span.lengua
 {
@@ -407,7 +407,6 @@ div.despleg {
 {% endif %}
 
 {% if docscrolltop %}
-// Hacer que la posición vertical en la barra de desplazamiento del espacio "fuente" permanezca.
 <script>
 document.getElementById("fuente").scrollTop = {{docscrolltop}};
 </script>

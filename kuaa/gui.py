@@ -95,9 +95,14 @@ class GUI:
         # Revert to version of doc html with nothing segmented.
         self.doc_html = self.doc.html
 
-    def update_doc(self, index):
-        self.doc_html = self.doc.select_html(index, self.fue_seg_html)
-        self.doc_select_html[index] = self.fue_seg_html
+    def update_doc(self, index, repeat=False):
+        if repeat:
+            current_fue = self.doc_select_html[index]
+        else:
+            current_fue = self.fue_seg_html
+        self.doc_html = self.doc.select_html(index, current_fue)
+        if not repeat:
+            self.doc_select_html[index] = current_fue
         self.sindex = index
 
 #    def translate_sent(self, index, tsegs, thtml):
@@ -182,8 +187,12 @@ class GUI:
     def clean_sentence(string, capitalize=True):
         """Clean up sentence for display in interface.
         Basically a duplicate of the Javascript function in tra.html and sent.html."""
+        # Replace HTML space with actual space
         string = string.replace("&nbsp;", ' ')
-        string = re.sub(r"\s+([.,;?!])", r"\1", string)
+        # Delete spaces before .,;?!, etc.
+        string = re.sub(r"\s+([.,;:?!)”’%])", r"\1", string)
+        # Delete spaces after ("', etc.
+        string = re.sub(r"([(\"“‘$])\s+", r"\1", string)
         if capitalize:
             string = string[0].upper() + string[1:]
         return string

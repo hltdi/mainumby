@@ -543,7 +543,7 @@ class Group(Entry):
         #->amh $n[cs=acc] Tmd_v[as=smp,vc=smp] ; || 1, 0 ; 0==1 tm:tm,rel:rel,sb:sb,ob:ob,neg:neg,ax:ax
         return string
 
-    def match_segments(self, segments, startindex, verbosity=1):
+    def match_segments(self, segments, startindex, seglimit=8, verbosity=1):
         """Attempt to match a sequence of Segs, starting at start_index, returning the match or False."""
         if verbosity or self.debug:
             print("Matching {} against {} starting from {}".format(self, segments, startindex))
@@ -552,10 +552,15 @@ class Group(Entry):
         patlength = len(self.tokens)
         patindex = 0
         segindex = startindex
-        while matched and patindex < patlength:
+        nsegments = 0
+        while matched and patindex < patlength and nsegments < seglimit:
             patelem = self.tokens[patindex]
             patfeats = self.features[patindex] if self.features else None
             segment = segments[segindex]
+            nsegments1 = segment.count_segments()
+            nsegments += nsegments1
+            if nsegments >= seglimit:
+                return False
             match = segment.match_group_tok(patelem, patfeats, verbosity=verbosity)
             if match:
                 if verbosity or self.debug:
@@ -2066,7 +2071,7 @@ class Join(Entry):
         else:
             return token.get('pos', '')
 
-    def match(self, segments, startindex=0, verbosity=0):
+    def match(self, segments, startindex=0, seglimit=20, verbosity=0):
         """Match this Join against segments in Segmentation starting with
         position startindex."""
         matched = True
@@ -2076,9 +2081,10 @@ class Join(Entry):
         patindex = 0
         segindex = startindex
         match1 = []
+        nsegments = 0
         if self.debug:
             print(" {} matching segments {}".format(self, segments[startindex:]))
-        while matched and patindex < patlength:
+        while matched and patindex < patlength and nsegments < seglimit:
             patelem = tokens[patindex]
             patpos1 = patpos[patindex]
             segment = segments[segindex]
@@ -2086,10 +2092,10 @@ class Join(Entry):
                 dmin, dmax = self.depth_constraints[patindex]
                 if not (dmin <= segment.depth <= dmax):
                     return False
-#            if patindex in self.has_child_indices:
-#                if not segment.has_child():
-#                    # Join requires a child for the segment, but it doesn't have one
-#                    return False
+            nsegments1 = segment.count_segments()
+            nsegments += nsegments1
+            if nsegments >= seglimit:
+                return False
             match2 = segment.match_join(patelem, patpos1, verbosity=verbosity)
             if match2:
                 if verbosity or self.debug:
@@ -2191,6 +2197,9 @@ class Match:
         self.length = len(matched) if matched else 0
         self.id = Match.id
         self.head_index = matched[entry.head_index][0] if entry else -1
+        self.feat_score = 0
+        if isinstance(entry, Group) and self.entry.features:
+            self.feat_score = sum([len(f) if f else 0 for f in entry.features])
         Match.id += 1
 
     def __repr__(self):
@@ -2210,8 +2219,10 @@ class Match:
         if len(matches) > 1:
             if verbosity:
                 print(" Resolving conflicts within {}".format(matches))
-            # First eliminate all matches that are covered by others
+            # First eliminate all matches that are covered by others, first
+            # sorting by length and if the same length by feature score
             Match.sort_by_length(matches)
+#            print("Sorted {}".format(matches))
             eliminated = []
             new_matches = [matches[0]]
             for match in matches[1:]:
@@ -2264,10 +2275,10 @@ class Match:
         return f2 <= f1 <= l2 or f2 <= l1 <= l2
 
     def contains_match(self, other):
-        """Does this Match contain the other?"""
+        """Does this Match contain the other? Perfect match counts."""
         f1, l1 = self.first, self.last
         f2, l2 = other.first, other.last
-        return f1 <= f2 <= l2 < l1 or f1 < f2 <= l2 <= l1
+        return f1 <= f2 <= l2 <= l1 # or f1 < f2 <= l2 <= l1
 
     def overlap_prefer(self, other):
         if self.entry.specificity() > other.entry.specificity():
@@ -2376,6 +2387,10 @@ class Match:
     @staticmethod
     def sort_by_length(matches):
         """Sort matches by number of elements matched."""
+        if all([(m.length == matches[0].length) for m in matches]):
+            # if all are the same length, use feature scores
+#            print("Sorting {} by feature score".format(matches))
+            matches.sort(key=lambda m: m.feat_score, reverse=True)
         matches.sort(key=lambda m: m.length, reverse=True)
 
     @staticmethod
@@ -2392,6 +2407,7 @@ class Token:
     pos_char = '&'
     spec_sep_char = '~'
     del_char = '~'
+    ungen_char = '*'
 
     def __init__(self, name='', prefix='', parent=None):
         self.name = name
@@ -2429,6 +2445,11 @@ class Token:
     def is_pos(token):
         """Is this the name of a POS?"""
         return token[0] == Token.pos_char
+
+    @staticmethod
+    def is_ungen(token):
+        """Is this the root of a failed morphological generation?"""
+        return token[0] == Token.ungen_char
 
     @staticmethod
     def special_prefix(token, check=False):
@@ -2488,6 +2509,15 @@ class SentToken(Token):
 #            return prechar + self.fullname + postchar
 #        else:
         return prechar + self.fullname + postchar
+
+    @staticmethod
+    def is_name_token(token):
+        """Name tokens are capitalized but not all uppercase."""
+        if len(token) > 0:
+            if token[0].isupper():
+                if len(token) == 1 or not token.isupper():
+                    return True
+        return False
 
     def get_keys(self, index=0):
         """Keys for finding group candidates."""

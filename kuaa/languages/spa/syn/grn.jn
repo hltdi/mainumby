@@ -14,8 +14,9 @@ NNNyN :: &n , &n , &n y &n ; ^0
 # minimal disambiguation of "de": -gui vs. possessive
 # transitive extractive verbs + "de": extraer, sacar, etc.
 VxNdeN :: $vex &n de &n ; ^0 ; 0[-ojxpl] ; 3[caso=gui]
-# possessive "de"
+# posesivo "de"
 NdeN :: &n de &n ; ^0 ; 0(-1) ; >2 0 ; 0[poses=[+ext,pp=3]]
+Nde[C] :: &n de %C ; ^0 ; 0(-1) ; >2 0 ; 0[poses=[+ext,pp=3]]
 # transitive verbs with personal objects
 VaN :: $vt a &n ; ^0 ; 0[-ojxpl] ; 2[caso=pe]
 # transitive verbs with impersonal objects

@@ -1025,6 +1025,8 @@
 ->grn <hymba_n ; 0==0 n:n,poses:poses ; #95
 ** tener_v[-r] hambre_n ; ^ hambre_n 1
 ->grn ñembyahýi_v[cat=che] ; ^ ñembyahýi_v 0 ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
+** tener_v[-r] mucha hambre_n ; ^ hambre_n 2
+->grn ñembyahýi_v[cat=che,grd=ete] ; ^ ñembyahýi_v 0 ; || 0, -1, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
 ** hambre_n común ; ^ hambre_n 0 ; #121
 ->grn karu_n aipeve ; 0==0 n:n,poses:poses
 ** hambre_n ; ^ hambre_n 0 ; #121
@@ -4485,7 +4487,7 @@
 ** calavera_n ; ^ calavera_n 0
 ->grn akãkanguekue_n ; 0==0 n:n,poses:poses
 ** calcetín_n ; ^ calcetín_n 0
-->grn pyrehegua_n ; 0==0 n:n,poses:poses
+->grn py ao ; 0==0 n:n,poses:poses
 ** calendario_n lunar ; ^ calendario_n 0
 ->grn jasy_n ára ; 0==0 n:n,poses:poses
 ** calendario_n ; ^ calendario_n 0
@@ -4545,7 +4547,6 @@
 ** calvicie_n ; ^ calvicie_n 0
 ->grn akãperõ_n ; 0==0 n:n,poses:poses
 ** calzado_n ; ^ calzado_n 0 ; #13
-->grn pyrehegua_n ; 0==0 n:n,poses:poses
 ->grn sapatu_n ; 0==0 n:n,poses:poses ; #46
 ** calzoncillo_n[n=1] ; ^ calzoncillo_n 0
 ->grn chulu_n ; 0==0 n:n,poses:poses
@@ -10911,8 +10912,6 @@
 ->grn káso_n ; 0==0 n:n,poses:poses
 ** media_n mañana ; ^ media_n 0
 ->grn asaje_n ; 0==0 n:n,poses:poses
-** media_n ; ^ media_n 0
-->grn pyrehegua_n ; 0==0 n:n,poses:poses
 ** medianoche_n ; ^ medianoche_n 0
 ->grn pyharembyte_n ; 0==0 n:n,poses:poses
 ** medicamento_n para el amor ; ^ medicamento_n 0
@@ -16610,12 +16609,10 @@
 ** zapallo_n ; ^ zapallo_n 0
 ->grn andai_n ; 0==0 n:n,poses:poses
 ** zapatero_n ; ^ zapatero_n 0
-->grn pyrehegua_n apohára ; 0==0 n:n,poses:poses
 ->grn sapatu_n apohára ; 0==0 n:n,poses:poses
 ** zapatilla_n ; ^ zapatilla_n 0
-->grn pyrehegua_n ; 0==0 n:n,poses:poses
+->grn sapatupe_n ; 0==0 n:n,poses:poses
 ** zapato_n ; ^ zapato_n 0 ; #7
-->grn pyrehegua_n ; 0==0 n:n,poses:poses
 ->grn sapatu_n ; 0==0 n:n,poses:poses ; #46
 ** zarcillo_n ; ^ zarcillo_n 0 ; #2
 ->grn namichãi_n ; 0==0 n:n,poses:poses ; #2
