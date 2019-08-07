@@ -4859,8 +4859,6 @@
 ->grn mbopo'i_v[cat=a] ; #11
 ** tener_v[+r,+fin] en cuenta ; ^ tener_v 0
 ->grn ñeñangareko_v[cat=a] ; || 0, -1, -1
-** tener_v[-r,+fin] que ; ^ tener_v 0
-->grn <hekotevẽ_v[cat=a]
 ** tener_v[-r] vergüenza_n ; ^ tener_v 0
 ->grn tĩ_v[pos=v] ; || 0, -1
 ** tener_v[-r,+fin] ; ^ tener_v 0

@@ -36,6 +36,8 @@ seguir_ger :: seguir_v [pos=v,tm=ger] ; 0=>1 p,n,tm ; 1-> [+fin]
 
 ## derivación 1
 volativo :: querer_v [pos=v,tm=inf,asp=[+vol]] ; 0=>1 p,n,tm,asp ; 1-> [+fin] ; // 0
+obligacion_prs :: tener_v[tm=prs] que [pos=v,tm=inf] ; 0=>2 p,n ; 2-> [+fin,tm=fut,asp=[+obl]] ; // 0 1
+obligacion_fut :: tener_v[tm=fut] que [pos=v,tm=inf] ; 0=>2 p,n ; 2-> [+fin,tm=fut,asp=[+obl]] ; // 0 1
 
 ## otros pronombres clíticos
 obj/1s :: me [+fin,pos=v,po=1,no=0] ; // 0

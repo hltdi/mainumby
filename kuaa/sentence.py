@@ -2210,7 +2210,6 @@ class Segmentation:
             if not gnodes:
                 self.gnodes_feats.append((gnodes, None))
                 continue
-#            print("snode {}, gn_indices {}, gnodes {}".format(snode, gn_indices, gnodes))
             merging = len(gnodes) > 1
             if not merging:
                 # Not really a merged node
@@ -2226,7 +2225,9 @@ class Segmentation:
                 # Use the first (preferred) analysis.
                 if features:
                     feature = features[0]
-                    feats_unified = FSSet(feature)
+                    if not isinstance(feature, bool):
+                        # Preferred feature may be True
+                        feats_unified = FSSet(feature)
             else:
                 # A genuine merge node
                 features = []

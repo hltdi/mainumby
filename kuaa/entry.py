@@ -585,8 +585,8 @@ class Group(Entry):
 
     def apply(self, superseg, verbosity=1):
         """Make changes specified in group to superseg containing segments matching it."""
-        if verbosity or self.debug:
-            print("Applying {} to {}".format(self, superseg))
+#        if verbosity or self.debug:
+        print("Applying {} to {}".format(self, superseg))
         hindex = self.head_index
         segments = superseg.segments
         supersegfeats = superseg.features
@@ -707,6 +707,39 @@ class Group(Entry):
                     if segment.thead is None:
                         segment.thead = []
                     segment.thead = newtrans
+            if tgroup.agr:
+                if verbosity or self.debug:
+                    print(" tgroup also has within agreement {}".format(tgroup.agr))
+                for agr1 in tgroup.agr:
+                    # Each of these includes the indices of the agreeing segments
+                    # and a set of features to agree on
+                    sindex = agr1[0]
+                    tindex = agr1[1]
+                    agr_feats = agr1[2:]
+                    srcseg = superseg.segments[rev_align[sindex]]
+                    targseg = superseg.segments[rev_align[tindex]]
+                    srcthead = srcseg.thead
+                    targthead = targseg.thead
+                    if srcthead and targthead:
+                        # For every combination of translations for the two segments,
+                        # make the features agree
+                        for s, t in [(sh, th) for sh in srcthead for th in targthead]:
+                            sfeats = s[2]
+                            tfeats = t[2]
+                            sfeats = sfeats.unfreeze(cast=False)
+                            tfeats = tfeats.unfreeze(cast=False)
+                            mutagr = FSSet.mutual_agree(sfeats, tfeats, agr_feats)
+                            if mutagr == 'fail':
+                                # Really should eliminate this from cleaned_trans
+                                if verbosity or self.debug:
+                                    print("   merger of {} and {} on features {} failed!".format(sfeats.__repr__(), tfeats.__repr__(), agr_feats))
+                            else:
+                                sf1, tf1= mutagr
+                                if verbosity or self.debug:
+                                    print("  merged features {}, {}".format(sf1, tf1))
+                                # Replace old features with new ones (changing cleaned_trans)
+                                s[2] = sf1
+                                t[2] = tf1
         if alignment:
             superseg.order = rev_align
             if verbosity or self.debug:
@@ -947,6 +980,7 @@ class Group(Entry):
                     else:
                         feat_pairs.append((f.strip(), f.strip()))
                 within_agrs.append([int(i1), int(i2)] + feat_pairs)
+#                print("Within agreement: {}".format(within_agrs))
                 continue
 #            match = NO_GAP.match(attrib)
 #            if match:

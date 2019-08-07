@@ -460,7 +460,7 @@ class Language:
                         break
                     else:
                         names.append(word)
-                elif words[-1] == '' and not names:
+                elif words[-1] in ['', '¶'] and not names:
                     # Name-like token not in first position and no end punctuation
                     # and no previous special words
                     if self.is_known(lowered):

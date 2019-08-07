@@ -18,3 +18,5 @@
 ->grn mandu'a_v[cat=che] hesekuéra ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
 ** recordar_v[-r,po=3,no=0] $n ; ^ recordar_v 0
 ->grn mandu'a_v[cat=che] $n rehe ; || 0, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
+** tener_v[-r] que $v[tm=inf] ; ^ tener_v 0
+->grn kotevẽ_v[cat=a,subcat=i] $v[tmp=prs] ; || 0, -1, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter ; 0=1 ns,ps

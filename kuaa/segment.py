@@ -532,109 +532,6 @@ class Seg:
             self.record.choice_tgroups = choice_tgroups
         self.html = (orig_tokens, self.color, transhtml, index, trans1, self.source_html)
 
-##    def set_html(self, index, verbosity=0):
-##        """Set the HTML markup for this segment, given its position in the sentence,
-##        Do postprocessing on phrases joined by '_' or special tokens (numerals).
-##        """
-##        # Combine translations where possible
-##        self.color = Seg.tt_notrans_color if not self.translation else Seg.tt_colors[index]
-##        self.set_source_html(index)
-##        transhtml = '<table>'
-##        capitalized = False
-##        choice_list = self.record.choices if self.record else None
-##        # Final source segment output
-##        tokens = self.token_str
-##        orig_tokens = self.original_token_str
-##        trans_choice_index = 0
-##        print("Setting HTML for segment {}: orig tokens {}, translation {}, tgroups {}".format(self, orig_tokens, self.cleaned_trans, self.tgroups))
-##        # T Group strings associated with each choice
-##        choice_tgroups = []
-##        if self.is_punc:
-##            trans = self.translation[0][0]
-##            if '"' in trans:
-##                trans = trans.replace('"', '\"')
-##            transhtml += "<tr><td class='transchoice'>"
-##            transhtml += '<br/><input type="radio" name="choice" id={} value="{}" checked>{}</td>'.format(trans, trans, trans)
-##            transhtml += '</tr>'
-##            transhtml += '</table>'
-##            self.html = (tokens, self.color, transhtml, index, self.source_html)
-##            return
-##        for tindex, (t, tgroups) in enumerate(zip(self.cleaned_trans, self.tgroups)):
-##            # Create all combinations of word sequences
-##            tg_expanded = []
-##            if self.special:
-##                trans = t[0]
-##                tgcombs = [[(trans, '')]]
-##            else:
-##                for tt, tg in zip(t, tgroups):
-##                    tg = Group.make_gpair_name(tg)
-##                    # Get rid of parentheses around optional elements
-##                    if '(' in tt:
-##                        tt = ['', tt[1:-1]]
-##                    else:
-##                        tt = tt.split('|')
-##                    # Add tg group string to each choice
-##                    tg_expanded.append([(ttt, tg) for ttt in tt])
-##                tgcombs = allcombs(tg_expanded)
-##            tgcombs.sort()
-##            tgforms = []
-##            tggroups = []
-##            for ttg in tgcombs:
-##                # "if tttg[0]" prevents '' from being treated as a token
-##                tgforms.append(' '.join([tttg[0] for tttg in ttg if tttg[0]]))
-##                tggroups.append("||".join([tttg[1] for tttg in ttg if tttg[0]]))
-##            # A single translation of the source segment
-##            transhtml += '<tr>'
-##            transhtml += "<td class='transchoice'>"
-##            html_choices = []
-##            for tcindex, (tchoice, tcgroups) in enumerate(zip(tgforms, tggroups)):
-##                tchoice = tchoice.replace('_', ' ')
-##                choice_tgroups.append(tcgroups)
-##                if tindex == 0 and tcindex == 0:
-##                    html_choices.append('<input type="radio" name="choice" id="{}" value="{}" checked>{}'.format(tchoice, tchoice, tchoice))
-##                else:
-##                    html_choices.append('<input type="radio" name="choice" id="{}" value="{}">{}'.format(tchoice, tchoice, tchoice))
-##                trans_choice_index += 1
-##            transhtml += "<br/>".join(html_choices)
-##            if len(tgcombs) > 1:
-##                transhtml += "<hr>"
-##            transhtml += "</td>"
-##            transhtml += '</tr>'
-##        if self.translation and self.translation[0]:
-##            if verbosity:
-##                print("Translation {}, clean trans {}".format(self.translation, self.cleaned_trans))
-##            if self.cleaned_trans[0][0] != tokens:
-##                # Add other translation button
-##                # Button to translate as source language
-##                transhtml += '<tr><td class="source">'
-##                transhtml += '<input type="radio" name="choice" id="{}" value="{}">{}</td></tr>'.format(orig_tokens, orig_tokens, orig_tokens)
-##        else:
-##            # No translations suggested: checkbox for translating as source (only option)
-##            transhtml += '<tr><td class="source">'
-##            transhtml += '<input type="checkbox" name="choice" id="{}" value="{}" checked>{}</td></tr>'.format(orig_tokens, orig_tokens, orig_tokens)
-##        transhtml += '</table>'
-##        # Capitalize tokens if in first place        
-##        if index==0:
-##            capitalized = False
-##            if ' ' in tokens:
-##                toks = []
-##                tok_list = tokens.split()
-##                for tok in tok_list:
-##                    if capitalized:
-##                        toks.append(tok)
-##                    elif self.source.is_punc(tok):
-##                        toks.append(tok)
-##                    else:
-##                        toks.append(tok.capitalize())
-##                        capitalized = True
-##                tokens = ' '.join(toks)
-##            else:
-##                tokens = tokens.capitalize()
-##        self.choice_tgroups = choice_tgroups
-##        if self.record:
-##            self.record.choice_tgroups = choice_tgroups
-##        self.html = (orig_tokens, self.color, transhtml, index, self.source_html)
-
     def unseg_tokens(self):
         """Rejoin tokens in original_token_str that were segmented when the Sentence was created."""
         toksegs = self.sentence.toksegs
@@ -850,8 +747,7 @@ class Segment(Seg):
         # Join tokens in cleaned translation if necessary
         if treetrans:
             thead_indices = [g.head_index for g in treetrans.tgroups]
-#            print("thead indices {}, cleaned trans {}, translation {}".format(thead_indices, self.cleaned_trans, self.translation))
-            self.thead = [o[i] for i, o in zip(thead_indices, self.translation)]
+            self.thead = [o[i] for i, o in zip(thead_indices, self.cleaned_trans)]
         else:
             self.thead = None
         self.color = color
@@ -1765,61 +1661,15 @@ class TreeTrans:
 #                gnode, gna1 = self.get_abs_conc(gnodes, tg_groups, verbosity=verbosity)
 #            else:
             gnode = gnodes[0]
-            gna1 = None
             if not gnode:
                 # snode is not covered by any group
                 self.record_ind_feats(tnode_index=tnode_index, snode=snode, node_index_map=node_index_map)
                 tnode_index += 1
             else:
-                # all other cases, there are one or more target translation groups
-##                if gna1:
-##                    # there are two nodes to be merged
-##                    # There are two gnodes for this snode, one concrete, one abstract;
-##                    # gna and gnc are lists of tuples for different translations
-##                    if verbosity:
-##                        print("   merging nodes: concrete {}, abstract {}".format(gnode, gna1))
-##                    cache_key = self.make_cache_key(gnode, gna1)
-##                    cached = self.get_cached(gnode, gna1, cache_key=cache_key, verbosity=verbosity)
-##                    if cached:
-##                        # merged nodes found in local cache
-##                        tok, tn_i, t_i, tg, t_feats = cached
-##                        self.mergers.append((tn_i, tg))
-##                        if verbosity > 1:
-##                            print("   mergers for {}: {}".format(self, self.mergers))
-##                        self.record_ind_feats(token=tok, tnode_index=tn_i, t_indices=t_i, 
-##                                              targ_feats=t_feats, snode=snode, node_index_map=node_index_map)
-##                    else:
-##                        # merged nodes not found in cache
-##                        tgroups, tokens, targ_feats, agrs, t_index = zip(gna1, gnode)
-##                        # Concrete node token
-##                        token = tokens[1]
-##                        # Unify target features of abstract and concrete nodes
-##                        targ_feats = FeatStruct.unify_all(targ_feats)
-##                        if targ_feats == 'fail':
-##                            print("Merged target features fail to unify")
-##                            return False
-##                        # merge the agreements
-##                        agrs = TreeTrans.merge_agrs(agrs)
-##                        # record the target groups and their indices
-##                        t_indices.extend([(tgroups[0], t_index[0]), (tgroups[1], t_index[1])])
-##                        ## Record target merger groups and their target node index in mergers
-##                        tg_merger_groups = self.make_merger_groups(tgroups, gnodes, tnode_index, verbosity=verbosity)
-##                        # Make target and source features agree as required
-##                        targ_feats = self.merge_agr_feats(agrs, targ_feats, features, verbosity=verbosity)
-##                        self.record_ind_feats(token=token, tnode_index=tnode_index, t_indices=t_indices,
-##                                              targ_feats=targ_feats, snode=snode, node_index_map=node_index_map)
-##                        self.cache_gnodes(cache_key=cache_key, token=token, tnode_index=tnode_index, t_indices=t_indices,
-##                                          tg_merger_groups=tg_merger_groups, targ_feats=targ_feats)
-##                    
-##                else:
-                # only one gnode in list, no merger
-                if verbosity > 1:
-                    print("   single node to generate: {}".format(gnode))
                 if gnode not in self.gnode_dict:
                     if verbosity > 1:
                         print("   not in gnode dict, skipping")
                     continue
-                # translating single gnode
                 gnode_tuple_list = self.gnode_dict[gnode]
                 gnode_tuple = firsttrue(lambda x: x[0] in tg_groups, gnode_tuple_list)
                 if verbosity > 1:
