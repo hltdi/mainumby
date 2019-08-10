@@ -157,17 +157,14 @@ def tra():
     if not GUI:
         create_gui()
     form = request.form
-    print("**FORM DICT FOR tra.html: {}**".format(form))
+#    print("**FORM DICT FOR tra.html: {}**".format(form))
     if not GUI.session:
         print("Ninguna memoria")
         init_session(create_memory=True)
     # Translating document?
     isdoc = form.get('isdoc') == 'true'
+    # Initialize various window parameters
     GUI.set_props(form, ['ocultar', 'nocorr', 'isdoc'], ['tfuente'])
-#    if 'ocultar' in form:
-#        GUI.props['ocultar'] = form.get('ocultar') == 'true'
-#    if 'nocorr' in form:
-#        GUI.props['nocorr'] = form.get('nocorr') == 'true'
     username = GUI.user.username if GUI.user else ''
     if 'ayuda' in form and form['ayuda'] == 'true':
         # Opened help window. Keep everything else as is.
@@ -177,7 +174,7 @@ def tra():
             file = form['docx']
             print("ARCHIVO SUBIDO {}".format(file))
             document = Document(file)
-#            GUI.props['tfuente'] = "90%"
+#            GUI.props['tfuente'] = "100%"
             return render_template('tra.html', doc=True, props=GUI.props)
         # Mode (sentence vs. document) has changed
         isdoc = form.get('modo') == 'documento'

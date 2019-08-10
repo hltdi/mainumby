@@ -14564,3 +14564,4 @@ yuxtaponer_v $vt
 zamarrear_v $vt
 zapar_v $vi,$vt
 zurcar_v $vt
+Roma_n $n

@@ -385,32 +385,23 @@ class Seg:
 
     ## Web app
 
-    def set_source_html(self, index):
-#        if self.has_paren:
-#            self.source_html = "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.pre_token_str)
-#            self.source_html += "<span id=parenthetical> {} </span>".format(self.paren_token_str)
-#            self.source_html += "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.post_token_str)
-#        else:
-        cap = index == 0 and self.sentence.capitalized
+    def set_source_html(self, first=False):
+        """Set the HTML for the source side of this Seg."""
+        cap = first and self.sentence.capitalized
         tokstr = self.original_token_str
         if cap:
             tokstr = tokstr[0].upper() + tokstr[1:]
         self.source_html = "<span class='fuente' style='color:{};'> {} </span>".format(self.color, tokstr)
 
     def get_gui_source(self, paren_color='Silver'):
-#        if self.has_paren:
-#            return ["<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.pre_token_str),
-#                    "<span class='fuente' style='color:{};'> {} </span>".format(paren_color, self.paren_token_str),
-#                    "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.post_token_str)]
-#        else:
         return "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.token_str)
 
-    def set_single_html(self, index, verbosity=0):
+    def set_html(self, index, first=False, verbosity=0):
         """Set the HTML markup for this segment as a colored segment in source and dropdown menu
         in target, given its position in the sentence.
         """
         self.color = Seg.tt_notrans_color if self.is_punc or (not self.translation and not self.special) else Seg.tt_colors[index]
-        self.set_source_html(index)
+        self.set_source_html(first)
         transhtml = "<div class='desplegable' ondrop='drop(event);' ondragover='allowDrop(event);'>"
         capitalized = False
         choice_list = self.record.choices if self.record else None
@@ -571,12 +562,23 @@ class Seg:
         return string.replace(' ' + Seg.join_tok_char, '')
 
     @staticmethod
+    def join_toks_char(strings):
+        """Join two tokens, the second of which starts with join_tok_char."""
+        if len(strings) == 2 and Seg.join_tok_char in strings[-1]:
+            return [strings[0] + strings[1][1:]]
+
+    @staticmethod
     def join_toks_in_strings(stringlists):
         """Join tokens in each item in list of strings."""
         for i, stringlist in enumerate(stringlists):
-            for j, string in enumerate(stringlist):
-                if Seg.join_tok_char in string:
-                    stringlists[i][j] = Seg.join_toks(string)
+            # If there are two and the 2nd starts with join_tok_char, join them
+            joined = Seg.join_toks_char(stringlist)
+            if joined:
+                stringlists[i] = joined
+            else:
+                for j, string in enumerate(stringlist):
+                    if Seg.join_tok_char in string:
+                        stringlists[i][j] = Seg.join_toks(string)
 
 class SuperSeg(Seg):
     """SuperSegment: joins Segment instances into larger units, either via a Join rule
@@ -889,24 +891,23 @@ class SNode:
         if not self.gnodes:
             # Nothing matched this snode; all variables empty
             self.variables['gnodes'] = EMPTY
-            self.variables['cgnodes'] = EMPTY
-            self.variables['agnodes'] = EMPTY
-#            self.variables['mgnodes'] = EMPTY
+#            self.variables['cgnodes'] = EMPTY
+#            self.variables['agnodes'] = EMPTY
             self.variables['features'] = EMPTY
         else:
             # GNodes associated with this SNode: 0, 1, or 2
             upper = set(self.gnodes)
             self.svar('gnodes', "w{}->gn".format(self.index), set(),
                       upper,
-                      0, 2, ess=True)
-            # Concrete GNodes associated with this SNode: must be 1
-            self.svar('cgnodes', "w{}->cgn".format(self.index), set(),
-                      {gn.sent_index for gn in self.sentence.gnodes if not gn.cat},
-                      1, 1)
-            # Abstract GNodes associated with this SNode: 0 or 1
-            self.svar('agnodes', "w{}->agn".format(self.index), set(),
-                      {gn.sent_index for gn in self.sentence.gnodes if gn.cat},
-                      0, 1)
+                      1, 1, ess=True)
+#            # Concrete GNodes associated with this SNode: must be 1
+#            self.svar('cgnodes', "w{}->cgn".format(self.index), set(),
+#                      {gn.sent_index for gn in self.sentence.gnodes if not gn.cat},
+#                      1, 1)
+#            # Abstract GNodes associated with this SNode: 0 or 1
+#            self.svar('agnodes', "w{}->agn".format(self.index), set(),
+#                      {gn.sent_index for gn in self.sentence.gnodes if gn.cat},
+#                      0, 1)
             # Features
             features = self.get_features()
             if len(features) > 1:
@@ -1127,10 +1128,10 @@ class GInst:
         # List of target language groups, gnodes, tnodes
         self.translations = []
         self.ngnodes = len(self.nodes)
-        # Number of abstract nodes
-        self.nanodes = len([n for n in self.nodes if n.cat])
-        # Number of concrete nodes
-        self.ncgnodes = self.ngnodes - self.nanodes
+#        # Number of abstract nodes
+#        self.nanodes = len([n for n in self.nodes if n.cat])
+#        # Number of concrete nodes
+#        self.ncgnodes = self.ngnodes - self.nanodes
         # TreeTrans instance for this GInst; saved here to prevent multiple TreeTrans translations
         self.treetrans = None
         # Indices of GInsts that this GINst depends on; set in Sentence.lexicalize()
@@ -1207,29 +1208,29 @@ class GInst:
         # GNode indices for this GInst (determined)
         self.variables['gnodes'] = DetVar('g{}->gnodes'.format(self.index), {gn.sent_index for gn in self.nodes})
         # Abstract GNode indices for GInst (determined)
-        if self.nanodes:
-            self.variables['agnodes'] = DetVar('g{}->agnodes'.format(self.index), {gn.sent_index for gn in self.nodes if gn.cat})
-            # Concrete GNode indices for GInst (determined)
-            self.variables['cgnodes'] = DetVar('g{}->cgnodes'.format(self.index), {gn.sent_index for gn in self.nodes if not gn.cat})
-        else:
-            self.variables['agnodes'] = EMPTY
-            self.variables['cgnodes'] = self.variables['gnodes']
+#        if self.nanodes:
+#            self.variables['agnodes'] = DetVar('g{}->agnodes'.format(self.index), {gn.sent_index for gn in self.nodes if gn.cat})
+#            # Concrete GNode indices for GInst (determined)
+#            self.variables['cgnodes'] = DetVar('g{}->cgnodes'.format(self.index), {gn.sent_index for gn in self.nodes if not gn.cat})
+#        else:
+#            self.variables['agnodes'] = EMPTY
+#        self.variables['cgnodes'] = self.variables['gnodes']
         # SNode positions of GNodes for this GInst
         self.svar('gnodes_pos', 'g{}->gnodes_pos'.format(self.index),
                   set(), set(cand_snodes), self.ngnodes, self.ngnodes)
         # SNode positions of abstract GNodes for this GInst
-        if self.nanodes == 0:
-            # No abstract nodes
-            self.variables['agnodes_pos'] = EMPTY
+#        if self.nanodes == 0:
+#            # No abstract nodes
+#            self.variables['agnodes_pos'] = EMPTY
             # SNode positions of concrete GNodes for this GInst
-            self.variables['cgnodes_pos'] = self.variables['gnodes_pos']
-        else:
-            # Position for each abstract node in the group
-            self.svar('agnodes_pos', 'g{}->agnodes_pos'.format(self.index),
-                      set(), set(cand_snodes), self.nanodes, self.nanodes)
-            # Position for each concrete node in the group
-            self.svar('cgnodes_pos', 'g{}->cgnodes_pos'.format(self.index),
-                      set(), set(cand_snodes), self.ncgnodes, self.ncgnodes)
+#        self.variables['cgnodes_pos'] = self.variables['gnodes_pos']
+#        else:
+#            # Position for each abstract node in the group
+#            self.svar('agnodes_pos', 'g{}->agnodes_pos'.format(self.index),
+#                      set(), set(cand_snodes), self.nanodes, self.nanodes)
+#            # Position for each concrete node in the group
+#        self.svar('cgnodes_pos', 'g{}->cgnodes_pos'.format(self.index),
+#                      set(), set(cand_snodes), self.ncgnodes, self.ncgnodes)
         # Determined variable for within-source agreement constraints, gen: 0}
         agr = self.get_agr()
         if agr:
@@ -1395,7 +1396,8 @@ class TreeTrans:
     """Translation of a tree: a group or two or more groups joined by merged nodes."""
 
     def __init__(self, segmentation, tree=None, ginst=None,
-                 abs_gnode_dict=None, gnode_dict=None, group_attribs=None,
+#                 abs_gnode_dict=None
+                 gnode_dict=None, group_attribs=None,
                  # Whether the tree has any abstract nodes (to merge with concrete nodes)
                  any_anode=False, index=0, top=False, verbosity=0):
         # The segmentation generating this translation
@@ -1404,7 +1406,7 @@ class TreeTrans:
         self.target = segmentation.target
         self.sentence = segmentation.sentence
         # Dict keeping information about each gnode; this dict is shared across different TreeTrans instances
-        self.abs_gnode_dict = abs_gnode_dict
+#        self.abs_gnode_dict = abs_gnode_dict
         self.gnode_dict = gnode_dict
         # A set of sentence node indices
         self.tree = tree
@@ -1564,20 +1566,16 @@ class TreeTrans:
 #                print("   multiple translations for concrete node: {}".format(gnc))
 #        return gnc, gna
 
-    def make_cache_key(self, concrete_gn_tuple, abstract_gn_tuple, verbosity=0):
+    def make_cache_key(self, gn_tuple, verbosity=0):
         """Make the key for the cache of gnode info."""
         cache_key = None
-#        print("Getting cache key for {} and {}".format(concrete_gn_tuple, abstract_gn_tuple))
-        if abstract_gn_tuple:
-            cache_key = ((concrete_gn_tuple[0], concrete_gn_tuple[-1]), (abstract_gn_tuple[0], abstract_gn_tuple[-1]))
-        else:
-            cache_key = concrete_gn_tuple[0], concrete_gn_tuple[-1]
+        cache_key = gn_tuple[0], gn_tuple[-1]
         return cache_key
 
-    def get_cached(self, concrete_gn_tuple, abstract_gn_tuple, cache_key=None, verbosity=0):
+    def get_cached(self, gn_tuple, cache_key=None, verbosity=0):
         """Get gnode information if already cached."""
         if not cache_key:
-            cache_key = self.make_cache_key(concrete_gn_tuple, abstract_gn_tuple, verbosity=verbosity)
+            cache_key = self.make_cache_key(gn_tuple, verbosity=verbosity)
         if cache_key in self.cache:
             # merged nodes found in local cache
             cached = self.cache[cache_key]
@@ -1676,8 +1674,8 @@ class TreeTrans:
                     print("   gnode_tuple: {}, list {}".format(gnode_tuple, gnode_tuple_list))
                 if not gnode_tuple:
                     print("Something wrong")
-                cache_key = self.make_cache_key(gnode_tuple, None)
-                cached = self.get_cached(gnode_tuple, None, cache_key=cache_key, verbosity=verbosity)
+                cache_key = self.make_cache_key(gnode_tuple)
+                cached = self.get_cached(gnode_tuple, cache_key=cache_key, verbosity=verbosity)
                 if cached:
                     # translation already in local cache
                     tok, tn_i, t_i, x, t_feats = cached

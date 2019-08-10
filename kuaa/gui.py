@@ -29,7 +29,12 @@
 
 import re
 
+from .utils import capitalize_string
+
 class GUI:
+
+    # Compiled regexs for sentence cleaning
+    clean_n = re.compile(r"\s+([.,;:?!)”″’%])")
 
     def __init__(self):
         self.session = None
@@ -83,13 +88,7 @@ class GUI:
         # List of seg HTML for any selected sentences
         self.doc_select_html = [""] * nsent
         self.doc_html = self.doc.html
-        self.props['tfuente'] = "90%" if nsent > 1 else "120%"
-
-#    def get_accepted_t(self):
-#        # First re-instate doc_html
-#        self.doc_html = self.doc.html
-#        # Return a string containing all of the non-empty accepted translations.
-#        return "\n".join([t for t in self.doc_tra_acep if t])
+        self.props['tfuente'] = "100%" if nsent > 1 else "120%"
 
     def doc_unselect_sent(self):
         # Revert to version of doc html with nothing segmented.
@@ -105,10 +104,6 @@ class GUI:
             self.doc_select_html[index] = current_fue
         self.sindex = index
 
-#    def translate_sent(self, index, tsegs, thtml):
-#        self.segs = tsegs
-#        self.tra_seg_html = thtml
-
     def accept_sent(self, index, trans):
         """What happens when a sentence translation is accepted."""
         print("+++Adding accepted translation for position {}".format(index))
@@ -119,7 +114,7 @@ class GUI:
         self.doc_tra_acep_str = self.stringify_doc_tra()
 #        "\n".join([t for t in self.doc_tra_acep if t]).strip()
         self.doc_unselect_sent()
-        self.props['tfuente'] = "90%"
+        self.props['tfuente'] = "100%"
 
     def stringify_doc_tra(self):
         """Create a string representation of the currently accepted sentence translations.
@@ -163,7 +158,7 @@ class GUI:
         self.doc_tra_acep_str = ''
         self.doc_html = ''
         self.doc_select_html = []
-        self.props['tfuente'] = "90%" if isdoc else "120%"
+        self.props['tfuente'] = "100%" if isdoc else "120%"
         if record:
             # Record the sentence translation
             if self.session:
@@ -188,11 +183,14 @@ class GUI:
         """Clean up sentence for display in interface.
         Basically a duplicate of the Javascript function in tra.html and sent.html."""
         # Replace HTML space with actual space
+#        print("Cleaning {}".format(string))
         string = string.replace("&nbsp;", ' ')
         # Delete spaces before .,;?!, etc.
-        string = re.sub(r"\s+([.,;:?!)”’%])", r"\1", string)
+        string = GUI.clean_n.sub(r"\1", string)
         # Delete spaces after ("', etc.
-        string = re.sub(r"([(\"“‘$])\s+", r"\1", string)
+        string = re.sub(r"([(\"‶“‘$])\s+", r"\1", string)
+#        print("Cleaned {}, capitalize? {}".format(string, capitalize))
         if capitalize:
-            string = string[0].upper() + string[1:]
+            string = capitalize_string(string)
         return string
+

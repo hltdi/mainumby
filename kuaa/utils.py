@@ -27,7 +27,7 @@
 # 2014.07.08
 # -- Created
 
-import unicodedata
+import unicodedata, re
 from sys import getsizeof, stderr
 from itertools import chain
 from collections import deque
@@ -36,9 +36,27 @@ try:
 except ImportError:
     pass
 
+## Compiled regexs
+# Whether the string is capitalized
+ISCAP_RE = re.compile(r"^[(\"\'‶“‘$]*[A-ZÀ-Ⱬ]")
+# Capitalize the string
+CAP_RE = re.compile(r"^([(\"\'‶“‘$]*)(\w)")
+
+## Strings
+
+def is_capitalized(string):
+    """True if the first non-punctuation character in the string is capitalized."""
+    return ISCAP_RE.match(string)
+
+def capitalize_string(string):
+    """Capitalize the first character following sentence initial punctuation."""
+    return CAP_RE.sub(lambda m: m.group(1) + m.group(2).upper(), string)
+
 def remove_control_characters(s):
     """Returns string s with unicode control characters removed."""
     return "".join(ch for ch in s if unicodedata.category(ch) not in ("Cf", "Cs", "Co", "Cn"))
+
+## Sequence processing
 
 def allcombs(seqs):
     """Returns a list of all sequences consisting of one element from each of seqs.

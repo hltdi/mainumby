@@ -451,21 +451,33 @@ class Language:
         names = []
         while name and words:
             word = words.pop(0)
-            if SentToken.is_name_token(word):
+            if len(word) == 0:
+                name = False
+                break
+            elif word[0].isupper():
+                # Word is capitalized
                 lowered = word.lower()
+                lowered_known = self.is_known(lowered)
                 if first:
-                    # Name-like token in first position
-                    if self.is_known(lowered):
+                    # In first position, check if it's known in one of its forms
+                    cap = lowered.capitalize()
+                    # Give priority to known name
+                    if self.is_known(cap):
+                        names.append(word)
+                    elif lowered_known:
                         name = False
                         break
                     else:
                         names.append(word)
-                elif words[-1] in ['', '¶'] and not names:
-                    # Name-like token not in first position and no end punctuation
-                    # and no previous special words
-                    if self.is_known(lowered):
-                        name = False
-                        break
+                elif SentToken.is_name_token(word):
+                    # A name=like token in other than first position
+                    if words[-1] in ['', '¶'] and not names:
+                        # No end punctuation and no previous special words
+                        if lowered_known:
+                            name = False
+                            break
+                        else:
+                            names.append(word)
                     else:
                         names.append(word)
                 else:
