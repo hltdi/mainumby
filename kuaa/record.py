@@ -71,8 +71,11 @@ MEM_SHORT_TIME_FORMAT = "%Y%m%d%H%M%S"
 ZERO_TIME = datetime.timedelta()
 TIME0 = datetime.datetime.utcnow()
 
-def get_time():
-    return datetime.datetime.utcnow()
+def get_time(string=False):
+    time = datetime.datetime.utcnow()
+    if string:
+        return time2shortstr(time)
+    return time
 
 def get_time_since0(time):
     return time - TIME0

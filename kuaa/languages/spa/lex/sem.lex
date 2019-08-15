@@ -9571,6 +9571,8 @@ nómada_n $n
 nómina_n $n
 núcleo_n $n
 número_n $n
+o $c
+u $c    
 oasis_n $n
 obcecar_v $v
 obedecer_v $v,$vt
@@ -14110,6 +14112,7 @@ whisky_n $n
 wáter_n $n
 xenofobia_n $n
 y $c
+e $c
 yacer_v $v,$vi
 yacimiento_n $n
 yanqui_n $n

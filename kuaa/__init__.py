@@ -23,10 +23,23 @@
 #
 # =========================================================================
 
-__all__ = ['language', 'entry', 'ui', 'constraint', 'db', 'views', 'variable', 'sentence', 'cs', 'utils', 'record', 'train', 'tag', 'gui']
-#  not needed for now: 'learn'
+__all__ = ['language', 'entry', 'constraint', 'views', 'variable', 'sentence', 'cs', 'utils', 'record', 'train', 'tag', 'gui', 'text']
+#  not needed for now: 'learn', 'ui', 'db'
 
 from flask import Flask, url_for, render_template
+from flask_sqlalchemy import SQLAlchemy
+
+## Instantiate the Flask class to get the application
+app = Flask(__name__)
+# app.config.from_object(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///text.db'
+app.config['SQLALCHEMY_BINDS'] = {
+    'lex':    'sqlite:///lex.db',
+    'text':   'sqlite:///text.db'
+}
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+# db = SQLAlchemy()
 
 ## train imports sentence
 from .train import *
@@ -38,22 +51,18 @@ from .train import *
 #### language also calls function in morphology.strip
 ##### entry imports morphology.fs
 
-#from .sentence import *
-#from .learn import *
-
 ## morphology a package; imports morphology.morpho
 ### which imports morphology.fst
 #### which imports morphology.semiring
 ##### which imports morphology.fs, morphology.utils
 ###### fs imports morphology.logic, morphology.internals
 from .morphology import *
+
 from .record import *
 
-# from . import db
+from .text import *
 
-## Instantiate the Flask class to get the application
-app = Flask(__name__)
-app.config.from_object(__name__)
+# from . import db
 
 ## Whether to create a session for the anonymous user when user doesn't log in.
 # USE_ANON = True
@@ -136,6 +145,12 @@ def quit(session=None):
     if session:
         session.quit()
 
+## Users
+def get_translator(username):
+    users = db.session.query(Translator).filter_by(username=username).all()
+    if users:
+        return users[0]
+
 ## Probably only need to read in usernames.
 def init_users(gui=None):
     # Read in current users before login.
@@ -164,19 +179,15 @@ def get_user(username):
     print("Looking for user with username {}".format(username))
     return User.get_user(username)
 
+def create_translator(username='', password='', email='', name='', level=1):
+    """Create an instance of the Translator class."""
+    trans = Translator(username=username, password=password, email=email,
+                       name=name, level=level)
+    db.session.add(trans)
+
 def create_user(dct):
     """Create a user from the dict of form values from login.html."""
     return User.dict2user(dct)
 
-#def clean_sentence(string, capitalize=True):
-#    """Clean up sentence for display in interface.
-#    Basically a duplicate of the Javascript function in tra.html and sent.html."""
-#    string = string.replace("&nbsp;", ' ')
-#    string = re.sub(r"\s+([.,;?!])", r"\1", string)
-#    if capitalize:
-#        string = string[0].upper() + string[1:]
-#    return string
-
 # Import views. This has to appear after the app is created.
 import kuaa.views
-

@@ -35,3 +35,5 @@ sudo apt-get dist-upgrade  # Installs updates (new ones)
 
 Mainumby passwords:
 scruz: surfcity
+admin: churuchuchu:2020
+anon: jekuaa'yva

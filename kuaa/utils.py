@@ -27,7 +27,7 @@
 # 2014.07.08
 # -- Created
 
-import unicodedata, re
+import unicodedata, re, datetime
 from sys import getsizeof, stderr
 from itertools import chain
 from collections import deque
@@ -35,6 +35,16 @@ try:
     from reprlib import repr
 except ImportError:
     pass
+
+# Time constants
+TIME_FORMAT = "%d.%m.%Y/%H:%M:%S:%f"
+# Time format without microseconds; used in Session and Memory ID and for User creation and update times
+SHORT_TIME_FORMAT = "%d.%m.%Y/%H:%M:%S"
+# Format without punctuation, for memory filenames (sortable by date created)
+MEM_SHORT_TIME_FORMAT = "%Y%m%d%H%M%S"
+
+ZERO_TIME = datetime.timedelta()
+TIME0 = datetime.datetime.utcnow()
 
 ## Compiled regexs
 # Whether the string is capitalized
@@ -55,6 +65,28 @@ def capitalize_string(string):
 def remove_control_characters(s):
     """Returns string s with unicode control characters removed."""
     return "".join(ch for ch in s if unicodedata.category(ch) not in ("Cf", "Cs", "Co", "Cn"))
+
+## Time
+def get_time(string=True):
+    time = datetime.datetime.utcnow()
+    if string:
+        return time2shortstr(time)
+    return time
+
+def get_time_since0(time):
+    return time - TIME0
+
+def time2str(time):
+    return time.strftime(TIME_FORMAT)
+
+def time2shortstr(time):
+    return time.strftime(SHORT_TIME_FORMAT)
+
+def str2time(string):
+    return datetime.datetime.strptime(string, TIME_FORMAT)
+
+def shortstr2time(string):
+    return datetime.datetime.strptime(string, SHORT_TIME_FORMAT)
 
 ## Sequence processing
 

@@ -1,0 +1,4 @@
+Ernesto;pbkdf2:sha256:50000$RaNOague$1a3f61c7d93ba814840d15ea48b060ab27057bdb45cf012976ac7687c0593e80;ernestorios252@gmail.com;Erndefrios;1
+Esteban;pbkdf2:sha256:50000$MaGEHF8f$9ddec504c61f827e7ece29c7fa9051bde8269d50cb6d807e652b0612da103904;estebanorte@gmail.com;Esteban;1
+5088842;pbkdf2:sha256:50000$MH8rgCYt$f0321d457bdc5385fad8eeb2199ebc5f50db7c74205d80d39d06f9435cba911c;diegoduartecol978@gmail.com;Diego Duarte - Oficio;3
+KARAI DUARTE;pbkdf2:sha256:50000$U3BhGENC$7eb9cec220583c9ad9f88f8eb9eed46ab397237d8da5d27b29f0435747294bd6;diegoduartecol978@gmail.com;Diego Duarte - Oficio;3

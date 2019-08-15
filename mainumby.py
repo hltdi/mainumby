@@ -44,12 +44,67 @@
 #    Joins and SuperSegs
 # 2019
 # -- Limited disambiguation
-# -- Simplified shortcut functions by including much of them in __init__.py
+# -- Simplified shortcut functions by including many of them in __init__.py
 
 __version__ = 2.0
 
 import kuaa
 
+## Bases de datos
+
+def db_reinit():
+    kuaa.db.create_all()
+    kuaa.db.session = kuaa.db.create_scoped_session()
+
+def db_create_admin():
+    admin = kuaa.Human(username='admin', email='gasser@indiana.edu', name="administrador")
+    db_add(admin)
+
+def db_create_anon():
+    anon = kuaa.Human(username='anon', email='onlyskybl@gmail.com', name="anónimo")
+    db_add(anon)
+
+#def db_recreate_session():
+#    kuaa.db.session = kuaa.db.create_scoped_session()
+
+#def db_create(db=None):
+#    """db puede ser también 'text' o 'lex'."""
+#    kuaa.db.create_all(bind=db)
+
+#def db_destroy(db=None):
+#    """db puede ser también 'text' o 'lex'."""
+#    kuaa.db.drop_all(bind=db)
+
+def db_list(klass):
+    """klass is something like kuaa.Text."""
+    return kuaa.db.session.query(klass).all()
+
+def db_add(instance):
+    kuaa.db.session.add(instance)
+
+def db_delete(instance):
+    kuaa.db.session.delete(instance)
+
+PRUEBA_TRANS = "Peteĩ mombe’upy michĩ\nJagua og̃uahẽ hógape. Upépe ojuhu peteĩ mbarakajápe herava’ekue Carlos.\nMokõi ojokuaa."
+
+def db_texts1():
+    """Add a Translator, two Texts, and two Translations to DB."""
+#    if recreate:
+#        db_recreate_session()
+#    if start_over:
+#        db_destroy()
+#        db_create()
+    t1 = kuaa.Text.read('prueba', title='Prueba')
+    t2 = kuaa.Text.read('pimienta', title="Pimienta que Huye")
+    anon = kuaa.Translator(username='anon', email='anon@aol.com', name="Anonymous",
+                           password="mypass")
+##    s1 = kuaa.TextSeg(text=t1, content="Una pequeña historia")
+##    s2 = kuaa.TextSeg(text=t1, content="Un perro llegó a casa.")
+##    s3 = kuaa.TextSeg(text=t1, content="Allí encontró a un gato que se llama Carlos.")
+    kuaa.db.session.add_all([t1, t2, anon])
+#    translation = kuaa.Translation(text=t1, translator=anon)
+#    kuaa.db.session.add(translation)
+                                   
 ## Atajos
 
 ## Creación y traducción de oración simple. Después de la segmentación inicial,

@@ -595,14 +595,18 @@ class Language:
         return os.path.join(self.directory, 'grp')
 
     def get_data_dir(self):
-        """Data directory: corpus and corpus analyses."""
+        """Data directory: documents and their translations."""
         return os.path.join(self.directory, 'data')
+
+    def get_stat_dir(self):
+        """Data directory: corpus and corpus analyses."""
+        return os.path.join(self.directory, 'stat')
 
     def get_pseudoseg_file(self, filename):
         return os.path.join(self.get_data_dir(), filename + '.ps')
 
     def get_transcount_file(self, language):
-        return os.path.join(self.get_data_dir(), language + '.tc')
+        return os.path.join(self.get_stat_dir(), language + '.tc')
 
     def get_ms_file(self, target_abbrev):
         d = self.get_syn_dir()
