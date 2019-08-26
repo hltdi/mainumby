@@ -480,6 +480,9 @@ class Language:
                             names.append(word)
                     else:
                         names.append(word)
+                elif word.isupper() and lowered_known:
+                    name = False
+                    break
                 else:
                     names.append(word)
             elif names and word in self.namejoin and any([SentToken.is_name_token(w) for w in words]):

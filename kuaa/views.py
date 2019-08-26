@@ -47,7 +47,7 @@
 #    global is the instance of GUI.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-from kuaa import app, make_document, load, seg_trans, quit, start, init_users, get_user, create_user
+from kuaa import app, make_document, make_text, load, seg_trans, quit, start, get_human, create_human, sentence_from_textseg
 from . import gui
 from docx import Document
 
@@ -58,7 +58,7 @@ GUI = None
 
 def create_gui():
     global GUI
-    GUI = gui.GUI()
+    GUI = gui.GUI(list_texts=True)
 
 def end_gui():
     global GUI
@@ -84,6 +84,10 @@ def solve_and_segment(isdoc=False, index=0):
     if isdoc:
         GUI.update_doc(index)
 
+#def set_text_select_html():
+#    domain_texts = get_domain_text_lists()
+#    GUI.set_text_select_html(domain_texts)
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     print("In index...")
@@ -100,12 +104,12 @@ def login():
         create_gui()
     form = request.form
 #    print("Form for login: {}".format(form))
-    if not GUI.users_initialized:
-        init_users(GUI)
+#    if not GUI.users_initialized:
+#        init_users(GUI)
     if request.method == 'POST' and 'login' in form:
         # Try to find user with username username
         username = form.get('username')
-        user = get_user(username)
+        user = get_human(username)
         if not user:
             print("No such user as {}".format(username))
             return render_template('login.html', error='user')
@@ -139,7 +143,7 @@ def reg():
         elif form.get('password') != form.get('password2'):
             return render_template('reg.html', error="password")
         else:
-            user = create_user(form)
+            user = create_human(form)
             print("Created user {}".format(user))
             GUI.user = user
             return render_template('acct.html', user=form.get('username'))
@@ -159,8 +163,8 @@ def tra():
     form = request.form
 #    print("**FORM DICT FOR tra.html: {}**".format(form))
     if not GUI.session:
-        print("Ninguna memoria")
-        init_session(create_memory=True)
+        print("Ninguna sesión")
+        init_session(create_memory=False)
     # Translating document?
     isdoc = form.get('isdoc') == 'true'
     # Initialize various window parameters
@@ -170,23 +174,29 @@ def tra():
         # Opened help window. Keep everything else as is.
         return render_template('tra.html', doc=isdoc, documento=GUI.doc_html, props=GUI.props)
     if 'modo' in form:
-        if 'docx' in form and form['docx']:
-            file = form['docx']
-            print("ARCHIVO SUBIDO {}".format(file))
-            document = Document(file)
-#            GUI.props['tfuente'] = "100%"
-            return render_template('tra.html', doc=True, props=GUI.props)
+        print("MODO IN FORM")
         # Mode (sentence vs. document) has changed
         isdoc = form.get('modo') == 'documento'
         if 'documento' in form and form['documento']:
+            # A document has been loaded, make it into a Document object
             make_document(GUI, form['documento'], single=False, html=True)
             print("PROCESANDO TEXTO {}".format(GUI.doc))
+            # Re-render, using HTML for Document
             return render_template('tra.html', documento=GUI.doc.html, doc=True, props=GUI.props)
+        elif isdoc: # and form.get('docsrc') == 'almacén':
+            # A Text object is to be loaded; create the text list and HTML
+            textid = form.get('textid', '')
+            if textid:
+                make_text(GUI, int(textid))
+                return render_template('tra.html', documento=GUI.doc_html, doc=True, props=GUI.props)
+            else:
+                # Re-render, displaying domain/text dropdowns
+                return render_template('tra.html', doc=True, props=GUI.props, text_html=GUI.text_select_html)
         else:
+            # Clear the GUI and re-render, keeping the mode setting
             GUI.clear(isdoc=isdoc)
             return render_template('tra.html', doc=isdoc, props=GUI.props)
     if form.get('borrar') == 'true':
-        print("BORRANDO")
         GUI.clear(form.get('registrar') == 'true', form.get('ometa'))
         # Start over with no current sentence or translation (translating sentence)
         GUI.props['tfuente'] = "120%"
@@ -197,13 +207,12 @@ def tra():
         # No sentence entered or selected
         print("NO SENTENCE ENTERED")
         return render_template('tra.html', user=username, props=GUI.props, doc=isdoc)
-    if not GUI.doc:
+    if not GUI.doc and not GUI.has_text:
         # Create a new document
         print("CREANDO NUEVO DOCUMENTO.")
         make_document(GUI, form['ofuente'], single=True, html=False)
         if len(GUI.doc) == 0:
             print(" pero documento está vacío.")
-#            GUI.props['tfuente'] = "120%"
             return render_template('tra.html', error=True, user=username, doc=isdoc, props=GUI.props)
     oindex = int(form.get('oindex', 0))
     docscrolltop = form.get('docscrolltop', 0)
@@ -216,7 +225,6 @@ def tra():
                                documento=GUI.doc_html, aceptado=aceptado,
                                user=username, props=GUI.props)
     if GUI.doc_tra_acep[oindex]:
-        print("SENTENCE ALREADY ACCEPTED")
         error = "¡Ya aceptaste esta traducción; por favor seleccioná otra oración para traducir!"
         return render_template('tra.html', oracion='', doc=True, error=error, tra_seg_html='', tra='',
                                aceptado=GUI.doc_tra_acep_str, docscrolltop=docscrolltop,
@@ -233,7 +241,12 @@ def tra():
                                aceptado=GUI.doc_tra_acep_str, user=username, props=GUI.props)
     
     # Get the sentence, the only one in GUI.doc if isdoc is False.
-    GUI.sentence = GUI.doc[oindex]
+    if GUI.has_text:
+        # Make the sentence from the TextSeg object
+        GUI.sentence = sentence_from_textseg(source=GUI.source, target=GUI.target,
+                                             textid=GUI.textid, oindex=oindex)
+    else:
+        GUI.sentence = GUI.doc[oindex]
     print("CURRENT SENTENCE {}".format(GUI.sentence))
     # Translate and segment the sentence, assigning GUI.segs
     solve_and_segment(isdoc=isdoc, index=oindex)

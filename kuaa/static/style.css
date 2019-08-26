@@ -340,12 +340,15 @@ input.text
         color: #4B2B17;
         font-family: "Verdana";
         font-size: 100%;
-/*        align: center; */
-        width: 100px;
+        text-align: center;
+        width: 120px;
+	padding: 0px 2px;
+	margin: 2px 0px; 
 	border-radius: 4px;
 	border-style: outset;
 	border-color: black;
 	border-width: 2px;
+        cursor: pointer;
 }
 #mainbutton
 {

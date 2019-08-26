@@ -31,18 +31,31 @@ import re
 
 from .utils import capitalize_string
 
+from . import get_domains_texts
+
+# the database class bound to the current app
+from . import db
+
 class GUI:
 
     # Compiled regexs for sentence cleaning
     clean_n = re.compile(r"\s+([.,;:?!)”″’%])")
 
-    def __init__(self):
+    def __init__(self, list_texts=False):
         self.session = None
         self.user = None
         self.users_initialized = False
         # Source and target languages
         self.source = None
         self.target = None
+        # TEXT (if document is stored in archive)
+        self.textid = -1
+        self.has_text = False
+        # HTML for selecting text
+        if list_texts:
+            self.set_domains_texts()
+        else:
+            self.text_select_html = ''
         # DOCUMENT
         # The current document (if translating document)
         self.doc = None
@@ -88,21 +101,54 @@ class GUI:
         # List of seg HTML for any selected sentences
         self.doc_select_html = [""] * nsent
         self.doc_html = self.doc.html
+        self.doc_html_list = self.doc.html_list
+        self.props['tfuente'] = "100%" if nsent > 1 else "120%"
+
+    def init_text(self, textid, nsent, html, html_list):
+        print("Initializing text, nsent: {}".format(nsent))
+        self.textid = textid
+        self.has_text = True
+        # List of translation HTML for sentences
+        self.doc_tra_html = [""] * nsent
+        # List of translation strings for sentences
+        self.doc_tra = [""] * nsent
+        # List of accepted translation strings for sentences
+        self.doc_tra_acep = [""] * nsent
+        # List of seg HTML for any selected sentences
+        self.doc_select_html = [""] * nsent
+        # HTML for source document
+        self.doc_html = html
+        self.text_html = html
+        # List of HTML for each source sentence
+        self.doc_html_list = html_list
         self.props['tfuente'] = "100%" if nsent > 1 else "120%"
 
     def doc_unselect_sent(self):
         # Revert to version of doc html with nothing segmented.
-        self.doc_html = self.doc.html
+        if self.has_text:
+            self.doc_html = self.text_html
+        else:
+            self.doc_html = self.doc.html
 
     def update_doc(self, index, repeat=False):
         if repeat:
             current_fue = self.doc_select_html[index]
         else:
             current_fue = self.fue_seg_html
-        self.doc_html = self.doc.select_html(index, current_fue)
+        self.doc_html = self.select_doc_html(index, current_fue)
         if not repeat:
             self.doc_select_html[index] = current_fue
         self.sindex = index
+
+    def select_doc_html(self, index, shtml):
+        """Replace the indexed element in html_list with one for the selected and translated
+        element."""
+        html = "<div id='doc'>"
+        html_list = self.doc_html_list[:]
+        print("HTML_LIST: {}".format(html_list))
+        html_list[index] = shtml
+        html += "".join(html_list) + "</div>"
+        return html
 
     def accept_sent(self, index, trans):
         """What happens when a sentence translation is accepted."""
@@ -151,6 +197,8 @@ class GUI:
             sentrec = self.sentence.record
         self.tra_seg_html = None
         self.sentence = None
+        self.has_text = False
+        self.textid = -1
         self.doc = None
         self.doc_tra_acep = []
         self.doc_tra_html = []
@@ -177,6 +225,26 @@ class GUI:
             for prop in props:
                 if prop in form:
                     self.props[prop] = form[prop]
+
+    def set_domains_texts(self):
+        """HTML for a menu listing Text docs available, grouped by domain.
+        domain_texts is of (domain, (id, title)) pairs."""
+#        html = "<div class='drop-right'>"
+        domain_texts, text_dict = get_domains_texts()
+        html = "<div class='desplegable-derecha' id='textos'>"
+        for dindex, (domain, texts) in enumerate(domain_texts):
+            if not texts:
+                # no texts for this domain
+                html += "<div id='button{}' class='despleg-derecha'>{}</div>".format(dindex, domain)
+            else:
+                html += "<div onclick=\"desplegarDerecha('despleg{}', 'button{}')\" id='button{}' class='despleg-derecha' style='cursor:context-menu'>{} ▸</div>".format(dindex, dindex, dindex, domain)
+                html += "<div id='despleg{}' class='textos-desplegable'>".format(dindex)
+                for tindex, (id, title) in enumerate(texts):
+                    html += "<span class='opcion' id='opcion{}.{}' onclick='abrirSeleccionado({})'>{}</span><br/>".format(dindex, tindex, id, title)
+                html += "</div></div>"
+        html += "</div>"
+#        </div>"
+        self.text_select_html = html
 
     @staticmethod
     def clean_sentence(string, capitalize=True):

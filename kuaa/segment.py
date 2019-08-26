@@ -94,12 +94,7 @@ class Seg:
     max_segments = 8
 
     # colors to display segments in interface
-    tt_colors = ['blue', 'sienna', 'green',
-                 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
-                 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
-                 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
-                 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green',
-                 'purple', 'red', 'blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green']
+    tt_colors = ['blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple']
 
     tt_notrans_color = "Silver"
 
@@ -400,7 +395,7 @@ class Seg:
         """Set the HTML markup for this segment as a colored segment in source and dropdown menu
         in target, given its position in the sentence.
         """
-        self.color = Seg.tt_notrans_color if self.is_punc or (not self.translation and not self.special) else Seg.tt_colors[index]
+        self.color = Seg.tt_notrans_color if self.is_punc or (not self.translation and not self.special) else Seg.tt_colors[index % 9]
         self.set_source_html(first)
         transhtml = "<div class='desplegable' ondrop='drop(event);' ondragover='allowDrop(event);'>"
         capitalized = False

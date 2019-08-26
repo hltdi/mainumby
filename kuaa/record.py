@@ -44,6 +44,8 @@
 #    or with different users.
 # 2018.09.03
 # -- Record interface for Memory and Session. More in Memory.
+# 2019.08.15
+# -- Moved User to Human, a SQLAlchemy class
 
 import datetime, sys, os, yaml
 from werkzeug.security import generate_password_hash, check_password_hash

@@ -668,6 +668,8 @@ class Group(Entry):
                             ufeats = segfeat.agree_FSS(tfeats, agr1)
                         elif tfeats:
                             ufeats = segfeat.u(tfeats)
+                        else:
+                            ufeats = segfeat or tfeats
                     else:
                         ufeats = segfeat or tfeats
                     # Use the root (token without _pos)
@@ -2195,6 +2197,9 @@ class Join(Entry):
                 tfeats = segment.get_thead_feats()
                 if segment.thead:
                     for ti, th in enumerate(segment.thead):
+                        if isinstance(th, str):
+                            # Can't add features to bare string
+                            continue
                         tf = th[2]
                         newtf = tf.unify_FS(addfeats)
                         if newtf != 'fail':

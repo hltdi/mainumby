@@ -184,22 +184,22 @@ class Document(list):
     # end of token: letters and digits, -+#.$%/º
     # end of word: letters and digits, #./º
     # only digits
-    number1_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$£€]?[\d]+[%¢°º]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
+    number1_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$₲£€]?[\d]+[%¢°º]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
     # digits with intermediate characters (.,=></), which must be followed by one or more digits
-    number_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$£€]?[\d]+[\d,.=></+\-±/×÷≤≥]*[\d]+[%¢°º]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
+    number_re = re.compile(r"([(\[{¡¿–—\"\'«“‘`*=]*)([\-+±$₲£€]?[\d]+[\d,.=></+\-±/×÷≤≥]*[\d]+[%¢°º]?)([)\]}!?\"\'»”’*\-–—,.:;]*)$")
     # separated punctuation, including some that might be separated by error
-    punc_re = re.compile(r"([\-–—&=.,:;\"+<>/?!%$¶]{1,3})$")
+    punc_re = re.compile(r"([\-–—&=.,:;\"+<>/?!%$₲¶]{1,3})$")
     # word of one character
     word1_re = re.compile(r"([(\[{¡¿\-–—\"\'«»“”‘`*=]*)(\w)([)\]}\"\'»”’*\-–—,:;=]*[?|.!]?)$")
     # word of more than one character: one beginning character, one end character, 0 or more within characters;
     # followed by possible punctuation and a possible footnote
     word_re = re.compile(r"([(\[{¡¿\-–—\"\'«»”“‘`*=]*)([\w#@~’][\w\-/:;+.'`’~&=\|]*[\w’/º#.])([)\]}\"\'»”’*\-–—,:;=.?!)\"\'»”’…¶]{0,3}\d*)$")
     word_lenient_re = re.compile(r"([(\[{¡¿\-–—\"\'«»”“‘`*=]*)([\w#@~’][\w\-/:;+.'`’~&=\|]*[\w’/º#.])([)\]}\"\'»”’*\-–—,:;=.?!)\"\'»”’…¶]*\d*)$")
-    period_re = re.compile("([\w.\-/:;+.'`’~&=\|¶]+\.)([\d]*)$")
+    period_re = re.compile("([\w.\-/:;+.'`’~&=\|¶°′]+\.)([\d]*)$")
     start_re = re.compile('[\-–—¿¡\'\"«»“‘(\[]+$')
-    poss_end_re = re.compile('[")\]}]{0,2}[?!][)"\]]{0,2}')
+    poss_end_re = re.compile('[")\]}]{0,2}[?!][)"\]]{0,2}$')
     # 0-2 pre-end characters (like ")"), 1 end character (.?!), 0-3 post-end characters (like ")" or footnote digits)
-    end_re = re.compile('[\"\'”’»)\]}:]{0,2}[.?!¶][.)»”’\'\"\]\-–—¶\d]{0,3}')
+    end_re = re.compile('[\"\'”’»)\]}:]{0,2}[.?!¶][.)»”’\'\"\]\-–—¶\d]{0,3}$')
 
     def __init__(self, language=None, target=None, text='', target_text='', path='',
                  proc=True, session=None, biling=False, alternating=True,
@@ -426,7 +426,7 @@ class Document(list):
                 if match:
                     pre, word, suf = match.groups()
                 else:
-                    pre, word, suf = None, token, None
+                    pre, word, suf = None, token, ''
                 if pre:
                     tokens.append((pre, 0, 0))
                 # Check to see if word ends in . (and opposition footnote digits) and is not an abbreviation
@@ -581,6 +581,8 @@ class Document(list):
     ### GUI
     def set_html(self):
         """Generate HTML for sentence display in GUI."""
+        if self.html:
+            return
         html = "<div id='doc'>"
         html_list = []
         for index, sentence in enumerate(self):
@@ -656,9 +658,6 @@ class Sentence:
             self.finalpunc = True
         else:
             self.finalpunc = False
-#        print("New sentence; cap? {}".format(self.capitalized))
-        # List of booleans, same length as self.tokens specifying whether the raw token was upper case
-#        self.isupper = []
         # Source language: a language object
         self.language = language
         # External tagger if there is one
@@ -854,8 +853,9 @@ class Sentence:
         segmentation = self.language.segs.get(token)
         if segmentation:
             self.tokens[tok_index:tok_index+1] = segmentation
-            # Also increase the toktypes list
-            self.toktypes[tok_index:tok_index+1] = [self.toktypes[tok_index], 1]
+            # Also increase the toktypes list if there is one
+            if self.toktypes:
+                self.toktypes[tok_index:tok_index+1] = [self.toktypes[tok_index], 1]
             self.toksegs.append((token, segmentation, tok_index))
 
     def clean(self):
@@ -1071,18 +1071,14 @@ class Sentence:
                 # Still need to figure out how to integrated tagged results and morphological analyses
                 if not self.tagger or self.tagger.morph:
                     analyses = self.morph_anal()
-#                    [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
-#                    print("Analyzed {}: {}".format(self.tokens, analyses))
                     if self.tagger:
                         # Merge results of tagging and morphological analysis
                         self.analyses = self.merge_POS(tagged, analyses)
                     else:
                         self.analyses = analyses
-#                        self.analyses = [[token, self.language.anal_word(token, clean=False)] for token in self.tokens]
                     # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
             if verbosity:
                 print("Running Morphosyns for {} on {}".format(self.language, self))
-#            print("Toks: {}".format(self.toks))
             for mi, ms in enumerate(self.language.ms):
                 # If ms applies and is "ambiguous", create a new copy of the sentence and add to altsyns
                 # (this happens in MorphoSyn)
@@ -1153,7 +1149,6 @@ class Sentence:
                         print("  no features for {}, using tagger POS {}".format(word, tag))
                     anal['pos'] = tag
                     tag1 = tag.split('.')[0]
-#                    print("Adding pos {} to anal {} root {} to {}".format(tag1, anal, anal.get('root'))
                     anal['root'] = anal['root'] + '_' + tag1
                     results1.append(anal)
                 elif anal_pos:
@@ -1213,7 +1208,6 @@ class Sentence:
                         if pos:
                             anal['pos'] = pos
                     cats = self.language.get_cats(root)
-#                    print("Cats for {}: {}".format(root, cats))
                     if cats:
                         anal['cats'] = cats
                     features = anal['features']
@@ -1281,13 +1275,6 @@ class Sentence:
         for index, node in enumerate(self.nodes):
             # Get keys into lexicon for this node
             keys = node.tok.get_keys(index)
-#            keys = {node.token}
-#            if node.rawtoken:
-#                keys.add(node.rawtoken)
-#            if index == 0:
-#                # For first word in sentence, try both capitalized an uncapitalized versions.
-#                keys.add(node.token.capitalize())
-#            print("Keys for {}: {}".format(node, keys))
             # Add root key
             anals = node.analyses
             if anals:
@@ -1298,14 +1285,8 @@ class Sentence:
                     self.add_anal_to_keys(a, keys)
             # Look up candidate groups in lexicon
             # Use simple (lexical) groups
-#            # Use group groupings specified in constrain_groups (False or a list of ints) or
-#            # all groupings
-#            groups2 = self.language.groups
             groups = self.language.groups[0]
-#            groupgroups = [groups2[0]] if constrain_groups else groups2
-#            print("Keys for group search {}".format(keys))
             for k in keys:
-#                for groups in groupgroups:
                 if k in groups:
                     # All the groups with key k
                     for group in groups[k]:
@@ -1315,7 +1296,6 @@ class Sentence:
                             continue
                         candidates.append((node.index, k, group))
                         node.group_cands.append(group)
-#        print("Candidates {}".format(candidates))
         # Now filter candidates to see if all words are present in the sentence.
         # For each group, save a list of sentence token indices that correspond
         # to the group's words
@@ -1410,7 +1390,6 @@ class Sentence:
         self.get_group_dependencies()
         self.get_group_sindices()
         self.get_group_conflicts()
-#        print("Group conflicts for {}: {}".format(self, self.group_conflicts))
         self.get_incompat_groups()
 
     def get_group_sindices(self):
@@ -1561,13 +1540,9 @@ class Sentence:
 
     def create_variables(self, verbosity=0):
         # All abstract (category) and instance (word or lexeme) gnodes
-#        catnodes = set()
         instnodes = set()
         for group in self.groups:
             for node in group.nodes:
-#                if node.cat:
-#                    catnodes.add(node.sent_index)
-#                else:
                 instnodes.add(node.sent_index)
 
         self.svar('groups', set(), set(range(len(self.groups))),
@@ -1581,8 +1556,6 @@ class Sentence:
         # covered snodes
         covered_snodes = {sn.index for sn in self.nodes if sn.gnodes}
         self.variables['snodes'] = DetVar('snodes', covered_snodes)
-        # Category (abstract) nodes
-#        self.svar('catgnodes', set(), catnodes)
         # Position pairs
         pos_pairs = set()
         for group in self.groups:
@@ -1614,36 +1587,6 @@ class Sentence:
         # If there are inconsistent groups, create a NAND constraint for each pair
         for g1, g2 in self.incompat_groups:
             self.constraints.append(NAND(groupvar, g1.index, g2.index))
-        # Relation among abstract, concrete, and all gnodes for each snode
-        # For each of the covered snodes, the associated gnodes are the union of the cgnodes and agnodes
-#        snodes_union_sel = [DetVar("nU2", {2*pos, 2*pos+1}) for pos in range(len(self.nodes))]
-#        print("SNodes union selection: {}".format(snodes_union_sel))
-#        node_apos_cpos_vars = []
-#        for node in self.nodes:
-#            node_apos_cpos_vars.extend([node.variables['cgnodes'], node.variables['agnodes']])
-#        snode_ac_union_constraint = ComplexUnionSelection(selvar=self.variables['covered_snodes'],
-#                                                          selvars=snodes_union_sel,
-#                                                          seqvars=node_apos_cpos_vars,
-#                                                          mainvars=[node.variables['gnodes'] for node in self.nodes])
-#        self.constraints.append(snode_ac_union_constraint)
-        # Constraints involving groups with category (abstract) nodes
-        # For each group that succeeds, the set of snodes ('gnodes_pos') is the union of the concrete and abstract nodes
-#        group_union_sel= [DetVar("gU2", {2*pos, 2*pos+1}) for pos in range(len(self.groups))]
-#        apos_cpos_vars = []
-#        for group in self.groups:
-#            apos_cpos_vars.extend([group.variables['agnodes_pos'], group.variables['cgnodes_pos']])
-#        group_ac_union_constraint = ComplexUnionSelection(selvar=groupvar,
-#                                                          selvars=group_union_sel,
-#                                                          seqvars=apos_cpos_vars,
-#                                                          mainvars=[group.variables['gnodes_pos'] for group in self.groups])
-#        self.constraints.append(group_ac_union_constraint)
-#        # The set of category (abstract) nodes used is the union of the category nodes of the groups used
-#        # ('agnodes' for each group)
-#        self.constraints.append(UnionSelection(self.variables['catgnodes'],
-#                                               groupvar,
-#                                               [g.variables['agnodes'] for g in self.groups]))
-        # All snodes must have distinct category nodes ('agnodes' for each snode)
-#        self.constraints.extend(Disjoint([sn.variables['agnodes'] for sn in self.nodes]).constraints)
         # All position constraints for snodes
         # 'gnode_pos' specifies pairs of snode positional constraints; applied over 'snodes' for each gnode
         self.constraints.append(PrecedenceSelection(self.variables['gnode_pos'],
@@ -1671,16 +1614,6 @@ class Sentence:
         # Union of all covered snodes for gnodes used is all snodes
         self.constraints.append(UnionSelection(self.variables['covered_snodes'], self.variables['gnodes'],
                                                [gn.variables['snodes'] for gn in self.gnodes]))
-#        # Complex union selection by groups on positions of all concrete gnodes in each selected group
-#        self.constraints.append(ComplexUnionSelection(selvar=groupvar,
-#                                                      selvars=[g.variables['cgnodes_pos'] for g in self.groups],
-#                                                      seqvars=[s.variables['cgnodes'] for s in self.nodes],
-#                                                      mainvars=[g.variables['cgnodes'] for g in self.groups]))
-#        # Complex union selection by groups on positions of all category gnodes in each selected group
-#        self.constraints.append(ComplexUnionSelection(selvar=groupvar,
-#                                                      selvars=[g.variables['agnodes_pos'] for g in self.groups],
-#                                                      seqvars=[s.variables['agnodes'] for s in self.nodes],
-#                                                      mainvars=[g.variables['agnodes'] for g in self.groups]))
         ## Agreement
         if any([g.variables.get('agr') for g in self.groups]):
             # If any groups have an 'agr' variable...
@@ -1797,9 +1730,6 @@ class Sentence:
         """Given a list of undecided essential variables and dstore, select
         a variable and two complementary values to distribute on."""
         group_varval = self.get_group_varval(undecvars, dstore)
-#        return self.get_s2g_varval(undecvars, dstore)
-#        # Use the 'groups' variable if there are group conflicts
-#        group_varval = self.get_group_varval(undecvars, dstore)
         if group_varval:
             return group_varval
         else:
@@ -1867,15 +1797,6 @@ class Sentence:
             val = {biggest[0]}
             return groups, val, gundec - val
         return
-#                    # 2018.7.10: Fixed this so it favors concrete over abstract tokens (nodes)
-#                    gn = group.ncgnodes + group.nanodes / 2.0
-#                    if gn > biggest[1]:
-#                        biggest = (conflict1, gn)
-#            val = {biggest[0]}
-#            # Return the $groups variable, the promising value, and
-#            # the remaining uncertain values with the promising value removed
-#            return groups, val, gundec - val
-#        return
 
     def get_s2g_varval(self, undecvars, dstore):
         """Given a set of undecided variables in a domain store, find a snode->gnode variable
@@ -1913,7 +1834,6 @@ class Sentence:
         # Get the indices of the selected groups
         groups = self.variables['groups'].get_value(dstore=dstore)
         groupindices = list(groups)
-#        print("Group var value {}".format(groupindices))
         groupindices.sort()
         covered_snodes = self.variables['covered_snodes'].get_value(dstore=dstore)
         ginsts = [self.groups[g] for g in groupindices]
@@ -1926,14 +1846,10 @@ class Sentence:
             else:
                 gnodes = []
             s2gnodes.append(gnodes)
-#        if verbosity:
-#        print("groups for {}: {}".format(self, groups))
         ncovered = len(covered_snodes)
         nuncovered = len(self.nodes) - ncovered
         ngroups = len(ginsts)
         score = ngroups + nuncovered
-#        print("  ginsts: {}".format(ginsts))
-#          if verbosity:
         # Create trees for each group
         tree_attribs = {}
         for snindex, sg in enumerate(s2gnodes):
@@ -1968,7 +1884,6 @@ class Sentence:
                                     trees=trees, dstore=dstore, session=self.session,
                                     score=score)
         print('SE ENCONTRÓ SEGMENTACIÓN {} para {}'.format(segmentation, self))
-#        print("  score: # groups {}, # uncovered {}".format(ngroups, nuncovered))
         return segmentation
 
     def get_all_segmentations(self, translate=True, generate=True,
@@ -2035,7 +1950,6 @@ class Sentence:
                     # Some word(s) not translated; use source forms with # prefix
                     verbatim = [self.verbatim(n) for n in self.nodes[end_index+1:start]]
                     tt_complete.append([' '.join(verbatim)])
-#                    tt_complete.append([self.verbatim(n) for n in self.nodes[end_index+1:start]])
                 tt_complete.append(forms)
                 end_index = end
             if end_index+1 < len(self.nodes):
@@ -2053,7 +1967,6 @@ class Sentence:
         """Create HTML for a sentence with no segmentation."""
         tokens = ' '.join(self.tokens)
         tokens = Segment.clean_spec(tokens)
-#        if single:
         # Create button
         trans_html = "<div class='desplegable'>"
         trans_html += "<div class='despleg'>"
@@ -2061,12 +1974,6 @@ class Sentence:
         trans_html += "</div>"
         trans_html += '</div>'
         source_html = "<span style='color:Silver;'> {} </span>".format(tokens)
-#        else:
-#            trans_html = "<table>"
-#            trans_html += '<tr><td class="source">'
-#            trans_html += '<input type="radio" name="choice" id="{}" value="{}">{}</td></tr>'.format(tokens, tokens, tokens)
-#            trans_html += '</table>'
-#            source_html = "<span style='color:Silver;'> {} </span>".format(tokens)
         return [(self.raw, "Silver", trans_html, 0, tokens, source_html)]
 
     def verbatim(self, node):
@@ -2125,9 +2032,6 @@ class Segmentation:
         self.index = index
         # A list of pairs for each snode: (gnodes, features)
         self.gnodes_feats = []
-##        # List of Translation objects; multiple translations are possible
-##        # for a given segmentation because of multiple translations for groups
-##        self.translations = []
         # A list of TreeTrans objects making up this segmentation
         self.ttrans = None
         self.ttrans_outputs = None
@@ -2184,8 +2088,6 @@ class Segmentation:
             if not gnodes:
                 self.gnodes_feats.append((gnodes, None))
                 continue
-#            merging = len(gnodes) > 1
-#            if not merging:
             # Not really a merged node
             features = []
             gnode = gnodes[0]
@@ -2194,37 +2096,12 @@ class Segmentation:
             snode_anal = gnode.snode_anal[snode_index]
             if snode_anal and snode_anal[0] and snode_anal[0][1]:
                 features = [a[1] for a in snode_anal]
-#            if verbosity:
-#                print("  Not a merge node, anal {}, using preferred from {}".format(snode_anal, features))
             # Use the first (preferred) analysis.
             if features:
                 feature = features[0]
                 if not isinstance(feature, bool):
                     # Preferred feature may be True
                     feats_unified = FSSet(feature)
-#            else:
-#                # A genuine merge node
-#                features = []
-#                for gnode in gnodes:
-#                    snode_indices = gnode.snode_indices
-#                    snode_index = snode_indices.index(snode.index)
-#                    snode_anal = gnode.snode_anal[snode_index]
-#                    if verbosity:
-#                        print("   Merge nodes for gnode {}: snode_anal {}".format(gnode, snode_anal))
-#                    # It could be a list of anals, only None if there aren't any.
-#                    if snode_anal and snode_anal[0] and snode_anal[0][1]:
-#                        if verbosity:
-#                            print("   Appending snode_anals for gnode {}: {}".format(gnode, [a[1] for a in snode_anal]))
-#                        features.extend([a[1] for a in snode_anal])
-#                # Could this fail?? YES, currently it can
-#                if verbosity:
-#                    print("  Unification result for {}: snode {}, gn_indices {} features {}".format(self, snode, gn_indices, features))
-#                if verbosity:
-#                    print("  Unifying fss in merge node {}".format(features))
-#                feats_unified = FSSet.unify_all([FSSet(feats) for feats in features])
-#            if merging and not feats_unified:
-#                print("SOMETHING WRONG: unification failed for {}!".format(features))
-#                return False
             if verbosity:
                 s = "  Unification result for {}: snode {}, gn_indices {} features {} feats unified {}"
                 print(s.format(self, snode, gn_indices, features, feats_unified))
@@ -2241,38 +2118,27 @@ class Segmentation:
                 for t in g.translations:
                     print("  {}".format(t))
         # Create TreeTrans instances here
-#        abs_gnode_dict = {}
         # A single gnode_dict for all treetranss
         gnode_dict = {}
         treetranss = []
         ttindex = 0
         for tree, ginst in zip(self.trees, self.ginsts):
-#            print("Translating {} / {}".format(tree, ginst))
             if ginst.treetrans and ginst.treetrans.top and ginst.treetrans.segmentation == self:
                 # There's a treetrans already and it's not the result of a merger,
                 # so just use it rather than creating a new one.
                 print("Not recreating treetrans for {}".format(ginst))
                 treetranss.append(ginst.treetrans)
             else:
-#                print("Making translations for tree {} and ginst {}".format(tree, ginst))
                 # Figure the various features for the next TreeTrans instance.
                 is_top = not any([(tree < other_tree) for other_tree in self.trees])
                 group_attribs = []
                 any_anode = False
                 # This is the first place we can limit the number of translations allowed
                 ginsttrans = ginst.translations
-#                print("ginst translations: {}".format(ginsttrans))
                 if limit_trans:
                     ginsttrans = ginsttrans[:Segmentation.max_group_trans]
                 for tgroup, tgnodes, tnodes in ginsttrans:
-#                    print(" Forming group_attribs: tgroup {}, tgnodes {}, tnodes {}".format(tgroup, tgnodes, tnodes))
                     for tgnode, tokens, feats, agrs, t_index in tgnodes:
-#                        if tgnode.cat:
-#                            any_anode = True
-#                            if tgnode in abs_gnode_dict:
-#                                abs_gnode_dict[tgnode].append((tgroup, tokens, feats, agrs, t_index))
-#                            else:
-#                                abs_gnode_dict[tgnode] = [(tgroup, tokens, feats, agrs, t_index)]
                         if tgnode in gnode_dict:
                             gnode_dict[tgnode].append((tgroup, tokens, feats, agrs, t_index))
                         else:
@@ -2280,15 +2146,12 @@ class Segmentation:
                     group_attribs.append((tgroup, tnodes, tgroup.agr, tgnodes))
 
                 treetrans = TreeTrans(self, tree=tree.copy(),
-                                      ginst=ginst, # attribs=ginst.translations,
-                                      gnode_dict=gnode_dict,
-#                                      abs_gnode_dict=abs_gnode_dict,
+                                      ginst=ginst, gnode_dict=gnode_dict,
                                       group_attribs=group_attribs,
                                       any_anode=any_anode,
                                       index=ttindex, top=is_top)
                 treetranss.append(treetrans)
                 ttindex += 1
-#        print("Gnode dict: {}".format(gnode_dict))
         self.treetranss = treetranss
 
         # Add subTTs to TTs (actually only have to do this for top TTs)
@@ -2318,7 +2181,6 @@ class Segmentation:
                     for tgc in tgroup_combs:
                         print("  {}".format(tgc))
                 for tgroup_comb in tgroup_combs:
-#                    print("tgroup_comb {}".format(tgroup_comb))
                     tgroups = [t[0] for t in tgroup_comb]
                     tnodes = [t[1] for t in tgroup_comb]
                     tt.build(tg_groups=tgroups, tg_tnodes=tnodes, verbosity=verbosity)
@@ -2347,13 +2209,9 @@ class Segmentation:
                 thindex = thead.index
                 tfeats = thead.snode_anal
                 ttoken = tfeats[0] or [thead.token]
-#                print("tt {}, thead {}, ttoken {}, snodes {}".format(tt, thead, ttoken, tt.snodes))
                 tsnode = tt.snodes[thindex]
                 ttok = tsnode.tok
                 tcats = tsnode.cats
-#                print("TT {}, ttok {}".format(tt, ttok))
-#                print("TT {}: head {}, index {}, feats {}, cats {}".format(tt, thead, thindex, tfeats, tcats))
-                # WHY [0]??
                 head = (thindex, ttoken, tcats, ttok)
                 raw_indices = []
                 for index in indices:
@@ -2366,7 +2224,6 @@ class Segmentation:
         return self.ttrans_outputs
 
     def get_untrans_segs(self, src_tokens, end_index, gname=None,
-#                         merger_groups=None,
                          indices_covered=None,
                          src_feats=None, src_toks=None):
         '''Set one or more segments for a sequence of untranslatable tokens. Ignore indices that are already
@@ -2382,12 +2239,10 @@ class Segmentation:
         if not src_toks:
             src_toks = [None] * len(src_tokens)
         for stoken, stok, sfeats in zip(src_tokens, src_toks, src_feats):
-#            print("stoken {}, stok {}, sfeats {}".format(stoken, stok, sfeats))
             if not stoken:
                 # empty sentence final token
                 continue
             if Token.del_token(stoken):
-#                print("Deleted token {}".format(stoken))
                 stoks.append(stoken)
                 sfeatures.append(sfeats)
                 included_tokens.append(stoken)
@@ -2416,7 +2271,6 @@ class Segmentation:
             stokheads.append(stok)
         i0 = end_index+1
         for stok_group, sfeat_group, stokhead in zip(stok_groups, sfeat_groups, stokheads):
-#            print("stok_group {}".format(stok_group))
             is_punc = len(stok_group) == 1 and self.source.is_punc(stok_group[0])
             if is_punc:
                 # Convert punctuation in source to punctuation in target if there is a mapping.
@@ -2430,11 +2284,9 @@ class Segmentation:
             space_before = 1
             if node_toktype == 2:
                 space_before = 0
-#            print("Node type for untranslated Segment: {}".format(node_toktype))
             seg = Segment(self, indices, translation, stok_group, session=self.session,
                           gname=None, sfeats=sfeat_group[0], tok=stokhead,
                           space_before=space_before,
-#                          merger_groups=None,
                           is_punc=is_punc)
             print("Segmento (no traducido) {}->{}: {}={} ({})".format(start, end, stok_group, seg.translation, seg.head_tok))
             self.segments.append(seg)
@@ -2510,27 +2362,6 @@ class Segmentation:
     def get_gui_segments(self):
         """HTML for Segments in this Segmentation."""
         return [segment.html for segment in self.segments]
-#        """These may differ from Segments because of intervening segments within outer segments."""
-#        segments = []
-#        enclosings = []
-#        parens = []
-#        for segment in self.segments:
-#            if segment.has_paren:
-#                paren_seg = segment.paren_seg
-#                if single:
-#                    tokens, color, html, index, trans1, src_html = segment.html
-#                    ptokens, pcolor, phtml, pindex, trans1, psrc = paren_seg.html
-#                else:
-#                    tokens, color, html, index, src_html = segment.html
-#                    ptokens, pcolor, phtml, pindex, psrc = paren_seg.html
-#                gui_src = segment.get_gui_source(pcolor)
-#                preseg = tokens, color, html, index, gui_src[0]
-#                parenseg = ptokens, pcolor, phtml, pindex, gui_src[1]
-#                postseg = tokens, color, html, index, gui_src[2]
-#                segments.extend([preseg, parenseg, postseg])
-#            elif not segment.is_paren:
-#            segments.append(segment.html)
-#        return segments
 
     ## Pseudosegs: simpler alternative to Segs
 
@@ -2541,18 +2372,12 @@ class Segmentation:
         self.pseudosegs = []
         for ginst in self.ginsts:
             name = ginst.group.name
-#            gh = ginst.head
-#            tok = gh.token
-#            feats = gh.features
             if translate:
                 ginst.set_translations()
                 transgroups = {t[0] for t in ginst.translations}
-#                transprops = [(g.head, g.features[g.head_index] if g.features else None) for g in transgroups]
                 transprops = [g.name for g in transgroups]
-#                ps = tok, feats, transprops
                 ps = name, transprops
             else:
-#                ps = tok, feats
                 ps = name
             self.pseudosegs.append(ps)
 
@@ -2571,7 +2396,6 @@ class Segmentation:
             print(" Segmentos: {}".format(self.segments))
             matches = self.match_joins(verbosity=0)
             matches.extend(self.match_groups(make_super=False, resolve=False, verbosity=verbosity))
-#            matches = join_matches + group_matches
             if matches:
                 print(" Encontró coincidencias {}".format(matches))
                 if len(matches) > 1:
@@ -2599,20 +2423,23 @@ class Segmentation:
         matched = True
         all_matches = []
         while matched and iteration < iters:
-#            if verbosity:
-            print("MATCHING JOINS IN GROUPINGS {}, ITERATION {}".format(joingroupings, iteration))
-            print(" Segments: {}".format(self.segments))
+            if verbosity:
+                print("MATCHING JOINS IN GROUPINGS {}, ITERATION {}".format(joingroupings, iteration))
+                print(" Segments: {}".format(self.segments))
             matches = self.match_joins(joingroupings=joingroupings, verbosity=0)
             if matches:
-                print(" Found matches {}".format(matches))
+                if verbosity:
+                    print(" Found matches {}".format(matches))
                 if len(matches) > 1:
                     Match.resolve(matches)
-                    print(" Resolved to {}".format(matches))
+                    if verbosity:
+                        print(" Resolved to {}".format(matches))
                 all_matches.extend(matches)
                 if makesuper:
                     self.matches2supersegs(matches, verbosity=verbosity)
             else:
-                print(" Ningunas coincidencias encontradas")
+                if verbosity:
+                    print(" Ningunas coincidencias encontradas")
                 matched = False
             iteration += 1
         if generate:
@@ -2653,7 +2480,6 @@ class Segmentation:
                         if match2:
                             if verbosity > 1:
                                 print("  Matched conds")
-#                            matches1.append((join, match1))
                             matches1.append(Match(join, match1))
                             # Don't look for more matches from this position; move forward
                             # by the length of the join - 1 (because we're moving forward
@@ -2671,8 +2497,6 @@ class Segmentation:
         """Get candidate matches of groups with segmentation Segs and match them,
         returning matches as Match instances.
         """
-#        print("MATCHING GROUPS {}".format(groupsid))
-#        print(" Segments: {}".format(self.segments))
         cands = self.get_group_cands(groupsid=groupsid, verbosity=verbosity)
         matches = self.match_group_cands(cands, resolve=resolve, verbosity=verbosity)
         if make_super:
@@ -2739,11 +2563,7 @@ class Segmentation:
         positions = [s[0] for s in seglist]
         features = [s[2] for s in seglist]
         superseg = SuperSeg(self, segs, features=features, join=join, verbosity=verbosity)
-#        if verbosity:
         print("CREANDO SUPERSEG PARA {} Y {} en posiciones {}".format(segs, join, positions))
-#        print("...reemplazando segmento {} a segmento {}".format(self.segments[positions[0]], self.segments[positions[-1]+1]))
-#            print("CREATING SUPERSEG FOR {} AND {} in positions {}".format(segs, join, positions))
-#            print("...replacing segment {} to segment {}".format(self.segments[positions[0]], self.segments[positions[-1]+1]))
         # replace the joined segments in the segmentation with the superseg
         self.segments[positions[0]:positions[-1]+1] = [superseg]
 

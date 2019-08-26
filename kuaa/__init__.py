@@ -62,6 +62,8 @@ from .record import *
 
 from .text import *
 
+db.create_all()
+
 # from . import db
 
 ## Whether to create a session for the anonymous user when user doesn't log in.
@@ -76,19 +78,22 @@ def start(gui, use_anon=True, create_memory=False):
 #    print("Starting {}, {}, {}".format(source, target, user))
     # Read in current users so that we can find the current user and
     # check for username overlap if a new account is created
-    User.read_all()
+#    User.read_all()
+    # set GUI.user
     if isinstance(gui.user, str):
         # Get the user from their username
-        gui.user = User.users.get(user)
+        gui.user = get_human(gui.user)
+#        User.users.get(user)
     if use_anon and not gui.user:
-        gui.user = User.get_anon()
+        gui.user = get_human('anon')
+#        User.get_anon()
     username = ''
     if gui.user:
         username = gui.user.username
     if create_memory:
         gui.session = kuaa.Memory.recreate(user=username)
-    elif user:
-        gui.session = kuaa.Session(source=gui.source, target=gui.target, user=user)
+    elif gui.user:
+        gui.session = kuaa.Session(source=gui.source, target=gui.target, user=gui.user)
 
 def load(source='spa', target='grn', gui=None):
     """Cargar lenguas fuente y meta para traducción."""
@@ -136,6 +141,22 @@ def make_document(gui, text, single=False, html=False):
     gui.init_doc()
 #    return d
 
+def make_text(gui, textid):
+    """Create a Mainumby Text object with the text."""
+    textobj = get_text(textid)
+    nsent = len(textobj.segments)
+    html, html_list = get_doc_text_html(textobj)
+    gui.init_text(textid, nsent, html, html_list)
+
+def get_doc_text_html(text):
+    if not text.segments:
+        return
+    html = "<div id='doc'>"
+    seghtml = [s.html for s in text.segments]
+    html += ''.join(seghtml)
+    html += "</div>"
+    return html, seghtml
+        
 def quit(session=None):
     """Quit the session (and the program), cleaning up in various ways."""
     for language in Language.languages.values():
@@ -144,19 +165,22 @@ def quit(session=None):
         language.quit(cache=session)
     if session:
         session.quit()
+    print("New items before committing: {}".format(db.session.new))
+    db.session.commit()
+    print("Committing DB session")
 
 ## Users
-def get_translator(username):
-    users = db.session.query(Translator).filter_by(username=username).all()
-    if users:
-        return users[0]
+# def get_translator(username):
+#     users = db.session.query(Translator).filter_by(username=username).all()
+#     if users:
+#         return users[0]
 
 ## Probably only need to read in usernames.
-def init_users(gui=None):
-    # Read in current users before login.
-    User.read_all()
-    if gui:
-        gui.users_initialized = True
+# def init_users(gui=None):
+#     # Read in current users before login.
+#    User.read_all()
+#    if gui:
+#        gui.users_initialized = True
 
 def make_session(source, target, user, create_memory=False, use_anon=True):
     User.read_all()
@@ -174,20 +198,68 @@ def make_session(source, target, user, create_memory=False, use_anon=True):
         session = kuaa.Session(source=source, target=target, user=user)
     return session
 
-def get_user(username):
-    """Find the user with username username."""
-    print("Looking for user with username {}".format(username))
-    return User.get_user(username)
+#def get_user(username):
+#    """Find the user with username username."""
+#    print("Looking for user with username {}".format(username))
+#    return User.get_user(username)
 
-def create_translator(username='', password='', email='', name='', level=1):
-    """Create an instance of the Translator class."""
-    trans = Translator(username=username, password=password, email=email,
-                       name=name, level=level)
-    db.session.add(trans)
+#def create_user(dct):
+#    """Create a user from the dict of form values from login.html."""
+#    return User.dict2user(dct)
 
-def create_user(dct):
-    """Create a user from the dict of form values from login.html."""
-    return User.dict2user(dct)
+## DB functions
+
+def sentence_from_textseg(textseg=None, source=None, target=None, textid=None, oindex=-1):
+    """Create a Sentence object from a DB TextSeg object, which is either
+    specified explicitly or accessed via its index within a Text object."""
+    textseg = textseg or get_text(textid).segments[oindex]
+    original = textseg.content
+    tokens = [tt.string for tt in textseg.tokens]
+    return Sentence(original=original, tokens=tokens, language=source, target=target)
+
+def create_human(form):
+    """Create and add to the text DB an instance of the Human class,
+    based on the form returned from tra.html."""
+    level = form.get('level', 1)
+    level = int(level)
+    human = Human(username=form.get('username', ''),
+                  password=form.get('password'),
+                  email=form.get('email'),
+                  name=form.get('name', ''),
+                  level=level)
+    db.session.add(human)
+    db.session.commit()
+    return human
+
+def get_humans():
+    return db.session.query(Human).all()
+
+def get_human(username):
+    humans = db.session.query(Human).filter_by(username=username).all()
+    if humans:
+        if len(humans) > 1:
+            print("Advertencia: ¡{} usuarios con el nombre de usuario {}!".format(len(humans), username))
+        return humans[0]
+
+def get_domains_texts():
+    """Return a list of domains and associated texts and a dict of texts by id."""
+    dom = dict([(d, []) for d in DOMAINS])
+    text_dict = {}
+    for text in db.session.query(Text).all():
+        d1 = text.domain
+        id = text.id
+        dom[d1].append((id, text.title))
+        text_dict[id] = text
+    # Alphabetize text titles
+    for texts in dom.values():
+        texts.sort(key=lambda x: x[1])
+    dom = list(dom.items())
+    # Alphabetize domain names
+    dom.sort()
+    return dom, text_dict
+
+def get_text(id):
+    return db.session.query(Text).get(id)
 
 # Import views. This has to appear after the app is created.
 import kuaa.views

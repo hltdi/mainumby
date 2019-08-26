@@ -27,12 +27,16 @@
 
 # 2019.08.12
 # -- Created
+# 2019.08.15
+# -- Added SerializerMixin, with to_dict() method inherited for all DB classes.
+# -- 'creation' datetimes for Human, Text, and Translation
 
 #from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, DateTime
 #from sqlalchemy.ext.declarative import declarative_base
 #from sqlalchemy.orm import sessionmaker, relationship, backref
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy_serializer import SerializerMixin
 import datetime, os
 import docx
 from .utils import get_time
@@ -46,10 +50,10 @@ TEXT_DIR = os.path.join(os.path.dirname(__file__), 'texts')
 TEXT_EXT = ".txt"
 DOCX_EXT = '.docx'
 
-DOMAINS = ["Miscelánea", "Cuentos", "Ciencia", "Gobierno", "Cocina",
-           "Historia", "Lenguaje"]
+DOMAINS = ["Miscelánea", "Cuentos", "Ciencia", "Entrenamiento",
+           "Historia", "Lenguaje", "Infantil", "Ley", "Política", "Cultura"]
 
-class Human(db.Model):
+class Human(db.Model, SerializerMixin):
     """User of the system who is registered and whose feedback is saved."""
 
     __tablename__ = 'humans'
@@ -57,7 +61,7 @@ class Human(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String)
-    fullname = db.Column(db.String)
+    name = db.Column(db.String)
     email = db.Column(db.String)
     pw_hash = db.Column(db.String)
     # Guarani ability
@@ -96,7 +100,7 @@ class Human(db.Model):
         human = Human(username=username, email=email, name=name, level=level, pw_hash=pw_hash)
         return human
 
-class Text(db.Model):
+class Text(db.Model, SerializerMixin):
     """A source-language document stored in a file."""
     
     __tablename__ = 'texts'
@@ -108,9 +112,10 @@ class Text(db.Model):
     content = db.Column(db.String)
     domain = db.Column(db.String)
     description = db.Column(db.String)
+    creation = db.Column(db.String)
 
     def __init__(self, name='', domain='Miscelánea', content='', title='',
-                 language=None, description=''):
+                 language=None, description='', segment=False):
         """Either name or title or both should be specified."""
         if domain not in DOMAINS:
             print("Advertencia: ¡{} no pertenece a la actual lista de dominios!".format(domain))
@@ -120,7 +125,10 @@ class Text(db.Model):
         self.title = title or name
         self.language = language
         self.description = description
+        self.creation = get_time(True)
         self.set_language()
+        if segment:
+            self.segment()
 
     def __repr__(self):
         return "<Text({}, {}:{})>".format(self.id, self.domain, self.title)
@@ -129,9 +137,15 @@ class Text(db.Model):
     def segment(self):
         # Let Document do the sentence tokenization work.
         doc = Document(text=self.content, language=self.language)
-        for index, sentence in enumerate(doc):
+        # Set HTML from the Doc
+        doc.set_html()
+        self.html = doc.html
+        for index, (sentence, shtml) in enumerate(zip(doc, doc.html_list)):
             # Make a TextSeg for each Sentence in the Document
-            TextSeg(text=self, content=sentence.original, index=index)
+            textseg = TextSeg(text=self, content=sentence.original, index=index, html=shtml)
+            for tokindex, token in enumerate(sentence.tokens):
+                # Make a TextTok for each token in the TextSeg
+                TextTok(string=token, textseg=textseg, index=tokindex)
 
     def set_language(self):
         if not self.language:
@@ -158,7 +172,7 @@ class Text(db.Model):
         return os.path.join(TEXT_DIR, name + ext)
 
     @staticmethod
-    def read(name, domain="Miscelánea", title=''):
+    def read(name, domain="Miscelánea", title='', segment=True):
         """Read a file in the 'texts' directory and create a Text object
         from its contents."""
         content = ''
@@ -175,7 +189,8 @@ class Text(db.Model):
         elif any([f.endswith(DOCX_EXT) for f in files]):
             content = Text.docx2txt(name)
         if content:
-            return Text(name=name, domain=domain, content=content, title=title)
+            return Text(name=name, domain=domain, content=content, title=title,
+                        segment=segment)
         print("No existe un archivo con nombre {}".format(name))
 
     @staticmethod
@@ -191,7 +206,7 @@ class Text(db.Model):
         except docx.opc.exceptions.PackageNotFoundError:
             print("No se pudo encontrar el archivo {}".format(path))
 
-class TextSeg(db.Model):
+class TextSeg(db.Model, SerializerMixin):
     """A sentence or similar unit within a Text."""
     
     __tablename__ = 'textsegs'
@@ -201,19 +216,43 @@ class TextSeg(db.Model):
     content = db.Column(db.String)
     index = db.Column(db.Integer)
     text_id = db.Column(db.Integer, db.ForeignKey('texts.id'))
-    text = db.relationship("Text", backref=db.backref('textsegs', lazy=True),
+    text = db.relationship("Text", backref=db.backref('segments', lazy=True),
                            cascade="all, delete")
+    # HTML for the sentence
+    html = db.Column(db.String)
 
-    def __init__(self, text='', content='', index=0):
+    def __init__(self, text='', content='', index=0, html=''):
         self.text = text
         self.content = content
         self.index = index
+        self.html = html
 
     def __repr__(self):
         content = self.content[:25] + '...' if len(self.content) > 25 else self.content
         return "<TextSeg({}, {})>".format(self.id, content)
 
-class Translation(db.Model):
+class TextTok(db.Model, SerializerMixin):
+    """A token within a TextSeg."""
+    
+    __tablename__ = 'texttoks'
+    __bind_key__ = "text"
+
+    id = db.Column(db.Integer, primary_key=True)
+    string = db.Column(db.String)
+    index = db.Column(db.Integer)
+    textseg_id = db.Column(db.Integer, db.ForeignKey('textsegs.id'))
+    textseg = db.relationship("TextSeg", backref=db.backref('tokens', lazy=True),
+                              cascade="all, delete")
+
+    def __init__(self, string='', textseg='', index=0):
+        self.textseg = textseg
+        self.string = string
+        self.index = index
+
+    def __repr__(self):
+        return "<TextTok({}, {})>".format(self.id, self.string)
+
+class Translation(db.Model, SerializerMixin):
     """A target-language translation of a Text."""
     
     __tablename__ = 'translations'
@@ -228,15 +267,17 @@ class Translation(db.Model):
     translator_id = db.Column(db.Integer, db.ForeignKey('humans.id'))
     translator = db.relationship("Human", backref=db.backref('humans', lazy=True),
                                  cascade="all, delete")
+    creation = db.Column(db.String)
 
     def __init__(self, text='', translator=None):
         self.text = text
         self.translator = translator
+        self.creation = get_time(True)
 
     def __repr__(self):
         return "<Translation({}, {}, {})>".format(self.id, self.text.name, self.translator.username)
 
-class TraSeg(db.Model):
+class TraSeg(db.Model, SerializerMixin):
     """A unit within a translation corresponding to a TextSeg within the associated Text object."""
     
     __tablename__ = 'trasegs'

@@ -52,17 +52,47 @@ import kuaa
 
 ## Bases de datos
 
+def db_texts():
+    texts = [kuaa.Text.read("prueba", title="Prueba", segment=True),
+             kuaa.Text.read("pajarito", domain="Cuentos", title="Pajarito Perezoso", segment=True),
+             kuaa.Text.read("abejas", domain="Ciencia", title="Reducción de Abejas", segment=True),
+             kuaa.Text.read("maiz", domain="Infantil", title="Maíz", segment=True),
+             kuaa.Text.read("pimienta", domain="Infantil", title="Pimienta que Huye", segment=True),
+             kuaa.Text.read("chaco", domain="Ciencia", title="Chaco Boreal", segment=True),
+             kuaa.Text.read("tiwanaku", domain="Historia", title="Imperio Tiahuanaco-Huari", segment=True)]
+    kuaa.db.session.add_all(texts)
+
+def db_users():
+    db_create_admin()
+    db_create_anon()
+    db_create_old_users()
+
 def db_reinit():
     kuaa.db.create_all()
     kuaa.db.session = kuaa.db.create_scoped_session()
 
 def db_create_admin():
-    admin = kuaa.Human(username='admin', email='gasser@indiana.edu', name="administrador")
+    admin = kuaa.Human(username='admin', email='gasser@indiana.edu', name="administrador",
+                       pw_hash='pbkdf2:sha256:50000$emvjKpZe$1d7a96e2375857a689b66ea66e6496f9e9d5c3bb6c9db95d5e99827aa915bf04')
     db_add(admin)
 
 def db_create_anon():
-    anon = kuaa.Human(username='anon', email='onlyskybl@gmail.com', name="anónimo")
+    anon = kuaa.Human(username='anon', email='onlyskybl@gmail.com', name="anónimo",
+                      pw_hash='pbkdf2:sha256:50000$U0Ls5bk2$81e2e46cd121cd8145317535c7d0a5e08726c09bba439c945e3b4a8975db053b')
     db_add(anon)
+
+def db_create_old_users():
+    humans = []
+    with open("notes/tmp.txt") as file:
+        for line in file:
+            username, pw_hash, email, name, level = line.strip().split(';')
+            humans.append(kuaa.Human(username=username, pw_hash=pw_hash,
+                                     email=email, name=name, level=level))
+    kuaa.db.session.add_all(humans)
+
+def db_serialize_class(klass):
+    """Return a list of dicts, one for each member of DB class."""
+    return [obj.to_dict() for obj in db_list(klass)]
 
 #def db_recreate_session():
 #    kuaa.db.session = kuaa.db.create_scoped_session()
@@ -84,26 +114,6 @@ def db_add(instance):
 
 def db_delete(instance):
     kuaa.db.session.delete(instance)
-
-PRUEBA_TRANS = "Peteĩ mombe’upy michĩ\nJagua og̃uahẽ hógape. Upépe ojuhu peteĩ mbarakajápe herava’ekue Carlos.\nMokõi ojokuaa."
-
-def db_texts1():
-    """Add a Translator, two Texts, and two Translations to DB."""
-#    if recreate:
-#        db_recreate_session()
-#    if start_over:
-#        db_destroy()
-#        db_create()
-    t1 = kuaa.Text.read('prueba', title='Prueba')
-    t2 = kuaa.Text.read('pimienta', title="Pimienta que Huye")
-    anon = kuaa.Translator(username='anon', email='anon@aol.com', name="Anonymous",
-                           password="mypass")
-##    s1 = kuaa.TextSeg(text=t1, content="Una pequeña historia")
-##    s2 = kuaa.TextSeg(text=t1, content="Un perro llegó a casa.")
-##    s3 = kuaa.TextSeg(text=t1, content="Allí encontró a un gato que se llama Carlos.")
-    kuaa.db.session.add_all([t1, t2, anon])
-#    translation = kuaa.Translation(text=t1, translator=anon)
-#    kuaa.db.session.add(translation)
                                    
 ## Atajos
 

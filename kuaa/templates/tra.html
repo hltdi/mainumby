@@ -14,7 +14,7 @@
     padding: 8px;
 }
 label#subir
-{
+ {
     display: inline-block;
     position: relative;
     background-color: #8DEDCD;
@@ -22,8 +22,8 @@ label#subir
     font-family: "Verdana";
     font-size: 100%;
     text-align: center;
-    padding: 2px;
-    width: 100px;
+    padding: 0px;
+    width: 116px;
     border-radius: 4px;
     border-style: outset;
     border-color: black;
@@ -55,14 +55,21 @@ td.opciones
 .envoltorio-subida {
     position: relative;
     font-size: 100%;
+    padding-bottom: 6px;
 }
 
 .btn-subir {
-    padding: 6px;
-    width: 30%;
+    padding: 0px;
     position: absolute;
     left: 0;
     opacity: 0;
+}
+.subir-label {
+    padding: 0px;
+}
+.subir-label:hover {
+    background-color: #4B2B17;
+    color: #8DEDCD;
 }
 div.archivo {
     padding-top: 8px;
@@ -164,7 +171,7 @@ input.filename
 }
 div.despleg {
     font-family: "Verdana";
-    background-color: #666666;
+    background-color: #4B2B17;
     color: white;
     font-size: 100%;
     padding-left: 5px;
@@ -181,15 +188,62 @@ div.despleg {
     position: relative;
     display: inline-block;
 }
+#dominios {
+    display: none;
+    border: 1px;
+    border-style: solid;
+    background-color: #F5E754;
+}
+div.desplegable-derecha {
+    position: relative;
+    display: inline-block;
+    /*    background-color: #4B2B17; */
+    border: none;
+    width: 100%;
+    display: none;
+}
+div.despleg-derecha {
+    font-family: "Verdana";
+/*    background-color: #4B2B17; */
+    color: #4B2B17;
+    font-size: 110%;
+    line-height: 1.5;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 2px;
+    margin: none;
+    border: 0;
+}
 .contenido-desplegable {
     display: none;
     position: absolute;
     background-color: #f1f1f1;
+    font-size: 85%;
     min-width: 160px;
     overflow: auto;
     padding: 4px 4px;
     box-shadow: 0px 8px 16px 8px rgba(0,0,0,0.4);
     z-index: 1;
+}
+.textos-desplegable {
+    display: none;
+    position: relative;
+    left: 120px;
+    bottom: 25px;
+    background-color: #8DEDCD;
+/*    background-color: #F5E754; */
+/*    color: #4B2B17; */
+    font-size: 100%;
+    /*    min-width: 160px; */
+    width: 25%;
+    overflow: auto;
+    padding: 2px 2px;
+/*    box-shadow: 0px 8px 16px 8px rgba(0,0,0,0.4); */
+    z-index: 1;
+}
+#seleccionBoton
+{
+    padding-top: 6px;
 }
 .show {display: block;}
 
@@ -261,19 +315,46 @@ div.despleg {
 </div>
 
 {% if doc and not documento %}
+<table style="width:100%">
+<tr>
+
+<td>
 <div class="envoltorio-subida" id="envoltorio-subida">
-  <span class='instructions'>
-    Subí un documento (formato .txt o .docx).
-  </span>
   <label id="subir" for="subido">
-  <div>Examinar...</div>
+  <div class="subir-label">Examinar...</div>
   <input id='subido' type='file' class="btn-subir" onchange="archivoSubido();" name='subido'>
   </label>
+  <span class='instructions'>
+    Subí un archivo (formato .txt o .docx) de tu computadora.
+  </span>
 </div>
+</td>
+</tr>
+<tr>
+<td>
+  <div id="seleccionBoton">
+  <input type="button" value="Seleccionar..." id="button" onclick="seleccionarArchivo();">
+  <span class'instructions'>
+    Seleccioná un archivo de los almacenados.
+  </span>
+    </div>
+</td></tr>
+<tr>
+<td id="dominios">
+{% if text_html %}
+{{ text_html|safe }}
+{% endif %}
+</td>
+</tr>
+
+</table>
+
 {% endif %}
 
 <input type="hidden" name="documento" value=''>
 <input type="hidden" name="ocultar" value={% if props.ocultar %} "true" {% else %} "false" {% endif %}>
+<input type="hidden" name="docsrc" value="computadora">
+<input type="hidden" name="textid" value="">
 
 </form>
 
@@ -301,7 +382,10 @@ div.despleg {
 
   {% if documento %}
     <div class="instruc" id="instruc_fuente">Para seleccionar una oración para traducir,
-    hacé clic sobre la oración.</div>
+    hacé clic sobre la oración.<br />
+    Para abandonar este documento, presioná "Abandonar" abajo.</div>
+    <br class='sep'/>
+    <input type="button" value="Abandonar" id="button" onclick="abandonarDoc();">
   {% elif oracion %}
     <div class="instruc" id="instruc_fuente">Para traducir otra oración,
     primero presioná 'Borrar' o hacé clic en el espacio de arriba.
@@ -518,6 +602,12 @@ function aceptarTrad()
     document.Form2.submit();
 }
 
+function abandonarDoc()
+{
+    document.Form1.modo.value = "doc";
+    document.Form1.submit();
+}
+
 function mayuscula(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -606,6 +696,7 @@ function fuenteNuevaLinea() {
 }
 
 function cambiarMeta(button, choiceid) {
+    // Swap items at the top with selected menu item.
     newitem = document.getElementById(choiceid).innerHTML;
     olditem = document.getElementById(button).innerHTML;
     // Add and remove the menu dropdown triangle.
@@ -632,7 +723,48 @@ function seleccionarOra(oraid, index) {
 /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
 function desplegar(button) {
     element = document.getElementById(button);
-    document.getElementById(button).classList.toggle("show");
+    element.classList.toggle("show");
+}
+
+/* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+function desplegarDerecha(childid, parentid) {
+    child = document.getElementById(childid);
+    parent = document.getElementById(parentid);
+    parentLabel = parent.innerHTML;
+    if (!child.style.display || child.style.display === "none") {
+	child.style.display = "block";
+	parent.innerHTML = triAbajo(parentLabel);
+    } else {
+	child.style.display = "none";
+	parent.innerHTML = triDerecha(parentLabel);
+    }
+}
+
+/* Arregla el triángulo que sigue el nombre de un dominio */
+function triAbajo(string) {
+    return string.replace(/\u25B8/g, "\u25BE");
+}
+
+function triDerecha(string) {
+    return string.replace(/\u25BE/g, "\u25B8");
+}
+
+function abrirSeleccionado(textid) {
+    // Open the selected Text from the DB.
+    document.Form0.textid.value = textid;
+    document.Form0.submit();
+}
+
+function ocultarDominios() {
+    var texttd = document.getElementById("dominios");
+    texttd.style.display = "none";
+}
+
+function mostrarDominios() {
+    var texttd = document.getElementById("dominios");
+    texttd.style.display = "block";
+    var selBot = document.getElementById("seleccionBoton");
+    selBot.style.display = "none";
 }
 
 /* Encuentra las traducciones de segmentos actualmente seleccionados */
@@ -719,6 +851,8 @@ function alternarInstrucciones() {
 // Buscar archivo subido y mostrar su nombre.
 function archivoSubido() {
     borrarError();
+    ocultarDominios();
+    document.Form0.docsrc.value = "computadora";
     var uploaded = document.getElementById("subido");
     if (uploaded) {
 	var files = uploaded.files;
@@ -760,8 +894,10 @@ function mostrarDocxSubido(file, size) {
 }
 
 function mostrarInfoArchivo(name, size) {
-    var html = "<div class='archivo'><table><tr><td class='archivo'><span class='heading'>Archivo subido</span></td><td class='archivo'><span class='archivo'>" + name + "</span><br/>" + size +
-	" KB</td><td class='archivo'><button id='button' type='button' onclick='procDoc();'>Abrir</button></td></tr></table></div>";
+    var html = "<div class='archivo'><table><tr><td class='archivo'><span class='heading'>Archivo subido</span></td><td class='archivo'><span class='archivo'>";
+    html += name + "</span><br/>" + size;
+    html += " KB</td><td class='archivo'><button id='button' type='button' onclick='procDoc();'>Abrir</button></td>";
+    html += "<td class='archivo'><button id='button' type='button' onclick='cancelarProcDoc();'>Cancelar</button></td></tr></table></div>";
     document.getElementById('envoltorio-subida').innerHTML = html;
 }
 
@@ -782,9 +918,25 @@ function mostrarArchivoSubido(file, size) {
     mostrarInfoArchivo(name, size);
 }
 
+// Mostrar archivos, organizados por dominio, que están almacenados.
+function seleccionarArchivo()
+{
+    document.Form0.docsrc.value = "almacén";
+    mostrarDominios();
+//    var html = "<div class='archivo'><table><tr><td class='archivo'>Archivo</td></tr></table></div>"; //
+//    document.getElementById('envoltorio-subida').innerHTML = html; //
+//    document.Form0.submit(); //
+}
+
 // Leer el contenido de un archivo subido y guardarlo en la variable documento.
 function procDoc() {
 //    var text = document.Form0.documento.value;
+    document.Form0.submit();
+    return true;
+}
+
+function cancelarProcDoc() {
+    document.Form0.documento.value = '';
     document.Form0.submit();
     return true;
 }
