@@ -74,11 +74,8 @@ db.create_all()
 def start(gui, use_anon=True, create_memory=False):
     """Iniciar una ejecución. Crear una sesión si hay un usuario y si no
     se está usando una Memory."""
-
-#    print("Starting {}, {}, {}".format(source, target, user))
-    # Read in current users so that we can find the current user and
-    # check for username overlap if a new account is created
-#    User.read_all()
+    if not gui.source:
+        load(gui=gui)
     # set GUI.user
     if isinstance(gui.user, str):
         # Get the user from their username
@@ -141,46 +138,16 @@ def make_document(gui, text, single=False, html=False):
     gui.init_doc()
 #    return d
 
-def make_text(gui, textid):
-    """Create a Mainumby Text object with the text."""
-    textobj = get_text(textid)
-    nsent = len(textobj.segments)
-    html, html_list = get_doc_text_html(textobj)
-    gui.init_text(textid, nsent, html, html_list)
-
-def get_doc_text_html(text):
-    if not text.segments:
-        return
-    html = "<div id='doc'>"
-    seghtml = [s.html for s in text.segments]
-    html += ''.join(seghtml)
-    html += "</div>"
-    return html, seghtml
-        
 def quit(session=None):
     """Quit the session (and the program), cleaning up in various ways."""
     for language in Language.languages.values():
         # Store new cached analyses or generated forms for
         # each active language, but only if there is a current session/user.
         language.quit(cache=session)
-    if session:
-        session.quit()
-    print("New items before committing: {}".format(db.session.new))
+#    if session:
+#        session.quit()
+    print("New items in session {} before committing: {}".format(db.session, db.session.new))
     db.session.commit()
-    print("Committing DB session")
-
-## Users
-# def get_translator(username):
-#     users = db.session.query(Translator).filter_by(username=username).all()
-#     if users:
-#         return users[0]
-
-## Probably only need to read in usernames.
-# def init_users(gui=None):
-#     # Read in current users before login.
-#    User.read_all()
-#    if gui:
-#        gui.users_initialized = True
 
 def make_session(source, target, user, create_memory=False, use_anon=True):
     User.read_all()
@@ -209,13 +176,43 @@ def make_session(source, target, user, create_memory=False, use_anon=True):
 
 ## DB functions
 
+def make_text(gui, textid):
+    """Create a Mainumby Text object with the text."""
+    textobj = get_text(textid)
+    nsent = len(textobj.segments)
+    html, html_list = get_doc_text_html(textobj)
+    gui.init_text(textid, nsent, html, html_list)
+
+def get_doc_text_html(text):
+    if not text.segments:
+        return
+    html = "<div id='doc'>"
+    seghtml = [s.html for s in text.segments]
+    html += ''.join(seghtml)
+    html += "</div>"
+    return html, seghtml
+        
 def sentence_from_textseg(textseg=None, source=None, target=None, textid=None, oindex=-1):
     """Create a Sentence object from a DB TextSeg object, which is either
     specified explicitly or accessed via its index within a Text object."""
+    print("Creating sentence from textseg, source={}".format(source))
     textseg = textseg or get_text(textid).segments[oindex]
     original = textseg.content
     tokens = [tt.string for tt in textseg.tokens]
     return Sentence(original=original, tokens=tokens, language=source, target=target)
+
+def make_translation(gui=None, text=None, textid=-1, user=None):
+    """Create a Translation object, given a text, a user (translator), and a list of
+    sentence translations from the GUI. There may be missing translations."""
+    text = text or get_text(textid)
+    trans = Translation(text=text, translator=user)
+    db.session.add(trans)
+    for index, sentence in enumerate(gui.doc_tra_acep):
+        if sentence:
+            ts = TraSeg(content=sentence, translation=trans, index=index)
+    print("Added translation {} to session {}".format(trans, db.session))
+    db.session.commit()
+    return trans
 
 def create_human(form):
     """Create and add to the text DB an instance of the Human class,

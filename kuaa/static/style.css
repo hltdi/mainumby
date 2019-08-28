@@ -91,6 +91,18 @@ p.error
     font-style: italic;
     font-size: 110%;
 }
+div.advert
+{
+   vertical-align: top;
+   line-height: 1.1;
+   width: 100%;
+   font-family: "Verdana";
+   font-size: 100%;
+   color: red;
+   border: none;
+   margin: 0px;
+   padding-bottom: 6px;
+}
 div.instruc
 {
    vertical-align: top;

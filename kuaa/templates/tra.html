@@ -30,7 +30,7 @@ label#subir
     border-width: 2px;
     cursor: pointer;
 }
-label:hover, label:active
+label#subir:hover, label#subir:active
 {
     background-color: #4B2B17;
     color: #8DEDCD;
@@ -167,7 +167,7 @@ textarea.dmeta
 }
 input.filename
 {
-   width: 50pt;
+   width: 100pt;
 }
 div.despleg {
     font-family: "Verdana";
@@ -320,6 +320,10 @@ div.despleg-derecha {
 
 <td>
 <div class="envoltorio-subida" id="envoltorio-subida">
+  {% if not user %}
+  <div class="advert" id="advert">Notá que no es posible registrar una traducción
+    en la base de datos de Mainumby sin identificarte.</div>
+  {% endif %}
   <label id="subir" for="subido">
   <div class="subir-label">Examinar...</div>
   <input id='subido' type='file' class="btn-subir" onchange="archivoSubido();" name='subido'>
@@ -335,7 +339,7 @@ div.despleg-derecha {
   <div id="seleccionBoton">
   <input type="button" value="Seleccionar..." id="button" onclick="seleccionarArchivo();">
   <span class'instructions'>
-    Seleccioná un archivo de los almacenados.
+    Seleccioná un archivo de la base de datos de Mainumby.
   </span>
     </div>
 </td></tr>
@@ -453,8 +457,10 @@ div.despleg-derecha {
     <textarea class='dmeta' id='aceptado'>{% if aceptado %}{{aceptado|safe}}{% endif %}</textarea>
     <br class='instruc' />
     <input type="submit" value="Guardar" id="button"/>
-    <label>Nombre de archivo:<input type="text" class="filename" id="text-filename" placeholder="doc.txt" size="50"/></label>
+    <label>Nombre de archivo:<input type="text" class="filename" id="text-filename" placeholder="doc.txt" size="100"/></label>
     <input type="hidden" name="ocultar" value={% if props.ocultar %}"true"{% else %}"false"{% endif %}>
+    <br class='sep' />
+    <input type="button" value="Registrar" id="button" onclick="registrar();">
     </form>
   {% endif %}
     </td>
@@ -581,7 +587,7 @@ function copiar()
 
 function registrar()
 {
-    meta = document.getElementById("textmeta").value;
+    meta = document.getElementById("aceptado").value;
     document.Form2.ometa.value = meta;
     document.Form2.borrar.value = 'true';
     document.Form2.registrar.value = 'true';
@@ -825,6 +831,10 @@ function alternarInstrucciones() {
 	if (f) {
 	    f.style.display = "none";
 	}
+	f = document.getElementById("advert");
+	if (f) {
+	    f.style.display = "none";
+	}
     } else {
 //	alert("Showing instructions");
 	document.Form0.ocultar.value = "false";
@@ -842,6 +852,10 @@ function alternarInstrucciones() {
 	    f.style.display = "block";
 	}
 	f = document.getElementById("instruc_trad");
+	if (f) {
+	    f.style.display = "block";
+	}
+	f = document.getElementById("advert");
 	if (f) {
 	    f.style.display = "block";
 	}
@@ -1015,10 +1029,16 @@ oraciones simples, y documentos almacenados en archivos. \
   presioná el botón "Registrar". \
   </li>\
   </ol>\
-<h5 class="help">Instrucciones para documento</h5>\
+<h5 class="help">Instrucciones para documentos</h5>\
 <ol class="help">\
   <li>En el espacio amarillo en la parte superior de la página, \
   seleccioná "Documento". \
+  Se presentan dos opciones para introducir un documento para \
+  traducir. Pod&eacute;s subir un documento de tu computadora o tel&eacute;fono \
+  o por otro lado elegir un documento de los que están almacenados \
+  en la base de datos de Mainumby. \
+  Según tu preferencia, o presioná el botón "Examinar..." \
+  o el botón "Seleccionar...". \
   </li>\
   <li>Presioná el botón "Examinar..." para subir un documento de tu \
   computadora o telefóno. Aparecerá una nueva ventana en la que podés \

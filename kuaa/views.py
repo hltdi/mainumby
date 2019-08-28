@@ -47,7 +47,7 @@
 #    global is the instance of GUI.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-from kuaa import app, make_document, make_text, load, seg_trans, quit, start, get_human, create_human, sentence_from_textseg
+from kuaa import app, make_document, make_text, seg_trans, quit, start, get_human, create_human, sentence_from_textseg
 from . import gui
 from docx import Document
 
@@ -62,17 +62,10 @@ def create_gui():
 
 def end_gui():
     global GUI
+    print("Ending GUI {}".format(GUI))
     if GUI:
         quit(GUI.session)
         GUI = None
-
-def init_session(create_memory=False, use_anon=False):
-    if not GUI.source:
-        load(gui=GUI)
-    # Load users and create session if there's a user
-    # or if USE_ANON is True
-    if not GUI.session:
-        start(GUI, use_anon=use_anon, create_memory=create_memory)
 
 # Attempt to translate the currently selected sentence,
 # assigning segmentation and HTML for the translation segmentation visualization
@@ -103,7 +96,7 @@ def login():
     if not GUI:
         create_gui()
     form = request.form
-#    print("Form for login: {}".format(form))
+    print("Form for login: {}".format(form))
 #    if not GUI.users_initialized:
 #        init_users(GUI)
     if request.method == 'POST' and 'login' in form:
@@ -159,12 +152,14 @@ def acct():
 def tra():
     global GUI
     if not GUI:
+        print("No GUI for tra.html")
         create_gui()
     form = request.form
-#    print("**FORM DICT FOR tra.html: {}**".format(form))
-    if not GUI.session:
-        print("Ninguna sesión")
-        init_session(create_memory=False)
+    print("**FORM DICT FOR tra.html: {}**".format(form))
+    if not GUI.source:
+        print("Ninguna lengua fuente")
+        start(gui=GUI, use_anon=False, create_memory=False)
+#        init_session(create_memory=False)
     # Translating document?
     isdoc = form.get('isdoc') == 'true'
     # Initialize various window parameters
@@ -172,9 +167,8 @@ def tra():
     username = GUI.user.username if GUI.user else ''
     if 'ayuda' in form and form['ayuda'] == 'true':
         # Opened help window. Keep everything else as is.
-        return render_template('tra.html', doc=isdoc, documento=GUI.doc_html, props=GUI.props)
+        return render_template('tra.html', doc=isdoc, documento=GUI.doc_html, props=GUI.props, user=username)
     if 'modo' in form:
-        print("MODO IN FORM")
         # Mode (sentence vs. document) has changed
         isdoc = form.get('modo') == 'documento'
         if 'documento' in form and form['documento']:
@@ -182,26 +176,33 @@ def tra():
             make_document(GUI, form['documento'], single=False, html=True)
             print("PROCESANDO TEXTO {}".format(GUI.doc))
             # Re-render, using HTML for Document
-            return render_template('tra.html', documento=GUI.doc.html, doc=True, props=GUI.props)
+            return render_template('tra.html', documento=GUI.doc.html, doc=True, props=GUI.props, user=username)
         elif isdoc: # and form.get('docsrc') == 'almacén':
             # A Text object is to be loaded; create the text list and HTML
             textid = form.get('textid', '')
             if textid:
                 make_text(GUI, int(textid))
-                return render_template('tra.html', documento=GUI.doc_html, doc=True, props=GUI.props)
+                return render_template('tra.html', documento=GUI.doc_html, doc=True, props=GUI.props, user=username)
             else:
                 # Re-render, displaying domain/text dropdowns
-                return render_template('tra.html', doc=True, props=GUI.props, text_html=GUI.text_select_html)
+                return render_template('tra.html', doc=True, props=GUI.props, text_html=GUI.text_select_html,
+                                       user=username)
         else:
             # Clear the GUI and re-render, keeping the mode setting
             GUI.clear(isdoc=isdoc)
-            return render_template('tra.html', doc=isdoc, props=GUI.props)
+            return render_template('tra.html', doc=isdoc, props=GUI.props, user=username)
     if form.get('borrar') == 'true':
-        GUI.clear(form.get('registrar') == 'true', form.get('ometa'))
+        record = form.get('registrar') == 'true'
+        if record:
+            trans = form.get('ometa')
+            print("Recording translation: {}".format(trans))
+            GUI.clear(record=True, translation=trans, isdoc=True)
+        else:
+            GUI.clear(record=False)
+            #, form.get('ometa'))
         # Start over with no current sentence or translation (translating sentence)
         GUI.props['tfuente'] = "120%"
-        return render_template('tra.html', oracion=None, tra_seg_html=None,
-                               user=username, props=GUI.props)
+        return render_template('tra.html', oracion=None, tra_seg_html=None, user=username, props=GUI.props)
     GUI.props['isdoc'] = isdoc
     if not 'ofuente' in form:
         # No sentence entered or selected
@@ -260,7 +261,7 @@ def tra():
 @app.route('/fin', methods=['GET', 'POST'])
 def fin():
     form = request.form
-#    print("Form for fin: {}".format(form))
+    print("Form for fin: {}".format(form))
     modo = form.get('modo')
     end_gui()
     return render_template('fin.html', modo=modo)

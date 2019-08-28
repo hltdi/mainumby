@@ -261,12 +261,10 @@ class Translation(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     # The associated Text object
     text_id = db.Column(db.Integer, db.ForeignKey('texts.id'))
-    text = db.relationship("Text", backref=db.backref('translations', lazy=True),
-                           cascade="all, delete")
+    text = db.relationship("Text", backref=db.backref('translations', lazy=True), cascade="all")
     # The associated Human object
     translator_id = db.Column(db.Integer, db.ForeignKey('humans.id'))
-    translator = db.relationship("Human", backref=db.backref('humans', lazy=True),
-                                 cascade="all, delete")
+    translator = db.relationship("Human", backref=db.backref('humans', lazy=True), cascade="all")
     creation = db.Column(db.String)
 
     def __init__(self, text='', translator=None):
@@ -287,11 +285,10 @@ class TraSeg(db.Model, SerializerMixin):
     content = db.Column(db.String)
     index = db.Column(db.Integer)
     translation_id = db.Column(db.Integer, db.ForeignKey('translations.id'))
-    translation = db.relationship("Translation", backref=db.backref('trasegs', lazy=True),
-                                  cascade="all, delete")
+    translation = db.relationship("Translation", backref=db.backref('trasegs', lazy=True), cascade="all, delete")
 
     def __init__(self, content='', translation=None, index=0):
-        self.content
+        self.content = content
         self.translation = translation
         self.index = index
 

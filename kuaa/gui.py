@@ -34,7 +34,7 @@ from .utils import capitalize_string
 from . import get_domains_texts
 
 # the database class bound to the current app
-from . import db
+from . import db, make_translation
 
 class GUI:
 
@@ -155,11 +155,12 @@ class GUI:
         print("+++Adding accepted translation for position {}".format(index))
         # Update the accepted translations
         self.doc_tra_acep[index] = trans
-        print("+++New doctrans: {}".format(self.doc_tra_acep))
+#        print("+++New doctrans: {}".format(self.doc_tra_acep))
         # Return a string concatenating all accepted translations
         self.doc_tra_acep_str = self.stringify_doc_tra()
 #        "\n".join([t for t in self.doc_tra_acep if t]).strip()
         self.doc_unselect_sent()
+        print("+++New trans string: {}".format(self.doc_tra_acep_str))
         self.props['tfuente'] = "100%"
 
     def stringify_doc_tra(self):
@@ -191,7 +192,14 @@ class GUI:
         self.doc_tra[index] = self.tra
 
     def clear(self, record=False, translation='', isdoc=False):
-        """Clear all document and sentence variables."""
+        """Clear all document and sentence variables, and record the current
+        translation if record is True and there is a translation."""
+#        if record:
+#            print("Recording translation {}".format(translation))
+#            print("Current doc_tra_acep {}".format(self.doc_tra_acep))
+        # Record the sentence translation
+        if record and self.has_text:
+            transDB = make_translation(gui=self, textid=self.textid, user=self.user)
         sentrec = None
         if self.sentence:
             sentrec = self.sentence.record
@@ -207,12 +215,10 @@ class GUI:
         self.doc_html = ''
         self.doc_select_html = []
         self.props['tfuente'] = "100%" if isdoc else "120%"
-        if record:
-            # Record the sentence translation
-            if self.session:
-                self.session.record(sentrec, translation=translation)
-            else:
-                print("NO SESSION SO NOTHING TO RECORD")
+#        if self.session:
+#            self.session.record(sentrec, translation=translation)
+#        else:
+#            print("NO SESSION SO NOTHING TO RECORD")
 
     def set_props(self, form, bool_props=None, props=None):
         """Set the property values from the form dict. bool-props and props
