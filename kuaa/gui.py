@@ -39,7 +39,7 @@ from . import db, make_translation
 class GUI:
 
     # Compiled regexs for sentence cleaning
-    clean_n = re.compile(r"\s+([.,;:?!)”″’%])")
+    clean_n = re.compile(r"\s+([.,;:?!)”″’%¶])")
 
     def __init__(self, list_texts=False):
         self.session = None
@@ -145,7 +145,6 @@ class GUI:
         element."""
         html = "<div id='doc'>"
         html_list = self.doc_html_list[:]
-        print("HTML_LIST: {}".format(html_list))
         html_list[index] = shtml
         html += "".join(html_list) + "</div>"
         return html
@@ -235,8 +234,7 @@ class GUI:
     def set_domains_texts(self):
         """HTML for a menu listing Text docs available, grouped by domain.
         domain_texts is of (domain, (id, title)) pairs."""
-#        html = "<div class='drop-right'>"
-        domain_texts, text_dict = get_domains_texts()
+        domain_texts = get_domains_texts()
         html = "<div class='desplegable-derecha' id='textos'>"
         for dindex, (domain, texts) in enumerate(domain_texts):
             if not texts:
@@ -246,10 +244,9 @@ class GUI:
                 html += "<div onclick=\"desplegarDerecha('despleg{}', 'button{}')\" id='button{}' class='despleg-derecha' style='cursor:context-menu'>{} ▸</div>".format(dindex, dindex, dindex, domain)
                 html += "<div id='despleg{}' class='textos-desplegable'>".format(dindex)
                 for tindex, (id, title) in enumerate(texts):
-                    html += "<span class='opcion' id='opcion{}.{}' onclick='abrirSeleccionado({})'>{}</span><br/>".format(dindex, tindex, id, title)
-                html += "</div></div>"
+                    html += "<div class='opcion' id='opcion{}.{}' onclick='abrirSeleccionado({})'>{}</div>".format(dindex, tindex, id, title)
+                html += "</div>"
         html += "</div>"
-#        </div>"
         self.text_select_html = html
 
     @staticmethod
@@ -262,7 +259,9 @@ class GUI:
         # Delete spaces before .,;?!, etc.
         string = GUI.clean_n.sub(r"\1", string)
         # Delete spaces after ("', etc.
-        string = re.sub(r"([(\"‶“‘$])\s+", r"\1", string)
+        string = re.sub(r"([-–]?[¿¡(\"‶“‘$])\s+", r"\1", string)
+        # Delete initial spaces after dashes (others?)
+        string = re.sub(r"^([-–]+)\s+", r"\1", string)
 #        print("Cleaned {}, capitalize? {}".format(string, capitalize))
         if capitalize:
             string = capitalize_string(string)

@@ -199,7 +199,7 @@ class Document(list):
     start_re = re.compile('[\-–—¿¡\'\"«»“‘(\[]+$')
     poss_end_re = re.compile('[")\]}]{0,2}[?!][)"\]]{0,2}$')
     # 0-2 pre-end characters (like ")"), 1 end character (.?!), 0-3 post-end characters (like ")" or footnote digits)
-    end_re = re.compile('[\"\'”’»)\]}:]{0,2}[.?!¶][.)»”’\'\"\]\-–—¶\d]{0,3}$')
+    end_re = re.compile('[\"\'”’»)\]}:]{0,2}[.?!¶…][.)»”’\'\"\]\-–—¶\d]{0,3}$')
 
     def __init__(self, language=None, target=None, text='', target_text='', path='',
                  proc=True, session=None, biling=False, alternating=True,
@@ -880,8 +880,19 @@ class Sentence:
         spec_found = False
         # Handle numeral and name word sequences
         first = True
+        inquote = False
         while tok_position < len(self.tokens):
-            spec = self.language.find_special(self.tokens[tok_position:], tok_position, first=first)
+            token = self.tokens[tok_position]
+            if not first and token in '"«“‘':
+                inquote = True
+                tok_position += 1
+                continue
+            elif inquote and token in '"»”’':
+                inquote = False
+                tok_position += 1
+                continue
+            spec = self.language.find_special(self.tokens[tok_position:], first=first,
+                                              inquote=inquote)
             if spec:
                 newtokens, prefix = spec
                 spec_found = True
@@ -1068,9 +1079,9 @@ class Sentence:
                 if self.tagger and not self.tagger.tokenizer:
                     # Use the POS tagger here
                     tagged = self.tagger.tag(self.tokens)
-                # Still need to figure out how to integrated tagged results and morphological analyses
+                # Still need to figure out how to integrate tagged results and morphological analyses
                 if not self.tagger or self.tagger.morph:
-                    analyses = self.morph_anal()
+                    analyses = self.morph_anal(tagged=tagged)
                     if self.tagger:
                         # Merge results of tagging and morphological analysis
                         self.analyses = self.merge_POS(tagged, analyses)
@@ -1090,20 +1101,27 @@ class Sentence:
                     for ms1 in self.language.ms[mi+1:]:
                         ms1.apply(scopy, ambig=ambig, verbosity=verbosity, terse=terse)
 
-    def morph_anal(self):
-        """Morphological analysis of the tokens in the sentence."""
+    def morph_anal(self, tagged=None):
+        """Morphological analysis of the tokens in the sentence. Use POS disambiguator
+        if appropriate."""
         analyses = []
-        for tok in self.toks:
+        for index, tok in enumerate(self.toks):
             tokstring = tok.fullname
             if tok.special or tok.punc or not tokstring:
                 # Don't bother to analyze it
                 analyses.append([tokstring, [{'root': tokstring, 'features': ''}]])
             else:
-                analyses.append([tokstring, self.language.anal_word(tokstring, clean=False)])
+                # Try POS disambiguator
+                anals = self.language.disambiguate_POS(tokstring, tagged, index)
+                if anals:
+                    analyses.append([tokstring, anals])
+                else:
+                    # Go ahead and do morphological analysis
+                    analyses.append([tokstring, self.language.anal_word(tokstring, clean=False)])
         return analyses
 
     def merge_POS(self, tagged, analyzed, verbosity=0):
-        """Merge the output of an external tagger and the L3Morpho analyzer. Use the tagger to
+        """Merge the output of an external tagger and the morfo analyzer. Use the tagger to
         disambiguate analyses, preferring the analysis if there's only one."""
         if verbosity:
             print("Merging tagger and analyzer results for {}".format(self))
@@ -1111,6 +1129,10 @@ class Sentence:
         for (word, tag), (token, anals) in zip(tagged, analyzed):
             if verbosity:
                 print("  word {}, tag {}, token {}, anals {}".format(word, tag, token, anals))
+            if token in self.language.POSambig:
+                # Already disambiguated
+                results.append([token, anals])
+                continue
             results1 = []
             for aindex, anal in enumerate(anals):
                 anal_pos = None
@@ -1120,6 +1142,8 @@ class Sentence:
                 if verbosity:
                     print("  tagger tag {}, analyzer tag {}".format(tag, anal_pos))
                 if anal_pos and tag:
+                    # Comparing analysis POS with tagger POS, so we need to normalize the tag first
+                    tag = tag.split('.')[0]
                     if anal_pos == tag or self.language.postag_match(tag, anal_pos):
                         if verbosity:
                             print("  tagger and analyzer agree on {} for {}".format(tag, anal))
@@ -1178,6 +1202,7 @@ class Sentence:
                 toktype = self.toktypes[tokindex]
             tokobjs.append(tokobj)
             if not incl_del and tokobj.delete:
+#                print("Not creating node for {} {} {}".format(tokindex, tokobj, anals))
                 # Ignore elements deleted by MorphoSyns
                 if anals and 'target' in anals[0]:
                     target_index = tokindex + anals[0]['target']
@@ -1239,6 +1264,7 @@ class Sentence:
                 tokobjs = []
                 incorp_indices = []
                 index += 1
+#        print("Nodes {}".format(self.nodes))
 
     def split(self):
         """Split the raw sentence into words, separating off punctuation."""
@@ -2304,19 +2330,22 @@ class Segmentation:
         tokens = [a[0] for a in sentence.analyses]
         indices_covered = []
         for treetrans, raw_indices, thead in tt:
+#            print("tt {}, raw i {}, thead {}".format(treetrans, raw_indices, thead))
             forms = treetrans.output_strings
             gname = treetrans.ginst.group.name
             head_index = treetrans.ginst.ghead_index
             tgroups = treetrans.ordered_tgroups
             start, end = raw_indices[0], raw_indices[-1]
             if start > max_index+1:
+#                print("tokens {}, end+1 {}, start {}".format(tokens, end_index+1, start))
                 # there's a gap between the farthest segment to the right and this one; make one or more untranslated segments
                 src_tokens = tokens[end_index+1:start]
                 src_nodes = [sentence.get_node_by_raw(index) for index in range(end_index+1, start)]
                 src_feats = [(s.analyses if s else None) for s in src_nodes]
-                src_toks = [s.tok for s in src_nodes]
-                self.get_untrans_segs(src_tokens, end_index, gname=gname,
-                                      src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered)
+                src_toks = [s.tok for s in src_nodes if s]
+                if src_toks:
+                    self.get_untrans_segs(src_tokens, end_index, gname=gname,
+                                        src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered)
             src_tokens = []
             pre_paren = []
             for tokindex in range(start, end+1):
@@ -2389,12 +2418,14 @@ class Segmentation:
         final segments."""
         iteration = 0
         matched = True
+        elim_joins = []
         all_matches = []
         nsegments = len([s for s in self.segments if not s.is_punc])
         while matched and iteration < iters and nsegments > 1:
             print("BUSCANDO COINCIDENCIAS CON JOINS Y GROUPS, ITERACIÓN {}".format(iteration))
             print(" Segmentos: {}".format(self.segments))
-            matches = self.match_joins(verbosity=0)
+            # Make sure previous matches of one segment are not repeated
+            matches = [m for m in self.match_joins(verbosity=0) if not any([m.equals(mm) for mm in all_matches])]
             matches.extend(self.match_groups(make_super=False, resolve=False, verbosity=verbosity))
             if matches:
                 print(" Encontró coincidencias {}".format(matches))

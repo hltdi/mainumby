@@ -29,7 +29,7 @@ import sys
 
 ## Default punctuation characters
 # Single quote eliminated 2013.08.12
-PUNCTUATION = r'[“‘”’–—…¿¡•:;/\\,<>?.!%$()[\]{}|#@&*\-_+=\"\`^~]'
+PUNCTUATION = r'[“‘”’–—…¿¡•:;/\\,<>?.!%$()[\]{}|#@&*\-_+=\"\`^~«]'
 ## Default alphabetic characters
 CHARACTERS = r'[a-zA-Z]'
 

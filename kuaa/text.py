@@ -51,7 +51,7 @@ TEXT_EXT = ".txt"
 DOCX_EXT = '.docx'
 
 DOMAINS = ["Miscelánea", "Cuentos", "Ciencia", "Entrenamiento",
-           "Historia", "Lenguaje", "Infantil", "Ley", "Política", "Cultura"]
+           "Historia", "Lengua", "Infantil", "Ley", "Política", "Cultura"]
 
 class Human(db.Model, SerializerMixin):
     """User of the system who is registered and whose feedback is saved."""

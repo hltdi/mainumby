@@ -48,9 +48,9 @@ TIME0 = datetime.datetime.utcnow()
 
 ## Compiled regexs
 # Whether the string is capitalized
-ISCAP_RE = re.compile(r"^[(\"\'‶“‘$]*[A-ZÀ-Ⱬ]")
+ISCAP_RE = re.compile(r"^[-–¿¡(\"\'‶“‘$]*[A-ZÀ-Ⱬ]")
 # Capitalize the string
-CAP_RE = re.compile(r"^([(\"\'‶“‘$]*)(\w)")
+CAP_RE = re.compile(r"^([-–¿¡(\"\'‶“‘$]*)(\w)")
 
 ## Strings
 

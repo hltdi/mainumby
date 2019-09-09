@@ -6,7 +6,8 @@ exttag: nltk|spa
 postags:
   a::a|det
   n::n|
-  v::v|
+  v::v|v.prc|v.inf|v.ger|v.fin
+collocs: n,prp,a,v.fin,v.prc
 groups: smp,q,dem,n1,a1,nm,v1;v2,a2,p1,c
 namejoin: y,de,del,la,los,las
 classes:

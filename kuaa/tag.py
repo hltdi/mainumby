@@ -73,7 +73,7 @@ class Tagger:
 
 class NLTK(Tagger):
     """An object representing what a language needs to use the NLTK tokenizer and
-    a trained Brill tagger within MDT."""
+    a trained Trigram tagger within MDT."""
 
     def __init__(self, arg, lang_abbrev, conversion=None, lemmas=None, eos=None):
         # Morphological analysis is not needed for English but is for other languages?
@@ -83,7 +83,9 @@ class NLTK(Tagger):
         import nltk
         import nltk.tbl
 #        print("Loaded NLTK")
-        pickle_path = os.path.join(os.path.join(os.path.join(LANGUAGE_DIR, lang_abbrev), 'syn'), "tag.pkl")
+        pickle_path = os.path.join(os.path.join(os.path.join(LANGUAGE_DIR, lang_abbrev), 'syn'), "trigram2.pkl")
+        # Brill tagger
+#        pickle_path = os.path.join(os.path.join(os.path.join(LANGUAGE_DIR, lang_abbrev), 'syn'), "tag.pkl")
 #        print("Pickle path {}".format(pickle_path))
         self.tokenizer = nltk.word_tokenize if lang_abbrev == 'eng' else None
 #        print("Tokenizer: {}".format(self.tokenizer))

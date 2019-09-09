@@ -1,5 +1,22 @@
 {% extends "base.html" %}
 
+{% block style %}
+
+<style type="text/css">
+#continuar
+{
+    clear: left;
+    font-size: 100%;
+    cursor: pointer;
+    text-decoration: underline;
+}
+#continuar:hover
+{
+    background-color: #8DEDCD;
+}
+</style>
+{% endblock%}
+
 {% block script %}
 <script>
 function ShowHelp() {
@@ -47,14 +64,15 @@ function traducir() {
 
 <tr>
 <td colspan='6' style="width: 1200px">
+<div id="cargando">
+
+<h1>Identificarte</h1>
+    
 <h4>
-¡Ingresaste como <span class="username">{{ user }}</span>!
+  ¡Ingresaste como <span class="username">{{ user }}</span>!
+  <span id="continuar" onclick="traducir()">Continuar...</di#8DEDCDhttps://doodle.com/poll/v9355xvtpzwudz76v>
 </h4>
 
-<div id="cargando">
-<p>
-Para continuar, seleccioná TRADUCIR.
-</p>
 </div>
 
 </td>

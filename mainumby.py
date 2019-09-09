@@ -62,6 +62,10 @@ def db_texts():
              kuaa.Text.read("tiwanaku", domain="Historia", title="Imperio Tiahuanaco-Huari", segment=True)]
     kuaa.db.session.add_all(texts)
 
+def db_add_text(file='', title='', domain=''):
+    text = kuaa.Text.read(file, title=title, domain=domain, segment=True)
+    kuaa.db.session.add(text)
+
 def db_users():
     db_create_admin()
     db_create_anon()

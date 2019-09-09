@@ -254,7 +254,7 @@ class Seg:
             # Match features
             if feats:
                 for feat in feats:
-                    u = join_elem.u(feat)
+                    u = join_elem.u(feat, strict=True)
                     if u and u != 'fail':
                         return u
             return False
@@ -460,9 +460,9 @@ class Seg:
                     if trans_choice_index == 1:
                         # Start menu list
                         transhtml += "<div id='{}' class='contenido-desplegable'>".format(despleg)
-                    transhtml += "<span class='opcion' id='{}' onclick='cambiarMeta(".format(choiceid)
+                    transhtml += "<div class='segopcion' id='{}' onclick='cambiarMeta(".format(choiceid)
                     transhtml += "\"{}\", \"{}\")'".format(boton, choiceid)
-                    transhtml += ">{}</span><br/>".format(alttchoice)
+                    transhtml += ">{}</div>".format(alttchoice)
                 trans_choice_index += 1
         if not self.translation and not self.special:
             trans1 = orig_tokens
@@ -537,8 +537,10 @@ class Seg:
     @staticmethod
     def join_toks_char(strings):
         """Join two tokens, the second of which starts with join_tok_char."""
-        if len(strings) == 2 and Seg.join_tok_char in strings[-1]:
-            return [strings[0] + strings[1][1:]]
+        if Seg.join_tok_char in strings[-1]:
+            strings[-2:] = [strings[-2] + strings[-1][1:]]
+            return strings
+#            return [strings[0] + strings[1][1:]]
 
     @staticmethod
     def join_toks_in_strings(stringlists):
@@ -938,6 +940,8 @@ class SNode:
             if '_' in node_root: # and not Seg.special_re.match(node_root):
                 # Numbers and other special tokens also contain '_'
                 node_roots = []
+                if node_root.count('_') > 1:
+                    print("node_root: {}".format(node_root))
                 # An ambiguous root in analysis, for example, ser|ir in Spa
                 r, p = node_root.split('_')
                 for rr in r.split('|'):

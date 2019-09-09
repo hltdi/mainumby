@@ -187,6 +187,8 @@ class Language:
                  # exttag: source|spec
                  # conversion: (POS_tag_conversion_dict, feature_conversion_dict)
                  exttag=False, conversion=False,
+                 # list of POS tags with POS collocations to be read in
+                 collocs=None,
 #                 lemmas=None,
                  # phrases to be joined during sentence tokenization
                  mwe=False,
@@ -271,7 +273,13 @@ class Language:
         self.words = []
         # Categories (and other semantic features) of words and roots; word->cats dict
         self.cats = {}
+        self.tokenPOS = {}
         self.read_cats()
+        # 2019.9.8: POS tags associated with collocations
+        if collocs:
+            self.read_collocs(collocs)
+        else:
+            self.collocs = None
         # Classes used in identifying numerals, etc.; class->words dict
         self.classes = {}
         # Patterns consisting of explicit tokens, classes, and patterns; used in identifying numerals, etc.
@@ -292,6 +300,9 @@ class Language:
         self.exceptions = []
         self.load_exceptions()
         # Cached entries read in when language is loaded if language will be used for analysis
+        # Disambig dicts also created
+        self.POSambig = {}
+        self.lexambig = {}
         if use in (ANALYSIS, SOURCE, TRAIN):
             self.set_anal_cached()
         # Load groups now if not to be used for translation
@@ -427,7 +438,7 @@ class Language:
             return True
         return False
 
-    def find_special(self, words, position, first=False):
+    def find_special(self, words, first=False, inquote=False):
         """Determines whether the list of words begins with a 'special' sequence, either
           a numeral, either in the form of digits or words, or
           a name, consisting of one or more capitalized words, possibly joined by
@@ -471,7 +482,7 @@ class Language:
                         names.append(word)
                 elif SentToken.is_name_token(word):
                     # A name=like token in other than first position
-                    if words[-1] in ['', '¶'] and not names:
+                    if inquote or (words[-1] in ['', '¶'] and not names):
                         # No end punctuation and no previous special words
                         if lowered_known:
                             name = False
@@ -485,7 +496,7 @@ class Language:
                     break
                 else:
                     names.append(word)
-            elif names and word in self.namejoin and any([SentToken.is_name_token(w) for w in words]):
+            elif names and word in self.namejoin and any([SentToken.is_name_token(w) for w in words[:2]]):
                 # Namejoin token, like 'y'; can only precede some capitalized word
                 names.append(word)
             else:
@@ -530,16 +541,16 @@ class Language:
             return firsttrue(lambda c: c.name == name, cands)
         return None
 
-    # Simple (purely lexical) and complex (lexical + syntactic) groups
-    def get_simple_groups(self):
-        return self.groups[0]
-
-    get_lex_groups = get_simple_groups
-
-    def get_complex_groups(self):
-        return self.groups[1]
-
-    get_syn_groups = get_complex_groups
+#    # Simple (purely lexical) and complex (lexical + syntactic) groups
+#    def get_simple_groups(self):
+#        return self.groups[0]
+#
+#    get_lex_groups = get_simple_groups
+#
+#    def get_complex_groups(self):
+#        return self.groups[1]
+#
+#    get_syn_groups = get_complex_groups
 
     def get_from_MWEs(self, tokens, mwes=None):
         """If list of tokens is in tree, return the leaf (its POS). Otherwise return False."""
@@ -611,6 +622,9 @@ class Language:
     def get_transcount_file(self, language):
         return os.path.join(self.get_stat_dir(), language + '.tc')
 
+    def get_colloc_file(self, tag):
+        return os.path.join(self.get_syn_dir(), tag + '.cloc')
+
     def get_ms_file(self, target_abbrev):
         d = self.get_syn_dir()
         return os.path.join(d, target_abbrev + '.ms')
@@ -675,7 +689,7 @@ class Language:
 
     def set_anal_cached(self):
         self.cached = {}
-        self.read_cache()
+        self.read_cache(expand=True)
         # New analyses since language loaded,
         # each entry a wordform and list of (root, FS) analyses
         self.new_anals = {}
@@ -683,14 +697,42 @@ class Language:
     def add_new_anal(self, word, anals):
         self.new_anals[word] = anals
 
+    def read_collocs(self, tags):
+        collocs = {}
+        for tag in tags:
+            try:
+                with open(self.get_colloc_file(tag), encoding='utf8') as f:
+                    pre = []
+                    post = []
+                    in_pre = True
+                    for line in f:
+                        line = line.strip()
+                        if not line:
+                            in_pre = False
+                            continue
+                        line = line.split()
+                        if in_pre:
+                            pre.append(line)
+                        else:
+                            post.append(line)
+                collocs[tag] = pre, post
+            except IOError:
+                print("Ningún archivo encontrado para la categoría {}".format(tag))
+        self.collocs = collocs
+
     def read_cats(self):
         file = self.get_sem_file()
         try:
             with open(file, encoding='utf8') as f:
                 for line in f:
                     form, sem = line.strip().split()
-                    self.cats[form] = sem.split(',')
-                    self.words.append(form.split('_')[0])
+                    raw = form.split('_')[0]
+                    cats = sem.split(',')
+                    self.cats[form] = cats
+                    if '_' in form:
+                        POS = form.split('_')[1]
+                        self.tokenPOS[raw] = POS
+                    self.words.append(raw)
         except IOError:
             pass
 
@@ -750,22 +792,62 @@ class Language:
 
     def read_cache(self, name='', expand=False, verbose=False):
         """Read cached entries into self.cached from a file.
-        Modified 2015/5/17 to include Mbojereha categories."""
+        Modified 2015/5/17 to include Mbojereha categories.
+        Modified a lot 2019.9.8: need to clean up."""
         cache = self.get_cache_file(name=name)
         try:
             with open(cache, encoding='utf8') as f:
-                for line in f:
+                 for line in f:
                     split_line = line.strip().split(" || ")
                     word, analyses = split_line
                     analyses = analyses.split(';;')
                     anals = [a.split(':') for a in analyses]
                     alist = []
+#                    print("word {}, anals {}".format(word, anals))
                     if any([(len(anal) != 2) for anal in anals]):
                         print("Problem with cache entry {}".format(line))
                     for r, a in anals:
-                        if expand:
+                        if expand and a:
                             a = FSSet(a)
                         alist.append({'root': r, 'features': a})
+                    POSs = set()
+                    roots = set()
+                    POSd = {}
+                    for al in alist:
+                        feats = al['features']
+                        root = al['root']
+                        roots.add(root)
+                        if feats:
+                            POS = feats.get('pos')
+                        elif word in self.tokenPOS:
+                            POS = self.tokenPOS[word]
+                            al['pos'] = POS
+                        if POS:
+                            # THIS IS ALL SPANISH-SPECIFIC SO SHOULDN'T BE HERE
+                            if POS == 'v':
+                                if feats.get('fin'):
+                                    POS = 'v.fin'
+                                else:
+                                    tm = feats.get('tm')
+                                    if tm == 'prc':
+                                        POS = 'v.prc'
+                                    elif tm == 'inf':
+                                        POS = 'v.inf'
+                                    else:
+                                        POS = 'v.ger'
+                            POSs.add(POS)
+                            if POS in POSd:
+                                POSd[POS].append(al)
+                            else:
+                                POSd[POS] = [al]
+                            # Add POS tag to root; later do this in .cch file
+                            al['root'] = "{}_{}".format(root, POS.split('.')[0])
+                    if len(POSs) >= 2:
+                        self.POSambig[word] = POSd
+                    if len(roots) >= 2:
+                        self.lexambig[word] = alist
+#                    if len(POSs) < 2 and len(roots) < 2:
+#                        print("{} {} neither POS nor lex ambiguous".format(word, analyses))
                     if not expand:
                         # Put False at the front of the list to show that it hasn't been expanded
                         alist.insert(0, False)
@@ -774,7 +856,7 @@ class Language:
             if verbose:
                 print('No such cache file as {}'.format(cache))
 
-    def get_cached_anal(self, word, expand=True):
+    def get_cached_anal(self, word, expand=False):
         """Return a list of dicts, one for each analysis of the word, or None."""
         entries = self.cached.get(word, None)
         if entries and expand and entries[0] is False:
@@ -1583,6 +1665,75 @@ class Language:
             dicts.append({'root': Language.make_root(root, pos), 'features': anal})
         return dicts
 
+    def disambiguate_POS(self, word, context, index, n=50, verbosity=0):
+        """Use stored POS collocations to prefer one tag over another,
+        given lists of tags preceding and following word, output of tagger."""
+        entry = self.POSambig.get(word)
+        if not entry:
+            return
+        precontext = context[:index]
+        if len(precontext) == 1:
+            precontext = [('EOS', 'X')] + precontext
+        elif len(precontext) == 0:
+            precontext = [(".", "pnc"), ('EOS', 'X')]
+        postcontext = context[index+1:]
+        if len(postcontext) == 1:
+            postcontext.append(('EOS', 'X'))
+        elif len(postcontext) == 0:
+            postcontext = [('EOS', 'X'), ('EOS', 'X')]
+        scores = {}
+        for tag, anals in entry.items():
+            score = self.disambig_score(precontext, postcontext, tag, n=n)
+            if not score:
+                if verbosity:
+                    print("No collocs for tag {}!".format(tag))
+                return
+            if verbosity:
+                print(" Score for {}: {}".format(tag, score))
+            scores[tag] = (Language.scale_disambig_score(score), anals)
+        if verbosity:
+            print("Scores: {}".format(scores))
+        # Select highest
+        highest = 0
+        highestfeats = None
+        for tag, (score, features) in scores.items():
+            if score > highest:
+                highest = score
+                highestfeats = features
+        return highestfeats
+
+    @staticmethod
+    def scale_disambig_score(values, n=50):
+        return sum(values)
+
+    def disambig_score(self, precontext, postcontext, tag, n=50):
+        """Given a word and its preceding and following context tags (lists of word, tag pairs)
+        and pre- and post-collocations for a given POS tag, calculate a score:
+        index of perfect matches and number of single (one tag) matches."""
+        collocs = self.collocs.get(tag)
+        if not collocs:
+            return
+        precollocs, postcollocs = collocs
+        perfpre = 0
+        perfpost = 0
+        partpre = 0
+        partpost = 0
+        precont = [c[1] for c in precontext[-2:]]
+        postcont = [c[1] for c in postcontext[:2]]
+        for index, precol in enumerate(precollocs):
+            i = n - index + 1
+            if not perfpre and precont == precol:
+                perfpre = i
+            elif precont[1] == precol[1]:
+                partpre += 1
+        for index, postcol in enumerate(postcollocs):
+            i = n - index + 1
+            if not perfpost and postcont == postcol:
+                perfpost = i
+            elif postcont[1] == postcol[1]:
+                partpost += 1
+        return perfpre, partpre, perfpost, partpost
+
     @staticmethod
     def make_root(root, pos):
         """Add the _ expected for roots."""
@@ -1850,6 +2001,9 @@ class Language:
         groupcats = d.get('groups') # d.get('groupcats')
         mwe = d.get('mwe')
         abbrev = d.get('abbrev')
+        collocs = d.get('collocs')
+        if collocs:
+            collocs = collocs.split(',')
         if groupcats:
             groupcats = [g.split(',') for g in groupcats.split(';')]
         conversion = None
@@ -1874,7 +2028,7 @@ class Language:
             
         l = Language(d.get('name'), abbrev, use=use, directory=directory,
                      exttag=exttag, conversion=conversion, postags=d.get('postags'),
-                     mwe=mwe, eos=d.get('eos', EOS),
+                     mwe=mwe, eos=d.get('eos', EOS), collocs=collocs,
 #                     lemmas=d.get('lemmas'),
                      namejoin=namejoin, groupcats=groupcats)
         translations = d.get('translations')

@@ -64,7 +64,7 @@ from .text import *
 
 db.create_all()
 
-# from . import db
+from .DB import *
 
 ## Whether to create a session for the anonymous user when user doesn't log in.
 # USE_ANON = True
@@ -241,19 +241,17 @@ def get_human(username):
 def get_domains_texts():
     """Return a list of domains and associated texts and a dict of texts by id."""
     dom = dict([(d, []) for d in DOMAINS])
-    text_dict = {}
     for text in db.session.query(Text).all():
         d1 = text.domain
         id = text.id
         dom[d1].append((id, text.title))
-        text_dict[id] = text
     # Alphabetize text titles
     for texts in dom.values():
         texts.sort(key=lambda x: x[1])
     dom = list(dom.items())
     # Alphabetize domain names
     dom.sort()
-    return dom, text_dict
+    return dom
 
 def get_text(id):
     return db.session.query(Text).get(id)

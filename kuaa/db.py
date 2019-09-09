@@ -1,5 +1,5 @@
 #   
-#   Mainumby Database helpef functions.
+#   Mainumby Database helper functions.
 #   Uses the Object Relational Mapper implementation of SQLAlchemy.
 #
 ########################################################################
@@ -25,50 +25,33 @@
 #
 # =========================================================================
 
-# 2015.07.11
+# 2019.08.39
 # -- Created (but not used for anything)
 
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, DateTime
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
-from flask import _app_ctx_stack
-import datetime
+#from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, DateTime
+#from sqlalchemy.ext.declarative import declarative_base
+#from sqlalchemy.orm import sessionmaker, relationship
+#from flask import _app_ctx_stack
+#import datetime
 from .text import *
 
-TEXT_DATABASE = 'sqlite:///text.db'
-LEX_DATABASE = 'sqlite:///lex.db'
+class TextDB:
+    """Container for text database functions."""
 
-class DB:
-    """Container for Database functions since we'll need at least 2 of them."""
-
-    def __init__(self, file, engine=None, session=None):
-        self.file = file
-        self.engine = None
-        self.session = None
-
-    def make_engine(self, echo=False):
-        self.engine = create_engine(self.file, echo=echo)
-
-    def make_session(self, echo=False):
-        """Opens a new database connection if there is none yet for the
-        current application context."""
-        top = _app_ctx_stack.top
-        if top:
-            if not hasattr(top, 'db_session'):
-                self.make_engine(echo=echo)
-                Session = sessionmaker(bind=self.engine)
-                top.db_session = Session()
-            self.session = top.db_session
-        self.make_engine(echo=echo)
-        Session = sessionmaker(bind=self.engine)
-        self.session = Session()
-
-    def initialize(self, echo=False):
-        if not self.engine:
-            self.make_engine(echo=echo)
-        Base.metadata.create_all(self.engine)
-
-    def clear_db(self):
-        if self.engine:
-            Base.metadata.drop_all(self.engine)
+    @staticmethod
+    def align(translation):
+        """Given a Translation object from the Text DB, align its TraSegs
+        with the corresponding TextSegs in the corresponding Text object,
+        return a list of pairs of strings."""
+        text = translation.text
+        textsegs = text.segments
+        text_trans = []
+        for traseg in translation.trasegs:
+            traindex = traseg.index
+            textseg = textsegs[traindex]
+            if textseg.index != traindex:
+                print("Warning: index mismatch: text {}, tra {}".format(textseg.index, traindex))
+            else:
+                text_trans.append((textseg.content, traseg.content))
+        return text_trans
 

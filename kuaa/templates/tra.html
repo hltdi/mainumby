@@ -180,9 +180,26 @@ div.despleg {
     margin: none;
     border: none;
 }
-.opcion {
-    font-size: 100%;
+.segopcion {
     cursor: pointer;
+    text-indent: -8px;
+    padding-left: 16px;
+    padding-right: 8px;
+    line-height: 1.2;
+/*    padding-bottom: 5px; */
+}
+div.opcion {
+    font-size: 100%;
+    padding-bottom: 5px;
+    cursor: pointer;
+    padding-left: 22px ;
+    text-indent: -22px ;
+}
+.segopcion:hover {
+    text-decoration: underline;
+}
+.opcion:hover {
+    text-decoration: underline;
 }
 .desplegable {
     position: relative;
@@ -200,7 +217,6 @@ div.desplegable-derecha {
     /*    background-color: #4B2B17; */
     border: none;
     width: 100%;
-    display: none;
 }
 div.despleg-derecha {
     font-family: "Verdana";
@@ -221,24 +237,23 @@ div.despleg-derecha {
     font-size: 85%;
     min-width: 160px;
     overflow: auto;
-    padding: 4px 4px;
+    padding: 4px 0px;
+/*    border: 1pt; */
+/*    border-style: solid; */
     box-shadow: 0px 8px 16px 8px rgba(0,0,0,0.4);
     z-index: 1;
 }
 .textos-desplegable {
     display: none;
     position: relative;
-    left: 120px;
+    left: 125px;
     bottom: 25px;
     background-color: #8DEDCD;
-/*    background-color: #F5E754; */
-/*    color: #4B2B17; */
     font-size: 100%;
     /*    min-width: 160px; */
-    width: 25%;
+    width: 35%;
     overflow: auto;
     padding: 2px 2px;
-/*    box-shadow: 0px 8px 16px 8px rgba(0,0,0,0.4); */
     z-index: 1;
 }
 #seleccionBoton
@@ -320,10 +335,12 @@ div.despleg-derecha {
 
 <td>
 <div class="envoltorio-subida" id="envoltorio-subida">
+{#  
   {% if not user %}
   <div class="advert" id="advert">Notá que no es posible registrar una traducción
     en la base de datos de Mainumby sin identificarte.</div>
-  {% endif %}
+    {% endif %}
+#}    
   <label id="subir" for="subido">
   <div class="subir-label">Examinar...</div>
   <input id='subido' type='file' class="btn-subir" onchange="archivoSubido();" name='subido'>
@@ -340,6 +357,8 @@ div.despleg-derecha {
   <input type="button" value="Seleccionar..." id="button" onclick="seleccionarArchivo();">
   <span class'instructions'>
     Seleccioná un archivo de la base de datos de Mainumby.
+    (Despu&eacute;s de traducirlo, si te has identificado, pod&eacute;s registrar tu
+    traducción.)
   </span>
     </div>
 </td></tr>

@@ -11,6 +11,8 @@ NNyN :: &n , &n y &n ; ^0
 NNNyN :: &n , &n , &n y &n ; ^0
 ## predicatos
 >> pred1
+# tiempo, modo
+Vsbj :: [pos=v,tm=sbp] ; ^0 ; 0[mod=opt]
 # minimal disambiguation of "de": -gui vs. possessive
 # transitive extractive verbs + "de": extraer, sacar, etc.
 VxNdeN :: $vex &n de &n ; ^0 ; 0[-ojxpl] ; 3[caso=gui]

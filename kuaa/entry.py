@@ -1784,7 +1784,7 @@ class MorphoSyn(Entry):
         If there are deletion constraints, prefix ~ to the relevant tokens.
         """
         if verbosity > 1 or self.debug:
-            print(" Enforcing constraints for match {}/{} {}, {}".format(start, end, elements, tokens))
+            print(" {} enforcing constraints for match {}/{} {}, {}".format(self, start, end, elements, tokens))
         # Exclude the source features
         if self.agr:
             srci, trgi, feats = self.agr
@@ -1820,6 +1820,7 @@ class MorphoSyn(Entry):
             for i, j in self.del_indices:
                 elements[i][0] = Token.del_char + elements[i][0]
                 if tokens:
+#                    print("Deleting {} from {}".format(i, tokens))
                     tokens[i].delete = True
                 if j != -1:
                     elements[i][2][0]['target'] = j-i
@@ -2150,7 +2151,7 @@ class Join(Entry):
         starting with position startindex."""
         for s1, s2, f1, f2 in self.agree_conditions:
             if verbosity or self.debug:
-                print("  Matching condition {} {}; {} {}".format(s1, s2, f1, f2))
+                print("  {} matching condition {} {}; {} {} against segments {}".format(self, s1, s2, f1, f2, segments))
             seg1 = segments[s1+startindex]
             seg2 = segments[s2+startindex]
             segfeats1 = seg1.get_shead_feats()
@@ -2165,6 +2166,8 @@ class Join(Entry):
                 if v1 == None:
                     continue
                 for feats2 in segfeats2:
+                    if isinstance(f2, str):
+                        continue
                     v2 = feats2.get(f2)
                     if verbosity or self.debug:
                         print("      Feats {} {}, vals {} {}".format(feats1.__repr__(), feats2.__repr__(), v1, v2))
@@ -2250,6 +2253,11 @@ class Match:
         return self.first <= index <= self.last
 
     ## Overlaps and comparison
+
+    def equals(self, match):
+        if self.first == match.first and self.last == match.last and self.entry == match.entry:
+            return True
+        return False
 
     @staticmethod
     def resolve(matches, sorted=False, verbosity=1):
