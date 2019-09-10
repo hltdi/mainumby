@@ -23,7 +23,7 @@
 #
 # =========================================================================
 
-__all__ = ['language', 'entry', 'constraint', 'views', 'variable', 'sentence', 'cs', 'utils', 'record', 'train', 'tag', 'gui', 'text', 'DB']
+__all__ = ['language', 'entry', 'constraint', 'views', 'variable', 'sentence', 'cs', 'utils', 'record', 'train', 'tag', 'gui', 'text', 'database']
 #  not needed for now: 'learn', 'ui'
 
 from flask import Flask, url_for, render_template
@@ -64,7 +64,7 @@ from .text import *
 
 db.create_all()
 
-from .DB import *
+from .database import *
 
 ## Whether to create a session for the anonymous user when user doesn't log in.
 # USE_ANON = True
