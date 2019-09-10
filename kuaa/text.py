@@ -36,7 +36,7 @@
 #from sqlalchemy.orm import sessionmaker, relationship, backref
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy_serializer import SerializerMixin
+#from sqlalchemy_serializer import SerializerMixin
 import datetime, os
 import docx
 from .utils import get_time
@@ -53,7 +53,7 @@ DOCX_EXT = '.docx'
 DOMAINS = ["Miscelánea", "Cuentos", "Ciencia", "Entrenamiento",
            "Historia", "Lengua", "Infantil", "Ley", "Política", "Cultura"]
 
-class Human(db.Model, SerializerMixin):
+class Human(db.Model):
     """User of the system who is registered and whose feedback is saved."""
 
     __tablename__ = 'humans'
@@ -100,7 +100,7 @@ class Human(db.Model, SerializerMixin):
         human = Human(username=username, email=email, name=name, level=level, pw_hash=pw_hash)
         return human
 
-class Text(db.Model, SerializerMixin):
+class Text(db.Model):
     """A source-language document stored in a file."""
     
     __tablename__ = 'texts'
@@ -206,7 +206,7 @@ class Text(db.Model, SerializerMixin):
         except docx.opc.exceptions.PackageNotFoundError:
             print("No se pudo encontrar el archivo {}".format(path))
 
-class TextSeg(db.Model, SerializerMixin):
+class TextSeg(db.Model):
     """A sentence or similar unit within a Text."""
     
     __tablename__ = 'textsegs'
@@ -231,7 +231,7 @@ class TextSeg(db.Model, SerializerMixin):
         content = self.content[:25] + '...' if len(self.content) > 25 else self.content
         return "<TextSeg({}, {})>".format(self.id, content)
 
-class TextTok(db.Model, SerializerMixin):
+class TextTok(db.Model):
     """A token within a TextSeg."""
     
     __tablename__ = 'texttoks'
@@ -252,7 +252,7 @@ class TextTok(db.Model, SerializerMixin):
     def __repr__(self):
         return "<TextTok({}, {})>".format(self.id, self.string)
 
-class Translation(db.Model, SerializerMixin):
+class Translation(db.Model):
     """A target-language translation of a Text."""
     
     __tablename__ = 'translations'
@@ -275,7 +275,7 @@ class Translation(db.Model, SerializerMixin):
     def __repr__(self):
         return "<Translation({}, {}, {})>".format(self.id, self.text.name, self.translator.username)
 
-class TraSeg(db.Model, SerializerMixin):
+class TraSeg(db.Model):
     """A unit within a translation corresponding to a TextSeg within the associated Text object."""
     
     __tablename__ = 'trasegs'

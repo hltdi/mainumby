@@ -155,7 +155,7 @@ def tra():
         print("No GUI for tra.html")
         create_gui()
     form = request.form
-    print("**FORM DICT FOR tra.html: {}**".format(form))
+#    print("**FORM DICT FOR tra.html: {}**".format(form))
     if not GUI.source:
         print("Ninguna lengua fuente")
         start(gui=GUI, use_anon=False, create_memory=False)

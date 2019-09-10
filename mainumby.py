@@ -59,6 +59,7 @@ def db_texts():
              kuaa.Text.read("maiz", domain="Infantil", title="Maíz", segment=True),
              kuaa.Text.read("pimienta", domain="Infantil", title="Pimienta que Huye", segment=True),
              kuaa.Text.read("chaco", domain="Ciencia", title="Chaco Boreal", segment=True),
+             kuaa.Text.read("mancha", domain="Cuentos", title="La Mancha de Humedad", segment=True),
              kuaa.Text.read("tiwanaku", domain="Historia", title="Imperio Tiahuanaco-Huari", segment=True)]
     kuaa.db.session.add_all(texts)
 

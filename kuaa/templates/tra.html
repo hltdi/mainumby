@@ -453,8 +453,11 @@ div.despleg-derecha {
     {% if props.isdoc %}
     • Para incluir esta oración en la traducción del documento, presioná "Aceptar".<br />
     {% else %}
-    • Para copiar la traducción al portapapeles, presioná "Copiar".<br />
+    • Para copiar la traducción al portapapeles, presioná "Copiar".
+    {% if user %}
+    <br />
     • Para registrar la traducción en la memoria de Mainumby, presioná "Registrar".
+    {% endif %}
     {% endif %}
     </div>
 
@@ -464,7 +467,9 @@ div.despleg-derecha {
     <input type="button" value="Aceptar" id="button" onclick="aceptarTrad();">
     {% else %}
     <input type="button" value="Copiar" id="button" onclick="copiar();">
+    {% if user %}
     <input type="button" value="Registrar" id="button" onclick="registrar();">
+    {% endif %}
     {% endif %}
 
   {% endif %}
@@ -478,8 +483,10 @@ div.despleg-derecha {
     <input type="submit" value="Guardar" id="button"/>
     <label>Nombre de archivo:<input type="text" class="filename" id="text-filename" placeholder="doc.txt" size="100"/></label>
     <input type="hidden" name="ocultar" value={% if props.ocultar %}"true"{% else %}"false"{% endif %}>
+    {% if user %}
     <br class='sep' />
     <input type="button" value="Registrar" id="button" onclick="registrar();">
+    {% endif %}
     </form>
   {% endif %}
     </td>
