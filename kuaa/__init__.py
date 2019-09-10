@@ -23,8 +23,8 @@
 #
 # =========================================================================
 
-__all__ = ['language', 'entry', 'constraint', 'views', 'variable', 'sentence', 'cs', 'utils', 'record', 'train', 'tag', 'gui', 'text']
-#  not needed for now: 'learn', 'ui', 'db'
+__all__ = ['language', 'entry', 'constraint', 'views', 'variable', 'sentence', 'cs', 'utils', 'record', 'train', 'tag', 'gui', 'text', 'DB']
+#  not needed for now: 'learn', 'ui'
 
 from flask import Flask, url_for, render_template
 from flask_sqlalchemy import SQLAlchemy
