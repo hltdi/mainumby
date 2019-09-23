@@ -446,6 +446,7 @@ class Language:
         If it does, it returns the list of tokens and the special character code
           for the sequence.
         """
+#        print("Finding special in {}".format(words))
         if isinstance(words, str):
             words = words.split()
         # Try to find a digit
@@ -1668,6 +1669,7 @@ class Language:
     def disambiguate_POS(self, word, context, index, n=50, verbosity=0):
         """Use stored POS collocations to prefer one tag over another,
         given lists of tags preceding and following word, output of tagger."""
+#        print("Disambiguating {} in context {}".format(word, context))
         entry = self.POSambig.get(word)
         if not entry:
             return

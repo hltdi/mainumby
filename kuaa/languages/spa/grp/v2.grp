@@ -3,7 +3,7 @@
 ** querer_v[-r,+fin] que $v[tm=sbp] ; ^ querer_v 0 ; // + cláusula subjuntiva
 ->grn pota_v[subcat=i] $v[tmp=prs] ; || 0, -1, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,inter:inter ; 2==1 n:ns,p:ps,asp:asp,neg:neg,po:po,no:no,pp:pp
 ** seguir_v[-r,+fin] $v ; ^ seguir_v 0 ; // v has copied tns and sbj pers+num in morphosyns
-->grn $v manterei|gueteri ; || 1, 0 ; 1==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
+->grn $v gueteri ; || 1, 0 ; 1==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,po:po,no:no,pp:pp,negipv:negipv,inter:inter
 ** acordar_v[+r,+fin] de $n; ^ acordar_v 0
 ->grn mandu'a_v[cat=che] $n rehe ; || 0, 2, 1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg,rel:rel,pp:pp,negipv:negipv,inter:inter
 ** acordar_v[+r,+fin] de $pro; ^ acordar_v 0

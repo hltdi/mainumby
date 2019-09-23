@@ -6407,6 +6407,7 @@ flequillo_n $n
 flete_n $n
 flexibilidad_n $n
 flexible_a $a
+inflexible_a $a
 flexionar_v $v,$vt
 flexión_n $n
 flirtear_v $v,$vi

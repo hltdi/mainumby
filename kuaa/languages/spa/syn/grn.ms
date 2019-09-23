@@ -17,7 +17,7 @@ refl/3 :: se [+fin,pos=v,p=3,voz=reflx,+r] ; // 0
 refl/1s :: me [+fin,pos=v,p=1,n=0,voz=reflx,+r] ; // 0
 refl/2s :: te [+fin,pos=v,p=2,n=0,voz=reflx,+r] ; // 0
 refl/1p :: nos [+fin,pos=v,p=1,n=1,voz=reflx,+r] ; // 0
-
+o
 ## auxiliares
 perf :: haber_v[tm=prs] [pos=v,tm=prc,asp=[+prf]] ; 0=>1 p,n ; // 0 ; 1-> [tm=prs,+fin]
 pcp :: haber_v[tm=ipf] [pos=v,tm=prc] ; 0=>1 p,n ; // 0 ; 1-> [tm=pcp,+fin]
@@ -41,8 +41,14 @@ obligacion_fut :: tener_v[tm=fut] que [pos=v,tm=inf] ; 0=>2 p,n ; 2-> [+fin,tm=f
 
 ## otros pronombres clíticos
 obj/1s :: me [+fin,pos=v,po=1,no=0] ; // 0
+obj/13s :: me lo [+fin,pos=v,po=1,no=0] ; // 0 1
+obj/13s :: me los [+fin,pos=v,po=1,no=0] ; // 0 1
 obj/2s :: te [+fin,pos=v,po=2,no=0] ; // 0
+obj/23s :: te lo [+fin,pos=v,po=2,no=0] ; // 0 1
+obj/13s :: te los [+fin,pos=v,po=2,no=0] ; // 0 1
 obj/1p :: nos [+fin,pos=v,po=1,no=1] ; // 0
+obj/12p :: nos lo [+fin,pos=v,po=1,no=1] ; // 0 1
+obj/13s :: nos los [+fin,pos=v,po=1,no=1] ; // 0 1
 # 2 o 3 persona
 obj/3sd :: le [+fin,pos=v,po=3,no=0] ; // 0
 obj/3sm :: lo [+fin,pos=v,po=3,no=0] ; // 0
@@ -50,6 +56,12 @@ obj/3sf :: la [+fin,pos=v,po=3,no=0] ; // 0
 obj/3pm :: los [+fin,pos=v,po=3,no=1] ; // 0
 obj/3pf :: las [+fin,pos=v,po=3,no=1] ; // 0
 obj/3pd :: les [+fin,pos=v,po=3,no=1] ; // 0
+obj/33d :: se le [+fin,pos=v,po=3,no=0] ; // 0 1
+obj/33sm :: se lo [+fin,pos=v,po=3,no=0] ; // 0 1
+obj/33sf :: se la [+fin,pos=v,po=3,no=0] ; // 0 1
+obj/33pm :: se los [+fin,pos=v,po=3,no=1] ; // 0 1
+obj/33pf :: se las [+fin,pos=v,po=3,no=1] ; // 0 1
+obj/33pd :: se les [+fin,pos=v,po=3,no=1] ; // 0 1
 #obj/3pm :: los [+fin,pos=v,po=3,no=1][+fin,pos=v,po=2,no=1] ; // 0
 #obj/3pf :: las [+fin,pos=v,po=3,no=1][+fin,pos=v,po=2,no=1] ; // 0
 #obj/3pd :: les [+fin,pos=v,po=3,no=1][+fin,pos=v,po=2,no=1] ; // 0
@@ -126,3 +138,6 @@ refl_2s :: *[+fin,n=0,no=0,p=2,po=2,pos=v,-r] ; 0 -> [+r,po=3]
 #refl_3 :: *[+fin,p=3,po=3,pos=v,-r] ; 0 -> [+r]
 refl_1p :: *[+fin,n=1,no=1,p=1,po=1,pos=v,-r] ; 0 -> [+r,po=3]
 refl_2p :: *[+fin,n=1,no=1,p=2,po=2,pos=v,-r] ; 0 -> [+r,po=3]
+
+## imperativo negativo
+impv_neg :: [+fin,n=0,pos=v,p=2,tm=sbp,+neg] ; 0 -> [tm=ipv,-neg,+negipv]

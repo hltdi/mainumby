@@ -29,7 +29,7 @@
 
 import re
 
-from .utils import capitalize_string
+from .utils import clean_sentence
 
 from . import get_domains_texts
 
@@ -186,8 +186,10 @@ class GUI:
         self.props['cap'] = cap
         self.props['punc'] = self.sentence.get_final_punc()
         self.fue_seg_html = ''.join([s[-1] for s in self.tra_seg_html])
-        self.tra = GUI.clean_sentence(' '.join([s[4] for s in self.tra_seg_html]), cap)
+        self.tra = clean_sentence(' '.join([s[4] for s in self.tra_seg_html]), cap)
+#        GUI.clean_sentence(' '.join([s[4] for s in self.tra_seg_html]), cap)
         self.doc_tra_html[index] = self.tra_seg_html
+#        print("New tra seg: {}".format(self.tra_seg_html))
         self.doc_tra[index] = self.tra
 
     def clear(self, record=False, translation='', isdoc=False):
@@ -251,8 +253,7 @@ class GUI:
 
     @staticmethod
     def clean_sentence(string, capitalize=True):
-        """Clean up sentence for display in interface.
-        Basically a duplicate of the Javascript function in tra.html and sent.html."""
+        """Clean up sentence for display in interface."""
         # Replace HTML space with actual space
 #        print("Cleaning {}".format(string))
         string = string.replace("&nbsp;", ' ')

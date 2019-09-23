@@ -1162,9 +1162,7 @@
 ->grn <hekojoja_n ; 0==0 n:n,poses:poses ; #50
 ->grn jojaha_n ; 0==0 n:n,poses:poses ; #4
 ** imaginación_n ; ^ imaginación_n 0 ; #4
-->grn py'ápe_n ; 0==0 n:n,poses:poses
-->grn <hemimo'ã_n ; 0==0 n:n,poses:poses
-->grn angata_n ; 0==0 n:n,poses:poses ; #4
+->grn py'amongeta_n ; 0==0 n:n,poses:poses
 ** indicación_n ; ^ indicación_n 0 ; #1
 ->grn jehechauka_n ; 0==0 n:n,poses:poses
 ->grn <hechauka_n ; 0==0 n:n,poses:poses ; #105
@@ -1475,8 +1473,9 @@
 ->grn jehupytyrã_n ; 0==0 n:n,poses:poses
 ->grn <hupytyrã_n ; 0==0 n:n,poses:poses
 ->grn jejaporã_n ; 0==0 n:n,poses:poses
-** oeste_n ; ^ oeste_n 0 ; #4
+** este_n ; ^ este_n 0 ; #4
 ->grn kuarahyresẽ_n ; 0==0 n:n,poses:poses ; #20
+** oeste_n ; ^ oeste_n 0 ; #4
 ->grn kuarahyreike_n ; 0==0 n:n,poses:poses ; #10
 ** olvido_n fácil ; ^ olvido_n 0 ; #3
 ->grn <hesarairei_n ; 0==0 n:n,poses:poses
@@ -1682,7 +1681,6 @@
 ->grn yvytimbo_n ; 0==0 n:n,poses:poses ; #1
 ** pregunta_n ; ^ pregunta_n 0 ; #19
 ->grn porandu_n ; 0==0 n:n,poses:poses ; #164
-->grn ñeporandu_n ; 0==0 n:n,poses:poses ; #2
 ** presidente_n ; ^ presidente_n 0 ; #1
 ->grn mburuvicha_n ; 0==0 n:n,poses:poses ; #646
 ** primavera_n ; ^ primavera_n 0 ; #1
@@ -11761,6 +11759,8 @@
 ->grn <hekopegua_n ; 0==0 n:n,poses:poses
 ** norte_n ; ^ norte_n 0
 ->grn yvate_n ; 0==0 n:n,poses:poses
+** sur_n ; ^ sur_n 0
+->grn ñemby_n ; 0==0 n:n,poses:poses
 ** nostalgia_n ; ^ nostalgia_n 0
 ->grn <hechaga'u_n ; 0==0 n:n,poses:poses
 ** nota_n musical ; ^ nota_n 0
@@ -13072,17 +13072,13 @@
 ** pintor_n artista ; ^ pintor_n 0
 ->grn sa'yhára_n ; 0==0 n:n,poses:poses
 ** pintor_n ; ^ pintor_n 0
-->grn pinihára_n ; 0==0 n:n,poses:poses
-** pintura_n rupestre de la prehistoria ; ^ pintura_n 0
-->grn itakuatia_n ; 0==0 n:n,poses:poses
+->grn mboparaha_n ; 0==0 n:n,poses:poses
 ** pinza_n ; ^ pinza_n 0
 ->grn jopyha_n ; 0==0 n:n,poses:poses
 ** piojo_n del vello ; ^ piojo_n 0
 ->grn kype_n ; 0==0 n:n,poses:poses
 ** piojo_n ; ^ piojo_n 0
 ->grn ky_n ; 0==0 n:n,poses:poses
-** pipa_n de fumar ; ^ pipa_n 0
-->grn kachĩmbo_n ; 0==0 n:n,poses:poses
 ** pipa_n ; ^ pipa_n 0
 ->grn pito_n ; 0==0 n:n,poses:poses
 ->grn petỹgua_n ; 0==0 n:n,poses:poses
@@ -15202,10 +15198,6 @@
 ->grn ñemo'ã_n ; 0==0 n:n,poses:poses ; #22
 ** supresión_n ; ^ supresión_n 0
 ->grn jehekýi_n ; 0==0 n:n,poses:poses
-** sur_n ; ^ sur_n 0
-->grn yvy_n ; 0==0 n:n,poses:poses
-->grn yvytu_n ro'y ; 0==0 n:n,poses:poses
-->grn yvytu_n yvyguigua ; 0==0 n:n,poses:poses
 ** surco_n interamario ; ^ surco_n 0
 ->grn kama_n pa'ũ ; 0==0 n:n,poses:poses
 ** suspensión_n ; ^ suspensión_n 0

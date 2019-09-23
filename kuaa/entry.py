@@ -787,20 +787,9 @@ class Group(Entry):
                 if verbosity > 1 or self.debug:
                     fstring = "  Trying {}, token index {}, nodegap {} (gap max {})"
                     print(fstring.format(node, index, nodegap, gapmax))
-#                # If this snode is unknown, the group can't include it unless it's in a permitted gap
-#                if node.is_unk() and gapmax == 0:
-#                    if verbosity > 1 or self.debug:
-#                        print("  Node is unknown!")
-#                    break
                 # Fail because gap is too long
                 if nodegap > gapmax:
                     break
-#                # If there is a failif condition for the group and the position within the group is right,
-#                # see if we should fail here
-#                if tryfail:
-#                    negm = node.neg_match(failspec, debug=self.debug, verbosity=verbosity)
-#                    if negm:
-#                        break
                 snode_indices = node.raw_indices
                 snode_start, snode_end = snode_indices[0], snode_indices[-1]
                 leftdel = None
@@ -833,7 +822,7 @@ class Group(Entry):
                     node_verbosity = 0
                     if verbosity > 1 or self.debug:
                         node_verbosity = 2
-                    if self.capitalized and head_sindex == 0:
+                    if self.capitalized and head_sindex == 0 and not token[0].upper():
                         if verbosity > 1 or self.debug:
                             print("    Matching capitalized group head with sentence-initial word")
                         node_match = node.match(token.lower(), feats, verbosity=node_verbosity)
@@ -862,8 +851,6 @@ class Group(Entry):
                             fstring = " Group head {} matched node {} in {}, node index {}, last_sindex {}"
                             print(fstring.format(token, node, self, snode_indices, last_sindex))
                         last_sindex = snode_end
-#                        if verbosity > 1 or self.debug:
-#                            print("  Head matched already".format(node))
                         matched = True
                         snindex = node.index + 1
                         # Don't look further for an snode to match this token

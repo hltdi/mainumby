@@ -629,6 +629,7 @@ class Sentence:
                  nodes=None, groups=None, target=None, init=False,
                  analyses=None, session=None, parent=None,
                  verbosity=0):
+#        print("Creating sentence from tokens {}".format(tokens))
         self.set_id()
         # A list of string tokens, created by a Document object including this sentence
         # or None if the Sentence is created outside of Document
@@ -1079,12 +1080,15 @@ class Sentence:
                 if self.tagger and not self.tagger.tokenizer:
                     # Use the POS tagger here
                     tagged = self.tagger.tag(self.tokens)
-                # Still need to figure out how to integrate tagged results and morphological analyses
+                if tagged:
+                    self.adjust_tags(tagged)
                 if not self.tagger or self.tagger.morph:
                     analyses = self.morph_anal(tagged=tagged)
+                    if verbosity:
+                        print("Analyses: {}".format(analyses))
                     if self.tagger:
                         # Merge results of tagging and morphological analysis
-                        self.analyses = self.merge_POS(tagged, analyses)
+                        self.analyses = self.merge_POS(tagged, analyses, verbosity=verbosity)
                     else:
                         self.analyses = analyses
                     # Then run MorphoSyns on analyses to collapse syntax into morphology where relevant for target
@@ -1100,6 +1104,31 @@ class Sentence:
                     # Attempt to apply succeeding morphosyns to copy if there is one
                     for ms1 in self.language.ms[mi+1:]:
                         ms1.apply(scopy, ambig=ambig, verbosity=verbosity, terse=terse)
+
+    def adjust_tags(self, tags):
+        """Add noun tags to capitalized words and maybe other stuff.
+        THIS SHOULD BE LANGUAGE/TAGGER SPECIFIC."""
+        for index, (token, tag) in enumerate(tags):
+            newtag = None
+            if not tag:
+                # tag is None
+                if token[0].isupper():
+                    newtag = 'n'
+#                    print("Inserting tag n for name {}".format(token))
+#                    tags[index] = token, 'n'
+                elif '~' in token:
+                    # special token or MWE
+                    tokenparts = token.split('~')
+                    spectype = tokenparts[0]
+                    if spectype and spectype.startswith('%N'):
+                        # it's a number (this really only works for certain taggers)!
+                        newtag = 'det'
+                    elif any([t[0].isupper() for t in tokenparts[1:]]):
+                        # apparently it's a name
+                        newtag = 'n'
+                if newtag:
+                    print("Inserting tag {} for token {}".format(newtag, token))
+                    tags[index] = token, newtag
 
     def morph_anal(self, tagged=None):
         """Morphological analysis of the tokens in the sentence. Use POS disambiguator
@@ -1170,10 +1199,12 @@ class Sentence:
                                 print("  rejecting non-preferred analysis {} by analyzer for {}".format(anal_pos, word))
                 elif tag:
                     if verbosity:
-                        print("  no features for {}, using tagger POS {}".format(word, tag))
+                        print("  no features for {}, using tagger POS {} (root {})".format(word, tag, anal.get('root')))
                     anal['pos'] = tag
                     tag1 = tag.split('.')[0]
-                    anal['root'] = anal['root'] + '_' + tag1
+                    root = anal['root']
+                    if '_' not in root:
+                        anal['root'] = root + '_' + tag1
                     results1.append(anal)
                 elif anal_pos:
                     if verbosity:
@@ -1183,6 +1214,8 @@ class Sentence:
                     if verbosity:
                         print("  neither tagger nor analyzer provide tag for {}".format(word))
                     results1.append(anal)
+                if verbosity:
+                    print("Results from merge: {}".format(results1))
             results.append([token, results1])
         return results
 
@@ -1303,6 +1336,8 @@ class Sentence:
             keys = node.tok.get_keys(index)
             # Add root key
             anals = node.analyses
+            if verbosity:
+                print("  Analyses of node {}: {}".format(node, anals))
             if anals:
                 if not isinstance(anals, list):
                     # Is this still possible?

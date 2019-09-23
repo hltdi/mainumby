@@ -295,6 +295,8 @@ class Seg:
                     if verbosity:
                         print(" Matching group features {} with segment features {}".format(group_feats.__repr__(), feat.__repr__()))
                     # strict feature forces True feature in group_feats to be explicit in feat
+                    # Be sure this is a FSSet
+                    feat = FSSet(feat)
                     u = feat.u(group_feats, strict=True)
                     if u == 'fail':
                         return False
@@ -368,8 +370,7 @@ class Seg:
         """Set the HTML for the source side of this Seg."""
         cap = first and self.sentence.capitalized
         tokstr = self.original_token_str
-        if cap:
-            tokstr = tokstr[0].upper() + tokstr[1:]
+        tokstr = clean_sentence(tokstr, capitalize=cap)
         self.source_html = "<span class='fuente' style='color:{};'> {} </span>".format(self.color, tokstr)
 
     def get_gui_source(self, paren_color='Silver'):
@@ -407,15 +408,17 @@ class Seg:
             self.html = (tokens, self.color, transhtml, index, trans1, self.source_html)
             return
         # No dropdown if there's only 1 translation
-        first_trans = True
         ntgroups = len(self.tgroups)
         multtrans = True
         for tindex, (t, tgroups) in enumerate(zip(self.cleaned_trans, self.tgroups)):
             # Create all combinations of word sequences
             tg_expanded = []
             if self.special:
+#                print("Handling {} {}".format(tindex, tgroups))
                 trans = t[0]
                 tgcombs = [[(trans, '')]]
+                # There can't be multiple translations for special sequences, can there?
+                multtrans = False
             else:
                 for tt, tg in zip(t, tgroups):
                     tg = Group.make_gpair_name(tg)
@@ -437,7 +440,9 @@ class Seg:
             ntggroups = len(tggroups)
             if (ntgroups == 1) and (ntggroups == 1):
                 multtrans = False
+#            print("{} tgroups {}".format(tindex, tgroups))
             for tcindex, (tchoice, tcgroups) in enumerate(zip(tgforms, tggroups)):
+#                print(" tchoice {}, special? {}, ntggroups {}, ntgroups {}, multtrans {}".format(tchoice, self.special, ntggroups, ntgroups, multtrans))
                 tchoice = tchoice.replace('_', ' ')
                 alttchoice = tchoice.replace("'", "’")
                 # ID for the current choice item
@@ -575,6 +580,7 @@ class SuperSeg(Seg):
         self.scats = self.head_seg.scats
         self.thead = self.head_seg.thead
         if self.head_seg.special:
+#            any([s.special for s in self.segments]):
             self.special = True
         ## Copy properties of sub-Segments
         self.record = self.segments[0].record

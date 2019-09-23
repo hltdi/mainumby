@@ -51,8 +51,22 @@ TIME0 = datetime.datetime.utcnow()
 ISCAP_RE = re.compile(r"^[-–¿¡(\"\'‶“‘$]*[A-ZÀ-Ⱬ]")
 # Capitalize the string
 CAP_RE = re.compile(r"^([-–¿¡(\"\'‶“‘$]*)(\w)")
+CLEAN_RE = re.compile(r"\s+([.,;:?!)”″’%¶])")
 
 ## Strings
+
+def clean_sentence(string, capitalize=True):
+    """Clean up sentence for display in interface."""
+    # Delete spaces before .,;?!, etc.
+    string = CLEAN_RE.sub(r"\1", string)
+    # Delete spaces after ("', etc.
+    string = re.sub(r"([-–]?[¿¡(\"‶“‘$])\s+", r"\1", string)
+    # Delete initial spaces after dashes (others?)
+    string = re.sub(r"^([-–]+)\s+", r"\1", string)
+#        print("Cleaned {}, capitalize? {}".format(string, capitalize))
+    if capitalize:
+        string = capitalize_string(string)
+    return string
 
 def is_capitalized(string):
     """True if the first non-punctuation character in the string is capitalized."""
