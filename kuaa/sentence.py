@@ -1145,8 +1145,13 @@ class Sentence:
                 if anals:
                     analyses.append([tokstring, anals])
                 else:
-                    # Go ahead and do morphological analysis
-                    analyses.append([tokstring, self.language.anal_word(tokstring, clean=False)])
+                    cached_anal = self.language.disambiguate_cache(tokstring, tagged[index][1])
+                    if cached_anal:
+                        analyses.append([tokstring, [cached_anal]])
+                    else:
+                        # Go ahead and do morphological analysis
+                        analyses.append([tokstring, self.language.anal_word(tokstring, check_cache=False,
+                                                                            clean=False)])
         return analyses
 
     def merge_POS(self, tagged, analyzed, verbosity=0):
@@ -2419,7 +2424,7 @@ class Segmentation:
         """Set the HTML for each of the segments in this segmentation."""
         first = True
         for i, segment in enumerate(self.segments):
-            segment.set_html(i, first=first)
+            segment.finalize(i, first=first)
             if first and not segment.is_punc:
                 first = False
 

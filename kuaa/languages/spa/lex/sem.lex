@@ -274,6 +274,7 @@ adecuado_a $a
 adelantamiento_n $n
 adelantar_v $v,$vt,$vi,$vp
 adelanto_n $n
+adelante_adv $adv
 adelgazar_v $v,$vt
 además_adv $adv
 ademán_n $n

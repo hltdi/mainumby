@@ -77,10 +77,6 @@ def solve_and_segment(isdoc=False, index=0):
     if isdoc:
         GUI.update_doc(index)
 
-#def set_text_select_html():
-#    domain_texts = get_domain_text_lists()
-#    GUI.set_text_select_html(domain_texts)
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     print("In index...")

@@ -1571,8 +1571,8 @@ class Language:
                   # Whether to include stripped suffixes (e.g., abrir+lo)
                   incl_suf = False,
                   to_dict=False, preproc=False, postproc=False,
-                  # Whether to cache new entries
-                  cache=True,
+                  # Whether to cache new entries and to check cache
+                  cache=True, check_cache=True,
                   no_anal=None, string=False, print_out=False, only_anal=False,
                   rank=True, report_freq=True, nbest=100,
                   # Whether to normalize orthography before analysis
@@ -1596,15 +1596,16 @@ class Language:
         analyses = []
         to_cache = [] if cache else None
         # See if the word is cached (before preprocessing/romanization)
-        cached = self.get_cached_anal(word)
-        if cached:
-            if verbosity:
-                print("Found {} in cached analyses".format(word))
-            if not pretty:
-                analyses = cached
-            else:
-                analyses = self.prettify_analyses(cached)
-            return analyses
+        if check_cache:
+            cached = self.get_cached_anal(word)
+            if cached:
+                if verbosity:
+                    print("Found {} in cached analyses".format(word))
+                if not pretty:
+                    analyses = cached
+                else:
+                    analyses = self.prettify_analyses(cached)
+                return analyses
         form = word
         # Try stripping off suffixes
         suff_anal = self.strip_suffixes(form, incl_suf=incl_suf, pretty=pretty)
@@ -1703,6 +1704,27 @@ class Language:
                 highest = score
                 highestfeats = features
         return highestfeats
+
+    def disambiguate_cache(self, word, tag):
+        """Try disambiguating using ordered cached analyses and tag from tagger.
+        If the tag agrees with the POS tag for the first cached analysis,
+        accept it (only)."""
+        cached = self.get_cached_anal(word)
+        if not cached:
+            return
+#        print("{}: checking tag {} and cached analyses {}".format(word, tag, cached))
+        # most frequent analysis
+        cached0 = cached[0]
+        # does POS agree?
+        cachePOS = ''
+        if 'pos' in cached0:
+            cachePOS = cached0['pos']
+        elif 'features' in cached0:
+            cachePOS = cached0['features'].get('pos', '')
+        if cachePOS == tag:
+#            print("{}: cached pref {} agrees with tag".format(word, tag))
+            return cached0
+        return
 
     @staticmethod
     def scale_disambig_score(values, n=50):

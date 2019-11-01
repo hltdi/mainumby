@@ -376,99 +376,85 @@ class Seg:
     def get_gui_source(self, paren_color='Silver'):
         return "<span class='fuente' style='color:{};'> {} </span>".format(self.color, self.token_str)
 
-    def set_html(self, index, first=False, verbosity=0):
-        """Set the HTML markup for this segment as a colored segment in source and dropdown menu
-        in target, given its position in the sentence.
+#    def get_trans_strings(self, index, first=False, choose=False, verbosity=0):
+#        """Get the final translation strings for this Seg."""
+
+    def finalize(self, index, html=True, first=False, choose=False, verbosity=0):
+        """Create final translation strings for this Seg. If html is True, set the HTML markup for
+        the Seg as a colored segment in source and dropdown menu in target, given its position in the sentence.
         """
-        self.color = Seg.tt_notrans_color if self.is_punc or (not self.translation and not self.special) else Seg.tt_colors[index % 9]
-        self.set_source_html(first)
-        transhtml = "<div class='desplegable' ondrop='drop(event);' ondragover='allowDrop(event);'>"
+        # only needed for html=False ?
+        tfinal = []
+        # T Group strings associated with each choice
+        choice_tgroups = []
+        if html:
+            self.color = Seg.tt_notrans_color if self.is_punc or (not self.translation and not self.special) else Seg.tt_colors[index % 9]
+            self.set_source_html(first)
+            transhtml = "<div class='desplegable' ondrop='drop(event);' ondragover='allowDrop(event);'>"
+            despleg = "despleg{}".format(index)
+            boton = "boton{}".format(index)
+            wrap = "wrap{}".format(index)
+            trans_choice_index = 0
         capitalized = False
         choice_list = self.record.choices if self.record else None
         # Final source segment output
         tokens = self.token_str
         orig_tokens = self.original_token_str
-        trans_choice_index = 0
-        # T Group strings associated with each choice
-        choice_tgroups = []
         # Currently selected translation
         trans1 = ''
-        despleg = "despleg{}".format(index)
-        boton = "boton{}".format(index)
-        wrap = "wrap{}".format(index)
         if self.is_punc:
-            trans = self.translation[0][0]
-            trans1 = trans
-            if '"' in trans:
-                trans = trans.replace('"', '\"')
-            transhtml += "<div class='despleg' id='{}' style='cursor:default'>".format(boton)
-            transhtml += trans
-            transhtml += "</div>"
-            transhtml += '</div>'
-            self.html = (tokens, self.color, transhtml, index, trans1, self.source_html)
-            return
+            if html:
+                trans = self.translation[0][0]
+                trans1 = trans
+                if '"' in trans:
+                    trans = trans.replace('"', '\"')
+                transhtml += "<div class='despleg' id='{}' style='cursor:default'>".format(boton)
+                transhtml += trans
+                transhtml += "</div>"
+                transhtml += '</div>'
+                self.html = (tokens, self.color, transhtml, index, trans1, self.source_html)
+                return
+            else:
+                return [trans]
         # No dropdown if there's only 1 translation
         ntgroups = len(self.tgroups)
         multtrans = True
         for tindex, (t, tgroups) in enumerate(zip(self.cleaned_trans, self.tgroups)):
-            # Create all combinations of word sequences
-            tg_expanded = []
-            if self.special:
-#                print("Handling {} {}".format(tindex, tgroups))
-                trans = t[0]
-                tgcombs = [[(trans, '')]]
-                # There can't be multiple translations for special sequences, can there?
-                multtrans = False
-            else:
-                for tt, tg in zip(t, tgroups):
-                    tg = Group.make_gpair_name(tg)
-                    # Get rid of parentheses around optional elements
-                    if '(' in tt:
-                        tt = ['', tt[1:-1]]
-                    else:
-                        tt = tt.split('|')
-                    # Add tg group string to each choice
-                    tg_expanded.append([(ttt, tg) for ttt in tt])
-                tgcombs = allcombs(tg_expanded)
-            tgcombs.sort()
-            tgforms = []
-            tggroups = []
-            for ttg in tgcombs:
-                # "if tttg[0]" prevents '' from being treated as a token
-                tgforms.append(' '.join([tttg[0] for tttg in ttg if tttg[0]]))
-                tggroups.append("||".join([tttg[1] for tttg in ttg if tttg[0]]))
-            ntggroups = len(tggroups)
-            if (ntgroups == 1) and (ntggroups == 1):
-                multtrans = False
-#            print("{} tgroups {}".format(tindex, tgroups))
+            tgforms, tggroups, multtrans = self.get_tchoices(t, tgroups, ntgroups, multtrans)
+            # only for html = False ?
+            tfinal.extend(tgforms)
+#            choice_tgroups.extend(tgg[1] for tgg in tggroups)
             for tcindex, (tchoice, tcgroups) in enumerate(zip(tgforms, tggroups)):
 #                print(" tchoice {}, special? {}, ntggroups {}, ntgroups {}, multtrans {}".format(tchoice, self.special, ntggroups, ntgroups, multtrans))
-                tchoice = tchoice.replace('_', ' ')
-                alttchoice = tchoice.replace("'", "’")
-                # ID for the current choice item
-                choiceid = 'opcion{}.{}'.format(index, trans_choice_index)
+#                tchoice = tchoice.replace('_', ' ')
+#                alttchoice = tchoice.replace("'", "’")
+#                print("index {}/{}/{}:{}, tchoice {}".format(index, tindex, tcindex, trans_choice_index, tchoice))
+                # This is the only part in the loop needed for html=False !!
                 choice_tgroups.append(tcgroups)
-                # The button itself
-                if tindex == 0 and tcindex == 0:
-                    trans1 = alttchoice
-                    if not multtrans:
-                        # Only translation; no dropdown menu
-                        transhtml += "<div class='despleg' id='{}' ".format(boton)
-                        transhtml += "style='background-color:{};cursor:grab' draggable='true' ondragstart='drag(event);'>{}</div>".format(self.color, alttchoice)
+                if html:
+                    # ID for the current choice item
+                    choiceid = 'opcion{}.{}'.format(index, trans_choice_index)
+                    # The button itself
+                    if tindex == 0 and tcindex == 0:
+                        trans1 = tchoice
+                        if not multtrans:
+                            # Only translation; no dropdown menu
+                            transhtml += "<div class='despleg' id='{}' ".format(boton)
+                            transhtml += "style='background-color:{};cursor:grab' draggable='true' ondragstart='drag(event);'>{}</div>".format(self.color, tchoice)
+                        else:
+                            # First translation of multiple translations; make dropdown menu
+                            transhtml += '<div draggable="true" id="{}" ondragstart="drag(event);">'.format(wrap)
+                            transhtml += '<div onclick="desplegar(' + "'{}')\"".format(despleg)
+                            transhtml += " id='{}' class='despleg' style='background-color:{};cursor:context-menu'>{} ▾</div>".format(boton, self.color, tchoice)
                     else:
-                        # First translation of multiple translations; make dropdown menu
-                        transhtml += '<div draggable="true" id="{}" ondragstart="drag(event);">'.format(wrap)
-                        transhtml += '<div onclick="desplegar(' + "'{}')\"".format(despleg)
-                        transhtml += " id='{}' class='despleg' style='background-color:{};cursor:context-menu'>{} ▾</div>".format(boton, self.color, alttchoice)
-                else:
-                    # Choice in menu under button
-                    if trans_choice_index == 1:
-                        # Start menu list
-                        transhtml += "<div id='{}' class='contenido-desplegable'>".format(despleg)
-                    transhtml += "<div class='segopcion' id='{}' onclick='cambiarMeta(".format(choiceid)
-                    transhtml += "\"{}\", \"{}\")'".format(boton, choiceid)
-                    transhtml += ">{}</div>".format(alttchoice)
-                trans_choice_index += 1
+                        # Choice in menu under button
+                        if trans_choice_index == 1:
+                            # Start menu list
+                            transhtml += "<div id='{}' class='contenido-desplegable'>".format(despleg)
+                        transhtml += "<div class='segopcion' id='{}' onclick='cambiarMeta(".format(choiceid)
+                        transhtml += "\"{}\", \"{}\")'".format(boton, choiceid)
+                        transhtml += ">{}</div>".format(tchoice)
+                    trans_choice_index += 1
         if not self.translation and not self.special:
             trans1 = orig_tokens
             # No translations suggested: button for translating as source
@@ -480,26 +466,99 @@ class Seg:
             transhtml += '</div></div>'
         transhtml += '</div>'
         # Capitalize tokens if in first place
-        if index==0:
-            capitalized = False
-            if ' ' in tokens:
-                toks = []
-                tok_list = tokens.split()
-                for tok in tok_list:
-                    if capitalized:
-                        toks.append(tok)
-                    elif self.source.is_punc(tok):
-                        toks.append(tok)
-                    else:
-                        toks.append(tok.capitalize())
-                        capitalized = True
-                tokens = ' '.join(toks)
-            else:
-                tokens = tokens.capitalize()
-        self.choice_tgroups = choice_tgroups
+#        if index==0:
+#            tokens = self.capitalize_first(tokens)
+#            capitalized = False
+#            if ' ' in tokens:
+#                toks = []
+#                tok_list = tokens.split()
+#                for tok in tok_list:
+#                    if capitalized:
+#                        toks.append(tok)
+#                    elif self.source.is_punc(tok):
+#                        toks.append(tok)
+#                    else:
+#                        toks.append(tok.capitalize())
+#                        capitalized = True
+#                tokens = ' '.join(toks)
+#            else:
+#                tokens = tokens.capitalize()
+#        self.choice_tgroups = choice_tgroups
+        print("choice t groups {}".format(choice_tgroups))
+        print("tfinal {}".format(tfinal))
         if self.record:
             self.record.choice_tgroups = choice_tgroups
-        self.html = (orig_tokens, self.color, transhtml, index, trans1, self.source_html)
+        if html:
+            self.html = (orig_tokens, self.color, transhtml, index, trans1, self.source_html)
+        else:
+            return tfinal
+
+#    def capitalize_first(self, tokens):
+#        """Capitalize tokens if in first place."""
+#        capitalized = False
+#        if ' ' in tokens:
+#            toks = []
+#            tok_list = tokens.split()
+#            for tok in tok_list:
+#                if capitalized:
+#                    toks.append(tok)
+#                elif self.source.is_punc(tok):
+#                    toks.append(tok)
+#                else:
+#                    toks.append(tok.capitalize())
+#                    capitalized = True
+#            tokens = ' '.join(toks)
+#        else:
+#            tokens = tokens.capitalize()
+
+    @staticmethod
+    def postproc_tstring(string):
+        """Make final replacements to translation string."""
+        return string.replace("'", "’").replace('_', ' ')
+
+#    @staticmethod
+#    def postproc_punc(string):
+#        """Make final replacements to punctuation (a string with possibly multiple
+#        punctuation characters."""
+#        if '"' in string:
+#            return string.replace('"', '\"')
+#        return string
+
+    def get_tchoices(self, t, tgroups, ntgroups, multtrans):
+        """Create all combinations of word sequences."""
+        # Create all combinations of word sequences
+        tg_expanded = []
+        multtrans = True
+        if self.special:
+            trans = t[0]
+            tgcombs = [[(trans, '')]]
+            # There can't be multiple translations for special sequences, can there?
+            multtrans = False
+        else:
+            for tt, tg in zip(t, tgroups):
+                tg = Group.make_gpair_name(tg)
+                # Get rid of parentheses around optional elements
+                if '(' in tt:
+                    tt = ['', tt[1:-1]]
+                else:
+                    tt = tt.split('|')
+                # Add tg group string to each choice
+                tg_expanded.append([(ttt, tg) for ttt in tt])
+            tgcombs = allcombs(tg_expanded)
+        tgcombs.sort()
+        tgforms = []
+        tggroups = []
+        for ttg in tgcombs:
+            # "if tttg[0]" prevents '' from being treated as a token
+            tgform = ' '.join([tttg[0] for tttg in ttg if tttg[0]])
+            tgform = Seg.postproc_tstring(tgform)
+            tgforms.append(tgform)
+            tggroups.append("||".join([tttg[1] for tttg in ttg if tttg[0]]))
+        ntggroups = len(tggroups)
+        if (ntgroups == 1) and (ntggroups == 1):
+            multtrans = False
+#        print("get_tgroups1 {} {}".format(tgforms, tggroups))
+        return tgforms, tggroups, multtrans
 
     def unseg_tokens(self):
         """Rejoin tokens in original_token_str that were segmented when the Sentence was created."""
@@ -711,8 +770,8 @@ class Segment(Seg):
         # Triples for each merger with the segment
         # Target-language groups
         self.tgroups = tgroups or [[""]] * (len(self.translation) or 1)
-        # Target-language group strings, ordered by choices; gets set in set_html()
-        self.choice_tgroups = None
+#        # Target-language group strings, ordered by choices; gets set in finalize()
+#        self.choice_tgroups = None
         # The session associated with this segmentation segment
         self.session = session
         # Create a record for this segment if there's a session running and it's not punctuation
