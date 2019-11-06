@@ -585,8 +585,8 @@ class Group(Entry):
 
     def apply(self, superseg, verbosity=1):
         """Make changes specified in group to superseg containing segments matching it."""
-#        if verbosity or self.debug:
-        print("Applying {} to {}".format(self, superseg))
+        if verbosity or self.debug:
+            print("Applying {} to {}".format(self, superseg))
         hindex = self.head_index
         segments = superseg.segments
         supersegfeats = superseg.features

@@ -647,7 +647,7 @@ class User:
     def from_file(username):
         path = User.get_path(username)
         with open(path, encoding='utf8') as file:
-            d = yaml.load(file)
+            d = yaml.load(file, Loader=yaml.FullLoader)
             u = User.dict2user(d, new=False)
         return u
 

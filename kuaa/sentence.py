@@ -154,13 +154,15 @@
 # -- Introduced ¶ for end of paragraph and titles.
 # 2019.05.27
 # -- Lexicalization always looks at simple (lexical) groups only.
+# 2019.11.05
+# -- Segment and sentence finalization: restricting 
 
 import copy, re, random, itertools, os
 from .ui import *
 from .segment import *
 from .record import SentRecord, Session
 from .entry import Token
-from .utils import remove_control_characters, firsttrue, is_capitalized
+from .utils import remove_control_characters, firsttrue, is_capitalized, clean_sentence
 
 class Document(list):
     """A list of of Sentences, split from a text string. If biling is True, this is a bilingual document,
@@ -1953,7 +1955,8 @@ class Sentence:
         return segmentation
 
     def get_all_segmentations(self, translate=True, generate=True,
-                              connect=False, html=False, verbosity=0):
+                              connect=False, html=False, agree_dflt=True, choose=False,
+                              verbosity=0):
         """After a sentence has been translated and segmented, collect all the
         segmentations, including those resulting from altsyn sentences."""
         segmentations = []
@@ -1969,22 +1972,25 @@ class Sentence:
                 # Match joins and further groups only for best segmentation
                 segmentations = segmentations[:1]
             if translate:
-                for seg in segmentations:
-                    seg.get_segs(html=False, single=True)
+                for segmentation in segmentations:
+                    segmentation.get_segs()
                     if connect:
                         # Search for Segment matches with Join and Group instances
                         # and connect Segments if found
-                        seg.connect(generate=False, verbosity=verbosity)
+                        segmentation.connect(generate=False, verbosity=verbosity)
                     if generate:
                         # Realize target morphology
-                        seg.generate()
-                        if html:
-                            # Generate the HTML for the GUI
-                            seg.seg_html()
+                        segmentation.generate()
+                        # Generate the final translation strings and HTML for the GUI
+                        segmentation.finalize_segments(html=html, agree_dflt=agree_dflt, choose=choose)
+                if generate and choose:
+                    # Set the final output sentence string.
+                    final = ' '.join([seg.final for seg in segmentation.segments])
+                    segmentation.final = clean_sentence(final)
             for sindex, segmentation in enumerate(segmentations):
                 print("SEGMENTACIÓN {}".format(sindex))
                 for segment in segmentation.segments:
-                    print("{}: {}".format(segment, segment.cleaned_trans))
+                    print("{}: {}".format(segment, segment.final))
             return segmentations
 
     ### Various ways of displaying translation outputs.
@@ -2111,6 +2117,8 @@ class Segmentation:
         self.pseudosegs = None
         # Score based on number of groups and sentences nodes covered (lower is better)
         self.score = score
+        # Final output string for this Segmentation of the sentence
+        self.final = ''
         if not terse:
             print("SEGMENTACIÓN CREADA con dstore {} y ginsts {}".format(dstore, ginsts))
 
@@ -2360,8 +2368,8 @@ class Segmentation:
             i0 += len(stok_group)
         return newsegs
 
-    def get_segs(self, html=True, single=False):
-        """Set the segments (instances of Segment) for the segmentation, including their translations.
+    def get_segs(self):
+        """Set the initial segments (instances of Segment) for the segmentation, including their translations.
         """
         tt = self.get_ttrans_outputs()
         end_index = -1
@@ -2417,16 +2425,102 @@ class Segmentation:
                                   src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered)
         # Sort the segments by start indices in case they're not in order (because of parentheticals)
         self.segments.sort(key=lambda s: s.indices[0])
-        if html:
-            self.seg_html()
+#        if html:
+#            self.finalize_segments()
 
-    def seg_html(self):
-        """Set the HTML for each of the segments in this segmentation."""
+    #######
+    ###    FINALIZING SEGMENT TRANSLATIONS.
+    #######
+
+    def finalize_segments(self, html=True, user_input=None, agree_dflt=False,
+                          choose=False,
+                          verbosity=0):
+        """Set the final strings and morphology for each segment in this segmentation
+        and the HTML too if html is True."""
         first = True
         for i, segment in enumerate(self.segments):
-            segment.finalize(i, first=first)
+            segment.finalize(i, first=first, html=html)
             if first and not segment.is_punc:
                 first = False
+        self.do_seg_feat_agreement(user_input=user_input,
+                                   agree_dflt=agree_dflt or choose,
+                                   verbosity=verbosity)
+        if choose:
+            self.choose_final(verbosity=verbosity)
+
+    def choose_final(self, verbosity=0):
+        """Choose one final translation for each segment in the segmentation."""
+        # Start with copies of seg.final for each Seg.
+#        all_finals = [segment.final[:] for segment in self.segments]
+        all_scored = []
+        for i, segment in enumerate(self.segments):
+            scored = self.score_finals(segment)
+            scored.sort()
+            all_scored.append((scored, segment))
+            # Pick the first string for this segment
+            segment.final = scored[0][1]
+        return all_scored
+
+    def score_finals(self, segment):
+        """Assign scores to final strings for a segment. Lower is better."""
+        finals = segment.final
+        final_morph = segment.final_morph
+        scored = []
+        for final in finals:
+            scored.append((final.count('*'), final))
+        return scored
+
+    def do_seg_feat_agreement(self, user_input=None, agree_dflt=False, verbosity=0):
+        """Realize whatever constraints/preferences there are for feature agreements
+        across segments within this segmentation of the sentence. If agree_dflt
+        is True, accept only strings that agree with the default."""
+        disamb_agree = self.target.disambig_agree
+        if not disamb_agree:
+            return
+        for features, value in disamb_agree:
+            if verbosity:
+                print("Attempting to realize agreement {} = {}".format(features, value))
+            for segment in self.segments:
+                final_strings = segment.final
+                if verbosity:
+                    print("  {}".format(segment))
+                if len(final_strings) == 1:
+                    continue
+                final_morphs = segment.final_morph
+                agree_strings = []
+                agree_morphs = []
+                for string, morphs in zip(final_strings, final_morphs):
+                    agree = True
+                    current_value = None
+                    for feature in features:
+                        if not agree:
+                            break
+                        for morph in morphs:
+                            if feature in morph:
+                                morphvalue = morph.get(feature)
+                                if agree_dflt:
+                                    # morphvalue must agree with default value
+                                    if morphvalue != value:
+                                        agree = False
+                                        # fail for the whole series of morphs
+                                        break
+                                elif current_value is None:
+                                    current_value = morphvalue
+                                elif morphvalue != current_value:
+                                    # morphvalue must agree with current value
+                                    agree = False
+                                    break
+                    if agree:
+                        agree_strings.append(string)
+                        agree_morphs.append(morphs)
+                if agree_strings:
+                    # Update the Seg's final string and morphology values
+                    segment.final = agree_strings
+                    segment.final_morph = agree_morphs
+                if verbosity:
+                    print("  agree strings: {}".format(agree_strings))
+
+    ## HTML
 
     def get_gui_segments(self):
         """HTML for Segments in this Segmentation."""
@@ -2633,6 +2727,7 @@ class Segmentation:
         segs = [s[1] for s in seglist]
         positions = [s[0] for s in seglist]
         features = [s[2] for s in seglist]
+#        print("Creating superset with features {}".format(features))
         superseg = SuperSeg(self, segs, features=features, join=join, verbosity=verbosity)
         print("CREANDO SUPERSEG PARA {} Y {} en posiciones {}".format(segs, join, positions))
         # replace the joined segments in the segmentation with the superseg

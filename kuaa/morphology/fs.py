@@ -336,35 +336,6 @@ class FeatStruct:
         else:
             return 'fail'
 
-#    def unify(self, other, strict=False):
-#        """other is a FeatStruct object or a dict. Attempt to unify self with other,
-#        returning the result or 'fail'. If strict is True, all features in other
-#        must appear explicitly in self for success (unless a feature's value is False)."""
-#        result = FeatStruct({})
-#        for k in set(self.keys()) | set(other.keys()):
-#            # Check all of the keys of self and other
-#            self_val, other_val = self.get(k, 'nil'), other.get(k, 'nil')
-#            if strict and self_val == 'nil' and other_val is not False:
-#                print(" Fail because {} has not value for {}".format(self.__repr__(), k))
-#                return 'fail'
-#            elif self_val != 'nil':
-#                if other_val != 'nil':
-#                    # If x and y both have a value for k, try to unify the values
-#                    u = FeatStruct.simple_unify(self_val, other_val)
-#                    if u == 'fail':
-#                        print(" Fail because {} and {} don't unify".format(self_val, other_val))
-#                        return 'fail'
-#                    else:
-#                        result[k] = u
-#                else:
-#                    # If self has a value for k but other doesn't, use self's value
-#                    result[k] = self_val
-#            elif other_val != 'nil':
-#                # If other has a value for k but self doesn't, use other's value
-#                result[k] = other_val
-#
-#        return result
-
     ##////////////////////////////////////////////////////////////
     #{ Equality & Hashing
     ##////////////////////////////////////////////////////////////

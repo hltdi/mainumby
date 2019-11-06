@@ -99,16 +99,16 @@ def load(source='spa', target='grn', gui=None):
         gui.source = s
         gui.target = t
 
-def seg_trans(gui, session=None, process=True, verbosity=0):
+def seg_trans(gui, session=None, process=True, html=True, choose=False, verbosity=0):
     """Traducir oración (accesible en gui) y devuelve la oración marcada (HTML) con
     segmentos coloreados."""
     return oración(sentence=gui.sentence, src=gui.source, targ=gui.target, session=gui.session,
-                   html=True, verbosity=verbosity)
+                   html=html, choose=choose, verbosity=verbosity)
 
 ## Creación y traducción de oración simple fuera de la interfaz web.
 
 def oración(text='', src=None, targ=None, user=None, session=None, sentence=None,
-            max_sols=2, translate=True, connect=True, generate=True, html=False,
+            max_sols=2, translate=True, connect=True, generate=True, html=False, choose=False,
             verbosity=0):
     """Analizar y talvez también traducir una oración del castellano al guaraní."""
     if not src and not targ:
@@ -118,7 +118,7 @@ def oración(text='', src=None, targ=None, user=None, session=None, sentence=Non
     s = Sentence.solve_sentence(src, targ, text=text, session=session, sentence=sentence,
                                 max_sols=max_sols, translate=translate, verbosity=verbosity)
     segmentations = s.get_all_segmentations(translate=translate, generate=generate,
-                                            connect=connect, html=html)
+                                            choose=choose, connect=connect, html=html)
     if html:
         if segmentations:
             segmentation = segmentations[0]

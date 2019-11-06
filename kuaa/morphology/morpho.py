@@ -703,6 +703,9 @@ class POS:
                 gens.sort(key=lambda g: g[-1], reverse=True)
             if only_words:
                 gens = [g[0] for g in gens]
+            elif self.language.disambig_feats:
+                # Return the output strings and selected features for each
+                gens = [(g[0], self.get_disambig(g[1])) for g in gens]
             if cache and gens:
                 for cache_key in cache_keys:
                     self.add_new_gen(root, cache_key, gens)
@@ -710,6 +713,20 @@ class POS:
         elif trace:
             print('No generation FST loaded')
             return []
+
+    def get_disambig(self, FS):
+        """Return a dict of features and values for each of the language's disambiguation features, if any."""
+        disambig_feats = self.language.disambig_feats
+        if not disambig_feats:
+            return FS
+        else:
+            dis_dict = {}
+            for feat in disambig_feats:
+                # feat could be a string (like 'tm') or a tuple (like 'poses', 'ext')
+                value = FS.get(feat)
+                if value != None:
+                    dis_dict[feat] = value
+            return dis_dict
 
     def anals_to_dicts(self, analyses):
         '''Convert list of analyses to list of dicts.'''

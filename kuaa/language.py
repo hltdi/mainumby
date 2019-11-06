@@ -189,6 +189,10 @@ class Language:
                  exttag=False, conversion=False,
                  # list of POS tags with POS collocations to be read in
                  collocs=None,
+                 # list of morphological features to help with target disambiguation
+                 disambig_feats=None,
+                 # list of lists of morphological features that should agree within a sentence
+                 disambig_agree=None,
 #                 lemmas=None,
                  # phrases to be joined during sentence tokenization
                  mwe=False,
@@ -280,6 +284,9 @@ class Language:
             self.read_collocs(collocs)
         else:
             self.collocs = None
+        # 2019.11
+        self.disambig_feats = disambig_feats
+        self.disambig_agree = disambig_agree
         # Classes used in identifying numerals, etc.; class->words dict
         self.classes = {}
         # Patterns consisting of explicit tokens, classes, and patterns; used in identifying numerals, etc.
@@ -2017,6 +2024,17 @@ class Language:
             print('No such Join file as {}'.format(path))
 
     @staticmethod
+    def string2value(string):
+        if string.isdigit():
+            return int(string)
+        elif string == "False":
+            return False
+        elif string == 'True':
+            return True
+        else:
+            return string
+
+    @staticmethod
     def from_dict(d, reverse=True, use=ANALYSIS, directory=None):
         """Convert a dict (loaded from a file) to a Language object."""
         exttag = d.get('exttag')
@@ -2026,6 +2044,16 @@ class Language:
         mwe = d.get('mwe')
         abbrev = d.get('abbrev')
         collocs = d.get('collocs')
+        disambig_feats = d.get('disambfeats')
+        disambig_agree = d.get('disambagree')
+        if disambig_feats:
+            disambig_feats = disambig_feats.split(',')
+            disambig_feats = [tuple(df.split(':')) if ':' in df else df for df in disambig_feats]
+        if disambig_agree:
+            disambig_agree = disambig_agree.split(';')
+            disambig_agree = [da.split('==') for da in disambig_agree]
+            disambig_agree = [([tuple(da.split(':')) if ':' in da else da for da in dis_agree[0].split(',')], Language.string2value(dis_agree[1]))\
+                               for dis_agree in disambig_agree]
         if collocs:
             collocs = collocs.split(',')
         if groupcats:
@@ -2053,6 +2081,8 @@ class Language:
         l = Language(d.get('name'), abbrev, use=use, directory=directory,
                      exttag=exttag, conversion=conversion, postags=d.get('postags'),
                      mwe=mwe, eos=d.get('eos', EOS), collocs=collocs,
+                     disambig_feats=disambig_feats,
+                     disambig_agree=disambig_agree,
 #                     lemmas=d.get('lemmas'),
                      namejoin=namejoin, groupcats=groupcats)
         translations = d.get('translations')
@@ -2294,6 +2324,7 @@ class Language:
         if verbosity:
             print("Generating {}:{} with POS {}, feature type {}".format(root, features.__repr__(), pos, type(features)))
         if not pos:
+            # generate() shouldn't have been called in this case!
             print("Warning: no POS for generation of {}:{}".format(root, features.__repr__()))
         is_not_roman = not roman
         morf = self.morphology
@@ -2306,24 +2337,28 @@ class Language:
                 print("POS {} not in morphology {}".format(pos, morf))
                 return [root]
             posmorph = morf[pos]
-            output = posmorph.gen(root, update_feats=features, guess=guess, only_words=True, cache=cache)
+            output = posmorph.gen(root, update_feats=features, guess=guess, only_words=False, cache=cache)
         else:
             for posmorph in list(morf.values()):
-                output.extend(posmorph.gen(root, update_feats=features, guess=guess, only_words=True))
+                output.extend(posmorph.gen(root, update_feats=features, guess=guess, only_words=False))
         if output:
+            # separate output strings from features
+            output_strings = [o[0] for o in output]
+            output_feats = [o[1] for o in output]
             # if there is a postprocessing dict, apply it
             if self.postproc:
-                self.char_postproc_list(output)
+                self.char_postproc_list(output_strings)
             if self.postsyll:
                 # There is a syllabic postprocessing dict, apply it
-                for oi,outp in enumerate(output):
-                    output[oi] = self.syll_postproc(outp)
-            return output
+                for oi, outp in enumerate(output_strings):
+                    output_strings[oi] = self.syll_postproc(outp)
+#            print("generate({}) => {}, {}".format(root, output_strings, output_feats))
+            return output_strings, output_feats
         else:
             print("   The root/feature combination {}:{} can't be generated for POS {}!".format(root, features.__repr__(), pos))
             # Add * to mark this is a uninflected.
             root = self.char_postproc(root)
-            return ['*' + root]
+            return ['*' + root], []
 
     def gen_multroots(self, roots, features, pos=None, guess=False, roman=True, cache=True, verbosity=0):
         """For multiple roots and the same features, return the list of possible outputs."""
@@ -2354,7 +2389,7 @@ class Language:
         return punc
 
     def syll_postproc(self, form, replace_gem=True):
-        """Convert romanized form to a representation in a syllabary."""
+        """Convert romanized form to a representation in a syllabary. Only currently works for Ethiopian Semitic."""
         dct = self.postsyll
         vowels = self.vowels
         # First delete gemination characters if required
@@ -2372,7 +2407,7 @@ class Language:
                     # Doesn't handle long vowels
                     trans = dct.get(form[n : n + 2], char + next_char)
                     n += 1
-                elif next_char == 'W' or char == '^':
+                elif next_char == 'W' or next_char == 'Y' or char == '^':
                     # Consonant represented by 2 roman characters; this needs to be more general obviously
                     if n < len(form) - 2 and form[n + 2] in vowels:
                         # followed by vowel
@@ -2389,7 +2424,6 @@ class Language:
             res += trans
             n += 1
         return res
-                      
 
 class LanguageError(Exception):
     '''Class for errors encountered when attempting to update the language.'''

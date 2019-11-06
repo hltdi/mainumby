@@ -50,6 +50,50 @@ __version__ = 2.0
 
 import kuaa
 
+## Atajos
+
+## Creación y traducción de oración simple. Después de la segmentación inicial,
+## se combinan los segmentos, usando patrones gramaticales ("joins") y grupos
+## adicionales.
+
+def tra(oracion, html=False, user=None, choose=False, verbosity=0):
+    return ora(oracion, user=user, max_sols=2, translate=True,
+               connect=True, generate=True, html=html, choose=choose,
+               verbosity=verbosity)
+
+## Creación (y opcionalmente traducción) de oración simple y de documento.
+
+def ora(text, user=None, max_sols=2, translate=True,
+        connect=True, generate=False, html=False, choose=False, verbosity=0):
+    return kuaa.oración(text, user=user, max_sols=max_sols, translate=translate,
+                        connect=connect, generate=generate, html=html, choose=choose,
+                        verbosity=verbosity)
+
+def anal(sentence, user=None, verbosity=0):
+    """Analizar una oración castellana."""
+    return kuaa.oración(sentence, user=user, translate=False, verbosity=verbosity)
+
+def g_anal(sentence, single=True, verbosity=0):
+    """Analyze a Guarani sentence, checking all groups."""
+    e, g = cargar(train=True)
+    session = kuaa.start(g, e, None, create_memory=single)
+    d = kuaa.Document(g, None, sentence, session=session, single=single)
+    if len(d) == 0:
+        print("Documento vacío")
+        return
+    s = d[0]
+    return s.analyze(translate=False, verbosity=verbosity)
+
+## Cargar castellano y guaraní. Devuelve las 2 lenguas.
+def cargar(train=False):
+    spa, grn = kuaa.Language.load_trans('spa', 'grn', train=train)
+    return spa, grn
+
+## Cargar una lengua, solo para análisis.
+def cargar1(lang='spa'):
+    spa = kuaa.Language.load_lang(lang)
+    return spa
+
 ## Bases de datos
 
 def db_texts():
@@ -120,49 +164,6 @@ def db_add(instance):
 def db_delete(instance):
     kuaa.db.session.delete(instance)
                                    
-## Atajos
-
-## Creación y traducción de oración simple. Después de la segmentación inicial,
-## se combinan los segmentos, usando patrones gramaticales ("joins") y grupos
-## adicionales.
-
-def tra(oracion, html=False, user=None, verbosity=0):
-    return ora(oracion, user=user, max_sols=2, translate=True,
-               connect=True, generate=True, html=html, verbosity=verbosity)
-
-## Creación (y opcionalmente traducción) de oración simple y de documento.
-
-def ora(text, user=None, max_sols=2, translate=True,
-        connect=True, generate=False, html=False, verbosity=0):
-    return kuaa.oración(text, user=user, max_sols=max_sols, translate=translate,
-                        connect=connect, generate=generate, html=html,
-                        verbosity=verbosity)
-
-def anal(sentence, user=None, verbosity=0):
-    """Analizar una oración castellana."""
-    return kuaa.oración(sentence, user=user, translate=False, verbosity=verbosity)
-
-def g_anal(sentence, single=True, verbosity=0):
-    """Analyze a Guarani sentence, checking all groups."""
-    e, g = cargar(train=True)
-    session = kuaa.start(g, e, None, create_memory=single)
-    d = kuaa.Document(g, None, sentence, session=session, single=single)
-    if len(d) == 0:
-        print("Documento vacío")
-        return
-    s = d[0]
-    return s.analyze(translate=False, verbosity=verbosity)
-
-## Cargar castellano y guaraní. Devuelve las 2 lenguas.
-def cargar(train=False):
-    spa, grn = kuaa.Language.load_trans('spa', 'grn', train=train)
-    return spa, grn
-
-## Cargar una lengua, solo para análisis.
-def cargar1(lang='spa'):
-    spa = kuaa.Language.load_lang(lang)
-    return spa
-
 ## Oraciones para evalucación
 
 O = \
