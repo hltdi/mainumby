@@ -371,6 +371,7 @@ class POS:
 
     def quit(self):
         """Save new_gens in gen_cache."""
+        # Disabled until there's an agreed on way to cache morphological generation
 #        self.write_gen_cache()
         pass
 
@@ -378,14 +379,6 @@ class POS:
         """Make the reverse abbreviation dictionary."""
         for ab, full in self.abbrevs.items():
             self.rev_abbrevs[full] = ab
-
-#    def unset_fsts(self):
-#        tmp_fsts = self.fsts
-#        self.fsts = [[None, None, None, None, None, None], [None, None, None, None, None, None]]
-#        return tmp_fsts
-
-#    def reset_fsts(self, fsts):
-#        self.fsts = fsts
 
     def get_gen_fvs(self):
         """The features and their values that are used for generation."""
@@ -537,7 +530,7 @@ class POS:
                 print("Adding new gen {}:{} || {}".format(root, fs.__repr__(), words))
             self.new_gens[(root, fs)] = words
 
-    def get_cached_gen(self, root, fs):
+    def get_cached_gen(self, root, fs, only_words):
         """Returns cached words for root, FS pair, if any."""
         if isinstance(fs, FeatStruct) and not fs.frozen():
             fs.freeze()
@@ -547,7 +540,12 @@ class POS:
         if (root, fs) not in self.gen_cached:
             return False
         else:
-            return self.gen_cached[(root, fs)]
+            # cached form includes output string and morphology
+            cached = self.gen_cached[(root, fs)]
+            if only_words:
+                return [c[0] for c in cached]
+            else:
+                return cached
 
     def write_gen_cache(self, name=''):
         """Write a dictionary of cached entries to a gen cache file. This should only be used in
@@ -557,7 +555,8 @@ class POS:
             file = self.get_gen_cache_file(name=name)
             with open(file, 'a', encoding='utf8') as out:
                 for (root, fs), words in self.new_gens.items():
-                    print("{}:{} || {}".format(root, fs.__repr__(), ';'.join(words)), file=out)
+#                    print("root {}, fs {}, words {}".format(root, fs.__repr__(), words))
+                    print("{}:{} || {}".format(root, fs.__repr__(), ';'.join(["{}|{}".format(w, m) for w, m in words])), file=out)
         # Empty new_gens in case we want to add things later
         self.new_gens.clear()
 
@@ -571,9 +570,11 @@ class POS:
                     root_fs, words = line.strip().split(" || ")
                     root, fs = root_fs.split(':')
                     words = words.split(';')
+                    words = [w.split('|') for w in words]
+                    # wordform and relevant features
+                    words = [(w, eval(m)) for w, m in words]
                     if fs in ('[]', 'None'):
-#                        fs = TOP
-                         fs = None
+                        fs = None
                     else:
                         fs = FeatStruct(fs, freeze=True)
                     self.gen_cached[(root, fs)] = words
@@ -657,7 +658,7 @@ class POS:
             only_words=True, sort=True,
             trace=False):
         """Generate word from root and features."""
-#        print("Update feats {}, type {}".format(update_feats, type(update_feats)))
+#        print("{} generating {} with update feats {}".format(self, root, update_feats.__repr__()))
         if isinstance(update_feats, str):
             update_feats = FeatStruct(update_feats)
         # See if there are already cached wordforms for the root and features
@@ -670,7 +671,7 @@ class POS:
         all_cached = []
         all_found = True
         for cache_key in cache_keys:
-            cached = self.get_cached_gen(root, cache_key)
+            cached = self.get_cached_gen(root, cache_key, only_words)
             if cached:
                 all_cached.extend(cached)
             else:
@@ -679,6 +680,8 @@ class POS:
         if all_found:
             if trace:
                 print("Found {}:{} in cached generations".format(root, cache_keys))
+            if not only_words and self.language.disambig_feats:
+                all_cached = [(g[0], self.get_disambig(g[1])) for g in all_cached]
             return all_cached
         features = features or self.defaultFS
         upd_features = features
@@ -698,17 +701,22 @@ class POS:
 #        print("Updated features: {}".format(fsset.__repr__()))
         if fst:
             gens = fst.transduce(root, fsset, seg_units=self.language.seg_units, trace=trace, timeit=timeit)
+            full_gens = gens
+            if self.language.disambig_feats:
+                full_gens = [(g[0], self.get_disambig(g[1])) for g in gens]
             if sort and len(gens) > 1 and self.feat_freqs:
                 gens = self.score_gen_output(root, gens)
                 gens.sort(key=lambda g: g[-1], reverse=True)
             if only_words:
                 gens = [g[0] for g in gens]
-            elif self.language.disambig_feats:
-                # Return the output strings and selected features for each
-                gens = [(g[0], self.get_disambig(g[1])) for g in gens]
+            else:
+                gens = full_gens
+#            elif self.language.disambig_feats:
+#                # Return the output strings and selected features for each
+#                gens = [(g[0], self.get_disambig(g[1])) for g in gens]
             if cache and gens:
                 for cache_key in cache_keys:
-                    self.add_new_gen(root, cache_key, gens)
+                    self.add_new_gen(root, cache_key, full_gens)
             return gens
         elif trace:
             print('No generation FST loaded')

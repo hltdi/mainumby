@@ -1114,6 +1114,8 @@ class Sentence:
             newtag = None
             if not tag:
                 # tag is None
+                if not token:
+                    continue
                 if token[0].isupper():
                     newtag = 'n'
 #                    print("Inserting tag n for name {}".format(token))
@@ -2429,7 +2431,7 @@ class Segmentation:
 #            self.finalize_segments()
 
     #######
-    ###    FINALIZING SEGMENT TRANSLATIONS.
+    ###    FINALIZING SEGMENT TRANSLATIONS IN SEGMENTATION.
     #######
 
     def finalize_segments(self, html=True, user_input=None, agree_dflt=False,
@@ -2437,11 +2439,16 @@ class Segmentation:
                           verbosity=0):
         """Set the final strings and morphology for each segment in this segmentation
         and the HTML too if html is True."""
-        first = True
         for i, segment in enumerate(self.segments):
-            segment.finalize(i, first=first, html=html)
-            if first and not segment.is_punc:
-                first = False
+            segment.finalize(i, html=False)
+#            if first and not segment.is_punc:
+#                first = False
+        if html:
+            first = True
+            for i, segment in enumerate(self.segments):
+                segment.finalize_html(i, first=first)
+                if first and not segment.is_punc:
+                    first = False
         self.do_seg_feat_agreement(user_input=user_input,
                                    agree_dflt=agree_dflt or choose,
                                    verbosity=verbosity)
@@ -2496,6 +2503,7 @@ class Segmentation:
                         if not agree:
                             break
                         for morph in morphs:
+#                            print("morph {}, feature {}".format(morph, feature))
                             if feature in morph:
                                 morphvalue = morph.get(feature)
                                 if agree_dflt:

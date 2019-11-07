@@ -2331,11 +2331,11 @@ class Language:
         output = []
         if isinstance(features, (bool, str)):
             # features may be True and (for some reason) the string 'fail'
-            return [root]
+            return [root], []
         elif pos:
             if pos not in morf:
                 print("POS {} not in morphology {}".format(pos, morf))
-                return [root]
+                return [root], []
             posmorph = morf[pos]
             output = posmorph.gen(root, update_feats=features, guess=guess, only_words=False, cache=cache)
         else:
