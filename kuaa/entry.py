@@ -715,21 +715,16 @@ class Group(Entry):
                 for agr1 in tgroup.agr:
                     # Each of these includes the indices of the agreeing segments
                     # and a set of features to agree on
-                    sindex = agr1[0]
-                    tindex = agr1[1]
-                    agr_feats = agr1[2:]
+                    sindex = agr1[0]; tindex = agr1[1]; agr_feats = agr1[2:]
                     srcseg = superseg.segments[rev_align[sindex]]
                     targseg = superseg.segments[rev_align[tindex]]
-                    srcthead = srcseg.thead
-                    targthead = targseg.thead
+                    srcthead = srcseg.thead; targthead = targseg.thead
                     if srcthead and targthead:
                         # For every combination of translations for the two segments,
                         # make the features agree
                         for s, t in [(sh, th) for sh in srcthead for th in targthead]:
-                            sfeats = s[2]
-                            tfeats = t[2]
-                            sfeats = sfeats.unfreeze(cast=False)
-                            tfeats = tfeats.unfreeze(cast=False)
+                            sfeats = s[2]; tfeats = t[2]
+                            sfeats = sfeats.unfreeze(cast=False); tfeats = tfeats.unfreeze(cast=False)
                             mutagr = FSSet.mutual_agree(sfeats, tfeats, agr_feats)
                             if mutagr == 'fail':
                                 # Really should eliminate this from cleaned_trans
@@ -740,8 +735,7 @@ class Group(Entry):
                                 if verbosity or self.debug:
                                     print("  merged features {}, {}".format(sf1, tf1))
                                 # Replace old features with new ones (changing cleaned_trans)
-                                s[2] = sf1
-                                t[2] = tf1
+                                s[2] = sf1; t[2] = tf1
         if alignment:
             superseg.order = rev_align
             if verbosity or self.debug:

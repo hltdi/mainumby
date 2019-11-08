@@ -118,6 +118,7 @@ def oración(text='', src=None, targ=None, user=None, session=None, sentence=Non
     s = Sentence.solve_sentence(src, targ, text=text, session=session, sentence=sentence,
                                 max_sols=max_sols, translate=translate, verbosity=verbosity)
     segmentations = s.get_all_segmentations(translate=translate, generate=generate,
+                                            agree_dflt=False,
                                             choose=choose, connect=connect, html=html)
     if html:
         if segmentations:

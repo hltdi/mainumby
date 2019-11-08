@@ -88,7 +88,7 @@ class Seg:
     """
 
     # Maximum number of generated forms permitted, given a root and set of update features
-    max_gen_forms = 4
+    max_gen_forms = 6
 
     # Maximum number of leaf Segments in Seg
     max_segments = 8
@@ -331,11 +331,9 @@ class Seg:
         if verbosity:
             print("Generating segment {} with cleaned trans {} and raw token str {}".format(self, self.cleaned_trans, self.raw_token_str))
         generator = self.target.generate
-        cleaned_trans = []
-        morphology = []
+        cleaned_trans = []; morphology = []
         for translation in self.cleaned_trans:
-            output1 = []
-            morph = []
+            output1 = []; morph = []
             if verbosity:
                 print("  Generating {}".format(translation))
             for item in translation:
@@ -351,8 +349,7 @@ class Seg:
                     token, pos, feats = item
                     if not pos:
                         # generator needs a POS
-                        output1.append(token)
-                        morph.append(None)
+                        output1.append(token); morph.append(None)
                     else:
                         outform, outfeats = generator(token, feats, pos=pos)
 #                        print("outform {}, outfeats {}".format(outform, outfeats))
@@ -362,28 +359,21 @@ class Seg:
                             outfeats = outfeats[:Seg.max_gen_forms]
                         # If there are multiple gen outputs, separate by |
                         form = '|'.join(outform)
-                        output1.append(form)
-                        morph.append(outfeats)
+                        output1.append(form); morph.append(outfeats)
                     generated = True
                 else:
-                    output1.append(item)
-                    morph.append(None)
-            cleaned_trans.append(output1)
-            morphology.append(morph)
+                    output1.append(item); morph.append(None)
+            cleaned_trans.append(output1); morphology.append(morph)
         if verbosity:
             print("  Cleaned: {}".format(cleaned_trans))
         # Sort so that failed generations come last
-        ungen_strings = []
-        ungen_morph = []
-        gen_strings = []
-        gen_morph = []
+        ungen_strings = []; ungen_morph = []
+        gen_strings = []; gen_morph = []
         for strings, feats in zip(cleaned_trans, morphology):
             if any([Token.is_ungen(s) for s in strings]):
-                ungen_strings.append(strings)
-                ungen_morph.append(feats)
+                ungen_strings.append(strings); ungen_morph.append(feats)
             else:
-                gen_strings.append(strings)
-                gen_morph.append(feats)
+                gen_strings.append(strings); gen_morph.append(feats)
         cleaned_trans = gen_strings + ungen_strings
         morphology = gen_morph + ungen_morph
 #        cleaned_trans.sort(key=lambda o: any([Token.is_ungen(oo) for oo in o]))
@@ -393,10 +383,216 @@ class Seg:
         self.morphology = morphology
         self.generated = True
 
-    ## Matching
-
     def has_child(self):
         return len(self.segments) > 1
+
+    ## Generating final translations
+
+    def finalize(self, index, first=False, choose=False, verbosity=0):
+        """Create final translation strings for this Seg. If html is True, set the HTML markup for
+        the Seg as a colored segment in source and dropdown menu in target, given its position in the sentence.
+        """
+        # No translation
+        if not self.cleaned_trans:
+            self.final = self.tokens
+            self.final_morph = []
+            return
+        # T Group strings associated with each choice
+        choice_tgroups = []
+#        if html:
+#            self.color = Seg.tt_notrans_color if self.is_punc or (not self.translation and not self.special) else Seg.tt_colors[index % 9]
+#            self.set_source_html(first)
+#            transhtml = "<div class='desplegable' ondrop='drop(event);' ondragover='allowDrop(event);'>"
+#            despleg = "despleg{}".format(index)
+#            boton = "boton{}".format(index)
+#            wrap = "wrap{}".format(index)
+#            trans_choice_index = 0
+        capitalized = False
+        choice_list = self.record.choices if self.record else None
+        # Final source segment output
+        tokens = self.token_str
+        orig_tokens = self.original_token_str
+        # Currently selected translation
+        trans1 = ''
+        if self.is_punc:
+            trans = self.translation[0][0]
+            self.final = [trans]
+            self.final_morph = [None]
+#            if html:
+#                trans1 = trans
+#                if '"' in trans:
+#                    trans = trans.replace('"', '\"')
+#                transhtml += "<div class='despleg' id='{}' style='cursor:default'>".format(boton)
+#                transhtml += trans + "</div></div>"
+#                self.html = (tokens, self.color, transhtml, index, trans1, self.source_html)
+            return
+#        ntgroups = len(self.tgroups)
+        multtrans = True
+        for tindex, (t, tgroups, tmorph) in enumerate(zip(self.cleaned_trans, self.tgroups, self.morphology)):
+            # get all legitimate combinations of output strings and morphological features for constituent Segs
+#            print("t {}, tgmorph {}".format(t, tmorph))
+#            print("current final {}".format(self.final))
+#            print("current morph {}".format(self.final_morph))
+            tgforms, tgmorph, tggroups, multtrans = self.get_tchoices(t, tgroups, tmorph, multtrans)
+            self.final.extend(tgforms)
+            self.final_morph.extend(tgmorph)
+            choice_tgroups.extend(tggroups)
+#            choice_tgroups.extend(tgg[1] for tgg in tggroups)
+##            if html:
+##                for tcindex, tchoice in enumerate(tgforms):
+##                    # ID for the current choice item
+##                    choiceid = 'opcion{}.{}'.format(index, trans_choice_index)
+##                    # The button itself
+##                    if tindex == 0 and tcindex == 0:
+##                        trans1 = tchoice
+##                        if not multtrans:
+##                            # Only translation; no dropdown menu
+##                            transhtml += "<div class='despleg' id='{}' ".format(boton)
+##                            transhtml += "style='background-color:{};cursor:grab' draggable='true' ondragstart='drag(event);'>{}</div>".format(self.color, tchoice)
+##                        else:
+##                            # First translation of multiple translations; make dropdown menu
+##                            transhtml += '<div draggable="true" id="{}" ondragstart="drag(event);">'.format(wrap)
+##                            transhtml += '<div onclick="desplegar(' + "'{}')\"".format(despleg)
+##                            transhtml += " id='{}' class='despleg' style='background-color:{};cursor:context-menu'>{} ▾</div>".format(boton, self.color, tchoice)
+##                    else:
+##                        # Choice in menu under button
+##                        if trans_choice_index == 1:
+##                            # Start menu list
+##                            transhtml += "<div id='{}' class='contenido-desplegable'>".format(despleg)
+##                        transhtml += "<div class='segopcion' id='{}' onclick='cambiarMeta(".format(choiceid)
+##                        transhtml += "\"{}\", \"{}\")'".format(boton, choiceid)
+##                        transhtml += ">{}</div>".format(tchoice)
+##                    trans_choice_index += 1
+##        if html:
+##            if not self.translation and not self.special:
+##                trans1 = orig_tokens
+##                # No translations suggested: button for translating as source
+##                multtrans = False
+##                transhtml += "<div class='despleg' id='{}'  style='cursor:grab' draggable='true' ondragstart='drag(event);'>".format(boton)
+##                transhtml += orig_tokens
+##                transhtml += "</div>"
+##            if multtrans:
+##                transhtml += '</div></div>'
+##            transhtml += '</div>'
+        if self.final:
+#            print("choice t groups {}".format(choice_tgroups))
+#            print("final string {}".format(self.final))
+#            print("final morph {}".format(self.final_morph))
+            if self.record:
+                self.record.choice_tgroups = choice_tgroups
+##        if html:
+##            self.html = (orig_tokens, self.color, transhtml, index, trans1, self.source_html)
+
+#    def capitalize_first(self, tokens):
+#        """Capitalize tokens if in first place."""
+#        capitalized = False
+#        if ' ' in tokens:
+#            toks = []
+#            tok_list = tokens.split()
+#            for tok in tok_list:
+#                if capitalized:
+#                    toks.append(tok)
+#                elif self.source.is_punc(tok):
+#                    toks.append(tok)
+#                else:
+#                    toks.append(tok.capitalize())
+#                    capitalized = True
+#            tokens = ' '.join(toks)
+#        else:
+#            tokens = tokens.capitalize()
+
+    @staticmethod
+    def postproc_tstring(string):
+        """Make final replacements to translation string."""
+        return string.replace("'", "’").replace('_', ' ')
+
+#    @staticmethod
+#    def postproc_punc(string):
+#        """Make final replacements to punctuation (a string with possibly multiple
+#        punctuation characters."""
+#        if '"' in string:
+#            return string.replace('"', '\"')
+#        return string
+
+    def combine_trans(self, trans_morph):
+        """Return all legitimate combinations of trans strings and associated features,
+        skipping over those that violate within-sentence morphological constraints."""
+        combinations = [[tm] for tm in trans_morph[0]]
+        disamb_agree = self.target.disambig_agree
+        for items in trans_morph[1:]:
+            new_combinations = []
+            for trans, group, morph in items:
+                for combination in combinations:
+                    agree = True
+                    if disamb_agree:
+                        prev_value = None
+                        for features, value in disamb_agree:
+                            for feature in features:
+                                for t, g, m in combination:
+                                    if feature in m:
+                                        prev_value = m.get(feature)
+                                        break
+                            for feature in features:
+                                if feature in morph:
+                                    next_value = morph.get(feature)
+                                    if next_value is not prev_value:
+                                        agree = False
+                                    break
+                    if agree:
+                        new_combination = combination + [(trans, group, morph)]
+                        new_combinations.append(new_combination)
+#                    else:
+#                        print("  REJECTED combination {} with {}/{}".format(combination, trans, morph))
+            combinations = new_combinations
+#        print("combinations {}".format(combinations))
+        return combinations
+
+    def get_tchoices(self, translation, tgroups, tmorph, multtrans):
+        """Create all combinations of word sequences."""
+        tg_expanded = []
+        multtrans = True
+        if self.special:
+            trans = translation[0]
+            tgcombs = [[(trans, '', '')]]
+            # There can't be multiple translations for special sequences, can there?
+            multtrans = False
+        else:
+            for tt, tg, tm in zip(translation, tgroups, tmorph):
+#                print("tt {}, tg {}, tm {}".format(tt, tg, tm))
+                tg = Group.make_gpair_name(tg)
+                if '(' in tt:
+                    # Get rid of parentheses around optional elements
+                    tt = ['', tt[1:-1]]
+                else:
+                    # Separate multiple generation options
+                    tt = tt.split('|')
+                # Add tg group string and associated morphology to each choice
+                if tm:
+                    tg_expanded.append([(ttt, tg, tmm) for ttt, tmm in zip(tt, tm)])
+                else:
+                    tg_expanded.append([(ttt, tg, None) for ttt in tt])
+            tgcombs = self.combine_trans(tg_expanded)
+#            tgcombs = allcombs(tg_expanded)
+#            print("tgcombs {}".format(tgcombs))
+        tgcombs.sort()
+        tgforms = []
+        tgmorphology = []
+        tggroups = []
+        for ttg in tgcombs:
+#            print("ttg {}".format(ttg))
+            # "if tttg[0]" prevents '' from being treated as a token
+            tgform = ' '.join([tttg[0] for tttg in ttg if tttg[0]])
+            tgform = Seg.postproc_tstring(tgform)
+            tgmorph = [tttg[2] for tttg in ttg if tttg[2]]
+            tgforms.append(tgform)
+            tgmorphology.append(tgmorph)
+            tggroups.append("||".join([tttg[1] for tttg in ttg if tttg[0]]))
+        ntgroups = len(tgroups)
+        ntggroups = len(tggroups)
+        if (ntgroups == 1) and (ntggroups == 1):
+            multtrans = False
+        print("get_tchoices {} {}".format(tgforms, tgmorphology))
+        return tgforms, tgmorphology, tggroups, multtrans
 
     ## Web app
 
@@ -413,7 +609,7 @@ class Seg:
 #    def get_trans_strings(self, index, first=False, choose=False, verbosity=0):
 #        """Get the final translation strings for this Seg."""
 
-    def finalize_html(self, index, first=False, verbosity=0):
+    def make_html(self, index, first=False, verbosity=0):
         # T Group strings associated with each choice
         choice_tgroups = []
         self.color = Seg.tt_notrans_color if self.is_punc or (not self.translation and not self.special) else Seg.tt_colors[index % 9]
@@ -481,169 +677,6 @@ class Seg:
         transhtml += '</div>'
         self.html = (orig_tokens, self.color, transhtml, index, trans1, self.source_html)
 
-    def finalize(self, index, html=True, first=False, choose=False, verbosity=0):
-        """Create final translation strings for this Seg. If html is True, set the HTML markup for
-        the Seg as a colored segment in source and dropdown menu in target, given its position in the sentence.
-        """
-        # T Group strings associated with each choice
-        choice_tgroups = []
-        if html:
-            self.color = Seg.tt_notrans_color if self.is_punc or (not self.translation and not self.special) else Seg.tt_colors[index % 9]
-            self.set_source_html(first)
-            transhtml = "<div class='desplegable' ondrop='drop(event);' ondragover='allowDrop(event);'>"
-            despleg = "despleg{}".format(index)
-            boton = "boton{}".format(index)
-            wrap = "wrap{}".format(index)
-            trans_choice_index = 0
-        capitalized = False
-        choice_list = self.record.choices if self.record else None
-        # Final source segment output
-        tokens = self.token_str
-        orig_tokens = self.original_token_str
-        # Currently selected translation
-        trans1 = ''
-        if self.is_punc:
-            trans = self.translation[0][0]
-            self.final = [trans]
-            self.final_morph = [None]
-            if html:
-                trans1 = trans
-                if '"' in trans:
-                    trans = trans.replace('"', '\"')
-                transhtml += "<div class='despleg' id='{}' style='cursor:default'>".format(boton)
-                transhtml += trans + "</div></div>"
-                self.html = (tokens, self.color, transhtml, index, trans1, self.source_html)
-            return
-        # No dropdown if there's only 1 translation
-        ntgroups = len(self.tgroups)
-        multtrans = True
-        for tindex, (t, tgroups, tmorph) in enumerate(zip(self.cleaned_trans, self.tgroups, self.morphology)):
-            # get all legitimate combinations of output strings and morphological features for constituent Segs
-            tgforms, tgmorph, tggroups, multtrans = self.get_tchoices(t, tgroups, ntgroups, tmorph, multtrans)
-            self.final.extend(tgforms)
-            self.final_morph.extend(tgmorph)
-            choice_tgroups.extend(tggroups)
-#            choice_tgroups.extend(tgg[1] for tgg in tggroups)
-            if html:
-                for tcindex, tchoice in enumerate(tgforms):
-                    # ID for the current choice item
-                    choiceid = 'opcion{}.{}'.format(index, trans_choice_index)
-                    # The button itself
-                    if tindex == 0 and tcindex == 0:
-                        trans1 = tchoice
-                        if not multtrans:
-                            # Only translation; no dropdown menu
-                            transhtml += "<div class='despleg' id='{}' ".format(boton)
-                            transhtml += "style='background-color:{};cursor:grab' draggable='true' ondragstart='drag(event);'>{}</div>".format(self.color, tchoice)
-                        else:
-                            # First translation of multiple translations; make dropdown menu
-                            transhtml += '<div draggable="true" id="{}" ondragstart="drag(event);">'.format(wrap)
-                            transhtml += '<div onclick="desplegar(' + "'{}')\"".format(despleg)
-                            transhtml += " id='{}' class='despleg' style='background-color:{};cursor:context-menu'>{} ▾</div>".format(boton, self.color, tchoice)
-                    else:
-                        # Choice in menu under button
-                        if trans_choice_index == 1:
-                            # Start menu list
-                            transhtml += "<div id='{}' class='contenido-desplegable'>".format(despleg)
-                        transhtml += "<div class='segopcion' id='{}' onclick='cambiarMeta(".format(choiceid)
-                        transhtml += "\"{}\", \"{}\")'".format(boton, choiceid)
-                        transhtml += ">{}</div>".format(tchoice)
-                    trans_choice_index += 1
-        if html:
-            if not self.translation and not self.special:
-                trans1 = orig_tokens
-                # No translations suggested: button for translating as source
-                multtrans = False
-                transhtml += "<div class='despleg' id='{}'  style='cursor:grab' draggable='true' ondragstart='drag(event);'>".format(boton)
-                transhtml += orig_tokens
-                transhtml += "</div>"
-            if multtrans:
-                transhtml += '</div></div>'
-            transhtml += '</div>'
-        if self.final:
-#            print("choice t groups {}".format(choice_tgroups))
-#            print("final string {}".format(self.final))
-#            print("final morph {}".format(self.final_morph))
-            if self.record:
-                self.record.choice_tgroups = choice_tgroups
-        if html:
-            self.html = (orig_tokens, self.color, transhtml, index, trans1, self.source_html)
-
-#    def capitalize_first(self, tokens):
-#        """Capitalize tokens if in first place."""
-#        capitalized = False
-#        if ' ' in tokens:
-#            toks = []
-#            tok_list = tokens.split()
-#            for tok in tok_list:
-#                if capitalized:
-#                    toks.append(tok)
-#                elif self.source.is_punc(tok):
-#                    toks.append(tok)
-#                else:
-#                    toks.append(tok.capitalize())
-#                    capitalized = True
-#            tokens = ' '.join(toks)
-#        else:
-#            tokens = tokens.capitalize()
-
-    @staticmethod
-    def postproc_tstring(string):
-        """Make final replacements to translation string."""
-        return string.replace("'", "’").replace('_', ' ')
-
-#    @staticmethod
-#    def postproc_punc(string):
-#        """Make final replacements to punctuation (a string with possibly multiple
-#        punctuation characters."""
-#        if '"' in string:
-#            return string.replace('"', '\"')
-#        return string
-
-    def get_tchoices(self, translation, tgroups, ntgroups, tmorph, multtrans):
-        """Create all combinations of word sequences."""
-        tg_expanded = []
-        multtrans = True
-        if self.special:
-            trans = translation[0]
-            tgcombs = [[(trans, '', '')]]
-            # There can't be multiple translations for special sequences, can there?
-            multtrans = False
-        else:
-            for tt, tg, tm in zip(translation, tgroups, tmorph):
-#                print("tt {}, tg {}, tm {}".format(tt, tg, tm))
-                tg = Group.make_gpair_name(tg)
-                if '(' in tt:
-                    # Get rid of parentheses around optional elements
-                    tt = ['', tt[1:-1]]
-                else:
-                    # Separate multiple generation options
-                    tt = tt.split('|')
-                # Add tg group string and associated morphology to each choice
-                if tm:
-                    tg_expanded.append([(ttt, tg, tmm) for ttt, tmm in zip(tt, tm)])
-                else:
-                    tg_expanded.append([(ttt, tg, None) for ttt in tt])
-            tgcombs = allcombs(tg_expanded)
-        tgcombs.sort()
-        tgforms = []
-        tgmorphology = []
-        tggroups = []
-        for ttg in tgcombs:
-#            print("ttg {}".format(ttg))
-            # "if tttg[0]" prevents '' from being treated as a token
-            tgform = ' '.join([tttg[0] for tttg in ttg if tttg[0]])
-            tgform = Seg.postproc_tstring(tgform)
-            tgmorph = [tttg[2] for tttg in ttg if tttg[2]]
-            tgforms.append(tgform)
-            tgmorphology.append(tgmorph)
-            tggroups.append("||".join([tttg[1] for tttg in ttg if tttg[0]]))
-        ntggroups = len(tggroups)
-        if (ntgroups == 1) and (ntggroups == 1):
-            multtrans = False
-        print("get_tchoices {} {}".format(tgforms, tgmorphology))
-        return tgforms, tgmorphology, tggroups, multtrans
-
     def unseg_tokens(self):
         """Rejoin tokens in original_token_str that were segmented when the Sentence was created."""
         toksegs = self.sentence.toksegs
@@ -706,8 +739,7 @@ class Seg:
                         stringlists[i][j] = Seg.join_toks(string)
 
 class SuperSeg(Seg):
-    """SuperSegment: joins Segment instances into larger units, either via a Join rule
-    or a Group."""
+    """SuperSegment: joins Seg instances into larger units, either via a Join rule or a Group."""
 
     def __init__(self, segmentation, segments=None, features=None, name=None, join=None, verbosity=0):
         Seg.__init__(self, segmentation)

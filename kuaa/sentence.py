@@ -2440,13 +2440,13 @@ class Segmentation:
         """Set the final strings and morphology for each segment in this segmentation
         and the HTML too if html is True."""
         for i, segment in enumerate(self.segments):
-            segment.finalize(i, html=False)
+            segment.finalize(i)
 #            if first and not segment.is_punc:
 #                first = False
         if html:
             first = True
             for i, segment in enumerate(self.segments):
-                segment.finalize_html(i, first=first)
+                segment.make_html(i, first=first)
                 if first and not segment.is_punc:
                     first = False
         self.do_seg_feat_agreement(user_input=user_input,
