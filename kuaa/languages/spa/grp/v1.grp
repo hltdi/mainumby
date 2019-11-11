@@ -1544,7 +1544,6 @@
 ** dar_v[-r,+fin] sacudidas ; ^ dar_v 0
 ->grn susũ_v[cat=a]
 ** dar_v[-r,+fin] ropa ; ^ dar_v 0
-->grn mboao_v[cat=a]
 ->grn mbyao_v[cat=a]
 ** dar_v[-r,+fin] notabilidad ; ^ dar_v 0
 ->grn moherãkuã_v[cat=a]
@@ -4110,8 +4109,6 @@
 ->grn soro_v[cat=a]
 ** proveer_v[+r,+fin] de asiento ; ^ proveer_v 0
 ->grn ñemboapyka_v[cat=a]
-** proveer_v[-r,+fin] de vestido ; ^ proveer_v 0
-->grn mboao_v[cat=a]
 ** proveer_v[-r,+fin] de boca ; ^ proveer_v 0
 ->grn mbojuru_v[cat=a]
 ** proveer_v[+r,+fin] de camino ; ^ proveer_v 0
@@ -5866,7 +5863,6 @@
 ->grn ñemama_v[cat=a]
 ->grn jejaho'i_v[cat=a] ; #2
 ** arropar_v[-r,+fin] ; ^ arropar_v 0
-->grn mboao_v[cat=a]
 ->grn jaho'i_v[cat=a] ; #22
 ->grn mbyao_v[cat=a] ; #5
 ** arrugar_v[+r,+fin] ; ^ arrugar_v 0
@@ -10247,7 +10243,6 @@
 ->grn ja'yvere_v[cat=a] ; #5
 ->grn ñemoakãratĩ_v[cat=a]
 ** trajear_v[-r,+fin] ; ^ trajear_v 0
-->grn mboao_v[cat=a]
 ->grn mbyao_v[cat=a] ; #5
 ** tramar_v[-r,+fin] ; ^ tramar_v 0 ; #11
 ->grn pyaha_v[subcat=i] ; #8
@@ -10465,7 +10460,6 @@
 ->grn ñemonde_v[cat=a]
 ** vestir_v[-r,+fin] ; ^ vestir_v 0 ; #488
 ->grn monde_v[cat=a] ; #84
-->grn mboao_v[cat=a]
 ** viajar_v[-r,+fin] ; ^ viajar_v 0
 ->grn guata_v[cat=a]
 ** vibrar_v[-r,+fin] ; ^ vibrar_v 0
@@ -11043,7 +11037,7 @@
 ->grn imo'ã_v[cat=a]
 ->grn pyaha_v[subcat=i]
 ** embanderar_v[-r,+fin]
-->grn mboaoveve_v[cat=a]
+->grn mbyaoveve_v[cat=a]
 ** embargar_v[-r,+fin]
 ->grn joko_v[cat=a]
 ->grn pe'a_v[subcat=i]

@@ -154,8 +154,8 @@
 # -- Introduced ¶ for end of paragraph and titles.
 # 2019.05.27
 # -- Lexicalization always looks at simple (lexical) groups only.
-# 2019.11.05
-# -- Segment and sentence finalization: restricting 
+# 2019.11.05-08
+# -- Segment and sentence finalization
 
 import copy, re, random, itertools, os
 from .ui import *
@@ -765,13 +765,15 @@ class Sentence:
     ## Initializing and solving a Sentence, created from a string if not already initialized
     @staticmethod
     def solve_sentence(sourceL, targetL, sentence=None, text='', session=None,
-                       max_sols=2, translate=True, verbosity=0):
+                       max_sols=2, translate=True, choose=False,
+                       verbosity=0):
         if not sentence:
             d = Document(language=sourceL, target=targetL, text=text, proc=True,
                          single=True, session=session)
             sentence = d[0]
         sentence.initialize(ambig=False, verbosity=verbosity)
-        sentence.solve(all_sols=max_sols > 1, max_sols=max_sols, translate=translate, verbosity=verbosity)
+        sentence.solve(all_sols=max_sols > 1, max_sols=max_sols, translate=translate, choose=choose,
+                       verbosity=verbosity)
         return sentence
 
     ## Bilingual sentence pairs and analyses
@@ -1529,12 +1531,13 @@ class Sentence:
     ## As of 2018.12, "solutions" are really initial "segmentations".
 
     def solve(self, translate=True, all_sols=False, all_trans=True, interactive=False,
-              limit_trans=True, max_sols=0, verbosity=0, tracevar=None, terse=True):
+              limit_trans=True, choose=False, max_sols=0, verbosity=0, tracevar=None, terse=True):
         """Generate segmentations, for all analyses if all_sols is True and translations (if translate is True)."""
         if not terse:
             print("RESOLVIENDO oración principal {}".format(self))
         self.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
-                    limit_trans=limit_trans, max_sols=max_sols, verbosity=verbosity, tracevar=tracevar, terse=terse)
+                    limit_trans=limit_trans, choose=choose, max_sols=max_sols,
+                    verbosity=verbosity, tracevar=tracevar, terse=terse)
         if all_sols or (len(self.segmentations) < max_sols):
             for s in self.altsyns:
                 if not terse:
@@ -1544,7 +1547,8 @@ class Sentence:
                          terse=terse)
     
     def solve1(self, translate=True, all_sols=False, all_trans=True, interactive=False,
-               limit_trans=True, max_sols=0, verbosity=0, tracevar=None, terse=True):
+               limit_trans=True, choose=False, max_sols=0,
+               verbosity=0, tracevar=None, terse=True):
         """Generate segmentations and translations (if translate is true)."""
         if not self.groups:
             if not terse or verbosity:
@@ -1563,8 +1567,9 @@ class Sentence:
                 segmentation = self.create_segmentation(dstore=ds, verbosity=verbosity)
                 if translate and self.target:
                     # Translating
-                    translated = segmentation.translate(verbosity=verbosity, limit_trans=limit_trans,
-                                                        all_trans=all_trans, interactive=interactive)
+                    translated = segmentation.translate(limit_trans=limit_trans, choose=choose,
+                                                        all_trans=all_trans,
+                                                        interactive=interactive, verbosity=verbosity)
                     if not translated:
                         if not terse:
                             print("Translation failed; trying next segmentation!")
@@ -2068,7 +2073,7 @@ class Sentence:
         return token.capitalize()
 
     ## Analyzing the sentence without creating segments
-    def analyze(self, translate=True, verbosity=0):
+    def analyze(self, translate=True, choose=False, verbosity=0):
         """Analyze the sentence without creating Segs (or TreeTrans instances).
         Match all Groups simultaneously, and do not apply any Joins.
         Useful for bitext corpus processing."""
@@ -2076,7 +2081,7 @@ class Sentence:
             print("Analizando {}".format(self))
         self.initialize(ambig=False, constrain_groups=False, verbosity=verbosity)
         self.solve(all_sols=False, translate=False, verbosity=verbosity,
-                   limit_trans=False)
+                   limit_trans=False, choose=choose)
         if self.segmentations:
             segmentation = self.segmentations[0]
             segmentation.make_pseudosegs(translate=translate, verbosity=verbosity)
@@ -2139,7 +2144,8 @@ class Segmentation:
 
     ## Creating translations
     
-    def translate(self, verbosity=0, all_trans=False, interactive=False, limit_trans=True):
+    def translate(self, verbosity=0, all_trans=False, interactive=False,
+                  limit_trans=True, choose=False):
         """Do everything you need to create the translation."""
         features = self.set_node_features(verbosity=verbosity)
         if not features:
@@ -2151,7 +2157,7 @@ class Segmentation:
             else:
                 ginst.set_translations(verbosity=verbosity)
         self.make_translations(verbosity=verbosity, all_trans=all_trans, interactive=interactive,
-                               limit_trans=limit_trans)
+                               limit_trans=limit_trans, choose=choose)
         return True
 
     def set_node_features(self, verbosity=0):
@@ -2185,7 +2191,7 @@ class Segmentation:
         return True
 
     def make_translations(self, verbosity=0, display=True, all_trans=False, interactive=False,
-                          limit_trans=True):
+                          limit_trans=True, choose=False):
         """Create a TreeTrans object for each GInst and tree. build() each top TreeTrans and
         realize translation. Whew."""
         if verbosity:
@@ -2211,7 +2217,9 @@ class Segmentation:
                 any_anode = False
                 # This is the first place we can limit the number of translations allowed
                 ginsttrans = ginst.translations
-                if limit_trans:
+                if choose:
+                    ginsttrans = [ginsttrans[0]]
+                elif limit_trans:
                     ginsttrans = ginsttrans[:Segmentation.max_group_trans]
                 for tgroup, tgnodes, tnodes in ginsttrans:
                     for tgnode, tokens, feats, agrs, t_index in tgnodes:
@@ -2221,10 +2229,8 @@ class Segmentation:
                             gnode_dict[tgnode] = [(tgroup, tokens, feats, agrs, t_index)]
                     group_attribs.append((tgroup, tnodes, tgroup.agr, tgnodes))
 
-                treetrans = TreeTrans(self, tree=tree.copy(),
-                                      ginst=ginst, gnode_dict=gnode_dict,
-                                      group_attribs=group_attribs,
-                                      any_anode=any_anode,
+                treetrans = TreeTrans(self, tree=tree.copy(), ginst=ginst, gnode_dict=gnode_dict,
+                                      group_attribs=group_attribs, any_anode=any_anode,
                                       index=ttindex, top=is_top)
                 treetranss.append(treetrans)
                 ttindex += 1
@@ -2412,7 +2418,7 @@ class Segmentation:
             seg = Segment(self, raw_indices, forms, src_tokens, treetrans=treetrans,
                           session=self.session, gname=gname, sfeats=src_feats[head_index],
                           tgroups=tgroups, head=thead, tok=thead[-1])
-            print("Segmento (traducido) {}->{}: {}={} ({}); {}".format(start, end, src_tokens, seg.translation, seg.head_tok, seg.cleaned_trans))
+            print("Segmento (traducido) {}->{}: {}={} ({})".format(start, end, src_tokens, seg.translation, seg.head_tok))
             self.segments.append(seg)
             indices_covered.extend(raw_indices)
             max_index = max(max_index, end)
@@ -2434,9 +2440,8 @@ class Segmentation:
     ###    FINALIZING SEGMENT TRANSLATIONS IN SEGMENTATION.
     #######
 
-    def finalize_segments(self, html=True, user_input=None, agree_dflt=False,
-                          choose=False,
-                          verbosity=0):
+    def finalize_segments(self, html=True, user_input=None, agree_dflt=True,
+                          choose=False, verbosity=0):
         """Set the final strings and morphology for each segment in this segmentation
         and the HTML too if html is True."""
         for i, segment in enumerate(self.segments):
@@ -2449,8 +2454,7 @@ class Segmentation:
                 segment.make_html(i, first=first)
                 if first and not segment.is_punc:
                     first = False
-        self.do_seg_feat_agreement(user_input=user_input,
-                                   agree_dflt=agree_dflt or choose,
+        self.do_seg_feat_agreement(user_input=user_input, agree_dflt=agree_dflt,
                                    verbosity=verbosity)
         if choose:
             self.choose_final(verbosity=verbosity)
@@ -2461,11 +2465,15 @@ class Segmentation:
 #        all_finals = [segment.final[:] for segment in self.segments]
         all_scored = []
         for i, segment in enumerate(self.segments):
-            scored = self.score_finals(segment)
-            scored.sort()
-            all_scored.append((scored, segment))
-            # Pick the first string for this segment
-            segment.final = scored[0][1]
+            # For now assume segment finals are already ordered appropriately;
+            # later take sentence context into account
+            segment.final = segment.final[0]
+#            scored = self.score_finals(segment)
+#            scored.sort()
+#            all_scored.append((scored, segment))
+#            # Pick the first string for this segment
+#            segment.final = scored[0][1]
+        self.final = clean_sentence(" ".join([s.final for s in self.segments]))
         return all_scored
 
     def score_finals(self, segment):
@@ -2486,7 +2494,8 @@ class Segmentation:
             return
         for features, value in disamb_agree:
             if verbosity:
-                print("Attempting to realize agreement {} = {}".format(features, value))
+                print("Attempting to realize agreement {} = {} ({})".format(features, value, agree_dflt))
+            current_value = -1
             for segment in self.segments:
                 final_strings = segment.final
                 if verbosity:
@@ -2494,11 +2503,13 @@ class Segmentation:
                 if len(final_strings) == 1:
                     continue
                 final_morphs = segment.final_morph
+                if not any(final_morphs):
+                    # nothing to check for this segment
+                    continue
                 agree_strings = []
                 agree_morphs = []
                 for string, morphs in zip(final_strings, final_morphs):
                     agree = True
-                    current_value = None
                     for feature in features:
                         if not agree:
                             break
@@ -2512,7 +2523,7 @@ class Segmentation:
                                         agree = False
                                         # fail for the whole series of morphs
                                         break
-                                elif current_value is None:
+                                elif current_value == -1:
                                     current_value = morphvalue
                                 elif morphvalue != current_value:
                                     # morphvalue must agree with current value
@@ -2522,7 +2533,8 @@ class Segmentation:
                         agree_strings.append(string)
                         agree_morphs.append(morphs)
                 if agree_strings:
-                    # Update the Seg's final string and morphology values
+                    # Update the Seg's final string and morphology values but
+                    # don't change anything if there are no strings that agree
                     segment.final = agree_strings
                     segment.final_morph = agree_morphs
                 if verbosity:

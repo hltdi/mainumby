@@ -70,6 +70,9 @@ class FSSet(set):
     def short_print(self):
         print(self.__repr__())
 
+    def copyFSS(self):
+        return FSSet(self.copy())
+
     def union(self, fsset):
         """Override set union method by casting result to FSSet."""
         res = set.union(self, fsset)

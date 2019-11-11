@@ -120,6 +120,9 @@
 # 2019.5.25
 # -- Group: eliminated check for whether SNode is "unknown" in group matching (so that place
 #    names will match).
+# 2019.11
+# -- Join: can add suffixes to elements in Segs that are joined:
+#    encontraron a Carlos -> ojuhúkuri Carlos-pe
 
 import copy, itertools
 import yaml
@@ -1950,9 +1953,10 @@ class Join(Entry):
     must_agree = re.compile("\s*(\d)\s*=!\s*(\d)\s*(.+)$")
 #    has_child = re.compile("\s*(\d)\s*\(\)$")
     depth_constraint = re.compile("\s*(\d)\s*\((.*)\)$")
-    head_index = re.compile("\s*\^\s*(\d)$")
+    hd_index = re.compile("\s*\^\s*(\d)$")
     swap_order = re.compile("\s*>\s*((?:\d\s*)+)$")
     add_feats = re.compile("\s*(\d)\s*(\[.+\])$")
+    add_suffix = re.compile("\s*(\d)\+(.+)$")
     max_depth = 8
 
     def __init__(self, source, target, name=None, tokens=None, expanded=False):
@@ -1963,6 +1967,7 @@ class Join(Entry):
         self.agree_changes = []
         self.targ_feats = []
         self.head_index = -1
+        self.add_suffixes = []
         self.segment_order = None
 #        self.has_child_indices = []
         # dictionary of min, max depth for particular pattern indices
@@ -2027,7 +2032,7 @@ class Join(Entry):
                     print("  Matched 'must agree' condition {}, s1 {}, s2 {}, f1 {}, f2 {}".format(attrib, s1, s2, f1, f2))
                 self.agree_changes.append((s1, s2, f1, f2))
                 continue
-            match = Join.head_index.match(attrib)
+            match = Join.hd_index.match(attrib)
             if match:
                 head_index = match.groups()[0]
                 head_index = int(head_index)
@@ -2065,6 +2070,14 @@ class Join(Entry):
                 if verbose:
                     print("  Matched swap order: {}".format(indices))
                 self.segment_order = indices
+                continue
+            match = Join.add_suffix.match(attrib)
+            if match:
+                index, suffix = match.groups()
+                index = int(index)
+                if verbose:
+                    print("  Matched 'add suffix' action {}, {}".format(index, suffix))
+                self.add_suffixes.append((index, suffix))
                 continue
             match = Join.add_feats.match(attrib)
             if match:
@@ -2188,6 +2201,20 @@ class Join(Entry):
                         newtf = tf.unify_FS(addfeats)
                         if newtf != 'fail':
                             th[2] = newtf
+        if self.add_suffixes:
+            for index, suffix in self.add_suffixes:
+                segment = segments[index]
+                print("Adding suffix {} to segment {}".format(suffix, segment))
+                if index != segment.shead_index:
+                    for trans in segment.cleaned_trans:
+                        # this is either a list of strings or a list of [root, pos, feats] lists
+                        trans1 = trans[0]
+                        # add the suffix to the first element
+                        if isinstance(trans1, str):
+                            # suffix only possible for string
+                            trans[0] = trans1 + suffix
+                    print(" New trans {}".format(segment.cleaned_trans))
+                                
         if self.segment_order:
             if verbosity or self.debug:
                 print("  Swap {}".format(self.segment_order))

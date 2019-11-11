@@ -46,7 +46,7 @@
 # -- Limited disambiguation
 # -- Simplified shortcut functions by including many of them in __init__.py
 
-__version__ = 2.0
+__version__ = 2.1
 
 import kuaa
 

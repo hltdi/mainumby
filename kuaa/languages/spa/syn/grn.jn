@@ -18,9 +18,11 @@ Vsbj :: [pos=v,tm=sbp] ; ^0 ; 0[mod=opt]
 VxNdeN :: $vex &n de &n ; ^0 ; 0[-ojxpl] ; 3[caso=gui]
 # posesivo "de"
 NdeN :: &n de &n ; ^0 ; 0(-1) ; >2 0 ; 0[poses=[+ext,pp=3]]
-Nde[C] :: &n de %C ; ^0 ; 0(-1) ; >2 0 ; 0[poses=[+ext,pp=3]]
+NdeN[C] :: &n de %C ; ^0 ; 0(-1) ; >2 0 ; 0[poses=[+ext,pp=3]]
 # transitive verbs with personal objects
 VaN :: $vt a &n ; ^0 ; 0[-ojxpl] ; 2[caso=pe]
+# transitive verb with named object
+VaN[C] :: $vt a %C; ^0 ; 0[-ojxpl] ; 2+-pe
 # transitive verbs with impersonal objects
 VN :: $vt &n ; ^0 ; 0[-ojxpl]
 AdvV :: $adv &v ; ^1

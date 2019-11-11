@@ -530,7 +530,8 @@ class POS:
                 print("Adding new gen {}:{} || {}".format(root, fs.__repr__(), words))
             self.new_gens[(root, fs)] = words
 
-    def get_cached_gen(self, root, fs, only_words):
+    def get_cached_gen(self, root, fs):
+#                       only_words):
         """Returns cached words for root, FS pair, if any."""
         if isinstance(fs, FeatStruct) and not fs.frozen():
             fs.freeze()
@@ -541,11 +542,11 @@ class POS:
             return False
         else:
             # cached form includes output string and morphology
-            cached = self.gen_cached[(root, fs)]
-            if only_words:
-                return [c[0] for c in cached]
-            else:
-                return cached
+#            cached = self.gen_cached[(root, fs)]
+#            if only_words:
+#                return [c[0] for c in cached]
+#            else:
+            return self.gen_cached[(root, fs)]
 
     def write_gen_cache(self, name=''):
         """Write a dictionary of cached entries to a gen cache file. This should only be used in
@@ -655,8 +656,7 @@ class POS:
     def gen(self, root, features=None, update_feats=None,
             guess=False, segment=False, fst=None, timeit=False, only_one=False, cache=True,
             # Return only word forms
-            only_words=True, sort=True,
-            trace=False):
+            sort=True, trace=False):
         """Generate word from root and features."""
 #        print("{} generating {} with update feats {}".format(self, root, update_feats.__repr__()))
         if isinstance(update_feats, str):
@@ -671,7 +671,8 @@ class POS:
         all_cached = []
         all_found = True
         for cache_key in cache_keys:
-            cached = self.get_cached_gen(root, cache_key, only_words)
+#            print("cache key {}".format(cache_key.__repr__()))
+            cached = self.get_cached_gen(root, cache_key)
             if cached:
                 all_cached.extend(cached)
             else:
@@ -680,7 +681,7 @@ class POS:
         if all_found:
             if trace:
                 print("Found {}:{} in cached generations".format(root, cache_keys))
-            if not only_words and self.language.disambig_feats:
+            if self.language.disambig_feats:
                 all_cached = [(g[0], self.get_disambig(g[1])) for g in all_cached]
             return all_cached
         features = features or self.defaultFS
@@ -702,21 +703,16 @@ class POS:
         if fst:
             gens = fst.transduce(root, fsset, seg_units=self.language.seg_units, trace=trace, timeit=timeit)
             full_gens = gens
-            if self.language.disambig_feats:
-                full_gens = [(g[0], self.get_disambig(g[1])) for g in gens]
             if sort and len(gens) > 1 and self.feat_freqs:
+#                print("Sorting and scoring {}".format([g[0] for g in gens]))
                 gens = self.score_gen_output(root, gens)
                 gens.sort(key=lambda g: g[-1], reverse=True)
-            if only_words:
-                gens = [g[0] for g in gens]
-            else:
-                gens = full_gens
-#            elif self.language.disambig_feats:
-#                # Return the output strings and selected features for each
-#                gens = [(g[0], self.get_disambig(g[1])) for g in gens]
+            if self.language.disambig_feats:
+                gens = [(g[0], self.get_disambig(g[1])) for g in gens]
+#                print("...sorted and reduced {}".format(gens))
             if cache and gens:
                 for cache_key in cache_keys:
-                    self.add_new_gen(root, cache_key, full_gens)
+                    self.add_new_gen(root, cache_key, gens)
             return gens
         elif trace:
             print('No generation FST loaded')
@@ -999,28 +995,37 @@ class POS:
         diffs = FSSet.compareFSS(feats)
         root_scores = [0.0] * len(forms)
         feat_scores = [0.0] * len(forms)
+        disambig_pen = self.language.disambig_penalties
+        def get_freq(feat, freqs, value):
+            freq = freqs.get(value, 0.0)
+            if disambig_pen and feat in disambig_pen and not value:
+                return disambig_pen[feat] * freq
+            return freq
         # root-feature frequencies
         if self.root_freqs and root in self.root_freqs:
             root_freqs = self.root_freqs[root]
             for feat, values in diffs.items():
+#                print("feat {}, values {}".format(feat, values))
                 if feat in root_freqs:
                     root_feat_freqs = root_freqs[feat]
-                    root_feat_values = [root_feat_freqs.get(value, 0.0) for value in values]
+#                    print(" root feat {}, value {}".format(feat, root_feat_freqs))
+                    root_feat_values = [get_freq(feat, root_feat_freqs, value) for value in values]
+#                    print(" values {}".format(root_feat_values))
                     root_scores = [(x + y) for x, y in zip(root_scores, root_feat_values)]
-        # total feature frequencies
-        if self.feat_freqs:
-            for feat, values in diffs.items():
-                if feat in self.feat_freqs:
-                    feat_freqs = self.feat_freqs[feat]
-                    feat_values = [feat_freqs.get(value, 0.0) for value in values]
-                    feat_scores = [(x + y) for x, y in zip(feat_scores, feat_values)]
-        # scale the feat_scores by the proportion of the total root_scores to the feat_scores
-        feat_sum = sum(feat_scores)
-        if feat_sum:
-            root_sum = sum(root_scores)
-            scaling = root_sum / feat_sum
-            scores = [(r + f * scaling) for r, f in zip(root_scores, feat_scores)]
-        else:
-            scores = root_scores
+#        # total feature frequencies
+#        if self.feat_freqs:
+#            for feat, values in diffs.items():
+#                if feat in self.feat_freqs:
+#                    feat_freqs = self.feat_freqs[feat]
+#                    feat_values = [feat_freqs.get(value, 0.0) for value in values]
+#                    feat_scores = [(x + y) for x, y in zip(feat_scores, feat_values)]
+#        # scale the feat_scores by the proportion of the total root_scores to the feat_scores
+#        feat_sum = sum(feat_scores)
+#        if feat_sum:
+#            root_sum = sum(root_scores)
+#            scaling = root_sum / feat_sum
+#            scores = [(r + f * scaling) for r, f in zip(root_scores, feat_scores)]
+#        else:
+        scores = root_scores
         # return the outputs with scores appended
         return [o + [s] for o, s in zip(output, scores)]

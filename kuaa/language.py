@@ -193,6 +193,8 @@ class Language:
                  disambig_feats=None,
                  # list of lists of morphological features that should agree within a sentence
                  disambig_agree=None,
+                 # penalties for None/False/0 morphology values
+                 disambig_penalties=None,
 #                 lemmas=None,
                  # phrases to be joined during sentence tokenization
                  mwe=False,
@@ -287,6 +289,7 @@ class Language:
         # 2019.11
         self.disambig_feats = disambig_feats
         self.disambig_agree = disambig_agree
+        self.disambig_penalties = disambig_penalties
         # Classes used in identifying numerals, etc.; class->words dict
         self.classes = {}
         # Patterns consisting of explicit tokens, classes, and patterns; used in identifying numerals, etc.
@@ -1710,7 +1713,16 @@ class Language:
             if score > highest:
                 highest = score
                 highestfeats = features
-        return highestfeats
+        # return a copy of the winning list of roots and features
+        highestcopy = []
+        for dct in highestfeats:
+            # copy each dict
+            dctcopy = {}
+            dctcopy['root'] = dct['root']
+            # copy each FSSet
+            dctcopy['features'] = dct['features'].copyFSS()
+            highestcopy.append(dctcopy)
+        return highestcopy
 
     def disambiguate_cache(self, word, tag):
         """Try disambiguating using ordered cached analyses and tag from tagger.
@@ -2031,6 +2043,8 @@ class Language:
             return False
         elif string == 'True':
             return True
+        elif string == 'None':
+            return None
         else:
             return string
 
@@ -2046,6 +2060,7 @@ class Language:
         collocs = d.get('collocs')
         disambig_feats = d.get('disambfeats')
         disambig_agree = d.get('disambagree')
+        disambig_penalties = d.get('disambpen')
         if disambig_feats:
             disambig_feats = disambig_feats.split(',')
             disambig_feats = [tuple(df.split(':')) if ':' in df else df for df in disambig_feats]
@@ -2054,6 +2069,10 @@ class Language:
             disambig_agree = [da.split('==') for da in disambig_agree]
             disambig_agree = [([tuple(da.split(':')) if ':' in da else da for da in dis_agree[0].split(',')], Language.string2value(dis_agree[1]))\
                                for dis_agree in disambig_agree]
+        if disambig_penalties:
+#            print("disambpen {}".format(disambig_penalties))
+            disambig_penalties = [dp.split('==') for dp in disambig_penalties.split(';')]
+            disambig_penalties = dict([(tuple(dp0.split(':')) if ':' in dp0 else dp0, float(dp1)) for dp0, dp1 in disambig_penalties])
         if collocs:
             collocs = collocs.split(',')
         if groupcats:
@@ -2083,6 +2102,7 @@ class Language:
                      mwe=mwe, eos=d.get('eos', EOS), collocs=collocs,
                      disambig_feats=disambig_feats,
                      disambig_agree=disambig_agree,
+                     disambig_penalties=disambig_penalties,
 #                     lemmas=d.get('lemmas'),
                      namejoin=namejoin, groupcats=groupcats)
         translations = d.get('translations')
@@ -2337,10 +2357,10 @@ class Language:
                 print("POS {} not in morphology {}".format(pos, morf))
                 return [root], []
             posmorph = morf[pos]
-            output = posmorph.gen(root, update_feats=features, guess=guess, only_words=False, cache=cache)
+            output = posmorph.gen(root, update_feats=features, guess=guess, cache=cache)
         else:
             for posmorph in list(morf.values()):
-                output.extend(posmorph.gen(root, update_feats=features, guess=guess, only_words=False))
+                output.extend(posmorph.gen(root, update_feats=features, guess=guess))
         if output:
             # separate output strings from features
             output_strings = [o[0] for o in output]

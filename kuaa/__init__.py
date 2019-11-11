@@ -116,7 +116,8 @@ def oración(text='', src=None, targ=None, user=None, session=None, sentence=Non
     if not session:
         session = make_session(src, targ, user, create_memory=True)
     s = Sentence.solve_sentence(src, targ, text=text, session=session, sentence=sentence,
-                                max_sols=max_sols, translate=translate, verbosity=verbosity)
+                                max_sols=max_sols, choose=choose, translate=translate,
+                                verbosity=verbosity)
     segmentations = s.get_all_segmentations(translate=translate, generate=generate,
                                             agree_dflt=False,
                                             choose=choose, connect=connect, html=html)

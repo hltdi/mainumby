@@ -93,6 +93,9 @@ class Seg:
     # Maximum number of leaf Segments in Seg
     max_segments = 8
 
+    # Maximum number of final strings for Segs
+    max_final = 10
+
     # colors to display segments in interface
     tt_colors = ['blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple']
 
@@ -428,14 +431,17 @@ class Seg:
             return
 #        ntgroups = len(self.tgroups)
         multtrans = True
+        final = []
+        final_morph = []
         for tindex, (t, tgroups, tmorph) in enumerate(zip(self.cleaned_trans, self.tgroups, self.morphology)):
             # get all legitimate combinations of output strings and morphological features for constituent Segs
-#            print("t {}, tgmorph {}".format(t, tmorph))
 #            print("current final {}".format(self.final))
 #            print("current morph {}".format(self.final_morph))
-            tgforms, tgmorph, tggroups, multtrans = self.get_tchoices(t, tgroups, tmorph, multtrans)
-            self.final.extend(tgforms)
-            self.final_morph.extend(tgmorph)
+            tgforms, tgmorph, tggroups, multtrans = self.get_tchoices(t, tgroups, tmorph, multtrans, tindex)
+#            print("tgforms {}".format(tgforms))
+            # tgforms and tgmorph are pairs including scores
+            final.extend(tgforms)
+            final_morph.extend(tgmorph)
             choice_tgroups.extend(tggroups)
 #            choice_tgroups.extend(tgg[1] for tgg in tggroups)
 ##            if html:
@@ -474,7 +480,14 @@ class Seg:
 ##            if multtrans:
 ##                transhtml += '</div></div>'
 ##            transhtml += '</div>'
-        if self.final:
+        if final:
+#            print("final {}".format(final))
+            final.sort(key=lambda f: f[1])
+#            print("final sorted {}".format(final))
+            final_morph.sort(key=lambda m: m[1])
+            self.final = [f[0] for f in final][:Seg.max_final]
+            self.final_morph = [m[0] for m in final_morph][:Seg.max_final]
+#        if self.final:
 #            print("choice t groups {}".format(choice_tgroups))
 #            print("final string {}".format(self.final))
 #            print("final morph {}".format(self.final_morph))
@@ -514,46 +527,63 @@ class Seg:
 #            return string.replace('"', '\"')
 #        return string
 
-    def combine_trans(self, trans_morph):
+    def agree_disambig(self, combination, morph, disamb_agree):
+        """Check that disamb_agree constraints are matched in combining
+        combination with new string that has features in morph."""
+        prev_value = -1
+        next_value = -1
+        for features, value in disamb_agree:
+            for feature in features:
+                for t, g, m in combination:
+                    if not m:
+                        continue
+                    if feature in m:
+                        # only one feature needs to match
+                        prev_value = m.get(feature)
+                        break
+                if prev_value != -1:
+                    break
+            if prev_value != -1:
+                for feature in features:
+                    if feature in morph:
+                        next_value = morph.get(feature)
+                        # only one feature needs to match
+                        if next_value is not prev_value:
+                            return False
+                        return True
+        return True
+
+    def combine_trans(self, trans_morph, init_score):
         """Return all legitimate combinations of trans strings and associated features,
         skipping over those that violate within-sentence morphological constraints."""
-        combinations = [[tm] for tm in trans_morph[0]]
+#        print("Combining {} with init {}".format(trans_morph, init_score))
+        combinations = [([tm], i+init_score) for i, tm in enumerate(trans_morph[0])]
         disamb_agree = self.target.disambig_agree
         for items in trans_morph[1:]:
             new_combinations = []
-            for trans, group, morph in items:
-                for combination in combinations:
+            for j, (trans, group, morph) in enumerate(items):
+#                print(" trans {} morph {}, j {}".format(trans, morph, j))
+                for combination, k in combinations:
+#                    print("  combination {}, k {}".format(combination, k))
                     agree = True
-                    if disamb_agree:
-                        prev_value = None
-                        for features, value in disamb_agree:
-                            for feature in features:
-                                for t, g, m in combination:
-                                    if feature in m:
-                                        prev_value = m.get(feature)
-                                        break
-                            for feature in features:
-                                if feature in morph:
-                                    next_value = morph.get(feature)
-                                    if next_value is not prev_value:
-                                        agree = False
-                                    break
+                    if disamb_agree and morph:
+                        agree = self.agree_disambig(combination, morph, disamb_agree)
                     if agree:
-                        new_combination = combination + [(trans, group, morph)]
+                        new_combination = combination + [(trans, group, morph)], j + k
+#                        print(" new comb {}".format(new_combination))
                         new_combinations.append(new_combination)
 #                    else:
 #                        print("  REJECTED combination {} with {}/{}".format(combination, trans, morph))
             combinations = new_combinations
-#        print("combinations {}".format(combinations))
         return combinations
 
-    def get_tchoices(self, translation, tgroups, tmorph, multtrans):
+    def get_tchoices(self, translation, tgroups, tmorph, multtrans, tindex):
         """Create all combinations of word sequences."""
         tg_expanded = []
         multtrans = True
         if self.special:
             trans = translation[0]
-            tgcombs = [[(trans, '', '')]]
+            tgcombs = [[(trans, '', ''), 0]]
             # There can't be multiple translations for special sequences, can there?
             multtrans = False
         else:
@@ -571,27 +601,27 @@ class Seg:
                     tg_expanded.append([(ttt, tg, tmm) for ttt, tmm in zip(tt, tm)])
                 else:
                     tg_expanded.append([(ttt, tg, None) for ttt in tt])
-            tgcombs = self.combine_trans(tg_expanded)
+            tgcombs = self.combine_trans(tg_expanded, tindex)
 #            tgcombs = allcombs(tg_expanded)
-#            print("tgcombs {}".format(tgcombs))
-        tgcombs.sort()
+#        print("tgcombs {}".format(tgcombs))
+#        tgcombs = [tgc[0] for tgc in tgcombs]
+#        tgcombs.sort()
         tgforms = []
         tgmorphology = []
         tggroups = []
-        for ttg in tgcombs:
-#            print("ttg {}".format(ttg))
+        for ttg, score in tgcombs:
             # "if tttg[0]" prevents '' from being treated as a token
             tgform = ' '.join([tttg[0] for tttg in ttg if tttg[0]])
             tgform = Seg.postproc_tstring(tgform)
             tgmorph = [tttg[2] for tttg in ttg if tttg[2]]
-            tgforms.append(tgform)
-            tgmorphology.append(tgmorph)
+#            print("form {}, morph {}, score {}".format(tgform, tgmorph, score))
+            tgforms.append((tgform, score))
+            tgmorphology.append((tgmorph, score))
             tggroups.append("||".join([tttg[1] for tttg in ttg if tttg[0]]))
         ntgroups = len(tgroups)
         ntggroups = len(tggroups)
         if (ntgroups == 1) and (ntggroups == 1):
             multtrans = False
-        print("get_tchoices {} {}".format(tgforms, tgmorphology))
         return tgforms, tgmorphology, tggroups, multtrans
 
     ## Web app
