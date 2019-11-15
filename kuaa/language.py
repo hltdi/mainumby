@@ -1620,7 +1620,7 @@ class Language:
         # Try stripping off suffixes
         suff_anal = self.strip_suffixes(form, incl_suf=incl_suf, pretty=pretty)
         if suff_anal:
-            print("Suff anal {}".format(suff_anal))
+#            print("Suff anal {}".format(suff_anal))
             analyses.extend(suff_anal)
             if cache and not pretty:
                 to_cache.extend(suff_anal)
@@ -1720,7 +1720,12 @@ class Language:
             dctcopy = {}
             dctcopy['root'] = dct['root']
             # copy each FSSet
-            dctcopy['features'] = dct['features'].copyFSS()
+            features = dct['features']
+            if isinstance(features, str):
+#                print("Features for {} is string {}".format(word, features))
+                dctcopy['features'] = features
+            else:
+                dctcopy['features'] = dct['features'].copyFSS()
             highestcopy.append(dctcopy)
         return highestcopy
 

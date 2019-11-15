@@ -17,7 +17,7 @@ refl/3 :: se [+fin,pos=v,p=3,voz=reflx,+r] ; // 0
 refl/1s :: me [+fin,pos=v,p=1,n=0,voz=reflx,+r] ; // 0
 refl/2s :: te [+fin,pos=v,p=2,n=0,voz=reflx,+r] ; // 0
 refl/1p :: nos [+fin,pos=v,p=1,n=1,voz=reflx,+r] ; // 0
-o
+
 ## auxiliares
 perf :: haber_v[tm=prs] [pos=v,tm=prc,asp=[+prf]] ; 0=>1 p,n ; // 0 ; 1-> [tm=prs,+fin]
 pcp :: haber_v[tm=ipf] [pos=v,tm=prc] ; 0=>1 p,n ; // 0 ; 1-> [tm=pcp,+fin]

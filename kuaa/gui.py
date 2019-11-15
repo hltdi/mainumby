@@ -76,6 +76,8 @@ class GUI:
         # SENTENCE
         # The current sentence
         self.sentence = None
+        # Current raw sentence string
+        self.fue = ''
         # HTML for the current source sentence
         self.fue_seg_html = None
         # Current sentence's segments (NOT ACTUALLY USED FOR ANYTHING CURRENTLY)
@@ -84,7 +86,7 @@ class GUI:
         self.tra_seg_html = None
         # Translation of the current sentence
         self.tra = None
-        # TOGGLES: isdoc, nocorr, ocultar
+        # TOGGLES: isdoc, nocorr, ocultar, sinopciones
         self.props = {}
         # Default
         self.props['tfuente'] = "120%"
@@ -105,7 +107,7 @@ class GUI:
         self.props['tfuente'] = "100%" if nsent > 1 else "120%"
 
     def init_text(self, textid, nsent, html, html_list):
-        print("Initializing text, nsent: {}".format(nsent))
+#        print("Initializing text, nsent: {}".format(nsent))
         self.textid = textid
         self.has_text = True
         # List of translation HTML for sentences
@@ -130,11 +132,12 @@ class GUI:
         else:
             self.doc_html = self.doc.html
 
-    def update_doc(self, index, repeat=False):
-        if repeat:
+    def update_doc(self, index, choose=False, repeat=False):
+        if repeat or choose:
             current_fue = self.doc_select_html[index]
         else:
             current_fue = self.fue_seg_html
+#        print("Updating doc, current src {}".format(current_fue))
         self.doc_html = self.select_doc_html(index, current_fue)
         if not repeat:
             self.doc_select_html[index] = current_fue
@@ -180,17 +183,24 @@ class GUI:
             string += sent_trans
         return string.strip()
 
-    def init_sent(self, index):
+    def init_sent(self, index, choose=False, trans='', source=''):
         """What happens after a sentence has been translated."""
         cap = self.sentence.capitalized
         self.props['cap'] = cap
         self.props['punc'] = self.sentence.get_final_punc()
-        self.fue_seg_html = ''.join([s[-1] for s in self.tra_seg_html])
-        self.tra = clean_sentence(' '.join([s[4] for s in self.tra_seg_html]), cap)
+        if choose:
+            self.fue = source
+            self.tra = trans
+            self.fue_seg_html = ''
+            self.doc_tra_html[index] = ''
+            self.doc_tra[index] = self.tra
+        else:
+            self.fue_seg_html = ''.join([s[-1] for s in self.tra_seg_html])
+            self.tra = clean_sentence(' '.join([s[4] for s in self.tra_seg_html]), cap)
 #        GUI.clean_sentence(' '.join([s[4] for s in self.tra_seg_html]), cap)
-        self.doc_tra_html[index] = self.tra_seg_html
+            self.doc_tra_html[index] = self.tra_seg_html
 #        print("New tra seg: {}".format(self.tra_seg_html))
-        self.doc_tra[index] = self.tra
+            self.doc_tra[index] = self.tra
 
     def clear(self, record=False, translation='', isdoc=False):
         """Clear all document and sentence variables, and record the current

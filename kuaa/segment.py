@@ -397,7 +397,7 @@ class Seg:
         """
         # No translation
         if not self.cleaned_trans:
-            self.final = self.tokens
+            self.final = [Seg.clean_spec(' '.join(self.tokens), False)]
             self.final_morph = []
             return
         # T Group strings associated with each choice
@@ -583,7 +583,7 @@ class Seg:
         multtrans = True
         if self.special:
             trans = translation[0]
-            tgcombs = [[(trans, '', ''), 0]]
+            tgcombs = [[[(trans, '', '')], 0]]
             # There can't be multiple translations for special sequences, can there?
             multtrans = False
         else:
@@ -610,6 +610,7 @@ class Seg:
         tgmorphology = []
         tggroups = []
         for ttg, score in tgcombs:
+#            print("ttg {}, score {}".format(ttg, score))
             # "if tttg[0]" prevents '' from being treated as a token
             tgform = ' '.join([tttg[0] for tttg in ttg if tttg[0]])
             tgform = Seg.postproc_tstring(tgform)
@@ -642,7 +643,8 @@ class Seg:
     def make_html(self, index, first=False, verbosity=0):
         # T Group strings associated with each choice
         choice_tgroups = []
-        self.color = Seg.tt_notrans_color if self.is_punc or (not self.translation and not self.special) else Seg.tt_colors[index % 9]
+        minimal = self.is_punc or (not self.translation and not self.special)
+        self.color = Seg.tt_notrans_color if minimal else Seg.tt_colors[index % 9]
         self.set_source_html(first)
         transhtml = "<div class='desplegable' ondrop='drop(event);' ondragover='allowDrop(event);'>"
         despleg = "despleg{}".format(index)
@@ -656,7 +658,7 @@ class Seg:
         orig_tokens = self.original_token_str
         # Currently selected translation
         trans1 = ''
-        if self.is_punc:
+        if minimal:
             trans = self.final[0]
             trans1 = trans
             if '"' in trans:
@@ -1579,12 +1581,16 @@ class TreeTrans:
 
     def make_cache_key(self, gn_tuple, verbosity=0):
         """Make the key for the cache of gnode info."""
+        if not gn_tuple:
+            return
         cache_key = None
         cache_key = gn_tuple[0], gn_tuple[-1]
         return cache_key
 
     def get_cached(self, gn_tuple, cache_key=None, verbosity=0):
         """Get gnode information if already cached."""
+        if not gn_tuple:
+            return
         if not cache_key:
             cache_key = self.make_cache_key(gn_tuple, verbosity=verbosity)
         if cache_key in self.cache:
@@ -1668,8 +1674,8 @@ class TreeTrans:
                 gnode_tuple = firsttrue(lambda x: x[0] in tg_groups, gnode_tuple_list)
                 if verbosity > 1:
                     print("   gnode_tuple: {}, list {}".format(gnode_tuple, gnode_tuple_list))
-                if not gnode_tuple:
-                    print("Something wrong")
+                if not gnode_tuple and verbosity:
+                    print("Something wrong with snode {}, gnodes {}, gnode_tuple_list {}, tg_groups {}".format(snode, gnodes, gnode_tuple_list, tg_groups))
                 cache_key = self.make_cache_key(gnode_tuple)
                 cached = self.get_cached(gnode_tuple, cache_key=cache_key, verbosity=verbosity)
                 if cached:

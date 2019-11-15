@@ -162,8 +162,9 @@ textarea.dmeta
     padding: 4px 0px 4px 4px;
     margin: 0px;
     width: 99%;
+    box-sizing: border-box;
     border: thin solid;
-    height: 120px;
+    height: {% if tradtodo %}260pt{% else %}100pt{% endif %};
 }
 input.filename
 {
@@ -321,6 +322,9 @@ div.despleg-derecha {
 {% endif %}
     </td>
     <td class='ocultar'>
+    <span id="sinopciones" class="alternar" onclick="alternarOpciones();">
+    {% if choose %}Mostrar opciones. {% else %}Traducir sin opciones.{% endif %}
+    </span><br/>
     <span id="ocultar" class="alternar" onclick="alternarInstrucciones();">
     {% if props.ocultar %}Mostrar instrucciones. {% else %}Ocultar instrucciones.{% endif %}
     </span>
@@ -375,7 +379,8 @@ div.despleg-derecha {
 {% endif %}
 
 <input type="hidden" name="documento" value=''>
-<input type="hidden" name="ocultar" value={% if props.ocultar %} "true" {% else %} "false" {% endif %}>
+<input type="hidden" name="ocultar" value={% if props.ocultar %}"true"{% else %}"false"{% endif %}>
+<input type="hidden" name="sinopciones" value={% if choose %}"true"{% else %}"false"{% endif %}>
 <input type="hidden" name="docsrc" value="computadora">
 <input type="hidden" name="textid" value="">
 
@@ -404,11 +409,18 @@ div.despleg-derecha {
   {% endif %}<br class='instruc'/>
 
   {% if documento %}
-    <div class="instruc" id="instruc_fuente">Para seleccionar una oración para traducir,
-    hacé clic sobre la oración.<br />
-    Para abandonar este documento, presioná "Abandonar" abajo.</div>
+    <div class="instruc" id="instruc_fuente">
+    {% if not tradtodo %}
+    Para seleccionar una oración para traducir, hacé clic sobre la oración.<br />
+    Para traducir todo el documento, presioná "Traducir todo" abajo.<br />
+    {% endif %}
+    Para abandonar este documento, presioná "Abandonar" abajo.
+    </div>
     <br class='sep'/>
     <input type="button" value="Abandonar" id="button" onclick="abandonarDoc();">
+    {% if choose %}
+    <input type="button" value="Traducir todo" id="button" onclick="traducirTodo();">
+    {% endif %}
   {% elif oracion %}
     <div class="instruc" id="instruc_fuente">Para traducir otra oración,
     primero presioná 'Borrar' o hacé clic en el espacio de arriba.
@@ -424,9 +436,10 @@ div.despleg-derecha {
     <td></td>
 
     <td>
-      {% if doc %}
+  {% if doc and not tradtodo %}
       <span class="level">Oración actual</span>
-      {% endif %}
+  {% endif %}
+  {% if not choose %}
     <div id='meta'>
   {% if tra_seg_html %}
       {% for tra in tra_seg_html %}
@@ -434,19 +447,23 @@ div.despleg-derecha {
       {% endfor %}
   {% endif %}
     </div>
+  {% endif %}
 
+  {% if tra or choose %}
+  {% if not choose %}
     <br class='instruc'/>
-
-  {% if tra %}
     <div class='instruc'>
     <div id='instruc2'>
     • Para segmentos marcados con "▾", pod&eacute;s seleccionar otra opción.<br />
     • Para cambiar la posición de un segmento, arrastralo sobre otro segmento.</div>
     </div>
+    {% endif %}
+    {% if not tradtodo %}
     <br class="sep" />
     <span id="correccion" class="alternar" onclick="alternarCorreccion();">Desactivar corrección ortográfica automática.</span>
     <br class='instruc'/>
     <textarea class='ometa' id='textmeta'>{{tra|safe}}</textarea>
+    {% if tra %}
     <br class='instruc' />
     <div class="instruc" id="instruc_trad">
     • Si no estás satisfecho con la traducción, pod&eacute;s editarla.<br />
@@ -459,6 +476,7 @@ div.despleg-derecha {
     • Para registrar la traducción en la memoria de Mainumby, presioná "Registrar".
     {% endif %}
     {% endif %}
+    {% endif %}  
     </div>
 
     <br class='instruc'/>
@@ -471,12 +489,15 @@ div.despleg-derecha {
     <input type="button" value="Registrar" id="button" onclick="registrar();">
     {% endif %}
     {% endif %}
+    {% endif %}
 
   {% endif %}
 
   {% if documento %}
+  {% if not tradtodo %}  
     <br class="sep" />
     <span class="level">Documento</span><br />
+  {% endif %}
     <form name="Form3" id="text-options">
     <textarea class='dmeta' id='aceptado'>{% if aceptado %}{{aceptado|safe}}{% endif %}</textarea>
     <br class='instruc' />
@@ -505,8 +526,11 @@ div.despleg-derecha {
 <input type="hidden" name="tfuente" value="120%">
 <input type="hidden" name="ometa" value="">
 <input type="hidden" name="nocorr" value="">
+<input type="hidden" name="sinopciones" value={% if choose %}"true"{% else %}"false"{% endif %}>
 <input type="hidden" name="ocultar" value={% if props.ocultar %}"true"{% else %}"false"{% endif %}>
+<input type="hidden" name="tradtodo" value={% if tradtodo %}"true"{% else %}"false"{% endif %}>
 <input type="hidden" name="docscrolltop" value=0>
+<input type="hidden" name="abandonardoc" value="false">
 </form>
 
 {% endblock %}
@@ -637,7 +661,16 @@ function aceptarTrad()
 function abandonarDoc()
 {
     document.Form1.modo.value = "doc";
-    document.Form1.submit();
+    document.Form2.abandonardoc.value = "true";
+    document.Form2.isdoc.value = "true";
+    document.getElementById("aceptado").value = '';
+    document.Form2.submit();
+}
+
+function traducirTodo()
+{
+    document.Form2.tradtodo.value = "true";
+    document.Form2.submit();
 }
 
 function mayuscula(string) {
@@ -831,6 +864,19 @@ function alternarCorreccion() {
 //	alert("Desactivando...");
 	document.Form2.nocorr.value = "true";
         document.getElementById('correccion').innerHTML = "Activar corrección ortográfica automática.";
+    }
+}
+
+/* Alternar: mostrar opciones <-> traducir sin opciones */
+function alternarOpciones() {
+    if (document.Form0.sinopciones.value == "false") {
+	document.Form0.sinopciones.value = "true";
+	document.Form2.sinopciones.value = "true";
+	document.getElementById("sinopciones").innerHTML = "Mostrar opciones.";
+    } else {
+	document.Form0.sinopciones.value = "false";
+	document.Form2.sinopciones.value = "false";
+	document.getElementById("sinopciones").innerHTML = "Traducir sin opciones.";
     }
 }
 

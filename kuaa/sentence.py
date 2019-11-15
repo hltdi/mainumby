@@ -205,7 +205,7 @@ class Document(list):
 
     def __init__(self, language=None, target=None, text='', target_text='', path='',
                  proc=True, session=None, biling=False, alternating=True,
-                 reinitid=False, docid='', single=False):
+                 reinitid=False, docid=''):
         self.set_id(reinitid=reinitid, docid=docid)
         self.language = language
         self.target = target
@@ -228,8 +228,6 @@ class Document(list):
             self.target_text = ''
         self.target_tokens = []
         self.target_sentences = []
-        # Whether the input consists of a single "sentence", possibly without final punctuation
-        self.single = single
         # A list of pairs of raw source-target sentences, the result of the user's interaction
         # with the system.
         self.output = []
@@ -268,7 +266,7 @@ class Document(list):
     @staticmethod
     def doc2sent(source, target, text, session=None):
         """Given a text and source and target languages, return a Sentence instance (or None if this is not possible)."""
-        return Document(source, target, text, proc=True, session=session, single=True).to_sentence()
+        return Document(source, target, text, proc=True, session=session).to_sentence()
 
     @staticmethod
     def doc2bisents(source, target, text, session=None):
@@ -533,7 +531,7 @@ class Document(list):
         if raw_token:
             raw_sentence.append(raw_token)
             raw_sentences.append(raw_sentence)
-        if self.single and not sentences:
+        if not sentences:
             current_sentence.append(('', 1, 0))
             sentences = [current_sentence]
         # Make Sentence objects for each list of tokens and types
@@ -650,6 +648,7 @@ class Sentence:
         self.toks = toks
         self.toktypes = toktypes
         self.original = original
+        self.final = ''
         # Token segmentations: (token, segmentation, token_index)
         self.toksegs = []
         # Set capitalization and final punctuation booleans
@@ -766,14 +765,14 @@ class Sentence:
     @staticmethod
     def solve_sentence(sourceL, targetL, sentence=None, text='', session=None,
                        max_sols=2, translate=True, choose=False,
-                       verbosity=0):
+                       verbosity=0, terse=False):
         if not sentence:
             d = Document(language=sourceL, target=targetL, text=text, proc=True,
-                         single=True, session=session)
+                         session=session)
             sentence = d[0]
         sentence.initialize(ambig=False, verbosity=verbosity)
         sentence.solve(all_sols=max_sols > 1, max_sols=max_sols, translate=translate, choose=choose,
-                       verbosity=verbosity)
+                       verbosity=verbosity, terse=terse)
         return sentence
 
     ## Bilingual sentence pairs and analyses
@@ -1133,7 +1132,7 @@ class Sentence:
                         # apparently it's a name
                         newtag = 'n'
                 if newtag:
-                    print("Inserting tag {} for token {}".format(newtag, token))
+#                    print("Inserting tag {} for token {}".format(newtag, token))
                     tags[index] = token, newtag
 
     def morph_anal(self, tagged=None):
@@ -1564,7 +1563,7 @@ class Sentence:
             while proceed:
                 succeeding_state = next(generator)
                 ds = succeeding_state.dstore
-                segmentation = self.create_segmentation(dstore=ds, verbosity=verbosity)
+                segmentation = self.create_segmentation(dstore=ds, verbosity=verbosity, terse=terse)
                 if translate and self.target:
                     # Translating
                     translated = segmentation.translate(limit_trans=limit_trans, choose=choose,
@@ -1900,7 +1899,7 @@ class Sentence:
                     prefval = inpair[0]
                     return var, {prefval}, varundec - {prefval}
 
-    def create_segmentation(self, dstore=None, verbosity=0):
+    def create_segmentation(self, dstore=None, verbosity=0, terse=False):
         """
         Assuming essential variables are determined in a domain store, make a Segmentation object.
         Adds segmentation to self.segmentations and also returns the segmentation.
@@ -1958,12 +1957,14 @@ class Sentence:
         segmentation = Segmentation(self, ginsts, s2gnodes, len(self.segmentations),
                                     trees=trees, dstore=dstore, session=self.session,
                                     score=score)
-        print('SE ENCONTRÓ SEGMENTACIÓN {} para {}'.format(segmentation, self))
+        if not terse:
+            print('SE ENCONTRÓ SEGMENTACIÓN')
+#         {} para {}'.format(segmentation, self))
         return segmentation
 
     def get_all_segmentations(self, translate=True, generate=True,
                               connect=False, html=False, agree_dflt=True, choose=False,
-                              verbosity=0):
+                              verbosity=0, terse=False):
         """After a sentence has been translated and segmented, collect all the
         segmentations, including those resulting from altsyn sentences."""
         segmentations = []
@@ -1975,16 +1976,16 @@ class Sentence:
                     segmentations.extend(sa.segmentations)
         if segmentations:
             Segmentation.rank(segmentations)
-            if connect:
-                # Match joins and further groups only for best segmentation
+            if choose or connect:
+                # match joins and further groups only for best segmentation
                 segmentations = segmentations[:1]
             if translate:
                 for segmentation in segmentations:
-                    segmentation.get_segs()
+                    segmentation.get_segs(terse=terse)
                     if connect:
                         # Search for Segment matches with Join and Group instances
                         # and connect Segments if found
-                        segmentation.connect(generate=False, verbosity=verbosity)
+                        segmentation.connect(generate=False, verbosity=verbosity, terse=terse)
                     if generate:
                         # Realize target morphology
                         segmentation.generate()
@@ -1995,10 +1996,13 @@ class Sentence:
                     final = ' '.join([seg.final for seg in segmentation.segments])
                     segmentation.final = clean_sentence(final)
             for sindex, segmentation in enumerate(segmentations):
-                print("SEGMENTACIÓN {}".format(sindex))
-                for segment in segmentation.segments:
-                    print("{}: {}".format(segment, segment.final))
+                if not terse:
+                    print("SEGMENTACIÓN {}".format(sindex))
+                    for segment in segmentation.segments:
+                        print("{}: {}".format(segment, segment.final))
             return segmentations
+        else:
+            self.final = self.original
 
     ### Various ways of displaying translation outputs.
     
@@ -2126,6 +2130,8 @@ class Segmentation:
         self.score = score
         # Final output string for this Segmentation of the sentence
         self.final = ''
+        # HTML for GUI when a single translation is chosen (self.final)
+        self.html = ''
         if not terse:
             print("SEGMENTACIÓN CREADA con dstore {} y ginsts {}".format(dstore, ginsts))
 
@@ -2306,8 +2312,8 @@ class Segmentation:
         return self.ttrans_outputs
 
     def get_untrans_segs(self, src_tokens, end_index, gname=None,
-                         indices_covered=None,
-                         src_feats=None, src_toks=None):
+                         indices_covered=None, src_feats=None, src_toks=None,
+                         terse=False):
         '''Set one or more segments for a sequence of untranslatable tokens. Ignore indices that are already
          covered by translated segments.'''
         stok_groups = []
@@ -2370,13 +2376,14 @@ class Segmentation:
                           gname=None, sfeats=sfeat_group[0], tok=stokhead,
                           space_before=space_before,
                           is_punc=is_punc)
-            print("Segmento (no traducido) {}->{}: {}={} ({})".format(start, end, stok_group, seg.translation, seg.head_tok))
+            if not terse:
+                print("Segmento (no traducido) {}->{}: {}={} ({})".format(start, end, stok_group, seg.translation, seg.head_tok))
             self.segments.append(seg)
             newsegs.append(seg)
             i0 += len(stok_group)
         return newsegs
 
-    def get_segs(self):
+    def get_segs(self, terse=False):
         """Set the initial segments (instances of Segment) for the segmentation, including their translations.
         """
         tt = self.get_ttrans_outputs()
@@ -2401,7 +2408,9 @@ class Segmentation:
                 src_toks = [s.tok for s in src_nodes if s]
                 if src_toks:
                     self.get_untrans_segs(src_tokens, end_index, gname=gname,
-                                        src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered)
+                                        src_feats=src_feats, src_toks=src_toks,
+                                        indices_covered=indices_covered,
+                                        terse=terse)
             src_tokens = []
             pre_paren = []
             for tokindex in range(start, end+1):
@@ -2418,7 +2427,8 @@ class Segmentation:
             seg = Segment(self, raw_indices, forms, src_tokens, treetrans=treetrans,
                           session=self.session, gname=gname, sfeats=src_feats[head_index],
                           tgroups=tgroups, head=thead, tok=thead[-1])
-            print("Segmento (traducido) {}->{}: {}={} ({})".format(start, end, src_tokens, seg.translation, seg.head_tok))
+            if not terse:
+                print("Segmento (traducido) {}->{}: {}={} ({})".format(start, end, src_tokens, seg.translation, seg.head_tok))
             self.segments.append(seg)
             indices_covered.extend(raw_indices)
             max_index = max(max_index, end)
@@ -2430,7 +2440,8 @@ class Segmentation:
             src_feats = [(s.analyses if s else None) for s in src_nodes]
             src_toks = [s.tok for s in src_nodes]
             self.get_untrans_segs(src_tokens, max_index, gname=gname,
-                                  src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered)
+                                  src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered,
+                                  terse=terse)
         # Sort the segments by start indices in case they're not in order (because of parentheticals)
         self.segments.sort(key=lambda s: s.indices[0])
 #        if html:
@@ -2448,7 +2459,8 @@ class Segmentation:
             segment.finalize(i)
 #            if first and not segment.is_punc:
 #                first = False
-        if html:
+        if html and not choose:
+            # Create HTML for individual Segs
             first = True
             for i, segment in enumerate(self.segments):
                 segment.make_html(i, first=first)
@@ -2457,16 +2469,17 @@ class Segmentation:
         self.do_seg_feat_agreement(user_input=user_input, agree_dflt=agree_dflt,
                                    verbosity=verbosity)
         if choose:
-            self.choose_final(verbosity=verbosity)
+            self.choose_final(html=html, verbosity=verbosity)
 
-    def choose_final(self, verbosity=0):
+    def choose_final(self, html=True, verbosity=0):
         """Choose one final translation for each segment in the segmentation."""
         # Start with copies of seg.final for each Seg.
 #        all_finals = [segment.final[:] for segment in self.segments]
-        all_scored = []
+#        all_scored = []
         for i, segment in enumerate(self.segments):
             # For now assume segment finals are already ordered appropriately;
             # later take sentence context into account
+#            print("Picking first string from {}".format(segment.final))
             segment.final = segment.final[0]
 #            scored = self.score_finals(segment)
 #            scored.sort()
@@ -2474,7 +2487,19 @@ class Segmentation:
 #            # Pick the first string for this segment
 #            segment.final = scored[0][1]
         self.final = clean_sentence(" ".join([s.final for s in self.segments]))
-        return all_scored
+        if html:
+            self.make_html(verbosity=verbosity)
+#        return all_scored
+
+    def make_html(self, verbosity=0):
+        """Create HTML for finalized Segmentation after single translation has
+        been chosen. NOT CURRENTLY NEEDED BECAUSE TRANSLATION IS ENTERED AS A
+        STRING IN A TEXT AREA."""
+        if not self.final:
+            return
+        self.html = "<div class='segmentation'>"
+        self.html += self.final
+        self.html += "</div>"
 
     def score_finals(self, segment):
         """Assign scores to final strings for a segment. Lower is better."""
@@ -2542,7 +2567,7 @@ class Segmentation:
 
     ## HTML
 
-    def get_gui_segments(self):
+    def get_segment_html(self):
         """HTML for Segments in this Segmentation."""
         return [segment.html for segment in self.segments]
 
@@ -2566,7 +2591,7 @@ class Segmentation:
 
     ## Generation, joining, group matching following initial segmentation
 
-    def connect(self, iters=15, generate=True, only1=False, verbosity=1):
+    def connect(self, iters=15, generate=True, only1=False, verbosity=1, terse=False):
         """Iteratively match Join and Group instances where possible, create supersegs for
         matches, and optionally finish by generateing morphological surface forms for
         final segments."""
@@ -2576,22 +2601,25 @@ class Segmentation:
         all_matches = []
         nsegments = len([s for s in self.segments if not s.is_punc])
         while matched and iteration < iters and nsegments > 1:
-            print("BUSCANDO COINCIDENCIAS CON JOINS Y GROUPS, ITERACIÓN {}".format(iteration))
-            print(" Segmentos: {}".format(self.segments))
+            if not terse:
+                print("BUSCANDO COINCIDENCIAS CON JOINS Y GROUPS, ITERACIÓN {}".format(iteration))
+                print(" Segmentos: {}".format(self.segments))
             # Make sure previous matches of one segment are not repeated
             matches = [m for m in self.match_joins(verbosity=0) if not any([m.equals(mm) for mm in all_matches])]
             matches.extend(self.match_groups(make_super=False, resolve=False, verbosity=verbosity))
             if matches:
-                print(" Encontró coincidencias {}".format(matches))
+                if not terse:
+                    print(" Encontró coincidencias {}".format(matches))
                 if len(matches) > 1:
                     Match.resolve(matches, verbosity=verbosity)
-                    print(" Resueltas a {}".format(matches))
+                    if not terse:
+                        print(" Resueltas a {}".format(matches))
                 if only1:
                     match = matches[0]
-                    self.match2superseg(match, verbosity=verbosity)
+                    self.match2superseg(match, verbosity=verbosity, terse=terse)
                     all_matches.append(match)
                 else:
-                    self.matches2supersegs(matches, verbosity=verbosity)
+                    self.matches2supersegs(matches, verbosity=verbosity, terse=terse)
                     all_matches.extend(matches)
             else:
                 matched = False
@@ -2601,7 +2629,8 @@ class Segmentation:
             self.generate(limit_forms=True, verbosity=verbosity)
         return all_matches
 
-    def join(self, iters=6, joingroupings=None, makesuper=True, generate=False, verbosity=1):
+    def join(self, iters=6, joingroupings=None, makesuper=True, generate=False,
+             verbosity=1, terse=False):
         """Iteratively match Join instances where possible, create supersegs for matches,
         and optionally finish by generating morphological surface forms for final segments."""
         iteration = 0
@@ -2678,14 +2707,15 @@ class Segmentation:
             print(" Found join matches {}".format(matches))
         return matches
 
-    def match_groups(self, groupsid=1, make_super=True, resolve=True, verbosity=1):
+    def match_groups(self, groupsid=1, make_super=True, resolve=True,
+                     verbosity=1, terse=False):
         """Get candidate matches of groups with segmentation Segs and match them,
         returning matches as Match instances.
         """
         cands = self.get_group_cands(groupsid=groupsid, verbosity=verbosity)
         matches = self.match_group_cands(cands, resolve=resolve, verbosity=verbosity)
         if make_super:
-            self.matches2supersegs(matches, verbosity=verbosity)
+            self.matches2supersegs(matches, verbosity=verbosity, terse=terse)
         return matches
 
     def get_group_cands(self, groupsid=1, groups=None, verbosity=1):
@@ -2729,16 +2759,16 @@ class Segmentation:
             print(" No matches found")
         return matches
 
-    def matches2supersegs(self, matches, verbosity=0):
+    def matches2supersegs(self, matches, verbosity=0, terse=False):
         """Given a list of matches of a Join or Group instances, create new Superseg instances."""
         # First sort the matches from last to first, to prevent indices from changing before
         # a new Superseg is introduced.
         if len(matches) > 1:
             Match.sort_by_position(matches)
         for match in matches:
-            self.match2superseg(match, verbosity=verbosity)
+            self.match2superseg(match, verbosity=verbosity, terse=terse)
 
-    def match2superseg(self, match, verbosity=0):
+    def match2superseg(self, match, verbosity=0, terse=False):
         """Given a match of a Join or Group instance, create a new SuperSeg instance."""
         if isinstance(match, Match):
             join, seglist = match.entry, match.matched
@@ -2749,7 +2779,8 @@ class Segmentation:
         features = [s[2] for s in seglist]
 #        print("Creating superset with features {}".format(features))
         superseg = SuperSeg(self, segs, features=features, join=join, verbosity=verbosity)
-        print("CREANDO SUPERSEG PARA {} Y {} en posiciones {}".format(segs, join, positions))
+        if not terse:
+            print("CREANDO SUPERSEG PARA {} Y {} en posiciones {}".format(segs, join, positions))
         # replace the joined segments in the segmentation with the superseg
         self.segments[positions[0]:positions[-1]+1] = [superseg]
 
@@ -2758,7 +2789,7 @@ class Segmentation:
         for segment in self.segments:
             segment.generate(limit_forms=limit_forms, verbosity=verbosity)
 
-    def process(self, generate=False, verbosity=0):
+    def process(self, generate=False, verbosity=0, terse=False):
         """Repeatedly try matching and applying Join instances and the Group instances from
         Join and Group groupings, until there are no more, then optionally do morphological
         generation."""
@@ -2768,10 +2799,10 @@ class Segmentation:
         g = 1
         while j < njoins or g < ngroups2:
             if j < njoins:
-                self.join(joingroupings=None, verbosity=verbosity)
+                self.join(joingroupings=None, verbosity=verbosity, terse=terse)
                 j += 1
             if g < ngroups2:
-                self.match_groups(groupsid=g, verbosity=verbosity)
+                self.match_groups(groupsid=g, verbosity=verbosity, terse=terse)
                 g += 1
         if generate:
             self.generate(limit_forms=True)

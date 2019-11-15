@@ -2,7 +2,9 @@
 ## nominales 1
 >> nom1
 AyA :: &a y &a ; ^0
-AN :: &a &n ; 0=?1 n:n; 0=?1 g:g ; >1 0 ; ^1
+# por ahora, preservar el orden castellano de adjetivo y sustantivo
+# AN :: &a &n ; 0=?1 n:n; 0=?1 g:g ; >1 0 ; ^1
+AN :: &a &n ; 0=?1 n:n; 0=?1 g:g ; ^1
 NA :: &n &a ; 0=?1 n:n; 0=?1 g:g ; ^0
 QN :: %N &n ; ^1
 DN :: $dem &n ; ^1

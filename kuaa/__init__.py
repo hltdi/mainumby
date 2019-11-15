@@ -99,17 +99,57 @@ def load(source='spa', target='grn', gui=None):
         gui.source = s
         gui.target = t
 
-def seg_trans(gui, session=None, process=True, html=True, choose=False, verbosity=0):
+def doc_sentences(doc=None, textobj=None, text='', textid=-1,
+                  gui=None, src=None, targ=None, user=None, verbosity=0):
+    """Recopilar oraciones (instancias de Sentence) de una instancia de Document o Text."""
+    if not src and not targ:
+        if gui:
+            src = gui.source; targ = gui.target
+        else:
+            src, targ = Language.load_trans('spa', 'grn', train=False)
+    if doc:
+        return doc
+    else:
+        return sentences_from_text(textobj, textid, src, targ)
+
+def doc_trans(doc=None, textobj=None, text='', textid=-1,
+              gui=None, src=None, targ=None, session=None, user=None,
+              verbosity=0):
+    """Traducir todas las oraciones en un documento sin ofrecer opciones al usuario.
+    O doc es una instancia de Documento or textobj es una instancia de Text o un
+    Documento es creado con text como contenido."""
+    if not src and not targ:
+        if gui:
+            src = gui.source; targ = gui.target
+        else:
+            src, targ = Language.load_trans('spa', 'grn', train=False)
+    if not session:
+        session = make_session(src, targ, user, create_memory=True)
+    sentences = doc if doc else sentences_from_text(textobj, textid, src, targ)
+    if sentences:
+        translations = []
+#        doc = make_document(gui, text, html=False)
+        for sentence in sentences:
+            translation = oración(src=src, targ=targ, sentence=sentence, session=session,
+                                  html=False, choose=True, return_string=True,
+                                  verbosity=verbosity, terse=True)
+            translations.append(translation)
+        return translations
+#        return [s.final for s in seg_sentences]
+    return []
+
+## Creación y traducción de oración, dentro o fuera de la aplicación web
+
+def gui_trans(gui, session=None, choose=False, return_string=False,
+              sentence=None, verbosity=0):
     """Traducir oración (accesible en gui) y devuelve la oración marcada (HTML) con
     segmentos coloreados."""
-    return oración(sentence=gui.sentence, src=gui.source, targ=gui.target, session=gui.session,
-                   html=html, choose=choose, verbosity=verbosity)
-
-## Creación y traducción de oración simple fuera de la interfaz web.
+    return oración(sentence=sentence or gui.sentence, src=gui.source, targ=gui.target, session=gui.session,
+                   html=True, return_string=return_string, choose=choose, verbosity=verbosity)
 
 def oración(text='', src=None, targ=None, user=None, session=None, sentence=None,
             max_sols=2, translate=True, connect=True, generate=True, html=False, choose=False,
-            verbosity=0):
+            return_string=False, verbosity=0, terse=False):
     """Analizar y talvez también traducir una oración del castellano al guaraní."""
     if not src and not targ:
         src, targ = Language.load_trans('spa', 'grn', train=False)
@@ -117,23 +157,38 @@ def oración(text='', src=None, targ=None, user=None, session=None, sentence=Non
         session = make_session(src, targ, user, create_memory=True)
     s = Sentence.solve_sentence(src, targ, text=text, session=session, sentence=sentence,
                                 max_sols=max_sols, choose=choose, translate=translate,
-                                verbosity=verbosity)
+                                verbosity=verbosity, terse=terse)
     segmentations = s.get_all_segmentations(translate=translate, generate=generate,
-                                            agree_dflt=False,
-                                            choose=choose, connect=connect, html=html)
-    if html:
+                                            agree_dflt=False, choose=choose, connect=connect, html=html,
+                                            terse=terse)
+    if choose:
+        if segmentations:
+            # there's already only one of these anyway
+            segmentation = segmentations[0]
+            # return the Segmentation
+            if return_string:
+                return segmentation.final
+            else:
+                return segmentation
+        else:
+            # no Segmentation; return the Sentence
+            if return_string:
+                return s.original
+            else:
+                return s
+    elif html:
         if segmentations:
             segmentation = segmentations[0]
-            return segmentation.segments, segmentation.get_gui_segments()
+            return segmentation.segments, segmentation.get_segment_html()
         return [], s.get_html()
     elif segmentations:
         return segmentations
     return s
 
-def make_document(gui, text, single=False, html=False):
+def make_document(gui, text, html=False):
     """Create a Mainumby Document object with the text."""
     session = gui.session
-    d = kuaa.Document(gui.source, gui.target, text, proc=True, session=session, single=single)
+    d = kuaa.Document(gui.source, gui.target, text, proc=True, session=session)
     if html:
         d.set_html()
     gui.doc = d
@@ -193,11 +248,26 @@ def get_doc_text_html(text):
     html += ''.join(seghtml)
     html += "</div>"
     return html, seghtml
+
+def sentences_from_text(text=None, textid=-1, source=None, target=None):
+    """Get a list of sentences from the Text object."""
+    if not text and textid == -1:
+        return
+    text = text or get_text(textid)
+    sentences = []
+    for textseg in text.segments:
+        original = textseg.content
+        tokens = [tt.string for tt in textseg.tokens]
+        sentence = Sentence(original=original, tokens=tokens, language=source, target=target)
+        sentences.append(sentence)
+    return sentences
         
 def sentence_from_textseg(textseg=None, source=None, target=None, textid=None, oindex=-1):
     """Create a Sentence object from a DB TextSeg object, which is either
-    specified explicitly or accessed via its index within a Text object."""
-    print("Creating sentence from textseg, source={}".format(source))
+    specified explicitly or accessed via its index within a Text object.
+    THERE'S SOME DUPLICATION HERE BECAUSE SENTENCE OBJECTS WERE ALREADY CREATED WHEN
+    THE Text OBJECT WAS CREATED IN THE DB."""
+#    print("Creating sentence from textseg, source={}".format(source))
     textseg = textseg or get_text(textid).segments[oindex]
     original = textseg.content
     tokens = [tt.string for tt in textseg.tokens]

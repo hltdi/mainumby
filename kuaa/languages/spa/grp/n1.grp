@@ -8548,8 +8548,6 @@
 ->grn tukumbo_n ; 0==0 n:n,poses:poses
 ** gas_n estomacal ; ^ gas_n 0
 ->grn <hyevu_n ; 0==0 n:n,poses:poses
-** gas_n ; ^ gas_n 0
-->grn ga_n ; 0==0 n:n,poses:poses
 ** gato_n salvaje de pelo leonado ; ^ gato_n 0
 ->grn mbarakaja_n eíra pytã ; 0==0 n:n,poses:poses
 ** gato_n montés ; ^ gato_n 0
@@ -8560,7 +8558,6 @@
 ** gato_n ; ^ gato_n 0
 ->grn mbarakaja_n ; 0==0 n:n,poses:poses
 ** gavilán_n ; ^ gavilán_n 0 ; #1
-->grn kirikiri_n guasu ; 0==0 n:n,poses:poses ; #7
 ->grn kirikiri_n ; 0==0 n:n,poses:poses ; #7
 ** gaviota_n ; ^ gaviota_n 0
 ->grn guyratĩ_n ; 0==0 n:n,poses:poses
@@ -11463,7 +11460,7 @@
 ** murmullo_n ; ^ murmullo_n 0
 ->grn guilili_n ; 0==0 n:n,poses:poses
 ** muro_n ; ^ muro_n 0
-->grn ogyke_n ; 0==0 n:n,poses:poses
+->grn <hogyke_n ; 0==0 n:n,poses:poses
 ** musgo_n de agua ; ^ musgo_n 0
 ->grn ygáu_n ; 0==0 n:n,poses:poses
 ** musgo_n terrestre ; ^ musgo_n 0
@@ -12428,7 +12425,7 @@
 ->grn yvyo_n ; 0==0 n:n,poses:poses
 ** pared_n ; ^ pared_n 0 ; #38
 ->grn <hóga_n yke ; 0==0 n:n,poses:poses
-->grn ogyke_n ; 0==0 n:n,poses:poses ; #6
+->grn <hogyke_n ; 0==0 n:n,poses:poses ; #6
 ->grn tápia_n ; 0==0 n:n,poses:poses ; #24
 ** pareja_n de juego ; ^ pareja_n 0
 ->grn kompi_n ; 0==0 n:n,poses:poses
@@ -17439,7 +17436,7 @@
 ** morador_n del monte ; ^ morador_n 0
 ->grn ka'aguypóra_n ; ^ ka'aguypóra_n 0 ; || 0, -1, -1
 ** mucho tiempo_n ; ^ tiempo_n 1
-->grn are_n ; ^ are_n 0 ; || -1, 0
+->grn are_n[n=0] ; ^ are_n 0 ; || -1, 0
 ** muela_n del juicio ; ^ muela_n 0
 ->grn tãigue'a_n ; ^ tãigue'a_n 0 ; || 0, -1, -1
 ** mujer_n joven ; ^ mujer_n 0

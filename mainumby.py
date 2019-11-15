@@ -50,6 +50,8 @@ __version__ = 2.1
 
 import kuaa
 
+dstring = "El perro llegó a su casa. Allí encontró a un gato que se  llamaba Carlos. Los dos se conocieron."
+
 ## Atajos
 
 ## Creación y traducción de oración simple. Después de la segmentación inicial,
@@ -166,29 +168,29 @@ def db_delete(instance):
                                    
 ## Oraciones para evalucación
 
-O = \
-  ["El hombre que fue hasta la ciudad.",
-   "El hombre vio a la mujer.",
-   "El buen gato duerme.",
-   "El gato negro duerme.",
-   "Los pasajeros se murieron ayer.",
-   "Me acordé de ese hombre feo.",
-   "La profesora encontró a su marido en la calle."]
-
-O1 = \
-   ["La economía de Paraguay se caracteriza por la predominancia de los sectores agroganaderos, comerciales y de servicios.",
-    "La economía paraguaya es la décimo cuarta economía de América Latina en términos de producto interno bruto (PIB) nominal."]
+##O = \
+##  ["El hombre que fue hasta la ciudad.",
+##   "El hombre vio a la mujer.",
+##   "El buen gato duerme.",
+##   "El gato negro duerme.",
+##   "Los pasajeros se murieron ayer.",
+##   "Me acordé de ese hombre feo.",
+##   "La profesora encontró a su marido en la calle."]
+##
+##O1 = \
+##   ["La economía de Paraguay se caracteriza por la predominancia de los sectores agroganaderos, comerciales y de servicios.",
+##    "La economía paraguaya es la décimo cuarta economía de América Latina en términos de producto interno bruto (PIB) nominal."]
 
 ## Procesamiento de corpus.
 
-def biblia2():
-    """Lista de oraciones (bilingües) de la Biblia (separadas por tabulador)."""
-    with open("../Bitext/EsGn/Biblia/biblia_tab.txt", encoding='utf8') as file:
-        return file.readlines()
-
-def dgo():
-    with open("../Bitext/EsGn/DGO/dgo_id2_tab.txt", encoding='utf8') as file:
-        return file.readlines()
+##def biblia2():
+##    """Lista de oraciones (bilingües) de la Biblia (separadas por tabulador)."""
+##    with open("../Bitext/EsGn/Biblia/biblia_tab.txt", encoding='utf8') as file:
+##        return file.readlines()
+##
+##def dgo():
+##    with open("../Bitext/EsGn/DGO/dgo_id2_tab.txt", encoding='utf8') as file:
+##        return file.readlines()
 
 ##def split_biblia():
 ##    """Assuming biblia_tab.txt is in good shape, write the Es and Gn sentences
@@ -201,79 +203,79 @@ def dgo():
 ##                print(e.strip(), file=es)
 ##                print(g.strip(), file=gn)
 
-def biblia_ora(train=True):
-    """Lista de pares de oraciones (instancias de Sentence) de la Biblia."""
-    oras = biblia2()
-    e, g = cargar(train=train)
-    o1, o2 = kuaa.Document.proc_preseg(e, g, oras, biling=True)
-    return o1, o2
-
-def dgo_ora(train=True):
-    oras = dgo()
-    e, g = cargar(train=train)
-    o1, o2 = kuaa.Document.proc_preseg(e, g, oras, biling=True)
-    return o1, o2
-
-def bib_bitext_anal(start=5750, end=-1, n=250, write=True, filename="biblia1"):
-    """Separate Bible sentences, superficially analyze them, creating
-    pseudosegments, append these to file."""
-    o1, o2 = biblia_ora()
-    e = o1[0].language
-    if n:
-        end = start + n
-    elif end < 0:
-        end = len(o1)
-    print("Analizando pares de oraciones desde {} hasta {}".format(start, end))
-    a = kuaa.Sentence.bitext_anal(o1, o2, start=start, end=end)
-    if write:
-        kuaa.Sentence.write_pseudosegs(e, a, filename)
-
-def dgo_bitext_anal(start=0, end=-1, n=400, write=True, filename="dgo"):
-    """Separate DGO sentences, superficially analyze them, creating
-    pseudosegments, append these to file."""
-    o1, o2 = dgo_ora()
-    e = o1[0].language
-    if n:
-        end = start + n
-    elif end < 0:
-        end = len(o1)
-    print("Analizando pares de oraciones desde {} hasta {}".format(start, end))
-    a = kuaa.Sentence.bitext_anal(o1, o2, start=start, end=end)
-    if write:
-        kuaa.Sentence.write_pseudosegs(e, a, filename)
+##def biblia_ora(train=True):
+##    """Lista de pares de oraciones (instancias de Sentence) de la Biblia."""
+##    oras = biblia2()
+##    e, g = cargar(train=train)
+##    o1, o2 = kuaa.Document.proc_preseg(e, g, oras, biling=True)
+##    return o1, o2
+##
+##def dgo_ora(train=True):
+##    oras = dgo()
+##    e, g = cargar(train=train)
+##    o1, o2 = kuaa.Document.proc_preseg(e, g, oras, biling=True)
+##    return o1, o2
+##
+##def bib_bitext_anal(start=5750, end=-1, n=250, write=True, filename="biblia1"):
+##    """Separate Bible sentences, superficially analyze them, creating
+##    pseudosegments, append these to file."""
+##    o1, o2 = biblia_ora()
+##    e = o1[0].language
+##    if n:
+##        end = start + n
+##    elif end < 0:
+##        end = len(o1)
+##    print("Analizando pares de oraciones desde {} hasta {}".format(start, end))
+##    a = kuaa.Sentence.bitext_anal(o1, o2, start=start, end=end)
+##    if write:
+##        kuaa.Sentence.write_pseudosegs(e, a, filename)
+##
+##def dgo_bitext_anal(start=0, end=-1, n=400, write=True, filename="dgo"):
+##    """Separate DGO sentences, superficially analyze them, creating
+##    pseudosegments, append these to file."""
+##    o1, o2 = dgo_ora()
+##    e = o1[0].language
+##    if n:
+##        end = start + n
+##    elif end < 0:
+##        end = len(o1)
+##    print("Analizando pares de oraciones desde {} hasta {}".format(start, end))
+##    a = kuaa.Sentence.bitext_anal(o1, o2, start=start, end=end)
+##    if write:
+##        kuaa.Sentence.write_pseudosegs(e, a, filename)
 
 ## Aprendizaje de nuevos grupos
 
-def aprender(source, target):
-    l = kuaa.Learner(source, target)
-    return l
-
-def doc(text, proc=True, single=False):
-    e, g = cargar()
-    d = kuaa.Document(e, g, text, proc=proc, single=single)
-    return d
-
-def generate(language, stem, feats=None, pos='v'):
-    if not feats:
-        feats = kuaa.FeatStruct("[]")
-    else:
-        feats = kuaa.FeatStruct(feats)
-    return language.generate(stem, feats, pos)
-
-def solve1(sentence):
-    """Solve; print and return segmentations."""
-    sentence.solve()
-    output_sols(sentence)
-    return sentence.segmentations
-
-def output_sols(sentence):
-    """Show target outputs for all segmentations for sentence."""
-    for sol in sentence.segmentations:
-        for x in sol.get_ttrans_outputs():
-            print(x)
-
-def usuario(username):
-    return kuaa.User.users.get(username)
+##def aprender(source, target):
+##    l = kuaa.Learner(source, target)
+##    return l
+##
+##def doc(text, proc=True, single=False):
+##    e, g = cargar()
+##    d = kuaa.Document(e, g, text, proc=proc, single=single)
+##    return d
+##
+##def generate(language, stem, feats=None, pos='v'):
+##    if not feats:
+##        feats = kuaa.FeatStruct("[]")
+##    else:
+##        feats = kuaa.FeatStruct(feats)
+##    return language.generate(stem, feats, pos)
+##
+##def solve1(sentence):
+##    """Solve; print and return segmentations."""
+##    sentence.solve()
+##    output_sols(sentence)
+##    return sentence.segmentations
+##
+##def output_sols(sentence):
+##    """Show target outputs for all segmentations for sentence."""
+##    for sol in sentence.segmentations:
+##        for x in sol.get_ttrans_outputs():
+##            print(x)
+##
+##def usuario(username):
+##    return kuaa.User.users.get(username)
 
 if __name__ == "__main__":
     print("Tereg̃uahẽporãite Mainumby-pe, versión {}\n".format(__version__))
