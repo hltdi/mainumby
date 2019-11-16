@@ -147,10 +147,11 @@ feats:
 		  ipv (imperv) |
 		  ipf (imperf) |
 		  pcp (pluscmprf) |
+		  cnd (condicional) |
 		  inf (infinitivo)
 
 #  tm (tmp) = None | vaekue | vaerã | va | akue | mi | ne | arã | moã | kuri | rakae | ta | chéne
-#  tm (tmp) = None | vaekue | vaerã | akue | mi | ne | arã | moã | kuri | rakae | ta
+#  tm (tmp) = None | vaekue | vaerã | akue | mi | ne | arã | moã | kuri | rakae | ta | rae
 
   impopt = mi = False | True;
            ke = False | True;

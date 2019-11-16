@@ -954,7 +954,7 @@ function archivoSubido() {
 		    error("¡" + file.name + " no es un archivo de texto válido! (tipo " + file.type + ")");
 		    return false;
 		}
-	    } else if (size > 500) {
+	    } else if (size > 1000) {
 		error("¡" + file.name + " es demasiado grande para Mainumby! Por favor subí otro archivo más pequeño.");
 		return false;
 	    }

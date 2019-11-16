@@ -1707,7 +1707,7 @@ class Language:
         if verbosity:
             print("Scores: {}".format(scores))
         # Select highest
-        highest = 0
+        highest = -1
         highestfeats = None
         for tag, (score, features) in scores.items():
             if score > highest:
@@ -2380,7 +2380,7 @@ class Language:
 #            print("generate({}) => {}, {}".format(root, output_strings, output_feats))
             return output_strings, output_feats
         else:
-            print("   The root/feature combination {}:{} can't be generated for POS {}!".format(root, features.__repr__(), pos))
+#            print("   The root/feature combination {}:{} can't be generated for POS {}!".format(root, features.__repr__(), pos))
             # Add * to mark this is a uninflected.
             root = self.char_postproc(root)
             return ['*' + root], []

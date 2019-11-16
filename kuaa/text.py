@@ -194,9 +194,10 @@ class Text(db.Model):
         print("No existe un archivo con nombre {}".format(name))
 
     @staticmethod
-    def docx2txt(name):
+    def docx2txt(name, path=''):
         """Extract text from a .docx file."""
-        path = Text.get_text_path(name, ext='.docx')
+        if not path:
+            path = Text.get_text_path(name, ext='.docx')
         try:
             doc = docx.Document(path)
             text = [para.text for para in doc.paragraphs]

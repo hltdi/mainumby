@@ -18,9 +18,12 @@ refl/1s :: me [+fin,pos=v,p=1,n=0,voz=reflx,+r] ; // 0
 refl/2s :: te [+fin,pos=v,p=2,n=0,voz=reflx,+r] ; // 0
 refl/1p :: nos [+fin,pos=v,p=1,n=1,voz=reflx,+r] ; // 0
 
-## auxiliares
+## auxiliares, condicional
 perf :: haber_v[tm=prs] [pos=v,tm=prc,asp=[+prf]] ; 0=>1 p,n ; // 0 ; 1-> [tm=prs,+fin]
 pcp :: haber_v[tm=ipf] [pos=v,tm=prc] ; 0=>1 p,n ; // 0 ; 1-> [tm=pcp,+fin]
+cnd_prf :: haber_v[tm=cnd] [pos=v,tm=prc] ; 0=>1 p,n ; // 0 ; 1-> [tm=cnd,+fin]
+sbi_prf :: haber_v[tm=sbi] [pos=v,tm=prc] ; 0=>1 p,n ; // 0 ; 1-> [tm=prt,+fin]
+sbi :: [pos=v,tm=sbi] ; 0 -> [tm=prt]
 # this only works for present progressive
 prog :: estar_v [pos=v,tm=ger,asp=[+prg]] ; 0=>1 p,n,tm ; // 0 ; 1-> [+fin]
 pasivo :: ser_v [pos=v,tm=prc,voz=reflx,+r] ; 0=>1 p,n,tm ; // 0

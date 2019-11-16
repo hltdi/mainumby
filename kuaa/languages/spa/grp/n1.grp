@@ -429,7 +429,7 @@
 ->grn kure_n ñemomuña ; 0==0 n:n,poses:poses
 ->grn kure_n ñemongakuaa ; 0==0 n:n,poses:poses
 ** cría_n ; ^ cría_n 0 ; #6
-->grn ñemuñare_n ; 0==0 n:n,poses:poses
+->grn ñemoñare_n ; 0==0 n:n,poses:poses
 ->grn ñemoña_n ; 0==0 n:n,poses:poses ; #38
 ** cuestión_n actual ; ^ cuestión_n 0 ; #11
 ->grn mba'e_n ramogua ; 0==0 n:n,poses:poses
@@ -1808,7 +1808,6 @@
 ** pérdida_n de tiempo ; ^ pérdida_n 0 ; #7
 ->grn jepope'a_n ; 0==0 n:n,poses:poses
 ** pérdida_n ; ^ pérdida_n 0 ; #7
-->grn <hundi_n ; 0==0 n:n,poses:poses
 ->grn kañy_n ; 0==0 n:n,poses:poses ; #146
 ->grn ñekañy_n ; 0==0 n:n,poses:poses ; #4
 ** quiebra_n ; ^ quiebra_n 0 ; #2
@@ -6186,7 +6185,7 @@
 ->grn voña_n ; 0==0 n:n,poses:poses
 ** crianza_n ; ^ crianza_n 0
 ->grn ñemongakuaa_n ; 0==0 n:n,poses:poses ; #3
-->grn ñemuñare_n ; 0==0 n:n,poses:poses
+->grn ñemoñare_n ; 0==0 n:n,poses:poses
 ->grn ñemoña_n ; 0==0 n:n,poses:poses ; #38
 ** criatura_n abortada ; ^ criatura_n 0 ; #7
 ->grn membyjuka_n ; 0==0 n:n,poses:poses
@@ -7359,7 +7358,7 @@
 ->grn gua'u_n ; 0==0 n:n,poses:poses ; #11
 ->grn ñembotavy_n ; 0==0 n:n,poses:poses ; #30
 ** engendro_n ; ^ engendro_n 0
-->grn ñemuñare_n ; 0==0 n:n,poses:poses
+->grn ñemoñare_n ; 0==0 n:n,poses:poses
 ->grn ñemoña_n ; 0==0 n:n,poses:poses ; #38
 ** enjuague_n de boca ; ^ enjuague_n 0
 ->grn jejuruhéi_n ; 0==0 n:n,poses:poses
@@ -13041,7 +13040,6 @@
 ** pileta_n de natación ; ^ pileta_n 0
 ->grn ytarã_n ; 0==0 n:n,poses:poses
 ** pileta_n ; ^ pileta_n 0
-->grn jahu_n haĝua ; 0==0 n:n,poses:poses
 ->grn jahuha_n ; 0==0 n:n,poses:poses
 ->grn jejahuha_n ; 0==0 n:n,poses:poses
 ** pillo_n ; ^ pillo_n 0
@@ -13098,7 +13096,6 @@
 ** pisapapeles_n ; ^ pisapapeles_n 0
 ->grn jopyha_n ; 0==0 n:n,poses:poses
 ** piscina_n ; ^ piscina_n 0
-->grn jahu_n haĝua ; 0==0 n:n,poses:poses
 ->grn jahuha_n ; 0==0 n:n,poses:poses
 ->grn jejahuha_n ; 0==0 n:n,poses:poses
 ** pista_n de aterrizaje ; ^ pista_n 0
@@ -14138,7 +14135,6 @@
 ** rendija_n ; ^ rendija_n 0
 ->grn pa'ũ_n ; 0==0 n:n,poses:poses
 ** rendimiento_n ; ^ rendimiento_n 0
-->grn ome'ẽva_n ; 0==0 n:n,poses:poses ; #24
 ->grn kane'õngue_n ; 0==0 n:n,poses:poses
 ** reno_n ; ^ reno_n 0
 ->grn chumbi_n ; 0==0 n:n,poses:poses
@@ -14163,7 +14159,7 @@
 ** reproche_n ; ^ reproche_n 0
 ->grn ja'o_n ; 0==0 n:n,poses:poses
 ** reproducción_n ; ^ reproducción_n 0
-->grn ñemuñare_n ; 0==0 n:n,poses:poses
+->grn ñemoñare_n ; 0==0 n:n,poses:poses
 ->grn ñemoña_n ; 0==0 n:n,poses:poses ; #38
 ** reptil_n ; ^ reptil_n 0
 ->grn otyryrýva_n ; 0==0 n:n,poses:poses
@@ -16174,8 +16170,6 @@
 ->grn yvytuatã_n ; 0==0 n:n,poses:poses
 ** vendedor_n de cosas ; ^ vendedor_n 0
 ->grn mba'ereruhára_n ; 0==0 n:n,poses:poses
-** vendedor_n de ropa ; ^ vendedor_n 0
-->grn aoñemuha_n ; 0==0 n:n,poses:poses
 ** vendedor_n ; ^ vendedor_n 0
 ->grn ñemuha_n ; 0==0 n:n,poses:poses ; #9
 ->grn ñemuhára_n ; 0==0 n:n,poses:poses

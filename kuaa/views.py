@@ -47,7 +47,7 @@
 #    global is the instance of GUI.
 
 from flask import request, session, g, redirect, url_for, abort, render_template, flash
-from kuaa import app, make_document, make_text, gui_trans, doc_trans, quit, start, get_human, create_human, sentence_from_textseg, doc_sentences
+from kuaa import app, make_document, make_text, gui_trans, doc_trans, quit, start, get_human, create_human, sentence_from_textseg
 from . import gui
 from docx import Document
 
@@ -264,7 +264,7 @@ def tra():
     # Here's where a sentence or a whole document gets translated
     if tradtodo:
         print("TRADUCIENDO EL DOCUMENTO ENTERO, documento: {}".format(GUI.doc))
-        sentences = doc_sentences(doc=GUI.doc, textid=GUI.textid, gui=GUI)
+#        sentences = doc_sentences(doc=GUI.doc, textid=GUI.textid, gui=GUI)
         all_trans = trad_doc()
         print("Traducciones: {}".format(all_trans[:3]))
         doctrans = '\n'.join(all_trans)

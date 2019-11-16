@@ -211,7 +211,8 @@ class Document(list):
         self.target = target
         self.session = session
         if not text and path:
-            text = Document.get_text_from_file(path)
+            text = text_from_doc(path)
+#            Document.get_text_from_file(path)
         # Intermediate representations: list of word-like tokens and ints representing types
         self.tokens = []
         list.__init__(self)
@@ -303,14 +304,18 @@ class Document(list):
             s, t = '\n'.join(s), '\n'.join(t)
         return s, t
 
-    @staticmethod
-    def get_text_from_file(path):
-        """Read in the text from a file."""
-        try:
-            with open(path, encoding='utf8') as file:
-                return file.readlines()
-        except IOError:
-            print("¡Archivo no encontrado!")
+#    @staticmethod
+#    def get_text_from_file(path):
+#        """Read in the text from a file. If extension is .docx, use docx module.
+#        Otherwise file must be a text file."""
+#        try:
+#            if path.endswith('.docx'):
+#                return Text.doc2text('', path=path)
+#            else:
+#                with open(path, encoding='utf8') as file:
+#                    return file.readlines()
+#        except IOError:
+#            print("¡Archivo no encontrado!")
 
     def preprocess(self):
         """Preprocess the document text.

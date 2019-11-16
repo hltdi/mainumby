@@ -819,7 +819,7 @@
 ->grn mbojeroviapy_v
 ->grn kate_v ; #2
 ** distinto_a ; ^ distinto_a 0 ; #3
-->grn joavy_v ; #18
+->grn joavy ; #18
 ** distraído_a ; ^ distraído_a 0
 ->grn jurujái_v
 ** diurna_a ; ^ diurna_a 0
@@ -829,7 +829,7 @@
 ->grn arapegua_v
 ** diverso_a ; ^ diverso_a 0 ; #19
 ->grn ambue_v ; #1003
-->grn joavy_v ; #18
+->grn joavy ; #18
 ** diversos_a ; ^ diversos_a 0
 ->grn opaichagua_v
 ** divertido_a ; ^ divertido_a 0
@@ -1840,7 +1840,7 @@
 ** medular_a ; ^ medular_a 0
 ->grn apytere_v
 ** mejor_a ; ^ mejor_a 0
-->grn iporãve_v
+->grn iporãve
 ** melancólico_a ; ^ melancólico_a 0
 ->grn py'angekói_v
 ** melindroso_a ; ^ melindroso_a 0

@@ -30,15 +30,23 @@
 ** mientras~que $v ; ^ mientras~que 0
 ->grn $v aja ; ^ aja 1 ; || 1, 0
 ## CONDICIÓN (también hay que incluir casos con subjuntivo...)
-** si $v ; ^ si 0
-->grn $v[pp=ramo] ; ^ $v 0 ; || -1, 0
+** si $v[tmp=prs] ; ^ si 0
+->grn $v[tmp=prs,pp=ramo] ; ^ $v 0 ; || -1, 0
+** si $v[tmp=prt] ; ^ si 0
+->grn $v[tmp=prt,pp=ramo] ; ^ $v 0 ; || -1, 0
+** si $v[tmp=sbp] ; ^ si 0
+->grn $v[tmp=prt,pp=ramo] ; ^ $v 0 ; || -1, 0
 ## RAZÓN
 ** porque $v ; ^ porque 0
 ->grn $v[pp=gui] ; ^ $v 0 ; || -1, 0
-** aunque $v ; ^ aunque 0
-->grn $v jepe ; || 1, 0
+** aunque $v[tmp=prs] ; ^ aunque 0
+->grn jepénte $v ; || 0, 1
+** aunque $v[tmp=prt] ; ^ aunque 0
+->grn jepénte $v[tmp=prt] ; 0, 1
 ** aunque $v[tmp=sbp] ; ^ aunque 0
-->grn $v[tmp=prs] jepe ; ^ jepe 1 ; || 1, 0
+->grn $v[tmp=prs,pp=ramo] jepe ; ^ jepe 1 ; || 1, 0
+** aunque $v[tmp=sbi] ; ^ aunque 0
+->grn $v[tmp=prt,pp=ramo] jepe ; ^ jepe 1 ; || 1, 0
 ## SEMEJANZA
 ** como $v ; ^ como 0
 ->grn $v[pp=icha] ; ^ $v 0 ; || -1, 0

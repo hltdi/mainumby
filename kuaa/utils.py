@@ -27,7 +27,7 @@
 # 2014.07.08
 # -- Created
 
-import unicodedata, re, datetime
+import unicodedata, re, datetime, docx
 from sys import getsizeof, stderr
 from itertools import chain
 from collections import deque
@@ -52,6 +52,23 @@ ISCAP_RE = re.compile(r"^[-–¿¡(\"\'‶“‘$]*[A-ZÀ-Ⱬ]")
 # Capitalize the string
 CAP_RE = re.compile(r"^([-–¿¡(\"\'‶“‘$]*)(\w)")
 CLEAN_RE = re.compile(r"\s+([.,;:?!)”″’%¶])")
+
+## Documents
+def text_from_doc(path):
+    try:
+        if path.endswith('.docx'):
+            doc = docx.Document(path)
+            text = [para.text for para in doc.paragraphs]
+            # Join paragraphs with something other than 
+            text = '\n\n'.join(text)
+            return text
+        else:
+            with open(path, encoding='utf8') as file:
+                return ''.join(file.readlines())
+    except IOError:
+        print("¡Archivo no encontrado!")
+#    except docx.opc.exceptions.PackageNotFoundError:
+#        print("No se pudo encontrar el archivo {}".format(path))
 
 ## Strings
 

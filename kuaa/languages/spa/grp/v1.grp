@@ -2522,7 +2522,7 @@
 ** faltar_v[-r,+fin] al respeto ; ^ faltar_v 0
 ->grn ñemotie'ỹ_v[cat=a]
 ** faltar_v[-r,+fin] ; ^ faltar_v 0
-->grn falta_v[cat=a]
+->grn jejavy_v[cat=a]
 ** fijar_v[-r,+fin] los ojos ; ^ fijar_v 0
 ->grn <hesareko_v[cat=che]
 ** fijar_v[+r,+fin] ; ^ fijar_v 0 ; #4

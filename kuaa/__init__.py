@@ -112,9 +112,9 @@ def doc_sentences(doc=None, textobj=None, text='', textid=-1,
     else:
         return sentences_from_text(textobj, textid, src, targ)
 
-def doc_trans(doc=None, textobj=None, text='', textid=-1,
+def doc_trans(doc=None, textobj=None, text='', textid=-1, docpath='',
               gui=None, src=None, targ=None, session=None, user=None,
-              verbosity=0):
+              terse=True):
     """Traducir todas las oraciones en un documento sin ofrecer opciones al usuario.
     O doc es una instancia de Documento or textobj es una instancia de Text o un
     Documento es creado con text como contenido."""
@@ -125,14 +125,24 @@ def doc_trans(doc=None, textobj=None, text='', textid=-1,
             src, targ = Language.load_trans('spa', 'grn', train=False)
     if not session:
         session = make_session(src, targ, user, create_memory=True)
-    sentences = doc if doc else sentences_from_text(textobj, textid, src, targ)
+    if not doc:
+        if docpath:
+            doc = Document(src, targ, path=docpath)
+    if doc:
+        sentences = doc
+    elif textid >= 0:
+        sentences = sentences_from_text(textobj, textid, src, targ)
+    elif text:
+        sentences = Document(src, targ, text=text)
+#    sentences = doc if doc else sentences_from_text(textobj, textid, src, targ)
     if sentences:
+        print("Traduciendo oraciones en documento...")
         translations = []
 #        doc = make_document(gui, text, html=False)
         for sentence in sentences:
             translation = oración(src=src, targ=targ, sentence=sentence, session=session,
                                   html=False, choose=True, return_string=True,
-                                  verbosity=verbosity, terse=True)
+                                  verbosity=0, terse=terse)
             translations.append(translation)
         return translations
 #        return [s.final for s in seg_sentences]
@@ -207,6 +217,7 @@ def quit(session=None):
     db.session.commit()
 
 def make_session(source, target, user, create_memory=False, use_anon=True):
+    """Create an instance of the Session or Memory class for the given user."""
     User.read_all()
     if isinstance(user, str):
         # Get the user from their username
@@ -221,15 +232,6 @@ def make_session(source, target, user, create_memory=False, use_anon=True):
     elif user:
         session = kuaa.Session(source=source, target=target, user=user)
     return session
-
-#def get_user(username):
-#    """Find the user with username username."""
-#    print("Looking for user with username {}".format(username))
-#    return User.get_user(username)
-
-#def create_user(dct):
-#    """Create a user from the dict of form values from login.html."""
-#    return User.dict2user(dct)
 
 ## DB functions
 
@@ -301,9 +303,11 @@ def create_human(form):
     return human
 
 def get_humans():
+    """Get all existing Human DB objects."""
     return db.session.query(Human).all()
 
 def get_human(username):
+    """Get the Human DB object with the given username."""
     humans = db.session.query(Human).filter_by(username=username).all()
     if humans:
         if len(humans) > 1:
@@ -326,6 +330,7 @@ def get_domains_texts():
     return dom
 
 def get_text(id):
+    """Get the Text object with the given id."""
     return db.session.query(Text).get(id)
 
 # Import views. This has to appear after the app is created.
