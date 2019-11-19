@@ -97,9 +97,11 @@ class Seg:
     max_final = 10
 
     # colors to display segments in interface
-    tt_colors = ['blue', 'sienna', 'green', 'purple', 'red', 'blue', 'sienna', 'green', 'purple']
+    tt_colors = ['blue', 'sienna', 'green', 'red', 'purple']
 
     tt_notrans_color = "Silver"
+
+    color_index = 0
 
     special_re = re.compile("%[A-Z]+~")
 
@@ -402,14 +404,6 @@ class Seg:
             return
         # T Group strings associated with each choice
         choice_tgroups = []
-#        if html:
-#            self.color = Seg.tt_notrans_color if self.is_punc or (not self.translation and not self.special) else Seg.tt_colors[index % 9]
-#            self.set_source_html(first)
-#            transhtml = "<div class='desplegable' ondrop='drop(event);' ondragover='allowDrop(event);'>"
-#            despleg = "despleg{}".format(index)
-#            boton = "boton{}".format(index)
-#            wrap = "wrap{}".format(index)
-#            trans_choice_index = 0
         capitalized = False
         choice_list = self.record.choices if self.record else None
         # Final source segment output
@@ -421,15 +415,7 @@ class Seg:
             trans = self.translation[0][0]
             self.final = [trans]
             self.final_morph = [None]
-#            if html:
-#                trans1 = trans
-#                if '"' in trans:
-#                    trans = trans.replace('"', '\"')
-#                transhtml += "<div class='despleg' id='{}' style='cursor:default'>".format(boton)
-#                transhtml += trans + "</div></div>"
-#                self.html = (tokens, self.color, transhtml, index, trans1, self.source_html)
             return
-#        ntgroups = len(self.tgroups)
         multtrans = True
         final = []
         final_morph = []
@@ -443,43 +429,6 @@ class Seg:
             final.extend(tgforms)
             final_morph.extend(tgmorph)
             choice_tgroups.extend(tggroups)
-#            choice_tgroups.extend(tgg[1] for tgg in tggroups)
-##            if html:
-##                for tcindex, tchoice in enumerate(tgforms):
-##                    # ID for the current choice item
-##                    choiceid = 'opcion{}.{}'.format(index, trans_choice_index)
-##                    # The button itself
-##                    if tindex == 0 and tcindex == 0:
-##                        trans1 = tchoice
-##                        if not multtrans:
-##                            # Only translation; no dropdown menu
-##                            transhtml += "<div class='despleg' id='{}' ".format(boton)
-##                            transhtml += "style='background-color:{};cursor:grab' draggable='true' ondragstart='drag(event);'>{}</div>".format(self.color, tchoice)
-##                        else:
-##                            # First translation of multiple translations; make dropdown menu
-##                            transhtml += '<div draggable="true" id="{}" ondragstart="drag(event);">'.format(wrap)
-##                            transhtml += '<div onclick="desplegar(' + "'{}')\"".format(despleg)
-##                            transhtml += " id='{}' class='despleg' style='background-color:{};cursor:context-menu'>{} ▾</div>".format(boton, self.color, tchoice)
-##                    else:
-##                        # Choice in menu under button
-##                        if trans_choice_index == 1:
-##                            # Start menu list
-##                            transhtml += "<div id='{}' class='contenido-desplegable'>".format(despleg)
-##                        transhtml += "<div class='segopcion' id='{}' onclick='cambiarMeta(".format(choiceid)
-##                        transhtml += "\"{}\", \"{}\")'".format(boton, choiceid)
-##                        transhtml += ">{}</div>".format(tchoice)
-##                    trans_choice_index += 1
-##        if html:
-##            if not self.translation and not self.special:
-##                trans1 = orig_tokens
-##                # No translations suggested: button for translating as source
-##                multtrans = False
-##                transhtml += "<div class='despleg' id='{}'  style='cursor:grab' draggable='true' ondragstart='drag(event);'>".format(boton)
-##                transhtml += orig_tokens
-##                transhtml += "</div>"
-##            if multtrans:
-##                transhtml += '</div></div>'
-##            transhtml += '</div>'
         if final:
 #            print("final {}".format(final))
             final.sort(key=lambda f: f[1])
@@ -487,14 +436,8 @@ class Seg:
             final_morph.sort(key=lambda m: m[1])
             self.final = [f[0] for f in final][:Seg.max_final]
             self.final_morph = [m[0] for m in final_morph][:Seg.max_final]
-#        if self.final:
-#            print("choice t groups {}".format(choice_tgroups))
-#            print("final string {}".format(self.final))
-#            print("final morph {}".format(self.final_morph))
             if self.record:
                 self.record.choice_tgroups = choice_tgroups
-##        if html:
-##            self.html = (orig_tokens, self.color, transhtml, index, trans1, self.source_html)
 
 #    def capitalize_first(self, tokens):
 #        """Capitalize tokens if in first place."""
@@ -644,7 +587,9 @@ class Seg:
         # T Group strings associated with each choice
         choice_tgroups = []
         minimal = self.is_punc or (not self.translation and not self.special)
-        self.color = Seg.tt_notrans_color if minimal else Seg.tt_colors[index % 9]
+        self.color = Seg.tt_notrans_color if minimal else Seg.tt_colors[Seg.color_index % 5]
+        if not minimal:
+            Seg.color_index += 1
         self.set_source_html(first)
         transhtml = "<div class='desplegable' ondrop='drop(event);' ondragover='allowDrop(event);'>"
         despleg = "despleg{}".format(index)

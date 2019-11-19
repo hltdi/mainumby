@@ -446,6 +446,7 @@
 ->grn johayhu_v[cat=a]
 ** amar_v[+r,+fin] ; ^ amar_v 0
 ->grn jehayhu_v[cat=a]
+->grn johayhu_v[cat=a]
 ** amar_v[-r,+fin] ; ^ amar_v 0
 ->grn <hayhu_v[cat=a]
 ** amargar_v[-r,+fin] la vida ; ^ amargar_v 0 ; #13

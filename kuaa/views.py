@@ -58,6 +58,7 @@ GUI = None
 
 def create_gui():
     global GUI
+    print("$$Creating new GUI")
     GUI = gui.GUI(list_texts=True)
 
 def end_gui():
@@ -79,11 +80,11 @@ def solve(isdoc=False, choose=False, index=0, source=''):
     if choose:
         segmentation = gui_trans(GUI, choose=True)
         trans = segmentation.final
-        GUI.init_sent(index, choose=True, trans=trans, source=source)
+        GUI.init_sent(index, choose=True, isdoc=isdoc, trans=trans, source=source)
     else:
         GUI.segs, GUI.tra_seg_html = gui_trans(GUI, choose=False)
 #    print("Solved segs: {}, html: {}".format(SEGS, SEG_HTML))
-        GUI.init_sent(index, choose=False)
+        GUI.init_sent(index, choose=False, isdoc=isdoc)
     if isdoc and not choose:
         GUI.update_doc(index, choose=choose)
 
@@ -158,39 +159,58 @@ def acct():
 def tra():
     global GUI
     if not GUI:
-#        print("No GUI for tra.html")
         create_gui()
     form = request.form
-    print("**FORM DICT FOR tra.html: {}**".format(form))
+#    print("**FORM DICT FOR tra.html (isdoc {}, modo {}, tradtodo {}, textid {}, text_html {})**".format(form.get('isdoc', None),
+#                                                                                          form.get('modo', None),
+#                                                                                          form.get('tradtodo', None),
+#                                                                                          form.get('textid', None),
+#                                                                                          ("+" if 'textid' in form and form['textid'] else '-')))
+#    print("GUI props: {}".format(GUI.props))
+#    if GUI.text_select_html:
+#        print("GUI has text_select_html")
+#    else:
+#        print("GUI doesn't have text_select_html")
     if not GUI.source:
 #        print("Ninguna lengua fuente")
         start(gui=GUI, use_anon=False, create_memory=False)
-#        init_session(create_memory=False)
     # Translating document?
-    isdoc = form.get('isdoc') == 'true'
+    isdoc = form.get('isdoc') == "true" or form.get('modo') == 'doc'
+    if isdoc:
+        print("TRANSLATING DOCUMENT")
+        if GUI.doc:
+            print("Document loaded")
+        else:
+            print("No document yet")
+    else:
+        print("TRANSLATING SENTENCE")
     # Initialize various window parameters
-    GUI.set_props(form, ['ocultar', 'sinopciones', 'nocorr', 'isdoc'], ['tfuente'])
+    GUI.set_props(form, ['ocultar', 'sinopciones', 'nocorr'], ['tfuente'])
+    GUI.props['isdoc'] = isdoc
+#    print("GUI props: {}".format(GUI.props))
     # Pick translation without offering options
     choose = GUI.props.get('sinopciones', False)
     username = GUI.user.username if GUI.user else ''
     tradtodo = form.get('tradtodo') == 'true'
     abandonar_doc = form.get('abandonardoc') == 'true'
     if abandonar_doc:
-        print("Abandonando actual documento...")
+#        print("Abandonando actual documento...")
         GUI.clear(isdoc=True)
     if 'ayuda' in form and form['ayuda'] == 'true':
         # Opened help window. Keep everything else as is.
         return render_template('tra.html', doc=isdoc, documento=GUI.doc_html, props=GUI.props, user=username,
                                choose=choose, tradtodo=tradtodo)
-    if 'modo' in form:
+    if not GUI.doc and not GUI.doc_html and 'modo' in form and form['modo']:
+#        print("modo in form: {}".format(form.get('modo')))
         # Mode (sentence vs. document) has changed
-        isdoc = form.get('modo') == 'documento'
+        isdoc = form.get('modo') == 'doc'
         if 'documento' in form and form['documento']:
             # A document has been loaded, make it into a Document object
             make_document(GUI, form['documento'], html=True)
-            print("PROCESANDO TEXTO {}".format(GUI.doc))
+#            print("PROCESANDO TEXTO EN ARCHIVO {}".format(GUI.doc))
             # Re-render, using HTML for Document
             return render_template('tra.html', documento=GUI.doc.html, doc=True, props=GUI.props, user=username,
+                                   text_html=GUI.text_select_html,
                                    choose=choose, tradtodo=tradtodo)
         elif isdoc: # and form.get('docsrc') == 'almacén':
             # A Text object is to be loaded; create the text list and HTML
@@ -199,9 +219,11 @@ def tra():
                 print("Making text doc from text {}".format(textid))
                 make_text(GUI, int(textid))
                 return render_template('tra.html', documento=GUI.doc_html, doc=True, props=GUI.props, user=username,
+                                       text_html=GUI.text_select_html,
                                        choose=choose, tradtodo=tradtodo)
             else:
                 # Re-render, displaying domain/text dropdowns
+#                print("DISPLAY DOMAINS")
                 return render_template('tra.html', doc=True, props=GUI.props, text_html=GUI.text_select_html,
                                        user=username, choose=choose, tradtodo=tradtodo)
         else:
@@ -209,53 +231,57 @@ def tra():
             GUI.clear(isdoc=isdoc)
             return render_template('tra.html', doc=isdoc, props=GUI.props, user=username, choose=choose, tradtodo=tradtodo)
     if form.get('borrar') == 'true':
+#        print("Clearing text, isdoc? {}, tradtodo {}".format(isdoc, tradtodo))
         record = form.get('registrar') == 'true'
         if record:
             trans = form.get('ometa')
 #            print("Recording translation: {}".format(trans))
             GUI.clear(record=True, translation=trans, isdoc=True)
         else:
-            GUI.clear(record=False)
+            GUI.clear(record=False, isdoc=isdoc, tradtodo=tradtodo)
             #, form.get('ometa'))
         # Start over with no current sentence or translation (translating sentence)
         GUI.props['tfuente'] = "120%"
         return render_template('tra.html', oracion=None, tra_seg_html=None, user=username, props=GUI.props,
-                               choose=choose, tradtodo=tradtodo)
+                               documento=GUI.doc_html,
+                               text_html=GUI.text_select_html, doc=isdoc, choose=choose, tradtodo=tradtodo)
     GUI.props['isdoc'] = isdoc
     if not 'ofuente' in form:
         # No sentence entered or selected
-        print("NO SENTENCE ENTERED")
+#        print("NO SENTENCE ENTERED")
         return render_template('tra.html', user=username, props=GUI.props, doc=isdoc, choose=choose, tradtodo=tradtodo)
     if not GUI.doc and not GUI.has_text:
         # Create a new document
         print("CREANDO NUEVO DOCUMENTO.")
         make_document(GUI, form['ofuente'], html=False)
         if len(GUI.doc) == 0:
-            print(" pero documento está vacío.")
+#            print(" pero documento está vacío.")
             return render_template('tra.html', error=False, user=username, doc=isdoc, props=GUI.props,
                                    text_html=GUI.text_select_html, choose=choose, tradtodo=tradtodo)
     oindex = int(form.get('oindex', 0))
+#    print("oindex {}".format(oindex))
     docscrolltop = form.get('docscrolltop', 0)
     if 'tacept' in form and form['tacept']:
         # A new translation to be added to the accepted sentence translations.
-        print("ACCEPTING NEW TRANSLATION {}".format(form['tacept']))
+#        print("ACCEPTING NEW TRANSLATION {}".format(form['tacept']))
         GUI.accept_sent(oindex, form['tacept'])
         aceptado = GUI.doc_tra_acep_str
         return render_template('tra.html', oracion='', doc=True, tra_seg_html='', tra='', oindex=-1,
                                documento=GUI.doc_html, aceptado=aceptado,
                                user=username, props=GUI.props, choose=choose, tradtodo=tradtodo)
-    if GUI.doc_tra_acep[oindex]:
+    if GUI.doc_tra_acep and GUI.doc_tra_acep[oindex]:
         error = "¡Ya aceptaste una traducción para esta oración; por favor seleccioná otra oración para traducir!"
         return render_template('tra.html', oracion='', doc=True, error=error, tra_seg_html='', tra='',
                                aceptado=GUI.doc_tra_acep_str, docscrolltop=docscrolltop,
                                documento=GUI.doc_html, user=username, props=GUI.props, choose=choose, tradtodo=tradtodo)
-    if GUI.doc_tra_html[oindex]:
+    if GUI.doc_tra_html and GUI.doc_tra_html[oindex]:
         # Find the previously generated translation
         tra_seg_html = GUI.doc_tra_html[oindex]
         tra = GUI.doc_tra[oindex]
+#        print("Looking for previous translation... (oindex={}, isdoc={}, tra {})".format(oindex, isdoc, tra))
         # Highlight selected source sentence with segments
         GUI.update_doc(oindex, repeat=True)
-        print("SENTENCE at {} ALREADY TRANSLATED".format(oindex))
+#        print("SENTENCE at {} ALREADY TRANSLATED".format(oindex))
         return render_template('tra.html', oracion=GUI.fue_seg_html, tra_seg_html=tra_seg_html, tra=tra,
                                documento=GUI.doc_html, doc=True, oindex=oindex, docscrolltop=docscrolltop,
                                aceptado=GUI.doc_tra_acep_str, user=username, props=GUI.props,
@@ -266,7 +292,7 @@ def tra():
         print("TRADUCIENDO EL DOCUMENTO ENTERO, documento: {}".format(GUI.doc))
 #        sentences = doc_sentences(doc=GUI.doc, textid=GUI.textid, gui=GUI)
         all_trans = trad_doc()
-        print("Traducciones: {}".format(all_trans[:3]))
+#        print("Traducciones: {}".format(all_trans[:3]))
         doctrans = '\n'.join(all_trans)
         GUI.props['tfuente'] = '100%'
 #        translations = ''
@@ -285,7 +311,8 @@ def tra():
                                                 textid=GUI.textid, oindex=oindex)
         else:
             GUI.sentence = GUI.doc[oindex]
-        print("CURRENT SENTENCE {}".format(GUI.sentence))
+        print("ORACIÓN ACTUAL {}".format(GUI.sentence))
+        print("isdoc {}".format(isdoc))
         # Translate and segment the sentence, assigning GUI.segs
         source = form.get('ofuente', '')
         solve(isdoc=isdoc, index=oindex, choose=choose, source=source)

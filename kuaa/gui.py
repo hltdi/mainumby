@@ -104,6 +104,7 @@ class GUI:
         self.doc_select_html = [""] * nsent
         self.doc_html = self.doc.html
         self.doc_html_list = self.doc.html_list
+        self.props['isdoc'] = True
         self.props['tfuente'] = "100%" if nsent > 1 else "120%"
 
     def init_text(self, textid, nsent, html, html_list):
@@ -123,6 +124,7 @@ class GUI:
         self.text_html = html
         # List of HTML for each source sentence
         self.doc_html_list = html_list
+        self.props['isdoc'] = True
         self.props['tfuente'] = "100%" if nsent > 1 else "120%"
 
     def doc_unselect_sent(self):
@@ -183,7 +185,7 @@ class GUI:
             string += sent_trans
         return string.strip()
 
-    def init_sent(self, index, choose=False, trans='', source=''):
+    def init_sent(self, index, choose=False, isdoc=False, trans='', source=''):
         """What happens after a sentence has been translated."""
         cap = self.sentence.capitalized
         self.props['cap'] = cap
@@ -198,13 +200,15 @@ class GUI:
             self.fue_seg_html = ''.join([s[-1] for s in self.tra_seg_html])
             self.tra = clean_sentence(' '.join([s[4] for s in self.tra_seg_html]), cap)
 #        GUI.clean_sentence(' '.join([s[4] for s in self.tra_seg_html]), cap)
-            self.doc_tra_html[index] = self.tra_seg_html
+            if isdoc:
+                self.doc_tra_html[index] = self.tra_seg_html
 #        print("New tra seg: {}".format(self.tra_seg_html))
-            self.doc_tra[index] = self.tra
+                self.doc_tra[index] = self.tra
 
-    def clear(self, record=False, translation='', isdoc=False):
+    def clear(self, record=False, translation='', isdoc=False, tradtodo=False):
         """Clear all document and sentence variables, and record the current
-        translation if record is True and there is a translation."""
+        translation if record is True and there is a translation. If tradtodo is True,
+        keep the doc, doc_html, textid."""
 #        if record:
 #            print("Recording translation {}".format(translation))
 #            print("Current doc_tra_acep {}".format(self.doc_tra_acep))
@@ -216,15 +220,17 @@ class GUI:
             sentrec = self.sentence.record
         self.tra_seg_html = None
         self.sentence = None
-        self.has_text = False
-        self.textid = -1
-        self.doc = None
+#        self.has_text = False
+        if not tradtodo:
+            self.textid = -1
+            self.doc = None
+            self.doc_html = ''
         self.doc_tra_acep = []
         self.doc_tra_html = []
         self.doc_tra = []
         self.doc_tra_acep_str = ''
-        self.doc_html = ''
         self.doc_select_html = []
+        self.props['isdoc'] = isdoc
         self.props['tfuente'] = "100%" if isdoc else "120%"
 #        if self.session:
 #            self.session.record(sentrec, translation=translation)
@@ -245,7 +251,7 @@ class GUI:
 
     def set_domains_texts(self):
         """HTML for a menu listing Text docs available, grouped by domain.
-        domain_texts is of (domain, (id, title)) pairs."""
+        domain_texts is list of (domain, (id, title)) pairs."""
         domain_texts = get_domains_texts()
         html = "<div class='desplegable-derecha' id='textos'>"
         for dindex, (domain, texts) in enumerate(domain_texts):

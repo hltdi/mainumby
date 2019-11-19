@@ -348,7 +348,7 @@ input.text
 }
 #button
 {
-        background-color: #8DEDCD;
+        background-color: #F5E754;
         color: #4B2B17;
         font-family: "Verdana";
         font-size: 100%;
@@ -364,7 +364,7 @@ input.text
 }
 #mainbutton
 {
-        background-color: #8DEDCD;
+        background-color: #F5E754;
         color: #4B2B17;
         font-family: "Verdana";
 	font-weight: bold;
@@ -379,7 +379,7 @@ input.text
 #button:hover, #button:active, #mainbutton:hover, #mainbutton:active
 {
         background-color: #4B2B17;
-        color: #8DEDCD;
+        color: #F5E754;
 }
 #altbutton
 {
@@ -474,6 +474,16 @@ input.menu:hover, input.menu:active, input.menu:focus
     color: #F5E754;
     border: none;
     outline: none;
+}
+input.trad
+{
+    color: black;
+    font-size: 100%;
+    text-align: center;
+    width: 210px;
+    height: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 button.menu
 {
@@ -588,5 +598,11 @@ button.despleg:hover, button.despleg:active, button.despleg:focus
     padding: 3px 7px;
     text-decoration: none;
     display: block;
+}
+.vl {
+  border-left: 2px solid black;
+  margin-left: 6px;
+  margin-right: 8px;
+  height: 80px;
 }
 .show {display: block;}

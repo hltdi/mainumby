@@ -17,7 +17,7 @@ label#subir
  {
     display: inline-block;
     position: relative;
-    background-color: #8DEDCD;
+    background-color: #F5E754;
     color: #4B2B17;
     font-family: "Verdana";
     font-size: 100%;
@@ -33,7 +33,7 @@ label#subir
 label#subir:hover, label#subir:active
 {
     background-color: #4B2B17;
-    color: #8DEDCD;
+    color: #F5E754;
 }
 td.subir
 {
@@ -50,6 +50,20 @@ td.opciones
 {
     font-size: 90%;
     font-style: italic;
+    text-align: center;
+    border: 1px solid white;
+    width: 38%;
+}
+td.sinopciones
+{
+    font-size: 90%;
+    font-style: italic;
+    text-align: center;
+    border: 1px solid white;
+    width: 38%;
+}
+td.sep
+{
     text-align: left;
 }
 .envoltorio-subida {
@@ -311,20 +325,35 @@ div.despleg-derecha {
 <div class="modo">
     <table style="width:100%">
     <tr>
-    <td class='subir'>Traducción de </td>
+    {#    <td class='subir'>Traducción de </td> #}
     <td class='opciones'>
+    Traducción de...<br/>
 {% if doc %}
-    <input type="radio" name="modo" id="ora" value="oración" onchange="this.form.submit();">palabra/frase/oración<br/>
-    <input type="radio" name="modo" id="doc" value="documento" checked>documento
+    <input type="button" class="trad" id="tradora" style="background-color: #F5E754; cursor: pointer" value="Palabras/frases/oraciones" onclick="alternarPalDoc(false);">
+    <input type="button" class="trad" id="traddoc" style="background-color: #8DEDCD" value="Documentos">
 {% else %}
-    <input type="radio" name="modo" id="ora" value="oración" checked>palabra/frase/oración<br/>
-    <input type="radio" name="modo" id="doc" value="documento" onchange="this.form.submit();">documento
+    <input type="button" class="trad" id="tradora" style="background-color: #8DEDCD" value="Palabras/frases/oraciones">
+    <input type="button" class="trad" id="traddoc" style="background-color: #F5E754; cursor: pointer" value="Documentos" onclick="alternarPalDoc(true);">
 {% endif %}
+{#    <span class='vl'></span> #}
+    </td>
+    <td style="width: 25px"></td>
+    <td class='sinopciones'>
+    ¿Opciones de traducción ofrecidas?<br/>
+    {% if choose %}
+    <input type="button" class="trad" id="conopc" style="background-color: #F5E754; cursor: pointer" value="Con opciones" onclick="alternarOpciones(false);">
+    <input type="button" class="trad" id="sinopc" style="background-color: #8DEDCD" value="Sin opciones">
+    {% else %}
+    <input type="button" class="trad" id="conopc" style="background-color: #8DEDCD" value="Con opciones">
+    <input type="button" class="trad" id="sinopc" style="background-color: #F5E754; cursor: pointer" value="Sin opciones" onclick="alternarOpciones(true);">
+    {% endif %}
     </td>
     <td class='ocultar'>
+{#    
     <span id="sinopciones" class="alternar" onclick="alternarOpciones();">
     {% if choose %}Mostrar opciones. {% else %}Traducir sin opciones.{% endif %}
-    </span><br/>
+     </span><br/>
+#}
     <span id="ocultar" class="alternar" onclick="alternarInstrucciones();">
     {% if props.ocultar %}Mostrar instrucciones. {% else %}Ocultar instrucciones.{% endif %}
     </span>
@@ -380,9 +409,10 @@ div.despleg-derecha {
 
 <input type="hidden" name="documento" value=''>
 <input type="hidden" name="ocultar" value={% if props.ocultar %}"true"{% else %}"false"{% endif %}>
-<input type="hidden" name="sinopciones" value={% if choose %}"true"{% else %}"false"{% endif %}>
+<input type="hidden" name="sinopciones" value={% if choose %}true{% else %}false{% endif %}>
 <input type="hidden" name="docsrc" value="computadora">
 <input type="hidden" name="textid" value="">
+<input type="hidden" name="modo" value="ora">
 
 </form>
 
@@ -399,7 +429,7 @@ div.despleg-derecha {
   </tr>
 
   <tr>
-    <td>
+  <td>
   {% if documento %}
     <div id='fuente' contenteditable="false">{{documento|safe}}</div>
   {% elif oracion %}
@@ -411,15 +441,21 @@ div.despleg-derecha {
   {% if documento %}
     <div class="instruc" id="instruc_fuente">
     {% if not tradtodo %}
-    Para seleccionar una oración para traducir, hacé clic sobre la oración.<br />
-    Para traducir todo el documento, presioná "Traducir todo" abajo.<br />
+    Para seleccionar una oración para traducir, hacé clic sobre la oración.
+    {% if choose %}
+    <br />
+    Para traducir todo el documento, presioná "Traducir todo" abajo.
+    {% endif %}
+    <br />
     {% endif %}
     Para abandonar este documento, presioná "Abandonar" abajo.
     </div>
     <br class='sep'/>
     <input type="button" value="Abandonar" id="button" onclick="abandonarDoc();">
     {% if choose %}
+    <span id="tradtodo">
     <input type="button" value="Traducir todo" id="button" onclick="traducirTodo();">
+    </span>
     {% endif %}
   {% elif oracion %}
     <div class="instruc" id="instruc_fuente">Para traducir otra oración,
@@ -457,17 +493,19 @@ div.despleg-derecha {
     • Para segmentos marcados con "▾", pod&eacute;s seleccionar otra opción.<br />
     • Para cambiar la posición de un segmento, arrastralo sobre otro segmento.</div>
     </div>
-    {% endif %}
-    {% if not tradtodo %}
+  {% endif %}
+  {% if not tradtodo %}
+  {#
     <br class="sep" />
     <span id="correccion" class="alternar" onclick="alternarCorreccion();">Desactivar corrección ortográfica automática.</span>
-    <br class='instruc'/>
+   <br class='instruc'/>
+#}   
     <textarea class='ometa' id='textmeta'>{{tra|safe}}</textarea>
     {% if tra %}
     <br class='instruc' />
     <div class="instruc" id="instruc_trad">
     • Si no estás satisfecho con la traducción, pod&eacute;s editarla.<br />
-    {% if props.isdoc %}
+    {% if doc %}
     • Para incluir esta oración en la traducción del documento, presioná "Aceptar".<br />
     {% else %}
     • Para copiar la traducción al portapapeles, presioná "Copiar".
@@ -481,7 +519,7 @@ div.despleg-derecha {
 
     <br class='instruc'/>
 
-    {% if props.isdoc %}
+    {% if doc %}
     <input type="button" value="Aceptar" id="button" onclick="aceptarTrad();">
     {% else %}
     <input type="button" value="Copiar" id="button" onclick="copiar();">
@@ -517,6 +555,7 @@ div.despleg-derecha {
 {% endif %}
 
 <form name="Form2" method=POST action='tra'>
+<input type="hidden" name="modo" value={% if isdoc %}"doc"{% else %}"ora"{% endif %}>
 <input type="hidden" name="ofuente" value="">
 <input type="hidden" name="oindex" value={% if oindex %}{{oindex}}{% else %}"0"{% endif %}>
 <input type="hidden" name="tacept" value="">    
@@ -526,11 +565,11 @@ div.despleg-derecha {
 <input type="hidden" name="tfuente" value="120%">
 <input type="hidden" name="ometa" value="">
 <input type="hidden" name="nocorr" value="">
-<input type="hidden" name="sinopciones" value={% if choose %}"true"{% else %}"false"{% endif %}>
+<input type="hidden" name="sinopciones" value={% if choose %}true{% else %}false{% endif %}>
 <input type="hidden" name="ocultar" value={% if props.ocultar %}"true"{% else %}"false"{% endif %}>
-<input type="hidden" name="tradtodo" value={% if tradtodo %}"true"{% else %}"false"{% endif %}>
+<input type="hidden" name="tradtodo" value={% if tradtodo %}true{% else %}false{% endif %}>
 <input type="hidden" name="docscrolltop" value=0>
-<input type="hidden" name="abandonardoc" value="false">
+<input type="hidden" name="abandonardoc" value=false>
 </form>
 
 {% endblock %}
@@ -606,7 +645,7 @@ function longFuente()
 
 function alSalir()
 {
-    document.Form2.borrar.value = 'true';
+    document.Form2.borrar.value = true;
     document.Form2.ofuente.value = '';
     document.Form2.tfuente.value = "120%";
     document.Form1.action = "fin";
@@ -621,7 +660,7 @@ function borrarFuente() {
 
 function borrar()
 {
-    document.Form2.borrar.value = 'true';
+    document.Form2.borrar.value = true;
     document.Form2.ofuente.value = '';
     document.Form2.tfuente.value = "120%";
     document.Form2.submit();
@@ -639,7 +678,7 @@ function registrar()
 {
     meta = document.getElementById("aceptado").value;
     document.Form2.ometa.value = meta;
-    document.Form2.borrar.value = 'true';
+    document.Form2.borrar.value = true;
     document.Form2.registrar.value = 'true';
     document.Form2.tfuente.value = "120%";
     document.Form2.action = "tra";
@@ -653,23 +692,28 @@ function aceptarTrad()
     index = document.Form2.oindex.value;
 //    alert("Aceptando oración " + index + " :: " + trad);
     document.Form2.tacept.value = trad;
-    document.Form2.isdoc.value = "true";
+    document.Form2.isdoc.value = true;
     document.Form2.tfuente.value = "100%";
     document.Form2.submit();
 }
 
 function abandonarDoc()
 {
-    document.Form1.modo.value = "doc";
-    document.Form2.abandonardoc.value = "true";
-    document.Form2.isdoc.value = "true";
+    document.Form2.modo.value = "doc";
+    document.Form2.abandonardoc.value = true;
+    document.Form2.isdoc.value = true;
+    document.Form2.ofuente.value = '';
     document.getElementById("aceptado").value = '';
     document.Form2.submit();
 }
 
 function traducirTodo()
 {
-    document.Form2.tradtodo.value = "true";
+    document.Form2.tradtodo.value = true;
+/*    document.Form2.borrar.value = true; */
+    document.Form2.isdoc.value = true;
+    document.Form2.modo.value = '';
+/*    document.style.cursor = "wait"; */
     document.Form2.submit();
 }
 
@@ -781,7 +825,7 @@ function seleccionarOra(oraid, index) {
     document.Form2.ofuente.value = oracion;
     document.Form2.oindex.value = index;
     document.Form2.tfuente.value = "100%";
-    document.Form2.isdoc.value = "true";
+    document.Form2.isdoc.value = true;
     document.Form2.submit();
 }
 
@@ -816,6 +860,8 @@ function triDerecha(string) {
 
 function abrirSeleccionado(textid) {
     // Open the selected Text from the DB.
+    document.Form0.modo.value = "doc";
+    document.Form2.isdoc.value = true;
     document.Form0.textid.value = textid;
     document.Form0.submit();
 }
@@ -853,6 +899,30 @@ function ingresar() {
     form.submit();
 }
 
+function alternarPalDoc(doc) {
+    if (doc) {
+	ora = document.getElementById("tradora");
+	tdoc = document.getElementById("traddoc");
+        document.Form0.modo.value = "doc";
+        document.Form2.isdoc.value = true;
+	tdoc.style.background = "#8DEDCD";
+	tdoc.style.cursor = "default";
+	ora.style.background = "#F5E754";
+	ora.style.cursor = "pointer";
+        document.Form0.submit();
+    } else {
+	ora = document.getElementById("tradora");
+	tdoc = document.getElementById("traddoc");
+        document.Form0.modo.value = "ora";
+        document.Form2.isdoc.value = false;
+	ora.style.background = "#8DEDCD";
+	ora.style.cursor = "default";
+	tdoc.style.background = "#F5E754";
+	tdoc.style.cursor = "pointer";
+        document.Form0.submit();
+    }
+}
+
 /* Alternar corrección automática */
 function alternarCorreccion() {
 //    alert("Alternando " + document.Form2.nocorr.value);
@@ -868,15 +938,30 @@ function alternarCorreccion() {
 }
 
 /* Alternar: mostrar opciones <-> traducir sin opciones */
-function alternarOpciones() {
-    if (document.Form0.sinopciones.value == "false") {
-	document.Form0.sinopciones.value = "true";
-	document.Form2.sinopciones.value = "true";
-	document.getElementById("sinopciones").innerHTML = "Mostrar opciones.";
+function alternarOpciones(sinopciones) {
+    conopc = document.getElementById("conopc");
+    sinopc = document.getElementById("sinopc");
+    document.Form2.borrar.value = true;
+    document.Form2.modo.value = {% if doc %}"doc"{% else %}"ora"{% endif %};
+    document.Form2.isdoc.value = {% if doc %}true{% else %}false{% endif %};
+    if (sinopciones) {
+	document.Form0.sinopciones.value = true;
+	document.Form2.sinopciones.value = true;
+	sinopc.style.background = "#8DEDCD";
+	sinopc.style.cursor = "default";
+	conopc.style.background = "#F5E754";
+	conopc.style.cursor = "pointer";
+        document.Form2.submit();
+//	document.getElementById("sinopciones").innerHTML = "Mostrar opciones.";
     } else {
-	document.Form0.sinopciones.value = "false";
-	document.Form2.sinopciones.value = "false";
-	document.getElementById("sinopciones").innerHTML = "Traducir sin opciones.";
+	document.Form0.sinopciones.value = false;
+	document.Form2.sinopciones.value = false;
+	conopc.style.background = "#8DEDCD";
+	conopc.style.cursor = "default";
+	sinopc.style.background = "#F5E754";
+	sinopc.style.cursor = "pointer";
+        document.Form2.submit();
+//	document.getElementById("sinopciones").innerHTML = "Traducir sin opciones.";
     }
 }
 
@@ -1060,6 +1145,12 @@ function mostrarAyuda() {
 <h4 class="help">Ayuda para usar el traductor</h4>\
 <p class="help">En esta página se puede traducir palabras, frases, \
 oraciones simples, y documentos almacenados en archivos. \
+Podés elegir entre las dos opciones con los botones en la parte superior izquierda \
+de la ventana. \
+El traductor tiene dos "modos", uno que ofrece opciones al usuario para \
+la traducción de muchas palabras y frases, uno que traduce sin ofrecer opciones. \
+Podés elegir entre los dos modos con los botones en el centro superior \
+de la ventana. \
 </p>\
 <h5 class="help">Instrucciones para palabras, frases, y oraciones</h5>\
 <ol class="help">\
@@ -1068,7 +1159,11 @@ oraciones simples, y documentos almacenados en archivos. \
   </li>\
   <li>Presioná la tecla Intro/Enter.\
   </li>\
-  <li>La visualización de la oración cambia para mostrar los segmentos \
+  <li>Si has seleccionado el modo "sin opciones", la traducción \
+  de Mainumby aparece en el espacio a la derecha. \
+  </li>\
+  <li>Por otro lado, so has seleccionado el modo "con opciones", \
+  la visualización de la oración cambia para mostrar los segmentos \
   extraídos por Mainumby con colores diferentes. \
   La traducción de Mainumby aparece en los espacios a la derecha. \
   El superior muestra la traducción de los segmentos extraídos por \
@@ -1099,9 +1194,9 @@ oraciones simples, y documentos almacenados en archivos. \
   </ol>\
 <h5 class="help">Instrucciones para documentos</h5>\
 <ol class="help">\
-  <li>En el espacio amarillo en la parte superior de la página, \
-  seleccioná "Documento". \
-  Se presentan dos opciones para introducir un documento para \
+  <li>Si has elegido "Documentos" al presionar en el botón \
+  en la parte superior de la ventana, \
+  se presentará dos posibilidades para introducir un documento para \
   traducir. Pod&eacute;s subir un documento de tu computadora o tel&eacute;fono \
   o por otro lado elegir un documento de los que están almacenados \
   en la base de datos de Mainumby. \
@@ -1130,12 +1225,17 @@ oraciones simples, y documentos almacenados en archivos. \
   documento. Para traducir la oración resaltada en negrita, hacé \
   clic. \
   </li>\
-  <li>Como en la interfaz para oraciones, se muestran los segmentos \
+  <li>Como en la interfaz para oraciones, si has seleccionado \
+  el modo "sin opciones", la traducción de Mainumby aparece directamente \
+  en el espacio a la derecha. \
+  Por otro lado, si has seleccionado el modo "con opciones", se muestran los segmentos \
   extraídos por Mainumby y sus traducciones (a la derecha) con \
   colores. Como en la otra interfaz, se puede escoger entre las \
   opciones ofrecidas y cambiar la posición de segmentos. \
   </li>\
-  <li>Cuando estés satisfecho con la traducción de la oración, \
+  <li>Con el modo "con opciones", tenés que aceptar la traducción de cada oración \
+  antes de que se incluya en la traducción del documento. \
+  Cuando estés satisfecho con la traducción de la oración, \
   presioná el botón "Aceptar" para incluirla en la traducción del \
   documento, la que se muestra en el espacio en la parte inferior \
   derecha.\

@@ -116,7 +116,7 @@ def doc_trans(doc=None, textobj=None, text='', textid=-1, docpath='',
               gui=None, src=None, targ=None, session=None, user=None,
               terse=True):
     """Traducir todas las oraciones en un documento sin ofrecer opciones al usuario.
-    O doc es una instancia de Documento or textobj es una instancia de Text o un
+    O doc es una instancia de Documento o textobj es una instancia de Text o un
     Documento es creado con text como contenido."""
     if not src and not targ:
         if gui:
