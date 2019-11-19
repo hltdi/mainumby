@@ -274,17 +274,7 @@ class Seg:
         """Does this Seg match pattern elem and features from a Group?"""
         if verbosity:
             print(" Matching item {} with group token {}".format(self, group_tok))
-        if '$' in group_tok:
-            # segment has to have a translation to match a category
-            if not self.translation:
-                return False
-            if not self.scats or group_tok not in self.scats:
-                return False
-            elif self.get_shead_feats():
-                return self.get_shead_feats()[0] or True
-            else:
-                return True
-        elif Token.is_special(group_tok):
+        if Token.is_special(group_tok):
             if not self.special:
                 return False
             pre = self.head_tok.prefix
@@ -294,14 +284,26 @@ class Seg:
             if not pre.startswith(group_tok):
                 return False
         else:
+            groupcat = '$' in group_tok
             toks = self.get_tokens()
-            if not any([group_tok == tok for tok in toks]) or isinstance(self, SuperSeg):
-                # Explicit string in group can't match a SuperSeg
-                return False
-            if not group_feats:
-                return True
             feats = self.get_shead_feats()
-            if feats:
+#            print("Matching toks {}, feats {}, group feats {}".format(toks, self.get_shead_feats(), group_feats))
+            # match tokens
+            if groupcat:
+                if not self.translation or (not self.scats or group_tok not in self.scats):
+                    return False
+            elif not any([group_tok == tok for tok in toks]) or isinstance(self, SuperSeg):
+#                # Explicit string in group can't match a SuperSeg
+                return False
+#            if not any([group_tok == tok for tok in toks]) or isinstance(self, SuperSeg):
+#                return False
+            if not group_feats:
+                # No group features to match so use head features if any
+                if feats:
+                    return feats[0] or True
+                else:
+                    return True
+            elif feats:
                 for feat in feats:
                     if verbosity:
                         print(" Matching group features {} with segment features {}".format(group_feats.__repr__(), feat.__repr__()))
@@ -312,6 +314,7 @@ class Seg:
                     if u == 'fail':
                         return False
                     else:
+                        print("  result {}".format(u.__repr__()))
                         return u
         return True
 

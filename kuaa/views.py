@@ -200,7 +200,11 @@ def tra():
         # Opened help window. Keep everything else as is.
         return render_template('tra.html', doc=isdoc, documento=GUI.doc_html, props=GUI.props, user=username,
                                choose=choose, tradtodo=tradtodo)
-    if not GUI.doc and not GUI.doc_html and 'modo' in form and form['modo']:
+    # No document loaded from file or from DB
+    no_doc = not GUI.doc and not GUI.doc_html
+    # No sentence entered in sentence UI
+    no_ora = not 'ofuente' in form
+    if no_doc and no_ora and 'modo' in form and form['modo']:
 #        print("modo in form: {}".format(form.get('modo')))
         # Mode (sentence vs. document) has changed
         isdoc = form.get('modo') == 'doc'

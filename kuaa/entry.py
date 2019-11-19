@@ -685,7 +685,7 @@ class Group(Entry):
                         print("   Updating head segment {}, cleaned {}".format(segment, segment.cleaned_trans))
                 else:
                     if verbosity or self.debug:
-                        print("   Updating non-head segment {}, head {}, ttok {}, ttokfeats {}, segfeat {}, agr {}".format(segment, segthead, ttoken, tfeats.__repr__(), segfeat.__repr__(), agr1))
+                        print("   Updating non-head segment {}, head {}, ttok {}, ttokfeats {}, segfeat {}".format(segment, segthead, ttoken, tfeats.__repr__(), segfeat.__repr__()))
                     if not segthead:
                         if ttoken and not segspec:
                             newtrans.append(ttoken)
@@ -699,8 +699,11 @@ class Group(Entry):
                             if isinstance(transfeats, FeatStruct):
                                 transfeats = FSSet(transfeats)
                             if transfeats and tfeats:
-#                                print("transfeats {} and tfeats {}".format(transfeats.__repr__(), tfeats.__repr__()))
+                                if self.debug:
+                                    print("     transfeats {} and tfeats {}".format(transfeats.__repr__(), tfeats.__repr__()))
                                 ufeats = transfeats.agree_with(tfeats)
+                                if self.debug:
+                                    print("     ... agree result: {}".format(ufeats.__repr__()))
                             else:
                                 ufeats = transfeats or tfeats
                             trans[2] = ufeats

@@ -27,6 +27,7 @@ VaN :: $vt a &n ; ^0 ; 0[-ojxpl] ; 2[caso=pe]
 VaN[C] :: $vt a %C; ^0 ; 0[-ojxpl] ; 2+-pe
 # transitive verbs with impersonal objects
 VN :: $vt &n ; ^0 ; 0[-ojxpl]
+# adverb-verb combinations
 AdvV :: $adv &v ; ^1
 VAdv :: &v $adv ; ^0
 ## sujeto - verbo

@@ -2782,7 +2782,6 @@ class Segmentation:
         segs = [s[1] for s in seglist]
         positions = [s[0] for s in seglist]
         features = [s[2] for s in seglist]
-#        print("Creating superset with features {}".format(features))
         superseg = SuperSeg(self, segs, features=features, join=join, verbosity=verbosity)
         if not terse:
             print("CREANDO SUPERSEG PARA {} Y {} en posiciones {}".format(segs, join, positions))

@@ -170,11 +170,11 @@ class FSSet(set):
     def agree_with(self, source, force=False):
         """Force self (actually return a changed copy) to agree with source (a FeatStruct)."""
         fss = set()
-        for srcfeat, srcval in source.items():
-            for fs in list(self):
+        for fs in list(self):
+            for srcfeat, srcval in source.items():
                 fs = FeatStruct.force_set(fs, srcfeat, srcval)
-                fs.freeze()
-                fss.add(fs)
+            fs.freeze()
+            fss.add(fs)
         return FSSet(fss)
 
     def agree_FSS(self, target, agrs, force=False, freeze=True):
