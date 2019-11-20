@@ -221,10 +221,10 @@ class GUI:
         self.tra_seg_html = None
         self.sentence = None
 #        self.has_text = False
-        if not tradtodo:
-            self.textid = -1
-            self.doc = None
-            self.doc_html = ''
+#        if not tradtodo:
+        self.textid = -1
+        self.doc = None
+        self.doc_html = ''
         self.doc_tra_acep = []
         self.doc_tra_html = []
         self.doc_tra = []

@@ -3,27 +3,33 @@
 ->grn raẽ
 ->grn raẽve
 ->grn tenonderã
-** cuando $v[tm=sbj] ; ^ cuando 0
+** cuando $v[tm=sbp] ; ^ cuando 0
 ->grn $v[tmp=prs,pp=ramo] ; ^ $v 0 ; || -1, 0
 ** cuando $v[tm=prt] ; ^ cuando 0
+->grn $v[pp=ramo] ; ^ $v 0 ; || -1, 0
+** cuando $v[tm=prs] ; ^ cuando 0
 ->grn $v[pp=ramo] ; ^ $v 0 ; || -1, 0
 ** después~de~que $v[tm=prt] ; ^ después~de~que 0
 ->grn $v rupi ; ^ rupi 1 ; || 1, 0
 ** después~que $v[tm=prt] ; ^ después~que 0
 ->grn $v rupi ; ^ rupi 1 ; || 1, 0
-** después~de~que $v[tm=sbj] ; ^ después~de~que 0
+** después~de~que $v[tm=sbp] ; ^ después~de~que 0
 ->grn $v[tmp=prs] rupi ; ^ rupi 1 ; || 1, 0
-** después~que $v[tm=sbj] ; ^ después~que 0
+** después~que $v[tm=sbp] ; ^ después~que 0
 ->grn $v[tmp=prs] rupi ; ^ rupi 1 ; || 1, 0
-** antes~de~que $v ; ^ antes~de~que 0
+** antes~de~que $v[tm=sbp] ; ^ antes~de~que 0
+->grn $v[tmp=prs] mboyve ; ^ mboyve 1 ; || 1, 0
+** antes~que $v[tm=sbp] ; ^ antes~que 0
+->grn $v[tmp=prs] mboyve ; ^ mboyve 1 ; || 1, 0
+** antes~de~que $v[tm=prt] ; ^ antes~de~que 0
 ->grn $v mboyve ; ^ mboyve 1 ; || 1, 0
-** antes~que $v ; ^ antes~que 0
+** antes~que $v[tm=prt] ; ^ antes~que 0
 ->grn $v mboyve ; ^ mboyve 1 ; || 1, 0
 ** desde~que $v ; ^ desde~que 0
 ->grn $v guive ; ^ guive 1 ; || 1, 0
 ** hasta~que $v[tm=prt] ; ^ hasta~que 0
 ->grn $v peve ; ^ peve 1 ; || 1, 0
-** hasta~que $v[tm=sbj] ; ^ hasta~que 0
+** hasta~que $v[tm=sbp] ; ^ hasta~que 0
 ->grn $v[tmp=prs] peve ; ^ peve 1 ; || 1, 0
 ** mientras $v ; ^ mientras 0
 ->grn $v aja ; ^ aja 1 ; || 1, 0

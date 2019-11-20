@@ -136,7 +136,7 @@ def doc_trans(doc=None, textobj=None, text='', textid=-1, docpath='',
         sentences = Document(src, targ, text=text)
 #    sentences = doc if doc else sentences_from_text(textobj, textid, src, targ)
     if sentences:
-        print("Traduciendo oraciones en documento...")
+#        print("Traduciendo oraciones en documento...")
         translations = []
 #        doc = make_document(gui, text, html=False)
         for sentence in sentences:
@@ -151,11 +151,11 @@ def doc_trans(doc=None, textobj=None, text='', textid=-1, docpath='',
 ## Creación y traducción de oración, dentro o fuera de la aplicación web
 
 def gui_trans(gui, session=None, choose=False, return_string=False,
-              sentence=None, verbosity=0):
+              sentence=None, terse=True, verbosity=0):
     """Traducir oración (accesible en gui) y devuelve la oración marcada (HTML) con
     segmentos coloreados."""
     return oración(sentence=sentence or gui.sentence, src=gui.source, targ=gui.target, session=gui.session,
-                   html=True, return_string=return_string, choose=choose, verbosity=verbosity)
+                   html=True, return_string=return_string, choose=choose, verbosity=verbosity, terse=terse)
 
 def oración(text='', src=None, targ=None, user=None, session=None, sentence=None,
             max_sols=2, translate=True, connect=True, generate=True, html=False, choose=False,

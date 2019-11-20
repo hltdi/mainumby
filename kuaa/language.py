@@ -2346,8 +2346,8 @@ class Language:
         """2017.5.19: features may now be an FSSet; should probably be the only option."""
         # In Amharic features may override the POS provided (needed for verbal nouns), but this doesn't apply
         # to Guarani, which may have posmorph v and feature pos a!
-#        if verbosity:
-        print("Generating {}:{} with POS {}, feature type {}".format(root, features.__repr__(), pos, type(features)))
+        if verbosity:
+            print("Generating {}:{} with POS {}, feature type {}".format(root, features.__repr__(), pos, type(features)))
         if not pos:
             # generate() shouldn't have been called in this case!
             print("Warning: no POS for generation of {}:{}".format(root, features.__repr__()))

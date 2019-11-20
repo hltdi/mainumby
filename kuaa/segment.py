@@ -314,7 +314,7 @@ class Seg:
                     if u == 'fail':
                         return False
                     else:
-                        print("  result {}".format(u.__repr__()))
+#                        print("  result {}".format(u.__repr__()))
                         return u
         return True
 
@@ -360,7 +360,6 @@ class Seg:
                         output1.append(token); morph.append(None)
                     else:
                         outform, outfeats = generator(token, feats, pos=pos)
-#                        print("outform {}, outfeats {}".format(outform, outfeats))
                         # Include only first max_gen_forms forms
                         if limit_forms:
                             outform = outform[:Seg.max_gen_forms]
@@ -388,6 +387,7 @@ class Seg:
         # Join strings indicated by join character: Madrid `pe => Madrid-pe
         Seg.join_toks_in_strings(cleaned_trans, morphology)
         self.cleaned_trans = cleaned_trans
+#        print("cleaned trans: {}".format(cleaned_trans))
         self.morphology = morphology
         self.generated = True
 
@@ -433,12 +433,11 @@ class Seg:
             final_morph.extend(tgmorph)
             choice_tgroups.extend(tggroups)
         if final:
-#            print("final {}".format(final))
             final.sort(key=lambda f: f[1])
-#            print("final sorted {}".format(final))
             final_morph.sort(key=lambda m: m[1])
             self.final = [f[0] for f in final][:Seg.max_final]
             self.final_morph = [m[0] for m in final_morph][:Seg.max_final]
+#            print("final {}".format(self.final))
             if self.record:
                 self.record.choice_tgroups = choice_tgroups
 

@@ -194,17 +194,18 @@ def tra():
     tradtodo = form.get('tradtodo') == 'true'
     abandonar_doc = form.get('abandonardoc') == 'true'
     if abandonar_doc:
-#        print("Abandonando actual documento...")
+        print("Abandonando actual documento...")
         GUI.clear(isdoc=True)
     if 'ayuda' in form and form['ayuda'] == 'true':
         # Opened help window. Keep everything else as is.
         return render_template('tra.html', doc=isdoc, documento=GUI.doc_html, props=GUI.props, user=username,
                                choose=choose, tradtodo=tradtodo)
     # No document loaded from file or from DB
-    no_doc = not GUI.doc and not GUI.doc_html
+    no_doc = isdoc and not GUI.doc and not GUI.doc_html
     # No sentence entered in sentence UI
-    no_ora = not 'ofuente' in form
-    if no_doc and no_ora and 'modo' in form and form['modo']:
+    no_ora = not isdoc and not 'ofuente' in form
+#    print("nodoc {}, noora {}".format(no_doc, no_ora))
+    if no_doc or no_ora and 'modo' in form and form['modo']:
 #        print("modo in form: {}".format(form.get('modo')))
         # Mode (sentence vs. document) has changed
         isdoc = form.get('modo') == 'doc'

@@ -2520,13 +2520,13 @@ class Segmentation:
         across segments within this segmentation of the sentence. If agree_dflt
         is True, accept only strings that agree with the default."""
         disamb_agree = self.target.disambig_agree
-        if not disamb_agree:
+        if not disamb_agree or len(self.segments) == 1:
             return
         for features, value in disamb_agree:
             if verbosity:
                 print("Attempting to realize agreement {} = {} ({})".format(features, value, agree_dflt))
-            current_value = -1
             for segment in self.segments:
+                current_value = -1
                 final_strings = segment.final
                 if verbosity:
                     print("  {}".format(segment))
@@ -2539,12 +2539,12 @@ class Segmentation:
                 agree_strings = []
                 agree_morphs = []
                 for string, morphs in zip(final_strings, final_morphs):
+                    current_value1 = -1
                     agree = True
                     for feature in features:
                         if not agree:
                             break
                         for morph in morphs:
-#                            print("morph {}, feature {}".format(morph, feature))
                             if feature in morph:
                                 morphvalue = morph.get(feature)
                                 if agree_dflt:
@@ -2553,15 +2553,16 @@ class Segmentation:
                                         agree = False
                                         # fail for the whole series of morphs
                                         break
-                                elif current_value == -1:
-                                    current_value = morphvalue
-                                elif morphvalue != current_value:
+                                elif current_value1 == -1:
+                                    current_value1 = morphvalue
+                                if current_value != -1 and morphvalue != current_value:
                                     # morphvalue must agree with current value
                                     agree = False
                                     break
                     if agree:
                         agree_strings.append(string)
                         agree_morphs.append(morphs)
+                current_value = current_value1
                 if agree_strings:
                     # Update the Seg's final string and morphology values but
                     # don't change anything if there are no strings that agree
