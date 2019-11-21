@@ -144,6 +144,7 @@ def doc_trans(doc=None, textobj=None, text='', textid=-1, docpath='',
                                   html=False, choose=True, return_string=True,
                                   verbosity=0, terse=terse)
             translations.append(translation)
+#        print("  traducciones {}".format(translations[:2]))
         return translations
 #        return [s.final for s in seg_sentences]
     return []

@@ -29,12 +29,13 @@ VaN[C] :: $vt a %C; ^0 ; 0[-ojxpl] ; 2+-pe
 VN :: $vt &n ; ^0 ; 0[-ojxpl]
 # adverb-verb combinations
 AdvV :: $adv &v ; ^1
-VAdv :: &v $adv ; ^0
+VAdv :: &v $adv ; ^0 ; 0[-ojxpl]
 ## sujeto - verbo
 >> sujpred
 NqSV :: &n que &n $vt ; ^0 ; 3[rel=sjoj] ; 3[-ojxpl] ; 2=?3 n:n ; 2=!3 n:ns
 PDqV :: &n $pp $det que &v ; ^0 ; 4[rel=obl]
-VP :: &v $pp ; 1() ; ^0
+# attempt to avoid chupe
+VP :: &v $pp ; 1() ; ^0 ; 0[-ojxpl]
 SV :: &n &v ; 0=?1 n:n ; 0=!1 n:ns ; ^1
 S[C]V :: %C [pos=v,n=0] ; ^1
 ## nominales 2

@@ -651,6 +651,7 @@ class Group(Entry):
                 tfeats = ttokfeats[tindex] if ttokfeats else None
                 ti_covered.append(tindex)
                 newtrans = []
+                agr1 = None
                 segspec = segment.special
                 if segment.thead is None:
                     segment.thead = []

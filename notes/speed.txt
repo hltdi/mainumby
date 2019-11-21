@@ -1,0 +1,9 @@
+		words	sec. to translate (no options)
+Pajarito	557	 7
+Abejas		788	18
+Chaco		1029	30
+                2374    55
+
+0.023 s/word
+
+133 / 557 Spanish words kept

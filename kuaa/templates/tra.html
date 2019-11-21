@@ -44,11 +44,11 @@ td.subir
 td.ocultar
 {
     text-align: right;
-    font-size: 100%;
+    font-size: 90%;
 }
 td.opciones
 {
-    font-size: 90%;
+    font-size: 80%;
     font-style: italic;
     text-align: center;
     border: 1px solid white;
@@ -56,7 +56,7 @@ td.opciones
 }
 td.sinopciones
 {
-    font-size: 90%;
+    font-size: 80%;
     font-style: italic;
     text-align: center;
     border: 1px solid white;
@@ -104,11 +104,10 @@ div.archivo table td {
 div#fuente
 {
     font-family: "Verdana";
-    font-size: {% if props.tfuente %} {{props.tfuente}} {% else %} 120% {% endif %};
+    font-size: {% if props.tfuente %} {{props.tfuente}} {% else %} 115% {% endif %};
     font-weight: {% if documento %}normal{% else %}bold{% endif %};
     resize: none;
     padding: 8px 8px;
-/* margin: 6px 0px 0px; */
     margin: 0px;
     box-sizing: border-box;
     width: 100%;
@@ -150,8 +149,8 @@ div.oradoc:hover
 }
 span.lengua
 {
-    font-size: 120%;
-    font-weight: bold;
+    font-size: 115%;
+/*    font-weight: bold; */
 }
 div#instruc_fuente, div#instruc2, div#instruc_trad
 {
@@ -166,7 +165,7 @@ textarea.ometa
     margin: 0px;
     width: 99%;
     border: thin solid;
-    height: 100px;
+    height: 60px;
 }
 textarea.dmeta
 {
@@ -182,7 +181,7 @@ textarea.dmeta
 }
 input.filename
 {
-   width: 100pt;
+   width: 50pt;
 }
 div.despleg {
     font-family: "Verdana";
@@ -250,7 +249,7 @@ div.despleg-derecha {
     position: absolute;
     background-color: #f1f1f1;
     font-size: 85%;
-    min-width: 160px;
+    min-width: 225px;
     overflow: auto;
     padding: 4px 0px;
 /*    border: 1pt; */
@@ -294,21 +293,18 @@ div.despleg-derecha {
     </a>
     </td>
 
-    <td class="title" style="width: 100px"></td>
+    <td class="title" style="width: 60px"></td>
 
-    <td class="menu" style="width: 200px">
+    <td class="menu" style="width: 190px">
       <input class="menu" type="submit" value="SALIR" name="salir" onclick="return alSalir();">
     </td>
     {% if user %}
-    <td class="menuuser" style="width: 200px">{{ user }}</td>
+    <td class="menuuser" style="width: 190px">{{ user }}</td>
     {% else %}
-    <td class="menu" style="width: 200px">
-       <button class="menu" onclick="ingresar()">IDENTIFICARTE</button>
-    </td>
+    <td class="menu" style="width: 190px"> <button class="menu" onclick="ingresar()">IDENTIFICARTE</button></td>
     {% endif %}
-    <td class="menu" style="width: 200px"><button class="menu"
-      onclick="mostrarAyuda();">AYUDA</button></td>
-    <td class="menu" style="width: 200px"><a href="contacto">CONTACTO</a></td>
+    <td class="menu" style="width: 190px"><button class="menu" onclick="mostrarAyuda();">AYUDA</button></td>
+    <td class="menu" style="width: 190px"><a href="contacto">CONTACTO</a></td>
 
     <input type="hidden" name="ayuda" value="">
     <input type="hidden" name="modo" value="ora">
@@ -540,7 +536,7 @@ div.despleg-derecha {
     <textarea class='dmeta' id='aceptado'>{% if aceptado %}{{aceptado|safe}}{% endif %}</textarea>
     <br class='instruc' />
     <input type="submit" value="Guardar" id="button"/>
-    <label>Nombre de archivo:<input type="text" class="filename" id="text-filename" placeholder="doc.txt" size="100"/></label>
+    <label>Nombre de archivo:<input type="text" class="filename" id="text-filename" placeholder="doc.txt" size="50"/></label>
     <input type="hidden" name="ocultar" value={% if props.ocultar %}"true"{% else %}"false"{% endif %}>
     {% if user %}
     <br class='sep' />
@@ -562,7 +558,7 @@ div.despleg-derecha {
 <input type="hidden" name="isdoc" value=false>
 <input type="hidden" name="borrar" value=false>
 <input type="hidden" name="registrar" value=false>
-<input type="hidden" name="tfuente" value="120%">
+<input type="hidden" name="tfuente" value="115%">
 <input type="hidden" name="ometa" value="">
 <input type="hidden" name="nocorr" value="">
 <input type="hidden" name="sinopciones" value={% if choose %}true{% else %}false{% endif %}>
@@ -647,7 +643,9 @@ function alSalir()
 {
     document.Form2.borrar.value = true;
     document.Form2.ofuente.value = '';
-    document.Form2.tfuente.value = "120%";
+    document.Form2.ometa.value = '';
+    document.getElementById("aceptado").value = ''
+    document.Form2.tfuente.value = "115%";
     document.Form1.action = "fin";
     document.Form1.target = "_self";     // Misma ventana
     document.Form1.submit();             // Enviar la página
@@ -662,7 +660,9 @@ function borrar()
 {
     document.Form2.borrar.value = true;
     document.Form2.ofuente.value = '';
-    document.Form2.tfuente.value = "120%";
+    document.Form2.ometa.value = '';
+    document.getElementById("aceptado").value = ''
+    document.Form2.tfuente.value = "115%";
     document.Form2.submit();
     return true;
 }
@@ -680,7 +680,7 @@ function registrar()
     document.Form2.ometa.value = meta;
     document.Form2.borrar.value = true;
     document.Form2.registrar.value = 'true';
-    document.Form2.tfuente.value = "120%";
+    document.Form2.tfuente.value = "115%";
     document.Form2.action = "tra";
     document.Form2.submit();
 }
@@ -703,6 +703,7 @@ function abandonarDoc()
     document.Form2.abandonardoc.value = true;
     document.Form2.isdoc.value = true;
     document.Form2.ofuente.value = '';
+    document.Form2.ometa.value = '';
     document.getElementById("aceptado").value = '';
     document.Form2.submit();
 }

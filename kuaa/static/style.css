@@ -480,10 +480,10 @@ input.trad
     color: black;
     font-size: 100%;
     text-align: center;
-    width: 210px;
-    height: 30px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    width: 185px;
+    height: 22px;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }
 button.menu
 {

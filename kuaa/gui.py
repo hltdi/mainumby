@@ -89,7 +89,7 @@ class GUI:
         # TOGGLES: isdoc, nocorr, ocultar, sinopciones
         self.props = {}
         # Default
-        self.props['tfuente'] = "120%"
+        self.props['tfuente'] = "115%"
 
     def init_doc(self):
 #        self.doc_html = self.doc.select_html(index, self.fue_seg_html)
@@ -105,7 +105,7 @@ class GUI:
         self.doc_html = self.doc.html
         self.doc_html_list = self.doc.html_list
         self.props['isdoc'] = True
-        self.props['tfuente'] = "100%" if nsent > 1 else "120%"
+        self.props['tfuente'] = "100%" if nsent > 1 else "115%"
 
     def init_text(self, textid, nsent, html, html_list):
 #        print("Initializing text, nsent: {}".format(nsent))
@@ -125,7 +125,7 @@ class GUI:
         # List of HTML for each source sentence
         self.doc_html_list = html_list
         self.props['isdoc'] = True
-        self.props['tfuente'] = "100%" if nsent > 1 else "120%"
+        self.props['tfuente'] = "100%" if nsent > 1 else "115%"
 
     def doc_unselect_sent(self):
         # Revert to version of doc html with nothing segmented.
@@ -205,7 +205,8 @@ class GUI:
 #        print("New tra seg: {}".format(self.tra_seg_html))
                 self.doc_tra[index] = self.tra
 
-    def clear(self, record=False, translation='', isdoc=False, tradtodo=False):
+    def clear(self, record=False, translation='', isdoc=False, tradtodo=False,
+              abandonar=False):
         """Clear all document and sentence variables, and record the current
         translation if record is True and there is a translation. If tradtodo is True,
         keep the doc, doc_html, textid."""
@@ -220,7 +221,8 @@ class GUI:
             sentrec = self.sentence.record
         self.tra_seg_html = None
         self.sentence = None
-#        self.has_text = False
+        if not abandonar:
+            self.has_text = False
 #        if not tradtodo:
         self.textid = -1
         self.doc = None
@@ -231,7 +233,7 @@ class GUI:
         self.doc_tra_acep_str = ''
         self.doc_select_html = []
         self.props['isdoc'] = isdoc
-        self.props['tfuente'] = "100%" if isdoc else "120%"
+        self.props['tfuente'] = "100%" if isdoc else "115%"
 #        if self.session:
 #            self.session.record(sentrec, translation=translation)
 #        else:
