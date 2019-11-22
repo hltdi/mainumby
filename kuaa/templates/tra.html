@@ -111,7 +111,7 @@ div#fuente
     margin: 0px;
     box-sizing: border-box;
     width: 100%;
-    height: {% if documento %}260pt{% else %}100pt{% endif %};
+    height: {% if documento %}260pt{% else %}80pt{% endif %};
     white-space: normal;
     border: thin solid;
     overflow-y: auto;
@@ -131,7 +131,7 @@ div#meta
     margin: 0px;
     box-sizing: border-box;
     width: 100%;
-    height: 100pt;
+    height: 80pt;
     white-space: normal;
     border: thin solid;
     overflow-y: auto;
@@ -644,11 +644,11 @@ function alSalir()
     document.Form2.borrar.value = true;
     document.Form2.ofuente.value = '';
     document.Form2.ometa.value = '';
-    document.getElementById("aceptado").value = ''
     document.Form2.tfuente.value = "115%";
     document.Form1.action = "fin";
     document.Form1.target = "_self";     // Misma ventana
     document.Form1.submit();             // Enviar la página
+    document.getElementById("aceptado").innerHTML = "";
     return true;
 }
 
@@ -661,9 +661,9 @@ function borrar()
     document.Form2.borrar.value = true;
     document.Form2.ofuente.value = '';
     document.Form2.ometa.value = '';
-    document.getElementById("aceptado").value = ''
     document.Form2.tfuente.value = "115%";
     document.Form2.submit();
+    document.getElementById("aceptado").value = '';
     return true;
 }
 
@@ -688,13 +688,13 @@ function registrar()
 function aceptarTrad()
 {
     trad = document.getElementById("textmeta").value;
-    document.getElementById("aceptado").value = '';
     index = document.Form2.oindex.value;
 //    alert("Aceptando oración " + index + " :: " + trad);
     document.Form2.tacept.value = trad;
     document.Form2.isdoc.value = true;
     document.Form2.tfuente.value = "100%";
     document.Form2.submit();
+    document.getElementById("aceptado").value = '';
 }
 
 function abandonarDoc()
@@ -704,8 +704,8 @@ function abandonarDoc()
     document.Form2.isdoc.value = true;
     document.Form2.ofuente.value = '';
     document.Form2.ometa.value = '';
-    document.getElementById("aceptado").value = '';
     document.Form2.submit();
+    document.getElementById("aceptado").value = '';
 }
 
 function traducirTodo()

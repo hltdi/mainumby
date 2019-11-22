@@ -330,7 +330,7 @@ def tra():
 @app.route('/fin', methods=['GET', 'POST'])
 def fin():
     form = request.form
-    print("Form for fin: {}".format(form))
+#    print("Form for fin: {}".format(form))
     modo = form.get('modo')
     end_gui()
     return render_template('fin.html', modo=modo)
