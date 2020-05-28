@@ -1572,14 +1572,6 @@
 ->grn kamba_n ra'ãnga ; 0==0 n:n,poses:poses
 ** persona_n de otro lugar ; ^ persona_n 0 ; #77
 ->grn arrivéño_n ; 0==0 n:n,poses:poses
-** persona_n de poco hablar ; ^ persona_n 0 ; #77
-->grn oñe'ẽ'ỹva_n ; 0==0 n:n,poses:poses
-** persona_n sin dueño ; ^ persona_n 0 ; #77
-->grn ijara'ỹva_n ; 0==0 n:n,poses:poses
-** persona_n sin nombre ; ^ persona_n 0 ; #77
-->grn <hera'ỹva_n ; 0==0 n:n,poses:poses
-** persona_n no grata ; ^ persona_n 0 ; #77
-->grn a'e'ỹha_n ; 0==0 n:n,poses:poses
 ** persona_n no indígena ; ^ persona_n 0 ; #77
 ->grn ava_n morotĩ ; 0==0 n:n,poses:poses ; #612
 ->grn te'ýi_n morotĩ ; 0==0 n:n,poses:poses
@@ -7217,8 +7209,6 @@
 ** elevador_n ; ^ elevador_n 0
 ->grn mopu'ãha_n ; 0==0 n:n,poses:poses ; #1
 ->grn <hupiha_n ; 0==0 n:n,poses:poses
-** elipsis_n en la sintaxis ; ^ elipsis_n 0
-->grn moĩmba'ỹva_n ; 0==0 n:n,poses:poses
 ** elocuencia_n ; ^ elocuencia_n 0
 ->grn ñe'ẽnga_n ; 0==0 n:n,poses:poses ; #12
 ->grn ñe'ẽngatu_n ; 0==0 n:n,poses:poses ; #3
@@ -7330,7 +7320,8 @@
 ** encéfalo_n ; ^ encéfalo_n 0
 ->grn akã_n apytu'ũ ; 0==0 n:n,poses:poses
 ** enemigo_n ; ^ enemigo_n 0
-->grn ja'e'ỹva ; 0==0 n:n,poses:poses
+->grn ja'e'ỹva_n ; 0==0 n:n,poses:poses
+->grn ojehayhu'ỹva_n ; 0==0 n:n,poses:poses
 ** enemistad_n ; ^ enemistad_n 0 ; #12
 ->grn e'ỹ_n ; 0==0 n:n,poses:poses
 ->grn amotare'ỹ_n ; 0==0 n:n,poses:poses
@@ -17800,3 +17791,5 @@
 ** órgano_n interno de animal ; ^ órgano_n 0
 ->grn chúra_n ; ^ chúra_n 0 ; || 0, -1, -1, -1
 ->grn achúra_n ; ^ achúra_n 0 ; || 0, -1, -1, -1
+** bicicleta_n ; ^ bicicleta_n 0
+->grn apajerekõi_n ; 0==0 n:n,poses:poses

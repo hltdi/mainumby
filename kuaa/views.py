@@ -98,6 +98,21 @@ def acerca():
     print("In acerca...")
     return render_template('acerca.html')
 
+@app.route('/ayuda', methods=['GET', 'POST'])
+def ayuda():
+    print("In ayuda...")
+    return render_template('ayuda.html')
+
+@app.route('/ayuda_ora', methods=['GET', 'POST'])
+def ayuda_ora():
+    print("In ayuda_ora...")
+    return render_template('ayuda_ora.html')
+
+@app.route('/ayuda_doc', methods=['GET', 'POST'])
+def ayuda_doc():
+    print("In ayuda_doc...")
+    return render_template('ayuda_doc.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if not GUI:
@@ -317,7 +332,6 @@ def tra():
         else:
             GUI.sentence = GUI.doc[oindex]
         print("ORACIÓN ACTUAL {}".format(GUI.sentence))
-        print("isdoc {}".format(isdoc))
         # Translate and segment the sentence, assigning GUI.segs
         source = form.get('ofuente', '')
         solve(isdoc=isdoc, index=oindex, choose=choose, source=source)

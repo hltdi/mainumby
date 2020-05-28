@@ -892,7 +892,6 @@
 ** cansar_v[-r,+fin] a una persona ; ^ cansar_v 0 ; #28
 ->grn mboka'apa_v[cat=a]
 ** cansar_v[-r,+fin] ; ^ cansar_v 0 ; #28
-->grn mbyaju_v[cat=a] ; #1
 ->grn monguerái_v[cat=a] ; #1
 ** cansar_v[+r,+fin] ; ^ cansar_v 0
 ->grn kane'õ_v[pos=v]
@@ -2725,7 +2724,6 @@
 ->grn ñemohyvatã_v[cat=a]
 ->grn ñembyaju_v[cat=a]
 ** hartar_v[-r,+fin] ; ^ hartar_v 0 ; #2
-->grn mbyaju_v[cat=a] ; #1
 ->grn mohyvatã_v[cat=a]
 ** herir_v[-r,+fin] con la mano ; ^ herir_v 0 ; #201
 ->grn japete_v[cat=a]
@@ -5193,9 +5191,7 @@
 ** aburrir_v[+r,+fin] ; ^ aburrir_v 0
 ->grn kaigue_v[cat=che]
 ->grn kuerái_v[cat=a] ; #10
-->grn ñembyaju_v[cat=a]
 ** aburrir_v[-r,+fin] ; ^ aburrir_v 0
-->grn mbyaju_v[cat=a] ; #1
 ->grn mboka'apa_v[cat=a] ; #1
 ->grn monguerái_v[cat=a] ; #1
 ** abusar_v[+r,+fin] ; ^ abusar_v 0
@@ -8099,7 +8095,6 @@
 ->grn jepicha_v[cat=a] ; #4
 ->grn kuerái_v[cat=a] ; #10
 ** fastidiar_v[-r,+fin] ; ^ fastidiar_v 0 ; #1
-->grn mbyaju_v[cat=a] ; #1
 ->grn monguerái_v[cat=a] ; #1
 ** fatigar_v[+r,+fin] ; ^ fatigar_v 0
 ->grn juku'a_v[cat=a]
@@ -8848,7 +8843,6 @@
 ->grn jepicha_v[cat=a] ; #4
 ->grn ñemyangekói_v[cat=a]
 ** molestar_v[-r,+fin] ; ^ molestar_v 0 ; #7
-->grn mbyaju_v[cat=a] ; #1
 ->grn <hesako'õ_v[cat=a] ; #3
 ->grn myangekói_v[cat=a] ; #32
 ** mondar_v[+r,+fin] ; ^ mondar_v 0
@@ -9927,7 +9921,6 @@
 ** sazonar_v[-r,+fin] ; ^ sazonar_v 0 ; #1
 ->grn mbohi'aju_v[cat=a]
 ->grn mbohe_v[cat=a] ; #3
-->grn mbyaju_v[cat=a] ; #1
 ** secundar_v[-r,+fin] ; ^ secundar_v 0
 ->grn moirũ_v[cat=a]
 ** sedar_v[-r,+fin] ; ^ sedar_v 0
@@ -11289,7 +11282,6 @@
 ** jalonar_v[-r,+fin]
 ->grn jatyka_v[cat=a]
 ** jorobar_v[-r,+fin]
-->grn mbyaju_v[cat=a]
 ->grn mokane'õ_v[cat=a]
 ** juguetear_v[-r,+fin]
 ->grn retia'e_v[cat=a]

@@ -9,23 +9,16 @@
     <img class='banner' src="{{url_for('static', filename='banner_logo.png')}}" alt="" width="300" height="52" />
     </td>
 
-    <td style="width: 100px"></td>
+    <td class='title' style="width: 100px"></td>
 
     <td class="menu" style="width: 200px">
       <button class="menu" onclick="traducir()">TRADUCIR</button>
-<!--
-      <div class='despleg-wrap'>
-      <button type="button" class="despleg" onclick="mostrarDespleg()">TRADUCIR ▾</button>
-      <div id="menudespleg" class="contenido-despleg">
-        <span class='opinic' onclick="traducir()">ORACIÓN</span>
-	<span class='opinic' onclick="documento()">DOCUMENTO</span>
-      </div>
-      </div>
--->
       </td>
-    <td class="menu" style="width: 200px">
+<!--    <td class="menu" style="width: 200px">
        <button class="menu" onclick="ingresar()">IDENTIFICARTE</button></td>
-    <td class="menu" style="width: 200px"><a href="acerca">ACERCA DE</a></td>
+       -->
+    <td class="menu" style="width: 200px"><a href="ayuda">AYUDA</a></td>
+    <td class="menu" style="width: 200px"><a href="acerca">ACERCA</a></td>
     <td class="menu" style="width: 200px"><a href="contacto">CONTACTO</a></td>
 
   </tr>
@@ -36,20 +29,143 @@
 <div id="cargando">
 <h1>Tereg̃uahẽporãite Mainumby-pe</h1>
 
-<p>
-Mainumby es una aplicación experimental que ayuda a traducir del
+  <!--
+<h2>Temas</h2>
+  <ul>
+    <li><a href="#general">Uso en general</a></li>
+    <li><a href="ayuda_ora">Traducción de palabras, frases, oraciones</a></li>
+    <li><a href="ayuda_doc">Traducción de documentos</a></li>
+  </ul>
+
+  <h2 id="general">Uso en general</h2>
+  -->
+  
+  <h2>¿Qu&eacute; es Mainumby?</h2>
+  <p>
+  Mainumby es una aplicación experimental que ayuda a traducir del
   castellano al guaraní.
-  Se está desarrollando dentro del proyecto
-  <a href="http://homes.sice.indiana.edu/gasser/pisur.html">Procesamiento de Idiomas del Sur
-  Global (PISUR)</a>, dirigido por Prof. Michael Gasser.
-<!--  y desde diciembre 2018, se está evaluando y extendiendo con -->
-  <!--  colaboración de la <a -->
-  <!--  href="http://www.yvymaraey.org">Fundación Yvy Marãe'ỹ</a> en -->
-  <!--  San Lorenzo, Paraguay. -->
+  Consiste en un <strong>traductor automático
+  rudimentario</strong> y una interfaz para usuarios en este sitio web.
+  Ofrece sugerencias para la traducción de palabras,
+  frases, oraciones, y documentos enteros.
+  Se basa en varios diccionarios digitalizados y las descripciones de la
+  gramática guaraní de <a
+  href="https://books.google.com/books?id=1AEvAAAAYAAJ">Krivoshein de
+  Canese y Acosta</a>, de <a
+  href="https://books.google.com/books?id=fh5HPwAACAAJ&dq=ayala+gram%C3%A1tica+guaran%C3%AD&hl=es&sa=X&ved=0ahUKEwiTxuuF2c3pAhVKnp4KHSnkASAQ6AEIKDAA">Ayala</a>,
+  y de <a
+  href="https://books.google.com/books?id=6AQvAAAAYAAJ&q=zarratea+gram%C3%A1tica+guaran%C3%AD&dq=zarratea+gram%C3%A1tica+guaran%C3%AD&hl=es&sa=X&ved=0ahUKEwiUp7Sl2c3pAhWUtJ4KHUhAA7oQ6AEIKDAA">Zarratea</a>. 
+  </p>
+
+  <p>
+  Para informarte más sobre la motivación y la teoría detrás de Mainumby,
+  ve <a href="acerca">aquí</a>.
+  </p>
+
+  <h2>¿Para qui&eacute;nes es?</h2>
+  <p>
+  Si estás aprendiendo la lengua Guaraní, pod&eacute;s usar Mainumby
+  cuando quer&eacute;s traducir palabras o frases simples castellanas.
+  Como tiene <strong>conocimiento de la <a
+  href="https://es.wikipedia.org/wiki/Morfolog%C3%ADa_ling%C3%BC%C3%ADstica">morfología</a></strong>
+  de los dos idiomas, o sea, la estructura de palabras, Mainumby sabe traducir elementos gramaticales.
+  Por ejemplo, traduce el verbo <i>compr&eacute;</i> como
+  <i>ajoguákuri</i> (entre otras posibilidades), preservando el sujeto
+  del verbo (1º persona singular, realizado como el prefijo <i>a-</i>)
+  y el <a
+  href="https://es.wikipedia.org/wiki/Tiempo_gramatical">tiempo</a>
+  (pret&eacute;rito, realizado como el sufijo 
+  <i>-kuri</i>).
+  Tambi&eacute;n sabe cómo una sola palabra
+  guaraní puede corresponder a una frase castellana.
+  Por ejemplo, traduce la frase <i>no estoy comprando</i> como
+  <i>ndajoguai’aína</i>, preservando la <a
+  href="https://es.wikipedia.org/wiki/Negaci%C3%B3n_%28gram%C3%A1tica%29">negación</a>
+  (el prefijo <i>nda-</i> y el sufijo <i>-i</i>) y el <a href="http://www.wikilengua.org/index.php/Aspecto">aspecto</a>
+  progresivo o durativo (el
+  sufijo <i>-aína</i>).
+  </p>
+
+  <p>Por otro lado, no se puede contar con traducciones adecuadas para
+oraciones completas complejas.
+Esto se debe a tres tipos de limitaciones del programa.
+</p>
+<ol>
+  <li>
+  El diccionario de Mainumby está bastante restringido; consiste en
+  palabras y frases extraídas de los pocos diccionarios bilingües que
+  están dispuestos en forma digital y gratis, y por eso faltan muchas palabras.</li>
+  <li>Cuando Mainumby tiene varias traducciones para una palabra, no
+  sabe distinguirlas; nada mas presenta las alternativas al usuario.
+  Por ejemplo, cuando intenta traducir la oración <i>llegando tarde a
+  la clase, el alumno le molestó al maestro</i>, no sabe escoger una de las cuatro traducciones del verbo
+  <i>molestar</i> que tiene en su diccionario:
+  <i>myangekói</i>, <i>hesako'õ</i>, <i>moñeko'õi</i>, y <i>mbyaju</i>.
+  <li>Al nivel sintáctico, el castellano y el guaraní son idiomas muy
+  diferentes, y no hay correspondencias exclusivas entre algunas estructuras
+  castellanas y estructuras guaraníes.
+  En esos casos, Mainumby queda confundido y deja la frase castellana sin traducción.
+  Un ejemplo es el <a
+  href="https://es.wikipedia.org/wiki/Gerundio#Gerundio_en_castellano">gerundio</a>.
+  Además de su uso despu&eacute;s de <i>estar</i> en el aspecto
+  progresivo,
+  Mainumby no sabe traduce esta forma al guaraní.
+  </li>
+</ol>
+
+  <h2>¿Cómo empezar?</h2>
+<p>
+Aunque Mainumby se puede usar en los smartphones (tel&eacute;fonos
+  inteligentes), el programa no está optimizado para tel&eacute;fonos
+  y se recomenda que lo uses en una computadora.
 </p>
 <p>
-Para empezar, seleccioná TRADUCIR arriba.
+  Para mostrar la interfaz de traducción, seleccioná
+  <a href="tra" target="_blank"><img src="{{url_for('static', filename='traducir.png')}}" style="width: 100px;
+  vertical-align:middle" alt="TRADUCIR" /></a>
+  (aquí o en el menú de opciones arriba).
+  Se abrirá una nueva página.
+</p>  
+
+<p>En la página de traducción se puede traducir palabras, frases, 
+oraciones simples, y documentos almacenados en archivos.
+Podés elegir entre estas dos opciones con los botones en la parte superior izquierda 
+de la ventana.
 </p>
+  <img class="instructions"
+  src="{{url_for('static', filename='oradoc.png')}}" style="width:500px;" alt="ora doc" />
+<p>
+Además, el traductor tiene dos "modos", uno que ofrece opciones al usuario para 
+la traducción de muchas palabras y frases, uno que traduce sin ofrecer opciones. 
+Podés elegir entre los dos modos con los botones en el centro superior 
+de la ventana.
+</p>
+  <img class="instructions"
+  src="{{url_for('static', filename='opciones.png')}}" style="width:500px;" alt="opciones" />
+<p>
+Ve <a href="ayuda_ora">aquí</a> para instrucciones detalladas para la traducción de palabras,
+frases, y oraciones simples y <a href="ayuda_doc">aquí</a> para instrucciones para la
+traducción de documentos.
+</p>
+
+<h2>¿Cómo apoyar?</h2>
+<p>
+Como ya explicado, Mainumby está bastante limitado, tanto en su
+diccionario bilingüe como en su conocimiento de las correspondencias
+gramaticales entre los dos idiomas.
+Si manejás el guaraní, pod&eacute;s apoyar el proyecto.
+Cada vez que un usuario bilingüe usa el programa para traducir oraciones castellanas, ya
+aceptando la traducción de Mainumby o corrigíendola,
+el programa actualiza de nuevo su base de datos, así mejorando su desempeño
+futuro.
+</p>
+<p>
+Además tenemos un <a href="https://groups.google.com/forum/#!forum/mainumby-disc">
+grupo de Google</a> para los usuarios de Mainumby.
+Si te quer&eacute;s juntar al grupo,
+enviale un correo a <a href="mailto:gasser@indiana.edu?Subject=Grupo%20de%20Google%20para%20Mainumby">Michael Gasser</a>.
+</p>
+
 </td>
 </tr>
 </table>

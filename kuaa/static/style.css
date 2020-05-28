@@ -7,7 +7,7 @@ background brown: #4B2B17
 
 html
 {
-     display: table;
+//     display: inline-table;
      margin-left: auto;
      margin-right: auto;
 }
@@ -16,36 +16,38 @@ body
 {
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 12pt;
-	margin-bottom: 12pt;
+	margin-top: 0pt;
+	margin-bottom: auto;
 	padding-left: 12pt;
 	padding-right: 12pt;
-	padding-top: 0;
-	padding-bottom: 0;
+	padding-top: 0pt;
+	padding-bottom: 12pt;
         font-size: 14px;
 	font-family: verdana, geneva, arial, sans-serif;
 	background-color: #FFF;
-        display: table-cell;
-/* 	display: inline-block; */
+        display: block;
+	overflow: scroll;
 }
 
 /* Center the body */
-div.body
-{
-    margin: 0 auto;
-}
+//div.body
+//{
+//    margin: 0 auto;
+//}
+
 h1,h2,h3 { clear: left; }
 h1
 {
 	font-size: 150%;
 	margin-top: .25em;
 	margin-bottom: 0;
-        border: thin solid;
+        border-top: thin solid;
+	border-bottom: thin solid;
 	text-align: left;
 	font-weight: bold;
 	color: #4B2B17;
 	background-color: #F5E754;
-	padding: 4px;
+//	padding: 4px;
 }
 h2
 {
@@ -53,17 +55,20 @@ h2
 	font-weight: bold;
 	margin-top: .75em;
 	margin-bottom: .35em;
-	background-color: #8DEDCD;
-	padding: 4px;
+//	background-color: #8DEDCD;
+	border-bottom: thin solid;
+//	padding: 4px;
 }
 h3
 {
-	background-color: #F5E754;
- 	font-size: 115%;
-	font-weight: bold;
+//	background-color: #8DEDCD;
+//	background-color: #F5E754;
+        border-bottom: thin solid;
+ 	font-size: 120%;
+	font-weight: normal;
 	margin-top: .5em;
-	margin-bottom: .5em;
-	padding: 4px;
+	margin-bottom: .35em;
+//	padding: 4px; 
 }
 h4
 {
@@ -137,6 +142,7 @@ br.sep
     font-size: 100%;
 /*    font-style: italic; */
 }
+/*
 table.center
 {
 	table-layout: fixed;
@@ -146,29 +152,77 @@ table.center
 	padding: 0;
 	border-collapse: collapse;
 }
+*/
 /* New 2018.7.27 */
 table.left
 {
 	table-layout: fixed;
-	margin-left: 0;
+	margin-left: auto;
 	margin-right: auto;
-	border: 0;
+//	border-left: thin solid;
 	padding: 0;
 	border-collapse: collapse;
 }
+//#long
+//{
+//	padding-right: 20pt;
+//}
 table.left tr td
 {
 	vertical-align: top;
 	padding: 0pt;
+//	border: thin solid;
 }
 
-table.left td p,h1,h2,h3,h4,ul
+table.left td h1,h2,h3,h4
 {
 	margin-top: 10pt;
 	margin-bottom: 10pt;
 	margin-left: 0pt;
 	margin-right: 0pt;
 	width: auto;
+}
+table.left td p
+{
+	margin-top: 10pt;
+	margin-bottom: 5pt;
+	margin-left: 50pt;
+	margin-right: 50pt;
+	width: auto;
+}
+
+table.left td ul
+{
+	margin-top: 10pt;
+	margin-bottom: 10pt;
+//	margin-left: 7pt;
+	margin-right: 50pt;
+	width: auto;
+}
+
+table.left td ol
+{
+    margin-left: 50pt;
+    margin-right: 50pt;
+    margin-top: 5pt;
+}
+
+img.instructions
+{
+    margin-top: 10pt;
+    margin-left: 50pt;
+    padding: 5pt;
+    border-style: double;
+    vertical-align: middle;
+}
+
+video.instructions
+{
+    margin-top: 10pt;
+    margin-left: 50pt;
+    padding: 5pt;
+    border-style: double;
+    vertical-align: middle;
 }
 
 table.left tr td img.banner
@@ -221,14 +275,14 @@ table.left tr.brown
 {
     background-color: #4B2B17;
 }
-
+/*
 table.center tr td
 {
 	vertical-align: top;
 	padding: 0pt;
 }
 
-table.center td p,h1,h2,h3,h4,ul
+table.center td p,h1,h2,h3,h4,ul,ol
 {
 	margin-top: 10pt;
 	margin-bottom: 10pt;
@@ -241,6 +295,12 @@ table.center tr td img.banner
 {
     vertical-align: bottom;
 }
+ul li
+{
+    padding-left: auto;
+    padding-right: auto;
+}
+*/
 th.TM
 {
    max-width: 35%;
@@ -399,9 +459,9 @@ input.text
         color: #F5E754;
         background-color: #4B2B17;
 }
+/*
 table.center tr td.menu
 {
-/*    height: 20px; */
     background-color: #4B2B17;
     text-align: center;
     vertical-align: bottom;
@@ -411,7 +471,6 @@ table.center tr td.menu
 table.center tr td.menu a
 {
     color: #8DEDCD;
-/*    font-weight: bold; */
     font-size: 100%;
     text-decoration: none;
 }
@@ -420,6 +479,7 @@ table.center tr td.menu a:hover
     color: #F5E754;
     background-color: #4B2B17;
 }
+*/
 table.title
 {
     margin-top: .75em;
@@ -478,7 +538,7 @@ input.menu:hover, input.menu:active, input.menu:focus
 input.trad
 {
     color: black;
-    font-size: 100%;
+    font-size: 90%;
     text-align: center;
     width: 185px;
     height: 22px;
@@ -606,3 +666,29 @@ button.despleg:hover, button.despleg:active, button.despleg:focus
   height: 80px;
 }
 .show {display: block;}
+
+div.paso
+{
+    font-size: 110%;
+   vertical-align: top;
+   margin-top: 10pt;
+   width: auto;
+   font-style: italic;
+}
+span.paso
+{
+//    border: thin solid;
+    margin-left: 25pt;
+//    color: white;
+//    background-color: black;
+}
+
+div.subpaso
+{
+    width: auto;
+    font-size: 90%;
+    margin-top: 8pt;
+    margin-left: 50pt;
+    margin-right: 50pt;
+    margin-bottom: 8pt;
+}

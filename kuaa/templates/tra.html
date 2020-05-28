@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}
+Mainumby: Traducción
+{% endblock %}
+
 {% block style %}
 
 <style type="text/css">
@@ -298,12 +302,20 @@ div.despleg-derecha {
     <td class="menu" style="width: 190px">
       <input class="menu" type="submit" value="SALIR" name="salir" onclick="return alSalir();">
     </td>
+<!--    
     {% if user %}
     <td class="menuuser" style="width: 190px">{{ user }}</td>
     {% else %}
     <td class="menu" style="width: 190px"> <button class="menu" onclick="ingresar()">IDENTIFICARTE</button></td>
     {% endif %}
-    <td class="menu" style="width: 190px"><button class="menu" onclick="mostrarAyuda();">AYUDA</button></td>
+-->    
+    <td class="menu" style="width: 200px"><a href="acerca">ACERCA</a></td>
+    <td class="menu" style="width: 200px"><a
+      href="ayuda">AYUDA</a></td>
+<!--      
+    <td class="menu" style="width: 190px"><button class="menu"
+      onclick="mostrarAyuda();">AYUDA</button></td>
+-->      
     <td class="menu" style="width: 190px"><a href="contacto">CONTACTO</a></td>
 
     <input type="hidden" name="ayuda" value="">
