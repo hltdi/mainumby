@@ -1,3 +1,4 @@
+/* Loading morphology data */
 function cargando() {
     document.getElementById("cargando").innerHTML = "<p></p><span class='cargando'>Iniciando sesión. Cargando base de datos (podría tardarse)...</span><p></p>";
 }

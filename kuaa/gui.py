@@ -269,18 +269,3 @@ class GUI:
         html += "</div>"
         self.text_select_html = html
 
-#    @staticmethod
-#    def clean_sentence(string, capitalize=True):
-#        """Clean up sentence for display in interface."""
-#        # Replace HTML space with actual space
-#        string = string.replace("&nbsp;", ' ')
-#        # Delete spaces before .,;?!, etc.
-#        string = GUI.clean_n.sub(r"\1", string)
-#        # Delete spaces after ("', etc.
-#        string = re.sub(r"([-–]?[¿¡(\"‶“‘$])\s+", r"\1", string)
-#        # Delete initial spaces after dashes (others?)
-#        string = re.sub(r"^([-–]+)\s+", r"\1", string)
-#        if capitalize:
-#            string = capitalize_string(string)
-#        return string
-

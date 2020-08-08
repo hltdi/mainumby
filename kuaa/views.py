@@ -90,28 +90,25 @@ def solve(isdoc=False, choose=False, index=0, source=''):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    print("In index...")
     return render_template('index.html')
 
 @app.route('/acerca', methods=['GET', 'POST'])
 def acerca():
-    print("In acerca...")
     return render_template('acerca.html')
 
 @app.route('/ayuda', methods=['GET', 'POST'])
 def ayuda():
-    print("In ayuda...")
     return render_template('ayuda.html')
 
-@app.route('/ayuda_ora', methods=['GET', 'POST'])
-def ayuda_ora():
-    print("In ayuda_ora...")
-    return render_template('ayuda_ora.html')
-
-@app.route('/ayuda_doc', methods=['GET', 'POST'])
-def ayuda_doc():
-    print("In ayuda_doc...")
-    return render_template('ayuda_doc.html')
+#@app.route('/ayuda_ora', methods=['GET', 'POST'])
+#def ayuda_ora():
+#    print("In ayuda_ora...")
+#    return render_template('ayuda_ora.html')
+#
+#@app.route('/ayuda_doc', methods=['GET', 'POST'])
+#def ayuda_doc():
+#    print("In ayuda_doc...")
+#    return render_template('ayuda_doc.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -349,17 +346,18 @@ def fin():
     end_gui()
     return render_template('fin.html', modo=modo)
 
-@app.route('/proyecto')
-def proyecto():
-    return render_template('proyecto.html')
-
-@app.route('/uso')
-def uso():
-    return render_template('uso.html')
-
 @app.route('/contacto')
 def contacto():
     return render_template('contacto.html')
+
+#@app.route('/proyecto')
+#def proyecto():
+#    return render_template('proyecto.html')
+#
+#@app.route('/uso')
+#def uso():
+#    return render_template('uso.html')
+
 
 # Not needed because this is in runserver.py.
 if __name__ == "__main__":

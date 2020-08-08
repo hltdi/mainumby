@@ -3,7 +3,8 @@
 {% block body %}
 <form action='' id='form' method="post">
 
-<table class="left">
+<div class="nav">
+<table class="nav">
   <tr class="brown">
     <td>
     <img class='banner' src="{{url_for('static', filename='banner_logo.png')}}" alt="" width="300" height="52" />
@@ -14,17 +15,17 @@
     <td class="menu" style="width: 200px">
       <button class="menu" onclick="traducir()">TRADUCIR</button>
       </td>
-<!--    <td class="menu" style="width: 200px">
-       <button class="menu" onclick="ingresar()">IDENTIFICARTE</button></td>
-       -->
     <td class="menu" style="width: 200px"><a href="ayuda">AYUDA</a></td>
     <td class="menu" style="width: 200px"><a href="acerca">ACERCA</a></td>
     <td class="menu" style="width: 200px"><a href="contacto">CONTACTO</a></td>
 
   </tr>
+</table>
+</div>
 
+<table class="main">
 <tr>
-<td colspan='6' style="width: 1200px">
+<td colspan='3' style="width: 1212px">
 
 <div id="cargando">
 <h1>Tereg̃uahẽporãite Mainumby-pe</h1>
@@ -48,7 +49,9 @@
   rudimentario</strong> y una interfaz para usuarios en este sitio web.
   Ofrece sugerencias para la traducción de palabras,
   frases, oraciones, y documentos enteros.
-  Se basa en varios diccionarios digitalizados y las descripciones de la
+  Se basa en varios diccionarios digitalizados, especialmente <a
+  href="https://www.worldcat.org/title/neeryru-avanee-karainee-karainee-avanee-diccionario-guarani-espanol-espanol-guarani/oclc/807255046">el
+  de Krivoshein de Canese y Acosta</a>, y las descripciones de la
   gramática guaraní de <a
   href="https://books.google.com/books?id=1AEvAAAAYAAJ">Krivoshein de
   Canese y Acosta</a>, de <a
@@ -58,8 +61,10 @@
   </p>
 
   <p>
-  Para informarte más sobre la motivación y la teoría detrás de Mainumby,
-  ve <a href="acerca">aquí</a>.
+  Para informarte más sobre la motivación y la teoría detrás de
+  Mainumby, seleccioná
+  <a href="acerca"><img src="{{url_for('static', filename='acerca.png')}}" style="width: 75px;
+  vertical-align:middle" alt="ACERCA" /></a>.
   </p>
 
   <h2>¿Para qui&eacute;nes es?</h2>
@@ -82,8 +87,7 @@
   <i>ndajoguai’aína</i>, preservando la <a
   href="https://es.wikipedia.org/wiki/Negaci%C3%B3n_%28gram%C3%A1tica%29">negación</a>
   (el prefijo <i>nda-</i> y el sufijo <i>-i</i>) y el <a href="http://www.wikilengua.org/index.php/Aspecto">aspecto</a>
-  progresivo o durativo (el
-  sufijo <i>-aína</i>).
+  progresivo o durativo (el sufijo <i>-aína</i>).
   </p>
 
   <p>Por otro lado, no se puede contar con traducciones adecuadas para
@@ -122,30 +126,23 @@ Aunque Mainumby se puede usar en los smartphones (tel&eacute;fonos
 <p>
   Para mostrar la interfaz de traducción, seleccioná
   <a href="tra" target="_blank"><img src="{{url_for('static', filename='traducir.png')}}" style="width: 100px;
-  vertical-align:middle" alt="TRADUCIR" /></a>
-  (aquí o en el menú de opciones arriba).
-  Se abrirá una nueva página.
-</p>  
+vertical-align:middle" alt="TRADUCIR" /></a>.
+  Para evitar la página de inicio (esta página) y ir directamente a la interfaz de
+traducción, marcá esa página como favorita en
+tu navegador.
+</p>
 
-<p>En la página de traducción se puede traducir palabras, frases, 
-oraciones simples, y documentos almacenados en archivos.
-Podés elegir entre estas dos opciones con los botones en la parte superior izquierda 
+<p>En la página de traducción hay dos interfaces, una para la
+traducción de palabras, frases, y oraciones simples, una para documentos almacenados en archivos.
+Pod&eacute;s elegir entre estas dos opciones con los botones en la parte superior izquierda 
 de la ventana.
 </p>
   <img class="instructions"
   src="{{url_for('static', filename='oradoc.png')}}" style="width:500px;" alt="ora doc" />
 <p>
-Además, el traductor tiene dos "modos", uno que ofrece opciones al usuario para 
-la traducción de muchas palabras y frases, uno que traduce sin ofrecer opciones. 
-Podés elegir entre los dos modos con los botones en el centro superior 
-de la ventana.
-</p>
-  <img class="instructions"
-  src="{{url_for('static', filename='opciones.png')}}" style="width:500px;" alt="opciones" />
-<p>
-Ve <a href="ayuda_ora">aquí</a> para instrucciones detalladas para la traducción de palabras,
-frases, y oraciones simples y <a href="ayuda_doc">aquí</a> para instrucciones para la
-traducción de documentos.
+Para instrucciones detalladas, seleccioná
+  <a href="ayuda" target="_blank"><img src="{{url_for('static', filename='ayuda.png')}}" style="width: 72px;
+  vertical-align:middle" alt="AYUDA" /></a>.
 </p>
 
 <h2>¿Cómo apoyar?</h2>
@@ -154,8 +151,9 @@ Como ya explicado, Mainumby está bastante limitado, tanto en su
 diccionario bilingüe como en su conocimiento de las correspondencias
 gramaticales entre los dos idiomas.
 Si manejás el guaraní, pod&eacute;s apoyar el proyecto.
-Cada vez que un usuario bilingüe usa el programa para traducir oraciones castellanas, ya
-aceptando la traducción de Mainumby o corrigíendola,
+Cada vez que un usuario bilingüe usa el programa para traducir
+oraciones castellanas, ya sea por aceptar la traducción ofrecida por
+Mainumby o sea por corregirla,
 el programa actualiza de nuevo su base de datos, así mejorando su desempeño
 futuro.
 </p>

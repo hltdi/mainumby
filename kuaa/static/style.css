@@ -18,8 +18,8 @@ body
 	margin-right: auto;
 	margin-top: 0pt;
 	margin-bottom: auto;
-	padding-left: 12pt;
-	padding-right: 12pt;
+//	padding-left: 12pt;
+//	padding-right: 12pt;
 	padding-top: 0pt;
 	padding-bottom: 12pt;
         font-size: 14px;
@@ -51,25 +51,24 @@ h1
 }
 h2
 {
-	font-size: 130%;
-	font-weight: bold;
-	margin-top: .75em;
-	margin-bottom: .35em;
-//	background-color: #8DEDCD;
-	border-bottom: thin solid;
-//	padding: 4px;
+    font-size: 130%;
+    font-weight: bold;
+    margin-top: .75em;
+    margin-bottom: .35em;
+    border-bottom-style: solid;
+    border-bottom-width: 1.5px;
 }
 h3
 {
-//	background-color: #8DEDCD;
-//	background-color: #F5E754;
-        border-bottom: thin solid;
- 	font-size: 120%;
-	font-weight: normal;
-	margin-top: .5em;
-	margin-bottom: .35em;
-//	padding: 4px; 
+    border-bottom-style: solid;
+    border-bottom-width: .25px;
+    font-size: 120%;
+    font-weight: normal;
+    margin-top: .5em;
+    margin-bottom: .35em;
 }
+// h2 span{ position:absolute; top:-60px;}
+// h3 span{ position:absolute; top:-60px;}
 h4
 {
  	font-size: 115%;
@@ -153,36 +152,30 @@ table.center
 	border-collapse: collapse;
 }
 */
-/* New 2018.7.27 */
-table.left
+
+div.nav
 {
-	table-layout: fixed;
-	margin-left: auto;
-	margin-right: auto;
-//	border-left: thin solid;
-	padding: 0;
-	border-collapse: collapse;
+    position: fixed;
+    top: 0;
+    overflow: hidden;
+    width: 100%;
 }
-//#long
-//{
-//	padding-right: 20pt;
-//}
-table.left tr td
+table.main
+{
+    table-layout: fixed;
+    margin-top: 35pt;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+//    padding-left: 12pt;
+//    padding-right: 12pt;
+}
+table.main tr td
 {
 	vertical-align: top;
 	padding: 0pt;
-//	border: thin solid;
 }
-
-table.left td h1,h2,h3,h4
-{
-	margin-top: 10pt;
-	margin-bottom: 10pt;
-	margin-left: 0pt;
-	margin-right: 0pt;
-	width: auto;
-}
-table.left td p
+table.main td p
 {
 	margin-top: 10pt;
 	margin-bottom: 5pt;
@@ -191,20 +184,103 @@ table.left td p
 	width: auto;
 }
 
-table.left td ul
+table.main td ul
 {
-	margin-top: 10pt;
-	margin-bottom: 10pt;
-//	margin-left: 7pt;
-	margin-right: 50pt;
+	margin-top: 5pt;
+	margin-bottom: 5pt;
 	width: auto;
 }
-
-table.left td ol
+table.main td ul li
+{
+	margin-top: 2pt;
+	margin-bottom: 2pt;
+	width: auto;
+}
+table.main td ol
 {
     margin-left: 50pt;
     margin-right: 50pt;
     margin-top: 5pt;
+}
+
+table.nav
+{
+	table-layout: fixed;
+	margin-left: auto;
+	margin-right: auto;
+	border: 0;
+//	border-left: thin solid;
+//        padding-left: 12pt;
+//        padding-right: 12pt;
+	border-collapse: collapse;
+}
+table.nav tr td img.banner
+{
+    vertical-align: bottom;
+}
+table.nav tr td.menu
+{
+    background-color: #4B2B17;
+    text-align: center;
+    vertical-align: bottom;
+    padding-bottom: 5px;
+    border-right: 0;
+    margin: 0;
+}
+table.nav tr td.menufuzzy
+{
+    background-color: #4B2B17;
+    color: #999999;
+    text-align: center;
+    vertical-align: bottom;
+    padding-bottom: 5px;
+    border-right: 0;
+    margin: 0;
+}
+table.nav tr td.menuuser
+{
+    background-color: #4B2B17;
+    color: #F5E754;
+    font-size: 110%;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: bottom;
+    padding-bottom: 5px;
+    border-right: 0;
+    margin: 0;
+}
+table.nav tr td.menu a
+{
+    color: #8DEDCD;
+    font-size: 100%;
+    text-decoration: none;
+}
+table.nav tr td.menu a:hover
+{
+    color: #F5E754;
+    background-color: #4B2B17;
+}
+table.nav tr.brown
+{
+    background-color: #4B2B17;
+}
+//#long
+//{
+//	padding-right: 20pt;
+//}
+//table.nav tr td
+//{
+//	vertical-align: top;
+//	padding: 0pt;
+//}
+
+table.main td h1,h2,h3,h4
+{
+	margin-top: 10pt;
+	margin-bottom: 10pt;
+	margin-left: 0pt;
+	margin-right: 0pt;
+	width: auto;
 }
 
 img.instructions
@@ -225,82 +301,6 @@ video.instructions
     vertical-align: middle;
 }
 
-table.left tr td img.banner
-{
-    vertical-align: bottom;
-}
-table.left tr td.menu
-{
-    background-color: #4B2B17;
-    text-align: center;
-    vertical-align: bottom;
-    padding-bottom: 5px;
-    border-right: 0;
-    margin: 0;
-}
-table.left tr td.menufuzzy
-{
-    background-color: #4B2B17;
-    color: #999999;
-    text-align: center;
-    vertical-align: bottom;
-    padding-bottom: 5px;
-    border-right: 0;
-    margin: 0;
-}
-table.left tr td.menuuser
-{
-    background-color: #4B2B17;
-    color: #F5E754;
-    font-size: 110%;
-    font-weight: bold;
-    text-align: center;
-    vertical-align: bottom;
-    padding-bottom: 5px;
-    border-right: 0;
-    margin: 0;
-}
-table.left tr td.menu a
-{
-    color: #8DEDCD;
-    font-size: 100%;
-    text-decoration: none;
-}
-table.left tr td.menu a:hover
-{
-    color: #F5E754;
-    background-color: #4B2B17;
-}
-table.left tr.brown
-{
-    background-color: #4B2B17;
-}
-/*
-table.center tr td
-{
-	vertical-align: top;
-	padding: 0pt;
-}
-
-table.center td p,h1,h2,h3,h4,ul,ol
-{
-	margin-top: 10pt;
-	margin-bottom: 10pt;
-	margin-left: 0pt;
-	margin-right: 0pt;
-	width: auto;
-}
-
-table.center tr td img.banner
-{
-    vertical-align: bottom;
-}
-ul li
-{
-    padding-left: auto;
-    padding-right: auto;
-}
-*/
 th.TM
 {
    max-width: 35%;
@@ -415,7 +415,7 @@ input.text
         text-align: center;
         width: 120px;
 	padding: 0px 2px;
-	margin: 2px 0px; 
+	margin: 2px 0px;
 	border-radius: 4px;
 	border-style: outset;
 	border-color: black;
@@ -675,6 +675,11 @@ div.paso
    width: auto;
    font-style: italic;
 }
+div.paso::before
+{
+    content: "◼︎ ";
+    font-style: normal;
+}
 span.paso
 {
 //    border: thin solid;
@@ -691,4 +696,33 @@ div.subpaso
     margin-left: 50pt;
     margin-right: 50pt;
     margin-bottom: 8pt;
+}
+.vspace
+{
+    top: -55px;
+    position: relative;
+}
+
+#inicio {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 280px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border-radius: 4px;
+  border-style: outset;
+  border-color: black;
+  border-width: 2px;
+  outline: none; /* Remove outline */
+  background-color: #4B2B17;
+  color: #8DEDCD;
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 0px 2px; /* Some padding */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 100%; /* Increase font size */
+}
+
+#inicio:hover {
+    color: #F5E754;
+    background-color: #4B2B17;
 }

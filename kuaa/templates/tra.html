@@ -131,10 +131,9 @@ div#meta
     resize: none;
     padding: 8px 0px 8px 8px;
     line-height: 125%;
-/*     margin: 6px 0px 0px; */
     margin: 0px;
     box-sizing: border-box;
-    width: 100%;
+    width: 101%;
     height: 80pt;
     white-space: normal;
     border: thin solid;
@@ -160,6 +159,10 @@ div#instruc_fuente, div#instruc2, div#instruc_trad
 {
     {% if props.ocultar %} display: none; {% endif %}
 }
+div.comentario
+{
+    text-align: left;
+}
 textarea.ometa
 {
     font-family: "Verdana";
@@ -167,7 +170,7 @@ textarea.ometa
     font-size: 100%;
     padding: 4px 0px 4px 4px;
     margin: 0px;
-    width: 99%;
+    width: 100%;
     border: thin solid;
     height: 60px;
 }
@@ -178,10 +181,23 @@ textarea.dmeta
     font-size: 100%;
     padding: 4px 0px 4px 4px;
     margin: 0px;
-    width: 99%;
+    width: 100%;
     box-sizing: border-box;
     border: thin solid;
     height: {% if tradtodo %}260pt{% else %}100pt{% endif %};
+}
+textarea.comentario
+{
+    font-family: "Verdana";
+    resize: none;
+    font-size: 100%;
+    padding: 4px 0px 4px 4px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+    width: 50%;
+    box-sizing: border-box;
+    border: thin solid;
+    height: 50pt;
 }
 input.filename
 {
@@ -285,7 +301,8 @@ div.despleg-derecha {
 
 {% block body %}
 
-<table class='left'>
+<div class='nav'>
+<table class='nav'>
 
 <form id='form' name="Form1" method=POST>
 
@@ -297,33 +314,26 @@ div.despleg-derecha {
     </a>
     </td>
 
-    <td class="title" style="width: 60px"></td>
+    <td class="title" style="width: 100px"></td>
 
-    <td class="menu" style="width: 190px">
+    <td class="menu" style="width: 200px">
       <input class="menu" type="submit" value="SALIR" name="salir" onclick="return alSalir();">
     </td>
-<!--    
-    {% if user %}
-    <td class="menuuser" style="width: 190px">{{ user }}</td>
-    {% else %}
-    <td class="menu" style="width: 190px"> <button class="menu" onclick="ingresar()">IDENTIFICARTE</button></td>
-    {% endif %}
--->    
     <td class="menu" style="width: 200px"><a href="acerca">ACERCA</a></td>
     <td class="menu" style="width: 200px"><a
       href="ayuda">AYUDA</a></td>
-<!--      
-    <td class="menu" style="width: 190px"><button class="menu"
-      onclick="mostrarAyuda();">AYUDA</button></td>
--->      
-    <td class="menu" style="width: 190px"><a href="contacto">CONTACTO</a></td>
+    <td class="menu" style="width: 200px"><a href="contacto">CONTACTO</a></td>
 
     <input type="hidden" name="ayuda" value="">
     <input type="hidden" name="modo" value="ora">
 </tr>
 </form>
+</table>
+</div>
+
+<table class="main">
 <tr>
-<td colspan="6">
+<td colspan="3"  style="width: 1212px">
 
 <p id="error" class="error">
 {% if error %}{{error}}{% endif %}
@@ -398,8 +408,6 @@ div.despleg-derecha {
   <input type="button" value="Elegir..." id="button" onclick="seleccionarArchivo();">
   <span class'instructions'>
     Elegí un archivo de la base de datos de Mainumby.
-    (Despu&eacute;s de traducirlo, si te has identificado, pod&eacute;s registrar tu
-    traducción.)
   </span>
     </div>
 </td></tr>
@@ -425,7 +433,8 @@ div.despleg-derecha {
 </form>
 
 {% if documento or not doc %}
-<table class='left'>
+
+<table>
 
   <tr>
     <td style="width: 590px">
@@ -503,10 +512,10 @@ div.despleg-derecha {
     </div>
   {% endif %}
   {% if not tradtodo %}
-  {#
+{#
     <br class="sep" />
     <span id="correccion" class="alternar" onclick="alternarCorreccion();">Desactivar corrección ortográfica automática.</span>
-   <br class='instruc'/>
+    <br class='instruc'/>
 #}   
     <textarea class='ometa' id='textmeta'>{{tra|safe}}</textarea>
     {% if tra %}
@@ -517,10 +526,10 @@ div.despleg-derecha {
     • Para incluir esta oración en la traducción del documento, presioná "Aceptar".<br />
     {% else %}
     • Para copiar la traducción al portapapeles, presioná "Copiar".
-    {% if user %}
+{#    {% if user %} #}
     <br />
     • Para registrar la traducción en la memoria de Mainumby, presioná "Registrar".
-    {% endif %}
+{#    {% endif %}   #}
     {% endif %}
     {% endif %}  
     </div>
@@ -531,33 +540,45 @@ div.despleg-derecha {
     <input type="button" value="Aceptar" id="button" onclick="aceptarTrad();">
     {% else %}
     <input type="button" value="Copiar" id="button" onclick="copiar();">
-    {% if user %}
+{#    {% if user %} #}
     <input type="button" value="Registrar" id="button" onclick="registrar();">
-    {% endif %}
+{#    {% endif %}   #}
     {% endif %}
     {% endif %}
 
   {% endif %}
 
   {% if documento %}
-  {% if not tradtodo %}  
+   {% if not tradtodo %}  
     <br class="sep" />
     <span class="level">Documento</span><br />
-  {% endif %}
+   {% endif %}
     <form name="Form3" id="text-options">
     <textarea class='dmeta' id='aceptado'>{% if aceptado %}{{aceptado|safe}}{% endif %}</textarea>
     <br class='instruc' />
     <input type="submit" value="Guardar" id="button"/>
     <label>Nombre de archivo:<input type="text" class="filename" id="text-filename" placeholder="doc.txt" size="50"/></label>
     <input type="hidden" name="ocultar" value={% if props.ocultar %}"true"{% else %}"false"{% endif %}>
-    {% if user %}
+{#   {% if user %} #}
     <br class='sep' />
     <input type="button" value="Registrar" id="button" onclick="registrar();">
-    {% endif %}
+{#   {% endif %} #}
     </form>
   {% endif %}
+    
     </td>
   </tr>
+  {% if tra_seg_html %}
+  <tr>
+    <td colspan='3' align='center'>
+{#    <div class="comentario"> #}
+      <textarea class="comentario" id="comentario"
+      placeholder='Si ten&eacute;s sugerencias o correcciones, escribilas aquí y luego presioná "Entrar".'></textarea><br class='sep' />
+    <input type="button" value="Entrar" id="button" onclick="comentario();">
+{#    </div> #}
+    </td>
+  </tr>
+  {% endif %}
 
 </table>
 {% endif %}
@@ -707,6 +728,30 @@ function aceptarTrad()
     document.Form2.tfuente.value = "100%";
     document.Form2.submit();
     document.getElementById("aceptado").value = '';
+}
+
+function comentario()
+{
+    com = document.getElementById("comentario").value;
+//    index = document.Form2.oindex.value;
+    alert("Registrando " + com);
+//    user_location();
+//    document.Form2.tacept.value = trad;
+//    document.Form2.isdoc.value = true;
+//    document.Form2.tfuente.value = "100%";
+//    document.Form2.submit();
+    document.getElementById("comentario").value = '';
+}
+
+function user_location() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log( this.responseText);
+    }
+  };
+  xhttp.open("GET", "//api.ipify.org?format=json", true);
+  xhttp.send();
 }
 
 function abandonarDoc()
