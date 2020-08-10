@@ -7,17 +7,17 @@
 #   human translation.
 #
 #   Copyleft 2019 PLoGS <gasser@indiana.edu>
-#   
+#
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
 #   published by the Free Software Foundation, either version 3 of
 #   the License, or (at your option) any later version.
-#   
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 #   GNU General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
@@ -208,14 +208,15 @@ class GUI:
     def clear(self, record=False, translation='', isdoc=False, tradtodo=False,
               abandonar=False):
         """Clear all document and sentence variables, and record the current
-        translation if record is True and there is a translation. If tradtodo is True,
-        keep the doc, doc_html, textid."""
+        translation if record is True and there is a translation. If tradtodo
+        is True, keep the doc, doc_html, textid."""
 #        if record:
 #            print("Recording translation {}".format(translation))
 #            print("Current doc_tra_acep {}".format(self.doc_tra_acep))
         # Record the sentence translation
         if record and self.has_text:
-            transDB = make_translation(gui=self, textid=self.textid, user=self.user)
+            transDB = make_translation(gui=self, textid=self.textid,
+                                       user=self.user)
         sentrec = None
         if self.sentence:
             sentrec = self.sentence.record
@@ -268,4 +269,3 @@ class GUI:
                 html += "</div>"
         html += "</div>"
         self.text_select_html = html
-

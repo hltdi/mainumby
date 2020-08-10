@@ -7,17 +7,17 @@
 #   human translation.
 #
 #   Copyleft 2015, 2016, 2017, 2018, 2019 HLTDI, PLoGS <gasser@indiana.edu>
-#   
+#
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
 #   published by the Free Software Foundation, either version 3 of
 #   the License, or (at your option) any later version.
-#   
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 #   GNU General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
@@ -101,7 +101,10 @@ def load(source='spa', target='grn', gui=None):
 
 def doc_sentences(doc=None, textobj=None, text='', textid=-1,
                   gui=None, src=None, targ=None, user=None, verbosity=0):
-    """Recopilar oraciones (instancias de Sentence) de una instancia de Document o Text."""
+    """
+    Recopilar oraciones (instancias de Sentence) de una instancia
+    de Document o Text.
+    """
     if not src and not targ:
         if gui:
             src = gui.source; targ = gui.target
@@ -115,9 +118,10 @@ def doc_sentences(doc=None, textobj=None, text='', textid=-1,
 def doc_trans(doc=None, textobj=None, text='', textid=-1, docpath='',
               gui=None, src=None, targ=None, session=None, user=None,
               terse=True):
-    """Traducir todas las oraciones en un documento sin ofrecer opciones al usuario.
-    O doc es una instancia de Documento o textobj es una instancia de Text o un
-    Documento es creado con text como contenido."""
+    """
+    Traducir todas las oraciones en un documento sin ofrecer opciones
+    al usuario. O doc es una instancia de Documento o textobj es una instancia
+    de Text o un Documento es creado con text como contenido."""
     if not src and not targ:
         if gui:
             src = gui.source; targ = gui.target
@@ -155,22 +159,32 @@ def gui_trans(gui, session=None, choose=False, return_string=False,
               sentence=None, terse=True, verbosity=0):
     """Traducir oración (accesible en gui) y devuelve la oración marcada (HTML) con
     segmentos coloreados."""
-    return oración(sentence=sentence or gui.sentence, src=gui.source, targ=gui.target, session=gui.session,
-                   html=True, return_string=return_string, choose=choose, verbosity=verbosity, terse=terse)
+    return oración(sentence=sentence or gui.sentence, src=gui.source,
+                   targ=gui.target, session=gui.session,
+                   html=True, return_string=return_string, choose=choose,
+                   verbosity=verbosity, terse=terse)
 
-def oración(text='', src=None, targ=None, user=None, session=None, sentence=None,
-            max_sols=2, translate=True, connect=True, generate=True, html=False, choose=False,
+def oración(text='', src=None, targ=None, user=None, session=None,
+            sentence=None,
+            max_sols=2, translate=True, connect=True, generate=True,
+            html=False, choose=False,
             return_string=False, verbosity=0, terse=False):
-    """Analizar y talvez también traducir una oración del castellano al guaraní."""
+    """
+    Analizar y talvez también traducir una oración del castellano al guaraní.
+    """
     if not src and not targ:
         src, targ = Language.load_trans('spa', 'grn', train=False)
     if not session:
         session = make_session(src, targ, user, create_memory=True)
-    s = Sentence.solve_sentence(src, targ, text=text, session=session, sentence=sentence,
-                                max_sols=max_sols, choose=choose, translate=translate,
+    s = Sentence.solve_sentence(src, targ, text=text, session=session,
+                                sentence=sentence,
+                                max_sols=max_sols, choose=choose,
+                                translate=translate,
                                 verbosity=verbosity, terse=terse)
-    segmentations = s.get_all_segmentations(translate=translate, generate=generate,
-                                            agree_dflt=False, choose=choose, connect=connect, html=html,
+    segmentations = s.get_all_segmentations(translate=translate,
+                                            generate=generate,
+                                            agree_dflt=False, choose=choose,
+                                            connect=connect, html=html,
                                             terse=terse)
     if choose:
         if segmentations:
@@ -261,24 +275,32 @@ def sentences_from_text(text=None, textid=-1, source=None, target=None):
     for textseg in text.segments:
         original = textseg.content
         tokens = [tt.string for tt in textseg.tokens]
-        sentence = Sentence(original=original, tokens=tokens, language=source, target=target)
+        sentence = Sentence(original=original, tokens=tokens,
+                            language=source, target=target)
         sentences.append(sentence)
     return sentences
-        
-def sentence_from_textseg(textseg=None, source=None, target=None, textid=None, oindex=-1):
-    """Create a Sentence object from a DB TextSeg object, which is either
+
+def sentence_from_textseg(textseg=None, source=None, target=None, textid=None,
+                          oindex=-1):
+    """
+    Create a Sentence object from a DB TextSeg object, which is either
     specified explicitly or accessed via its index within a Text object.
-    THERE'S SOME DUPLICATION HERE BECAUSE SENTENCE OBJECTS WERE ALREADY CREATED WHEN
-    THE Text OBJECT WAS CREATED IN THE DB."""
+    THERE'S SOME DUPLICATION HERE BECAUSE SENTENCE OBJECTS WERE ALREADY
+    CREATED WHEN THE Text OBJECT WAS CREATED IN THE DB.
+    """
 #    print("Creating sentence from textseg, source={}".format(source))
     textseg = textseg or get_text(textid).segments[oindex]
     original = textseg.content
     tokens = [tt.string for tt in textseg.tokens]
-    return Sentence(original=original, tokens=tokens, language=source, target=target)
+    return Sentence(original=original, tokens=tokens, language=source,
+                    target=target)
 
 def make_translation(gui=None, text=None, textid=-1, user=None):
-    """Create a Translation object, given a text, a user (translator), and a list of
-    sentence translations from the GUI. There may be missing translations."""
+    """
+    Create a Translation object, given a text, a user (translator), and a
+    list of sentence translations from the GUI. There may be missing
+    translations.
+    """
     text = text or get_text(textid)
     trans = Translation(text=text, translator=user)
     db.session.add(trans)
@@ -290,8 +312,10 @@ def make_translation(gui=None, text=None, textid=-1, user=None):
     return trans
 
 def create_human(form):
-    """Create and add to the text DB an instance of the Human class,
-    based on the form returned from tra.html."""
+    """
+    Create and add to the text DB an instance of the Human class,
+    based on the form returned from tra.html.
+    """
     level = form.get('level', 1)
     level = int(level)
     human = Human(username=form.get('username', ''),

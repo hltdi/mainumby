@@ -1,4 +1,4 @@
-#   
+#
 #   Mainumby Database for Texts and their Translations.
 #   Uses the Object Relational Mapper implementation of SQLAlchemy.
 #
@@ -9,17 +9,17 @@
 #   human translation.
 #
 #   Copyright (C) PLoGS <gasser@indiana.edu>
-#   
+#
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
 #   published by the Free Software Foundation, either version 3 of
 #   the License, or (at your option) any later version.
-#   
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 #   GNU General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
@@ -68,7 +68,8 @@ class Human(db.Model):
     level = db.Column(db.Integer)
     creation = db.Column(db.String)
 
-    def __init__(self, username='', email='', password='', name='', level=1, pw_hash=''):
+    def __init__(self, username='', email='', password='', name='',
+                 level=1, pw_hash=''):
         """name and level are optional. Other fields are required."""
         self.username = username
         self.email = email
@@ -102,7 +103,7 @@ class Human(db.Model):
 
 class Text(db.Model):
     """A source-language document stored in a file."""
-    
+
     __tablename__ = 'texts'
     __bind_key__ = "text"
 
@@ -201,7 +202,7 @@ class Text(db.Model):
         try:
             doc = docx.Document(path)
             text = [para.text for para in doc.paragraphs]
-            # Join paragraphs with something other than 
+            # Join paragraphs with something other than
             text = '\n\n'.join(text)
             return text
         except docx.opc.exceptions.PackageNotFoundError:
@@ -209,7 +210,7 @@ class Text(db.Model):
 
 class TextSeg(db.Model):
     """A sentence or similar unit within a Text."""
-    
+
     __tablename__ = 'textsegs'
     __bind_key__ = "text"
 
@@ -234,7 +235,7 @@ class TextSeg(db.Model):
 
 class TextTok(db.Model):
     """A token within a TextSeg."""
-    
+
     __tablename__ = 'texttoks'
     __bind_key__ = "text"
 
@@ -254,18 +255,24 @@ class TextTok(db.Model):
         return "<TextTok({}, {})>".format(self.id, self.string)
 
 class Translation(db.Model):
-    """A target-language translation of a Text."""
-    
+    """
+    A target-language translation of a Text.
+    """
+
     __tablename__ = 'translations'
     __bind_key__ = "text"
 
     id = db.Column(db.Integer, primary_key=True)
     # The associated Text object
     text_id = db.Column(db.Integer, db.ForeignKey('texts.id'))
-    text = db.relationship("Text", backref=db.backref('translations', lazy=True), cascade="all")
+    text = db.relationship("Text",
+                           backref=db.backref('translations', lazy=True),
+                           cascade="all")
     # The associated Human object
     translator_id = db.Column(db.Integer, db.ForeignKey('humans.id'))
-    translator = db.relationship("Human", backref=db.backref('humans', lazy=True), cascade="all")
+    translator = db.relationship("Human",
+                                 backref=db.backref('humans', lazy=True),
+                                 cascade="all")
     creation = db.Column(db.String)
 
     def __init__(self, text='', translator=None):
@@ -274,11 +281,16 @@ class Translation(db.Model):
         self.creation = get_time(True)
 
     def __repr__(self):
-        return "<Translation({}, {}, {})>".format(self.id, self.text.name, self.translator.username)
+        user = self.translator.name if self.translator else "anon"
+        string = "<Translation({}, {}, {})>"
+        return string.format(self.id, self.text.name, user)
 
 class TraSeg(db.Model):
-    """A unit within a translation corresponding to a TextSeg within the associated Text object."""
-    
+    """
+    A unit within a translation corresponding to a TextSeg within
+    the associated Text object.
+    """
+
     __tablename__ = 'trasegs'
     __bind_key__ = "text"
 

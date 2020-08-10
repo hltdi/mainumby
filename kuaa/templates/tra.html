@@ -367,7 +367,7 @@ div.despleg-derecha {
     {% endif %}
     </td>
     <td class='ocultar'>
-{#    
+{#
     <span id="sinopciones" class="alternar" onclick="alternarOpciones();">
     {% if choose %}Mostrar opciones. {% else %}Traducir sin opciones.{% endif %}
      </span><br/>
@@ -386,12 +386,12 @@ div.despleg-derecha {
 
 <td>
 <div class="envoltorio-subida" id="envoltorio-subida">
-{#  
+{#
   {% if not user %}
   <div class="advert" id="advert">Notá que no es posible registrar una traducción
     en la base de datos de Mainumby sin identificarte.</div>
     {% endif %}
-#}    
+#}
   <label id="subir" for="subido">
   <div class="subir-label">Examinar...</div>
   <input id='subido' type='file' class="btn-subir" onchange="archivoSubido();" name='subido'>
@@ -490,34 +490,34 @@ div.despleg-derecha {
 
     <td>
   {% if doc and not tradtodo %}
-      <span class="level">Oración actual</span>
+<span class="level">Oración actual</span>
   {% endif %}
   {% if not choose %}
-    <div id='meta'>
+<div id='meta'>
   {% if tra_seg_html %}
       {% for tra in tra_seg_html %}
       {{tra[2]|safe}}
       {% endfor %}
   {% endif %}
-    </div>
+</div>
   {% endif %}
 
   {% if tra or choose %}
   {% if not choose %}
     <br class='instruc'/>
-    <div class='instruc'>
+<div class='instruc'>
     <div id='instruc2'>
     • Para segmentos marcados con "▾", pod&eacute;s seleccionar otra opción.<br />
     • Para cambiar la posición de un segmento, arrastralo sobre otro segmento.</div>
-    </div>
+</div>
   {% endif %}
   {% if not tradtodo %}
 {#
     <br class="sep" />
     <span id="correccion" class="alternar" onclick="alternarCorreccion();">Desactivar corrección ortográfica automática.</span>
     <br class='instruc'/>
-#}   
-    <textarea class='ometa' id='textmeta'>{{tra|safe}}</textarea>
+#}
+<textarea class='ometa' id='textmeta'>{{tra|safe}}</textarea>
     {% if tra %}
     <br class='instruc' />
     <div class="instruc" id="instruc_trad">
@@ -531,7 +531,7 @@ div.despleg-derecha {
     • Para registrar la traducción en la memoria de Mainumby, presioná "Registrar".
 {#    {% endif %}   #}
     {% endif %}
-    {% endif %}  
+    {% endif %}
     </div>
 
     <br class='instruc'/>
@@ -549,7 +549,7 @@ div.despleg-derecha {
   {% endif %}
 
   {% if documento %}
-   {% if not tradtodo %}  
+   {% if not tradtodo %}
     <br class="sep" />
     <span class="level">Documento</span><br />
    {% endif %}
@@ -565,7 +565,7 @@ div.despleg-derecha {
 {#   {% endif %} #}
     </form>
   {% endif %}
-    
+
     </td>
   </tr>
   {% if tra_seg_html %}
@@ -587,7 +587,7 @@ div.despleg-derecha {
 <input type="hidden" name="modo" value={% if isdoc %}"doc"{% else %}"ora"{% endif %}>
 <input type="hidden" name="ofuente" value="">
 <input type="hidden" name="oindex" value={% if oindex %}{{oindex}}{% else %}"0"{% endif %}>
-<input type="hidden" name="tacept" value="">    
+<input type="hidden" name="tacept" value="">
 <input type="hidden" name="isdoc" value=false>
 <input type="hidden" name="borrar" value=false>
 <input type="hidden" name="registrar" value=false>
@@ -620,7 +620,7 @@ div.despleg-derecha {
 document.getElementById("fuente").scrollTop = {{docscrolltop}};
 </script>
 {% endif %}
- 
+
 <script>
 document.getElementById("fuente").focus();
 
@@ -709,11 +709,22 @@ function copiar()
 
 function registrar()
 {
-    meta = document.getElementById("aceptado").value;
+    if (document.getElementById("aceptado"))
+    {
+      // Registrar traducción de documento
+      meta = document.getElementById("aceptado").innerHTML;
+      isdoc = true;
+    } else {
+      // Registrar traducción de oración
+      meta = document.getElementById("textmeta").innerHTML;
+      isdoc = false;
+    }
     document.Form2.ometa.value = meta;
     document.Form2.borrar.value = true;
-    document.Form2.registrar.value = 'true';
+    document.Form2.registrar.value = true;
+    document.Form2.ofuente.value = '';
     document.Form2.tfuente.value = "115%";
+    document.Form2.isdoc.value = isdoc;
     document.Form2.action = "tra";
     document.Form2.submit();
 }
@@ -812,25 +823,25 @@ function corregirGn() {
     textmeta = document.getElementById("textmeta");
     text = textmeta.value;
     if (text) {
-	position = textmeta.selectionStart;
+      position = textmeta.selectionStart;
 	// Where to put the cursor after correction.
-	insertion = position;
-        changed = '';
-        c = text.slice(position-1, position);
+      insertion = position;
+      changed = '';
+      c = text.slice(position-1, position);
 //	alert("char " + c + " before " + before + " after " + after);
-        if (["â", "ä"].indexOf(c) >= 0) {
+    if (["â", "ä"].indexOf(c) >= 0) {
 	    changed = "ã";
-        } else if (["ê", "ë"].indexOf(c) >= 0) {
+    } else if (["ê", "ë"].indexOf(c) >= 0) {
 	    changed = "ẽ";
-        } else if (["î", "ï"].indexOf(c) >= 0) {
+    } else if (["î", "ï"].indexOf(c) >= 0) {
 	    changed = "ĩ";
-        } else if (["ô", "ö"].indexOf(c) >= 0) {
+    } else if (["ô", "ö"].indexOf(c) >= 0) {
 	    changed = "õ";
-        } else if (["û", "ü"].indexOf(c) >= 0) {
+    } else if (["û", "ü"].indexOf(c) >= 0) {
 	    changed = "ũ";
-        } else if (["ŷ", "ÿ"].indexOf(c) >= 0) {
+    } else if (["ŷ", "ÿ"].indexOf(c) >= 0) {
 	    changed = "ỹ";
-        } else if ("ĝ" == c) {
+    } else if ("ĝ" == c) {
 	    changed = "g̃";
 	    // Two characters so insert character one position forward.
 	    insertion += 1;
@@ -844,7 +855,7 @@ function corregirGn() {
 	    document.getElementById("textmeta").value = text;
 	    textmeta.selectionEnd = insertion;
 	}
-    }
+}
 }
 
 function fuente() {
