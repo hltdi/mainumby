@@ -1,4 +1,4 @@
-#   
+#
 #   Mainumby: records kept for system translations and user feedback
 #
 ########################################################################
@@ -8,17 +8,17 @@
 #   human translation.
 #
 #   Copyleft 2016, 2017, 2018, 2019 PLoGS <gasser@indiana.edu>
-#   
+#
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
 #   published by the Free Software Foundation, either version 3 of
 #   the License, or (at your option) any later version.
-#   
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 #   GNU General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
@@ -480,7 +480,7 @@ class SentRecord:
 
     def write(self, file=sys.stdout):
         d = self.to_dict()
-        yaml.dump(d, file, default_flow_style=False)        
+        yaml.dump(d, file, default_flow_style=False)
 
 #    def write(self, file=sys.stdout):
 #        print("{}".format(SENTENCE_PRE), file=file)
@@ -551,7 +551,7 @@ class SegRecord:
                 # Only if translation is selected
                 d['tgrp'] = self.tgroups
             return d
-        
+
 #class Feedback:
 #    """Feedback from a user about a segment or sentence and its translation."""
 #
@@ -647,7 +647,7 @@ class User:
     def from_file(username):
         path = User.get_path(username)
         with open(path, encoding='utf8') as file:
-            d = yaml.load(file, Loader=yaml.FullLoader)
+            d = yaml.load(file)
             u = User.dict2user(d, new=False)
         return u
 
@@ -754,5 +754,3 @@ class User:
         if not anon:
             anon = User(username=User.anon_user, email=User.anon_email, password=User.anon_pw, name=User.anon_name, new=True)
         return anon
-        
-        
