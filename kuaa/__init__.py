@@ -211,7 +211,11 @@ def oración(text='', src=None, targ=None, user=None, session=None,
     return s
 
 def make_document(gui, text, html=False):
-    """Create a Mainumby Document object with the text."""
+    """
+    Create a Mainumby Document object with the source text, which
+    could be a word, sentence, or document.
+    """
+    print("CREATING NEW Document INSTANCE.")
     session = gui.session
     d = kuaa.Document(gui.source, gui.target, text, proc=True, session=session)
     if html:
@@ -250,8 +254,22 @@ def make_session(source, target, user, create_memory=False, use_anon=True):
 
 ## DB functions
 
+def make_dbtext(content, language,
+                name='', domain='Miscelánea', title='',
+                description='', segment=False):
+    """
+    Create a Text database object with the given content and
+    language, returning its id.
+    """
+    text = Text(content=content, language=language,
+                name=name, domain=domain, title=title,
+                description=description, segment=segment)
+#    db.session.add(text)
+#    db.session.commit()
+    return text
+
 def make_text(gui, textid):
-    """Create a Mainumby Text object with the text."""
+    """Initialize with the Text object specified by textid."""
     textobj = get_text(textid)
     nsent = len(textobj.segments)
     html, html_list = get_doc_text_html(textobj)
@@ -295,7 +313,8 @@ def sentence_from_textseg(textseg=None, source=None, target=None, textid=None,
     return Sentence(original=original, tokens=tokens, language=source,
                     target=target)
 
-def make_translation(gui=None, text=None, textid=-1, user=None):
+def make_translation(text=None, textid=-1, accepted=None,
+                     translation='', user=None):
     """
     Create a Translation object, given a text, a user (translator), and a
     list of sentence translations from the GUI. There may be missing
@@ -304,7 +323,9 @@ def make_translation(gui=None, text=None, textid=-1, user=None):
     text = text or get_text(textid)
     trans = Translation(text=text, translator=user)
     db.session.add(trans)
-    for index, sentence in enumerate(gui.doc_tra_acep):
+    sentences = accepted if any(accepted) else translation
+    # Sentence translations accepted separately
+    for index, sentence in enumerate(sentences):
         if sentence:
             ts = TraSeg(content=sentence, translation=trans, index=index)
     print("Added translation {} to session {}".format(trans, db.session))

@@ -35,6 +35,7 @@
 #from sqlalchemy.ext.declarative import declarative_base
 #from sqlalchemy.orm import sessionmaker, relationship, backref
 from flask_sqlalchemy import SQLAlchemy
+# from sqlalchemy import inspect
 from werkzeug.security import generate_password_hash, check_password_hash
 #from sqlalchemy_serializer import SerializerMixin
 import datetime, os

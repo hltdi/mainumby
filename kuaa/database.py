@@ -51,3 +51,30 @@ class TextDB:
             else:
                 text_trans.append((textseg.content, traseg.content))
         return text_trans
+
+### Various utility functions for DB classes
+
+def db_serialize_class(klass):
+    """Return a list of dicts, one for each member of DB class."""
+    return [obj.to_dict() for obj in db_list(klass)]
+
+#def db_recreate_session():
+#    kuaa.db.session = kuaa.db.create_scoped_session()
+
+#def db_create(db=None):
+#    """db puede ser también 'text' o 'lex'."""
+#    kuaa.db.create_all(bind=db)
+
+#def db_destroy(db=None):
+#    """db puede ser también 'text' o 'lex'."""
+#    kuaa.db.drop_all(bind=db)
+
+def db_list(klass):
+    """klass is something like kuaa.Text."""
+    return db.session.query(klass).all()
+
+def db_add(instance):
+    db.session.add(instance)
+
+def db_delete(instance):
+    db.session.delete(instance)

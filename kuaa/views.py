@@ -270,7 +270,6 @@ def tra():
                                doc=isdoc, choose=choose, tradtodo=tradtodo)
     if not GUI.doc and not GUI.has_text:
         # Create a new document
-        print("CREANDO NUEVO DOCUMENTO.")
         make_document(GUI, form['ofuente'], html=False)
         if len(GUI.doc) == 0:
 #            print(" pero documento está vacío.")

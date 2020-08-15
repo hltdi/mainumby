@@ -34,7 +34,7 @@ from .utils import clean_sentence
 from . import get_domains_texts
 
 # the database class bound to the current app
-from . import db, make_translation
+from . import db, make_translation, make_dbtext
 
 class GUI:
 
@@ -155,7 +155,10 @@ class GUI:
         return html
 
     def accept_sent(self, index, trans):
-        """What happens when a sentence translation is accepted."""
+        """
+        What happens when a sentence translation, part of a larger
+        text, is accepted.
+        """
         print("+++Adding accepted translation for position {}".format(index))
         # Update the accepted translations
         self.doc_tra_acep[index] = trans
@@ -207,16 +210,27 @@ class GUI:
 
     def clear(self, record=False, translation='', isdoc=False, tradtodo=False,
               abandonar=False):
-        """Clear all document and sentence variables, and record the current
+        """
+        Clear all document and sentence variables, and record the current
         translation if record is True and there is a translation. If tradtodo
-        is True, keep the doc, doc_html, textid."""
-#        if record:
-#            print("Recording translation {}".format(translation))
-#            print("Current doc_tra_acep {}".format(self.doc_tra_acep))
-        # Record the sentence translation
-        if record and self.has_text:
-            transDB = make_translation(gui=self, textid=self.textid,
-                                       user=self.user)
+        is True, keep the doc, doc_html, textid.
+        """
+        if record and translation:
+            # there could be line feed characters
+            translation = translation.replace("\r", "")
+            translation = translation.split("\n")
+            print("Recording translation {}".format(translation))
+            if not self.has_text:
+                print("GUI doc {}".format(self.doc))
+                docconts = '\n'.join([s.original for s in self.doc])
+                text = make_dbtext(docconts, self.source, segment=True)
+                textid = -1
+            else:
+                text=None
+                textid = self.textid
+            make_translation(text=text, textid=textid, user=self.user,
+                             translation=translation,
+                             accepted=self.doc_tra_acep)
         sentrec = None
         if self.sentence:
             sentrec = self.sentence.record
