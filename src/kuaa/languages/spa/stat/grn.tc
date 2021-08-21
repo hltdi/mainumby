@@ -1,0 +1,825 @@
+abandonar_v[-r,+fin] :: {'<heja_v[cat=a]': 6.0, 'jei_v[cat=a]': 3.0}
+abierto_a :: {"jepe'a_v": 2.0}
+abrazar_v[-r,+fin] :: {'<ñañuã_v[cat=a]': 1.0}
+abrir_v[-r,+fin] :: {"pe'a_v[subcat=i]": 8.0, "<hesape'a_v[cat=a]": 1.0}
+abuela_n :: {'sy_n': 1.0}
+abundancia_n :: {'<heta_n': 3.0}
+acción_n :: {'<hembiapo_n': 1.0}
+acercar_v[+r,+fin] :: {'ja_v[cat=a]': 4.0, 'ñemboja_v[cat=a]': 2.0}
+acercar_v[-r,+fin] :: {'mboja_v[cat=a]': 1.0}
+acompañante_n :: {'moirũhára_n': 1.0}
+acompañar_v[-r,+fin] :: {'moirũ_v[cat=a]': 6.0}
+acontecer_v[-r,+fin] :: {'jehu_v[cat=a]': 9.0}
+acordar_v[+r,+fin] :: {"mandu'a_v[cat=che]": 2.0}
+acostar_v[+r,+fin] :: {'ñeno_v[cat=a]': 1.0}
+actuar_v[-r,+fin] :: {"mba'apo_v[cat=a]": 1.0}
+acusar_v[-r,+fin] :: {'mboja_v[cat=a]': 2.0}
+adelantar_v[+r,+fin] :: {'ñemotenonde_v[cat=a]': 1.0}
+además :: {'avei': 17.5, "hi'ári": 1.5}
+administrador_n :: {'<herekua_n': 1.0}
+adornar_v[-r,+fin] :: {'mbojegua_v[cat=a]': 1.0}
+adorno_n :: {'apesã_n': 1.0, 'jeguaka_n': 1.0}
+afirmar_v[-r,+fin] :: {'mombarete_v[cat=a]': 2.0}
+agradar_v[-r,+fin] :: {'mbohory_v[cat=a]': 2.0}
+agua_n :: {'y_n': 37.0}
+ahorcar_v[+r,+fin] :: {'jejuvy_v[cat=a]': 1.0}
+ahí :: {'upépe': 2.0}
+aire_n :: {'yvytu_n': 2.0}
+ajeno_a :: {"mba'e'ỹ_v": 1.0}
+ala_n :: {'pepo_n': 10.0}
+alabar_v[-r,+fin] :: {"momba'e_v[cat=a]": 3.5, 'momorã_v[cat=a]': 1.5}
+alcanzar_v[-r,+fin] :: {'ĝuahẽ_v[cat=a]': 1.0, '<hupyty_v[cat=a]': 1.0}
+aldea_n :: {'táva_n': 4.0}
+alegrar_v[+r,+fin] :: {"vy'a_v[cat=a]": 6.0}
+alegría_n :: {"vy'a_n": 2.0}
+algo :: {'peteĩ': 3.0, "peteĩ.mba'e": 1.0}
+alguien :: {'máva': 2.0}
+alimento_n :: {"<hembi'u_n": 3.0}
+allá :: {'upépe': 7.0, 'amo': 3.0}
+allí :: {'upépe': 53.0}
+alma_n :: {"py'a_n": 9.5, 'ánga_n': 1.5}
+almohada_n :: {'akãngyta_n': 1.0}
+alrededor~de :: {'jerére': 1.0}
+alto_a :: {'puku_v': 3.0}
+alumbrar_v[-r,+fin] :: {'<hesape_v[cat=a]': 1.0}
+alzar_v[-r,+fin] :: {'<hupi_v[cat=a]': 1.0}
+amado_n :: {'mborayhu_n': 1.0}
+amar_v[-r,+fin] :: {'<hayhu_v[cat=a]': 22.0}
+ambo_a[n=1] :: {'mokõive_v': 1.0}
+amedrentar_v[-r,+fin] :: {'mongyhyje_v[cat=a]': 1.0}
+amigo_n :: {'irũ_n': 7.0}
+amor_n :: {'mborayhu_n': 23.5, '<hayhu_n': 5.5}
+anchura_n :: {'pekue_n': 1.0}
+andar_v[-r,+fin] :: {'iko_v[cat=a]': 26.0, 'guata_v[cat=a]': 18.0}
+angustiar_v[+r,+fin] :: {"jepy'apy_v[cat=a]": 1.0}
+anhelar_v[-r,+fin] :: {'pota_v[subcat=i]': 1.0}
+animal_n :: {'<hymba_n': 1.0}
+antes :: {'mboyve': 5.0}
+antes~de :: {'mboyve': 2.0}
+anuncio_n :: {'marandu_n': 1.0}
+apartar_v[+r,+fin] :: {'jei_v[cat=a]': 3.0}
+apartar_v[-r,+fin] :: {'momombyry_v[cat=a]': 1.0, "pe'a_v[subcat=i]": 1.0}
+aposento_n :: {'koty_n': 4.0}
+apoyar_v[+r,+fin] :: {'jeko_v[cat=a]': 4.0}
+aprovechar_v[-r,+fin] :: {'poru_v[subcat=i]': 1.0}
+aquel_det :: {'upe': 32.0}
+aquella_det :: {'upe': 14.0}
+aquí :: {"ko'ápe": 10.0, 'ápe': 4.0}
+arca_n :: {'karameguã_n': 4.0}
+arena_n :: {"yvyku'i_n": 1.0}
+arrancar_v[-r,+fin] :: {"<hapo'o_v[cat=a]": 1.0}
+arrebatar_v[-r,+fin] :: {"pe'a_v[subcat=i]": 1.0}
+arreglo_n :: {'ñemyatyrõ_n': 2.0}
+arrepentir_v[+r,+fin] :: {'mbyasy_v[cat=a]': 5.0}
+arriba :: {'ári': 1.0}
+arrojar_v[-r,+fin] :: {'mombo_v[cat=a]': 2.0}
+arroyo_n :: {'ysyry_n': 10.0}
+asar_v[-r,+fin] :: {'<hesy_v[cat=a]': 1.0}
+asegurar_v[-r,+fin] :: {'myatã_v[cat=a]': 1.0}
+astuto_a :: {'katupyry_v': 1.0}
+así :: {'upéicha': 27.0, 'péicha': 26.0, 'kóicha': 6.0}
+así~que :: {'upévare': 7.0}
+atacar_v[-r,+fin] :: {'ndyry_v[cat=a]': 6.0}
+ataque_n :: {'ñorairõ_n': 1.0}
+atemorizar_v[-r,+fin] :: {'mongyhyje_v[cat=a]': 2.5, 'mondýi_v[cat=a]': 0.5}
+atender_v[-r,+fin] :: {'ñangareko_v[cat=a]': 1.0}
+atesorar_v[-r,+fin] :: {'mbyaty_v[cat=a]': 2.0}
+atravesar_v[-r,+fin] :: {'<hasa_v[cat=a]': 1.0}
+autoridad_n :: {'mburuvicha_n': 4.0}
+ave_n :: {'guyra_n': 2.0}
+avisar_v[-r,+fin] :: {"mombe'u_v[cat=a]": 1.0}
+avistar_v[-r,+fin] :: {'<hecha_v[cat=a]': 1.0}
+ayer :: {'kuehe': 2.0}
+ayudar_v[-r,+fin] :: {'pytyvõ_v[subcat=i]': 12.0}
+azotar_v[-r,+fin] :: {'nupã_v[subcat=i]': 4.0}
+a~duras~penas :: {'hasypeve': 1.0}
+añadir_v[-r,+fin] :: {'joapy_v[cat=a]': 1.0}
+aún :: {'gueteri': 8.0, 'avei': 1.0}
+aún~no :: {'gueteri': 5.0}
+bajar_v[+r,+fin] :: {'guejy_v[cat=a]': 2.0}
+bajar_v[-r,+fin] :: {'guejy_v[cat=a]': 3.0, 'mboguejy_v[cat=a]': 1.0}
+batalla_n :: {'ñorairõ_n': 18.0}
+batallar_v[-r,+fin] :: {'ñorairõ_v[cat=a]': 1.0}
+beber_v[-r,+fin] :: {"y'u_v[cat=a]": 8.0, "mboy'u_v[cat=a]": 2.0}
+bendecir_v[-r,+fin] :: {'<hovasa_v[cat=a]': 12.0}
+besar_v[-r,+fin] :: {'<hetũ_v[cat=a]': 3.0}
+beso_n :: {'ñehetũ_n': 1.0}
+bestia_n :: {'<hymba_n': 2.0}
+bien :: {'porã': 3.0}
+boca_n :: {'juru_n': 11.0}
+bolsa_n :: {'vosa_n': 1.0}
+borde_n :: {'<hembe_n': 4.0, "<hembe'y_n": 1.0}
+borracho_a :: {"ka'u_v": 1.0}
+bosque_n :: {"ka'aguy_n": 3.0}
+brazo_n :: {'jyva_n': 3.0}
+brecha_n :: {"pa'ũ_n": 1.0}
+brillar_v[-r,+fin] :: {'<hesape_v[cat=a]': 1.0}
+brotar_v[-r,+fin] :: {'<heñói_v[cat=a]': 1.0}
+bueno_a :: {'porã_v': 18.0, 'marangatu_v': 3.0}
+buey_n :: {'guéi_n': 7.0}
+burlar_v[+r,+fin] :: {'ñembohory_v[cat=a]': 1.0}
+buscar_v[-r,+fin] :: {'<heka_v[cat=a]': 17.0}
+caballo_n :: {'kavaju_n': 20.0}
+cabecera_n :: {'akã_n': 2.0}
+cabello_n :: {'<hague_n': 3.0}
+caber_v[-r,+fin] :: {'ja_v[cat=che]': 1.0}
+cabeza_n :: {'akã_n': 35.0}
+cabra_n :: {'kavara_n': 2.0}
+cabrito_n :: {'kavara_n': 1.0}
+cada~día :: {"ko'ẽre": 2.0}
+caer_v[-r,+fin] :: {"'a_v[cat=a]": 3.0, 'kúi_v[cat=a]': 1.0}
+caja_n :: {'<hyru_n': 2.0}
+calcular_v[-r,+fin] :: {'papa_v[subcat=i]': 1.0}
+calle_n :: {'<hape_n': 1.0}
+cama_n :: {'<hupa_n': 8.0}
+caminar_v[-r,+fin] :: {'guata_v[cat=a]': 4.0}
+camino_n :: {'<hape_n': 45.0}
+campo_n :: {'ñu_n': 15.0}
+canasta_n :: {'ajaka_n': 1.0}
+canasto_n :: {'ajaka_n': 1.0}
+cansado_a :: {"kane'õ_v": 2.0}
+cantar_v[-r,+fin] :: {'purahéi_v[cat=a]': 6.0, 'ropurahéi_v[cat=a]': 1.0}
+capa_n :: {'ahoja_n': 2.0}
+capacitar_v[-r,+fin] :: {'mbokatupyry_v[cat=a]': 1.0}
+cariño_n :: {'mborayhu_n': 1.0, '<hayhu_n': 1.0}
+carne_n :: {"so'o_n": 4.0}
+carta_n :: {"kuatiañe'ẽ_n": 12.0}
+carta_n[n=1] :: {'kavaju_n': 1.0}
+casa_n :: {'<hóga_n': 182.0}
+casar_v[+r,+fin] :: {'menda_v[cat=a]': 6.0}
+casar_v[-r,+fin] :: {'momenda_v[cat=a]': 1.0}
+casi :: {'haimete': 1.0}
+castigar_v[-r,+fin] :: {'nupã_v[subcat=i]': 1.0}
+cavar_v[-r,+fin] :: {"jo'o_v[cat=a]": 1.0}
+celo_n :: {"<hakate'ỹ_n": 2.0}
+ceniza_n :: {'tanimbu_n': 1.0, 'kusugue_n': 1.0}
+cerrar_v[-r,+fin] :: {'mboty_v[cat=a]': 4.0}
+chico_n :: {'mitã_n': 1.0}
+cielo_n :: {'yvága_n': 54.0}
+cintura_n :: {"ku'a_n": 1.0}
+ciudad_n :: {'táva_n': 131.0}
+clamar_v[-r,+fin] :: {'sapukái_v[cat=a]': 10.0}
+cocido_a :: {'jy_v': 1.0}
+codiciar_v[-r,+fin] :: {'pota_v[subcat=i]': 3.0}
+cofre_n :: {'karameguã_n': 2.0}
+cojo_a :: {'karẽ_v': 1.0}
+colina_n :: {'yvyty_n': 2.0}
+colocar_v[+r,+fin] :: {'ñemoĩ_v[cat=a]': 1.0}
+colocar_v[-r,+fin] :: {'moĩ_v[cat=a]': 5.0}
+comandante_n :: {'mburuvicha_n': 13.0}
+combatir_v[-r,+fin] :: {'ndyry_v[cat=a]': 1.0}
+comenzar_v[-r,+fin] :: {'ñepyrũ_v[cat=a]': 66.0, 'moñepyrũ_v[cat=a]': 4.0}
+comer_v[-r,+fin] :: {'karu_v[cat=a]': 30.0, "'u_v[cat=a]": 10.0}
+comida_n :: {"<hembi'u_n": 2.0, 'karu_n': 1.0}
+comienzo_n :: {'ñepyrũ_n': 1.0}
+compañero_n :: {'irũ_n': 1.0}
+completar_v[-r,+fin] :: {"mohu'ã_v[cat=a]": 1.0}
+comprar_v[-r,+fin] :: {'jogua_v[cat=a]': 6.0}
+comprender_v[-r,+fin] :: {'kuaa_v[subcat=i]': 1.0}
+comunicar_v[-r,+fin] :: {"mombe'u_v[cat=a]": 2.0}
+con :: {'ndive': 80.0}
+conceder_v[-r,+fin] :: {"me'ẽ_v[cat=a]": 4.0}
+conciencia_n :: {"py'a_n": 7.0}
+concubina_n :: {'kuña_n': 2.0}
+conducir_v[-r,+fin] :: {'mboguata_v[cat=a]': 1.0}
+conducta_n :: {'<heko_n': 1.0}
+confianza_n :: {'jerovia_v[pos=v]': 2.0}
+confiar_v[-r,+fin] :: {'rovia_v[subcat=gue]': 2.0}
+confirmar_v[-r,+fin] :: {'moañete_v[cat=a]': 1.0}
+congregación_n :: {'aty_n': 2.0}
+conocer_v[-r,+fin] :: {'kuaa_v[subcat=i]': 25.0}
+conocimiento_n :: {'kuaa_n': 5.0}
+considerar_v[-r,+fin] :: {"momba'e_v[cat=a]": 1.0}
+contar_v[-r,+fin] :: {"mombe'u_v[cat=a]": 11.0, 'papa_v[subcat=i]': 2.0}
+contemplar_v[-r,+fin] :: {"ma'ẽ_v[cat=a]": 1.0}
+contra :: {'rehe': 6.0}
+contribuir_v[-r,+fin] :: {"me'ẽ_v[cat=a]": 1.0}
+convertir_v[+r,+fin] :: {'jevy_v[cat=a]': 4.0}
+convocar_v[-r,+fin] :: {'mbyaty_v[cat=a]': 3.0, '<henói_v[cat=a]': 2.0}
+corazón_n :: {"py'a_n": 37.0}
+correr_v[-r,+fin] :: {'ñani_v[cat=a]': 5.0, 'syry_v[cat=a]': 2.0}
+cortar_v[-r,+fin] :: {"ñakã'o_v[cat=a]": 3.0, 'kytĩ_v[subcat=i]': 3.0}
+cosa_n :: {"mba'e_n": 111.0}
+costoso_a :: {'<hepy_v': 1.0}
+crecer_v[-r,+fin] :: {'kakuaa_v[cat=a]': 3.0}
+creer_v[-r,+fin] :: {'rovia_v[subcat=gue]': 31.0, "imo'ã_v[cat=a]": 1.0}
+criado_n :: {'<hembiguái_n': 13.0}
+criar_v[-r,+fin] :: {'mongakuaa_v[cat=a]': 2.0}
+crujir_v[-r,+fin] :: {'pururũ_v[cat=a]': 1.0}
+cruzar_v[-r,+fin] :: {'<hasa_v[cat=a]': 3.0}
+cuarto_a :: {'irundyha_v': 2.0}
+cubrir_v[-r,+fin] :: {"jaho'i_v[cat=a]": 4.0}
+cuchillo_n :: {'kyse_n': 1.0}
+cuerno_n :: {'<hatĩ_n': 2.0}
+cuerpo_n :: {'<hete_n': 38.0}
+cueva_n :: {'itakua_n': 6.0}
+cumbre_n :: {"<hu'ã_n": 2.0}
+cumplir_v[-r,+fin] :: {'mboty_v[cat=a]': 1.0}
+custodiar_v[-r,+fin] :: {'ñangareko_v[cat=a]': 2.0, 'ñongatu_v[cat=a]': 1.0}
+cuál :: {'máva': 1.0}
+cómo :: {"mba'éichapa": 1.0}
+danzar_v[-r,+fin] :: {'jeroky_v[cat=a]': 3.0}
+dar_v[+r,+fin] :: {"ñeme'ẽ_v[cat=a]": 1.0, 'jere_v[cat=a]': 1.0}
+dar_v[-r,+fin] :: {"me'ẽ_v[cat=a]": 117.0, 'moingo_v[cat=a]': 1.0}
+debilidad_n :: {'kangy_n': 1.0}
+decir_v[-r,+fin] :: {"'e_v[cat=a]": 62.0, "mombe'u_v[cat=a]": 22.0}
+decir_v[-r,po=1,no=0] :: {"mombe'u_v[cat=a]": 1.0, "'e_v[cat=a]": 1.0, "'e_v[cat=a].chéve": 1.0}
+decir_v[-r,po=2,no=0] :: {"'e_v[cat=a]": 2.0}
+dedicar_v[-r,+fin] :: {"me'ẽ_v[cat=a]": 1.0}
+dejar_v[-r,+fin] :: {'<heja_v[cat=a]': 28.0, 'jei_v[cat=a]': 1.0}
+delantera_n :: {'<henonde_n': 1.0}
+del~otro~lado :: {'mboypýri': 1.0}
+demandar_v[-r,+fin] :: {'jerure_v[cat=a]': 2.0}
+demonio_n :: {'aña_n': 1.0}
+demostrar_v[-r,+fin] :: {'<hechauka_v[cat=a]': 1.0}
+derecha_n :: {'akatúa_n': 3.0}
+derribar_v[-r,+fin] :: {'ity_v[cat=a]': 10.0}
+desafiar_v[-r,+fin] :: {'moñarõ_v[cat=a]': 1.0}
+desaparecer_v[-r,+fin] :: {'gue_v[cat=a]': 1.0}
+desbaratar_v[-r,+fin] :: {'mbyai_v[cat=a]': 1.0}
+descalzo_a :: {'pynandi_v': 1.0}
+descansar_v[-r,+fin] :: {"pytu'u_v[cat=a]": 1.0}
+descendencia_n :: {'ñemoñare_n': 8.0}
+descender_v[-r,+fin] :: {'guejy_v[cat=a]': 10.0}
+descendiente_n :: {'ñemoñare_n': 3.0}
+descubrir_v[-r,+fin] :: {'juhu_v[cat=a]': 1.0}
+desde :: {'guive': 19.0}
+desear_v[-r,+fin] :: {'pota_v[subcat=i]': 5.0}
+desechar_v[-r,+fin] :: {'jei_v[cat=a]': 1.0}
+desgarrar_v[-r,+fin] :: {'mondoro_v[cat=a]': 1.0}
+desistir_v[-r,+fin] :: {'<heja_v[cat=a]': 1.0}
+desmenuzar_v[-r,+fin] :: {"myangu'i_v[cat=a]": 2.0}
+desnudo_a :: {'opívo_v': 2.0}
+despertar_v[+r,+fin] :: {'páy_v[cat=a]': 1.0}
+despertar_v[-r,+fin] :: {'páy_v[cat=a]': 1.0}
+después :: {'rire': 6.0}
+después~de :: {'rire': 8.0}
+destruir_v[-r,+fin] :: {'hundi_v[cat=a]': 28.0}
+detener_v[+r,+fin] :: {'pyta_v[cat=a]': 6.0}
+detener_v[-r,+fin] :: {'joko_v[cat=a]': 2.0}
+de~esta~manera :: {'péicha': 2.0, 'upéicha': 2.0}
+diente_n :: {'<hãi_n': 1.0}
+difícil_a :: {'<hasy_v': 2.0}
+dinero_n :: {'viru_n': 2.0, 'pirapire_n': 1.0}
+dios_n :: {'tupã_n': 54.0}
+discurso_n :: {"ñe'ẽ_n": 1.0}
+discípulo_n :: {"<hemimbo'e_n": 1.0}
+dolencia_n :: {"mba'asy_n": 1.0}
+doler_v[+r,+fin] :: {'ñembyasy_v[cat=a]': 1.0}
+dolor_n :: {'<hasy_n': 2.0}
+dormir_v[-r,+fin] :: {'ke_v[cat=a]': 10.0}
+dueño_n :: {'karai_n': 1.0, 'jára_n': 1.0}
+débil_a :: {'kangy_v': 12.0}
+día_n :: {'ára_n': 162.0}
+dónde :: {'moõpa': 1.0}
+echar_v[+r,+fin] :: {'jeity_v[cat=a]': 2.0}
+echar_v[-r,+fin] :: {'ity_v[cat=a]': 2.0, 'mombo_v[cat=a]': 2.0, 'mosẽ_v[cat=a]': 1.0}
+elegir_v[-r,+fin] :: {'poravo_v[subcat=i]': 16.0}
+emplear_v[-r,+fin] :: {'poru_v[subcat=i]': 1.0}
+empobrecer_v[-r,+fin] :: {'momboriahu_v[cat=a]': 1.0}
+encender_v[-r,+fin] :: {'<hapy_v[cat=a]': 2.0, 'myendy_v[cat=a]': 1.0}
+encerrar_v[+r,+fin] :: {'ñemboty_v[cat=a]': 1.0}
+encontrar_v[-r,+fin] :: {'juhu_v[cat=a]': 3.0, 'topa_v[cat=a]': 1.0}
+enfermedad_n :: {'<hasy_n': 3.0, "mba'asy_n": 3.0}
+enfermo_a :: {'<hasy_v': 2.0}
+engañar_v[+r,+fin] :: {'ñembotavy_v[cat=a]': 1.0}
+engañar_v[-r,+fin] :: {'mbotavy_v[cat=a]': 2.0}
+enojado_a :: {'pochy_v': 1.0}
+enseñanza_n :: {"mbo'e_n": 1.0}
+enseñar_v[-r,+fin] :: {"mbo'e_v[cat=a]": 15.5, "porombo'e_v[cat=a]": 1.5}
+entender_v[-r,+fin] :: {'kuaa_v[subcat=i]': 9.0, '<hendu_v[cat=a]': 1.0}
+enterar_v[+r,+fin] :: {'kuaa_v[subcat=i]': 4.0}
+enterrar_v[-r,+fin] :: {'ñotỹ_v[cat=a]': 3.0}
+entonces :: {'upérõ': 163.0}
+entrada_n :: {'<hokẽ_n': 10.0}
+entrar_v[-r,+fin] :: {'ike_v[cat=a]': 38.5, '<hasa_v[cat=a]': 0.5}
+entre :: {'apytépe': 1.0}
+entregar_v[-r,+fin] :: {"me'ẽ_v[cat=a]": 23.0}
+enviar_v[-r,+fin] :: {'mondo_v[cat=a]': 87.0, 'mbou_v[cat=a]': 9.0, 'rahauka_v[cat=a]': 1.0}
+en~cualquier~lugar :: {'mamo': 1.0}
+en~este~lugar :: {"ko'ápe": 4.0}
+en~vano :: {'rei': 1.0}
+esa_det :: {'upe': 1.0}
+escapar_v[-r,+fin] :: {'jehekýi_v[cat=a]': 1.0}
+esclavo_n :: {'<hembiguái_n': 3.0}
+escoger_v[-r,+fin] :: {'poravo_v[subcat=i]': 17.0}
+escogido_a :: {'poravopyre_v': 1.0}
+escribir_v[-r,+fin] :: {'hai_v[cat=a]': 17.0}
+escuchar_v[-r,+fin] :: {'<hendu_v[cat=a]': 5.0}
+ese_det :: {'upe': 4.0, 'pe': 2.0}
+espacio_n :: {'<henda_n': 1.0}
+espantar_v[-r,+fin] :: {'mongyhyje_v[cat=a]': 0.5, 'mondýi_v[cat=a]': 0.5}
+esperar_v[-r,+fin] :: {"<ha'arõ_v[cat=a]": 12.0}
+esposa_n :: {'<hembireko_n': 2.0}
+espíritu_n :: {"py'a_n": 6.5, 'ã_n': 1.0, 'ánga_n': 0.5}
+esta_det :: {'ko': 37.0}
+establecer_v[-r,+fin] :: {'mohenda_v[cat=a]': 2.0}
+estado_n :: {'<heko_n': 1.0}
+estar_v[-r,+fin] :: {'iko_v[cat=a]': 53.5, 'ime_v[cat=a]': 33.5}
+estas_det :: {"ko'ã": 46.0}
+estimar_v[-r,+fin] :: {'<hayhu_v[cat=a]': 2.0}
+estiércol_n :: {'<hepoti_n': 1.0}
+esto_n :: {'kóva_n': 8.0}
+estos_det :: {"ko'ã": 17.0}
+estos_n :: {"ko'ãva_n": 2.0}
+estrella_n :: {'mbyja_n': 4.0}
+estrépito_n :: {'<hyapu_n': 1.0}
+existir_v[-r,+fin] :: {'ikove_v[cat=a]': 2.0}
+extender_v[-r,+fin] :: {'pyso_v[subcat=i]': 1.0, 'myasãi_v[cat=a]': 1.0}
+extirpar_v[-r,+fin] :: {'nohẽ_v[subcat=gue]': 1.0}
+falso_a :: {"gua'u_v": 1.0}
+familia_n :: {'ñemoñare_n': 4.0}
+famoso_a :: {'<herakuã_v': 1.0}
+faz_n :: {'yvy_n': 1.0, '<hova_n': 1.0}
+fe_n :: {'jerovia_n': 20.0}
+fiel_a :: {'jeroviaha_v': 2.0}
+fiesta_n :: {'arete_n': 8.0}
+fin_n :: {'opa_n': 2.5, 'paha_n': 0.5}
+final_n :: {'paha_n': 1.0}
+flauta_n :: {'mimby_n': 2.0}
+flor_n :: {'yvoty_n': 7.0, 'poty_n': 2.0}
+fortalecer_v[+r,+fin] :: {'ñemombarete_v[cat=a]': 1.0}
+fortalecer_v[-r,+fin] :: {'mombarete_v[cat=a]': 1.0}
+fortaleza_n :: {'mbarete_n': 8.0}
+frente_n :: {'<henonde_n': 6.0, 'syva_n': 2.0}
+frontera_n :: {"<hembe'y_n": 4.0}
+fuego_n :: {'<hata_n': 21.0}
+fuente_n :: {'ykua_n': 4.0}
+fuerte_a :: {"kuimba'e_v": 3.0, '<hatã_v': 1.0}
+fuerza_n :: {'mbarete_n': 2.0}
+gente_n :: {'yvypóra_n': 1.0}
+girar_v[-r,+fin] :: {'jere_v[cat=a]': 1.0}
+glorioso_a :: {'<herakuã_v': 1.0}
+gobernador_n :: {'táva_n': 4.0}
+golpear_v[-r,+fin] :: {'nupã_v[subcat=i]': 6.0}
+gozo_n :: {'<hory_n': 1.0}
+grabar_v[-r,+fin] :: {'hai_v[cat=a]': 1.0}
+gracia_n[n=1] :: {'aguije_n': 2.0}
+grande_a :: {'guasu_v': 25.0, 'tuicha_v': 9.0}
+grano_n :: {"<ha'ỹi_n": 2.0}
+gritar_v[-r,+fin] :: {'sapukái_v[cat=a]': 17.0}
+grito_n :: {'sapukái_n': 2.0}
+grupo_n :: {'aty_n': 2.0}
+guardar_v[-r,+fin] :: {'ñangareko_v[cat=a]': 9.0, 'ñongatu_v[cat=a]': 1.0}
+guerra_n :: {'ñorairõ_n': 24.0}
+guerrear_v[-r,+fin] :: {'ñorairõ_v[cat=a]': 1.0}
+haba_n :: {'kumanda_n': 1.0}
+haber_v[-r,p=3,n=0,+neg] :: {'pori_v[cat=che,+neg]': 7.0}
+habitar_v[-r,+fin] :: {'iko_v[cat=a]': 35.0}
+hablar_v[-r,+fin] :: {"ñe'ẽ_v[cat=a]": 104.0, 'ñemongeta_v[cat=a]': 1.0}
+hacer_v[-r,+fin] :: {'<japo_v[cat=a]': 261.0}
+hacia :: {'gotyo': 5.0}
+hallar_v[-r,+fin] :: {'juhu_v[cat=a]': 25.0}
+hambre_n :: {'ñembyahýi_n': 9.0, 'ñembyahýi_v[cat=che]': 1.0}
+hambruna_n :: {'ñembyahýi_n': 1.0}
+herir_v[-r,+fin] :: {'kutu_v[subcat=i]': 3.0, '<japi_v[cat=a]': 1.0}
+hermana_n :: {"kypy'y_n": 3.0, '<heindy_n': 1.0}
+hermano_n :: {'ryvy_n': 20.0, "ryke'y_n": 8.0}
+hermoso_a :: {'porã_v': 2.0}
+hierba_n :: {"ka'avo_n": 2.0}
+hija_n :: {'memby_n': 2.0}
+hijo_n :: {"ra'y_n": 514.5, 'memby_n': 71.0, 'mitã_n': 9.5}
+hilera_n :: {'<hysýi_n': 11.0}
+hogar_n :: {'<hóga_n': 1.0}
+hombre_n :: {"kuimba'e_n": 109.0}
+hombro_n :: {"ati'y_n": 1.0}
+honrar_v[-r,+fin] :: {"momba'e_v[cat=a]": 3.0}
+hortaliza_n :: {"ka'avo_n": 1.0}
+humillar_v[+r,+fin] :: {'ñemomirĩ_v[cat=a]': 10.0}
+humillar_v[-r,+fin] :: {'motĩndy_v[cat=a]': 1.0}
+humo_n :: {'<hatatĩ_n': 1.0}
+hábil_a :: {'katupyry_v': 1.0}
+iglesia_n :: {'tupão_n': 1.0}
+igualar_v[-r,+fin] :: {'mbojoja_v[cat=a]': 1.0}
+igualmente :: {'avei': 1.0}
+impedir_v[-r,+fin] :: {'joko_v[cat=a]': 2.0}
+incienso_n :: {'yvyra_n': 2.0}
+inclinar_v[+r,+fin] :: {'jayvy_v[cat=a]': 3.0}
+inquietar_v[-r,+fin] :: {'myangekói_v[cat=a]': 1.0}
+instalar_v[+r,+fin] :: {'ñemohenda_v[cat=a]': 2.0}
+instruir_v[-r,+fin] :: {"mbo'e_v[cat=a]": 1.0}
+inteligencia_n :: {'akã_n': 1.0}
+interrogar_v[-r,+fin] :: {'porandu_v[cat=a]': 1.0}
+introducir_v[+r,+fin] :: {'ike_v[cat=a]': 1.0}
+introducir_v[-r,+fin] :: {'moinge_v[cat=a]': 1.0}
+invadir_v[-r,+fin] :: {'ike_v[cat=a]': 2.0}
+invocar_v[-r,+fin] :: {'<henói_v[cat=a]': 5.0}
+ir_v[+r,+fin] :: {'ha_v[cat=a]': 33.0, '<hasa_v[cat=a]': 1.5, 'jei_v[cat=a]': 0.5}
+ir_v[-r,+fin] :: {'ha_v[cat=a]': 61.0}
+ira_n :: {'pochy_n': 7.0}
+irrumpir_v[-r,+fin] :: {'ike_v[cat=a]': 3.0}
+ir|ser_v[-r,+fin] :: {'ha_v[cat=a]': 69.0, 'ime_v[cat=a]': 4.0}
+izquierda_n :: {'asu_n': 3.0}
+jamás :: {"araka'eve": 3.0}
+jefe_n :: {'<huvicha_n': 40.0}
+joven_n :: {'mitã_n': 7.0, "karia'y_n": 5.0, 'mitãrusu_n': 1.0}
+joya_n :: {'jegua_n': 1.0}
+juicio_n :: {'akã_n': 1.0}
+juntar_v[+r,+fin] :: {"jehe'a_v[cat=a]": 2.0, 'ñembyaty_v[cat=a]': 1.0}
+juntar_v[-r,+fin] :: {'mbyaty_v[cat=a]': 3.0}
+juntos :: {'oñondive': 3.0}
+justicia_n :: {'<hekojoja_n': 2.0}
+justo_a :: {'marangatu_v': 1.0}
+júbilo_n :: {'<hory_n': 2.0, "vy'a_n": 1.0}
+labor_n :: {'<hembiapo_n': 1.0}
+lado_n :: {'yke_n': 5.0}
+ladrón_n :: {'mondaha_n': 4.0}
+lamentar_v[+r,+fin] :: {"jahe'o_v[cat=a]": 1.0}
+lamentar_v[-r,+fin] :: {'mbyasy_v[cat=a]': 1.0}
+langosta_n :: {'tuku_n': 1.0}
+lanzar_v[+r,+fin] :: {'jepoi_v[cat=a]': 1.0}
+lanzar_v[-r,+fin] :: {'mombo_v[cat=a]': 2.0}
+largo_a :: {'puku_v': 1.0}
+lateral_n :: {'yke_n': 1.0}
+lavar_v[-r,+fin] :: {'johéi_v[cat=a]': 1.0}
+lazo_n :: {'ñuhã_n': 1.5, 'apytĩ_n': 0.5}
+leche_n :: {'kamby_n': 2.0}
+lecho_n :: {'<hupa_n': 3.0}
+lengua_n :: {"ñe'ẽ_n": 8.0}
+lepra_n :: {'kuru_n': 5.0}
+levantar_v[+r,+fin] :: {"pu'ã_v[cat=a]": 42.0}
+levantar_v[-r,+fin] :: {"mopu'ã_v[cat=a]": 2.0}
+ley_n :: {'<hembiapoukapy_n': 16.0}
+leña_n :: {"jepe'a_n": 5.0}
+liberar_v[+r,+fin] :: {'jei_v[cat=a]': 1.0}
+librar_v[-r,+fin] :: {'pysyrõ_v[subcat=i]': 2.0}
+libro_n :: {"kuatiañe'ẽ_n": 4.0}
+limosna_n :: {"tupãmba'e_n": 1.0}
+limpiar_v[-r,+fin] :: {'mopotĩ_v[cat=a]': 6.0, 'johéi_v[cat=a]': 1.0}
+limpio_a :: {'potĩ_v': 2.0}
+llamar_v[+r,+fin] :: {'<héra_v[cat=che]': 4.0, 'ñembohéra_v[cat=a]': 1.0}
+llamar_v[-r,+fin] :: {'<henói_v[cat=a]': 25.0}
+llano_a :: {'pe_v': 1.0}
+llanura_n :: {'ñu_n': 1.0}
+llegar_v[-r,+fin] :: {'ĝuahẽ_v[cat=a]': 102.0}
+llenar_v[-r,+fin] :: {'myenyhẽ_v[cat=a]': 7.0}
+lleno_a :: {'<henyhẽ_v': 2.0}
+llevar_v[-r,+fin] :: {'raha_v[subcat=gue]': 66.0, 'jereraha_v[cat=a]': 1.0}
+llorar_v[-r,+fin] :: {"jahe'o_v[cat=a]": 3.0}
+lluvia_n :: {'ama_n': 3.0}
+lobo_n :: {'aguara_n': 1.0}
+loco_a :: {'tarova_v': 3.0}
+luego :: {'upéi': 29.0}
+lugar_n :: {'<henda_n': 17.0}
+luna_n :: {'jasy_n': 8.0}
+luz_n :: {'<hendy_n': 13.0, '<hesape_n': 4.0}
+lágrima_n[n=1] :: {'<hesay_n': 5.0}
+límite_n :: {"<hembe'y_n": 1.0}
+madera_n :: {'yvyra_n': 19.0}
+madre_n :: {'sy_n': 18.0}
+maestro_n :: {"mbo'ehára_n": 2.0}
+magia_n :: {'paje_n': 1.0}
+malo_a :: {'vai_v': 39.0}
+manantial_n :: {'ykua_n': 2.0}
+mandamiento_n :: {'<hembiapoukapy_n': 32.0}
+mandar_v[-r,+fin] :: {'mondo_v[cat=a]': 2.0}
+mano_n :: {'po_n': 46.0, 'akatúa_n': 4.0, 'asu_n': 1.0}
+mantener_v[-r,+fin] :: {'reko_v[subcat=gue]': 1.0}
+manto_n :: {'ahoja_n': 7.0}
+marido_n :: {'ména_n': 22.0}
+matar_v[-r,+fin] :: {'juka_v[cat=a]': 95.0}
+mayor_a :: {'tuicha_v': 2.0}
+mañana :: {"ko'ẽrõ": 6.0}
+medida_n :: {"<ha'ãha_n": 1.0}
+mediodía_n :: {'asaje_n': 7.0}
+memoria_n :: {"mandu'a_n": 1.0}
+mensajero_n :: {'<hembiguái_n': 2.0}
+mente_n :: {"apytu'ũ_n": 1.0}
+mentira_n :: {'japu_n': 4.0}
+mesa_n :: {'mesa_n': 15.0}
+metal_n :: {'ita_n': 1.0}
+meter_v[+r,+fin] :: {'ike_v[cat=a]': 2.0}
+meter_v[-r,+fin] :: {'moinge_v[cat=a]': 3.5, 'moĩ_v[cat=a]': 3.5}
+miedo_n :: {'kyhyje_v[pos=v]': 6.0}
+miel_n :: {'eíra_n': 7.0}
+mirar_v[-r,+fin] :: {"ma'ẽ_v[cat=a]": 26.0, 'maña_v[cat=a]': 1.0}
+mitad_n :: {'mbyte_n': 5.0}
+modo_n :: {'<heko_n': 1.0}
+moler_v[-r,+fin] :: {"myangu'i_v[cat=a]": 1.0}
+mono_n :: {"ka'i_n": 2.0}
+montar_v[-r,+fin] :: {'jupi_v[cat=a]': 2.0}
+montaña_n :: {'yvyty_n': 1.0}
+morada_n :: {'<hekoha_n': 1.0}
+mostrar_v[-r,+fin] :: {'<hechauka_v[cat=a]': 1.0}
+mover_v[+r,+fin] :: {"ku'e_v[cat=a]": 1.0}
+muchacha_n :: {'mitãkuña_n': 5.0}
+muchacho_n :: {'mitã_n': 4.0}
+mucho_a :: {'heta': 17.0}
+muerte_n :: {'mano_n': 16.0}
+mujer_n :: {'kuña_n': 90.0}
+mula_n :: {'mburika_n': 3.0}
+multiplicar_v[+r,+fin] :: {'ñemboheta_v[cat=a]': 1.0}
+multiplicar_v[-r,+fin] :: {'mboheta_v[cat=a]': 1.0}
+mundo_n :: {'yvy_n': 23.0}
+médico_n :: {'pohãnohára_n': 1.0}
+música_n :: {"mba'epu_n": 3.0}
+nacer_v[-r,+fin] :: {'<heñói_v[cat=a]': 3.0}
+nación_n :: {'<hetã_n': 29.0}
+nada :: {"mba'eve": 5.0}
+nariz_n :: {'tĩ_n': 1.0}
+naturaleza_n :: {'<heko_n': 1.0}
+nave_n :: {'ygára_n': 4.0}
+necesitar_v[-r,+fin] :: {'kotevẽ_v[subcat=i]': 1.0}
+necio_n :: {'výro_n': 1.0}
+negocio_n :: {'ñemuha_n': 1.0}
+niño_n :: {'mitã_n': 29.0}
+no :: {'ani': 30.0}
+noche_n :: {'pyhare_n': 21.0}
+nombre_n :: {'<héra_n': 44.0}
+norte_n :: {'yvate_n': 1.0}
+noticia_n :: {'marandu_n': 1.0}
+no~está :: {'noĩri': 1.0}
+nube_n :: {'arai_n': 8.0}
+nuevo_a :: {'pyahu_v': 20.0}
+numeroso_a :: {'<heta_v': 2.0}
+nunca :: {"araka'eve": 5.0}
+objeto_n :: {"mba'e_n": 1.0}
+obra_n :: {'apo_n': 5.0}
+observar_v[-r,+fin] :: {"ma'ẽ_v[cat=a]": 1.0}
+ocasión_n :: {'ára_n': 1.0}
+ocurrir_v[-r,+fin] :: {'jehu_v[cat=a]': 2.0}
+ofrecer_v[-r,+fin] :: {"kuave'ẽ_v[subcat=i]": 32.0}
+ojo_n :: {'<hesa_n': 16.0}
+olor_n :: {'<hyakuã_n': 4.0}
+olvidar_v[-r,+fin] :: {'<hesarái_v[cat=che]': 1.0}
+oponer_v[+r,+fin] :: {'mbohovái_v[cat=a]': 1.0}
+orar_v[-r,+fin] :: {"ñembo'e_v[cat=a]": 8.0}
+ordenar_v[-r,+fin] :: {'myatyrõ_v[cat=a]': 1.0}
+oreja_n :: {'nambi_n': 1.0}
+oriente_n :: {'kuarahy_n': 10.0}
+orilla_n :: {"<hembe'y_n": 2.0}
+ornamento_n :: {'jegua_n': 1.0}
+oscuridad_n :: {'ypytũ_n': 0.5, 'pytũ_n': 0.5}
+otorgar_v[-r,+fin] :: {"me'ẽ_v[cat=a]": 1.0}
+otro_a :: {'ambue_v': 1.0}
+oveja_n :: {'ovecha_n': 29.0}
+oído_n :: {'apysa_n': 1.0}
+oír_v[+r,+fin] :: {'ñehendu_v[cat=a]': 4.0}
+oír_v[-r,+fin] :: {'<hendu_v[cat=a]': 88.0}
+padre_n :: {'ru_n': 166.0}
+pagar_v[-r,+fin] :: {"<hepyme'ẽ_v[cat=a]": 4.0}
+palabra_n :: {"ñe'ẽ_n": 25.0}
+palacio_n :: {'<hóga_n': 4.0}
+palmera_n :: {'pindo_n': 2.0}
+paloma_n :: {'pykasu_n': 1.0}
+pan_n :: {'mbujape_n': 17.0}
+panal_n :: {'eíra_n': 1.0}
+para :: {'guarã': 5.0}
+parar_v[+r,+fin] :: {'pyta_v[cat=a]': 7.0}
+pared_n :: {'<hóga_n': 1.0}
+pariente_n :: {'ñemoñare_n': 2.0}
+parte_n :: {'marandu_n': 1.0}
+partir_v[-r,+fin] :: {'ha_v[cat=a]': 14.0}
+pasar_v[-r,+fin] :: {'<hasa_v[cat=a]': 39.0}
+pasto_n :: {"kapi'i_n": 1.0}
+patio_n :: {'korapy_n': 1.0}
+país_n :: {'<hetã_n': 10.0}
+pecado_n :: {'angaipa_n': 47.0}
+pedazo_n :: {'akytã_n': 1.0}
+pedir_v[-r,+fin] :: {'jerure_v[cat=a]': 23.0}
+peinado_a :: {'akãkarãi_v': 1.0}
+pelea_n :: {'ñorairõ_n': 1.0}
+pensar_v[-r,+fin] :: {"imo'ã_v[cat=a]": 7.0}
+peor_a :: {'vaive_v': 1.0}
+pequeño_a :: {'michĩ_v': 1.0}
+perder_v[+r,+fin] :: {'ñehundi_v[cat=a]': 1.0}
+perfecto_a :: {'porã_v': 1.0}
+perfume_n :: {'<hyakuã_n': 3.0}
+permanecer_v[-r,+fin] :: {'ime_v[cat=a]': 3.0}
+permanentemente :: {'mante': 1.0}
+permitir_v[-r,+fin] :: {'<heja_v[cat=a]': 3.0}
+pero :: {'katu': 179.0, 'avei': 35.0}
+perro_n :: {'jagua_n': 1.0}
+perseguir_v[-r,+fin] :: {'muña_v[cat=a]': 9.0}
+persona_n :: {'<hapicha_n': 1.0}
+pesado_a :: {'pohýi_v': 5.0}
+peso_n :: {'pohyikue_n': 3.0}
+peste_n :: {"mba'asy_n": 3.0}
+piadoso_a :: {'marangatu_v': 3.0}
+pie_n :: {'py_n': 14.0}
+piedra_n :: {'ita_n': 43.0}
+pierna_n :: {'<hetyma_n': 1.0}
+pisar_v[-r,+fin] :: {'pyrũ_v[cat=a]': 2.0}
+plantar_v[-r,+fin] :: {'ñemitỹ_v[cat=a]': 1.0}
+plata_n :: {'viru_n': 1.0}
+plenitud_n :: {'<henyhẽ_n': 1.0}
+pobreza_n :: {'mboriahu_n': 1.0}
+poder_n :: {"pu'aka_n": 1.0}
+poder_v[-r,+fin] :: {'katu_v[cat=che]': 17.0}
+poderoso_a :: {'poguasu_v': 1.0}
+poner_v[+r,+fin] :: {'ñemoĩ_v[cat=a]': 4.0}
+poner_v[-r,+fin] :: {'moĩ_v[cat=a]': 78.0}
+por :: {'rehe': 3.0}
+por~eso :: {'upévare': 5.0}
+por~qué :: {"mba'ére": 2.0}
+poseer_v[-r,+fin] :: {'reko_v[subcat=gue]': 1.0}
+pozo_n :: {'ykua_n': 8.0}
+precio_n :: {'<hepy_n': 1.0}
+predicador_n :: {"mbo'ehára_n": 1.0}
+preferir_v[-r,+fin] :: {'potave_v[subcat=i]': 1.0}
+pregonar_v[-r,+fin] :: {'<henduka_v[cat=a]': 1.0}
+pregunta_n :: {'porandu_n': 2.0}
+preguntar_v[-r,+fin] :: {'porandu_v[cat=a]': 46.0}
+prender_v[-r,+fin] :: {'<hapy_v[cat=a]': 5.0}
+preocupar_v[+r,+fin] :: {"jepy'apy_v[cat=a]": 2.0}
+preparar_v[-r,+fin] :: {"mbosako'i_v[cat=a]": 6.0}
+presentar_v[-r,+fin] :: {"kuave'ẽ_v[subcat=i]": 1.0, 'ru_v[subcat=gue]': 1.0}
+primero_a :: {'peteĩha_v': 7.0}
+procurar_v[-r,+fin] :: {"ñeha'ã_v[cat=a]": 4.0}
+profundo_a :: {'asy_v': 1.0}
+propio_a :: {'tee_v': 4.0}
+proverbio_n :: {"ñe'ẽnga_n": 1.0}
+prójimo_n :: {'<hapicha_n': 1.0}
+pueblo_n :: {'táva_n': 15.0, '<hekoha_n': 6.0}
+puerta_n :: {'<hokẽ_n': 34.0}
+pues :: {'katu': 29.0, 'voi': 13.0}
+quebrar_v[-r,+fin] :: {'joka_v[cat=a]': 2.0, 'mopẽ_v[cat=a]': 1.0}
+quedar_v[+r,+fin] :: {'pyta_v[cat=a]': 29.0}
+quedar_v[-r,+fin] :: {'pyta_v[cat=a]': 21.0}
+quemar_v[+r,+fin] :: {'kái_v[cat=a]': 1.0}
+quemar_v[-r,+fin] :: {'<hapy_v[cat=a]': 26.0}
+querer_v[-r,+fin] :: {'pota_v[subcat=i]': 20.0}
+queso_n :: {'kesu_n': 1.0}
+quitar_v[-r,+fin] :: {"pe'a_v[subcat=i]": 27.0}
+quién :: {'máva': 5.0, 'mávapa': 2.0}
+qué :: {"mba'épa": 6.0}
+rasgar_v[-r,+fin] :: {'mondoro_v[cat=a]': 11.0}
+ratón_n :: {'anguja_n': 3.0}
+recoger_v[-r,+fin] :: {'mbyaty_v[cat=a]': 2.0, '<hupi_v[cat=a]': 2.0, "mono'õ_v[cat=a]": 1.0, "po'o_v[subcat=i]": 1.0}
+recordar_v[-r,+fin] :: {"mandu'a_v[cat=che]": 1.0}
+recorrer_v[-r,+fin] :: {'<hasa_v[cat=a]': 3.0}
+redondo_a :: {"apu'a_v": 4.0}
+reducir_v[-r,+fin] :: {'momichĩ_v[cat=a]': 1.0}
+referir_v[-r,+fin] :: {"mombe'u_v[cat=a]": 2.0}
+reforzar_v[-r,+fin] :: {'mombarete_v[cat=a]': 1.0}
+regalar_v[-r,+fin] :: {"me'ẽ_v[cat=a]": 1.0}
+regalo_n :: {'jopói_n': 1.0}
+regar_v[-r,+fin] :: {'<hypýi_v[cat=a]': 3.0}
+regresar_v[-r,+fin] :: {'jevy_v[cat=a]': 2.0}
+reino_n :: {'<hetã_n': 36.0}
+relatar_v[-r,+fin] :: {"mombe'u_v[cat=a]": 1.0}
+remate_n :: {"<hembe'y_n": 1.0}
+rendir_v[+r,+fin] :: {"ñeme'ẽ_v[cat=a]": 1.0}
+reparar_v[-r,+fin] :: {'myatyrõ_v[cat=a]': 6.0}
+repartir_v[-r,+fin] :: {"mboja'o_v[cat=a]": 4.0}
+reposo_n :: {"pytu'u_n": 1.0}
+reptil_n :: {'otyryrýva_n': 2.0}
+resplandecer_v[-r,+fin] :: {'<hesape_v[cat=a]': 3.0}
+resplandor_n :: {'<hendy_n': 6.0}
+responder_v[-r,+fin] :: {'mbohovái_v[cat=a]': 3.0}
+retroceder_v[-r,+fin] :: {'guevi_v[cat=a]': 2.0}
+reunir_v[+r,+fin] :: {'ñembyaty_v[cat=a]': 4.0}
+reunir_v[-r,+fin] :: {'mbyaty_v[cat=a]': 34.0}
+reverenciar_v[-r,+fin] :: {'ñesũ_v[cat=a]': 2.0, 'mbojerovia_v[cat=a]': 1.0}
+revolcar_v[+r,+fin] :: {'japajeréi_v[cat=a]': 1.0}
+reñir_v[-r,+fin] :: {'ñorairõ_v[cat=a]': 1.0}
+rincón_n :: {'<hugua_n': 1.0}
+roca_n :: {'ita_n': 2.0}
+rociar_v[-r,+fin] :: {'<hypýi_v[cat=a]': 1.0}
+rocío_n :: {'ysapy_n': 1.0}
+rodear_v[-r,+fin] :: {'mongora_v[cat=a]': 1.0}
+rogar_v[-r,+fin] :: {'jerure_v[cat=a]': 20.0}
+rojo_a :: {'pytã_v': 1.0}
+romper_v[-r,+fin] :: {'mondoro_v[cat=a]': 1.0, 'joka_v[cat=a]': 1.0}
+ropa_n :: {'ao_n': 15.0}
+rostro_n :: {'<hova_n': 2.0}
+roto_a :: {'soro_v': 1.0}
+ruido_n :: {'<hyapu_n': 2.0}
+río_n :: {'ysyry_n': 8.0, 'y_n': 1.0}
+saber_v[-r,+fin] :: {'kuaa_v[subcat=i]': 89.0}
+sabiduría_n :: {'arandu_n': 12.0}
+sabio_a :: {'arandu_v': 1.0}
+sacar_v[-r,+fin] :: {'nohẽ_v[subcat=gue]': 24.5, "pe'a_v[subcat=i]": 4.0, '<hekýi_v[cat=a]': 1.5}
+sacerdote_n :: {"pa'i_n": 157.0, 'paje_n': 1.0}
+sacudir_v[-r,+fin] :: {'mbokuchu_v[cat=a]': 1.0}
+sal_n :: {'juky_n': 2.0}
+salir_v[-r,+fin] :: {'sẽ_v[cat=a]': 79.0}
+salud_n :: {'<hesãi_n': 1.0}
+saludar_v[-r,+fin] :: {'momaitei_v[cat=a]': 6.0}
+salvación_n :: {'pysyrõ_n': 5.0}
+salvar_v[-r,+fin] :: {'pysyrõ_v[subcat=i]': 3.0}
+sanar_v[-r,+fin] :: {'kuera_v[cat=a]': 1.0}
+sandalia_n :: {'sapatupe_n': 1.0}
+sangre_n :: {'<huguy_n': 30.0}
+santo_a :: {'marangatu_v': 3.0}
+seguir_v[-r,+fin] :: {'muña_v[cat=a]': 6.0}
+segundo :: {'mokõiha': 3.0}
+segundo_a :: {'mokõiha_v': 8.0}
+según :: {'javeve': 5.0}
+sembrar_v[-r,+fin] :: {'ñotỹ_v[cat=a]': 2.0}
+semilla_n :: {"<ha'ỹi_n": 2.0}
+separar_v[+r,+fin] :: {'jei_v[cat=a]': 3.0}
+sepultar_v[-r,+fin] :: {'ñotỹ_v[cat=a]': 23.0}
+ser_v[-r,+fin] :: {'ime_v[cat=a]': 30.0}
+serpiente_n :: {'mbói_n': 3.0}
+servir_v[-r,+fin] :: {'pytyvõ_v[subcat=i]': 2.0, 'jehu_v[cat=a]': 1.0}
+señal_n :: {'<hechaukaha_n': 3.0}
+señor_n :: {'karai_n': 2.0}
+señora_n :: {'kuñakarai_n': 1.0}
+siempre :: {'tapia': 2.0}
+siesta_n :: {'asaje_n': 1.0}
+sin~causa :: {'rei': 1.0}
+sin~cesar :: {'manterei': 1.0}
+sirviente_n :: {'<hembiguái_n': 1.0}
+sitiar_v[-r,+fin] :: {'mongora_v[cat=a]': 5.0}
+sobre :: {'ári': 46.0}
+sol_n :: {'kuarahy_n': 10.0}
+solamente :: {'añónte': 2.0}
+solo :: {'año': 1.0, 'añónte': 1.0}
+soltar_v[-r,+fin] :: {'poi_v[cat=a]': 3.0, 'jora_v[cat=a]': 1.0}
+sombra_n :: {"kuarahy'ã_n": 4.0}
+sonar_v[-r,+fin] :: {'mbopu_v[cat=a]': 1.0}
+sonido_n :: {'pu_n': 3.0}
+soplar_v[-r,+fin] :: {'peju_v[subcat=i]': 2.0}
+sorprender_v[-r,+fin] :: {'mondýi_v[cat=a]': 1.0}
+sostener_v[-r,+fin] :: {'joko_v[cat=a]': 1.0}
+subir_v[-r,+fin] :: {'jupi_v[cat=a]': 11.0}
+suceder_v[-r,+fin] :: {'jehu_v[cat=a]': 3.0}
+suelo_n :: {'yvy_n': 5.0}
+suerte_n :: {"po'a_n": 3.0}
+suplicar_v[-r,+fin] :: {'jerure_v[cat=a]': 1.0}
+sur_n :: {'yvy_n': 6.0}
+sustraer_v[-r,+fin] :: {"pe'a_v[subcat=i]": 2.0}
+suyo_n :: {"imba'e_n": 3.0}
+sólo :: {'año': 1.0}
+tal :: {'peichagua': 1.0}
+talento_n :: {'akã_n': 2.0}
+también :: {'avei': 176.0}
+tan :: {'péicha': 2.0}
+tanto :: {'péicha': 2.0, 'kóicha': 1.0}
+tarde_n :: {"ka'aru_n": 3.0}
+tejer_v[-r,+fin] :: {'pyaha_v[subcat=i]': 1.0}
+temblar_v[-r,+fin] :: {'ryrýi_v[cat=a]': 3.0}
+temor_n :: {'kyhyje_n': 4.0}
+templo_n :: {'tupão_n': 21.0}
+tender_v[-r,+fin] :: {'myasãi_v[cat=a]': 1.0}
+tener_v[-r,+fin] :: {'reko_v[subcat=gue]': 110.0}
+tentación_n :: {"<ha'ã_n": 2.0}
+tercero_a :: {'mbohapyha_v': 7.0}
+testimonio_n :: {'<hechaukaha_n': 1.0}
+tiempo_n :: {'ára_n': 33.0}
+tierra_n :: {'yvy_n': 72.0, '<hetã_n': 64.5, '<heko_n': 3.5}
+tirar_v[-r,+fin] :: {"<ha'ã_v[cat=a]": 2.0}
+tocar_v[-r,+fin] :: {'poko_v[cat=a]': 5.0, 'mbopu_v[cat=a]': 4.0}
+todavía :: {'gueteri': 3.0}
+todo_a :: {'opa': 29.0}
+tomar_v[-r,+fin] :: {'pyhy_v[subcat=i]': 1.0}
+tormenta_n :: {'yvytu_n': 1.0}
+torrente_n :: {'ysyry_n': 6.0}
+tostado_a :: {'maimbe_v': 4.0}
+trabajar_v[-r,+fin] :: {"mba'apo_v[cat=a]": 10.0}
+trabajo_n :: {'<hembiapo_n': 5.0}
+traer_v[+r,+fin] :: {'jereru_v[cat=a]': 1.0}
+traer_v[-r,+fin] :: {'ru_v[subcat=gue]': 33.0}
+trasladar_v[-r,+fin] :: {'rova_v[subcat=gue]': 2.0}
+trompeta_n :: {'turu_n': 16.0}
+trono_n :: {'guapyha_n': 4.0}
+tumulto_n :: {'sarambi_n': 1.0}
+turnar_v[+r,+fin] :: {'jopyru_v[cat=a]': 1.0}
+turno_n :: {'ha_n': 5.0}
+tutor_n :: {'<herekua_n': 2.0}
+unos~con~otros :: {'oñondive': 2.0}
+usar_v[-r,+fin] :: {'poru_v[subcat=i]': 1.0}
+utensilio_n :: {'<hembiporu_n': 18.0}
+vaca_n :: {'vaka_n': 7.0}
+vaciar_v[-r,+fin] :: {'monandi_v[cat=a]': 1.0}
+vaina_n :: {'<hyru_n': 1.0}
+vajilla_n :: {'<hembiporu_n': 4.0}
+valiente_a :: {'ñarõ_v': 2.0}
+valle_n :: {'ñu_n': 17.0}
+valor_n :: {'<hepy_n': 1.0}
+varón_n :: {"kuimba'e_n": 21.0}
+vasija_n :: {'<hyru_n': 3.0}
+vencer_v[-r,+fin] :: {"pu'aka_v[cat=che]": 8.0}
+vender_v[-r,+fin] :: {'ñemu_v[cat=a]': 1.0}
+venir_v[-r,+fin] :: {'ju_v[cat=a]': 75.0}
+ventana_n :: {'ovetã_n': 9.0}
+ver_v[-r,+fin] :: {'<hecha_v[cat=a]': 134.0}
+verdad_n :: {'añetegua_n': 6.0, 'añete_n': 5.0}
+vestido_n :: {'ao_n': 4.0}
+vestidura_n :: {'ao_n': 5.0}
+vestir_v[-r,+fin] :: {'monde_v[cat=a]': 3.0}
+vez_n :: {'jevy_n': 19.0}
+victoria_n :: {"pu'aka_n": 3.0}
+vida_n :: {'<heko_n': 10.0, '<hekove_n': 6.0}
+viejo_a :: {'tuja_v': 4.0}
+viento_n :: {'yvytu_n': 3.0}
+vigilar_v[-r,+fin] :: {'ñangareko_v[cat=a]': 1.0}
+virgen_n :: {'kuñataĩ_n': 2.0, 'kuña_n': 1.0}
+visita_n :: {'mbohupa_n': 1.0}
+vivir_v[-r,+fin] :: {'iko_v[cat=a]': 26.5, 'ikove_v[cat=a]': 14.5, 'ime_v[cat=a]': 2.0}
+viña_n :: {'parralty_n': 7.0}
+volver_v[+r,+fin] :: {'jere_v[cat=a]': 2.0}
+volver_v[-r,+fin] :: {'jevy_v[cat=a]': 5.0, 'jere_v[cat=a]': 1.0}
+voz_n :: {"ñe'ẽ_n": 9.0}
+y :: {'ha': 837.0}
+zambullir_v[+r,+fin] :: {'ñapymi_v[cat=a]': 1.0}
+zarza_n :: {'jukeri_n': 1.0}
+ángel_n :: {'ñandejára_n': 6.0}
+ánimo_n :: {"py'a_n": 2.0}
+árbol_n :: {'yvyra_n': 6.0}
+ésta_n :: {'kóva_n': 3.0}
+éstas_n :: {"ko'ãva_n": 1.0}
+éste_n :: {'kóva_n': 7.0}
+éstos_n :: {"ko'ãva_n": 4.0}
+último_a :: {'paha_v': 1.0}

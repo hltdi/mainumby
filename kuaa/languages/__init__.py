@@ -1,2 +1,0 @@
-"""Hiiktuu languages."""
-

@@ -1,6 +1,0 @@
-name: guarani
-abbrev: grn
-source: True
-target: True
-disambfeats: tm,oclu,clu,ps,ojxpl,pl,poses:clu,poses:ext
-disambagree: clu,oclu,poses:clu==False

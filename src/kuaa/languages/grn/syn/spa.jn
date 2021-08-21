@@ -1,0 +1,12 @@
+## unidades sintácticas al nivel de la oración
+## nominales 1
+>> nom1
+NhaN :: &n ha &n ; ^0
+NAfs :: [pos=n,g=f,n=0] [pos=a] ; ^0 ; 1[g=f,n=0]
+NAfp :: [pos=n,g=f,n=1] [pos=a] ; ^0 ; 1[g=f,n=1]
+NAms :: [pos=n,g=m,n=0] [pos=a] ; ^0 ; 1[g=m,n=0]
+NAmp :: [pos=n,g=m,n=1] [pos=a] ; ^0 ; 1[g=m,n=1]
+## predicatos
+>> pred1
+# tiempo, modo
+Vsbj :: [pos=v,mod=opt] ; ^0 ; 0[tm=sbp]

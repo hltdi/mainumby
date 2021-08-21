@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}" />
+
+<style type="text/css">
+table.example
+{
+    border: 1px solid black;
+    padding: 5px;
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+}
+table.example tr td,th
+{
+    border: 1px solid black;
+    padding: 3px;
+}
+</style>
+
+<title>Mainumby: un Ayudante para la Traducción Castellano-Guaraní: Uso</title>
+
+</script>
+
+</head>
+
+<body>
+
+<form action='login' method="post">
+
+<table class="center">
+  <tr>
+    <td class="title">
+    <a href="base">
+    <img class='banner' src="{{url_for('static',
+      filename='banner_logo.png')}}" alt="" width="300"
+      height="52" />
+    </a>
+    </td>
+<!--    <td class="menu" style="width: 167px"><a href="base">PÁGINA DE
+  INICIO</a></td> -->
+    <td class="menu" style="width: 250px"><a href="contacto">CONTACTO</a></td>
+    <td class="menu" style="width: 250px"><input type="submit" value="INICIAR SESÍON" class="menu"></td>
+
+</tr>
+<tr>
+<td colspan="5" style="width:800px">  
+<h1>Mainumby: uso de la aplicación</h1>
+
+  <p>
+  En esta página se proveen instrucciones detalladas sobre el uso de
+  la aplicación web Mainumby a trav&eacute;s de algunos ejemplos.
+  </p>
+
+<h2>Ejemplo 1</h2>
+
+<table class="example">
+  <tr>
+    <th>Documento:
+    </th>
+    <th>Resultados de la búsqueda de la MT:
+      </th>
+    </tr>
+    <tr>
+      <td>...<br/>
+      <strong>En</strong> la montaña <strong>vivieron</strong> los
+	inmigrantes
+	<strong>por mucho tiempo en paz y</strong> armonía con la naturaleza.</br>
+      ...
+
+      </td>
+      <td>
+	<span style="color: #AA0000"><strong>En</strong></span> esas
+	comunidades
+	<span style="color: #009900"><strong>vivieron</strong></span>
+	<span style="color: #0000AA"><strong>por mucho
+	tiempo</strong></span>
+	<span style="color: #888800"><strong>en paz y</strong></span>
+	amistad, juntos y solidariamente.<br/>
+	Umi táva <span style="color: #AA0000"><strong>rupi</strong></span>
+	<span style="color: #009900"><strong>oiko</strong></span>
+	<span style="color: #0000AA"><strong>heta ára</strong></span>
+	<span style="color: #888800"><strong>teko marangatu
+	ha</strong></span> mborayhu
+	pa'ũ<span style="color: #888800"><strong>me</strong></span>,
+	oñondivepa, jekupytýpe.
+      </td>
+    </tr>
+  </table>
+
+<hr/>
+
+<!--
+<p>
+<input type="submit" value="Iniciar sesión" id="button">
+</p>
+-->
+
+</td>
+</tr>
+
+<!--
+</table>
+-->
+
+</form>
+
+</body>
+</html>
