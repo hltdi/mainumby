@@ -172,7 +172,7 @@ def oración(text='', src=None, targ=None, user=None, session=None,
             html=False, choose=False,
             return_string=False, verbosity=0, terse=False):
     """
-    Analizar y talvez también traducir una oración del castellano al guaraní.
+    Analizar y talvez también traducir una oración.
     """
     if not src and not targ:
         src, targ = Language.load_trans('spa', 'grn', train=False)

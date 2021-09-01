@@ -1949,7 +1949,7 @@ class Language:
         target_abbrev = target.abbrev if target else None
         source_groups = []
         target_groups = []
-        print("Leyendo grupos léxicos para {}".format(self))
+        print("grupos léxicos")
 #        groupfiles = self.get_grouplist_files(posnames)
         for name, gfile in self.get_group_files(posnames):
             posindex = firstindex(lambda x: name in x, self.groupcats) if self.groupcats else 0
@@ -2002,7 +2002,7 @@ class Language:
         path = self.get_ms_file(target.abbrev)
         try:
             with open(path, encoding='utf8') as f:
-                print("Leyendo transformaciones morfosintácticas para {}".format(target))
+                print("Leyendo transformaciones morfosintácticas...", end='')
                 lines = f.read().split('\n')[::-1]
                 # the order of MorphoSyns matters
                 while lines:
@@ -2040,7 +2040,7 @@ class Language:
         grouping = []
         try:
             with open(path, encoding='utf8') as f:
-                print("Leyendo patrones para juntar segmentos para {}".format(target))
+                print("patrones para juntar segmentos...", end='')
                 lines = f.read().split('\n')[::-1]
                 # the order of Joins matters
                 while lines:
@@ -2383,8 +2383,8 @@ class Language:
         """
         # In Amharic features may override the POS provided (needed for verbal nouns), but this doesn't apply
         # to Guarani, which may have posmorph v and feature pos a!
-        if verbosity:
-            print("Generating {}:{} with POS {}".format(root, features.__repr__(), pos))
+#        if verbosity:
+        print("Generating {}:{} with POS {}".format(root, features.__repr__(), pos))
         if not pos:
             # generate() shouldn't have been called in this case!
             print("Warning: no POS for generation of {}:{}".format(root, features.__repr__()))

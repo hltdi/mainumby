@@ -142,7 +142,9 @@ class Seg:
         self.indices = None
 
     def get_tokens(self):
-        """Returns a set of all possible tokens for this segment."""
+        """
+        Returns a set of all possible tokens for this segment.
+        """
         toks = self.get_shead_tokens() or self.get_untrans_token() or [self.token_str]
         raw = self.get_shead_raw()
         if raw and raw not in toks:
@@ -183,6 +185,7 @@ class Seg:
     def get_shead_pos(self):
         if self.shead:
             pos = set()
+#            h, f, p = self.shead
             for h, f, p in self.shead:
                 if p:
                     pos.add(p)
@@ -742,7 +745,8 @@ class SuperSeg(Seg):
     Join rule or a Group.
     """
 
-    def __init__(self, segmentation, segments=None, features=None, name=None, join=None, verbosity=0):
+    def __init__(self, segmentation, segments=None, features=None, name=None,
+                 join=None, verbosity=0):
         Seg.__init__(self, segmentation)
         self.segments = segments
         self.name = name
@@ -832,16 +836,26 @@ class Segment(Seg):
     """
 
     def __init__(self, segmentation, indices, translation, tokens, color=None,
-                 space_before=1, treetrans=None, sfeats=None, tgroups=None,
-                 head=None, tok=None, spec_indices=None, session=None,
-                 gname=None, is_punc=False):
+                 space_before=1, treetrans=None,
+#                 sfeats=None, thead=None,
+                 tgroups=None,
+                 thead=None, tok=None, spec_indices=None, session=None,
+                 shead=None, scats=None, gname=None, is_punc=False):
         Seg.__init__(self, segmentation)
-#        print("**Creating Segment with translation {}".format(translation))
-        if sfeats:
-            sfeat_dict = sfeats[0]
+#        print("**Creating Segment with shead {}".format(shead))
+#        if shead:
+#            print("*** shead feats {}, ({})".format(shead[1], type(shead[1])))
+        if shead:
+#            print("*shead {}".format(shead))
             self.shead_index = 0
-            self.shead = [(sfeat_dict.get('root'), sfeat_dict.get('features'), sfeat_dict.get('pos'))]
-            self.scats = sfeat_dict.get('cats', set())
+            self.shead = shead
+            self.scats = scats
+#        if sfeats:
+#            print("*sfeats {}".format(sfeats))
+#            sfeat_dict = sfeats
+#            self.shead_index = 0
+#            self.shead = [(sfeat_dict.get('root'), sfeat_dict.get('features'), sfeat_dict.get('pos'))]
+#            self.scats = sfeat_dict.get('cats', set())
         else:
             self.shead_index = -1
             self.shead = None
@@ -1157,6 +1171,7 @@ class SNode:
             node_features = analysis.get('features')
             node_cats = analysis.get('cats', [])
             node_root = analysis.get('root', '')
+            node_pos = analysis.get('pos', '')
             node_roots = None
             if verbosity > 1 or debug:
                 print("    Trying to match analysis: {}/{}/{} against group {}".format(node_root, node_cats, node_features.__repr__(), grp_item))
@@ -1207,10 +1222,10 @@ class SNode:
                         u_features = simple_unify(node_features, grp_feats, strict=True)
                     if u_features != 'fail':
                         # SUCCEED: matched token and features
-                        results.append((node_root, u_features))
+                        results.append((node_root, u_features, node_pos, node_cats))
                 else:
                     # SUCCEED: matched token and no group features to match
-                    results.append((node_root, node_features))
+                    results.append((node_root, node_features, node_pos, node_cats))
             else:
                 # SUCCEED: group has features but node doesn't
                 results.append((grp_item, grp_feats))
@@ -1618,6 +1633,7 @@ class TreeTrans:
     def record_ind_feats(self, token='',
                          tnode_index=-1, t_indices=None, targ_feats=None,
                          snode=None, node_index_map=None, verbosity=0):
+        #print("Record_ind_feats {}".format(targ_feats.__repr__()))
         node_index_map[snode.index] = tnode_index
         if not t_indices:
             t_indices = []

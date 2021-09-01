@@ -581,7 +581,8 @@ class POS:
                         fs = FeatStruct(fs, freeze=True)
                     self.gen_cached[(root, fs)] = words
         except IOError:
-            print('No such gen cache file as {}'.format(file))
+#            print('No such gen cache file as {}'.format(file))
+            return
 
     def load_fst(self, generate=False, guess=False, verbose=False):
         '''Load FST.'''

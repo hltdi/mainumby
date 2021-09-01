@@ -364,7 +364,8 @@ class Group(Entry):
             self.root = self.head
 
         name = name or Group.make_name(tokens)
-        Entry.__init__(self, name, language, trans=trans, comment=comment, pos=self.pos)
+        Entry.__init__(self, name, language, trans=trans,
+                       comment=comment, pos=self.pos)
         # Index of the POS group grouping that this group is part of
         self.posindex = posindex
         # POS, 'misc', or other
@@ -550,7 +551,7 @@ class Group(Entry):
 
     ## Copying, reversing
 
-    def reverse(self, language, defaults=None):
+    def reverse(self, language, defaults=None, pos=None):
         """
         Create one or more groups translating from language to this
         group's language.
@@ -560,12 +561,19 @@ class Group(Entry):
             cat = self.cat
             if cat and cat in self.language.group_defaults:
                 defaults = self.language.group_defaults[cat]
+                print("Reversing defaults {}".format(defaults))
+                rev_defaults = Group.reverse_defaults(defaults)
+                print("  {}".format(rev_defaults))
         for translation in translations:
-            label, properties = translation
-            name, id = label.split(':')
-            id = int(id)
+            group, properties = translation
+            name = group.name
+            id = int(group.id)
             m = FORM_FEATS.match(name)
             root, feats = m.groups()
+            root, p = RootToken.get_POS(root)
+            pos = pos or p
+            string = "Reverse Group: root {} pos {} feats {} id {} properties {} trans {}"
+            print(string.format(root, pos, feats, id, properties, self))
 
     @staticmethod
     def reverse_defaults(defaults):
@@ -636,13 +644,18 @@ class Group(Entry):
 
     @staticmethod
     def reverse_alignment(alignment, length):
-        """For a sequence of elements x of length length and an alignment associating positions in another sequence
-        y with positions in x, return a reverse alignment. Positions with no associated element in the other sequence
-        are represented by -1."""
+        """
+        For a sequence of elements x of length length and an alignment
+        associating positions in another sequence y with positions in x,
+        return a reverse alignment. Positions with no associated element in the
+        other sequence are represented by -1.
+        """
         return [(alignment.index(i) if i in alignment else -1) for i in range(length)]
 
     def apply(self, superseg, verbosity=1):
-        """Make changes specified in group to superseg containing segments matching it."""
+        """
+        Make changes specified in group to superseg containing segments matching it.
+        """
         if verbosity or self.debug:
             print("Applying {} to {}".format(self, superseg))
         hindex = self.head_index
@@ -2678,6 +2691,22 @@ class Token:
             prefix = ''
             name = token
         return prefix, name
+
+class RootToken(Token):
+    """
+    Root tokens, e.g., sbr_v.
+    """
+
+    @staticmethod
+    def get_POS(token):
+        """Token may be something like guata_, guata_v, ber__n."""
+        if Token.is_special(token) or '_' not in token:
+            return token, None
+        for pos in ['v', 'a', 'n', 'nm', 'n_v', 'cop', 'nm_pl', 'nm_prs']:
+            if token.endswith('_' + pos):
+                root, p, x = token.rpartition('_' + pos)
+                return root, pos
+        return token, None
 
 class SentToken(Token):
     """Sentence tokens."""

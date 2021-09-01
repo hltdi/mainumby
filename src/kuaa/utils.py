@@ -123,8 +123,10 @@ def shortstr2time(string):
 ## Sequence processing
 
 def allcombs(seqs):
-    """Returns a list of all sequences consisting of one element from each of seqs.
-    This could also be done with itertools.product."""
+    """
+    Returns a list of all sequences consisting of one element from each of seqs.
+    This could also be done with itertools.product.
+    """
     if not seqs:
         return []
     res = [[x] for x in seqs[0]]
@@ -136,11 +138,19 @@ def allcombs(seqs):
     return res
 
 def firsttrue(predicate, seq):
-    """First element of sequence for which predicate is True. None otherwise."""
+    """
+    First element of sequence for which predicate is True. None otherwise.
+    """
     for x in seq:
         px = predicate(x)
         if  px:
             return x
+
+def flatten(list_of_lists):
+    """
+    Flatten a list of lists. Returns a list.
+    """
+    return list(chain.from_iterable(list_of_lists))
 
 ### Measure the size of an object (recursively)
 

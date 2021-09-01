@@ -111,8 +111,11 @@ class FSSet(set):
             return FSSet(*filter(lambda x: x != 'fail', result1))
 
     def unify_FS(self, fs, strict=False, verbose=False):
-        """Attempt to unify this FSSet with a simple FeatStruct instance, basically filter
-        the FeatStructs in the set by their unification with fs. Pretty much like FSSet.unify()."""
+        """
+        Attempt to unify this FSSet with a simple FeatStruct instance,
+        basically filter the FeatStructs in the set by their unification
+        with fs. Pretty much like FSSet.unify().
+        """
         # This is a list of the unifications of the elements of self with fs
         result1 = [simple_unify(f1, fs, strict=strict, verbose=verbose) for f1 in list(self)]
         if every(lambda x: x == TOP, result1):

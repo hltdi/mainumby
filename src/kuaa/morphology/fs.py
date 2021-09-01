@@ -23,7 +23,7 @@ fs.py is a modification of featstruct.py in NLTK.
 2015.06.14
 -- Added update_inside, which updates a FeatStruct like update,
    but only changes the deepest level.
-"""    
+"""
 
 import re, copy
 from .logic import Variable, Expression, SubstituteBindingsI, LogicParser
@@ -84,7 +84,7 @@ class FeatStruct:
     #////////////////////////////////////////////////////////////
     #{ Read-only mapping methods
     #////////////////////////////////////////////////////////////
-    
+
     def __getitem__(self, name_or_path):
         """If the feature with the given name or path exists, return
         its value; otherwise, raise C{KeyError}."""
@@ -97,7 +97,7 @@ class FeatStruct:
                 parent, name = self._path_parent(name_or_path, '')
                 return parent._features[name]
             except KeyError: raise KeyError(name_or_path)
-        
+
     def get(self, name_or_path, default=None):
         """If the feature with the given name or path exists, return its
         value; otherwise, return C{default}."""
@@ -146,7 +146,7 @@ class FeatStruct:
                 parent, name = self._path_parent(name_or_path, 'deleted')
                 del parent._features[name]
             except KeyError: raise KeyError(name_or_path)
-            
+
     def __setitem__(self, name_or_path, value):
         """Set the value for the feature with the given name or path
         to C{value}.  If C{name_or_path} is an invalid path, raise
@@ -199,7 +199,7 @@ class FeatStruct:
             items = features
         else:
             raise ValueError('Expected mapping or list of tuples')
-        
+
         for key, val in items:
             if not isinstance(key, self._feature_name_types):
                 raise TypeError('Feature names must be strings')
@@ -219,12 +219,12 @@ class FeatStruct:
         features may be a FeatStruct instance or a dict.
         """
         if self._frozen: raise ValueError(self._FROZEN_ERROR)
-        
+
         if features is None:
             items = ()
         else:
             items = features.items()
-        
+
         for key, val in items:
             # The case where the value is a mapping
             if hasattr(val, 'keys'):
@@ -237,7 +237,7 @@ class FeatStruct:
                     self[key] = FeatStruct(val)
             else:
                 self[key] = val
-            
+
     def _path_parent(self, path, operation):
         """
         Helper function -- given a feature path, return a tuple
@@ -523,7 +523,7 @@ class FeatStruct:
                 elif FeatStruct.simple_unify(val, selfval) == 'fail':
                     return False
         return True
-        
+
     @staticmethod
     def unify_all(features_list):
         """Unify all of the FeatStruct objects (or None) in the list, if possible."""
@@ -547,7 +547,7 @@ class FeatStruct:
         @param check_reentrance: If true, then also return false if
             there is any difference between the reentrances of C{self}
             and C{other}.
-            
+
         @note: the L{== operator <__eq__>} is equivalent to
             C{equal_values()} with C{check_reentrance=True}.
         """
@@ -557,27 +557,27 @@ class FeatStruct:
         """
         Return true if C{self} and C{other} are both feature
         structures, assign the same values to all features, and
-        contain the same reentrances.  I.e., return 
+        contain the same reentrances.  I.e., return
         C{self.equal_values(other, check_reentrance=True)}.
-        
+
         @see: L{equal_values()}
         """
         return self._equal(other, set(), set(), set())
-    
+
     def __ne__(self, other):
         """
         Return true unless C{self} and C{other} are both feature
         structures, assign the same values to all features, and
-        contain the same reentrances.  I.e., return 
+        contain the same reentrances.  I.e., return
         C{not self.equal_values(other, check_reentrance=True)}.
         """
         return not self.__eq__(other)
-    
+
     def _equal(self, other, visited_self, visited_other, visited_pairs):
         """
         Helper function for L{equal_values} -- return true iff self
         and other have equal values.
-        
+
         @param visited_self: A set containing the ids of all C{self}
             values we've already visited.
         @param visited_other: A set containing the ids of all C{other}
@@ -613,22 +613,22 @@ class FeatStruct:
         visited_self.add(id(self))
         visited_other.add(id(other))
         visited_pairs.add( (id(self), id(other)) )
-        
+
         # Now we have to check all values.  If any of them don't match,
         # then return false.
         for (fname, self_fval) in self.items():
             other_fval = other[fname]
             if isinstance(self_fval, FeatStruct):
-                if not self_fval._equal(other_fval, 
+                if not self_fval._equal(other_fval,
                                         visited_self, visited_other,
                                         visited_pairs):
                     return False
             else:
                 if self_fval != other_fval: return False
-                
+
         # Everything matched up; return true.
         return True
-    
+
     def __hash__(self):
         """
         If this feature structure is frozen, return its hash value;
@@ -660,7 +660,7 @@ class FeatStruct:
     ##////////////////////////////////////////////////////////////
     #{ Freezing
     ##////////////////////////////////////////////////////////////
-    
+
     #: Error message used by mutating methods when called on a frozen
     #: feature structure.
     _FROZEN_ERROR = "Frozen FeatStructs may not be modified"
@@ -722,7 +722,7 @@ class FeatStruct:
         for (key, val) in self.items():
             selfcopy[copy.deepcopy(key,memo)] = copy.deepcopy(val,memo)
         return selfcopy
-    
+
     ##////////////////////////////////////////////////////////////
     #{ String Representations
     ##////////////////////////////////////////////////////////////
@@ -811,7 +811,7 @@ class FeatStruct:
     def _str(self):
         """
         @return: A list of lines composing a string representation of
-            this feature structure.  
+            this feature structure.
         """
         #{ Added by MG
         types = [t._label for t in self._types]
@@ -830,13 +830,13 @@ class FeatStruct:
             if types:
                 brack = '[' + type_string + ']'
             return [brack]
-        
+
         # What's the longest feature name?  Use this to align names.
         maxfnamelen = max(len(str(k)) for k in self.keys())
 
         lines = []
         items = self.items()
-        
+
         # sorting note: keys are unique strings, so we'll never fall
         # through to comparing values.
         for (fname, fval) in sorted(items):
@@ -844,10 +844,10 @@ class FeatStruct:
             if isinstance(fval, Variable):
                 lines.append('%s = %s' % (fname.ljust(maxfnamelen),
                                           fval.name))
-                
+
             elif isinstance(fval, Expression):
                 lines.append('%s = <%s>' % (fname.ljust(maxfnamelen), fval))
-                
+
             elif not isinstance(fval, FeatStruct):
                 # It's not a nested feature structure -- just print it.
                 lines.append('%s = %r' % (fname.ljust(maxfnamelen), fval))
@@ -859,26 +859,26 @@ class FeatStruct:
 
                 # Recursively print the feature's value (fval).
                 fval_lines = fval._str()
-                
+
                 # Indent each line to make room for fname.
                 fval_lines = [(' '*(maxfnamelen+3))+l for l in fval_lines]
 
                 # Pick which line we'll display fname on.
                 nameline = (len(fval_lines)-1)//2
-                
+
                 fval_lines[nameline] = (
                         fname.ljust(maxfnamelen)+' ='+
                         fval_lines[nameline][maxfnamelen+2:])
 
                 # Add the feature structure to the output.
                 lines += fval_lines
-                            
+
                 # Separate FeatStructs by a blank line.
                 lines.append('')
 
         # Get rid of any excess blank lines.
         if lines[-1] == '': lines = lines[:-1]
-        
+
         # Add brackets around everything.
         maxlen = max(len(line) for line in lines)
         lines = ['[ %s%s ]' % (line, ' '*(maxlen-len(line))) for line in lines]
@@ -934,10 +934,10 @@ class Feature:
     """
     def __init__(self, name, default=None, display=None):
         assert display in (None, 'prefix', 'slash')
-        
+
         self._name = name # [xx] rename to .identifier?
         """The name of this feature."""
-        
+
         self._default = default # [xx] not implemented yet.
         """Default value for this feature.  Use None for unbound."""
 
@@ -964,7 +964,7 @@ class Feature:
     #////////////////////////////////////////////////////////////
     # These can be overridden by subclasses:
     #////////////////////////////////////////////////////////////
-    
+
     def parse_value(self, s, position, reentrances, parser):
         return parser.parse_value(s, position, reentrances)
 
@@ -986,7 +986,7 @@ class SlashFeature(Feature):
 
 SLASH = SlashFeature('slash', default=False, display='slash')
 TYPE = Feature('type', display='prefix')
-    
+
 ######################################################################
 # Feature Structure Parser
 ######################################################################
@@ -1075,7 +1075,7 @@ class FeatStructParser(object):
         else:
             fstruct.clear()
 
-        # Read up to the open bracket.  
+        # Read up to the open bracket.
         match = self._START_FSTRUCT_RE.match(s, position)
         if not match:
             match = self._BARE_PREFIX_RE.match(s, position)
@@ -1136,7 +1136,7 @@ class FeatStructParser(object):
             match = self._END_FSTRUCT_RE.match(s, position)
             if match is not None:
                 return self._finalize(s, match.end(), reentrances, fstruct)
-            
+
             # Get the feature name's name
             match = self._FEATURE_NAME_RE.match(s, position)
             if match is None: raise ValueError('feature name', position)
@@ -1183,7 +1183,7 @@ class FeatStructParser(object):
 
             # Store the value.
             fstruct[name] = value
-            
+
             # If there's a close bracket, handle it at the top of the loop.
             if self._END_FSTRUCT_RE.match(s, position):
                 continue
@@ -1212,7 +1212,7 @@ class FeatStructParser(object):
         #    fstruct.setdefault(feature, feature.default)
         # Return the value.
         return fstruct, pos
-    
+
     def _parse_value(self, name, s, position, reentrances):
         if isinstance(name, Feature):
             return name.parse_value(s, position, reentrances, self)
@@ -1292,13 +1292,13 @@ class FeatStructParser(object):
             raise ValueError('logic expression', match.start(1))
 
     def parse_tuple_value(self, s, position, reentrances, match):
-        return self._parse_seq_value(s, position, reentrances, match, ')', 
+        return self._parse_seq_value(s, position, reentrances, match, ')',
                                      FeatureValueTuple, FeatureValueConcat)
 
     def parse_set_value(self, s, position, reentrances, match):
         return self._parse_seq_value(s, position, reentrances, match, '}',
                                      FeatureValueSet, FeatureValueUnion)
-    
+
     def _parse_seq_value(self, s, position, reentrances, match,
                          close_paren, seq_class, plus_class):
         """
@@ -1318,7 +1318,7 @@ class FeatStructParser(object):
             if m:
                 if seen_plus: return plus_class(values), m.end()
                 else: return seq_class(values), m.end()
-            
+
             # Read the next value.
             val, position = self.parse_value(s, position, reentrances)
             values.append(val)
@@ -1342,10 +1342,10 @@ class SubstituteBindingsSequence(SubstituteBindingsI):
         return ([elt for elt in self if isinstance(elt, Variable)] +
                 sum([elt.variables() for elt in self
                      if isinstance(elt, SubstituteBindingsI)], []))
-    
+
     def substitute_bindings(self, bindings):
         return self.__class__([self.subst(v, bindings) for v in self])
-    
+
     def subst(self, v, bindings):
         if isinstance(v, SubstituteBindingsI):
             return v.substitute_bindings(bindings)
@@ -1385,17 +1385,17 @@ class FeatureValueUnion(SubstituteBindingsSequence, frozenset):
     def __new__(cls, values):
         # If values contains FeatureValueUnions, then collapse them.
         values = _flatten(values, FeatureValueUnion)
-        
-        # If the resulting list contains no variables, then 
+
+        # If the resulting list contains no variables, then
         # use a simple FeatureValueSet instead.
         if sum(isinstance(v, Variable) for v in values) == 0:
             values = _flatten(values, FeatureValueSet)
             return FeatureValueSet(values)
-        
+
         # If we contain a single variable, return that variable.
         if len(values) == 1:
             return list(values)[0]
-        
+
         # Otherwise, build the FeatureValueUnion.
         return frozenset.__new__(cls, values)
 
@@ -1413,17 +1413,17 @@ class FeatureValueConcat(SubstituteBindingsSequence, tuple):
     def __new__(cls, values):
         # If values contains FeatureValueConcats, then collapse them.
         values = _flatten(values, FeatureValueConcat)
-        
-        # If the resulting list contains no variables, then 
+
+        # If the resulting list contains no variables, then
         # use a simple FeatureValueTuple instead.
         if sum(isinstance(v, Variable) for v in values) == 0:
             values = _flatten(values, FeatureValueTuple)
             return FeatureValueTuple(values)
-        
+
         # If we contain a single variable, return that variable.
         if len(values) == 1:
             return list(values)[0]
-        
+
         # Otherwise, build the FeatureValueConcat.
         return tuple.__new__(cls, values)
 
@@ -1449,10 +1449,12 @@ def simple_unify(x, y, strict=False, verbose=False):
         return 'fail'
 
 def unify_dicts(x, y, strict=False, verbose=False):
-    '''Try to unify two dicts in the context of bindings, returning the merged result.
-    If strict is True, all features in y must appear explictly in x for success (unless the
-    feature's value is False)."""
-#    only succeed if there are explicit matching values in both FSs.'''
+    '''
+    Try to unify two dicts in the context of bindings, returning the merged
+    result. If strict is True, all features in y must appear explictly
+    in x for success (unless the feature's value is False).
+    '''
+#    only succeed if there are explicit matching values in both FSs.
     # Make an empty dict of the type of x
     if verbose:
         print('Unifying dicts {} {}'.format(x.__repr__(), y.__repr__()))

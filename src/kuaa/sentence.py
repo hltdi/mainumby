@@ -1251,7 +1251,7 @@ class Sentence:
         del_indices = {}
         toktype = 1
         tokobjs = []
-        print("Nodifying: {}".format(self.toks))
+        print("Nodificando: {}".format(self.toks))
         for tokindex, (tokobj, anals) in enumerate(zip(self.toks, [a[1] for a in self.analyses])):
             fulltok = tokobj.fullname
 #            if self.toktypes:
@@ -1453,10 +1453,10 @@ class Sentence:
             # Create a GInst object and GNodes for each surviving group
             self.groups.append(GInst(group, self, head_i, snodes, group_index))
             group_index += 1
-        if not terse or verbosity:
-            print("{} grupo(s) encontrado(s) para {}".format(len(self.groups), self))
-            for g in self.groups:
-                print("  {}".format(g))
+#        if not terse or verbosity:
+        print("{} grupo(s) encontrado(s) para {}".format(len(self.groups), self))
+        for g in self.groups:
+            print("  {}".format(g))
         # Assign sentence-level indices to each GNode; store gnodes in list
         sent_index = 0
         for group in self.groups:
@@ -1485,10 +1485,10 @@ class Sentence:
             gnodes = covered_gnodes.get(snode.index, [])
             snode.gnodes = [gnode.sent_index for gnode in gnodes] #gnode_indices
 #            print("Associated snode {} with gnodes {}".format(snode, gnodes))
-            self.filter_snode_anals(snode, gnodes)
 #            if gnode_indices:
             if gnodes:
                 self.covered_indices.append(snode.index)
+                self.filter_snode_anals(snode, gnodes)
         self.get_group_dependencies()
         self.get_group_sindices()
         self.get_group_conflicts()
@@ -1509,10 +1509,11 @@ class Sentence:
             sfeats = sanal.get('features')
             spos = sanal.get('pos')
             for ganals in gnode_anals:
+#                print("ganals {}".format(ganals))
                 for ganal1 in ganals:
                     for ganal in ganal1:
-                        # this is a tuple: root, features
-                        groot, gfeats = ganal
+                        # this is a tuple: root, features, pos, cats
+                        groot, gfeats, gpos, gcats = ganal
                         if groot != sroot:
 #                            print("{} fails to match {}".format(sroot, groot))
                             continue
@@ -1981,8 +1982,10 @@ class Sentence:
         groups = self.variables['groups'].get_value(dstore=dstore)
         groupindices = list(groups)
         groupindices.sort()
+#        print("Solved: groups {}".format(groupindices))
         covered_snodes = self.variables['covered_snodes'].get_value(dstore=dstore)
         ginsts = [self.groups[g] for g in groupindices]
+#        print("  ginsts: {}".format(ginsts))
         s2gnodes = []
         # For each snode, find which gnodes are associated with it in this dstore. This becomes the value of
         # the s2gnodes field in the segmentation created.
@@ -2029,8 +2032,8 @@ class Sentence:
         segmentation = Segmentation(self, ginsts, s2gnodes, len(self.segmentations),
                                     trees=trees, dstore=dstore, session=self.session,
                                     score=score)
-        if not terse:
-            print('SE ENCONTRÓ SEGMENTACIÓN')
+#        if not terse:
+#            print('SE ENCONTRÓ SEGMENTACIÓN')
 #         {} para {}'.format(segmentation, self))
         return segmentation
 
@@ -2050,11 +2053,12 @@ class Sentence:
                     segmentations.extend(sa.segmentations)
         if segmentations:
             Segmentation.rank(segmentations)
-            if choose or connect:
+            if choose:
                 # match joins and further groups only for best segmentation
                 segmentations = segmentations[:1]
             if translate:
                 for segmentation in segmentations:
+#                    print("Translating {}".format(segmentation))
                     segmentation.get_segs(terse=terse)
                     if connect:
                         # Search for Segment matches with Join and Group instances
@@ -2177,8 +2181,8 @@ class Segmentation:
     # Maximum number of group translations permitted
     max_group_trans = 2
 
-    def __init__(self, sentence, ginsts, s2gnodes, index, trees=None, dstore=None, session=None,
-                 score=0, terse=True):
+    def __init__(self, sentence, ginsts, s2gnodes, index, trees=None,
+                 dstore=None, session=None, score=0, terse=True):
         self.sentence = sentence
         # Source language
         self.source = sentence.language
@@ -2208,8 +2212,8 @@ class Segmentation:
         self.final = ''
         # HTML for GUI when a single translation is chosen (self.final)
         self.html = ''
-        if not terse:
-            print("SEGMENTACIÓN CREADA con dstore {} y ginsts {}".format(dstore, ginsts))
+#        if not terse:
+        print("SEGMENTACIÓN CREADA con dstore {} y ginsts {}".format(dstore, ginsts))
 
     def __repr__(self):
         return "|< {} >|({}.{})".format(self.sentence.raw, self.sentence.id, self.index)
@@ -2365,9 +2369,11 @@ class Segmentation:
                         break
 
     def get_ttrans_outputs(self):
-        """Return a list of (treetrans, snode_indices, (thindex, ttoken, tcats))
+        """
+        Return a list of (treetrans, snode_indices, (thindex, ttoken, tcats))
         for the segmentation's tree translations. These are needed for the
-        creation of Segment instances."""
+        creation of Segment instances.
+        """
         if not self.ttrans_outputs:
             self.ttrans_outputs = []
             last_indices = [-1]
@@ -2382,7 +2388,9 @@ class Segmentation:
                 tsnode = tt.snodes[thindex]
                 ttok = tsnode.tok
                 tcats = tsnode.cats
-                head = (thindex, ttoken, tcats, ttok)
+                tgnodefeats = [x[1] for x in tt.sol_gnodes_feats]
+#                print("*TT gnodefeats {}".format(tgnodefeats))
+                head = (thindex, ttoken, tcats, ttok, tgnodefeats)
                 raw_indices = []
                 for index in indices:
                     node = self.sentence.nodes[index]
@@ -2411,6 +2419,9 @@ class Segmentation:
         if not src_toks:
             src_toks = [None] * len(src_tokens)
         for stoken, stok, sfeats in zip(src_tokens, src_toks, src_feats):
+            ## *** SOMETHING WRONG HERE
+            if sfeats:
+                sfeats = sfeats[0]
             if not stoken:
                 # empty sentence final token
                 continue
@@ -2467,8 +2478,18 @@ class Segmentation:
                 if snode.root:
                     translation = [translation]
                 is_target = True
+            sfeats=sfeat_group[0]
+            if sfeats:
+                shead = [(sfeats.get('root'), None, sfeats.get('pos'))]
+                scats = sfeats.get('cats', set())
+            else:
+                shead = scats = None
+#            print("** untrans sfeats: {}".format(sfeat_group[0]))
             seg = Segment(self, indices, translation, stok_group, session=self.session,
-                          gname=None, sfeats=sfeat_group[0], tok=stokhead,
+                          gname=None,
+                          shead=shead, scats=scats,
+#                          sfeats=sfeat_group[0],
+                          tok=stokhead,
                           space_before=space_before,
                           is_punc=is_punc)
             if not terse:
@@ -2524,12 +2545,17 @@ class Segmentation:
                     print("Something wrong with position {}, should be in {}".format(tokindex, raw_indices))
             src_tokens = pre_paren
             src_nodes = [sentence.get_node_by_raw(index) for index in range(start, end+1)]
-            src_feats = [(s.analyses if s else None) for s in src_nodes]
+            src_feats = [(s.analyses if s else None) for s in src_nodes][head_index][0]
+            shead = [(src_feats.get('root'), thead[-1][0], src_feats.get('pos'))]
+            scats = src_feats.get('cats', set())
             seg = Segment(self, raw_indices, forms, src_tokens, treetrans=treetrans,
-                          session=self.session, gname=gname, sfeats=src_feats[head_index],
-                          tgroups=tgroups, head=thead, tok=thead[-1])
+                          session=self.session, gname=gname,
+#                          sfeats=src_feats, thead=thead,
+                          shead=shead, scats=scats,
+                          tgroups=tgroups, tok=thead[-2])
             if not terse:
                 print("Segmento (traducido) {}->{}: {}={} ({})".format(start, end, src_tokens, seg.translation, seg.head_tok))
+#                print("  Feats: {}".format(src_feats[head_index]))
             self.segments.append(seg)
             indices_covered.extend(raw_indices)
             max_index = max(max_index, end)
@@ -2541,7 +2567,8 @@ class Segmentation:
             src_feats = [(s.analyses if s else None) for s in src_nodes]
             src_toks = [s.tok for s in src_nodes]
             self.get_untrans_segs(src_tokens, max_index, gname=gname,
-                                  src_feats=src_feats, src_toks=src_toks, indices_covered=indices_covered,
+                                  src_feats=src_feats,
+                                  src_toks=src_toks, indices_covered=indices_covered,
                                   terse=terse)
         # Sort the segments by start indices in case they're not in order (because of parentheticals)
         self.segments.sort(key=lambda s: s.indices[0])

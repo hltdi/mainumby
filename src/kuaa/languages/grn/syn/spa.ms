@@ -60,6 +60,7 @@ neg :: *[pos=v,+neg] ; ++ 0 no ; FAILIF neg_ipv
 #pot :: poder_v [pos=v,tm=inf] ; 0=>1 p,n,po,no ; 1-> [+fin,tm=prs] ; 0-> [p=3]
 
 ## posesivo
+#pos/1s.s :: che_n [pos=n] ; 1=>0 n
 #pos/1s.s :: mi [pos=n,n=0,poses=[+ext,pp=1,np=0]] ; // 0
 #pos/1s.p :: mis [pos=n,n=1,poses=[+ext,pp=1,np=0]] ; // 0
 #pos/2s.s :: tu [pos=n,n=0,poses=[+ext,pp=2,np=0]] ; // 0

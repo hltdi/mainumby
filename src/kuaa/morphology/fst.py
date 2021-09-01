@@ -1543,12 +1543,12 @@ class FST:
         """
         Load the FST from a .pkl file.
         """
-        print("Unpickling from {}: {}".format(directory, label))
         directory = directory or FST.get_fst_dir(language)
         path = os.path.join(directory, label + ".pkl")
         if not os.path.exists(path):
 #            print("Pickle {} not found!".format(path))
             return
+        print("Despickleando archivo en {}: {}".format(directory, label))
         file = open(path, "rb")
         return pickle.load(file)
 

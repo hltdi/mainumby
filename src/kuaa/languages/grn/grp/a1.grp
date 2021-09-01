@@ -1,5 +1,16 @@
 +t == ; 0==0 ns:n,ps:p,tmp:tm,asp:asp,neg:neg,grd:grd,rel:rel,pos:pos,inter:inter
 ** pyahu_a[pos=a]
 ->spa nuevo_a
-** porã_a[pos=a]
+** porã_a
 ->spa bueno_a
+** che_a
+->spa mi_a
+** nde_a[pos=a]
+->spa tu_a
+->spa su_a
+** ñande_a[pos=a]
+->spa nuestro_a
+** ore_a[pos=a]
+->spa nuestro_a
+** pende_a[pos=a]
+->spa su_a

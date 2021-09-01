@@ -1,11 +1,17 @@
 ## unidades sintácticas al nivel de la oración
 ## nominales 1
 >> nom1
+ANsm :: [pos=a] [pos=n,n=0,g=m] ; 0[n=0,g=m,+pre] ; 1^
+ANsf :: [pos=a] [pos=n,n=0,g=f] ; 0[n=0,g=f,+pre] ; 1^
+ANpm :: [pos=a] [pos=n,n=1,g=m] ; 0[n=1,g=m,+pre] ; 1^
+ANpf :: [pos=a] [pos=n,n=1,g=f] ; 0[n=1,g=f,+pre] ; 1^
+#ANp :: [pos=a] [pos=n,n=1] ; 0[n=1] ; 1^
+
 NhaN :: &n ha &n ; ^0
-NAfs :: [pos=n,g=f,n=0] [pos=a] ; ^0 ; 1[g=f,n=0]
-NAfp :: [pos=n,g=f,n=1] [pos=a] ; ^0 ; 1[g=f,n=1]
-NAms :: [pos=n,g=m,n=0] [pos=a] ; ^0 ; 1[g=m,n=0]
-NAmp :: [pos=n,g=m,n=1] [pos=a] ; ^0 ; 1[g=m,n=1]
+NAfs :: [pos=n,g=f,n=0] [pos=a] ; ^0 ; 1[g=f,n=0,-pre]
+NAfp :: [pos=n,g=f,n=1] [pos=a] ; ^0 ; 1[g=f,n=1,-pre]
+NAms :: [pos=n,g=m,n=0] [pos=a] ; ^0 ; 1[g=m,n=0,-pre]
+NAmp :: [pos=n,g=m,n=1] [pos=a] ; ^0 ; 1[g=m,n=1,-pre]
 ## predicatos
 >> pred1
 # tiempo, modo
