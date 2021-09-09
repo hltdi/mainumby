@@ -121,6 +121,9 @@ neg :: *[pos=v,+neg] ; ++ 0 no ; FAILIF neg_ipv
 ## Rasgos todavía guaraníes
 #2p_3p_ :: *[ns=1,ps=2] ; 0 -> [ps=3]
 
+## Caso de sustantivos y pronombres
+con_N :: [pos=n,caso=ndi] ; ++ 0 con
+
 ## tiempo/aspecto
 # ir a futuro; después distinguir
 ta_fut :: *[tm=ta] ; ++ 0 ir_v ; ++ 1 a ; 2=>0 ns:n,ps:p ; 2-> [tm=inf]

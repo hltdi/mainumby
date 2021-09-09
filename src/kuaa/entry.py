@@ -201,7 +201,7 @@ class Entry:
         """Initialize name and basic features: language, trans, count, id."""
         self.name = name
         self.language = language
-        self.trans = trans
+        self.trans = trans or []
         self.count = 1
         self.comment = comment
         self.debug = False
@@ -572,8 +572,111 @@ class Group(Entry):
             root, feats = m.groups()
             root, p = RootToken.get_POS(root)
             pos = pos or p
-            string = "Reverse Group: root {} pos {} feats {} id {} properties {} trans {}"
-            print(string.format(root, pos, feats, id, properties, self))
+            transtrans = (self, {'agr': []})
+            token = root + '_' + pos if pos else root
+            string = "Reverse Group: token {} feats {} properties {} transtrans {}"
+            print(string.format(token, feats, properties, self))
+#            newgroup = Group([token], head_index=0, head=token,
+#                             language=language, trans=transtrans)
+            group.trans = transtrans
+            return group
+
+    # def add_trans(self, tgroup, tfeats, tlang):
+    #     '''
+    #     Add a translation in target language tlang: tgroup
+    #     with s->t translation features tfeats, a dict of features
+    #     with keys 'agr', 'align', 'count'.
+    #     The features are first reversed.
+    #     For now the target language is ignored.
+    #     '''
+    #     if not self.trans:
+    #         self.trans = []
+    #     revfeats = self.reverse_feats(tgroup, tfeats)
+    #     self.trans.append((tgroup, tfeats))
+    #
+    # def reverse_trans(self):
+    #     '''
+    #     Add this group and reversed translation features as
+    #     translation of each translation group.
+    #     '''
+    #     for tgroup, tfeats in self.trans:
+    #         if not tgroup.trans:
+    #             tgroup.trans = []
+    #         rev_feats = Group.reverse_feats(tgroup, tfeats)
+    #         tgroup.trans.append((self, rev_feats))
+
+    def reverse_trans(self, sgroup, sfeats):
+        rev_feats = sgroup.reverse_feats(self, sfeats)
+        if not self.trans:
+            self.trans = []
+        self.trans.append((sgroup, rev_feats))
+
+    def reverse_feats(self, tgroup, tfeats):
+        """
+        Return a new translation feature dict,
+        reversing the agr and align features in tfeats.
+        """
+        rev_feats = {}
+        if 'agr' in tfeats:
+            rev_feats['agr'] = self.reverse_agrs(tgroup, tfeats['agr'])
+        if 'align' in tfeats:
+            revalign = Group.reverse_alignment(tfeats['align'], len(tgroup.tokens))
+            rev_feats['align'] = revalign
+        return rev_feats
+
+    @staticmethod
+    def reverse_alignment(alignment, ntoks):
+        """
+        Reverse the alignment (a list), creating a new
+        alignment of length ntoks.
+        -1 represents no correspondence with a target token.
+        """
+        talign = [-1] * ntoks
+        for spos, tpos in enumerate(alignment):
+            if tpos != -1:
+                talign[tpos] = spos
+        return talign
+
+    def reverse_agrs(self, tgroup, tagrs):
+        """
+        tagrs is a list of tuples, one for each token in self.
+        Each tuple consists of a pair:
+          target_token_index, <tuple of (source_feat, target_feat) pairs>
+        """
+        # Start with a dict with tindex keys, to convert to a list
+        # of length of target tokens
+        rev_agr_dct = {}
+        for stok_index, tagr in enumerate(tagrs):
+            if not tagr:
+                # No agreement constraint for this source token
+                continue
+            tindex, featpairs = tagr
+            rev_agr_dct[tindex] = tuple([(tfeat, sfeat) for sfeat, tfeat in featpairs])
+        rev_agrs = []
+        for tindex in range(len(tgroup.tokens)):
+            if tindex not in rev_agr_dct:
+                rev_agrs.append(False)
+            else:
+                rev_agrs.append((tindex, rev_agr_dct[tindex]))
+        return rev_agrs
+
+    # @staticmethod
+    # def reverse_agr(agr):
+    #     '''
+    #     Reverse the translation agreement constraints,
+    #     a pair of an index and a tuple of feature pairs, e.g.,
+    #     (0, (('n', 'ns'), ('p', 'ps'), ('tm', 'tmp'), ('neg', 'neg')))
+    #     '''
+    #     print("Reversing {}".format(agr))
+    #     index, feats = agr
+    #     # later figure out the correct target index
+    #     rev_agr = [index]
+    #     rev_feats = []
+    #     for sf, tf in feats:
+    #         rev_feats.append((tf, sf))
+    #     rev_feats = tuple(rev_feats)
+    #     rev_agr.append(rev_feats)
+    #     return tuple(rev_agr)
 
     @staticmethod
     def reverse_defaults(defaults):
@@ -980,7 +1083,8 @@ class Group(Entry):
         return match_snodes
 
     @staticmethod
-    def from_string(string, language, trans_strings=None, target=None,
+    def from_string(string, language,
+                    trans_strings=None, target=None,
                     trans=False, n_src_tokens=1,
                     tstrings=None, cat='', posindex=0, shead_index=0):
         """
@@ -988,7 +1092,6 @@ class Group(Entry):
         translation group strings to one or more groups.
         [trans=True means this is for a target-language Group.]
         """
-#        print("Creating group from {} and trans strings {} [trans={}]".format(string, trans_strings, trans))
         # Separate the tokens from any group attributes
         tokens_attribs = string.split(ATTRIB_SEP)
         tokens = tokens_attribs[0].strip().split()
@@ -1133,9 +1236,9 @@ class Group(Entry):
             # Create target (translation) groups
             tgroups = []
             for tstring in trans_strings:
-                tgroup, tagr, alg, tc = Group.from_string(tstring, target, trans_strings=None, trans=True,
-                                                          shead_index=head_index,
-                                                          n_src_tokens=len(realtokens))
+                tgroup, tagr, alg, tc = \
+                Group.from_string(tstring, target, trans_strings=None, trans=True,
+                                  shead_index=head_index, n_src_tokens=len(realtokens))
                 tattribs = {'agr': tagr}
                 if alg:
                     tattribs['align'] = alg
@@ -1146,15 +1249,15 @@ class Group(Entry):
         # if so, use it
         gname = Group.make_name(name_toks)
         existing_group = language.get_group(gname, key=head, posindex=posindex)
-        g = existing_group or Group(realtokens, head_index=head_index, head=head,
-                                    features=features, agr=within_agrs,
-#                                    failif=failif,
-                                    name=gname, count=count, string=string, posindex=posindex,
-                                    trans_strings=tstrings, cat=cat, comment=comment,
-                                    intervening=intervening)
+        g = existing_group or \
+           Group(realtokens, head_index=head_index, head=head,
+                 features=features, agr=within_agrs,
+                 name=gname, count=count, string=string, posindex=posindex,
+                 trans_strings=tstrings, cat=cat, comment=comment,
+                 intervening=intervening)
         if target and not trans:
             # Add translation to source group
-            g.trans = tgroups
+            g.trans = tgroups or []
         if not existing_group:
             # Add group to its language in the appropriate POS groups
             language.add_group(g, posindex=posindex, cat=cat)
@@ -2002,7 +2105,7 @@ class MorphoSyn(Entry):
             if not isinstance(s_anals, list):
                 s_anals = [s_anals]
             new_s_anals = []
-            if m_elem[0][0] == '~':
+            if m_elem[0][0] == Token.del_char:
                 if 'target' in s_anals[0]:
                     s_anals[0]['target-node'] = s_anals[0]['target'] + s_index
             if m_feats_list:
@@ -2340,6 +2443,8 @@ class Join(Entry):
                             # Can't add features to bare string
                             continue
                         tf = th[2]
+                        if isinstance(tf, FeatStruct):
+                            tf = FSSet(tf)
                         newtf = tf.unify_FS(addfeats)
                         if newtf != 'fail':
                             th[2] = newtf
@@ -2602,7 +2707,7 @@ class Token:
     cat_char = '$'
     set_char = '$$'
     pos_char = '&'
-    spec_sep_char = '~'
+    spec_sep_char = '|'
     del_char = '~'
     ungen_char = '*'
     add_char = '+'
@@ -2664,7 +2769,7 @@ class Token:
 
     @staticmethod
     def special_prefix(token, check=False):
-        """If this is a special token, return its prefix (what precedes ~)."""
+        """If this is a special token, return its prefix (what precedes spec_sep_char)."""
         if not check or Token.is_special(token):
             return Token.split_token(token)[0]
         return ''
@@ -2682,9 +2787,12 @@ class Token:
 
     @staticmethod
     def split_token(token):
-        """Separate the prefix and the name from the token string.
-        The first instance of ~ connects the prefix to the name for a special token.
-        There can be more than one ~ in numerals."""
+        """
+        Separate the prefix and the name from the token string.
+        The first instance of spec_sep_char connects the prefix to the name for a
+        special token.
+        There can be more than one spec_sep_char in numerals.
+        """
         if Token.spec_sep_char in token:
             prefix, x, name = token.partition(Token.spec_sep_char)
         else:
@@ -2786,8 +2894,11 @@ class JoinToken(Token):
 
     @staticmethod
     def match_pos(join_pos, seg_poss):
-        """Does Join element POS match at least one of segment POSs?"""
-#        print("Does joinpos {} match segposs {}".format(join_pos, seg_poss))
+        """
+        Does Join element POS match at least one of segment POSs?
+        """
+        if not seg_poss:
+            return False
         for seg_pos in seg_poss:
             # seg_pos may include a sub_pos
             if '.' in seg_pos:

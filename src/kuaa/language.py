@@ -148,8 +148,8 @@ GENERATION = 1
 # translation
 SOURCE = 2
 TARGET = 3
-# training target; both analysis and generation
-TRAIN = 4
+# both analysis and generation
+BIDIR = 4
 
 ## Strings used in groups file
 GROUP_SEP = '**'
@@ -317,7 +317,7 @@ class Language:
         # Disambig dicts also created
         self.POSambig = {}
         self.lexambig = {}
-        if use in (ANALYSIS, SOURCE, TRAIN):
+        if use in (ANALYSIS, SOURCE, BIDIR):
             self.set_anal_cached()
         # Load groups now if not to be used for translation
         if use in (ANALYSIS,):
@@ -336,8 +336,8 @@ class Language:
         else:
             self.tagger = None
         if not exttag or self.tagger.morph:
-            self.load_morpho(generate=use in (GENERATION, TARGET, TRAIN),
-                             analyze=use in (ANALYSIS, SOURCE, TRAIN),
+            self.load_morpho(generate=use in (GENERATION, TARGET, BIDIR),
+                             analyze=use in (ANALYSIS, SOURCE, BIDIR),
                              guess=False, verbose=False)
 #        print("Lengua {} creada".format(self))
 
@@ -525,7 +525,7 @@ class Language:
     def quit(self, cache=True):
         """Do stuff when the program exits. Only cache analyses and generation if there is a current
         session/user."""
-        if cache and self.use in (GENERATION, TARGET, TRAIN):
+        if cache and self.use in (GENERATION, TARGET, BIDIR):
             for pos in self.morphology.values():
                 pos.quit()
 
@@ -1390,7 +1390,8 @@ class Language:
             print('Loading morphological data for {} {}'.format(self.name, "(gen)" if generate else "(anal)"))
         # Load pre-analyzed words
         self.set_analyzed()
-        self.set_suffixes(verbose=verbose)
+        if analyze:
+            self.set_suffixes(verbose=verbose)
         self.morphology.set_words()
         for pos in self.morphology:
             posmorph = self.morphology[pos]
@@ -1597,7 +1598,10 @@ class Language:
                   # Whether to normalize orthography before analysis
                   clean=True,
                   verbosity=0):
-        '''Morphologically analyze a single word, trying all existing POSs, both lexical and guesser FSTs.'''
+        '''
+        Morphologically analyze a single word, trying all existing POSs, both
+        lexical and guesser FSTs.
+        '''
         # First make sure the analysis FSTs are loaded for this language
         if self.use in (GENERATION, TARGET):
             print("No se ha cargado el analizador para {}".format(self))
@@ -1683,6 +1687,9 @@ class Language:
         dicts = []
         for root, anal in anals:
             pos = anal.get('pos', '')
+            # Cast the analysis to an FSSet if necessary
+            if isinstance(anal, FeatStruct):
+                anal = FSSet(anal)
             dicts.append({'root': Language.make_root(root, pos), 'features': anal})
         return dicts
 
@@ -1872,9 +1879,13 @@ class Language:
 
     def read_group(self, gfile, gname=None, target=None,
                    source_groups=None, target_groups=None, target_abbrev=None,
+                   reverse=False,
                    groupcats=None, posindex=0, verbosity=0):
         """
-        Read in a single group type from a file with path gfile and name gname.
+        Read in a single group type (not a single group!) from a file with path
+        gfile and name gname.
+        If reverse is True, reverse the translation of target groups for each
+        source group.
         """
         with open(gfile, encoding='utf8') as file:
             gname = gname or gfile.rpartition('/')[-1].split('.')[0]
@@ -1935,12 +1946,18 @@ class Language:
                             if tlang == target_abbrev:
                                 translations.append(tgroup)
                     target_groups.extend(translations)
-                # Creates the group and any target groups specified and adds them to the appropriate groups
+                # Creates the group and any target groups specified and adds
+                # them to the appropriate groups
+                g, t_agr, align, t_count = \
                 Group.from_string(source_group, self, translations, target=target,
                                   trans=False, tstrings=trans_strings,
                                   cat=gname, posindex=posindex)
+                if reverse:
+                    for tgroup, tfeatures in g.trans:
+                        tgroup.reverse_trans(g, tfeatures)
 
-    def read_groups(self, posnames=None, target=None, verbosity=0):
+    def read_groups(self, posnames=None, target=None, reverse=False,
+                    verbosity=0):
         """
         Read in groups from .grp files. If target is not None
         (must be a language), read in translation groups
@@ -1956,6 +1973,7 @@ class Language:
 #            print("Group {}, file {}, posindex {}".format(name, gfile, posindex))
             self.read_group(gfile, gname=name, target=target, source_groups=source_groups,
                             target_groups=target_groups, target_abbrev=target_abbrev,
+                            reverse=reverse,
                             verbosity=verbosity, posindex=posindex)
 
         # Sort groups for each key by priority
@@ -2002,7 +2020,7 @@ class Language:
         path = self.get_ms_file(target.abbrev)
         try:
             with open(path, encoding='utf8') as f:
-                print("Leyendo transformaciones morfosintácticas...", end='')
+                print("{}: leyendo transformaciones morfosintácticas...".format(self), end='')
                 lines = f.read().split('\n')[::-1]
                 # the order of MorphoSyns matters
                 while lines:
@@ -2244,36 +2262,95 @@ class Language:
         return Language.from_dict(dct, use=use, directory=directory)
 
     @staticmethod
-    def load_trans(source, target, groups=None, train=False):
-        """Load a source and a target language, given as abbreviations.
-        Read in groups for source language, including target language translations at the end.
-        If train is True, load the analysis rather than generation FSTs for the target language.
-        If the languages are already loaded, don't load them."""
+    def load_trans(source, target, bidir=False):
+        """
+        Load a source and a target language, given as abbreviations.
+        Read in groups for source language, including target language translations
+        at the end.
+        If bidir is True, load analysis and generations FST for both languages
+        and groups in both directions.
+        If the languages are already loaded, don't load them.
+        """
         srclang = Language.languages.get(source)
         targlang = Language.languages.get(target)
-        loaded = False
-        srcuse = SOURCE
-        targuse = TRAIN if train else TARGET
-        if srclang and targlang and srclang.use == srcuse and targlang.use == targuse:
-            loaded = True
-        else:
-            try:
+        src_loaded = False
+        targ_loaded = False
+        srcuse = BIDIR if bidir else SOURCE
+        targuse = BIDIR if bidir else TARGET
+        if srclang:
+#            print("Srclang use: {}".format(srclang.use))
+            if srclang.use in (SOURCE, BIDIR):
+                print("Lengua fuente {} ya cargada".format(srclang))
+            else:
+                # Source language is loaded but as target
+                print("Añadiendo datos morfológicos para {}".format(srclang))
+                srclang.set_anal_cached()
+#                print("Leyendo ", end='')
+#                srclang.read_groups(target=targlang)
+                srclang.load_morphosyntax(targlang)
+                srclang.load_morpho(analyze=True, generate=False, guess=False)
+                srclang.use = BIDIR
+            if bidir:
+                if srclang.use in (TARGET, BIDIR):
+                    print("Lengua meta {} ya cargada".format(srclang))
+                else:
+                    # Source language is loaded as source but needs to have
+                    # generation FSTs as well.
+                    print("Añadiendo datos morfológicos para {}".format(srclang))
+                    srclang.load_morpho(analyze=False, generate=True, guess=False)
+                    srclang.use = BIDIR
+            src_loaded = True
+        if targlang:
+#            print("Targlang use: {}".format(targlang.use))
+            if targlang.use in (TARGET, BIDIR):
+                print("Lengua meta {} ya cargada".format(targlang))
+            else:
+                # Target is loaded as source, needs generation FSTs.
+                print("Añadiendo datos morfológicos para {}".format(targlang))
+                targlang.load_morpho(analyze=False, generate=True, guess=False)
+                targlang.use = BIDIR
+            if bidir:
+                if targlang.use in (SOURCE, BIDIR):
+                    print("Lengua fuente {} ya cargada".format(targlang))
+                else:
+                    # Target is loaded as target, needs source morphosyntax
+                    # and FSTs as well.
+#                    print("Leyendo ", end='')
+                    targlang.load_morphosyntax(srclang)
+#                    targlang.read_groups(target=srclang)
+                    targlang.load_morpho(analyze=True, generate=False, guess=False)
+                    targlang.use = BIDIR
+            targ_loaded = True
+        if src_loaded and targ_loaded:
+            return srclang, targlang
+        try:
+            if not srclang:
                 srcpath = os.path.join(Language.get_language_dir(source), source + '.lg')
                 srclang = Language.read(srcpath, use=srcuse)
                 print("Lengua fuente {} cargada".format(srclang))
+            if not targlang:
                 targpath = os.path.join(Language.get_language_dir(target), target + '.lg')
                 targlang = Language.read(targpath, use=targuse)
                 print("Lengua destino {} cargada".format(targlang))
-            except IOError:
-                print("One of these languages doesn't exist.")
-                return
+        except IOError:
+            print("One of these languages doesn't exist.")
+            return
         # Load groups for source language now
-        if not loaded:
-            srclang.read_ms(target=targlang)
-            srclang.read_joins(target=targlang)
-            srclang.read_transcounts(target)
-            srclang.read_groups(posnames=groups, target=targlang)
+        if not src_loaded:
+            srclang.load_morphosyntax(targlang, reverse=bidir)
+        if bidir and not targ_loaded:
+            targlang.load_morphosyntax(srclang)
         return srclang, targlang
+
+    def load_morphosyntax(self, target, reverse=False):
+        """
+        Load Morphosyns, Joins, translation counts, and groups for a
+        source language.
+        """
+        self.read_ms(target=target)
+        self.read_joins(target=target)
+        self.read_transcounts(target.abbrev)
+        self.read_groups(target=target, reverse=reverse)
 
     @staticmethod
     def load_lang(lang, groups=None):
@@ -2293,7 +2370,7 @@ class Language:
                 return
         # Load groups for source language now
         if not loaded:
-            srclang.read_groups(posnames=groups)
+            srclang.read_groups()
         return srclang
 
     @staticmethod

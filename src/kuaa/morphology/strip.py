@@ -52,7 +52,6 @@ def sufstrip(word, suffixes, verbose=False):
     result = []
     for n in range(1, len(word)):
         suf = word[n:]
-#        print('suf {}'.format(suf))
         if suf in suffixes:
             attribs = suffixes[suf]
             aff = attribs[0]
@@ -172,4 +171,3 @@ def deaccent(word, index):
 ##        else:
 ##            segs.append(c)
 ##    return ''.join(segs)
-

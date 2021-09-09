@@ -488,7 +488,7 @@ ahitar_v $v
 ahogar_v $v,$vt,$vp
 ahogo_n $n
 ahondar_v $v,$vt,$vp
-ahora_adv %adv
+ahora_adv $adv
 ahorcar_v $v,$vt,$vp
 ahorquillar_v $v
 ahorrar_v $v,$vt,$vp
@@ -9574,7 +9574,7 @@ nómina_n $n
 núcleo_n $n
 número_n $n
 o $c
-u $c    
+u $c
 oasis_n $n
 obcecar_v $v
 obedecer_v $v,$vt
@@ -13620,7 +13620,6 @@ tópico_n $n
 tórax_n $n
 tórtola_n $n
 tótem_n $n
-tú_n $pro
 túnel_n $n
 túnica_n $n
 ubicación_n $n
@@ -14593,3 +14592,14 @@ financiar_v $v,$vt
 enunciar_v $v,$vt
 exclamar_v $v,$vt
 emigrar_v $v,$vi
+tú_n $pro
+yo_n $pro
+vos_n $pro
+él_n $pro
+ella_n $pro
+usted_n $pro
+nosotros_n $pro
+vosotros_n $pro
+ustedes_n $pro
+ellos_n $pro
+ellas_n $pro

@@ -234,9 +234,13 @@ class Morphology(dict):
 #                                         create_weights=True)
 
     def sort_analyses(self, analyses):
-        """Each analysis is a root, fs pair. Sort by the list of values for each feature that has such a list.
-        SEVERAL THINGS DON'T WORK HERE. FIRST ANALYSES SHOULD BE SORTED BY THE *SUM* OF THE SCORES FOR EACH
-        FEATURE. SECOND, EMBEDDED FEATURE VALUES DON'T WORK YET."""
+        """
+        Each analysis is a root, fs pair. Sort by the list of values for each
+        feature that has such a list.
+        SEVERAL THINGS DON'T WORK HERE. FIRST ANALYSES SHOULD BE SORTED BY THE
+        *SUM* OF THE SCORES FOR EACH
+        FEATURE. SECOND, EMBEDDED FEATURE VALUES DON'T WORK YET.
+        """
         for pos, morph in self.items():
             feat_list = morph.feat_list
             for feat, values in feat_list:
@@ -444,8 +448,10 @@ class POS:
             return anals
 
     def set_analyzed(self, filename='analyzed.lex', verbose=False):
-        '''Set the dicts of analyzed words for analysis and generation,
-        reading them in from a file, one per line.'''
+        '''
+        Set the dicts of analyzed words for analysis and generation,
+        reading them in from a file, one per line.
+        '''
         path = os.path.join(self.language.get_lex_dir(), self.pos + '_' + filename)
         if os.path.exists(path):
             file = open(path, encoding='utf8')

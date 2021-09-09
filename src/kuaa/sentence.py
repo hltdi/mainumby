@@ -1499,9 +1499,11 @@ class Sentence:
         Remove any analyses from SNode that are not compatible with the
         associated GNodes.
         """
-#        print("Filtering {} by {}".format(snode, gnodes))
+        print("** Filtering {} by {}".format(snode, gnodes))
         snode_anals = snode.analyses
         gnode_anals = [gnode.snode_anal for gnode in gnodes]
+        print(" Snode anals {}".format(snode_anals))
+        print(" Gnode anals {}".format(gnode_anals))
         filtered = []
         for sanal in snode_anals:
             # this is a dict with keys 'root' 'features', and 'pos'
@@ -1509,7 +1511,6 @@ class Sentence:
             sfeats = sanal.get('features')
             spos = sanal.get('pos')
             for ganals in gnode_anals:
-#                print("ganals {}".format(ganals))
                 for ganal1 in ganals:
                     for ganal in ganal1:
                         # this is a tuple: root, features, pos, cats
@@ -2261,7 +2262,7 @@ class Segmentation:
             gnode = gnodes[0]
             snode_indices = gnode.snode_indices
             snode_index = snode_indices.index(snode.index)
-            snode_anal = gnode.snode_anal[snode_index]
+            snode_anal = gnode.snode_anal[snode_index] if gnode.snode_anal else None
             if snode_anal and snode_anal[0] and snode_anal[0][1]:
                 features = [a[1] for a in snode_anal]
             # Use the first (preferred) analysis.
@@ -2384,7 +2385,7 @@ class Segmentation:
                 thead = tt.ginst.head
                 thindex = thead.index
                 tfeats = thead.snode_anal
-                ttoken = tfeats[0] or [thead.token]
+                ttoken = (tfeats and tfeats[0]) or [thead.token]
                 tsnode = tt.snodes[thindex]
                 ttok = tsnode.tok
                 tcats = tsnode.cats
@@ -2545,9 +2546,13 @@ class Segmentation:
                     print("Something wrong with position {}, should be in {}".format(tokindex, raw_indices))
             src_tokens = pre_paren
             src_nodes = [sentence.get_node_by_raw(index) for index in range(start, end+1)]
-            src_feats = [(s.analyses if s else None) for s in src_nodes][head_index][0]
-            shead = [(src_feats.get('root'), thead[-1][0], src_feats.get('pos'))]
-            scats = src_feats.get('cats', set())
+            src_feats = [(s.analyses if s else None) for s in src_nodes][head_index]
+            if src_feats:
+                src_feats = src_feats[0]
+                shead = [(src_feats.get('root'), thead[-1][0], src_feats.get('pos'))]
+                scats = src_feats.get('cats', set())
+            else:
+                shead = scats = None
             seg = Segment(self, raw_indices, forms, src_tokens, treetrans=treetrans,
                           session=self.session, gname=gname,
 #                          sfeats=src_feats, thead=thead,

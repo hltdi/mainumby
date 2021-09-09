@@ -64,7 +64,7 @@ dstring = "Aguatase."
 ## se combinan los segmentos, usando patrones gramaticales ("joins") y grupos
 ## adicionales.
 
-def tra(oracion, reverse=True, html=False, user=None, choose=False, verbosity=0):
+def tra(oracion, reverse=False, html=False, user=None, choose=False, verbosity=0):
     return ora(oracion, reverse=reverse, user=user, max_sols=2, translate=True,
                connect=True, generate=True, html=html, choose=choose,
                verbosity=verbosity)
@@ -87,7 +87,7 @@ def anal(sentence, language='spa', user=None, verbosity=0):
 
 def g_anal(sentence, single=True, verbosity=0):
     """Analyze a Guarani sentence, checking all groups."""
-    e, g = cargar(train=True)
+    e, g = cargar(bidir=True)
     session = kuaa.start(g, e, None, create_memory=single)
     d = kuaa.Document(g, None, sentence, session=session, single=single)
     if len(d) == 0:
@@ -97,9 +97,9 @@ def g_anal(sentence, single=True, verbosity=0):
     return s.analyze(translate=False, verbosity=verbosity)
 
 ## Cargar castellano y guaraní. Devuelve las 2 lenguas.
-def cargar(train=False, reverse=True):
+def cargar(reverse=False, bidir=False):
     src, targ = ('grn', 'spa') if reverse else ('spa', 'grn')
-    source, target = kuaa.Language.load_trans(src, targ, train=train)
+    source, target = kuaa.Language.load_trans(src, targ, bidir=bidir)
     return source, target
 
 ## Cargar una lengua, solo para análisis.
@@ -189,16 +189,16 @@ def db_create_old_users():
 ##                print(e.strip(), file=es)
 ##                print(g.strip(), file=gn)
 
-##def biblia_ora(train=True):
+##def biblia_ora(bidir=True):
 ##    """Lista de pares de oraciones (instancias de Sentence) de la Biblia."""
 ##    oras = biblia2()
-##    e, g = cargar(train=train)
+##    e, g = cargar(bidir=bidir)
 ##    o1, o2 = kuaa.Document.proc_preseg(e, g, oras, biling=True)
 ##    return o1, o2
 ##
-##def dgo_ora(train=True):
+##def dgo_ora(bidir=True):
 ##    oras = dgo()
-##    e, g = cargar(train=train)
+##    e, g = cargar(bidir=bidir)
 ##    o1, o2 = kuaa.Document.proc_preseg(e, g, oras, biling=True)
 ##    return o1, o2
 ##

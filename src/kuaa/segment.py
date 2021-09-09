@@ -104,7 +104,7 @@ class Seg:
 
     color_index = 0
 
-    special_re = re.compile("%[A-Z]+~")
+    special_re = re.compile("%[A-Z]+|")
 
     # Character indicating that tokens in translation string should be joined ("Carlos `-pe" -> "Carlos-pe")
     join_tok_char = "`"
@@ -125,7 +125,7 @@ class Seg:
         # source and target strings and features
         self.original_token_str = ''
         self.token_string = ''
-        self.clean_trans = None
+        self.cleaned_trans = None
         # set during generation (no need to copy between Seg levels)
         self.morphology = None
         # set during finalization, using self.morphology
@@ -145,7 +145,9 @@ class Seg:
         """
         Returns a set of all possible tokens for this segment.
         """
-        toks = self.get_shead_tokens() or self.get_untrans_token() or [self.token_str]
+#        print("** shead tokens {} untrans {}".format(self.get_shead_tokens(), self.get_untrans_token()))
+        toks = self.get_shead_tokens() or [self.get_untrans_token()] or [self.token_str]
+#        print("** Toks {}".format(toks))
         raw = self.get_shead_raw()
         if raw and raw not in toks:
             toks.append(raw)
@@ -153,11 +155,13 @@ class Seg:
         for tok in toks:
             if '_' in tok:
                 to_add.append(tok.split('_')[0])
-        return set(toks + to_add)
+        tokens = toks + to_add
+#        print("** Tokens {}".format(tokens))
+        return set(tokens)
 
     def get_untrans_token(self):
         """For untranslated segments, return the cleaned string."""
-        return self.cleaned_trans and self.cleaned_trans[0][0]
+        return self.cleaned_trans and self.cleaned_trans[0][0][0]
 
     def count_segments(self):
         """Return the number of leaf Segments."""
@@ -215,14 +219,13 @@ class Seg:
 
     def get_special(self, del_spec=False):
         """If Segment is special, return its category and the token as a tuple."""
-        if self.special:
-            if self.cleaned_trans:
-                # Already translated
-                token = self.get_shead_tokens()[0]
-                pre, x, form = token.partition('~')
-            else:
-                tok = self.get_untrans_token()
-                pre, form = tok.split('~')
+        if self.special and self.cleaned_trans:
+            # Already translated
+            token = self.get_shead_tokens()[0]
+            pre, x, form = token.partition(Token.spec_sep_char)
+#            else:
+#                tok = self.get_untrans_token()
+#                pre, form = tok.split('~')
             if del_spec:
                 pre = pre[1:]
             return pre, form
@@ -414,8 +417,10 @@ class Seg:
     ## Generating final translations
 
     def finalize(self, index, first=False, choose=False, verbosity=0):
-        """Create final translation strings for this Seg. If html is True, set the HTML markup for
-        the Seg as a colored segment in source and dropdown menu in target, given its position in the sentence.
+        """
+        Create final translation strings for this Seg. If html is True, set the
+        HTML markup for the Seg as a colored segment in source and dropdown
+        menu in target, given its position in the sentence.
         """
         # No translation
         if not self.cleaned_trans:
@@ -694,7 +699,7 @@ class Seg:
 
     @staticmethod
     def remove_spec_pre(string):
-        """Remove special prefixes, for example, '%ND~'."""
+        """Remove special prefixes, for example, '%ND|'."""
         if '%' in string:
             string = ''.join(Seg.special_re.split(string))
         return string
@@ -705,10 +710,10 @@ class Seg:
         if specpre:
             string = Seg.remove_spec_pre(string)
         # prefix ~
-        if string[0] == '~':
+        if string[0] in '~|':
             string = string[1:]
-        # connecting _ and ~
-        string = string.replace('  ', ' ').replace('_', ' ').replace('~', ' ')
+        # connecting _ and |
+        string = string.replace('  ', ' ').replace('_', ' ').replace('|', ' ').replace('~', ' ')
         return string
 
     @staticmethod
@@ -842,7 +847,6 @@ class Segment(Seg):
                  thead=None, tok=None, spec_indices=None, session=None,
                  shead=None, scats=None, gname=None, is_punc=False):
         Seg.__init__(self, segmentation)
-#        print("**Creating Segment with shead {}".format(shead))
 #        if shead:
 #            print("*** shead feats {}, ({})".format(shead[1], type(shead[1])))
         if shead:
@@ -870,6 +874,7 @@ class Segment(Seg):
         # For each translation alternative, separate words, each of which can have alternatives (separated by '|').
         # self.translation is a list of lists
         self.translation = [(t.split() if isinstance(t, str) else t) for t in translation]
+#        print("**Creating Segment with translation {}".format(self.translation))
         self.cleaned_trans = None
         self.tokens = tokens
         self.token_str = ' '.join(tokens)
@@ -888,9 +893,9 @@ class Segment(Seg):
                 tgroups = [spec_toks]
             self.token_str = Seg.clean_spec(self.token_str)
             self.original_token_str = Seg.clean_spec(self.original_token_str)
-        if '~' in self.original_token_str:
+        if Token.spec_sep_char in self.original_token_str:
             self.original_token_str = Seg.clean_spec(self.original_token_str)
-        if '~' in self.token_str:
+        if Token.spec_sep_char in self.token_str:
             self.token_str = Seg.clean_spec(self.token_str)
         if not self.cleaned_trans:
             self.cleaned_trans = self.translation[:]
@@ -1009,7 +1014,7 @@ class SNode:
 
     def is_unk(self):
         """Does this node have no analysis, no known category or POS?"""
-        if '~' in self.tok.name:
+        if Entry.mwe_sep in self.tok.name:
             # A special phrase (MWE) that bypasses POS tagging
             return False
         a = self.get_analysis()
@@ -1147,10 +1152,13 @@ class SNode:
         # If item is a category, don't bother looking at token
         is_cat = Token.is_cat(grp_item)
         is_spec = Token.is_special(grp_item)
+#        if verbosity > 1 or debug:
+#            print("** Got this far with {} and {}".format(self.tok.name, grp_item))
+#            print("   is_cat {}, is_spec {}, special {}".format(is_cat, is_spec, self.tok.special))
         if is_spec and self.tok.special:
             if verbosity > 1 or debug:
                 print("Special entry {} for {}".format(grp_item, self.token))
-            token_type = self.token.split('~')[0]
+            token_type = self.token.split(Token.spec_sep_char)[0]
             if token_type.startswith(grp_item):
                 # Special group item matches node token (grp_item could be shorter than token_type)
                 return None
@@ -1243,6 +1251,7 @@ class GInst:
 
     def __init__(self, group, sentence, head_index, snode_indices, index):
         # The Group object that this "instantiates"
+#        print("**Creating GInst with snode_indices {}".format(snode_indices))
         self.group = group
         self.sentence = sentence
         self.source = sentence.language
@@ -1362,7 +1371,9 @@ class GInst:
             self.variables['agr'] = DetVar('g{}agr'.format(self.index), agr)
 
     def set_translations(self, verbosity=0):
-        """Find the translations of the group in the target language."""
+        """
+        Find the translations of the group in the target language.
+        """
         translations = self.group.get_translations()
         # Sort group translations by their translation frequency
         Group.sort_trans(translations)
@@ -1442,7 +1453,7 @@ class GNode:
         self.index = index
         self.sentence = ginst.sentence
         self.snode_indices = [s[0] for s in snodes]
-        self.snode_anal = [s[1] for s in snodes]
+        self.snode_anal = [s[1] for s in snodes if s[1]]
         self.snode_tokens = [s[2] for s in snodes]
         # Whether this is the head of the group
         self.head = index == ginst.group.head_index
@@ -1467,7 +1478,7 @@ class GNode:
         else:
             self.features = None
         self.variables = {}
-#        print("Gnode {} created with snode_anals {}".format(self, self.snode_anal))
+#        print("Gnode {} created with snode_anals {}, snode_tokens {}".format(self, self.snode_anal, self.snode_tokens))
 
     def __repr__(self):
         return "{}|{}".format(self.ginst, self.token)
