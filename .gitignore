@@ -11,7 +11,7 @@ __pycache__/
 env/
 build/
 develop-eggs/
-dist/
+# dist/
 downloads/
 eggs/
 .eggs/
@@ -65,4 +65,3 @@ cache/
 
 # Sessions, user data
 sessions/
-
