@@ -6,7 +6,7 @@
 #   for parsing, generation, translation, and computer-assisted
 #   human translation.
 #
-#   Copyleft 2019 PLoGS <gasser@indiana.edu>
+#   Copyleft 2019, 2021 PLoGS <gasser@indiana.edu>
 #
 #   This program is free software: you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -146,8 +146,10 @@ class GUI:
         self.sindex = index
 
     def select_doc_html(self, index, shtml):
-        """Replace the indexed element in html_list with one for the selected and translated
-        element."""
+        """
+        Replace the indexed element in html_list with one for the selected
+        and translated element.
+        """
         html = "<div id='doc'>"
         html_list = self.doc_html_list[:]
         html_list[index] = shtml
@@ -171,9 +173,11 @@ class GUI:
         self.props['tfuente'] = "100%"
 
     def stringify_doc_tra(self):
-        """Create a string representation of the currently accepted sentence translations.
+        """
+        Create a string representation of the currently accepted sentence translations.
         Probably need to make the more efficient by saving series of consecutive sentences
-        that have already been stringified."""
+        that have already been stringified.
+        """
         string = ''
         for sent_trans in self.doc_tra_acep:
             if not sent_trans:

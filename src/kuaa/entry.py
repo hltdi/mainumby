@@ -1870,7 +1870,7 @@ class MorphoSyn(Entry):
         matched_anals = []
         for anal in sanals:
             root = anal['root']
-            if FORMALT_SEP in root:
+            if FORMALT_SEP in root and '_' in root:
                 roots, pos = root.split('_')
                 roots = roots.split(FORMALT_SEP)
                 roots = [(r + '_' + pos) for r in roots]
@@ -2732,7 +2732,7 @@ class Token:
         """token is the prefix+name of a Token (not necessarily
         instantiated), or just the prefix.
         True if this is a 'special' token (name, number, etc.)"""
-        return token and token[0] == Token.spec_char
+        return token and Token.spec_char in token[:-1]
 
     @staticmethod
     def is_cat(token):
@@ -2769,7 +2769,10 @@ class Token:
 
     @staticmethod
     def special_prefix(token, check=False):
-        """If this is a special token, return its prefix (what precedes spec_sep_char)."""
+        """
+        If this is a special token, return its prefix (what precedes
+        spec_sep_char).
+        """
         if not check or Token.is_special(token):
             return Token.split_token(token)[0]
         return ''

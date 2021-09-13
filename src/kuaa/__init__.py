@@ -159,8 +159,10 @@ def doc_trans(doc=None, textobj=None, text='', textid=-1, docpath='',
 
 def gui_trans(gui, session=None, choose=False, return_string=False,
               sentence=None, terse=True, verbosity=0):
-    """Traducir oración (accesible en gui) y devuelve la oración marcada (HTML) con
-    segmentos coloreados."""
+    """
+    Traducir oración (accesible en gui) y devuelve la oración marcada (HTML) con
+    segmentos coloreados.
+    """
     return oración(sentence=sentence or gui.sentence, src=gui.source,
                    targ=gui.target, session=gui.session,
                    html=True, return_string=return_string, choose=choose,

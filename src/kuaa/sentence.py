@@ -909,8 +909,8 @@ class Sentence:
             if spec:
                 newtokens, prefix = spec
                 spec_found = True
-                prefix = "%{}~".format(prefix)
-                tokens.append(prefix + '~'.join(newtokens))
+                prefix = "%{}{}".format(prefix, Token.spec_sep_char)
+                tokens.append(prefix + Token.spec_sep_char.join(newtokens))
                 tok_position += len(newtokens)
                 first = False
             else:
@@ -1130,9 +1130,9 @@ class Sentence:
                     newtag = 'n'
 #                    print("Inserting tag n for name {}".format(token))
 #                    tags[index] = token, 'n'
-                elif '~' in token:
+                elif Token.spec_sep_char in token:
                     # special token or MWE
-                    tokenparts = token.split('~')
+                    tokenparts = token.split(Token.spec_sep_char)
                     spectype = tokenparts[0]
                     if spectype and spectype.startswith('%N'):
                         # it's a number (this really only works for certain taggers)!
@@ -1171,8 +1171,10 @@ class Sentence:
         return analyses
 
     def merge_POS(self, tagged, analyzed, verbosity=0):
-        """Merge the output of an external tagger and the morfo analyzer. Use the tagger to
-        disambiguate analyses, preferring the analysis if there's only one."""
+        """
+        Merge the output of an external tagger and the morfo analyzer. Use the tagger to
+        disambiguate analyses, preferring the analysis if there's only one.
+        """
         if verbosity:
             print("Merging tagger and analyzer results for {}".format(self))
         results = []
@@ -1499,11 +1501,9 @@ class Sentence:
         Remove any analyses from SNode that are not compatible with the
         associated GNodes.
         """
-        print("** Filtering {} by {}".format(snode, gnodes))
+#        print("** Filtering {} by {}".format(snode, gnodes))
         snode_anals = snode.analyses
         gnode_anals = [gnode.snode_anal for gnode in gnodes]
-        print(" Snode anals {}".format(snode_anals))
-        print(" Gnode anals {}".format(gnode_anals))
         filtered = []
         for sanal in snode_anals:
             # this is a dict with keys 'root' 'features', and 'pos'

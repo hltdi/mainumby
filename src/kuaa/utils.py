@@ -52,6 +52,7 @@ TIME0 = datetime.datetime.utcnow()
 ISCAP_RE = re.compile(r"^[-–¿¡(\"\'‶“‘$]*[A-ZÀ-Ⱬ]")
 # Capitalize the string
 CAP_RE = re.compile(r"^([-–¿¡(\"\'‶“‘$]*)(\w)")
+# Delete spaces before punctuation appended to words
 CLEAN_RE = re.compile(r"\s+([.,;:?!)”″’%¶])")
 
 ## Documents

@@ -104,7 +104,7 @@ class Seg:
 
     color_index = 0
 
-    special_re = re.compile("%[A-Z]+|")
+    special_re = re.compile("%[a-zA-Z]+|")
 
     # Character indicating that tokens in translation string should be joined ("Carlos `-pe" -> "Carlos-pe")
     join_tok_char = "`"
@@ -140,13 +140,20 @@ class Seg:
         self.record = None
         self.gname = None
         self.indices = None
+        self.untrans = False
 
     def get_tokens(self):
         """
         Returns a set of all possible tokens for this segment.
         """
 #        print("** shead tokens {} untrans {}".format(self.get_shead_tokens(), self.get_untrans_token()))
-        toks = self.get_shead_tokens() or [self.get_untrans_token()] or [self.token_str]
+        if self.shead:
+            toks = self.get_shead_tokens()
+        elif self.untrans:
+            toks = [self.get_untrans_token()]
+        else:
+            toks = [self.token_str]
+#        toks = self.get_shead_tokens() or [self.get_untrans_token()] or [self.token_str]
 #        print("** Toks {}".format(toks))
         raw = self.get_shead_raw()
         if raw and raw not in toks:
@@ -161,7 +168,7 @@ class Seg:
 
     def get_untrans_token(self):
         """For untranslated segments, return the cleaned string."""
-        return self.cleaned_trans and self.cleaned_trans[0][0][0]
+        return self.untrans and self.cleaned_trans and self.cleaned_trans[0][0][0]
 
     def count_segments(self):
         """Return the number of leaf Segments."""
@@ -205,9 +212,13 @@ class Seg:
                 return [h[0] for h in self.thead]
 
     def get_thead_feats(self):
+#        print("** seg {}, thead {}".format(self, self.thead))
         if not self.generated:
             if self.thead:
-                return [h[2] for h in self.thead]
+                # thead could be a list of lists, in which case the
+                # features are in position 2 of the sublist or a
+                # a list of strings, with no features
+                return [h[2] for h in self.thead if isinstance(h, list)]
 
     def get_thead_pos(self):
         if not self.generated:
@@ -262,8 +273,8 @@ class Seg:
                 return self.scats and join_elem in self.scats
             else:
                 toks = self.get_tokens()
-                if verbosity > 1:
-                    print("    Tokens to match {}".format(toks))
+                if verbosity:
+                    print("    Tokens to match {} against join element ".format(toks, join_elem))
                 return any([join_elem == tok for tok in toks]) and toks
         elif not self.translation:
             # If group element has features, matching segment must have translation
@@ -707,6 +718,7 @@ class Seg:
     @staticmethod
     def clean_spec(string, specpre=True):
         """Remove special prefixes and connecting characters."""
+        print("** Cleaning {}".format(string))
         if specpre:
             string = Seg.remove_spec_pre(string)
         # prefix ~
@@ -847,8 +859,15 @@ class Segment(Seg):
                  thead=None, tok=None, spec_indices=None, session=None,
                  shead=None, scats=None, gname=None, is_punc=False):
         Seg.__init__(self, segmentation)
+#        print("Creating segment with trans {}, tokens {}, treetrans {}, shead {}".format(
+#               translation, tokens, treetrans, shead
+#        ))
 #        if shead:
 #            print("*** shead feats {}, ({})".format(shead[1], type(shead[1])))
+        if treetrans:
+            self.untrans = False
+        else:
+            self.untrans = True
         if shead:
 #            print("*shead {}".format(shead))
             self.shead_index = 0
@@ -880,7 +899,8 @@ class Segment(Seg):
         self.token_str = ' '.join(tokens)
         self.raw_token_str = self.token_str[:]
         self.original_tokens = tokens
-        self.original_token_str = ' '.join(self.original_tokens)
+        # There could be strings from deleted nodes, like ~la
+        self.original_token_str = ' '.join(self.original_tokens).replace(Token.del_char, '')
         # If there are special tokens in the source language, fix them here.
         if self.head_tok.special:
             self.special = True
@@ -903,6 +923,7 @@ class Segment(Seg):
         if treetrans:
             thead_indices = [g.head_index for g in treetrans.tgroups]
             self.thead = [o[i] for i, o in zip(thead_indices, self.cleaned_trans)]
+#            print("{}: thead indices {}, trans {}, thead {}".format(self, thead_indices, self.cleaned_trans, self.thead))
         else:
             self.thead = None
         self.color = color

@@ -1387,7 +1387,7 @@ class Language:
     def load_morpho(self, generate=False, analyze=True, guess=True, verbose=False):
         """Load words and FSTs for morphological analysis and/or generation."""
         if verbose:
-            print('Loading morphological data for {} {}'.format(self.name, "(gen)" if generate else "(anal)"))
+            print('Loading morphological data for {} (anal:{}, gen:{})'.format(self.name, analyze, generate))
         # Load pre-analyzed words
         self.set_analyzed()
         if analyze:
