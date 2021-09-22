@@ -164,7 +164,7 @@ from .ui import *
 from .segment import *
 from .record import SentRecord, Session
 from .entry import Token
-from .utils import remove_control_characters, firsttrue, is_capitalized, clean_sentence
+from .utils import remove_control_characters, firsttrue, is_capitalized, clean_sentence, flatten
 
 class Document(list):
     """A list of of Sentences, split from a text string. If biling is True, this is a bilingual document,
@@ -1605,7 +1605,10 @@ class Sentence:
 
     def solve(self, translate=True, all_sols=False, all_trans=True, interactive=False,
               limit_trans=True, choose=False, max_sols=0, verbosity=0, tracevar=None, terse=True):
-        """Generate segmentations, for all analyses if all_sols is True and translations (if translate is True)."""
+        """
+        Generate segmentations, for all analyses if all_sols is True and
+        translations (if translate is True).
+        """
         if not terse:
             print("RESOLVIENDO oración principal {}".format(self))
         self.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
@@ -1615,11 +1618,13 @@ class Sentence:
             for s in self.altsyns:
                 if not terse:
                     print("RESOLVIENDO oración alternativa {}".format(s))
-                s.solve1(translate=translate, all_sols=all_sols, all_trans=all_trans, interactive=interactive,
-                         limit_trans=limit_trans, max_sols=max_sols, verbosity=verbosity, tracevar=tracevar,
-                         terse=terse)
+                s.solve1(translate=translate, all_sols=all_sols,
+                         all_trans=all_trans, interactive=interactive,
+                         limit_trans=limit_trans, max_sols=max_sols,
+                         verbosity=verbosity, tracevar=tracevar, terse=terse)
 
-    def solve1(self, translate=True, all_sols=False, all_trans=True, interactive=False,
+    def solve1(self, translate=True, all_sols=False, all_trans=True,
+               interactive=False,
                limit_trans=True, choose=False, max_sols=0,
                verbosity=0, tracevar=None, terse=True):
         """Generate segmentations and translations (if translate is true)."""
@@ -1630,7 +1635,8 @@ class Sentence:
         if not terse or verbosity:
             print(" Resolviendo {}".format(self))
         ds = None
-        generator = self.solver.generator(test_verbosity=verbosity, expand_verbosity=verbosity,
+        generator = self.solver.generator(test_verbosity=verbosity,
+                                          expand_verbosity=verbosity,
                                           tracevar=tracevar)
         try:
             proceed = True
@@ -1670,7 +1676,10 @@ class Sentence:
                 print("NINGUNAS SEGMENTACIONES encontradas para {}".format(self))
 
     def translate(self, sol_index=-1, all_trans=False, limit_trans=True, verbosity=0):
-        """Translate the segmentation with sol_index or all segmentations if index is negative."""
+        """
+        Translate the segmentation with sol_index or all segmentations if index
+        is negative.
+        """
         segmentations = self.segmentations if sol_index < 0 else [self.segmentations[sol_index]]
         for segmentation in segmentations:
             segmentation.translate(all_trans=all_trans, limit_trans=limit_trans, verbosity=verbosity)
@@ -1770,25 +1779,61 @@ class Sentence:
                                                         featvars=[sn.variables['features'] for sn in self.nodes],
                                                         selvars=[g.variables.get('agr', EMPTY) for g in self.groups]))
 
-    @staticmethod
-    def update_tree(group_dict, group_i, tree, depth=0):
-        """Update a tree (a set of snode indices) for the group with index group_i
-        by searching for merged groups and their trees in group_dict."""
-        if depth > 3:
-            print("Infinite loop!")
-            return
-        if not group_dict[group_i][1]:
-            # Nothing to merge for this group
-            return
-        else:
-            for mgi in group_dict[group_i][1]:
-                # Group indices for merger. Add the snode indices for each
-                # merged group to the tree (set).
-                tree.update(group_dict[mgi][0])
-                if mgi == group_i:
-                    print("Error in making tree, group_dict: {}".format(group_dict))
-                    return
-                Sentence.update_tree(group_dict, mgi, tree, depth=depth+1)
+#     @staticmethod
+#     def update_tree(group_dict, group_i, tree, depth=0):
+#         """
+#         Update a tree (a set of snode indices) for the group with index group_i
+#         by searching for merged groups and their trees in group_dict.
+#         """
+# #        print("** Updating tree {}, group {}, dict {}, depth {}".format(tree, group_i, group_dict, depth))
+#         if depth > 3:
+#             print("Infinite loop!")
+#             return
+#         if not group_dict[group_i][1]:
+#             # Nothing to merge for this group
+#             return
+#         else:
+#             for mgi in group_dict[group_i][1]:
+#                 # Group indices for merger. Add the snode indices for each
+#                 # merged group to the tree (set).
+#                 tree.update(group_dict[mgi][0])
+#                 if mgi == group_i:
+#                     print("Error in making tree, group_dict: {}".format(group_dict))
+#                     return
+#                 Sentence.update_tree(group_dict, mgi, tree, depth=depth+1)
+
+    #######
+    ###    NEW SEGMENTATION.
+    #######
+
+    def get_group_indices(self):
+        """
+        Sentence GInsts, their SNode indices, and raw token indices.
+        Return a dict of perfectly coinciding GInsts and a list
+        of overlapping GInsts.
+        """
+        groups = self.groups
+        snode_indices = [tuple(g.sindices[0]) for g in groups]
+        indices = [(si, tuple(flatten([self.nodes[i].raw_indices for i in si]))) for si in snode_indices]
+        gi = list(zip(groups, indices))
+        # group groups by which snode indices they cover
+        i_dct = {}
+        incons = []
+        for group, i in gi:
+            if i in i_dct:
+                i_dct[i].append(group)
+            else:
+                i_dct[i] = [group]
+        # Look for overlap between non-coinciding groups
+        i_list = list(i_dct.items())
+        for index, (indices, grps) in enumerate(i_list[:-1]):
+            indices = indices[0]
+            indices1 = set(indices)
+            for indices2, grps2 in i_list[index+1:]:
+                indices2 = indices2[0]
+                if indices1.intersection(indices2):
+                    incons.append(((grps, indices), (grps2, indices2)))
+        return i_dct, incons
 
     ## Methods to constrain search
 
@@ -1975,7 +2020,8 @@ class Sentence:
 
     def create_segmentation(self, dstore=None, verbosity=0, terse=False):
         """
-        Assuming essential variables are determined in a domain store, make a Segmentation object.
+        Assuming essential variables are determined in a domain store, make a
+        Segmentation object.
         Adds segmentation to self.segmentations and also returns the segmentation.
         """
         dstore = dstore or self.dstore
@@ -2002,33 +2048,39 @@ class Sentence:
         score = ngroups + nuncovered
         # Create trees for each group
         tree_attribs = {}
+#        print("** create segmentation")
         for snindex, sg in enumerate(s2gnodes):
+#            print("**   snindex {} sg {}".format(snindex, sg))
             for gn in sg:
                 gnode = self.gnodes[gn]
                 gn_group = gnode.ginst.index
                 if gn_group not in tree_attribs:
-                    tree_attribs[gn_group] = [[], []]
-                tree_attribs[gn_group][0].append(snindex)
-            if len(sg) == 2:
-                # Record group merger when an snode is associated with two gnodes
-                gn0, gn1 = self.gnodes[sg[0]], self.gnodes[sg[1]]
-                group0, group1 = gn0.ginst.index, gn1.ginst.index
-                if gn0.cat:
-                    # Group for gnode0 is merged with group for gnode1
-                    tree_attribs[group0][1].append(group1)
-                else:
-                    tree_attribs[group1][1].append(group0)
-        for gindex, sn in tree_attribs.items():
-            # First store the group's own tree as a set of sn indices and
-            # the third element of sn
-            sn.append(set(sn[0]))
-            # Next check for mergers
-            Sentence.update_tree(tree_attribs, gindex, sn[2])
+                    tree_attribs[gn_group] = [] # [[]] # [[], []]
+                tree_attribs[gn_group].append(snindex)
+#                print("**    tree_attribs for gng {}: {}".format(gn_group, tree_attribs[gn_group]))
+            # if len(sg) == 2:
+            #     # Record group merger when an snode is associated with two gnodes
+            #     gn0, gn1 = self.gnodes[sg[0]], self.gnodes[sg[1]]
+            #     group0, group1 = gn0.ginst.index, gn1.ginst.index
+            #     if gn0.cat:
+            #         # Group for gnode0 is merged with group for gnode1
+            #         tree_attribs[group0][1].append(group1)
+            #     else:
+            #         tree_attribs[group1][1].append(group0)
+#        print("**  tree_attribs {}".format(tree_attribs))
+        # for gindex, sn in tree_attribs.items():
+        #     # First store the group's own tree as a set of sn indices and
+        #     # the third element of sn
+        #     sn.append(set(sn[0]))
+        #     # Next check for mergers
+#            Sentence.update_tree(tree_attribs, gindex, sn[2])
         # Convert the dict to a list and sort by group indices
-        trees = list(tree_attribs.items())
-        trees.sort(key=lambda x: x[0])
+#        trees = list(tree_attribs.items())
+#        trees.sort(key=lambda x: x[0])
         # Just keep the snode indices in each tree
-        trees = [x[1][2] for x in trees]
+#        trees = [x[1][1] for x in trees]
+        trees = [set(x) for x in tree_attribs.values()]
+#        print("** trees: {}".format(trees))
         # Get the indices of the GNodes for each SNode
         segmentation = Segmentation(self, ginsts, s2gnodes, len(self.segmentations),
                                     trees=trees, dstore=dstore, session=self.session,
@@ -2039,7 +2091,8 @@ class Sentence:
         return segmentation
 
     def get_all_segmentations(self, translate=True, generate=True,
-                              connect=False, html=False, agree_dflt=True, choose=False,
+                              connect=False, html=False, agree_dflt=True,
+                              choose=False, finalize=False,
                               verbosity=0, terse=False):
         """
         After a sentence has been translated and segmented, collect all the
@@ -2069,7 +2122,8 @@ class Sentence:
                         # Realize target morphology
                         segmentation.generate()
                         # Generate the final translation strings and HTML for the GUI
-                        segmentation.finalize_segments(html=html, agree_dflt=agree_dflt, choose=choose)
+                        segmentation.finalize_segments(html=html, agree_dflt=agree_dflt,
+                                                       choose=choose, finalize=finalize)
                 if generate and choose:
                     # Set the final output sentence string.
                     final = ' '.join([seg.final for seg in segmentation.segments])
@@ -2184,6 +2238,7 @@ class Segmentation:
 
     def __init__(self, sentence, ginsts, s2gnodes, index, trees=None,
                  dstore=None, session=None, score=0, terse=True):
+        print("** Creating Segmentation with ginsts {}, trees {}, s2g {}".format(ginsts, trees, s2gnodes))
         self.sentence = sentence
         # Source language
         self.source = sentence.language
@@ -2277,7 +2332,8 @@ class Segmentation:
             self.gnodes_feats.append((gnodes, feats_unified))
         return True
 
-    def make_translations(self, verbosity=0, display=True, all_trans=False, interactive=False,
+    def make_translations(self, verbosity=0, display=True, all_trans=False,
+                          interactive=False,
                           limit_trans=True, choose=False):
         """
         Create a TreeTrans object for each GInst and tree. build() each top
@@ -2585,7 +2641,7 @@ class Segmentation:
     #######
 
     def finalize_segments(self, html=True, user_input=None, agree_dflt=True,
-                          choose=False, verbosity=0):
+                          choose=False, finalize=False, verbosity=0):
         """Set the final strings and morphology for each segment in this segmentation
         and the HTML too if html is True."""
         for i, segment in enumerate(self.segments):
@@ -2601,7 +2657,7 @@ class Segmentation:
                     first = False
         self.do_seg_feat_agreement(user_input=user_input, agree_dflt=agree_dflt,
                                    verbosity=verbosity)
-        if choose:
+        if choose or finalize:
             self.choose_final(html=html, verbosity=verbosity)
 
     def choose_final(self, html=True, verbosity=0):

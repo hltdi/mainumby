@@ -606,9 +606,12 @@ class Group(Entry):
     #         tgroup.trans.append((self, rev_feats))
 
     def reverse_trans(self, sgroup, sfeats):
-        rev_feats = sgroup.reverse_feats(self, sfeats)
         if not self.trans:
             self.trans = []
+        if any([sgroup == sg for sg, ft in self.trans]):
+#            print("*** {} already has trans {}".format(self, sgroup))
+            return
+        rev_feats = sgroup.reverse_feats(self, sfeats)
         self.trans.append((sgroup, rev_feats))
 
     def reverse_feats(self, tgroup, tfeats):
@@ -1256,8 +1259,27 @@ class Group(Entry):
                  trans_strings=tstrings, cat=cat, comment=comment,
                  intervening=intervening)
         if target and not trans:
+            if not g.trans:
+                g.trans = []
+            gt = g.trans
+            if tgroups:
+                if gt:
+                    existing_tg = [t[0] for t in gt]
+                    tgroups = [tg for tg in tgroups if tg[0] not in existing_tg]
+#                    if tgroups:
+#                        print("** Group {} already has trans {}".format(g, [x[0] for x in gt]))
+#                        print("**  adding new tgroups {}".format([t[0] for t in tgroups]))
+                gt.extend(tgroups)
+
+#            if tgroups and g.trans:
+#                print("** Group {} already has trans {}".format(g, g.trans))
+#                print("**  adding {}".format(tgroups))
             # Add translation to source group
-            g.trans = tgroups or []
+#            if not g.trans:
+#                g.trans = []
+#            if tgroups:
+#                g.trans.extend(tgroups)
+#            g.trans = tgroups or []
         if not existing_group:
             # Add group to its language in the appropriate POS groups
             language.add_group(g, posindex=posindex, cat=cat)

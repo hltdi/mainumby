@@ -848,8 +848,7 @@ class SuperSeg(Seg):
 
 class Segment(Seg):
     """
-    Sentence segmentation segment, realization of a Group, possibly merged with
-    another. Displayed in GUI.
+    Sentence segmentation segment, realization of a Group. Displayed in GUI.
     """
 
     def __init__(self, segmentation, indices, translation, tokens, color=None,
@@ -1272,7 +1271,7 @@ class GInst:
 
     def __init__(self, group, sentence, head_index, snode_indices, index):
         # The Group object that this "instantiates"
-#        print("**Creating GInst with snode_indices {}".format(snode_indices))
+        print("**Creating GInst for {} with snode_indices {}".format(group, snode_indices))
         self.group = group
         self.sentence = sentence
         self.source = sentence.language
@@ -1544,6 +1543,13 @@ class TreeTrans:
                  gnode_dict=None, group_attribs=None,
                  # Whether the tree has any abstract nodes (to merge with concrete nodes)
                  any_anode=False, index=0, top=False, verbosity=0):
+        print("** Creating TT for GI {} with tree {}".format(ginst, tree))
+#        print("**  GNode dict")
+#        for x, y in gnode_dict.items():
+#            print("   {} : {}".format(x, y))
+        print("**  Group attribs")
+        for ga in group_attribs:
+            print("   {}".format(ga))
         # The segmentation generating this translation
         self.segmentation = segmentation
         self.source = segmentation.source

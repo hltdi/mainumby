@@ -54,8 +54,6 @@
 ->grn ãngatu_n ; 0==0 n:n,poses:poses
 ** alma_n de los difuntos ; ^ alma_n 0 ; #285
 ->grn ayvu_n porãgue ; 0==0 n:n,poses:poses
-** alma_n de difunto ; ^ alma_n 0 ; #285
-->grn angue_n ; 0==0 n:n,poses:poses
 ** alma_n del porgatorio ; ^ alma_n 0 ; #285
 ->grn ãnga_n hoverehapegua ; 0==0 n:n,poses:poses
 ** alma_n del difunto ; ^ alma_n 0 ; #285
@@ -180,10 +178,9 @@
 ->grn ã_n ; 0==0 n:n,poses:poses ; #292
 ->grn pore'ỹ_n ; 0==0 n:n,poses:poses ; #3
 ->grn piã_n ; 0==0 n:n,poses:poses ; #3
-** ayuda_n mutua ; ^ ayuda_n 0 ; #32
-->grn jekopyty_n ; 0==0 n:n,poses:poses
 ** ayuda_n mútua ; ^ ayuda_n 0 ; #32
 ->grn mínga_n ; 0==0 n:n,poses:poses
+->grn jekopyty_n ; 0==0 n:n,poses:poses
 ** ayuda_n ; ^ ayuda_n 0 ; #32
 ->grn ñepytyvõ_n ; 0==0 n:n,poses:poses ; #12
 ->grn pysyrõ_n ; 0==0 n:n,poses:poses ; #36
@@ -959,7 +956,6 @@
 ** ganado_n ; ^ ganado_n 0 ; #78
 ->grn <hymba_n ; 0==0 n:n,poses:poses ; #95
 ->grn mymbakuéra_n ; 0==0 n:n,poses:poses ; #26
-->grn <hymba_n ; 0==0 n:n,poses:poses ; #95
 ** gente_n de la chacra ; ^ gente_n 0 ; #216
 ->grn koygua_n ; 0==0 n:n,poses:poses
 ** gente_n del mar ; ^ gente_n 0 ; #216
@@ -1214,8 +1210,6 @@
 ** juicio_n ; ^ juicio_n 0 ; #182
 ->grn akã_n ; 0==0 n:n,poses:poses ; #168
 ->grn apytu'ũ_n ; 0==0 n:n,poses:poses ; #33
-** lado_n derecho ; ^ lado_n 0 ; #219
-->grn akatúa_n ; 0==0 n:n,poses:poses
 ** lado_n ; ^ lado_n 0 ; #219
 ->grn yke_n ; 0==0 n:n,poses:poses ; #62
 ->grn <hova_n ; 0==0 n:n,poses:poses ; #59
@@ -2026,7 +2020,6 @@
 ->grn mbarakaja_n kupy ; 0==0 n:n,poses:poses
 ** situación_n ; ^ situación_n 0 ; #6
 ->grn <heko_n ; 0==0 n:n,poses:poses ; #858
-->grn <heko_n ; 0==0 n:n,poses:poses ; #858
 ** solicitud_n ; ^ solicitud_n 0 ; #6
 ->grn jerure_n ; 0==0 n:n,poses:poses ; #196
 ->grn <hembijerure_n ; 0==0 n:n,poses:poses
@@ -2328,8 +2321,6 @@
 ->grn kakaha_n ; 0==0 n:n,poses:poses ; #2
 ** abanderado_n ; ^ abanderado_n 0
 ->grn aoveverekoha_n ; 0==0 n:n,poses:poses
-** abandono_n mutuo ; ^ abandono_n 0
-->grn jueja_n ; 0==0 n:n,poses:poses
 ** abandono_n ; ^ abandono_n 0
 ->grn piã_n ; 0==0 n:n,poses:poses
 ** abanico_n ; ^ abanico_n 0
@@ -2632,8 +2623,6 @@
 ->grn jererohory_n ; 0==0 n:n,poses:poses
 ->grn techaramo_n ; 0==0 n:n,poses:poses
 ->grn juruhe'ẽ_n ; 0==0 n:n,poses:poses ; #2
-** agente_n de policía ; ^ agente_n 0
-->grn tahachi_n ; 0==0 n:n,poses:poses
 ** agilidad_n ; ^ agilidad_n 0
 ->grn pyryrỹi_n ; 0==0 n:n,poses:poses
 ** agitación_n ; ^ agitación_n 0
@@ -2690,6 +2679,7 @@
 ->grn amandykyre_n ; 0==0 n:n,poses:poses
 ** agua_n de lluvia ; ^ agua_n 0
 ->grn amandy_n ; 0==0 n:n,poses:poses
+->grn amandykyre_n ; ^ amandykyre_n 0 ; || 0, -1, -1
 ** agua_n del mbutu ; ^ agua_n 0
 ->grn mbutuy_n ; 0==0 n:n,poses:poses
 ** agua_n de bañado ; ^ agua_n 0
@@ -2740,8 +2730,6 @@
 ->grn asukary_n ; 0==0 n:n,poses:poses
 ** agua_n dulce ; ^ agua_n 0
 ->grn yhe'ẽ_n ; 0==0 n:n,poses:poses
-** agua_n caliente ; ^ agua_n 0
-->grn ytaku_n ; 0==0 n:n,poses:poses
 ** agua_n chupada ; ^ agua_n 0
 ->grn ypague_n ; 0==0 n:n,poses:poses
 ** agua_n pura ; ^ agua_n 0
@@ -3017,8 +3005,6 @@
 ->grn amaporu_n ; 0==0 n:n,poses:poses
 ** alzada_n de cabeza ; ^ alzada_n 0
 ->grn akãupi_n ; 0==0 n:n,poses:poses
-** ama_n de casa ; ^ ama_n 0
-->grn machu_n ; 0==0 n:n,poses:poses
 ** ama_n ; ^ ama_n 0
 ->grn kuñakarai_n ; 0==0 n:n,poses:poses
 ** amabilidad_n ; ^ amabilidad_n 0
@@ -3305,6 +3291,7 @@
 ->grn maitei_n ; 0==0 n:n,poses:poses
 ->grn jepojopy_n ; 0==0 n:n,poses:poses
 ->grn popyhy_n ; 0==0 n:n,poses:poses
+->grn pojopy_n ; ^ pojopy_n 0 ; || 0, -1, -1
 ** aprieto_n ; ^ aprieto_n 0 ; #5
 ->grn jejopy_n ; 0==0 n:n,poses:poses ; #19
 ->grn jejopyvai_n ; 0==0 n:n,poses:poses
@@ -3399,14 +3386,10 @@
 ->grn tujujehe'a_n ; 0==0 n:n,poses:poses
 ** argolla_n ; ^ argolla_n 0
 ->grn apu'a_n ; 0==0 n:n,poses:poses
-** arma_n de fuego como escopeta ; ^ arma_n 0
-->grn mboka_n ; 0==0 n:n,poses:poses
 ** arma_n de fuego portatil ; ^ arma_n 0
 ->grn mboka'i_n ; 0==0 n:n,poses:poses
 ** arma_n de grueso calibre ; ^ arma_n 0
 ->grn mbokaguasu_n ; 0==0 n:n,poses:poses
-** arma_n de fuego ; ^ arma_n 0
-->grn mboka_n ; 0==0 n:n,poses:poses
 ** arma_n ; ^ arma_n 0
 ->grn mboka_n ; 0==0 n:n,poses:poses
 ** armadillo_n mulita grande ; ^ armadillo_n 0
@@ -3855,6 +3838,7 @@
 ->grn ambota_n ; 0==0 n:n,poses:poses
 ** barba_n de maíz ; ^ barba_n 0 ; #15
 ->grn avati_n ava ; 0==0 n:n,poses:poses
+->grn atĩ_n ; ^ atĩ_n 0 ; || 0, -1, -1
 ** barba_n larga ; ^ barba_n 0 ; #15
 ->grn <hendyva_n vuku ; 0==0 n:n,poses:poses ; #10
 ** barba_n ; ^ barba_n 0 ; #15
@@ -3991,8 +3975,6 @@
 ->grn <hymba_n ; 0==0 n:n,poses:poses
 ** biblia_n ; ^ biblia_n 0
 ->grn ñandejára_n ñe'ẽ ; 0==0 n:n,poses:poses
-** bicho_n de luz ; ^ bicho_n 0
-->grn muã_n ; 0==0 n:n,poses:poses
 ** bicho_n colorado ; ^ bicho_n 0
 ->grn kũi'i_n ; 0==0 n:n,poses:poses
 ** bicicleta_n ; ^ bicicleta_n 0
@@ -4163,8 +4145,6 @@
 ->grn ao_n rembe'y ; 0==0 n:n,poses:poses
 ** borde_n del plato ; ^ borde_n 0 ; #18
 ->grn ña'ẽrembe_n ; 0==0 n:n,poses:poses
-** borde_n saliente ; ^ borde_n 0 ; #18
-->grn pepo_n ; 0==0 n:n,poses:poses
 ** borde_n ; ^ borde_n 0 ; #18
 ->grn <hembe_n ; 0==0 n:n,poses:poses ; #20
 ->grn <hembe'y_n ; 0==0 n:n,poses:poses ; #56
@@ -4377,8 +4357,6 @@
 ->grn áva_n vuku ; 0==0 n:n,poses:poses ; #89
 ** cabello_n[n=1] enrulados ; ^ cabello_n 0
 ->grn áva_n chororĩ ; 0==0 n:n,poses:poses ; #89
-** cabello_n canoso ; ^ cabello_n 0 ; #30
-->grn akãtĩ_n ; 0==0 n:n,poses:poses
 ** cabello_n desgreñado ; ^ cabello_n 0 ; #30
 ->grn akãravichãi_n ; 0==0 n:n,poses:poses
 ** cabello_n abundante ; ^ cabello_n 0 ; #30
@@ -4519,8 +4497,6 @@
 ->grn mbopytu'uha_n ; 0==0 n:n,poses:poses
 ** tener_v[-r] calor_n ; ^ calor_n 1
 ->grn mbyry'ái_v[cat=che] ; ^ mbyry'ái_v 0 ; || 0, -1 ; 0==0 n:ns,p:ps,tm:tmp,asp:asp,neg:neg
-** calor_n interior ; ^ calor_n 0
-->grn py'araku_n ; 0==0 n:n,poses:poses
 ** calor_n grande ; ^ calor_n 0
 ->grn hakuvo_n ; 0==0 n:n,poses:poses
 ** calor_n sofocante ; ^ calor_n 0
@@ -4689,7 +4665,6 @@
 ->grn japeusa_n ; 0==0 n:n,poses:poses
 ** canilla_n de la pierna ; ^ canilla_n 0
 ->grn kupy_n ; 0==0 n:n,poses:poses
-->grn kupy_n ; 0==0 n:n,poses:poses
 ** canilla_n de las piernas ; ^ canilla_n 0
 ->grn tymakã_n ; 0==0 n:n,poses:poses
 ** canilla_n ; ^ canilla_n 0
@@ -4737,8 +4712,6 @@
 ->grn guyra_n sapukái ; 0==0 n:n,poses:poses
 ** canto_n de tabla ; ^ canto_n 0 ; #11
 ->grn apipẽ_n ; 0==0 n:n,poses:poses
-** canto_n del gallo ; ^ canto_n 0 ; #11
-->grn tokoro'o_n ; 0==0 n:n,poses:poses
 ** canto_n del sapo ; ^ canto_n 0 ; #11
 ->grn kururu_n ñe'ẽ ; 0==0 n:n,poses:poses
 ** canto_n rodado ; ^ canto_n 0 ; #11
@@ -5041,12 +5014,8 @@
 ->grn taguato_n resay ; 0==0 n:n,poses:poses
 ** caña_n de mimbre ; ^ caña_n 0
 ->grn takuapi_n ; 0==0 n:n,poses:poses
-** caña_n de azúcar ; ^ caña_n 0
-->grn takuare'ẽ_n ; 0==0 n:n,poses:poses
 ** caña_n fístula ; ^ caña_n 0
 ->grn taperyvaete_n ; 0==0 n:n,poses:poses
-** caña_n dulce ; ^ caña_n 0
-->grn takuare'ẽ_n ; 0==0 n:n,poses:poses
 ** caña_n paraguaya ; ^ caña_n 0
 ->grn guari_n ; 0==0 n:n,poses:poses
 ->grn guaripóla_n ; 0==0 n:n,poses:poses
@@ -5646,7 +5615,6 @@
 ** comida_n moderna ; ^ comida_n 0 ; #61
 ->grn <hembi'u_n ko'aĝagua ; 0==0 n:n,poses:poses ; #184
 ** comida_n dada ; ^ comida_n 0 ; #61
-->grn <hembi'ume'ẽ_n ; 0==0 n:n,poses:poses
 ->grn <hembi'ume'ẽ_n ; 0==0 n:n,poses:poses
 ** comida_n hecha ; ^ comida_n 0 ; #61
 ->grn <hembi'uapo_n ; 0==0 n:n,poses:poses
@@ -6525,8 +6493,6 @@
 ->grn ñe'ẽmondo_n ; 0==0 n:n,poses:poses
 ** dedo_n tullido de la mano ; ^ dedo_n 0
 ->grn kuãchapĩ_n ; 0==0 n:n,poses:poses
-** dedo_n de la mano ; ^ dedo_n 0
-->grn kuã_n ; 0==0 n:n,poses:poses
 ** dedo_n del pie ; ^ dedo_n 0
 ->grn pysã_n ; 0==0 n:n,poses:poses
 ** dedo_n anular ; ^ dedo_n 0
@@ -7513,7 +7479,6 @@
 ** escozor_n de la garganta ; ^ escozor_n 0
 ->grn ahy'oko'õ_n ; 0==0 n:n,poses:poses
 ** escozor_n en los ojos ; ^ escozor_n 0
-->grn <hesako'õ_n ; 0==0 n:n,poses:poses
 ->grn <hesako'õ_n ; 0==0 n:n,poses:poses
 ** escozor_n ; ^ escozor_n 0
 ->grn ko'õ_n ; 0==0 n:n,poses:poses ; #5
@@ -8973,10 +8938,6 @@
 ->grn ñekytĩ_n ; 0==0 n:n,poses:poses ; #9
 ->grn jejapi_n ; 0==0 n:n,poses:poses ; #12
 ->grn ai_n ; 0==0 n:n,poses:poses ; #24
-** hermana_n menor de la mujer ; ^ hermana_n 0
-->grn kypy'y_n ; 0==0 n:n,poses:poses
-** hermana_n mayor de la mujer ; ^ hermana_n 0
-->grn ryke_n ; 0==0 n:n,poses:poses
 ** hermana_n de la madre ; ^ hermana_n 0
 ->grn sy'y_n ; 0==0 n:n,poses:poses
 ** hermana_n del varón ; ^ hermana_n 0
@@ -8997,12 +8958,6 @@
 ->grn ryke_n ; 0==0 n:n,poses:poses
 ** hermanamiento_n ; ^ hermanamiento_n 0
 ->grn joyke'y_n ; 0==0 n:n,poses:poses
-** hermano_n de la mujer ; ^ hermano_n 0
-->grn kyvy_n ; 0==0 n:n,poses:poses
-** hermano_n mayor del varón ; ^ hermano_n 0
-->grn ryke'y_n ; 0==0 n:n,poses:poses
-** hermano_n menor del varón ; ^ hermano_n 0
-->grn ryvy_n ; 0==0 n:n,poses:poses
 ** hermano_n de la madre ; ^ hermano_n 0
 ->grn tuty_n ; 0==0 n:n,poses:poses
 ** hermano_n[n=1] entre sí ; ^ hermano_n 0
@@ -9012,8 +8967,6 @@
 ** hermano_n menor ; ^ hermano_n 0
 ->grn kyvy_n ; 0==0 n:n,poses:poses
 ->grn ryvy_n ; 0==0 n:n,poses:poses
-** hermano_n mayor ; ^ hermano_n 0
-->grn kyvy_n ; 0==0 n:n,poses:poses
 ->grn ryke'y_n ; 0==0 n:n,poses:poses
 ** hermano_n[n=1] ; ^ hermano_n 0
 ->grn joyke'y_n ; 0==0 poses:poses
@@ -10651,6 +10604,7 @@
 ** mango_n de mortero ; ^ mango_n 0
 ->grn angu'a'ýva_n ; 0==0 n:n,poses:poses
 ->grn avatisoka_n ; 0==0 n:n,poses:poses
+->grn soka_n ; ^ soka_n 0 ; 0==0 n:n,poses:poses
 ** mani_n ; ^ mani_n 0
 ->grn amanduvi_n ; 0==0 n:n,poses:poses
 ** manifestación_n ; ^ manifestación_n 0
@@ -11086,8 +11040,6 @@
 ->grn eíra_n ; 0==0 n:n,poses:poses
 ** miel_n en general ; ^ miel_n 0
 ->grn ei_n ; 0==0 n:n,poses:poses
-** miel_n de abeja ; ^ miel_n 0
-->grn eirete_n ; 0==0 n:n,poses:poses
 ** miel_n espesa ; ^ miel_n 0
 ->grn eíra_n apatajy ; 0==0 n:n,poses:poses
 ** miel_n verdadera ; ^ miel_n 0
@@ -11193,8 +11145,6 @@
 ->grn <hekoherã_n ; 0==0 n:n,poses:poses
 ** modista_n ; ^ modista_n 0
 ->grn mbovyvyhára_n ; 0==0 n:n,poses:poses
-** del mismo modo_n ; ^ modo_n 2
-->grn peteĩcha_n ; 0==0 n:n,poses:poses
 ** modo_n ; ^ modo_n 0
 ->grn <heko_n ; 0==0 n:n,poses:poses
 ** mofa_n ; ^ mofa_n 0
@@ -12125,9 +12075,6 @@
 ** oscuridad_n ; ^ oscuridad_n 0 ; #30
 ->grn pytũ_n ; 0==0 n:n,poses:poses ; #68
 ->grn ypytũ_n ; 0==0 n:n,poses:poses ; #14
-** oso_n hormiguero ; ^ oso_n 0
-->grn jurumi_n ; 0==0 n:n,poses:poses
-->grn kumirĩ_n ; 0==0 n:n,poses:poses
 ** ostentación_n ; ^ ostentación_n 0
 ->grn jekuaauka_n ; 0==0 n:n,poses:poses ; #4
 ->grn jehechauka_n ; 0==0 n:n,poses:poses
@@ -12255,8 +12202,6 @@
 ->grn <hokái_n ; 0==0 n:n,poses:poses
 ** palito_n ; ^ palito_n 0
 ->grn yvyra'i_n ; 0==0 n:n,poses:poses
-** palma_n de la mano ; ^ palma_n 0
-->grn popyte_n ; 0==0 n:n,poses:poses
 ** palmada_n ; ^ palmada_n 0
 ->grn jepopete_n ; 0==0 n:n,poses:poses ; #15
 ->grn pete_n ; 0==0 n:n,poses:poses ; #76
@@ -12270,7 +12215,8 @@
 ->grn ãmba'y_n pytã ; 0==0 n:n,poses:poses
 ** palo_n de mortero ; ^ palo_n 0
 ->grn angu'a'ýva_n ; 0==0 n:n,poses:poses
-->grn avatisoka_n ; 0==0 n:n,poses:poses
+->grn soka_n ; ^ soka_n 0 ; || 0, -1, -1
+->grn avatisoka_n ; ^ avatisoka_n 0 ; || 0, -1, -1
 ** palo_n del mortero ; ^ palo_n 0
 ->grn soka_n ; 0==0 n:n,poses:poses
 ** palo_n para arco ; ^ palo_n 0
@@ -12349,8 +12295,6 @@
 ** panza_n ; ^ panza_n 0
 ->grn <hyepo_n ; 0==0 n:n,poses:poses
 ->grn <hye_n ; 0==0 n:n,poses:poses ; #125
-** papa_n dulce ; ^ papa_n 0
-->grn jety_n ; 0==0 n:n,poses:poses
 ** papa_n ; ^ papa_n 0
 ->grn yvy'a_n ; 0==0 n:n,poses:poses ; #2
 ->grn ru_n ; 0==0 n:n,poses:poses ; #1049
@@ -12657,7 +12601,6 @@
 ->grn mitãpohãnohára_n ; 0==0 n:n,poses:poses
 ** pedido_n ; ^ pedido_n 0 ; #6
 ->grn jerure_n ; 0==0 n:n,poses:poses ; #196
-->grn <hembijerure_n ; 0==0 n:n,poses:poses
 ->grn <hembijerure_n ; 0==0 n:n,poses:poses
 ** pedo_n ; ^ pedo_n 0
 ->grn pyno_n ; 0==0 n:n,poses:poses
@@ -13953,7 +13896,6 @@
 ** reclamo_n ; ^ reclamo_n 0 ; #1
 ->grn jerure_n ; 0==0 n:n,poses:poses ; #196
 ->grn <hembijerure_n ; 0==0 n:n,poses:poses
-->grn <hembijerure_n ; 0==0 n:n,poses:poses
 ** reclusión_n ; ^ reclusión_n 0
 ->grn pysy_n ; 0==0 n:n,poses:poses
 ** recluta_n ; ^ recluta_n 0
@@ -14564,8 +14506,6 @@
 ->grn juky_n ; 0==0 n:n,poses:poses
 ** sala_n destinada a conferencias ; ^ sala_n 0
 ->grn kotyñehendurã_n ; 0==0 n:n,poses:poses
-** sala_n de clase ; ^ sala_n 0
-->grn mbo'ehakoty_n ; 0==0 n:n,poses:poses
 ** sala_n ; ^ sala_n 0
 ->grn kotyĝuahẽha_n ; 0==0 n:n,poses:poses
 ** salamandra_n ; ^ salamandra_n 0
@@ -15557,8 +15497,6 @@
 ->grn jaguarete_n ; 0==0 n:n,poses:poses ; #75
 ** tigre_n overo ; ^ tigre_n 0
 ->grn jaguane_n ; 0==0 n:n,poses:poses
-** tigre_n amaricano ; ^ tigre_n 0
-->grn jaguarete_n pope ; 0==0 n:n,poses:poses ; #75
 ** tigre_n pequeño ; ^ tigre_n 0
 ->grn jaguarete_n ra'y ; 0==0 n:n,poses:poses ; #75
 ** tigre_n ; ^ tigre_n 0
@@ -16510,8 +16448,6 @@
 ->grn mbói_n hovy ; 0==0 n:n,poses:poses
 ** víbora_n de cascabel ; ^ víbora_n 0
 ->grn mbói_n chini ; 0==0 n:n,poses:poses
-** víbora_n venenosa ; ^ víbora_n 0
-->grn jarara_n ; 0==0 n:n,poses:poses
 ** víbora_n ; ^ víbora_n 0
 ->grn mbói_n ; 0==0 n:n,poses:poses
 ** víspera_n ; ^ víspera_n 0
@@ -16837,10 +16773,6 @@
 ->grn tahachi_n ; ^ tahachi_n 0 ; || 0, -1, -1
 ** agua_n caliente ; ^ agua_n 0
 ->grn ytaku_n ; ^ ytaku_n 0 ; || 0, -1
-** agua_n caliente ; ^ agua_n 0
-->grn ytaku_n ; ^ ytaku_n 0 ; || 0, -1
-** agua_n de lluvia ; ^ agua_n 0
-->grn amandykyre_n ; ^ amandykyre_n 0 ; || 0, -1, -1
 ** agua_n salada ; ^ agua_n 0
 ->grn jukyry_n ; ^ jukyry_n 0 ; || 0, -1
 ** agudeza_n visual ; ^ agudeza_n 0
@@ -16874,24 +16806,14 @@
 ->grn ekueléra_n ; ^ ekueléra_n 0 ; || 0, -1, -1, -1
 ** alumno_n de la escuela ; ^ alumno_n 0
 ->grn ekueléro_n ; ^ ekueléro_n 0 ; || 0, -1, -1, -1
-** ama de casa_n ; ^ casa_n 2
-->grn machu_n ; ^ machu_n 0 ; || -1, -1, 0
 ** ama_n de casa ; ^ ama_n 0
 ->grn machu_n ; ^ machu_n 0 ; || 0, -1, -1
-** amor_n mutuo ; ^ amor_n 0
-->grn joayhu_n ; ^ joayhu_n 0 ; || 0, -1
-** animal_n doméstico ; ^ animal_n 0
-->grn mymba_n ; ^ mymba_n 0 ; || 0, -1
 ** aparición de ultratumba_n ; ^ ultratumba_n 2
 ->grn póra_n ; ^ póra_n 0 ; || -1, -1, 0
-** apretón_n de manos ; ^ apretón_n 0
-->grn pojopy_n ; ^ pojopy_n 0 ; || 0, -1, -1
 ** apunte_n en papel ; ^ apunte_n 0
 ->grn jehaipyre_n ; ^ jehaipyre_n 0 ; || 0, -1, -1
 ** arcilla_n blanca ; ^ arcilla_n 0
 ->grn tujutĩ_n ; ^ tujutĩ_n 0 ; || 0, -1
-** arma de fuego_n ; ^ fuego_n 2
-->grn mboka_n ; ^ mboka_n 0 ; || -1, -1, 0
 ** arma_n blanca ; ^ arma_n 0
 ->grn kyse_n ; ^ kyse_n 0 ; || 0, -1
 ** arma_n de fuego ; ^ arma_n 0
@@ -16900,16 +16822,10 @@
 ->grn guahu_n ; ^ guahu_n 0 ; || 0, -1, -1
 ** ausencia de dolor_n ; ^ dolor_n 2
 ->grn tasy'ỹ_n ; ^ tasy'ỹ_n 0 ; || -1, -1, 0
-** ayuda_n mutua ; ^ ayuda_n 0
-->grn mínga_n ; ^ mínga_n 0 ; || 0, -1
 ** baja estatura_n ; ^ estatura_n 1
 ->grn karapakue_n ; ^ karapakue_n 0 ; || -1, 0
 ** bala_n perdida ; ^ bala_n 0
 ->grn saijovy_n ; ^ saijovy_n 0 ; || 0, -1
-** barba_n de maíz ; ^ barba_n 0
-->grn atĩ_n ; ^ atĩ_n 0 ; || 0, -1, -1
-** barbas de maíz_n ; ^ maíz_n 2
-->grn atĩ_n ; ^ atĩ_n 0 ; || -1, -1, 0
 ** barrio_n marginal ; ^ barrio_n 0
 ->grn añaretã'i_n ; ^ añaretã'i_n 0 ; || 0, -1
 ** bicho_n de luz ; ^ bicho_n 0
@@ -16976,8 +16892,6 @@
 ->grn tokoro'o_n ; ^ tokoro'o_n 0 ; || 0, -1, -1
 ** cara_n de una cosa ; ^ cara_n 0
 ->grn terekua_n ; ^ terekua_n 0 ; || 0, -1, -1, -1
-** casa_n abandonada ; ^ casa_n 0
-->grn tapere_n ; ^ tapere_n 0 ; || 0, -1
 ** caída_n de agua ; ^ caída_n 0
 ->grn ytu_n ; ^ ytu_n 0 ; || 0, -1, -1
 ->grn ytororõ_n ; ^ ytororõ_n 0 ; || 0, -1, -1
@@ -17029,16 +16943,12 @@
 ->grn kandial_n ; ^ kandial_n 0 ; || 0, -1, -1
 ** cuartel de policía_n ; ^ policía_n 2
 ->grn tahachio_n ; ^ tahachio_n 0 ; || -1, -1, 0
-** cuello_n duro ; ^ cuello_n 0
-->grn ajuratã_n ; ^ ajuratã_n 0 ; || 0, -1
 ** cuenca del ojo_n ; ^ ojo_n 2
 ->grn tesakua_n ; ^ tesakua_n 0 ; || -1, -1, 0
 ** cuero de vaca_n ; ^ vaca_n 2
 ->grn vakapi_n ; ^ vakapi_n 0 ; || -1, -1, 0
 ** cuero_n cabelludo ; ^ cuero_n 0
 ->grn api_n ; ^ api_n 0 ; || 0, -1
-** cuero_n vacuno ; ^ cuero_n 0
-->grn vakapi_n ; ^ vakapi_n 0 ; || 0, -1
 ** cuesta_n abajo ; ^ cuesta_n 0
 ->grn yvyguejy_n ; ^ yvyguejy_n 0 ; || 0, -1
 ** cuesta_n arriba ; ^ cuesta_n 0
@@ -17092,28 +17002,16 @@
 ->grn mandi_n ; ^ mandi_n 0 ; || -1, -1, 0
 ** declaración_n de amor ; ^ declaración_n 0
 ->grn ñemongeta_n ; ^ ñemongeta_n 0 ; || 0, -1, -1
-** dedo de la mano_n ; ^ mano_n 3
-->grn kuã_n ; ^ kuã_n 0 ; || -1, -1, -1, 0
 ** dedo del pie_n ; ^ pie_n 2
 ->grn pysã_n ; ^ pysã_n 0 ; || -1, -1, 0
 ** dedo_n de la mano ; ^ dedo_n 0
 ->grn kuã_n ; ^ kuã_n 0 ; || 0, -1, -1, -1
-** dedo_n del pie ; ^ dedo_n 0
-->grn pysã_n ; ^ pysã_n 0 ; || 0, -1, -1
 ** dedo_n mayor ; ^ dedo_n 0
 ->grn kuámbyte_n ; ^ kuámbyte_n 0 ; || 0, -1
-** dedo_n meñique ; ^ dedo_n 0
-->grn kuã'i_n ; ^ kuã'i_n 0 ; || 0, -1
 ** dedo_n pulgar de la mano ; ^ dedo_n 0
 ->grn kuãngusu_n ; ^ kuãngusu_n 0 ; || 0, -1, -1, -1, -1
-** dedo_n índice ; ^ dedo_n 0
-->grn kuãmbo'e_n ; ^ kuãmbo'e_n 0 ; || 0, -1
 ** defecto_n físico ; ^ defecto_n 0
 ->grn meguã_n ; ^ meguã_n 0 ; || 0, -1
-** del mismo modo_n ; ^ modo_n 2
-->grn peteĩcha_n ; ^ peteĩcha_n 0 ; || -1, -1, 0
-** depósito_n de basura ; ^ depósito_n 0
-->grn ytyapy_n ; ^ ytyapy_n 0 ; || 0, -1, -1
 ** deseo_n de beber ; ^ deseo_n 0
 ->grn y'uhéi_n ; ^ y'uhéi_n 0 ; || 0, -1, -1
 ** deseo_n de comer ; ^ deseo_n 0
@@ -17123,10 +17021,6 @@
 ->grn ropehýi_n ; ^ ropehýi_n 0 ; || 0, -1, -1
 ** dolor de cuello_n ; ^ cuello_n 2
 ->grn ajuratã_n ; ^ ajuratã_n 0 ; || -1, -1, 0
-** dolor_n de cabeza ; ^ dolor_n 0
-->grn akãrasy_n ; ^ akãrasy_n 0 ; || 0, -1, -1
-** dolor_n de estómago ; ^ dolor_n 0
-->grn py'arasy_n ; ^ py'arasy_n 0 ; || 0, -1, -1
 ** dolor_n de muelas ; ^ dolor_n 0
 ->grn tãirasy_n ; ^ tãirasy_n 0 ; || 0, -1, -1
 ** dolor_n de vientre ; ^ dolor_n 0
@@ -17183,20 +17077,14 @@
 ->grn poguýpe_n ; ^ poguýpe_n 0 ; || -1, 0, -1
 ** en presencia_n de ; ^ presencia_n 1
 ->grn rovake_n ; ^ rovake_n 0 ; || -1, 0, -1
-** espacio_n intermedio ; ^ espacio_n 0
-->grn pa'ũ_n ; ^ pa'ũ_n 0 ; || 0, -1
 ** esposo_n de la hija ; ^ esposo_n 0
 ->grn tajyme_n ; ^ tajyme_n 0 ; || 0, -1, -1, -1
 ** estómago_n de aves ; ^ estómago_n 0
 ->grn takara'a_n ; ^ takara'a_n 0 ; || 0, -1, -1
 ** falta de visión_n ; ^ visión_n 2
 ->grn techa'ỹ_n ; ^ techa'ỹ_n 0 ; || -1, -1, 0
-** fin del mundo_n ; ^ mundo_n 2
-->grn arakañy_n ; ^ arakañy_n 0 ; || -1, -1, 0
 ** fin_n de los tiempos ; ^ fin_n 0
 ->grn arapaha_n ; ^ arapaha_n 0 ; || 0, -1, -1, -1
-** fin_n del mundo ; ^ fin_n 0
-->grn arakañy_n ; ^ arakañy_n 0 ; || 0, -1, -1
 ** flor de ceibo_n ; ^ ceibo_n 2
 ->grn anai_n ; ^ anai_n 0 ; || -1, -1, 0
 ** fosa_n nasal ; ^ fosa_n 0
@@ -17244,26 +17132,18 @@
 ->grn túke_n ; ^ túke_n 0 ; || 0, -1, -1, -1
 ** gota_n de lluvia ; ^ gota_n 0
 ->grn amandykyre_n ; ^ amandykyre_n 0 ; || 0, -1, -1
-** grado_n escolar ; ^ grado_n 0
-->grn mbo'esyry_n ; ^ mbo'esyry_n 0 ; || 0, -1
 ** grano_n de la cara ; ^ grano_n 0
 ->grn jari'i_n ; ^ jari'i_n 0 ; || 0, -1, -1, -1
 ** habitante_n de la casa ; ^ habitante_n 0
 ->grn ogaygua_n ; ^ ogaygua_n 0 ; || 0, -1, -1, -1
 ** hacha_n de combate ; ^ hacha_n 0
 ->grn akangua_n ; ^ akangua_n 0 ; || 0, -1, -1
-** harina_n de maíz ; ^ harina_n 0
-->grn hu'itĩ_n ; ^ hu'itĩ_n 0 ; || 0, -1, -1
 ** hermana menor_n ; ^ menor_n 1
 ->grn kypy'y_n ; ^ kypy'y_n 0 ; || -1, 0
-** hermana_n del varón ; ^ hermana_n 0
-->grn <heindy_n ; ^ <heindy_n 0 ; || 0, -1, -1
 ** hermana_n mayor de la mujer ; ^ hermana_n 0
 ->grn ryke_n ; ^ ryke_n 0 ; || 0, -1, -1, -1, -1
 ** hermana_n menor de la mujer ; ^ hermana_n 0
 ->grn kypy'y_n ; ^ kypy'y_n 0 ; || 0, -1, -1, -1, -1
-** hermano menor_n ; ^ menor_n 1
-->grn ryvy_n ; ^ ryvy_n 0 ; || -1, 0
 ** hermano_n de la mujer ; ^ hermano_n 0
 ->grn kyvy_n ; ^ kyvy_n 0 ; || 0, -1, -1, -1
 ** hermano_n mayor del varón ; ^ hermano_n 0
@@ -17282,8 +17162,6 @@
 ->grn membyanga_n ; ^ membyanga_n 0 ; || 0, -1, -1, -1
 ** hijastro_n del hombre ; ^ hijastro_n 0
 ->grn ta'yranga_n ; ^ ta'yranga_n 0 ; || 0, -1, -1
-** hijo_n de la mujer ; ^ hijo_n 0
-->grn memby_n ; ^ memby_n 0 ; || 0, -1, -1, -1
 ** hijo_n del hombre ; ^ hijo_n 0
 ->grn ra'y_n ; ^ ra'y_n 0 ; || 0, -1, -1
 ** hilera_n de plantación ; ^ hilera_n 0
@@ -17296,8 +17174,6 @@
 ->grn tuja_n ; ^ tuja_n 0 ; || 0, -1
 ->grn lekaja_n ; ^ lekaja_n 0 ; || 0, -1
 ->grn lepiju_n ; ^ lepiju_n 0 ; || 0, -1
-** hongo_n cutáneo ; ^ hongo_n 0
-->grn uñe_n ; ^ uñe_n 0 ; || 0, -1
 ** hora de la siesta_n ; ^ siesta_n 3
 ->grn asaje_n ; ^ asaje_n 0 ; || -1, -1, -1, 0
 ** hormiga león_n ; ^ león_n 1
@@ -17334,12 +17210,6 @@
 ->grn tyepy_n ; ^ tyepy_n 0 ; || -1, -1, 0
 ** interior_n de la pieza ; ^ interior_n 0
 ->grn kotypy_n ; ^ kotypy_n 0 ; || 0, -1, -1, -1
-** irritación_n de la piel ; ^ irritación_n 0
-->grn joha_n ; ^ joha_n 0 ; || 0, -1, -1, -1
-** juego_n de escondite ; ^ juego_n 0
-->grn koréko_n ; ^ koréko_n 0 ; || 0, -1, -1
-** jugo_n de caña de azúcar ; ^ jugo_n 0
-->grn mósto_n ; ^ mósto_n 0 ; || 0, -1, -1, -1, -1
 ** labio_n partido ; ^ labio_n 0
 ->grn tembevo_n ; ^ tembevo_n 0 ; || 0, -1
 ** lado_n derecho ; ^ lado_n 0
@@ -17369,9 +17239,6 @@
 ** lugar_n de nacimiento ; ^ lugar_n 0
 ->grn válle_n ; ^ válle_n 0 ; || 0, -1, -1
 ->grn mamogua_n ; ^ mamogua_n 0 ; || 0, -1, -1
-** luna_n menguante ; ^ luna_n 0
-->grn jasypaha_n ; ^ jasypaha_n 0 ; || 0, -1
-->grn jasyho_n ; ^ jasyho_n 0 ; || 0, -1
 ** luz_n de las estrellas ; ^ luz_n 0
 ->grn jasyrata_n ; ^ jasyrata_n 0 ; || 0, -1, -1, -1
 ** luz_n de luna ; ^ luz_n 0
@@ -17397,19 +17264,10 @@
 ->grn po'a'ỹ_n ; ^ po'a'ỹ_n 0 ; || -1, 0
 ** mandioca_n seca al sol ; ^ mandioca_n 0
 ->grn popĩ_n ; ^ popĩ_n 0 ; || 0, -1, -1, -1
-** mango_n de mortero ; ^ mango_n 0
-->grn soka_n ; ^ soka_n 0 ; || 0, -1, -1
-->grn avatisoka_n ; ^ avatisoka_n 0 ; || 0, -1, -1
 ** mango_n de utensilio ; ^ mango_n 0
 ->grn ýva_n ; ^ ýva_n 0 ; || 0, -1, -1
 ->grn jyva_n ; ^ jyva_n 0 ; || 0, -1, -1
 ->grn y_n ; ^ y_n 0 ; || 0, -1, -1
-** mano_n de mortero ; ^ mano_n 0
-->grn avatisoka_n ; ^ avatisoka_n 0 ; || 0, -1, -1
-** mano_n derecha ; ^ mano_n 0
-->grn akatúa_n ; ^ akatúa_n 0 ; || 0, -1
-** mano_n izquierda ; ^ mano_n 0
-->grn asu_n ; ^ asu_n 0 ; || 0, -1
 ** medio_n de comunicación ; ^ medio_n 0
 ->grn momaranduha_n ; ^ momaranduha_n 0 ; || 0, -1, -1
 ** medios de comunicación_n ; ^ comunicación_n 2
@@ -17428,14 +17286,10 @@
 ->grn kuñataĩ_n ; ^ kuñataĩ_n 0 ; || 0, -1
 ** mujer_n vieja ; ^ mujer_n 0
 ->grn guaiguĩ_n ; ^ guaiguĩ_n 0 ; || 0, -1
-** murmullo_n de agua ; ^ murmullo_n 0
-->grn yrasẽ_n ; ^ yrasẽ_n 0 ; || 0, -1, -1
 ** murmullo_n de corriente ; ^ murmullo_n 0
 ->grn ngululu_n ; ^ ngululu_n 0 ; || 0, -1, -1
 ** médico_n indígena ; ^ médico_n 0
 ->grn paje_n ; ^ paje_n 0 ; || 0, -1
-** músculo_n del brazo ; ^ músculo_n 0
-->grn mbarakaja_n ; ^ mbarakaja_n 0 ; || 0, -1, -1
 ** músculo_n del brazo ; ^ músculo_n 0
 ->grn mbarakaja_n ; ^ mbarakaja_n 0 ; || 0, -1, -1
 ** nacimiento_n de arroyo ; ^ nacimiento_n 0
@@ -17480,19 +17334,12 @@
 ->grn forĩfo_n ; ^ forĩfo_n 0 ; || 0, -1
 ** palma_n de la mano ; ^ palma_n 0
 ->grn popyte_n ; ^ popyte_n 0 ; || 0, -1, -1, -1
-** palo_n borracho ; ^ palo_n 0
-->grn samu'ũ_n ; ^ samu'ũ_n 0 ; || 0, -1
-** palo_n de mortero ; ^ palo_n 0
-->grn soka_n ; ^ soka_n 0 ; || 0, -1, -1
-->grn avatisoka_n ; ^ avatisoka_n 0 ; || 0, -1, -1
 ** palpitación_n del corazón ; ^ palpitación_n 0
 ->grn py'apopo_n ; ^ py'apopo_n 0 ; || 0, -1, -1
 ->grn py'aperere_n ; ^ py'aperere_n 0 ; || 0, -1, -1
 ** pan_n de almidón y queso ; ^ pan_n 0
 ->grn chipa_n ; ^ chipa_n 0 ; || 0, -1, -1, -1, -1
 ->grn mbeju_n ; ^ mbeju_n 0 ; || 0, -1, -1, -1, -1
-** papa_n dulce ; ^ papa_n 0
-->grn jety_n ; ^ jety_n 0 ; || 0, -1
 ** papel_n escrito ; ^ papel_n 0
 ->grn kuatiañe'ẽ_n ; ^ kuatiañe'ẽ_n 0 ; || 0, -1
 ** paraje_n abandonado ; ^ paraje_n 0
@@ -17512,8 +17359,6 @@
 ->grn soki_n ; ^ soki_n 0 ; || 0, -1, -1
 ** pelo_n de la barba ; ^ pelo_n 0
 ->grn tendyya_n ; ^ tendyya_n 0 ; || 0, -1, -1, -1
-** pelo_n largo ; ^ pelo_n 0
-->grn avuku_n ; ^ avuku_n 0 ; || 0, -1
 ** pelota_n de cuero ; ^ pelota_n 0
 ->grn vakapipopo_n ; ^ vakapipopo_n 0 ; || 0, -1, -1
 ** pez_n dorado ; ^ pez_n 0
@@ -17526,8 +17371,6 @@
 ->grn kurepi_n ; ^ kurepi_n 0 ; || -1, -1, 0
 ** piel_n de cerdo ; ^ piel_n 0
 ->grn kurepi_n ; ^ kurepi_n 0 ; || 0, -1, -1
-** piel_n de vaca ; ^ piel_n 0
-->grn vakapi_n ; ^ vakapi_n 0 ; || 0, -1, -1
 ** piojo_n de aves ; ^ piojo_n 0
 ->grn mymýi_n ; ^ mymýi_n 0 ; || 0, -1, -1
 ** piojo_n de la ropa ; ^ piojo_n 0
@@ -17538,8 +17381,6 @@
 ->grn jerokyha_n ; ^ jerokyha_n 0 ; || 0, -1, -1
 ** pista_n de carrera ; ^ pista_n 0
 ->grn ñeñaniha_n ; ^ ñeñaniha_n 0 ; || 0, -1, -1
-** plantación_n de yerba mate ; ^ plantación_n 2
-->grn ka'aty_n ; ^ ka'aty_n 0 ; || 0, -1, -1, -1
 ** poca cosa_n ; ^ cosa_n 1
 ->grn vyrorei_n ; ^ vyrorei_n 0 ; || -1, 0
 ** polenta de calabaza_n ; ^ calabaza_n 2
@@ -17557,8 +17398,6 @@
 ->grn kiveve_n ; ^ kiveve_n 0 ; || 0, -1, -1, -1, -1
 ** precipitación_n pluvial ; ^ precipitación_n 0
 ->grn ama_n ; ^ ama_n 0 ; || 0, -1
-** prenda_n de vestir ; ^ prenda_n 0
-->grn ao_n ; ^ ao_n 0 ; || 0, -1, -1
 ** producto_n agrícola ; ^ producto_n 0
 ->grn temitỹngue_n ; ^ temitỹngue_n 0 ; || 0, -1
 ->grn kóga'a_n ; ^ kóga'a_n 0 ; || 0, -1
@@ -17569,10 +17408,6 @@
 ->grn ñembo'a_n ; ^ ñembo'a_n 0 ; || 0, -1, -1
 ** pulga_n que entra bajo la piel ; ^ pulga_n 0
 ->grn tũ_n ; ^ tũ_n 0 ; || 0, -1, -1, -1, -1, -1
-** punta del pie_n ; ^ pie_n 2
-->grn pytĩ_n ; ^ pytĩ_n 0 ; || -1, -1, 0
-** punta_n del pie ; ^ punta_n 0
-->grn pytĩ_n ; ^ pytĩ_n 0 ; || 0, -1, -1
 ** punto_n culminante ; ^ punto_n 0
 ->grn hu'ã_n ; ^ hu'ã_n 0 ; || 0, -1
 ** pus de llaga_n ; ^ llaga_n 2
@@ -17584,27 +17419,19 @@
 ->grn havía_n ; ^ havía_n 0 ; || -1, 0
 ** pájaro_n blanco ; ^ pájaro_n 0
 ->grn guyratĩ_n ; ^ guyratĩ_n 0 ; || 0, -1
-** pájaro_n carpintero ; ^ pájaro_n 0
-->grn ypekũ_n ; ^ ypekũ_n 0 ; || 0, -1
 ** qué barbaridad_n ; ^ barbaridad_n 1
 ->grn aihuepéte_n ; ^ aihuepéte_n 0 ; || -1, 0
 ** qué maravilla_n ; ^ maravilla_n 1
 ->grn aihuepéte_n ; ^ aihuepéte_n 0 ; || -1, 0
-** rata_n de agua ; ^ rata_n 0
-->grn kyja_n ; ^ kyja_n 0 ; || 0, -1, -1
 ** raíz de planta_n ; ^ raíz_n 0
 ->grn tapo_n ; ^ tapo_n 0 ; || 0, -1, -1
 ** receta_n ; ^ receta_n 0
 ->grn <hembi'u_n apoukapy ; 0==0 n:n,poses:poses
 ->grn pohã_n apoukapy ; 0==0 n:n,poses:poses
-** recipiente_n para agua ; ^ recipiente_n 0
-->grn ygua_n ; ^ ygua_n 0 ; || 0, -1, -1
 ** reja_n de arado ; ^ reja_n 0
 ->grn jo'oha_n ; ^ jo'oha_n 0 ; || 0, -1, -1
 ** relato_n cómico ; ^ relato_n 0
 ->grn pukarã_n ; ^ pukarã_n 0 ; || 0, -1
-** remolino_n de agua ; ^ remolino_n 0
-->grn yjere_n ; ^ yjere_n 0 ; || 0, -1, -1
 ** residuo de miel_n ; ^ miel_n 2
 ->grn guarápo_n ; ^ guarápo_n 0 ; || -1, -1, 0
 ** residuo de tabaco_n ; ^ tabaco_n 2
@@ -17653,23 +17480,14 @@
 ->grn paje_n ; ^ paje_n 0 ; || 0, -1
 ** sala_n de clase ; ^ sala_n 0
 ->grn mbo'ehakoty_n ; ^ mbo'ehakoty_n 0 ; || 0, -1, -1
-** salto_n de agua ; ^ salto_n 0
-->grn ytu_n ; ^ ytu_n 0 ; || 0, -1, -1
-->grn ytororõ_n ; ^ ytororõ_n 0 ; || 0, -1, -1
 ** salto_n mortal ; ^ salto_n 0
 ->grn ñeakãtĩparo_n ; ^ ñeakãtĩparo_n 0 ; || 0, -1
-** salón_n de baile ; ^ salón_n 0
-->grn jerokyha_n ; ^ jerokyha_n 0 ; || 0, -1, -1
 ** savia_n lechosa ; ^ savia_n 0
 ->grn kambysy_n ; ^ kambysy_n 0 ; || 0, -1
 ** sensación de muerte_n ; ^ muerte_n 2
 ->grn py'aropu_n ; ^ py'aropu_n 0 ; || -1, -1, 0
 ** signo_n de exclamación ; ^ signo_n 0
 ->grn kyndýi_n ; ^ kyndýi_n 0 ; || 0, -1, -1
-** signo_n de interrogación ; ^ signo_n 0
-->grn kyporandu_n ; ^ kyporandu_n 0 ; || 0, -1, -1
-** silla_n de montar ; ^ silla_n 0
-->grn apéro_n ; ^ apéro_n 0 ; || 0, -1, -1
 ** sin cola_n ; ^ cola_n 1
 ->grn guevi_n ; ^ guevi_n 0 ; || -1, 0
 ->grn koli_n ; ^ koli_n 0 ; || -1, 0
@@ -17708,10 +17526,6 @@
 ->grn aopo'i_n ; ^ aopo'i_n 0 ; || 0, -1
 ** tendón_n de ; ^ tendón_n 0
 ->grn aquiles_n ; ^ aquiles_n 0 ; || 0, -1
-** tiempo_n lluvioso ; ^ tiempo_n 0
-->grn amandy_n ; ^ amandy_n 0 ; || 0, -1
-** tigre_n americano ; ^ tigre_n 0
-->grn jaguarete_n ; ^ jaguarete_n 0 ; || 0, -1
 ** tipo_n de ; ^ tipo_n 0
 ->grn lája_n ; ^ lája_n 0 ; || 0, -1
 ** tomar refección_n ; ^ refección_n 1
@@ -17727,12 +17541,6 @@
 ->grn korõ_n ; ^ korõ_n 0 ; || 0, -1, -1
 ** trompa_n de elefante ; ^ trompa_n 0
 ->grn tĩmbuku_n ; ^ tĩmbuku_n 0 ; || 0, -1, -1
-** tía_n materna ; ^ tía_n 0
-->grn sy'y_n ; ^ sy'y_n 0 ; || 0, -1
-** tío_n materno ; ^ tío_n 0
-->grn tuty_n ; ^ tuty_n 0 ; || 0, -1
-** tío_n paterno ; ^ tío_n 0
-->grn tuvy_n ; ^ tuvy_n 0 ; || 0, -1
 ** uña del pie_n ; ^ pie_n 2
 ->grn pysãpe_n ; ^ pysãpe_n 0 ; || -1, -1, 0
 ** uña_n del pie ; ^ uña_n 0
@@ -17750,12 +17558,8 @@
 ->grn tyryru_n ; ^ tyryru_n 0 ; || 0, -1, -1
 ** vela_n de cera ; ^ vela_n 0
 ->grn araity_n ; ^ araity_n 0 ; || 0, -1, -1
-** velo_n del paladar ; ^ velo_n 0
-->grn apekũ_n ; ^ apekũ_n 0 ; || 0, -1, -1
 ** vendedor_n ambulante ; ^ vendedor_n 0
 ->grn makatéro_n ; ^ makatéro_n 0 ; || 0, -1
-** villa_n miseria ; ^ villa_n 0
-->grn añaretã'i_n ; ^ añaretã'i_n 0 ; || 0, -1
 ** visitante_n molesto ; ^ visitante_n 0
 ->grn tevija_n ; ^ tevija_n 0 ; || 0, -1
 ** voces de animal_n ; ^ animal_n 2
@@ -17782,8 +17586,6 @@
 ->grn kuãpy_n ; ^ kuãpy_n 0 ; || 0, -1, -1
 ** yerba_n canchada ; ^ yerba_n 0
 ->grn mborovire_n ; ^ mborovire_n 0 ; || 0, -1
-** yerba_n mate ; ^ yerba_n 0
-->grn ka'a_n ; ^ ka'a_n 0 ; || 0, -1
 ** zumbido_n de oído ; ^ zumbido_n 0
 ->grn apysakuañe'ẽ_n ; ^ apysakuañe'ẽ_n 0 ; || 0, -1, -1
 ** órbita_n del ojo ; ^ órbita_n 0

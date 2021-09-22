@@ -1306,6 +1306,7 @@
 ->grn marãve
 ** a~la~par
 ->grn ijyképe
+->grn joja
 ** en~el~pasado
 ->grn akue
 ** perteneciente~a
@@ -1502,8 +1503,6 @@
 ** a~medias
 ->grn vai vai
 ->grn nunga
-** a~la~par
-->grn joja
 ** a~su~vez
 ->grn háma
 ** al~fin
@@ -1528,8 +1527,6 @@
 ->grn ipahápe
 ** en~todo~caso
 ->grn opáichavo
-** de~lado
-->grn ykévo
 ** de~verdad
 ->grn añetehápe
 ** a~pie
@@ -1560,3 +1557,5 @@
 ->grn upearã
 ** para~ello
 ->grn upearã
+** del~mismo~modo
+->grn peteĩcha

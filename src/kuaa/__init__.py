@@ -169,8 +169,8 @@ def gui_trans(gui, session=None, choose=False, return_string=False,
                    verbosity=verbosity, terse=terse)
 
 def oración(text='', src=None, targ=None, user=None, session=None,
-            sentence=None,
-            max_sols=2, translate=True, connect=True, generate=True,
+            sentence=None, finalize=False,
+            max_sols=3, translate=True, connect=True, generate=True,
             html=False, choose=False,
             return_string=False, verbosity=0, terse=False):
     """
@@ -188,6 +188,7 @@ def oración(text='', src=None, targ=None, user=None, session=None,
     segmentations = s.get_all_segmentations(translate=translate,
                                             generate=generate,
                                             agree_dflt=False, choose=choose,
+                                            finalize=finalize,
                                             connect=connect, html=html,
                                             terse=terse)
     if choose:

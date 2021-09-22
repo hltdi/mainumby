@@ -50,7 +50,7 @@
 # 2021
 # -- Included everything under src directory to enable setup
 
-__version__ = 2.2
+__version__ = 2.3
 
 import kuaa
 
