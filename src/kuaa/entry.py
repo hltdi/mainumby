@@ -2116,6 +2116,8 @@ class MorphoSyn(Entry):
             if m_index in negindices:
                 if verbosity > 1 or self.debug:
                     print(" Negative match: m_elem {}, s_elem {}, m_index {}".format(m_elem, s_elem, m_index))
+                m_index += 1
+                s_index += 1
                 continue
             m_index += 1
             # Replace the token (could have ~ now)

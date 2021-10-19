@@ -2046,6 +2046,7 @@ class Sentence:
         nuncovered = len(self.nodes) - ncovered
         ngroups = len(ginsts)
         score = ngroups + nuncovered
+        print("** covered {}, ginsts {}, s2gnodes {}, score {}".format(covered_snodes, ginsts, s2gnodes, score))
         # Create trees for each group
         tree_attribs = {}
 #        print("** create segmentation")

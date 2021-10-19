@@ -86,13 +86,13 @@ class NLTK(Tagger):
         pickle_path = os.path.join(os.path.join(os.path.join(LANGUAGE_DIR, lang_abbrev), 'syn'), "trigram2.pkl")
         # Brill tagger
 #        pickle_path = os.path.join(os.path.join(os.path.join(LANGUAGE_DIR, lang_abbrev), 'syn'), "tag.pkl")
-#        print("Pickle path {}".format(pickle_path))
+        print("**Pickle path {}".format(pickle_path))
         self.tokenizer = nltk.word_tokenize if lang_abbrev == 'eng' else None
 #        print("Tokenizer: {}".format(self.tokenizer))
         self.tokenize = True if lang_abbrev == 'eng' else False
         with open(pickle_path, 'rb') as pkl:
             self.tagger = load(pkl)
-#            print("Loaded tagger")
+            print("**Loaded tagger")
 
     def __repr__(self):
         return "NLTK:tagger:{}".format(self.lang)

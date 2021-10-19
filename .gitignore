@@ -59,9 +59,11 @@ target/
 
 # virtualenv
 venv/
+venv*/
 
 # DB
 cache/
 
 # Sessions, user data
 sessions/
+notes/
