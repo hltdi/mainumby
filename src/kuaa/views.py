@@ -63,7 +63,7 @@ def create_gui():
 
 def end_gui():
     global GUI
-    print("Ending GUI {}".format(GUI))
+#    print("Ending GUI {}".format(GUI))
     if GUI:
         quit(GUI.session)
         GUI = None
@@ -173,7 +173,7 @@ def tra():
     if not GUI:
         create_gui()
     form = request.form
-    print("Form {}".format(form))
+#    print("Form {}".format(form))
     if not GUI.source:
 #        print("Ninguna lengua fuente")
         start(gui=GUI, use_anon=False, create_memory=False)
@@ -186,7 +186,7 @@ def tra():
     # Initialize various window parameters
     GUI.set_props(form, ['ocultar', 'sinopciones', 'nocorr'], ['tfuente'])
     GUI.props['isdoc'] = isdoc
-    print("GUI props: {}".format(GUI.props))
+#    print("GUI props: {}".format(GUI.props))
     # We may need to clear the doc if we've changed mode
     if isdoc and 'documento' in form and not form['documento']:
         GUI.doc = None
@@ -320,7 +320,7 @@ def tra():
 #        sentences = doc_sentences(doc=GUI.doc, textid=GUI.textid, gui=GUI)
         all_trans = trad_doc()
         doctrans = '\n'.join(all_trans)
-        print("Traducciones: {}".format(doctrans[:100]))
+#        print("Traducciones: {}".format(doctrans[:100]))
         GUI.props['tfuente'] = '100%'
 #        translations = ''
 #        for sentence in sentences:
@@ -340,7 +340,7 @@ def tra():
                                                  textid=GUI.textid, oindex=oindex)
         else:
             GUI.sentence = GUI.doc[oindex]
-        print("ORACIÓN ACTUAL {}".format(GUI.sentence))
+#        print("ORACIÓN ACTUAL {}".format(GUI.sentence))
         # Translate and segment the sentence, assigning GUI.segs
         source = form.get('ofuente', '')
         solve(isdoc=isdoc, index=oindex, choose=choose, source=source)

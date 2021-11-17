@@ -23,10 +23,10 @@
 #
 # =========================================================================
 
-__all__ = ['language', 'entry', 'constraint', 'views', 'variable', 'sentence', 'cs', 'utils', 'record', 'train', 'tag', 'gui', 'text', 'database']
+#__all__ = ['language', 'entry', 'constraint', 'views', 'variable', 'sentence', 'cs', 'utils', 'record', 'train', 'tag', 'gui', 'text', 'database']
 #  not needed for now: 'learn', 'ui'
 
-__version__ = '2.2'
+__version__ = '2.3'
 
 from flask import Flask, url_for, render_template
 from flask_sqlalchemy import SQLAlchemy
@@ -41,31 +41,34 @@ app.config['SQLALCHEMY_BINDS'] = {
 }
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+import mbojereha
+
 # db = SQLAlchemy()
 
 ## train imports sentence
-from .train import *
+#from .train import *
 
-## sentence imports ui, segment, record
-### segment imports cs, utils, entry.Entry, entry.Group, record.SegRecord
-### ui imports language (ui not needed for current version)
+## sentence imports ui, segment, individual classes from other modules
+### segment imports cs, utils + individual classes
+#### cs imports constraint
+### ui imports language (ui itself not needed for current version)
 #### language imports entry, some functions from utils, morphology.morpho, morphology.semiring
 #### language also calls function in morphology.strip
-##### entry imports morphology.fs
+##### entry imports morphology.fs, class and constant from morphology.semiring
 
 ## morphology a package; imports morphology.morpho
 ### which imports morphology.fst
 #### which imports morphology.semiring
 ##### which imports morphology.fs, morphology.utils
 ###### fs imports morphology.logic, morphology.internals
-from .morphology import *
+#from .morphology import *
 
 from .record import *
 
+# Required for text database.
 from .text import *
-
 db.create_all()
-
 from .database import *
 
 ## Whether to create a session for the anonymous user when user doesn't log in.
@@ -96,10 +99,11 @@ def start(gui, use_anon=True, create_memory=False):
 
 def load(source='spa', target='grn', gui=None):
     """Cargar lenguas fuente y meta para traducción."""
-    s, t = kuaa.Language.load_trans(source, target)
+    s, t = mbojereha.Language.load_trans(source, target)
     if gui:
         gui.source = s
         gui.target = t
+    return s, t
 
 def doc_sentences(doc=None, textobj=None, text='', textid=-1,
                   gui=None, src=None, targ=None, user=None, verbosity=0):
@@ -111,7 +115,7 @@ def doc_sentences(doc=None, textobj=None, text='', textid=-1,
         if gui:
             src = gui.source; targ = gui.target
         else:
-            src, targ = Language.load_trans('spa', 'grn', bidir=False)
+            src, targ = mbojereha.Language.load_trans('spa', 'grn', bidir=False)
     if doc:
         return doc
     else:
@@ -128,18 +132,18 @@ def doc_trans(doc=None, textobj=None, text='', textid=-1, docpath='',
         if gui:
             src = gui.source; targ = gui.target
         else:
-            src, targ = Language.load_trans('spa', 'grn', bidir=False)
+            src, targ = mbojereha.Language.load_trans('spa', 'grn', bidir=False)
     if not session:
         session = make_session(src, targ, user, create_memory=True)
     if not doc:
         if docpath:
-            doc = Document(src, targ, path=docpath)
+            doc = mbojereha.Document(src, targ, path=docpath)
     if doc:
         sentences = doc
     elif textid >= 0:
         sentences = sentences_from_text(textobj, textid, src, targ)
     elif text:
-        sentences = Document(src, targ, text=text)
+        sentences = mbojereha.Document(src, targ, text=text)
 #    sentences = doc if doc else sentences_from_text(textobj, textid, src, targ)
     if sentences:
 #        print("Traduciendo oraciones en documento...")
@@ -180,7 +184,7 @@ def oración(text='', src=None, targ=None, user=None, session=None,
         src, targ = Language.load_trans('spa', 'grn', bidir=False)
     if not session:
         session = make_session(src, targ, user, create_memory=True)
-    s = Sentence.solve_sentence(src, targ, text=text, session=session,
+    s = mbojereha.Sentence.solve_sentence(src, targ, text=text, session=session,
                                 sentence=sentence,
                                 max_sols=max_sols, choose=choose,
                                 translate=translate,
@@ -245,7 +249,7 @@ def make_session(source, target, user, create_memory=False, use_anon=True):
     User.read_all()
     if isinstance(user, str):
         # Get the user from their username
-        user = User.users.get(user)
+        user = mbojereha.User.users.get(user)
     if use_anon and not user:
         user = User.get_anon()
     username = ''
@@ -298,7 +302,7 @@ def sentences_from_text(text=None, textid=-1, source=None, target=None):
     for textseg in text.segments:
         original = textseg.content
         tokens = [tt.string for tt in textseg.tokens]
-        sentence = Sentence(original=original, tokens=tokens,
+        sentence = mbojereha.Sentence(original=original, tokens=tokens,
                             language=source, target=target)
         sentences.append(sentence)
     return sentences
@@ -315,7 +319,7 @@ def sentence_from_textseg(textseg=None, source=None, target=None, textid=None,
     textseg = textseg or get_text(textid).segments[oindex]
     original = textseg.content
     tokens = [tt.string for tt in textseg.tokens]
-    return Sentence(original=original, tokens=tokens, language=source,
+    return mbojereha.Sentence(original=original, tokens=tokens, language=source,
                     target=target)
 
 def make_translation(text=None, textid=-1, accepted=None,
@@ -384,5 +388,6 @@ def get_text(id):
     """Get the Text object with the given id."""
     return db.session.query(Text).get(id)
 
-# Import views. This has to appear after the app is created.
+## Import views. This has to appear after the app is created.
+# views imports gui and various functions from .
 import kuaa.views

@@ -31,6 +31,8 @@ import re
 
 from .utils import clean_sentence
 
+from .record import SentRecord
+
 from . import get_domains_texts
 
 # the database class bound to the current app
@@ -237,7 +239,8 @@ class GUI:
                              accepted=self.doc_tra_acep)
         sentrec = None
         if self.sentence:
-            sentrec = self.sentence.record
+            sentrec = SentRecord(self.sentence, session=self.session)
+#            sentrec = self.sentence.record
         self.tra_seg_html = None
         self.sentence = None
         if not abandonar:

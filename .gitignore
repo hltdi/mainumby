@@ -64,6 +64,7 @@ venv*/
 # DB
 cache/
 
-# Sessions, user data
+# Sessions, user data, archived files
 sessions/
 notes/
+old/

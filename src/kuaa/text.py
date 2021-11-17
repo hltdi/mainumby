@@ -41,8 +41,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import datetime, os
 import docx
 from .utils import get_time
-from .sentence import Document
-from .language import Language
+from mbojereha.sentence import Document
+from mbojereha.language import Language
 
 # the database class bound to the current app
 from . import db
